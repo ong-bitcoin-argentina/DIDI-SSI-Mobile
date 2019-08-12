@@ -1,7 +1,7 @@
 package com.app.didi.presentation.di
 
 import com.app.didi.AppApplication
-import com.app.didi.presentation.di.module.*
+import com.app.didi.di.module.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector

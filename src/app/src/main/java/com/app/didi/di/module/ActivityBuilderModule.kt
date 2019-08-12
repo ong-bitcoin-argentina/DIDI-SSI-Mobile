@@ -1,4 +1,4 @@
-package com.app.didi.presentation.di.module
+package com.app.didi.di.module
 
 import com.app.didi.MainActivity
 import dagger.Module

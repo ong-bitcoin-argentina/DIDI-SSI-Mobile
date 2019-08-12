@@ -1,4 +1,4 @@
-package com.app.didi.presentation.di.module
+package com.app.didi.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
