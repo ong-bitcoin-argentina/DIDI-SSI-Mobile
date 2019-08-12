@@ -1,15 +1,14 @@
 package com.app.didi
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import dagger.android.support.DaggerAppCompatActivity
+import com.app.didi.presentation.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
