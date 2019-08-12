@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.didi.MainViewModel
 import com.app.didi.presentation.common.AppViewModelFactory
 import com.app.didi.presentation.di.base.ViewModelKey
+import com.app.didi.presentation.signup.EmailSignupViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -19,4 +20,8 @@ abstract class ViewModelModule {
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(EmailSignupViewModel::class)
+    abstract fun bindEmailEntryViewModel(emailSignupViewModel: EmailSignupViewModel): ViewModel
 }
