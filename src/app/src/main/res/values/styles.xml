@@ -6,6 +6,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
     </style>
+
+    <style name="Button" parent="Base.Widget.AppCompat.Button.Colored"/>
+
+    <style name="Button.Primary">
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Button.Secondary">
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
+    </style>
+
+    <style name="Button.Transparent" parent="Widget.AppCompat.Button.Borderless"/>
 
 </resources>
