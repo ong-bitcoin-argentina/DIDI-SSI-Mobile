@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Didi</string>
+    <string name="access_enterButton">Ingresar</string>
+    <string name="access_createAccount">Crear cuenta</string>
+    <string name="access_recoverAccount">Recuperar cuenta</string>
 </resources>
