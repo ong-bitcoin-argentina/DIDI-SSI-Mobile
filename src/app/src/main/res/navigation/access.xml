@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/access"
+            app:startDestination="@id/startAccess">
+
+    <fragment
+            android:id="@+id/startAccess"
+            android:label="start_access_fragment"
+            android:name="com.app.didi.presentation.access.StartAccessFragment"
+            tools:layout="@layout/start_access_fragment">
+        <action
+                android:id="@+id/action_startAccess_to_placeholder2"
+                app:destination="@id/loginEnterPhone"/>
+        <action
+                android:id="@+id/action_startAccess_to_signupOnboarding"
+                app:destination="@id/signupOnboarding"/>
+        <action
+                android:id="@+id/action_startAccess_to_recoveryExplanation"
+                app:destination="@id/recoveryExplanation"/>
+    </fragment>
+
+    <fragment android:id="@+id/loginEnterPhone">
+        <action
+                android:id="@+id/action_loginEnterPhone_to_loginVerifyPhone"
+                app:destination="@id/loginVerifyPhone"/>
+    </fragment>
+
+    <fragment android:id="@+id/loginVerifyPhone"/>
+
+    <fragment android:id="@+id/signupOnboarding">
+        <action
+                android:id="@+id/action_signupOnboarding_to_signupEnterPhone"
+                app:destination="@id/signupEnterPhone"/>
+    </fragment>
+
+    <fragment android:id="@+id/signupVerifyPhone">
+        <action
+                android:id="@+id/action_signupVerifyPhone_to_signupEnterEmail"
+                app:destination="@id/signupEnterEmail"/>
+    </fragment>
+
+    <fragment android:id="@+id/signupEnterPhone">
+        <action
+                android:id="@+id/action_signupEnterPhone_to_signupVerifyPhone"
+                app:destination="@id/signupVerifyPhone"/>
+    </fragment>
+
+    <fragment android:id="@+id/signupEnterEmail">
+        <action
+                android:id="@+id/action_signupEnterEmail_to_signupConfirmed"
+                app:destination="@id/signupConfirmation"/>
+    </fragment>
+
+    <fragment android:id="@+id/signupConfirmation"/>
+
+    <fragment android:id="@+id/recoveryExplanation">
+        <action
+                android:id="@+id/action_recoveryExplanation_to_placeholder8"
+                app:destination="@id/recoveryEnterEmail"/>
+    </fragment>
+
+    <fragment android:id="@+id/recoveryEnterEmail">
+        <action
+                android:id="@+id/action_recoveryEnterEmail_to_recoveryEnterPhone"
+                app:destination="@id/recoveryEnterPhone"/>
+    </fragment>
+
+    <fragment android:id="@+id/recoveryEnterPhone">
+        <action
+                android:id="@+id/action_recoveryEnterPhone_to_recoverVerifyPhone"
+                app:destination="@id/recoverVerifyPhone"/>
+    </fragment>
+
+    <fragment android:id="@+id/recoverVerifyPhone"/>
+</navigation>
