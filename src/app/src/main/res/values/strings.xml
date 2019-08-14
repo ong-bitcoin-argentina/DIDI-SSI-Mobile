@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Didi</string>
-    <string name="access_enterButton">Ingresar</string>
+
+    <string name="access_enter">Ingresar</string>
     <string name="access_createAccount">Crear cuenta</string>
     <string name="access_recoverAccount">Recuperar cuenta</string>
+
+    <string name="enterPhone_message">Cargá tu número de celular</string>
+    <string name="enterPhone_country">Argentina +54</string>
+    <string name="enterPhone_phoneNumber_info">Número de celular</string>
+    <string name="enterPhone_phoneNumber_placeholder">011 + número sin el 15</string>
+    <string name="enterPhone_confirm">Validar</string>
 </resources>

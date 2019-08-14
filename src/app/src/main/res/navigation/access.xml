@@ -3,16 +3,16 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/access"
-            app:startDestination="@id/startAccess">
+            app:startDestination="@id/startAccess"
+            android:label="@string/app_name">
 
     <fragment
             android:id="@+id/startAccess"
-            android:label="start_access_fragment"
             android:name="com.app.didi.presentation.access.StartAccessFragment"
             tools:layout="@layout/start_access_fragment">
         <action
-                android:id="@+id/action_startAccess_to_placeholder2"
-                app:destination="@id/loginEnterPhone"/>
+                android:id="@+id/action_startAccess_to_loginEnterPhone"
+                app:destination="@+id/loginEnterPhone"/>
         <action
                 android:id="@+id/action_startAccess_to_signupOnboarding"
                 app:destination="@id/signupOnboarding"/>
@@ -21,7 +21,11 @@
                 app:destination="@id/recoveryExplanation"/>
     </fragment>
 
-    <fragment android:id="@+id/loginEnterPhone">
+    <fragment
+            android:id="@+id/loginEnterPhone"
+            android:name="com.app.didi.presentation.access.LoginEnterPhoneFragment"
+            android:label="@string/access_enter"
+            tools:layout="@layout/common_enter_phone_fragment">
         <action
                 android:id="@+id/action_loginEnterPhone_to_loginVerifyPhone"
                 app:destination="@id/loginVerifyPhone"/>

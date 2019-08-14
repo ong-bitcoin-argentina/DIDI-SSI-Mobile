@@ -20,7 +20,7 @@
                 />
 
         <Button
-                android:text="@string/access_enterButton"
+                android:text="@string/access_enter"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:id="@+id/enterButton"

@@ -21,4 +21,6 @@
 
     <style name="Button.Transparent" parent="Widget.AppCompat.Button.Borderless"/>
 
+    <style name="TextAppearance" parent="TextAppearance.AppCompat.Medium"/>
+
 </resources>

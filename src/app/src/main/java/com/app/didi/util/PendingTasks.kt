@@ -11,4 +11,10 @@ object PendingTasks {
             TODO("To be implemented after backend API is defined")
         }
     }
+
+    class AfterCustomEditText {
+        init {
+            TODO("To be implemented after custom edit text is available")
+        }
+    }
 }

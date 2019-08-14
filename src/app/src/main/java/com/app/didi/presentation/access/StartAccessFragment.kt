@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.app.didi.R
 import com.app.didi.databinding.StartAccessFragmentBinding
-import com.app.didi.util.PendingTasks
 
 class StartAccessFragment : Fragment() {
 
@@ -34,15 +34,15 @@ class StartAccessFragment : Fragment() {
 
     private fun setupListeners() {
         dataBinding.enterButton.setOnClickListener {
-            PendingTasks.AfterServiceDefinition()
+            this.findNavController().navigate(StartAccessFragmentDirections.actionStartAccessToLoginEnterPhone())
         }
 
         dataBinding.createAccountButton.setOnClickListener {
-            PendingTasks.AfterServiceDefinition()
+            this.findNavController().navigate(StartAccessFragmentDirections.actionStartAccessToSignupOnboarding())
         }
 
         dataBinding.recoverAccountButton.setOnClickListener {
-            PendingTasks.AfterServiceDefinition()
+            this.findNavController().navigate(StartAccessFragmentDirections.actionStartAccessToRecoveryExplanation())
         }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="screen_margin_horizontal">16dp</dimen>
-    <dimen name="screen_margin_vertical">16dp</dimen>
+    <dimen name="screen_margin_vertical">30dp</dimen>
 
     <dimen name="button_height">56dp</dimen>
 </resources>
