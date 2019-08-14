@@ -9,6 +9,7 @@ import dagger.android.ContributesAndroidInjector
  * las dependencias a la activity
  */
 @Module
+@Suppress("unused")
 abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun contributeMainActivity(): MainActivity

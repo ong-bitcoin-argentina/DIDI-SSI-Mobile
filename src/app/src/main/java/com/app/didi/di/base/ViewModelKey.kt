@@ -1,4 +1,4 @@
-package com.app.didi.presentation.di.base
+package com.app.didi.di.base
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

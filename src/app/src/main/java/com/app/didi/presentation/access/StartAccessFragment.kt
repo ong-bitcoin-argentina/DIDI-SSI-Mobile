@@ -1,20 +1,18 @@
 package com.app.didi.presentation.access
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
-
+import androidx.fragment.app.Fragment
 import com.app.didi.R
 import com.app.didi.databinding.StartAccessFragmentBinding
 import com.app.didi.util.PendingTasks
 
 class StartAccessFragment : Fragment() {
 
-    lateinit var dataBinding: StartAccessFragmentBinding
+    private lateinit var dataBinding: StartAccessFragmentBinding
 
     companion object {
         fun newInstance() = StartAccessFragment()
@@ -34,7 +32,7 @@ class StartAccessFragment : Fragment() {
         setupListeners()
     }
 
-    fun setupListeners() {
+    private fun setupListeners() {
         dataBinding.enterButton.setOnClickListener {
             PendingTasks.AfterServiceDefinition()
         }

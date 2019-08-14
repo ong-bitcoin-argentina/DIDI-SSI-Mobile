@@ -3,11 +3,12 @@ package com.app.didi.di.module
 import android.app.Application
 import android.content.Context
 import com.app.didi.AppApplication
-import com.app.didi.presentation.di.base.ApplicationContext
+import com.app.didi.di.base.ApplicationContext
 import dagger.Module
 import dagger.Provides
 
 @Module
+@Suppress("unused")
 class ApplicationModule {
     /**
      * Importante: agregar la anotation @ApplicationContext donde se inyecta

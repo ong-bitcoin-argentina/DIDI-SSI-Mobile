@@ -1,4 +1,4 @@
-package com.app.didi.presentation.di
+package com.app.didi.di
 
 import com.app.didi.AppApplication
 import com.app.didi.di.module.*

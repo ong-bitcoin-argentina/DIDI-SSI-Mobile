@@ -1,6 +1,6 @@
 package com.app.didi
 
-import com.app.didi.presentation.di.DaggerAppComponent
+import com.app.didi.di.DaggerAppComponent
 import dagger.android.DaggerApplication
 
 class AppApplication : DaggerApplication() {
