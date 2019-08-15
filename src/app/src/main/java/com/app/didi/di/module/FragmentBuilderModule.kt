@@ -1,6 +1,6 @@
 package com.app.didi.di.module
 
-import com.app.didi.presentation.access.LoginEnterPhoneFragment
+import com.app.didi.presentation.access.login.LoginEnterPhoneFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

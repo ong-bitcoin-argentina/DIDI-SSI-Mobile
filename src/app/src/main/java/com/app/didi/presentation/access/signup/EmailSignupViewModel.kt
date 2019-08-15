@@ -1,4 +1,4 @@
-package com.app.didi.presentation.signup
+package com.app.didi.presentation.access.signup
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -41,6 +41,11 @@ class EmailSignupViewModel
     }
 
     fun signup(email: String, password: String) {
-        signupRequestArgs.postValue(RequestArgs(email, password))
+        signupRequestArgs.postValue(
+            RequestArgs(
+                email,
+                password
+            )
+        )
     }
 }

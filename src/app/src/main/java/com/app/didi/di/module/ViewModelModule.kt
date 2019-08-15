@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.didi.MainViewModel
 import com.app.didi.di.base.ViewModelKey
-import com.app.didi.presentation.access.LoginEnterPhoneViewModel
+import com.app.didi.presentation.access.login.LoginEnterPhoneViewModel
 import com.app.didi.presentation.common.AppViewModelFactory
-import com.app.didi.presentation.signup.EmailSignupViewModel
+import com.app.didi.presentation.access.signup.EmailSignupViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
