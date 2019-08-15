@@ -3,5 +3,8 @@
     <dimen name="screen_margin_horizontal">16dp</dimen>
     <dimen name="screen_margin_vertical">30dp</dimen>
 
+    <dimen name="phone_illustration_width">185dp</dimen>
+    <dimen name="phone_illustration_height">160dp</dimen>
+
     <dimen name="button_height">56dp</dimen>
 </resources>

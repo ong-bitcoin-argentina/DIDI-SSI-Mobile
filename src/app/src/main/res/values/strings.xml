@@ -10,4 +10,9 @@
     <string name="enterPhone_phoneNumber_info">Número de celular</string>
     <string name="enterPhone_phoneNumber_placeholder">011 + número sin el 15</string>
     <string name="enterPhone_confirm">Validar</string>
+
+    <string name="recovery_explanation_text1">Si quieres recuperar la cuenta es porque:</string>
+    <string name="recovery_explanation_text2">-Te robaron el teléfono\n-Cambiaste tu nro. de teléfono\n-Perdiste tu teléfono</string>
+    <string name="recovery_explanation_text3">Debes recordar tu email y contraseña de resguardo para recuperar su cuenta</string>
+    <string name="recovery_explanation_confirm">Iniciar</string>
 </resources>

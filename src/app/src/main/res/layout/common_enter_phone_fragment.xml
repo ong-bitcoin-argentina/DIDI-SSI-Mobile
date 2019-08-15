@@ -86,8 +86,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_width="185dp"
-                android:layout_height="160dp"
+                android:layout_width="@dimen/phone_illustration_width"
+                android:layout_height="@dimen/phone_illustration_height"
                 />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

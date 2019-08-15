@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <Button
+            android:text="@string/recovery_explanation_confirm"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:id="@+id/button"
+            style="@style/Button.Primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/screen_margin_horizontal"
+            android:layout_marginBottom="@dimen/screen_margin_vertical"
+            android:layout_marginEnd="@dimen/screen_margin_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="0.5"/>
+
+    <ImageView
+            android:src="@color/colorAccent"
+            android:layout_width="@dimen/phone_illustration_width"
+            android:layout_height="@dimen/phone_illustration_height"
+            android:id="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"/>
+
+    <TextView
+            android:text="@string/recovery_explanation_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance"
+            android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/textView3"
+            android:layout_marginTop="@dimen/screen_margin_vertical"
+            app:layout_constraintVertical_chainStyle="spread_inside"/>
+
+    <TextView
+            android:text="@string/recovery_explanation_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            android:textStyle="bold"/>
+
+    <TextView
+            android:text="@string/recovery_explanation_text3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:textAppearance="@style/TextAppearance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/screen_margin_horizontal"
+            android:layout_marginEnd="@dimen/screen_margin_horizontal"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintBottom_toTopOf="@+id/button"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

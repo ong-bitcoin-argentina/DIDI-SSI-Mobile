@@ -3,7 +3,6 @@ package com.app.didi.presentation.access.login
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.app.didi.presentation.access.LoginEnterPhoneFragmentDirections
 import com.app.didi.presentation.common.phoneVerification.CommonEnterPhoneFragment
 import javax.inject.Inject
 

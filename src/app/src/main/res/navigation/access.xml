@@ -59,9 +59,13 @@
 
     <fragment android:id="@+id/signupConfirmation"/>
 
-    <fragment android:id="@+id/recoveryExplanation">
+    <fragment
+            android:id="@+id/recoveryExplanation"
+            android:label="@string/access_recoverAccount"
+            android:name="com.app.didi.presentation.access.recovery.RecoveryExplanationFragment"
+            tools:layout="@layout/recovery_explanation_fragment">
         <action
-                android:id="@+id/action_recoveryExplanation_to_placeholder8"
+                android:id="@+id/action_recoveryEnterEmail"
                 app:destination="@id/recoveryEnterEmail"/>
     </fragment>
 
