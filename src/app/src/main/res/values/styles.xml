@@ -9,6 +9,17 @@
         <item name="colorSecondary">@color/colorSecondary</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+
+    <!-- Button Styles -->
     <style name="Button" parent="Base.Widget.AppCompat.Button.Colored"/>
 
     <style name="Button.Primary">
@@ -21,15 +32,11 @@
 
     <style name="Button.Transparent" parent="Widget.AppCompat.Button.Borderless"/>
 
+    <!-- Text Styles -->
     <style name="TextAppearance" parent="TextAppearance.AppCompat.Medium"/>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="TextAppearance.Emphasis" parent="TextAppearance">
+        <item name="android:textStyle">bold</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>

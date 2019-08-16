@@ -54,10 +54,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textAppearance="@style/TextAppearance"
+            android:textAppearance="@style/TextAppearance.Emphasis"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
-            android:textStyle="bold"/>
+            />
 
     <TextView
             android:text="@string/recovery_explanation_text3"

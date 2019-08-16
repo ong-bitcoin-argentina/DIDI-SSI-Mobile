@@ -8,4 +8,8 @@
     <color name="colorSecondary">#67DAC6</color>
     <color name="colorSecondaryDark">#448B7F</color>
     <color name="colorOnSecondary">#FFF</color>
+
+    <color name="onboarding_1">#8351C5</color>
+    <color name="onboarding_2">#CB296E</color>
+    <color name="onboarding_3">#6ECD55</color>
 </resources>

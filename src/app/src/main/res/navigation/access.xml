@@ -33,7 +33,11 @@
 
     <fragment android:id="@+id/loginVerifyPhone"/>
 
-    <fragment android:id="@+id/signupOnboarding">
+    <fragment
+            android:id="@+id/signupOnboarding"
+            android:name="com.app.didi.presentation.access.signup.SignupOnboardingFragment"
+            android:label="Registro"
+            tools:layout="@layout/signup_onboarding_fragment">
         <action
                 android:id="@+id/action_signupOnboarding_to_signupEnterPhone"
                 app:destination="@id/signupEnterPhone"/>

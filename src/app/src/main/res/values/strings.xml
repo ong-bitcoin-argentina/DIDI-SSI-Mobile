@@ -15,4 +15,11 @@
     <string name="recovery_explanation_text2">-Te robaron el teléfono\n-Cambiaste tu nro. de teléfono\n-Perdiste tu teléfono</string>
     <string name="recovery_explanation_text3">Debes recordar tu email y contraseña de resguardo para recuperar su cuenta</string>
     <string name="recovery_explanation_confirm">Iniciar</string>
+
+    <string name="onboarding_title_1">¿Qué podes hacer?</string>
+    <string name="onboarding_title_2">Podés generar certificados</string>
+    <string name="onboarding_title_3">Alcanzá tus metas de ahorro</string>
+    <string name="onboarding_description_1">Con Didi vas a poder armar rondas comunitarias de plata y crear tu identidad digital sin intermediarios y de manera segura.</string>
+    <string name="onboarding_description_2">Con Didi vas a poder acceder a todos tus certificados de cursos y propiedades.</string>
+    <string name="onboarding_description_3">Podés crear Rondas y así conseguir la plata que estabas necesitando de manera facil y confiable.</string>
 </resources>
