@@ -3,6 +3,8 @@ package com.app.didi.presentation.access
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -27,8 +29,13 @@ class AccessActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         val navController = findNavController(R.id.navHost)
+
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            toolbar.visibility = if (destination.label == null) View.GONE else View.VISIBLE
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

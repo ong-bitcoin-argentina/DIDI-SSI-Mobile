@@ -9,7 +9,7 @@
             android:id="@+id/startAccess"
             android:name="com.app.didi.presentation.access.StartAccessFragment"
             tools:layout="@layout/start_access_fragment"
-            android:label="@string/app_name">
+            >
         <action
                 android:id="@+id/action_startAccess_to_loginEnterPhone"
                 app:destination="@+id/loginEnterPhone"/>
@@ -36,7 +36,6 @@
     <fragment
             android:id="@+id/signupOnboarding"
             android:name="com.app.didi.presentation.access.signup.SignupOnboardingFragment"
-            android:label="Registro"
             tools:layout="@layout/signup_onboarding_fragment">
         <action
                 android:id="@+id/action_signupOnboarding_to_signupEnterPhone"
