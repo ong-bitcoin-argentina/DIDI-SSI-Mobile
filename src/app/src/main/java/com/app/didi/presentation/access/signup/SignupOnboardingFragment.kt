@@ -13,7 +13,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.app.didi.R
 import com.app.didi.databinding.SignupOnboardingFragmentBinding
 import com.app.didi.databinding.SignupOnboardingInfoFragmentBinding
-import com.app.didi.util.afterPageChanged
+import com.app.didi.util.onPageScrolled
+import kotlin.math.abs
 
 class SignupOnboardingFragment : Fragment() {
 
@@ -31,7 +32,7 @@ class SignupOnboardingFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        onPageChange(0)
+        onPageScrolled(0, 0.0f)
         setupListeners()
     }
 
@@ -40,16 +41,22 @@ class SignupOnboardingFragment : Fragment() {
 
         viewBinding.tabDots.setupWithViewPager(viewBinding.viewPager)
 
-        viewBinding.viewPager.afterPageChanged(this::onPageChange)
+        viewBinding.viewPager.onPageScrolled(this::onPageScrolled)
     }
 
-    private fun onPageChange(index: Int) {
-        viewBinding.layout.setBackgroundResource(infoContent[index].background)
+    private fun onPageScrolled(page: Int, offset: Float) {
+        val mainOffset = if (offset <= 0.5f) offset else offset - 1.0f
+        val mainPage = if (mainOffset >= 0.0f) page else page + 1
+        val offPage = if (mainOffset <= 0.0f) page else page + 1
+
+        viewBinding.layout.setBackgroundResource(infoContent[mainPage].background)
+        viewBinding.fadeBackground.setBackgroundResource(infoContent[offPage].background)
+        viewBinding.fadeBackground.alpha = abs(mainOffset)
     }
 
     class Adapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getCount(): Int {
-            return 3
+            return infoContent.count()
         }
 
         override fun getItem(position: Int): Fragment {
