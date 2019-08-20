@@ -16,6 +16,7 @@
     <string name="recovery_explanation_text3">Debes recordar tu email y contraseña de resguardo para recuperar su cuenta</string>
     <string name="recovery_explanation_confirm">Iniciar</string>
 
+    <string name="onboarding_close">Cerrar</string>
     <string name="onboarding_title_1">¿Qué podes hacer?</string>
     <string name="onboarding_title_2">Podés generar certificados</string>
     <string name="onboarding_title_3">Alcanzá tus metas de ahorro</string>

@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSecondary">@color/colorSecondary</item>
     </style>
@@ -32,8 +33,13 @@
 
     <style name="Button.Transparent" parent="Widget.AppCompat.Button.Borderless"/>
 
+    <style name="Button.Transparent.Inverse" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textAppearance">@style/TextAppearance.Inverse</item>
+    </style>
+
     <!-- Text Styles -->
     <style name="TextAppearance" parent="TextAppearance.AppCompat.Medium"/>
+    <style name="TextAppearance.Inverse" parent="TextAppearance.AppCompat.Medium.Inverse"/>
 
     <style name="TextAppearance.Emphasis" parent="TextAppearance">
         <item name="android:textStyle">bold</item>

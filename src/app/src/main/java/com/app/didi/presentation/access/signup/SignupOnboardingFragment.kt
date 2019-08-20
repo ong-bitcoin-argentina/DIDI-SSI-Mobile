@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.navigation.fragment.findNavController
 import com.app.didi.R
 import com.app.didi.databinding.SignupOnboardingFragmentBinding
 import com.app.didi.databinding.SignupOnboardingInfoFragmentBinding
@@ -37,11 +38,21 @@ class SignupOnboardingFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        viewBinding.viewPager.adapter = Adapter(childFragmentManager)
+        viewBinding.viewPager.adapter = Adapter(childFragmentManager) {
+            if (viewBinding.viewPager.currentItem + 1 < infoContent.size) {
+                viewBinding.viewPager.currentItem += 1
+            } else {
+                findNavController().navigate(SignupOnboardingFragmentDirections.actionSignupOnboardingToSignupEnterPhone())
+            }
+        }
 
         viewBinding.tabDots.setupWithViewPager(viewBinding.viewPager)
 
         viewBinding.viewPager.onPageScrolled(this::onPageScrolled)
+
+        viewBinding.closeButton.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun onPageScrolled(page: Int, offset: Float) {
@@ -54,13 +65,16 @@ class SignupOnboardingFragment : Fragment() {
         viewBinding.fadeBackground.alpha = abs(mainOffset)
     }
 
-    class Adapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    class Adapter(
+        fm: FragmentManager,
+        private val onClick: (View) -> Unit
+    ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getCount(): Int {
             return infoContent.count()
         }
 
         override fun getItem(position: Int): Fragment {
-            return InfoFragment(infoContent[position])
+            return InfoFragment(infoContent[position], onClick)
         }
     }
 
@@ -71,7 +85,10 @@ class SignupOnboardingFragment : Fragment() {
         @DrawableRes val background: Int
     )
 
-    class InfoFragment(val content: InfoContent) : Fragment() {
+    class InfoFragment(
+        private val content: InfoContent,
+        private val onClick: (View) -> Unit
+    ) : Fragment() {
         lateinit var viewBinding: SignupOnboardingInfoFragmentBinding
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -82,6 +99,7 @@ class SignupOnboardingFragment : Fragment() {
         override fun onActivityCreated(savedInstanceState: Bundle?) {
             super.onActivityCreated(savedInstanceState)
 
+            viewBinding.layout.setOnClickListener(onClick)
             viewBinding.imageView.setImageResource(content.image)
             viewBinding.titleTextView.text =  getString(content.title)
             viewBinding.descriptionTextView.text = getString(content.description)
