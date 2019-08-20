@@ -1,6 +1,7 @@
 package com.app.didi.di.module
 
 import com.app.didi.presentation.access.login.LoginEnterPhoneFragment
+import com.app.didi.presentation.access.signup.SignupEnterPhoneFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -12,4 +13,8 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract fun contributeLoginEnterPhoneFragment(): LoginEnterPhoneFragment
+
+
+    @ContributesAndroidInjector
+    abstract fun contributeSignupEnterPhoneFragment(): SignupEnterPhoneFragment
 }

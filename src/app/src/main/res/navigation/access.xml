@@ -38,7 +38,7 @@
             android:name="com.app.didi.presentation.access.signup.SignupOnboardingFragment"
             tools:layout="@layout/signup_onboarding_fragment">
         <action
-                android:id="@+id/action_signupOnboarding_to_signupEnterPhone"
+                android:id="@+id/action_enterPhone"
                 app:destination="@id/signupEnterPhone"/>
     </fragment>
 
@@ -48,7 +48,11 @@
                 app:destination="@id/signupEnterEmail"/>
     </fragment>
 
-    <fragment android:id="@+id/signupEnterPhone">
+    <fragment
+            android:id="@+id/signupEnterPhone"
+            android:name="com.app.didi.presentation.access.signup.SignupEnterPhoneFragment"
+            android:label="@string/access_createAccount"
+            tools:layout="@layout/common_enter_phone_fragment">
         <action
                 android:id="@+id/action_signupEnterPhone_to_signupVerifyPhone"
                 app:destination="@id/signupVerifyPhone"/>

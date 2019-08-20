@@ -42,7 +42,7 @@ class SignupOnboardingFragment : Fragment() {
             if (viewBinding.viewPager.currentItem + 1 < infoContent.size) {
                 viewBinding.viewPager.currentItem += 1
             } else {
-                findNavController().navigate(SignupOnboardingFragmentDirections.actionSignupOnboardingToSignupEnterPhone())
+                findNavController().navigate(SignupOnboardingFragmentDirections.actionEnterPhone())
             }
         }
 
