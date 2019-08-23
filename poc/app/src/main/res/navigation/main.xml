@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.app.dportlandia.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" >
+        <action
+            android:id="@+id/receiveVerifiedClaim"
+            app:destination="@id/receiveVerifiedClaim" />
+        <action
+            android:id="@+id/selectiveDisclosure"
+            app:destination="@id/selectiveDisclosure" />
+    </fragment>
+    <fragment
+        android:id="@+id/receiveVerifiedClaim"
+        android:name="com.app.dportlandia.ReceiveVerifiedClaimFragment"
+        android:label="fragment_receive_verified_claim"
+        tools:layout="@layout/fragment_receive_verified_claim" />
+    <fragment
+        android:id="@+id/selectiveDisclosure"
+        android:name="com.app.dportlandia.SelectiveDisclosureFragment"
+        android:label="fragment_selective_disclosure"
+        tools:layout="@layout/fragment_selective_disclosure" />
+</navigation>
