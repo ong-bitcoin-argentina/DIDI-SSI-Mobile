@@ -25,7 +25,7 @@
                     android:id="@+id/responseEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Claim URI"
+                    android:hint="JWT URI"
                     android:inputType="textMultiLine|text"
                     android:maxLines="200"
                     android:scrollbars="vertical" />
@@ -48,23 +48,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/acceptButton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clearButton"
             tools:text="Content" />
-
-        <Button
-            android:id="@+id/acceptButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Accept"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/requestContent" />
 
         <Button
             android:id="@+id/pasteButton"

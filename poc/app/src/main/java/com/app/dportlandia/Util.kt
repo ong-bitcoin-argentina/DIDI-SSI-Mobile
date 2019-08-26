@@ -1,9 +1,11 @@
 package com.app.dportlandia
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.SimpleCursorAdapter
+import androidx.core.content.ContextCompat
 
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
@@ -17,19 +19,29 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     })
 }
 
-sealed class Result<T> {
-    override fun toString(): String {
-        return when (this) {
-            is Success -> "Success: ${this.value}"
-            is Failure -> "Failure: ${this.value}"
+fun Context.getClipboardText(): CharSequence? {
+    ContextCompat.getSystemService(this, ClipboardManager::class.java)?.primaryClip?.let { clip ->
+        if (clip.itemCount > 0) {
+            return clip.getItemAt(0).text
         }
     }
+    return null
 }
+
+sealed class Result<T>
 
 data class Success<T>(
     val value: T
-) : Result<T>()
+) : Result<T>() {
+    override fun toString(): String {
+        return value.toString()
+    }
+}
 
 class Failure<T>(
     val value: Exception
-) : Result<T>()
+) : Result<T>() {
+    override fun toString(): String {
+        return "Failure: $value"
+    }
+}
