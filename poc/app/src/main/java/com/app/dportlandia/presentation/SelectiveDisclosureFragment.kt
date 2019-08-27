@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -20,6 +21,7 @@ import com.app.dportlandia.databinding.FragmentSelectiveDisclosureBinding
 import com.app.dportlandia.getClipboardText
 import com.app.dportlandia.model.SelectiveDisclosureRequest
 import com.app.dportlandia.model.SelectiveDisclosureResponse
+import kotlinx.android.synthetic.main.fragment_selective_disclosure.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.uport.sdk.Uport
@@ -72,6 +74,8 @@ class SelectiveDisclosureFragment : Fragment() {
         }
 
         viewBinding.submitButton.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
+
             val activity = this.activity
             val account = Uport.defaultAccount
             val parsedJwt = (this.parsedInputJwt.value as? Success)?.value
@@ -98,8 +102,12 @@ class SelectiveDisclosureFragment : Fragment() {
 
             val rq = JsonObjectRequest(response.callback, JSONObject(params), Response.Listener {
                 println("Success: $it")
+                Toast.makeText(context, "Success: $it", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.GONE
             }, Response.ErrorListener {
                 println("Error: $it")
+                Toast.makeText(context, "Error: $it", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.GONE
             })
             queue.add(rq)
         }

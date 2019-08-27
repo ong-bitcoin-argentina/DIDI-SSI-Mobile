@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -69,6 +70,7 @@ class ReceiveVerifiedClaimFragment : Fragment() {
 
             if (context != null && claim != null) {
                 VerifiedClaimRepository(context).add(claim)
+                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
             }
         }
     }
