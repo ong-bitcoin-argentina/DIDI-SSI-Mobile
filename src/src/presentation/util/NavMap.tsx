@@ -1,7 +1,6 @@
 import { NavigationContainer, createStackNavigator } from "react-navigation";
 
 import NavigationEnabledComponent from "./NavigationEnabledComponent"
-import TypedObject from "../../util/TypedObject";
 
 export interface NavigationEnabledComponentConstructor<Props, Navigation> {
         new (props: Readonly<Props>): NavigationEnabledComponent<Props, {}, Navigation>
@@ -16,32 +15,30 @@ type AnyConstructor = NavigationEnabledComponentConstructor<{}, {}>
 export default class NavMap<Props> {
         static from<T extends AnyConstructor>(
                 constructor: T, 
-                to: NavTree<NonNullable<InstanceType<T>['__navigationTypeReference']>>
+                to?: NavTree<NonNullable<InstanceType<T>['__navigationTypeReference']>>
         ) : NavMap<NonNullable<InstanceType<T>['__propTypeReference']>> {
-                return new NavMap(constructor, TypedObject.values(to))
+                return new NavMap(constructor, to ? to : {})
         }
 
         private current: AnyConstructor
-        private rest: AnyConstructor[]
+        private rest: {[name: string]: AnyConstructor}
 
-        private constructor(ctor: AnyConstructor, to: Array<NavMap<{}>>) {
+        private constructor(ctor: AnyConstructor, to: {[name: string]: NavMap<{}>}) {
                 this.current = ctor
-                this.rest = to
-                        .map(navMap => navMap.values())
-                        .reduce((curr, next) => curr.concat(next), [])
+
+                const rest: {[name: string]: AnyConstructor} = {}
+                Object.entries(to).forEach(([name, nav]) => {
+                        rest[name] = nav.current
+                        Object.assign(rest, nav.rest)
+                })
+                this.rest = rest
         }
 
         public navigator(): NavigationContainer {
-                const spec: { [id: string]: AnyConstructor } = {}
-                this.values().forEach(value => {
-                        spec[value.name] = value
-                })
+                const spec = this.rest
+                spec.root = this.current
                 return createStackNavigator(spec, {
-                        initialRouteName: this.current.name
+                        initialRouteName: 'root'
                 })
-        }
-
-        private values(): AnyConstructor[] {
-                return [this.current].concat(this.rest)
         }
 }

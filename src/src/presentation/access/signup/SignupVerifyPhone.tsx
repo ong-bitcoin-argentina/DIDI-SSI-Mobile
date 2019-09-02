@@ -1,3 +1,3 @@
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-export class SignupVerifyPhone extends NavigationEnabledComponent<{}, {}, {}> {
+export class SignupVerifyPhoneScreen extends NavigationEnabledComponent<{}, {}, {}> {
 }

@@ -19,9 +19,9 @@ import DidiButton from '../util/DidiButton';
 export type StartAccessProps = {}
 
 export interface StartAccessNavigation {
-        Login: LoginEnterPhoneProps,
-        Signup: SignupOnboardingProps,
-        Recovery: RecoveryExplanationProps
+        LoginEnterPhone: LoginEnterPhoneProps,
+        SignupOnboarding: SignupOnboardingProps,
+        RecoveryExplanation: RecoveryExplanationProps
 }
 
 export class StartAccessScreen extends NavigationEnabledComponent<StartAccessProps, {}, StartAccessNavigation> {
@@ -34,15 +34,15 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
                                         <View style={styles.body}>
                                                 <DidiButton 
                                                         accessibilityRole={'button'}
-                                                        onPress={() => this.navigate("Login", {})}
+                                                        onPress={() => this.navigate("LoginEnterPhone", {})}
                                                         title="Ingresar"/>
                                                 <DidiButton 
                                                         accessibilityRole={'button'}
-                                                        onPress={() => this.navigate("Signup", {})}
+                                                        onPress={() => this.navigate("SignupOnboarding", {})}
                                                         title="Crear Cuenta"/>
                                                 <DidiButton 
                                                         accessibilityRole={'button'}
-                                                        onPress={() => this.navigate("Recovery", {})}
+                                                        onPress={() => this.navigate("RecoveryExplanation", {})}
                                                         title="Recuperar Cuenta"/>
                                         </View>
 				</SafeAreaView>
