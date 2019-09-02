@@ -15,6 +15,7 @@ import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import DidiButton from '../util/DidiButton';
+import defaultNavigationHeaderStyle from '../styles/defaultNavigationHeaderStyle'
 
 export type StartAccessProps = {}
 
@@ -25,6 +26,10 @@ export interface StartAccessNavigation {
 }
 
 export class StartAccessScreen extends NavigationEnabledComponent<StartAccessProps, {}, StartAccessNavigation> {
+        static navigationOptions = defaultNavigationHeaderStyle({
+                header: null
+        })
+
         render() {
 		return (
 			<Fragment>
