@@ -12,6 +12,8 @@
     "object-literal-sort-keys": false,
     "callable-types": false,
     "member-access": false,
-    "quotemark": [true, "single", "jsx-double"]
+    "quotemark": false,
+    "ordered-imports": false,
+    "interface-over-type-literal": false
   }
 }

@@ -1,13 +1,9 @@
 import React from 'react'
 import {createAppContainer, createStackNavigator} from 'react-navigation'
 
-import HomeScreen from './presentation/HomeScreen';
+import AccessNavigator from './presentation/access/AccessNavigator';
 
-const AppNavigator = createStackNavigator({
-        Home: HomeScreen,
-});
-
-const AppContainer = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AccessNavigator.navigator());
 
 export default class App extends React.Component {
         render() {

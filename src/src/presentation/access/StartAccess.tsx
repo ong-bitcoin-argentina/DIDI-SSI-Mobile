@@ -15,13 +15,22 @@ import {
 	LearnMoreLinks,
 	ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import NavigationEnabledComponent from './util/NavigationEnabledComponent';
 
-export interface HomeScreenNavigation {
+import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
+import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
+import { SignupOnboardingProps } from "./signup/SignupOnboarding";
+import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 
+export type StartAccessProps = {}
+
+export interface StartAccessNavigation {
+        Login: LoginEnterPhoneProps,
+        Signup: SignupOnboardingProps,
+        Recovery: RecoveryExplanationProps
 }
-export default class HomeScreen extends NavigationEnabledComponent<{}, {}, HomeScreenNavigation> {
-	render() {
+
+export class StartAccessScreen extends NavigationEnabledComponent<StartAccessProps, {}, StartAccessNavigation> {
+        render() {
 		return (
 			<Fragment>
 				<StatusBar barStyle="dark-content" />
@@ -63,7 +72,7 @@ export default class HomeScreen extends NavigationEnabledComponent<{}, {}, HomeS
 			</Fragment>
 		);
 	}
-};
+}
 
 const styles = StyleSheet.create({
 	scrollView: {
