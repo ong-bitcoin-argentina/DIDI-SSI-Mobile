@@ -6,16 +6,13 @@ import {
 	View,
 } from 'react-native';
 
-import {
-	Colors
-} from 'react-native/Libraries/NewAppScreen';
-
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import DidiButton from '../util/DidiButton';
 import defaultNavigationHeaderStyle from '../styles/defaultNavigationHeaderStyle'
+import themes from '../styles/themes'
 
 export type StartAccessProps = {}
 
@@ -37,17 +34,18 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 				<SafeAreaView style={styles.area}>
                                         <View style={styles.body}/>
                                         <View style={styles.body}>
-                                                <DidiButton 
-                                                        accessibilityRole={'button'}
+                                                <DidiButton
                                                         onPress={() => this.navigate("LoginEnterPhone", {})}
+                                                        style={styles.secondaryButton}
                                                         title="Ingresar"/>
-                                                <DidiButton 
-                                                        accessibilityRole={'button'}
+                                                <DidiButton
                                                         onPress={() => this.navigate("SignupOnboarding", {})}
+                                                        style={styles.primaryButton}
                                                         title="Crear Cuenta"/>
-                                                <DidiButton 
-                                                        accessibilityRole={'button'}
+                                                <DidiButton
                                                         onPress={() => this.navigate("RecoveryExplanation", {})}
+                                                        style={styles.transparentButton}
+                                                        titleStyle={styles.transparentButtonText}
                                                         title="Recuperar Cuenta"/>
                                         </View>
 				</SafeAreaView>
@@ -58,13 +56,24 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 
 const styles = StyleSheet.create({
         area: {
-                backgroundColor: Colors.red,
                 flex: 1,
         },
 	body: {
-                backgroundColor: Colors.white,
+                backgroundColor: themes.background,
                 alignItems: "center",
                 justifyContent: "space-evenly",
                 flex: 1,
-	}
+        },
+        transparentButton: {
+                backgroundColor: themes.background
+        },
+        transparentButtonText: {
+                color: themes.foreground
+        },
+        primaryButton: {
+                backgroundColor: themes.primaryTheme.button
+        },
+        secondaryButton: {
+                backgroundColor: themes.secondaryTheme.button
+        }
 });

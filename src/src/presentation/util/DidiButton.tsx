@@ -4,19 +4,23 @@ import {
         TouchableOpacity,
         TouchableOpacityProps,
         Text,
+        StyleProp,
+        TextStyle,
 } from 'react-native';
 
 export interface DidiButtonProps extends TouchableOpacityProps {
-        title: string
+        title: string,
+        titleStyle?: StyleProp<TextStyle>
 }
 
 export default class DidiButton extends React.Component<DidiButtonProps> {
         public render() {
                 return (
                         <TouchableOpacity
-                                style={styles.button}
-                                {...this.props}>
-                                <Text style={styles.text}>
+                                accessibilityRole='button'
+                                {...this.props}
+                                style={[styles.button, this.props.style]}>
+                                <Text style={[styles.text, this.props.titleStyle]}>
                                         {this.props.title.toUpperCase()}
                                 </Text>
                         </TouchableOpacity>
