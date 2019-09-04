@@ -7,6 +7,7 @@ import {
 	StyleProp,
 	TextStyle
 } from "react-native";
+import colors from "../styles/colors";
 
 export interface DidiButtonProps extends TouchableOpacityProps {
 	title: string;
@@ -22,7 +23,7 @@ export default class DidiButton extends React.Component<DidiButtonProps> {
 				style={[styles.button, this.props.style]}
 			>
 				<Text style={[styles.text, this.props.titleStyle]}>
-					{this.props.title.toUpperCase()}
+					{this.props.title}
 				</Text>
 			</TouchableOpacity>
 		);
@@ -39,9 +40,11 @@ const styles = StyleSheet.create({
 		marginHorizontal: 5,
 		marginVertical: 5,
 		borderRadius: 5,
-		backgroundColor: "#999"
+		backgroundColor: colors.primary
 	},
 	text: {
+		fontWeight: "500",
+		fontSize: 16,
 		textAlign: "center",
 		color: "#FFF"
 	}

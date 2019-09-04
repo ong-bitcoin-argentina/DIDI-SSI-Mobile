@@ -6,7 +6,7 @@ import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import DidiButton from "../util/DidiButton";
-import defaultNavigationHeaderStyle from "../styles/defaultNavigationHeaderStyle";
+import NavigationHeaderStyle from "../styles/NavigationHeaderStyle";
 import themes from "../styles/themes";
 
 export type StartAccessProps = {};
@@ -22,14 +22,15 @@ export class StartAccessScreen extends NavigationEnabledComponent<
 	{},
 	StartAccessNavigation
 > {
-	static navigationOptions = defaultNavigationHeaderStyle({
-		header: null
-	});
+	static navigationOptions = NavigationHeaderStyle.gone;
 
 	render() {
 		return (
 			<Fragment>
-				<StatusBar barStyle="dark-content" />
+				<StatusBar
+					backgroundColor={themes.darkNavigation}
+					barStyle="light-content"
+				/>
 				<SafeAreaView style={styles.area}>
 					<View style={styles.body} />
 					<View style={styles.body}>
