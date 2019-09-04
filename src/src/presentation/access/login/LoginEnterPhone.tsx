@@ -19,18 +19,6 @@ export class LoginEnterPhoneScreen extends EnterPhoneScreen<
 		return {};
 	}
 
-	countryImageSource(): ImageSourcePropType {
-		return {};
-	}
-
-	tagImageSource(): ImageSourcePropType {
-		return {};
-	}
-
-	canPressContinueButton(): boolean {
-		return true;
-	}
-
 	didPressContinueButton(event: GestureResponderEvent): void {
 		this.navigate("LoginVerifyPhone", {});
 	}

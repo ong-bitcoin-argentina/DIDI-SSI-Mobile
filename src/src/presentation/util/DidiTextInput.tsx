@@ -34,7 +34,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 			<View {...this.props.viewProps} style={rootStyle}>
 				<Image style={styles.tagImage} source={this.props.tagImage} />
 				<View style={styles.textContainer}>
-					<Text>{this.props.description}</Text>
+					<Text style={styles.description}>{this.props.description}</Text>
 					<TextInput
 						{...this.props.textInputProps}
 						style={textInputStyle}
@@ -59,7 +59,12 @@ const styles = StyleSheet.create({
 		flexDirection: "column"
 	},
 	textInput: {
+		color: themes.foreground,
 		height: 30
+	},
+	description: {
+		color: themes.foregroundFaded,
+		fontSize: 12
 	},
 	tagImage: {
 		backgroundColor: themes.secondaryTheme.button,
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
 		height: 25
 	},
 	underline: {
-		backgroundColor: "#CCC",
+		backgroundColor: themes.foregroundFaded,
 		height: 1
 	}
 });

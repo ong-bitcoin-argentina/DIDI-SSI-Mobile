@@ -16,24 +16,38 @@ import themes from "../styles/themes";
 import DidiButton from "../util/DidiButton";
 import DidiTextInput from "../util/DidiTextInput";
 
+export type EnterPhoneProps = {};
+
 export interface EnterPhoneState {
-	inputPhoneNumber: string;
+	inputPhoneNumber?: string;
 }
 
 export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<
-	{},
+	EnterPhoneProps,
 	EnterPhoneState,
 	Nav
 > {
+	constructor(props: EnterPhoneProps) {
+		super(props);
+		this.state = {};
+	}
+
 	abstract contentImageSource(): ImageSourcePropType;
 
-	abstract countryImageSource(): ImageSourcePropType;
-
-	abstract tagImageSource(): ImageSourcePropType;
-
-	abstract canPressContinueButton(): boolean;
-
 	abstract didPressContinueButton(event: GestureResponderEvent): void;
+
+	countryImageSource(): ImageSourcePropType {
+		return {};
+	}
+
+	tagImageSource(): ImageSourcePropType {
+		return {};
+	}
+
+	canPressContinueButton(): boolean {
+		const phone = this.state.inputPhoneNumber;
+		return phone ? phone.length > 0 : false;
+	}
 
 	render() {
 		return (
@@ -44,13 +58,17 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<
 				/>
 				<SafeAreaView style={styles.area}>
 					<View style={styles.body}>
-						<Text>Cargá tu número de celular</Text>
+						<Text style={{ fontSize: 18, fontWeight: "500" }}>
+							Cargá tu número de celular
+						</Text>
 						<View style={{ flexDirection: "row", alignItems: "center" }}>
 							<Image
 								style={styles.countryImage}
 								source={this.countryImageSource()}
 							/>
-							<Text style={{ marginLeft: 10 }}>Argentina +54</Text>
+							<Text style={{ marginLeft: 10, fontSize: 18, fontWeight: "400" }}>
+								Argentina +54
+							</Text>
 						</View>
 						<DidiTextInput
 							description="Número de celular"

@@ -8,6 +8,7 @@ import {
 	TextStyle
 } from "react-native";
 import colors from "../styles/colors";
+import themes from "../styles/themes";
 
 export interface DidiButtonProps extends TouchableOpacityProps {
 	title: string;
@@ -16,13 +17,21 @@ export interface DidiButtonProps extends TouchableOpacityProps {
 
 export default class DidiButton extends React.Component<DidiButtonProps> {
 	public render() {
+		const currentButtonColor = {
+			backgroundColor: this.props.disabled
+				? themes.buttonDisabled
+				: themes.button
+		};
+		const currentTitleStyle: TextStyle = {
+			fontStyle: this.props.disabled ? "italic" : "normal"
+		};
 		return (
 			<TouchableOpacity
 				accessibilityRole="button"
 				{...this.props}
-				style={[styles.button, this.props.style]}
+				style={[styles.button, currentButtonColor, this.props.style]}
 			>
-				<Text style={[styles.text, this.props.titleStyle]}>
+				<Text style={[styles.text, currentTitleStyle, this.props.titleStyle]}>
 					{this.props.title}
 				</Text>
 			</TouchableOpacity>
@@ -39,8 +48,7 @@ const styles = StyleSheet.create({
 		width: "80%",
 		marginHorizontal: 5,
 		marginVertical: 5,
-		borderRadius: 5,
-		backgroundColor: colors.primary
+		borderRadius: 5
 	},
 	text: {
 		fontWeight: "500",
