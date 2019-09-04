@@ -11,9 +11,9 @@ import {
 } from "react-native";
 
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
-import themes from "../styles/themes";
 import DidiButton from "../util/DidiButton";
 import DidiTextInput from "../util/DidiTextInput";
+import DidiTheme from "../styles/DidiTheme";
 
 export type EnterPhoneProps = {};
 
@@ -31,38 +31,23 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<
 		this.state = {};
 	}
 
-	abstract contentImageSource(): ImageSourcePropType;
-
-	abstract didPressContinueButton(event: GestureResponderEvent): void;
-
-	countryImageSource(): ImageSourcePropType {
-		return {};
-	}
-
-	tagImageSource(): ImageSourcePropType {
-		return {};
-	}
-
-	canPressContinueButton(): boolean {
-		const phone = this.state.inputPhoneNumber;
-		return phone ? phone.length > 0 : false;
-	}
-
 	render() {
+		const theme = this.theme();
+		const style = styles(theme);
 		return (
 			<Fragment>
 				<StatusBar
-					backgroundColor={themes.darkNavigation}
+					backgroundColor={theme.darkNavigation}
 					barStyle="light-content"
 				/>
-				<SafeAreaView style={styles.area}>
-					<View style={styles.body}>
+				<SafeAreaView style={style.area}>
+					<View style={style.body}>
 						<Text style={{ fontSize: 18, fontWeight: "500" }}>
 							Cargá tu número de celular
 						</Text>
 						<View style={{ flexDirection: "row", alignItems: "center" }}>
 							<Image
-								style={styles.countryImage}
+								style={style.countryImage}
 								source={this.countryImageSource()}
 							/>
 							<Text style={{ marginLeft: 10, fontSize: 18, fontWeight: "400" }}>
@@ -76,41 +61,64 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<
 							textInputProps={{
 								onChangeText: text => this.setState({ inputPhoneNumber: text })
 							}}
+							theme={theme}
 						/>
 						<Image
-							style={styles.contentImage}
+							style={style.contentImage}
 							source={this.contentImageSource()}
 						/>
 						<DidiButton
 							disabled={!this.canPressContinueButton()}
 							onPress={event => this.didPressContinueButton(event)}
 							title="Validar"
+							theme={theme}
 						/>
 					</View>
 				</SafeAreaView>
 			</Fragment>
 		);
 	}
+
+	protected abstract theme(): DidiTheme;
+
+	protected abstract contentImageSource(): ImageSourcePropType;
+
+	protected abstract didPressContinueButton(event: GestureResponderEvent): void;
+
+	private countryImageSource(): ImageSourcePropType {
+		return {};
+	}
+
+	private tagImageSource(): ImageSourcePropType {
+		return {};
+	}
+
+	private canPressContinueButton(): boolean {
+		const phone = this.state.inputPhoneNumber;
+		return phone ? phone.length > 0 : false;
+	}
 }
 
-const styles = StyleSheet.create({
-	area: {
-		backgroundColor: themes.background,
-		flex: 1
-	},
-	body: {
-		alignItems: "center",
-		justifyContent: "space-evenly",
-		flex: 1
-	},
-	contentImage: {
-		backgroundColor: themes.secondaryTheme.button,
-		width: 185,
-		height: 160
-	},
-	countryImage: {
-		backgroundColor: themes.secondaryTheme.button,
-		width: 30,
-		height: 30
-	}
-});
+function styles(theme: DidiTheme) {
+	return StyleSheet.create({
+		area: {
+			backgroundColor: theme.background,
+			flex: 1
+		},
+		body: {
+			alignItems: "center",
+			justifyContent: "space-evenly",
+			flex: 1
+		},
+		contentImage: {
+			backgroundColor: theme.opposite().button,
+			width: 185,
+			height: 160
+		},
+		countryImage: {
+			backgroundColor: theme.opposite().button,
+			width: 30,
+			height: 30
+		}
+	});
+}

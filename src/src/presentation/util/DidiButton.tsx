@@ -7,20 +7,20 @@ import {
 	StyleProp,
 	TextStyle
 } from "react-native";
-import colors from "../styles/colors";
 import themes from "../styles/themes";
+import DidiTheme from "../styles/DidiTheme";
 
 export interface DidiButtonProps extends TouchableOpacityProps {
 	title: string;
 	titleStyle?: StyleProp<TextStyle>;
+	theme?: DidiTheme;
 }
 
 export default class DidiButton extends React.Component<DidiButtonProps> {
 	public render() {
+		const theme = this.props.theme ? this.props.theme : themes.primaryTheme;
 		const currentButtonColor = {
-			backgroundColor: this.props.disabled
-				? themes.buttonDisabled
-				: themes.button
+			backgroundColor: this.props.disabled ? theme.buttonDisabled : theme.button
 		};
 		const currentTitleStyle: TextStyle = {
 			fontStyle: this.props.disabled ? "italic" : "normal"

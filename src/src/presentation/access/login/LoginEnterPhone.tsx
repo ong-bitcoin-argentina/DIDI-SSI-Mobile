@@ -3,6 +3,8 @@ import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 import { EnterPhoneScreen } from "../../common/EnterPhone";
 import { LoginVerifyPhoneProps } from "./LoginVerifyPhone";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import themes from "../../styles/themes";
+import DidiTheme from "../../styles/DidiTheme";
 
 export type LoginEnterPhoneProps = {};
 
@@ -13,13 +15,20 @@ export interface LoginEnterPhoneNavigation {
 export class LoginEnterPhoneScreen extends EnterPhoneScreen<
 	LoginEnterPhoneNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar");
+	static navigationOptions = NavigationHeaderStyle.withTitle(
+		"Ingresar",
+		themes.secondaryTheme
+	);
 
-	contentImageSource(): ImageSourcePropType {
+	protected contentImageSource(): ImageSourcePropType {
 		return {};
 	}
 
-	didPressContinueButton(event: GestureResponderEvent): void {
+	protected didPressContinueButton(event: GestureResponderEvent): void {
 		this.navigate("LoginVerifyPhone", {});
+	}
+
+	protected theme(): DidiTheme {
+		return themes.secondaryTheme;
 	}
 }

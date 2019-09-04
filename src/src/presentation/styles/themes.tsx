@@ -1,22 +1,7 @@
 import colors, { Color } from "./colors";
+import DidiTheme from "./DidiTheme";
 
-interface Theme {
-	background: Color;
-	foreground: Color;
-	foregroundFaded: Color;
-
-	navigation: Color;
-	darkNavigation: Color;
-	navigationText: Color;
-
-	button: Color;
-	buttonText: Color;
-
-	buttonDisabled: Color;
-	buttonDisabledText: Color;
-}
-
-const primaryTheme: Theme = {
+const primaryTheme: DidiTheme = {
 	background: colors.background,
 	foreground: colors.text,
 	foregroundFaded: colors.textFaded,
@@ -29,10 +14,14 @@ const primaryTheme: Theme = {
 	buttonText: colors.primaryText,
 
 	buttonDisabled: colors.textFaded,
-	buttonDisabledText: colors.text
+	buttonDisabledText: colors.text,
+
+	opposite(): DidiTheme {
+		return secondaryTheme;
+	}
 };
 
-const secondaryTheme: Theme = {
+const secondaryTheme: DidiTheme = {
 	background: colors.background,
 	foreground: colors.text,
 	foregroundFaded: colors.textFaded,
@@ -45,7 +34,11 @@ const secondaryTheme: Theme = {
 	buttonText: colors.secondaryText,
 
 	buttonDisabled: colors.textFaded,
-	buttonDisabledText: colors.text
+	buttonDisabledText: colors.text,
+
+	opposite(): DidiTheme {
+		return primaryTheme;
+	}
 };
 
 export default {

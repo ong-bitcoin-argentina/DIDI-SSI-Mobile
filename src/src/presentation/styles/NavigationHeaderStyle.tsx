@@ -1,20 +1,23 @@
 import { NavigationStackScreenOptions } from "react-navigation";
 import themes from "../styles/themes";
+import DidiTheme from "./DidiTheme";
 
-const defaultStyle: NavigationStackScreenOptions = {
-	headerStyle: {
-		backgroundColor: themes.navigation
-	},
-	headerTintColor: themes.navigationText
-};
+function defaultStyle(theme: DidiTheme): NavigationStackScreenOptions {
+	return {
+		headerStyle: {
+			backgroundColor: theme.navigation
+		},
+		headerTintColor: theme.navigationText
+	};
+}
 
 const goneStyle: NavigationStackScreenOptions = {
 	header: null
 };
 
 const styles = {
-	withTitle(title: string): NavigationStackScreenOptions {
-		return { ...defaultStyle, title };
+	withTitle(title: string, theme?: DidiTheme): NavigationStackScreenOptions {
+		return { ...defaultStyle(theme ? theme : themes.primaryTheme), title };
 	},
 
 	gone: goneStyle

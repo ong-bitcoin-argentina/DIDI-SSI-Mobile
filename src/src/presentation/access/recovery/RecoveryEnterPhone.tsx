@@ -3,6 +3,8 @@ import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 import { EnterPhoneScreen } from "../../common/EnterPhone";
 import { RecoveryVerifyPhoneProps } from "./RecoveryVerifyPhone";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import themes from "../../styles/themes";
+import DidiTheme from "../../styles/DidiTheme";
 
 export type RecoveryEnterPhoneProps = {};
 
@@ -17,11 +19,15 @@ export class RecoveryEnterPhoneScreen extends EnterPhoneScreen<
 		"Recuperar Cuenta"
 	);
 
-	contentImageSource(): ImageSourcePropType {
+	protected contentImageSource(): ImageSourcePropType {
 		return {};
 	}
 
-	didPressContinueButton(event: GestureResponderEvent): void {
+	protected didPressContinueButton(event: GestureResponderEvent): void {
 		this.navigate("RecoveryVerifyPhone", {});
+	}
+
+	protected theme(): DidiTheme {
+		return themes.primaryTheme;
 	}
 }
