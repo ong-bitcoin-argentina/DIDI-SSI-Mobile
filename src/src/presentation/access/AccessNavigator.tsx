@@ -14,26 +14,26 @@ import { SignupVerifyPhoneScreen } from "./signup/SignupVerifyPhone";
 import { SignupEnterEmailScreen } from "./signup/SignupEnterEmail";
 import { SignupConfirmEmailScreen } from "./signup/SignupConfirmEmail";
 
-import NavMap from "../util/NavMap"
+import NavMap from "../util/NavMap";
 
 export default NavMap.from(StartAccessScreen, {
-        LoginEnterPhone: NavMap.from(LoginEnterPhoneScreen, {
-                LoginVerifyPhone: NavMap.from(LoginVerifyPhoneScreen)
-        }),
-        SignupOnboarding: NavMap.from(SignupOnboardingScreen, {
-                SignupEnterPhone: NavMap.from(SignupEnterPhoneScreen, {
-                        SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
-                                SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
-                                        SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen)
-                                })
-                        })
-                })
-        }),
-        RecoveryExplanation: NavMap.from(RecoveryExplanationScreen, {
-                RecoveryEnterEmail: NavMap.from(RecoveryEnterEmailScreen, {
-                        RecoveryEnterPhone: NavMap.from(RecoveryEnterPhoneScreen, {
-                                RecoveryVerifyPhone: NavMap.from(RecoveryVerifyPhoneScreen)
-                        })
-                })
-        }),
-})
+	LoginEnterPhone: NavMap.from(LoginEnterPhoneScreen, {
+		LoginVerifyPhone: NavMap.from(LoginVerifyPhoneScreen)
+	}),
+	SignupOnboarding: NavMap.from(SignupOnboardingScreen, {
+		SignupEnterPhone: NavMap.from(SignupEnterPhoneScreen, {
+			SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
+				SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
+					SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen)
+				})
+			})
+		})
+	}),
+	RecoveryExplanation: NavMap.from(RecoveryExplanationScreen, {
+		RecoveryEnterEmail: NavMap.from(RecoveryEnterEmailScreen, {
+			RecoveryEnterPhone: NavMap.from(RecoveryEnterPhoneScreen, {
+				RecoveryVerifyPhone: NavMap.from(RecoveryVerifyPhoneScreen)
+			})
+		})
+	})
+});
