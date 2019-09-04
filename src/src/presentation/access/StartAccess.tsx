@@ -29,7 +29,7 @@ export class StartAccessScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar
 					backgroundColor={themes.darkNavigation}
-					barStyle="light-content"
+					barStyle="dark-content"
 				/>
 				<SafeAreaView style={styles.area}>
 					<View style={styles.body} />
@@ -59,10 +59,10 @@ export class StartAccessScreen extends NavigationEnabledComponent<
 
 const styles = StyleSheet.create({
 	area: {
+		backgroundColor: themes.background,
 		flex: 1
 	},
 	body: {
-		backgroundColor: themes.background,
 		alignItems: "center",
 		justifyContent: "space-evenly",
 		flex: 1

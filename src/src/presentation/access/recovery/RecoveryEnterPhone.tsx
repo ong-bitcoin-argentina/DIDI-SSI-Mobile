@@ -13,7 +13,9 @@ export interface RecoveryEnterPhoneNavigation {
 export class RecoveryEnterPhoneScreen extends EnterPhoneScreen<
 	RecoveryEnterPhoneNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Recuperar");
+	static navigationOptions = NavigationHeaderStyle.withTitle(
+		"Recuperar Cuenta"
+	);
 
 	contentImageSource(): ImageSourcePropType {
 		return {};

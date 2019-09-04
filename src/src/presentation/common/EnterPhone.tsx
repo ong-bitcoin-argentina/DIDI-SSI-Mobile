@@ -96,10 +96,10 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<
 
 const styles = StyleSheet.create({
 	area: {
+		backgroundColor: themes.background,
 		flex: 1
 	},
 	body: {
-		backgroundColor: themes.background,
 		alignItems: "center",
 		justifyContent: "space-evenly",
 		flex: 1
