@@ -19,6 +19,10 @@ export class LoginEnterPhoneScreen extends EnterPhoneScreen<
 		return {};
 	}
 
+	countryImageSource(): ImageSourcePropType {
+		return {};
+	}
+
 	tagImageSource(): ImageSourcePropType {
 		return {};
 	}

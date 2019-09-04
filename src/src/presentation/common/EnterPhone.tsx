@@ -14,6 +14,7 @@ import { TextInput } from "react-native-gesture-handler";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import themes from "../styles/themes";
 import DidiButton from "../util/DidiButton";
+import DidiTextInput from "../util/DidiTextInput";
 
 export interface EnterPhoneState {
 	inputPhoneNumber: string;
@@ -25,6 +26,8 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<
 	Nav
 > {
 	abstract contentImageSource(): ImageSourcePropType;
+
+	abstract countryImageSource(): ImageSourcePropType;
 
 	abstract tagImageSource(): ImageSourcePropType;
 
@@ -45,32 +48,18 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<
 						<View style={{ flexDirection: "row", alignItems: "center" }}>
 							<Image
 								style={styles.countryImage}
-								source={this.tagImageSource()}
+								source={this.countryImageSource()}
 							/>
 							<Text style={{ marginLeft: 10 }}>Argentina +54</Text>
 						</View>
-						<View
-							style={{
-								width: "80%",
-								flexDirection: "row",
-								alignItems: "center"
+						<DidiTextInput
+							description="Número de celular"
+							placeholder="011 + número sin el 15"
+							tagImage={this.tagImageSource()}
+							textInputProps={{
+								onChangeText: text => this.setState({ inputPhoneNumber: text })
 							}}
-						>
-							<Image style={styles.tagImage} source={this.tagImageSource()} />
-							<View
-								style={{ marginLeft: 30, flex: 1, flexDirection: "column" }}
-							>
-								<Text>Número de celular</Text>
-								<TextInput
-									style={styles.textInput}
-									placeholder="011 + número sin el 15"
-									onChangeText={text =>
-										this.setState({ inputPhoneNumber: text })
-									}
-								/>
-								<View style={{ backgroundColor: "#CCC", height: 1 }} />
-							</View>
-						</View>
+						/>
 						<Image
 							style={styles.contentImage}
 							source={this.contentImageSource()}
@@ -97,10 +86,6 @@ const styles = StyleSheet.create({
 		justifyContent: "space-evenly",
 		flex: 1
 	},
-	textInput: {
-		height: 30,
-		textDecorationLine: "underline"
-	},
 	contentImage: {
 		backgroundColor: themes.secondaryTheme.button,
 		width: 185,
@@ -110,10 +95,5 @@ const styles = StyleSheet.create({
 		backgroundColor: themes.secondaryTheme.button,
 		width: 30,
 		height: 30
-	},
-	tagImage: {
-		backgroundColor: themes.secondaryTheme.button,
-		width: 25,
-		height: 25
 	}
 });
