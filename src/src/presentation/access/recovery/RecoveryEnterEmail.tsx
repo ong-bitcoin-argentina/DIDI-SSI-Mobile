@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, StatusBa
 import React, { Fragment } from "react";
 
 import DidiButton from "../../util/DidiButton";
+import strings from "../resources/strings";
 import themes from "../../styles/themes";
 import colors from "../../styles/colors";
 import DidiTextInput from "../../util/DidiTextInput";
@@ -22,36 +23,25 @@ export interface RecoveryEnterEmailNavigation {
 	RecoveryEnterPhone: RecoveryEnterPhoneProps;
 }
 
-const strings = {
-	recoveryEnterEmail: {
-		barTitle: "Recuperar Cuenta",
-		messageHead: "Ingresa tu email y contraseña",
-		emailTitle: "E-mail",
-		passwordTitle: "Password",
-		forgotPasswordMessage: "No recuerdo la contraseña",
-		recoverButtonText: "Recuperar"
-	}
-};
-
 export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 	RecoveryEnterEmailProps,
 	RecoverEnterEmailState,
 	RecoveryEnterEmailNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recoveryEnterEmail.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
 	render() {
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={styles.area}>
-					<Text style={styles.head}>{strings.recoveryEnterEmail.messageHead}</Text>
+					<Text style={styles.head}>{strings.recovery.enterEmail.messageHead}</Text>
 
 					<Image source={require("../resources/images/emailRecover.png")} style={styles.image} />
 
 					<View style={styles.inputContainer}>
 						<DidiTextInput
-							description={strings.recoveryEnterEmail.emailTitle}
+							description={strings.recovery.enterEmail.emailTitle}
 							placeholder=""
 							tagImage={require("../resources/images/email.png")}
 							textInputProps={{
@@ -62,7 +52,7 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 
 					<View style={styles.inputContainer}>
 						<DidiTextInput
-							description={strings.recoveryEnterEmail.passwordTitle}
+							description={strings.recovery.enterEmail.passwordTitle}
 							placeholder=""
 							tagImage={require("../resources/images/key.png")}
 							textInputProps={{
@@ -76,14 +66,14 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 							onPress={() => this.navigate("ForgotPasswordEnterEmail", {})}
 							style={styles.forgotPassword}
 						>
-							<Text>{strings.recoveryEnterEmail.forgotPasswordMessage + " >"}</Text>
+							<Text>{strings.recovery.enterEmail.forgotPasswordMessage + " >"}</Text>
 						</TouchableOpacity>
 					</View>
 
 					<DidiButton
 						style={styles.recoverButton}
 						onPress={() => this.navigate("RecoveryEnterPhone", {})}
-						title={strings.recoveryEnterEmail.recoverButtonText}
+						title={strings.recovery.enterEmail.recoverButtonText}
 					/>
 				</SafeAreaView>
 			</Fragment>
