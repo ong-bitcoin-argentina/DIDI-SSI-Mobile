@@ -5,8 +5,8 @@ const colors = {
 	text: "#4A4A4A",
 	textFaded: "#9B9B9B",
 
-	primary: "#4C63D1",
-	primaryDark: "#4C5E9E",
+	primary: "#2f77dc",
+	primaryDark: "#205196",
 	primaryText: "#FFF",
 
 	secondary: "#67DAC6",
