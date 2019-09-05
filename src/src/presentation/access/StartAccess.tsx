@@ -29,7 +29,7 @@ export class StartAccessScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar
 					backgroundColor={themes.darkNavigation}
-					barStyle="dark-content"
+					barStyle="light-content"
 				/>
 				<SafeAreaView style={styles.area}>
 					<View style={styles.body} />

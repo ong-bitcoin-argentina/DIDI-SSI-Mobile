@@ -26,7 +26,7 @@ export default class HomeScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<Fragment>
-				<StatusBar barStyle="dark-content" />
+				<StatusBar barStyle="light-content" />
 				<SafeAreaView>
 					<ScrollView
 						contentInsetAdjustmentBehavior="automatic"
