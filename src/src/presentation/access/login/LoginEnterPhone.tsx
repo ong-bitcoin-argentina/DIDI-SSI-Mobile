@@ -1,6 +1,6 @@
 import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
-import { EnterPhoneScreen, EnterPhoneProps } from "../../common/EnterPhone";
+import { EnterPhoneScreen, EnterPhoneProps } from "../common/EnterPhone";
 import { LoginVerifyPhoneProps } from "./LoginVerifyPhone";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import themes from "../../styles/themes";
@@ -12,13 +12,8 @@ export interface LoginEnterPhoneNavigation {
 	LoginVerifyPhone: LoginVerifyPhoneProps;
 }
 
-export class LoginEnterPhoneScreen extends EnterPhoneScreen<
-	LoginEnterPhoneNavigation
-> {
-	static navigationOptions = NavigationHeaderStyle.withTitle(
-		"Ingresar",
-		themes.secondaryTheme
-	);
+export class LoginEnterPhoneScreen extends EnterPhoneScreen<LoginEnterPhoneNavigation> {
+	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar", themes.secondaryTheme);
 
 	protected contentImageSource(): ImageSourcePropType {
 		return {};

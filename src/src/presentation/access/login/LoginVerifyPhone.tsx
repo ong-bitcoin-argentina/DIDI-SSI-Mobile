@@ -1,6 +1,6 @@
 import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
-import { VerifyPhoneScreen, VerifyPhoneProps } from "../../common/VerifyPhone";
+import { VerifyPhoneScreen, VerifyPhoneProps } from "../common/VerifyPhone";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import themes from "../../styles/themes";
 import DidiTheme from "../../styles/DidiTheme";
@@ -9,13 +9,8 @@ export type LoginVerifyPhoneProps = VerifyPhoneProps;
 
 export type LoginVerifyPhoneNavigation = {};
 
-export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<
-	LoginVerifyPhoneNavigation
-> {
-	static navigationOptions = NavigationHeaderStyle.withTitle(
-		"Ingresar",
-		themes.secondaryTheme
-	);
+export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<LoginVerifyPhoneNavigation> {
+	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar", themes.secondaryTheme);
 
 	protected contentImageSource(): ImageSourcePropType {
 		return {};

@@ -1,6 +1,6 @@
 import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
-import { VerifyPhoneScreen, VerifyPhoneProps } from "../../common/VerifyPhone";
+import { VerifyPhoneScreen, VerifyPhoneProps } from "../common/VerifyPhone";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import themes from "../../styles/themes";
 import DidiTheme from "../../styles/DidiTheme";
@@ -12,9 +12,7 @@ export interface SignupVerifyPhoneNavigation {
 	SignupEnterEmail: SignupEnterEmailProps;
 }
 
-export class SignupVerifyPhoneScreen extends VerifyPhoneScreen<
-	SignupVerifyPhoneNavigation
-> {
+export class SignupVerifyPhoneScreen extends VerifyPhoneScreen<SignupVerifyPhoneNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Registro");
 
 	protected contentImageSource(): ImageSourcePropType {

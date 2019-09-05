@@ -10,23 +10,19 @@ import {
 	GestureResponderEvent
 } from "react-native";
 
-import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
-import DidiButton from "../util/DidiButton";
-import DidiTextInput from "../util/DidiTextInput";
-import DidiTheme from "../styles/DidiTheme";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import DidiButton from "../../util/DidiButton";
+import DidiTextInput from "../../util/DidiTextInput";
+import DidiTheme from "../../styles/DidiTheme";
 
-export type VerifyPhoneProps = {};
+export type EnterPhoneProps = {};
 
-export interface VerifyPhoneState {
-	inputCode?: string;
+export interface EnterPhoneState {
+	inputPhoneNumber?: string;
 }
 
-export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
-	VerifyPhoneProps,
-	VerifyPhoneState,
-	Nav
-> {
-	constructor(props: VerifyPhoneProps) {
+export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<EnterPhoneProps, EnterPhoneState, Nav> {
+	constructor(props: EnterPhoneProps) {
 		super(props);
 		this.state = {};
 	}
@@ -36,38 +32,24 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 		const style = styles(theme);
 		return (
 			<Fragment>
-				<StatusBar
-					backgroundColor={theme.darkNavigation}
-					barStyle="light-content"
-				/>
+				<StatusBar backgroundColor={theme.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={style.area}>
 					<View style={style.body}>
-						<Text
-							style={{
-								fontSize: 18,
-								fontWeight: "500",
-								width: "80%",
-								textAlign: "center"
-							}}
-						>
-							Ingresá el código de 6 digitos para verificar tu celular
-						</Text>
+						<Text style={{ fontSize: 18, fontWeight: "500" }}>Cargá tu número de celular</Text>
+						<View style={{ flexDirection: "row", alignItems: "center" }}>
+							<Image style={style.countryImage} source={this.countryImageSource()} />
+							<Text style={{ marginLeft: 10, fontSize: 18, fontWeight: "400" }}>Argentina +54</Text>
+						</View>
 						<DidiTextInput
-							description="Código de validacion"
-							placeholder="6 digitos"
+							description="Número de celular"
+							placeholder="011 + número sin el 15"
 							tagImage={this.tagImageSource()}
 							textInputProps={{
-								onChangeText: text => this.setState({ inputCode: text })
+								onChangeText: text => this.setState({ inputPhoneNumber: text })
 							}}
 							theme={theme}
 						/>
-						<Image
-							style={style.contentImage}
-							source={this.contentImageSource()}
-						/>
-						<Text style={{ fontSize: 18, fontWeight: "400" }}>
-							¿No recibiste el código?
-						</Text>
+						<Image style={style.contentImage} source={this.contentImageSource()} />
 						<DidiButton
 							disabled={!this.canPressContinueButton()}
 							onPress={event => this.didPressContinueButton(event)}
@@ -86,19 +68,17 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 
 	protected abstract didPressContinueButton(event: GestureResponderEvent): void;
 
+	private countryImageSource(): ImageSourcePropType {
+		return {};
+	}
+
 	private tagImageSource(): ImageSourcePropType {
 		return {};
 	}
 
 	private canPressContinueButton(): boolean {
-		const code = this.state.inputCode;
-		if (code) {
-			const match = code.match("^[0-9]{6}$");
-			if (match) {
-				return match.length > 0;
-			}
-		}
-		return false;
+		const phone = this.state.inputPhoneNumber;
+		return phone ? phone.length > 0 : false;
 	}
 }
 
