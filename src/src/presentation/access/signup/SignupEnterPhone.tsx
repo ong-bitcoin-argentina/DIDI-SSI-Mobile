@@ -1,12 +1,12 @@
 import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
-import { EnterPhoneScreen } from "../../common/EnterPhone";
+import { EnterPhoneScreen, EnterPhoneProps } from "../../common/EnterPhone";
 import { SignupVerifyPhoneProps } from "./SignupVerifyPhone";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import DidiTheme from "../../styles/DidiTheme";
 import themes from "../../styles/themes";
 
-export type SignupEnterPhoneProps = {};
+export type SignupEnterPhoneProps = EnterPhoneProps;
 
 export interface SignupEnterPhoneNavigation {
 	SignupVerifyPhone: SignupVerifyPhoneProps;

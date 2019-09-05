@@ -1,12 +1,11 @@
 import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
-import { VerifyPhoneScreen } from "../../common/VerifyPhone";
-import { LoginVerifyPhoneProps } from "./LoginVerifyPhone";
+import { VerifyPhoneScreen, VerifyPhoneProps } from "../../common/VerifyPhone";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import themes from "../../styles/themes";
 import DidiTheme from "../../styles/DidiTheme";
 
-export type LoginVerifyPhoneProps = {};
+export type LoginVerifyPhoneProps = VerifyPhoneProps;
 
 export type LoginVerifyPhoneNavigation = {};
 
@@ -23,7 +22,7 @@ export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<
 	}
 
 	protected didPressContinueButton(event: GestureResponderEvent): void {
-		// End login flow
+		// TODO: End login flow
 	}
 
 	protected theme(): DidiTheme {

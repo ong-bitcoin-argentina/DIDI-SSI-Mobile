@@ -1,9 +1,30 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
-export type RecoveryVerifyPhoneProps = {};
+import { VerifyPhoneScreen, VerifyPhoneProps } from "../../common/VerifyPhone";
+import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import themes from "../../styles/themes";
+import DidiTheme from "../../styles/DidiTheme";
 
-export class RecoveryVerifyPhoneScreen extends NavigationEnabledComponent<
-	RecoveryVerifyPhoneProps,
-	{},
-	{}
-> {}
+export type RecoveryVerifyPhoneProps = VerifyPhoneProps;
+
+export type RecoveryVerifyPhoneNavigation = {};
+
+export class RecoveryVerifyPhoneScreen extends VerifyPhoneScreen<
+	RecoveryVerifyPhoneNavigation
+> {
+	static navigationOptions = NavigationHeaderStyle.withTitle(
+		"Recuperar cuenta"
+	);
+
+	protected contentImageSource(): ImageSourcePropType {
+		return {};
+	}
+
+	protected didPressContinueButton(event: GestureResponderEvent): void {
+		// TODO: End login flow
+	}
+
+	protected theme(): DidiTheme {
+		return themes.primaryTheme;
+	}
+}
