@@ -8,6 +8,7 @@ import themes from "../../styles/themes";
 import colors from "../../styles/colors";
 import { RecoveryEnterEmailProps } from "./RecoveryEnterEmail";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import commonStyles from "../resources/commonStyles";
 
 export type RecoveryExplanationProps = {};
 
@@ -27,25 +28,30 @@ export class RecoveryExplanationScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
-				<SafeAreaView style={styles.area}>
-					<Text style={styles.head}>{strings.recovery.explanation.messageMotivesTitle}</Text>
+				<SafeAreaView style={commonStyles.view.area}>
+					<View style={commonStyles.view.body}>
+						<Text style={commonStyles.text.normal}>{strings.recovery.explanation.messageMotivesTitle}</Text>
 
-					<View style={styles.motives}>
-						{strings.recovery.explanation.messageMotives.map(motive => (
-							<Text key={strings.recovery.explanation.messageMotives.indexOf(motive)} style={styles.motive}>
-								{"-" + motive}
-							</Text>
-						))}
+						<View>
+							{strings.recovery.explanation.messageMotives.map(motive => (
+								<Text
+									key={strings.recovery.explanation.messageMotives.indexOf(motive)}
+									style={[commonStyles.text.emphasis, { textAlign: "left" }]}
+								>
+									{"- " + motive}
+								</Text>
+							))}
+						</View>
+
+						<Image source={require("../resources/images/accountRecover.png")} style={styles.image} />
+
+						<Text style={commonStyles.text.faded}>{strings.recovery.explanation.rememberEmailMessage}</Text>
+
+						<DidiButton
+							onPress={() => this.navigate("RecoveryEnterEmail", {})}
+							title={strings.recovery.explanation.startButtonText}
+						/>
 					</View>
-
-					<Image source={require("../resources/images/accountRecover.png")} style={styles.image} />
-
-					<Text style={styles.foot}>{strings.recovery.explanation.rememberEmailMessage}</Text>
-
-					<DidiButton
-						onPress={() => this.navigate("RecoveryEnterEmail", {})}
-						title={strings.recovery.explanation.startButtonText}
-					/>
 				</SafeAreaView>
 			</Fragment>
 		);
@@ -53,29 +59,10 @@ export class RecoveryExplanationScreen extends NavigationEnabledComponent<
 }
 
 const styles = StyleSheet.create({
-	area: {
-		flex: 1,
-		backgroundColor: colors.background,
-		alignItems: "center",
-		justifyContent: "space-evenly"
-	},
-	head: {
-		textAlign: "center",
-		paddingTop: 30,
-		width: "80%",
-		fontSize: 19,
-		color: colors.text
-	},
-	motives: {
-		width: "70%"
-	},
-	motive: {
-		fontSize: 19,
-		fontWeight: "bold",
-		color: colors.text
-	},
 	image: {
-		width: "50%"
+		width: 185,
+		height: 160,
+		alignSelf: "center"
 	},
 	foot: {
 		textAlign: "center",

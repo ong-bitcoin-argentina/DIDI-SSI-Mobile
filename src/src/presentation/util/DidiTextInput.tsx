@@ -1,14 +1,5 @@
 import React, { Fragment } from "react";
-import {
-	StyleSheet,
-	Text,
-	View,
-	Image,
-	TextInput,
-	ImageSourcePropType,
-	ViewProps,
-	TextInputProps
-} from "react-native";
+import { StyleSheet, Text, View, Image, TextInput, ImageSourcePropType, ViewProps, TextInputProps } from "react-native";
 import themes from "../styles/themes";
 import DidiTheme from "../styles/DidiTheme";
 
@@ -27,9 +18,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 	public render() {
 		const theme = this.props.theme ? this.props.theme : themes.primaryTheme;
 		const style = styles(theme);
-		const rootStyle = this.props.viewProps
-			? [style.root, this.props.viewProps.style]
-			: style.root;
+		const rootStyle = this.props.viewProps ? [style.root, this.props.viewProps.style] : style.root;
 		const textInputStyle = this.props.textInputProps
 			? [style.textInput, this.props.textInputProps.style]
 			: style.textInput;
@@ -39,11 +28,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				<Image style={style.tagImage} source={this.props.tagImage} />
 				<View style={style.textContainer}>
 					<Text style={style.description}>{this.props.description}</Text>
-					<TextInput
-						{...this.props.textInputProps}
-						style={textInputStyle}
-						placeholder={this.props.placeholder}
-					/>
+					<TextInput {...this.props.textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
 					<View style={style.underline} />
 				</View>
 			</View>
@@ -54,7 +39,6 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 function styles(theme: DidiTheme) {
 	return StyleSheet.create({
 		root: {
-			width: "80%",
 			flexDirection: "row",
 			alignItems: "center"
 		},

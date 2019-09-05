@@ -14,6 +14,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import DidiTheme from "../../styles/DidiTheme";
+import commonStyles from "../resources/commonStyles";
 
 export type VerifyPhoneProps = {};
 
@@ -37,18 +38,9 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={theme.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={style.area}>
-					<View style={style.body}>
-						<Text
-							style={{
-								fontSize: 18,
-								fontWeight: "500",
-								width: "80%",
-								textAlign: "center"
-							}}
-						>
-							Ingresá el código de 6 digitos para verificar tu celular
-						</Text>
+				<SafeAreaView style={commonStyles.view.area}>
+					<View style={commonStyles.view.body}>
+						<Text style={commonStyles.text.emphasis}>Ingresá el código de 6 digitos para verificar tu celular</Text>
 						<DidiTextInput
 							description="Código de validacion"
 							placeholder="6 digitos"
@@ -59,7 +51,7 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 							theme={theme}
 						/>
 						<Image style={style.contentImage} source={this.contentImageSource()} />
-						<Text style={{ fontSize: 18, fontWeight: "400" }}>¿No recibiste el código?</Text>
+						<Text style={commonStyles.text.normal}>¿No recibiste el código?</Text>
 						<DidiButton
 							disabled={!this.canPressContinueButton()}
 							onPress={event => this.didPressContinueButton(event)}
@@ -96,24 +88,11 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 
 function styles(theme: DidiTheme) {
 	return StyleSheet.create({
-		area: {
-			backgroundColor: theme.background,
-			flex: 1
-		},
-		body: {
-			alignItems: "center",
-			justifyContent: "space-evenly",
-			flex: 1
-		},
 		contentImage: {
 			backgroundColor: theme.opposite().button,
 			width: 185,
-			height: 160
-		},
-		countryImage: {
-			backgroundColor: theme.opposite().button,
-			width: 30,
-			height: 30
+			height: 160,
+			alignSelf: "center"
 		}
 	});
 }

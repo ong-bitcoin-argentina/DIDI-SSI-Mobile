@@ -8,6 +8,7 @@ import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import DidiButton from "../util/DidiButton";
 import NavigationHeaderStyle from "../styles/NavigationHeaderStyle";
 import themes from "../styles/themes";
+import commonStyles from "./resources/commonStyles";
 
 export type StartAccessProps = {};
 
@@ -17,23 +18,16 @@ export interface StartAccessNavigation {
 	RecoveryExplanation: RecoveryExplanationProps;
 }
 
-export class StartAccessScreen extends NavigationEnabledComponent<
-	StartAccessProps,
-	{},
-	StartAccessNavigation
-> {
+export class StartAccessScreen extends NavigationEnabledComponent<StartAccessProps, {}, StartAccessNavigation> {
 	static navigationOptions = NavigationHeaderStyle.gone;
 
 	render() {
 		return (
 			<Fragment>
-				<StatusBar
-					backgroundColor={themes.darkNavigation}
-					barStyle="light-content"
-				/>
-				<SafeAreaView style={styles.area}>
-					<View style={styles.body} />
-					<View style={styles.body}>
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+				<SafeAreaView style={commonStyles.view.area}>
+					<View style={commonStyles.view.body} />
+					<View style={commonStyles.view.body}>
 						<DidiButton
 							onPress={() => this.navigate("LoginEnterPhone", {})}
 							style={styles.secondaryButton}
@@ -58,15 +52,6 @@ export class StartAccessScreen extends NavigationEnabledComponent<
 }
 
 const styles = StyleSheet.create({
-	area: {
-		backgroundColor: themes.background,
-		flex: 1
-	},
-	body: {
-		alignItems: "center",
-		justifyContent: "space-evenly",
-		flex: 1
-	},
 	transparentButton: {
 		backgroundColor: themes.background
 	},

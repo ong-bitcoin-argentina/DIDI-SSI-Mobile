@@ -1,12 +1,5 @@
 import React, { Fragment } from "react";
-import {
-	StyleSheet,
-	TouchableOpacity,
-	TouchableOpacityProps,
-	Text,
-	StyleProp,
-	TextStyle
-} from "react-native";
+import { StyleSheet, TouchableOpacity, TouchableOpacityProps, Text, StyleProp, TextStyle } from "react-native";
 import themes from "../styles/themes";
 import DidiTheme from "../styles/DidiTheme";
 
@@ -31,9 +24,7 @@ export default class DidiButton extends React.Component<DidiButtonProps> {
 				{...this.props}
 				style={[styles.button, currentButtonColor, this.props.style]}
 			>
-				<Text style={[styles.text, currentTitleStyle, this.props.titleStyle]}>
-					{this.props.title}
-				</Text>
+				<Text style={[styles.text, currentTitleStyle, this.props.titleStyle]}>{this.props.title}</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -45,7 +36,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		height: 56,
-		width: "80%",
 		marginHorizontal: 5,
 		marginVertical: 5,
 		borderRadius: 5
@@ -54,6 +44,7 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 		fontSize: 16,
 		textAlign: "center",
-		color: "#FFF"
+		color: "#FFF",
+		marginHorizontal: 10
 	}
 });

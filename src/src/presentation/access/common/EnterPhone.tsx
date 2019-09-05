@@ -14,6 +14,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import DidiTheme from "../../styles/DidiTheme";
+import commonStyles from "../resources/commonStyles";
 
 export type EnterPhoneProps = {};
 
@@ -33,12 +34,12 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={theme.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={style.area}>
-					<View style={style.body}>
-						<Text style={{ fontSize: 18, fontWeight: "500" }}>Cargá tu número de celular</Text>
-						<View style={{ flexDirection: "row", alignItems: "center" }}>
+				<SafeAreaView style={commonStyles.view.area}>
+					<View style={commonStyles.view.body}>
+						<Text style={commonStyles.text.emphasis}>Cargá tu número de celular</Text>
+						<View style={style.countryContainer}>
 							<Image style={style.countryImage} source={this.countryImageSource()} />
-							<Text style={{ marginLeft: 10, fontSize: 18, fontWeight: "400" }}>Argentina +54</Text>
+							<Text style={commonStyles.text.normal}>Argentina +54</Text>
 						</View>
 						<DidiTextInput
 							description="Número de celular"
@@ -84,24 +85,22 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 
 function styles(theme: DidiTheme) {
 	return StyleSheet.create({
-		area: {
-			backgroundColor: theme.background,
-			flex: 1
-		},
-		body: {
-			alignItems: "center",
-			justifyContent: "space-evenly",
-			flex: 1
-		},
 		contentImage: {
 			backgroundColor: theme.opposite().button,
 			width: 185,
-			height: 160
+			height: 160,
+			alignSelf: "center"
+		},
+		countryContainer: {
+			alignSelf: "center",
+			flexDirection: "row",
+			alignItems: "center"
 		},
 		countryImage: {
 			backgroundColor: theme.opposite().button,
 			width: 30,
-			height: 30
+			height: 30,
+			marginRight: 10
 		}
 	});
 }
