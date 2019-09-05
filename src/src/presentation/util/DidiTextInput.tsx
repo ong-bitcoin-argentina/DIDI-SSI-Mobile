@@ -64,7 +64,8 @@ function styles(theme: DidiTheme) {
 			flexDirection: "column"
 		},
 		textInput: {
-			color: theme.foreground
+			color: theme.foreground,
+			minHeight: 30
 		},
 		description: {
 			color: theme.foregroundFaded,
