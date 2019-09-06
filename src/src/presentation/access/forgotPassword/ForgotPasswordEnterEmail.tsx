@@ -35,6 +35,11 @@ export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 		return this.state ? Validator.isEmail(this.state.inputEmail) : false;
 	}
 
+	sendEmail = () => {
+		// TODO send verification email....
+		this.navigate("ForgotPasswordEmailSent", { email: this.state.inputEmail });
+	}
+
 	render() {
 		return (
 			<Fragment>
@@ -58,7 +63,7 @@ export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 						<Text>{""}</Text>
 
 						<DidiButton
-							onPress={() => {}}
+							onPress={this.sendEmail}
 							disabled={!this.canPressContinueButton()}
 							title={strings.recovery.passwordRecover.recoverButtonText}
 						/>

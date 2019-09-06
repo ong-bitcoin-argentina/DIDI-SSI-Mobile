@@ -1,5 +1,5 @@
 import React from "react";
-import { createAppContainer, createStackNavigator } from "react-navigation";
+import { createAppContainer } from "react-navigation";
 
 import AccessNavigator from "./presentation/access/AccessNavigator";
 

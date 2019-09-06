@@ -20,6 +20,10 @@ export default {
 			forgotPasswordMessage: "No recuerdo la contraseña",
 			recoverButtonText: "Recuperar"
 		},
+		passwordRecoverEmailSent: {
+			message: "Se te ha enviado un email para comenzar el proceso de recuperación de su contraseña",
+			buttonText: "Ver mis E-mails"
+		}
 	},
 	signup: {
 		barTitle: "Registro",
