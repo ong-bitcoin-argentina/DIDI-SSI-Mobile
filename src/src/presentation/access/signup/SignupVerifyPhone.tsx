@@ -16,7 +16,7 @@ export class SignupVerifyPhoneScreen extends VerifyPhoneScreen<SignupVerifyPhone
 	static navigationOptions = NavigationHeaderStyle.withTitle("Registro");
 
 	protected contentImageSource(): ImageSourcePropType {
-		return {};
+		return require("../resources/images/loginVerify.png");
 	}
 
 	protected didPressContinueButton(event: GestureResponderEvent): void {
