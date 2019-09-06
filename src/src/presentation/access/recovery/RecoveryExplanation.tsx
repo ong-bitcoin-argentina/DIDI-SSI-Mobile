@@ -43,7 +43,7 @@ export class RecoveryExplanationScreen extends NavigationEnabledComponent<
 							))}
 						</View>
 
-						<Image source={require("../resources/images/accountRecover.png")} style={styles.image} />
+						<Image source={require("../resources/images/accountRecover.png")} style={commonStyles.image.image} />
 
 						<Text style={commonStyles.text.faded}>{strings.recovery.explanation.rememberEmailMessage}</Text>
 
@@ -59,11 +59,6 @@ export class RecoveryExplanationScreen extends NavigationEnabledComponent<
 }
 
 const styles = StyleSheet.create({
-	image: {
-		width: 185,
-		height: 160,
-		alignSelf: "center"
-	},
 	foot: {
 		textAlign: "center",
 		width: "70%",

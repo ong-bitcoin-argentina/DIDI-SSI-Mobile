@@ -13,7 +13,13 @@ export default {
 			messageMotives: ["Te robaron el teléfono", "Cambiaste tu nro. de teléfono", "Perdiste tu teléfono"],
 			rememberEmailMessage: "Debes recordar tu email y contraseña de resguardo para recuperar su cuenta",
 			startButtonText: "Iniciar"
-		}
+		},
+		passwordRecover: {
+			messageHead: "Recuperar Contraseña",
+			emailTitle: "E-mail",
+			forgotPasswordMessage: "No recuerdo la contraseña",
+			recoverButtonText: "Recuperar"
+		},
 	},
 	signup: {
 		barTitle: "Registro",

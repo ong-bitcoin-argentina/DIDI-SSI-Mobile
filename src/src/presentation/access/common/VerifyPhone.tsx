@@ -15,6 +15,7 @@ import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import DidiTheme from "../../styles/DidiTheme";
 import commonStyles from "../resources/commonStyles";
+import Validator from "../helpers/validator";
 
 export type VerifyPhoneProps = {};
 
@@ -75,14 +76,7 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 	}
 
 	private canPressContinueButton(): boolean {
-		const code = this.state.inputCode;
-		if (code) {
-			const match = code.match("^[0-9]{6}$");
-			if (match) {
-				return match.length > 0;
-			}
-		}
-		return false;
+		return this.state ? Validator.isPhoneNumber(this.state.inputCode) : false;
 	}
 }
 

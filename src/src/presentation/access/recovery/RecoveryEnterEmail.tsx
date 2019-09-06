@@ -10,6 +10,7 @@ import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import { RecoveryEnterPhoneProps } from "./RecoveryEnterPhone";
 import { ForgotPasswordEnterEmailProps } from "../forgotPassword/ForgotPasswordEnterEmail";
 import commonStyles from "../resources/commonStyles";
+import Validator from "../helpers/validator";
 
 export type RecoveryEnterEmailProps = {};
 
@@ -30,6 +31,10 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
+	private canPressContinueButton(): boolean {
+		return this.state && this.state.password ? this.state.password.length > 0 && Validator.isEmail(this.state.email) : false;
+	}
+
 	render() {
 		return (
 			<Fragment>
@@ -38,7 +43,7 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 					<View style={commonStyles.view.body}>
 						<Text style={commonStyles.text.emphasis}>{strings.recovery.enterEmail.messageHead}</Text>
 
-						<Image source={require("../resources/images/emailRecover.png")} style={styles.image} />
+						<Image source={require("../resources/images/emailRecover.png")} style={commonStyles.image.image} />
 
 						<DidiTextInput
 							description={strings.recovery.enterEmail.emailTitle}
@@ -67,6 +72,7 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 
 						<DidiButton
 							onPress={() => this.navigate("RecoveryEnterPhone", {})}
+							disabled={!this.canPressContinueButton()}
 							title={strings.recovery.enterEmail.recoverButtonText}
 						/>
 					</View>
@@ -81,10 +87,5 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		marginLeft: "auto",
 		alignSelf: "flex-end"
-	},
-	image: {
-		width: 185,
-		height: 160,
-		alignSelf: "center"
 	}
 });

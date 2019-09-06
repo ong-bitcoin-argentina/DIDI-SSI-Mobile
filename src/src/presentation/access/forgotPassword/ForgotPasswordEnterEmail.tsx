@@ -6,6 +6,13 @@ import { ForgotPasswordEmailSentProps } from "./ForgotPasswordEmailSent";
 import strings from "../resources/strings";
 import { ForgotPasswordEnterEmailProps } from "../forgotPassword/ForgotPasswordEnterEmail";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import { StatusBar, View, Text, Image, StyleSheet } from "react-native";
+import themes from "../../styles/themes";
+import { SafeAreaView } from "react-navigation";
+import commonStyles from "../resources/commonStyles";
+import DidiTextInput from "../../util/DidiTextInput";
+import DidiButton from "../../util/DidiButton";
+import Validator from "../helpers/validator";
 
 export type ForgotPasswordEnterEmailProps = {};
 
@@ -14,7 +21,7 @@ export interface ForgotPasswordEnterEmailNavigation {
 }
 
 interface ForgotPasswordEnterEmailState {
-	inputPhoneNumber: string;
+	inputEmail: string;
 }
 
 export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
@@ -25,10 +32,45 @@ export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
 	private canPressContinueButton(): boolean {
-		return this.state && this.state.inputPhoneNumber ? this.state.inputPhoneNumber.length > 0 : false;
+		return this.state ? Validator.isEmail(this.state.inputEmail) : false;
 	}
 
 	render() {
-		return <Fragment></Fragment>;
+		return (
+			<Fragment>
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+				<SafeAreaView style={commonStyles.view.area}>
+					<View style={commonStyles.view.body}>
+						<Text style={[commonStyles.text.emphasis, styles.messageHead]}>
+							{strings.recovery.passwordRecover.messageHead}
+						</Text>
+						<Image source={require("../resources/images/recoverPassword.png")} style={commonStyles.image.image} />
+
+						<DidiTextInput
+							description={strings.recovery.passwordRecover.emailTitle}
+							placeholder=""
+							tagImage={require("../resources/images/email.png")}
+							textInputProps={{
+								onChangeText: text => this.setState({ inputEmail: text })
+							}}
+						/>
+
+						<Text>{""}</Text>
+
+						<DidiButton
+							onPress={() => {}}
+							disabled={!this.canPressContinueButton()}
+							title={strings.recovery.passwordRecover.recoverButtonText}
+						/>
+					</View>
+				</SafeAreaView>
+			</Fragment>
+		);
 	}
 }
+
+const styles = StyleSheet.create({
+	messageHead: {
+		fontSize: 19
+	}
+});

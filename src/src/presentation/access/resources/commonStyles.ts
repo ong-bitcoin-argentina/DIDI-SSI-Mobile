@@ -19,6 +19,13 @@ export default {
 			color: colors.textFaded
 		}
 	}),
+	image: StyleSheet.create({
+		image: {
+			width: 185,
+			height: 160,
+			alignSelf: "center"
+		}
+	}),
 	view: StyleSheet.create({
 		area: {
 			backgroundColor: colors.background,
