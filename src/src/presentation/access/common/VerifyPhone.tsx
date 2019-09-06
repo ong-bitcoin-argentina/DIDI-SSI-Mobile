@@ -72,7 +72,7 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 	protected abstract didPressContinueButton(event: GestureResponderEvent): void;
 
 	private tagImageSource(): ImageSourcePropType {
-		return {};
+		return require("../resources/images/phone.png");
 	}
 
 	private canPressContinueButton(): boolean {
@@ -83,7 +83,6 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 function styles(theme: DidiTheme) {
 	return StyleSheet.create({
 		contentImage: {
-			backgroundColor: theme.opposite().button,
 			width: 185,
 			height: 160,
 			alignSelf: "center"

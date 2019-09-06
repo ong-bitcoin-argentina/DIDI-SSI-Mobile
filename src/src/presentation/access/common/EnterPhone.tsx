@@ -74,7 +74,7 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 	}
 
 	private tagImageSource(): ImageSourcePropType {
-		return {};
+		return require("../resources/images/phone.png");
 	}
 
 	private canPressContinueButton(): boolean {
@@ -86,7 +86,6 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 function styles(theme: DidiTheme) {
 	return StyleSheet.create({
 		contentImage: {
-			backgroundColor: theme.opposite().button,
 			width: 185,
 			height: 160,
 			alignSelf: "center"
@@ -97,7 +96,6 @@ function styles(theme: DidiTheme) {
 			alignItems: "center"
 		},
 		countryImage: {
-			backgroundColor: theme.opposite().button,
 			width: 30,
 			height: 30,
 			marginRight: 10

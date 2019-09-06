@@ -56,7 +56,6 @@ function styles(theme: DidiTheme) {
 			fontSize: 12
 		},
 		tagImage: {
-			backgroundColor: theme.opposite().button,
 			width: 25,
 			height: 25
 		},

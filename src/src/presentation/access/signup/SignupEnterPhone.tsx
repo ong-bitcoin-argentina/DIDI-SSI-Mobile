@@ -42,10 +42,10 @@ export class SignupEnterPhoneScreen extends NavigationEnabledComponent<
 						<Text style={[commonStyles.text.emphasis, styles.messageHead]}>
 							{strings.signup.enterPhone.messageHead}
 						</Text>
-						<Image source={require("../resources/images/phoneRecover.png")} style={styles.image} />
+						<Image source={require("../resources/images/loginVerify.png")} style={styles.image} />
 
 						<View style={styles.placeContainer}>
-							<Image source={require("../resources/images/arg.png")} />
+							<Image style={styles.countryImage} source={require("../resources/images/arg.png")} />
 							<Text style={{ ...commonStyles.text.normal, ...styles.placeText }}>
 								{strings.signup.enterPhone.place}
 							</Text>
@@ -94,5 +94,10 @@ const styles = StyleSheet.create({
 		width: 185,
 		height: 160,
 		alignSelf: "center"
+	},
+	countryImage: {
+		width: 30,
+		height: 30,
+		marginRight: 10
 	}
 });

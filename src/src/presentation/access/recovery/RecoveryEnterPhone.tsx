@@ -16,7 +16,7 @@ export class RecoveryEnterPhoneScreen extends EnterPhoneScreen<RecoveryEnterPhon
 	static navigationOptions = NavigationHeaderStyle.withTitle("Recuperar Cuenta");
 
 	protected contentImageSource(): ImageSourcePropType {
-		return {};
+		return require("../resources/images/phoneRecover.png");
 	}
 
 	protected didPressContinueButton(event: GestureResponderEvent): void {

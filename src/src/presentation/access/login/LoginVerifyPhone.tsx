@@ -13,7 +13,7 @@ export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<LoginVerifyPhoneNa
 	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar", themes.secondaryTheme);
 
 	protected contentImageSource(): ImageSourcePropType {
-		return {};
+		return require("../resources/images/loginVerify.png");
 	}
 
 	protected didPressContinueButton(event: GestureResponderEvent): void {

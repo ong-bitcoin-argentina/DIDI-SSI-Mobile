@@ -13,7 +13,7 @@ export class RecoveryVerifyPhoneScreen extends VerifyPhoneScreen<RecoveryVerifyP
 	static navigationOptions = NavigationHeaderStyle.withTitle("Recuperar cuenta");
 
 	protected contentImageSource(): ImageSourcePropType {
-		return {};
+		return require("../resources/images/phoneRecover.png");
 	}
 
 	protected didPressContinueButton(event: GestureResponderEvent): void {
