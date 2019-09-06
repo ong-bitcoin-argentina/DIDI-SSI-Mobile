@@ -57,12 +57,3 @@ export class RecoveryExplanationScreen extends NavigationEnabledComponent<
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	foot: {
-		textAlign: "center",
-		width: "70%",
-		fontSize: 19,
-		color: colors.textFaded
-	}
-});
