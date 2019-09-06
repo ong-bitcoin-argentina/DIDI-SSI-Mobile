@@ -35,7 +35,12 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 
 						<Text>{""}</Text>
 
-						<DidiButton onPress={() => {}} title={strings.recovery.passwordRecoverEmailSent.buttonText} />
+						<DidiButton
+							onPress={() => {
+								this.navigate("ForgotPasswordConfirmEmail", {});
+							}}
+							title={strings.recovery.passwordRecoverEmailSent.buttonText}
+						/>
 					</View>
 				</SafeAreaView>
 			</Fragment>

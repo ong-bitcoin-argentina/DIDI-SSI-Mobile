@@ -23,6 +23,11 @@ export default {
 		passwordRecoverEmailSent: {
 			message: "Se te ha enviado un email para comenzar el proceso de recuperación de su contraseña",
 			buttonText: "Ver mis E-mails"
+		},
+		passwordRecoverConfirmationCode: {
+			messageHead: "Ingrese el código enviado por email",
+			codeTitle: "Código de validación",
+			buttonText: "OK"
 		}
 	},
 	signup: {
