@@ -70,7 +70,7 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 	protected abstract didPressContinueButton(event: GestureResponderEvent): void;
 
 	private countryImageSource(): ImageSourcePropType {
-		return {};
+		return require("../resources/images/arg.png");
 	}
 
 	private tagImageSource(): ImageSourcePropType {
