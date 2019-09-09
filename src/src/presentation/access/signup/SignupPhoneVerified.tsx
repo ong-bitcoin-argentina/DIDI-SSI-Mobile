@@ -12,7 +12,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { SignupEnterEmailProps } from "./SignupEnterEmail";
 
 export type SignupPhoneVerifiedProps = {
-	phoneNumber: string
+	phoneNumber: string;
 };
 
 export interface SignupPhoneVerifiedNavigation {
@@ -37,20 +37,17 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 						<DidiTextInput
 							description={strings.signup.phoneVerified.cellNumber}
 							placeholder={this.props.phoneNumber}
-							tagImage={require("../resources/images/email.png")}
+							tagImage={require("../resources/images/phone.png")}
 							textInputProps={{
 								editable: false
 							}}
 						/>
 
-						<Image source={require("../resources/images/emailRecover.png")} style={commonStyles.image.image} />
+						<Image source={require("../resources/images/accountCreate.png")} style={commonStyles.image.image} />
 
 						<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.message}</Text>
 
-						<DidiButton
-							onPress={() => {}}
-							title={strings.signup.phoneVerified.next}
-						/>
+						<DidiButton onPress={() => {}} title={strings.signup.phoneVerified.next} />
 					</View>
 				</SafeAreaView>
 			</Fragment>
