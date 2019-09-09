@@ -11,10 +11,22 @@ export default abstract class NavigationEnabledComponent<Props, State, Nav> exte
 	// tslint:disable-next-line: variable-name
 	__navigationTypeReference?: Nav;
 
-	navigate<Target extends Extract<keyof Nav, string>>(target: Target, props: Nav[Target]) {
+	navigation() {
 		const navProps: NavigationProps<Props> = this.props;
-		if (navProps.navigation) {
-			navProps.navigation.navigate(target, props);
+		return navProps.navigation;
+	}
+
+	navigate<Target extends Extract<keyof Nav, string>>(target: Target, props: Nav[Target]) {
+		const nav = this.navigation();
+		if (nav) {
+			nav.navigate(target, props);
+		}
+	}
+
+	goBack() {
+		const nav = this.navigation();
+		if (nav) {
+			nav.goBack();
 		}
 	}
 }
