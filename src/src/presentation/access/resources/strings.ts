@@ -52,6 +52,16 @@ export default {
 			passwordTitle: "Password",
 			repeatPasswordTitle: "Repetir Contraseña",
 			backupGenerate: "Generar Backup"
+		},
+		registrationEmailSent: {
+			message:
+				"Recibirá un email para validar su cuenta. Deberá hacer click en el link y asi completar la generacion del backup de su identidad",
+			buttonText: "Ver mis E-mails"
+		},
+		registrationValidated: {
+			message:
+			"Su E-mail ha sido validado y su Identidad Digital ha sido resguardada.",
+		buttonEnter: "Ingresar a Didi"
 		}
 	},
 	accessCommon: {
