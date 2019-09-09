@@ -4,10 +4,13 @@ import { VerifyPhoneScreen, VerifyPhoneProps, VerifyPhoneState } from "../common
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import themes from "../../styles/themes";
 import DidiTheme from "../../styles/DidiTheme";
+import { DashboardScreenProps } from "../dashboard/dashboard";
 
 export type LoginVerifyPhoneProps = VerifyPhoneProps;
 
-export type LoginVerifyPhoneNavigation = {};
+export type LoginVerifyPhoneNavigation = {
+	Dashboard: DashboardScreenProps;
+};
 
 export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<
 	LoginVerifyPhoneProps,
@@ -22,6 +25,7 @@ export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<
 
 	protected didPressContinueButton(event: GestureResponderEvent): void {
 		// TODO: End login flow
+		this.navigate("Dashboard", {});
 	}
 
 	protected theme(): DidiTheme {

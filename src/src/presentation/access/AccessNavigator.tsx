@@ -22,6 +22,7 @@ import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEm
 import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswordConfirmEmail";
 
 import NavMap from "../util/NavMap";
+import { DashboardScreen } from "./dashboard/dashboard";
 
 const login = NavMap.from(LoginEnterPhoneScreen, {
 	LoginVerifyPhone: NavMap.from(LoginVerifyPhoneScreen)
@@ -33,7 +34,9 @@ const signup = NavMap.from(SignupOnboardingScreen, {
 			SignupPhoneVerified: NavMap.from(SignupPhoneVerifiedScreen, {
 				SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
 					SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen, {
-						SignupConfirmed: NavMap.from(SignupConfirmedScreen)
+						SignupConfirmed: NavMap.from(SignupConfirmedScreen, {
+							Dashboard: NavMap.from(DashboardScreen)
+						})
 					})
 				})
 			})
@@ -44,7 +47,9 @@ const signup = NavMap.from(SignupOnboardingScreen, {
 const forgotPassword = NavMap.from(ForgotPasswordEnterEmailScreen, {
 	ForgotPasswordEmailSent: NavMap.from(ForgotPasswordEmailSentScreen, {
 		ForgotPasswordConfirmEmail: NavMap.from(ForgotPasswordConfirmEmailScreen, {
-			ForgotPasswordNewPassword: NavMap.from(ForgotPasswordNewPasswordScreen, {})
+			ForgotPasswordNewPassword: NavMap.from(ForgotPasswordNewPasswordScreen, {
+				Dashboard: NavMap.from(DashboardScreen)
+			})
 		})
 	})
 });
@@ -52,7 +57,9 @@ const forgotPassword = NavMap.from(ForgotPasswordEnterEmailScreen, {
 const recovery = NavMap.from(RecoveryExplanationScreen, {
 	RecoveryEnterEmail: NavMap.from(RecoveryEnterEmailScreen, {
 		RecoveryEnterPhone: NavMap.from(RecoveryEnterPhoneScreen, {
-			RecoveryVerifyPhone: NavMap.from(RecoveryVerifyPhoneScreen)
+			RecoveryVerifyPhone: NavMap.from(RecoveryVerifyPhoneScreen, {
+				Dashboard: NavMap.from(DashboardScreen)
+			})
 		}),
 		ForgotPasswordEnterEmail: forgotPassword
 	})

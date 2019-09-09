@@ -7,8 +7,11 @@ import strings from "../resources/strings";
 import themes from "../../styles/themes";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";
+import { DashboardScreenProps } from "../dashboard/dashboard";
 
-export interface SignupConfirmedNavigation {}
+export interface SignupConfirmedNavigation {
+	Dashboard: DashboardScreenProps;
+}
 
 export type SignupConfirmedProps = {};
 
@@ -36,7 +39,12 @@ export class SignupConfirmedScreen extends NavigationEnabledComponent<
 
 						<Text>{""}</Text>
 
-						<DidiButton onPress={() => {}} title={strings.signup.registrationValidated.buttonEnter} />
+						<DidiButton
+							onPress={() => {
+								this.navigate("Dashboard", {});
+							}}
+							title={strings.signup.registrationValidated.buttonEnter}
+						/>
 					</View>
 				</SafeAreaView>
 			</Fragment>

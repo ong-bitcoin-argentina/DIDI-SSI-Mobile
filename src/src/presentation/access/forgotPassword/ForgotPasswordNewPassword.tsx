@@ -8,13 +8,16 @@ import DidiTextInput from "../../util/DidiTextInput";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { DashboardScreenProps } from "../dashboard/dashboard";
 
 interface ForgotPasswordNewPasswordState {
 	key: string;
 	keyDup: string;
 }
 
-export type ForgotPasswordNewPasswordProps = {};
+export type ForgotPasswordNewPasswordProps = {
+	Dashboard: DashboardScreenProps;
+};
 
 export interface ForgotPasswordNewPasswordNavigation {}
 
@@ -62,7 +65,9 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 						<Text>{""}</Text>
 
 						<DidiButton
-							onPress={() => {}}
+							onPress={() => {
+								this.navigate("Dashboard", {});
+							}}
 							disabled={!this.canPressContinueButton()}
 							title={strings.accessCommon.recoverButtonText}
 						/>
