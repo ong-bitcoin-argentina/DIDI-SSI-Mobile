@@ -32,7 +32,9 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
 	private canPressContinueButton(): boolean {
-		return this.state && this.state.password ? this.state.password.length > 0 && Validator.isEmail(this.state.email) : false;
+		return this.state && this.state.password
+			? this.state.password.length > 0 && Validator.isEmail(this.state.email)
+			: false;
 	}
 
 	render() {

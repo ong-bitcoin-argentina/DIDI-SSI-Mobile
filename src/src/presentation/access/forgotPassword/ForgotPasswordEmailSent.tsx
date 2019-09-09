@@ -25,9 +25,9 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
-						<Image source={require("../resources/images/emailRecoverSent.png")} style={styles.imageBig} />
-
 						<Text>{""}</Text>
+
+						<Image source={require("../resources/images/emailRecoverSent.png")} style={commonStyles.image.image} />
 
 						<Text style={[commonStyles.text.normal, styles.message]}>
 							{strings.recovery.passwordRecoverEmailSent.message}
@@ -49,11 +49,6 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 }
 
 const styles = StyleSheet.create({
-	imageBig: {
-		width: 236,
-		height: 182,
-		alignSelf: "center"
-	},
 	message: {
 		fontSize: 20,
 		textAlign: "center"
