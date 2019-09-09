@@ -71,7 +71,7 @@ export default {
 		recoverButtonText: "Registrar",
 		place: "Argentina +54",
 		enterPhone: {
-			messageHead: "Carga tu numero de celular",
+			messageHead: "Carga tu número de celular",
 			cellPlaceholder: "011 + número sin el 15",
 			cellNumber: "Número de celular"
 		},

@@ -30,7 +30,7 @@ const pages: OnboardingPage[] = [
 		backgroundColor: "#6ECD55",
 		backgroundTile: require("../resources/images/onboardingTile3.png"),
 		title: "Alcanzá tus metas de ahorro",
-		body: "Podés crear Rondas y así conseguir la plata que estabas necesitando de manera facil y confiable."
+		body: "Podés crear Rondas y así conseguir la plata que estabas necesitando de manera fácil y confiable."
 	}
 ];
 
