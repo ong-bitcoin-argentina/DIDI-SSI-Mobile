@@ -44,6 +44,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 							placeholder=""
 							tagImage={require("../resources/images/key.png")}
 							textInputProps={{
+								secureTextEntry: true,
 								onChangeText: text => this.setState({ key: text })
 							}}
 						/>
@@ -53,6 +54,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 							placeholder=""
 							tagImage={require("../resources/images/key.png")}
 							textInputProps={{
+								secureTextEntry: true,
 								onChangeText: text => this.setState({ keyDup: text })
 							}}
 						/>

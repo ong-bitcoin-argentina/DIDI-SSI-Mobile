@@ -61,6 +61,7 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 							placeholder=""
 							tagImage={require("../resources/images/key.png")}
 							textInputProps={{
+								secureTextEntry: true,
 								onChangeText: text => this.setState({ password: text })
 							}}
 						/>
