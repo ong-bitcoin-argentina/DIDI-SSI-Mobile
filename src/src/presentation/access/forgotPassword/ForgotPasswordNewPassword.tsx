@@ -62,7 +62,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 						<DidiButton
 							onPress={() => {}}
 							disabled={!this.canPressContinueButton()}
-							title={strings.recovery.enterEmail.recoverButtonText}
+							title={strings.accessCommon.recoverButtonText}
 						/>
 					</View>
 				</SafeAreaView>

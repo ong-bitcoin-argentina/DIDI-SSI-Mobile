@@ -16,6 +16,7 @@ import DidiTextInput from "../../util/DidiTextInput";
 import DidiTheme from "../../styles/DidiTheme";
 import commonStyles from "../resources/commonStyles";
 import Validator from "../helpers/validator";
+import strings from "../resources/strings";
 
 export type VerifyPhoneProps = {};
 
@@ -41,10 +42,10 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={theme.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
-						<Text style={commonStyles.text.emphasis}>Ingresá el código de 6 digitos para verificar tu celular</Text>
+						<Text style={commonStyles.text.emphasis}>{strings.accessCommon.verifyPhone.messageHead}</Text>
 						<DidiTextInput
-							description="Código de validacion"
-							placeholder="6 digitos"
+							description={strings.accessCommon.verifyPhone.codeTitle}
+							placeholder={strings.accessCommon.verifyPhone.codePlaceholder}
 							tagImage={this.tagImageSource()}
 							textInputProps={{
 								onChangeText: text => this.setState({ inputCode: text })
@@ -52,11 +53,11 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 							theme={theme}
 						/>
 						<Image style={style.contentImage} source={this.contentImageSource()} />
-						<Text style={commonStyles.text.normal}>¿No recibiste el código?</Text>
+						<Text style={commonStyles.text.normal}>{strings.accessCommon.verifyPhone.resendCode}</Text>
 						<DidiButton
 							disabled={!this.canPressContinueButton()}
 							onPress={event => this.didPressContinueButton(event)}
-							title="Validar"
+							title={strings.accessCommon.validateButtonText}
 							theme={theme}
 						/>
 					</View>

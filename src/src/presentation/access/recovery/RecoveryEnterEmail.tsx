@@ -73,7 +73,7 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 						<DidiButton
 							onPress={() => this.navigate("RecoveryEnterPhone", {})}
 							disabled={!this.canPressContinueButton()}
-							title={strings.recovery.enterEmail.recoverButtonText}
+							title={strings.accessCommon.recoverButtonText}
 						/>
 					</View>
 				</SafeAreaView>

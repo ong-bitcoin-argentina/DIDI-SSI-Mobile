@@ -15,6 +15,7 @@ import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import DidiTheme from "../../styles/DidiTheme";
 import commonStyles from "../resources/commonStyles";
+import strings from "../resources/strings";
 
 export type EnterPhoneProps = {};
 
@@ -36,14 +37,14 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 				<StatusBar backgroundColor={theme.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
-						<Text style={commonStyles.text.emphasis}>Cargá tu número de celular</Text>
+						<Text style={commonStyles.text.emphasis}>{strings.accessCommon.enterPhone.messageHead}</Text>
 						<View style={style.countryContainer}>
 							<Image style={style.countryImage} source={this.countryImageSource()} />
-							<Text style={commonStyles.text.normal}>Argentina +54</Text>
+							<Text style={commonStyles.text.normal}>{strings.accessCommon.place}</Text>
 						</View>
 						<DidiTextInput
-							description="Número de celular"
-							placeholder="011 + número sin el 15"
+							description={strings.accessCommon.enterPhone.cellNumber}
+							placeholder={strings.accessCommon.enterPhone.cellPlaceholder}
 							tagImage={this.tagImageSource()}
 							textInputProps={{
 								onChangeText: text => this.setState({ inputPhoneNumber: text })
@@ -54,7 +55,7 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 						<DidiButton
 							disabled={!this.canPressContinueButton()}
 							onPress={event => this.didPressContinueButton(event)}
-							title="Validar"
+							title={strings.accessCommon.validateButtonText}
 							theme={theme}
 						/>
 					</View>

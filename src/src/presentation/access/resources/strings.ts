@@ -5,8 +5,7 @@ export default {
 			messageHead: "Ingresa tu email y contraseña",
 			emailTitle: "E-mail",
 			passwordTitle: "Password",
-			forgotPasswordMessage: "No recuerdo la contraseña",
-			recoverButtonText: "Recuperar"
+			forgotPasswordMessage: "No recuerdo la contraseña"
 		},
 		explanation: {
 			messageMotivesTitle: "Si quieres recuperar la cuenta es porque:",
@@ -17,8 +16,7 @@ export default {
 		passwordRecover: {
 			messageHead: "Recuperar Contraseña",
 			emailTitle: "E-mail",
-			forgotPasswordMessage: "No recuerdo la contraseña",
-			recoverButtonText: "Recuperar"
+			forgotPasswordMessage: "No recuerdo la contraseña"
 		},
 		passwordRecoverEmailSent: {
 			message: "Se te ha enviado un email para comenzar el proceso de recuperación de su contraseña",
@@ -39,20 +37,23 @@ export default {
 	signup: {
 		barTitle: "Registro",
 		enterPhone: {
-			messageHead: "Ingresa tu teléfono para registrarte en la aplicación",
-			place: "Argentina +54",
-			cellPlaceholder: "011 + número sin el 15",
-			cellNumber: "Número de celular",
-			recoverButtonText: "Registrar"
+			messageHead: "Ingresa tu teléfono para registrarte en la aplicación"
 		}
 	},
 	accessCommon: {
+		validateButtonText: "Validar",
+		recoverButtonText: "Registrar",
+		place: "Argentina +54",
 		enterPhone: {
 			messageHead: "Carga tu numero de celular",
-			place: "Argentina +54",
 			cellPlaceholder: "011 + número sin el 15",
 			cellNumber: "Número de celular",
-			recoverButtonText: "Registrar"
+		},
+		verifyPhone: {
+			messageHead: "Ingresá el código de 6 digitos para verificar tu celular",
+			codeTitle: "Código de validacion",
+			codePlaceholder:"6 digitos",
+			resendCode:"¿No recibiste el código?",
 		}
 	}
 };

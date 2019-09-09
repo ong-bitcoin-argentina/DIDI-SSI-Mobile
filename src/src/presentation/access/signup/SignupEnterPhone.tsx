@@ -40,20 +40,20 @@ export class SignupEnterPhoneScreen extends NavigationEnabledComponent<
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
 						<Text style={[commonStyles.text.emphasis, styles.messageHead]}>
-							{strings.signup.enterPhone.messageHead}
+							{strings.accessCommon.enterPhone.messageHead}
 						</Text>
 						<Image source={require("../resources/images/loginVerify.png")} style={styles.image} />
 
 						<View style={styles.placeContainer}>
 							<Image style={styles.countryImage} source={require("../resources/images/arg.png")} />
 							<Text style={{ ...commonStyles.text.normal, ...styles.placeText }}>
-								{strings.signup.enterPhone.place}
+								{strings.accessCommon.place}
 							</Text>
 						</View>
 
 						<DidiTextInput
-							description={strings.signup.enterPhone.cellNumber}
-							placeholder={strings.signup.enterPhone.cellPlaceholder}
+							description={strings.accessCommon.enterPhone.cellNumber}
+							placeholder={strings.accessCommon.enterPhone.cellPlaceholder}
 							tagImage={require("../resources/images/phone.png")}
 							textInputProps={{
 								onChangeText: text => this.setState({ inputPhoneNumber: text })
@@ -63,7 +63,7 @@ export class SignupEnterPhoneScreen extends NavigationEnabledComponent<
 						<DidiButton
 							onPress={() => this.navigate("SignupVerifyPhone", {})}
 							disabled={!this.canPressContinueButton()}
-							title={strings.signup.enterPhone.recoverButtonText}
+							title={strings.accessCommon.recoverButtonText}
 						/>
 					</View>
 				</SafeAreaView>
