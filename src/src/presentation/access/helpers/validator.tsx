@@ -9,6 +9,16 @@ export default class Validator {
 		return false;
 	}
 
+	static isNumber(code?: String): boolean {
+		if (code) {
+			const match = code.match("^[0-9]*$");
+			if (match) {
+				return match.length > 0;
+			}
+		}
+		return false;
+	}
+
 	static isEmail(code?: String): boolean {
 		if (code) {
 			const match = code.match(

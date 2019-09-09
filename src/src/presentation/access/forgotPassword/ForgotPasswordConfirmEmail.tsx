@@ -1,13 +1,15 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import strings from "../resources/strings";
 import React, { Fragment } from "react";
 import { StatusBar, View, Text, Image, StyleSheet } from "react-native";
-import themes from "../../styles/themes";
 import { SafeAreaView } from "react-navigation";
+
+import Validator from "../helpers/validator";
+import strings from "../resources/strings";
+import themes from "../../styles/themes";
 import commonStyles from "../resources/commonStyles";
 import DidiTextInput from "../../util/DidiTextInput";
 import DidiButton from "../../util/DidiButton";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 export type ForgotPasswordConfirmEmailProps = {};
 
@@ -26,7 +28,7 @@ export class ForgotPasswordConfirmEmailScreen extends NavigationEnabledComponent
 
 	private canPressContinueButton(): boolean {
 		// TODO validar codigo!!!
-		return this.state ? this.state.code.length > 0 : false;
+		return this.state ? this.state.code.length > 0 && Validator.isNumber(this.state.code) : false;
 	}
 
 	render() {
@@ -53,7 +55,9 @@ export class ForgotPasswordConfirmEmailScreen extends NavigationEnabledComponent
 						<Text>{""}</Text>
 
 						<DidiButton
-							onPress={() => {}}
+							onPress={() => {
+								this.navigate("ForgotPasswordNewPassword", {});
+							}}
 							disabled={!this.canPressContinueButton()}
 							title={strings.recovery.passwordRecoverConfirmationCode.buttonText}
 						/>

@@ -28,6 +28,12 @@ export default {
 			messageHead: "Ingrese el código enviado por email",
 			codeTitle: "Código de validación",
 			buttonText: "OK"
+		},
+		passwordChange: {
+			barTitle: "Recuperar Contraseña",
+			messageHead: "Ingresa tu nueva contraseña",
+			newPassMessage: "Nueva Contraseña",
+			repeatNewPassMessage: "Repetir Contraseña"
 		}
 	},
 	signup: {
