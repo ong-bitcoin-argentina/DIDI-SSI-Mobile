@@ -10,15 +10,18 @@ type NavTree<Nav> = {
 	[K in Extract<keyof Nav, string>]: NavMap<Nav[K]>;
 };
 
-type AnyConstructor = NavigationEnabledComponentConstructor<any, any>;
+type AnyConstructor = any;
 
 export default class NavMap<Props> {
-	static from<T extends AnyConstructor>(
-		constructor: T,
-		to?: NavTree<NonNullable<InstanceType<T>["__navigationTypeReference"]>>
-	): NavMap<NonNullable<InstanceType<T>["__propTypeReference"]>> {
+	static from<Prop, Nav>(
+		constructor: NavigationEnabledComponentConstructor<Prop, Nav>,
+		to?: NavTree<Nav>
+	): NavMap<Prop> {
 		return new NavMap(constructor, to ? to : {});
 	}
+
+	// Prevent assignments with incompatible props
+	private unassignable?: Props;
 
 	private current: AnyConstructor;
 	private rest: { [name: string]: AnyConstructor };
