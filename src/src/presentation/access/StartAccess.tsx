@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, View, Image } from "react-native";
 
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
@@ -24,9 +24,14 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 	render() {
 		return (
 			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="dark-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body} />
+					<View style={commonStyles.view.body}>
+						<Image
+							style={{ alignSelf: "center", resizeMode: "center" }}
+							source={require("../resources/images/didiLogo.png")}
+						/>
+					</View>
 					<View style={commonStyles.view.body}>
 						<DidiButton
 							onPress={() => this.navigate("LoginEnterPhone", {})}
