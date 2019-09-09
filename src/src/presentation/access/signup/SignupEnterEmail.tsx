@@ -30,7 +30,7 @@ export class SignupEnterEmailScreen extends NavigationEnabledComponent<
 	SignupEnterEmailState,
 	SignupEnterEmailNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.signup.barTitle);
 
 	private canPressContinueButton(): boolean {
 		if (!this.state || !Validator.isEmail(this.state.email)) {

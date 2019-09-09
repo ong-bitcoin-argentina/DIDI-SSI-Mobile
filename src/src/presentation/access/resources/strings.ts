@@ -59,9 +59,8 @@ export default {
 			buttonText: "Ver mis E-mails"
 		},
 		registrationValidated: {
-			message:
-			"Su E-mail ha sido validado y su Identidad Digital ha sido resguardada.",
-		buttonEnter: "Ingresar a Didi"
+			message: "Su E-mail ha sido validado y su Identidad Digital ha sido resguardada.",
+			buttonEnter: "Ingresar a Didi"
 		}
 	},
 	accessCommon: {

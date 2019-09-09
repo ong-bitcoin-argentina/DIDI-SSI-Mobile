@@ -14,6 +14,7 @@ import { SignupVerifyPhoneScreen } from "./signup/SignupVerifyPhone";
 import { SignupEnterEmailScreen } from "./signup/SignupEnterEmail";
 import { SignupConfirmEmailScreen } from "./signup/SignupConfirmEmail";
 import { SignupPhoneVerifiedScreen } from "./signup/SignupPhoneVerified";
+import { SignupConfirmedScreen } from "./signup/SignupConfirmed";
 
 import { ForgotPasswordEnterEmailScreen } from "./forgotPassword/ForgotPasswordEnterEmail";
 import { ForgotPasswordNewPasswordScreen } from "./forgotPassword/ForgotPasswordNewPassword";
@@ -31,7 +32,9 @@ const signup = NavMap.from(SignupOnboardingScreen, {
 		SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
 			SignupPhoneVerified: NavMap.from(SignupPhoneVerifiedScreen, {
 				SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
-					SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen)
+					SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen, {
+						SignupConfirmed: NavMap.from(SignupConfirmedScreen)
+					})
 				})
 			})
 		})

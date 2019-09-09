@@ -24,7 +24,7 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 	{},
 	SignupPhoneVerifiedNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.signup.barTitle);
 
 	render() {
 		return (

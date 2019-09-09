@@ -7,18 +7,15 @@ import strings from "../resources/strings";
 import themes from "../../styles/themes";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";
-import { SignupConfirmedProps } from "./SignupConfirmed";
 
-export interface SignupConfirmEmailNavigation {
-	SignupConfirmed: SignupConfirmedProps;
-}
+export interface SignupConfirmedNavigation {}
 
-export type SignupConfirmEmailProps = {};
+export type SignupConfirmedProps = {};
 
-export class SignupConfirmEmailScreen extends NavigationEnabledComponent<
-	SignupConfirmEmailProps,
+export class SignupConfirmedScreen extends NavigationEnabledComponent<
+	SignupConfirmedProps,
 	{},
-	SignupConfirmEmailNavigation
+	SignupConfirmedNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.signup.barTitle);
 
@@ -32,19 +29,14 @@ export class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 						<Text>{""}</Text>
 
 						<Text style={[commonStyles.text.normal, styles.message]}>
-							{strings.signup.registrationEmailSent.message}
+							{strings.signup.registrationValidated.message}
 						</Text>
 
-						<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
+						<Image source={require("../resources/images/emailConfirmed.png")} style={commonStyles.image.image} />
 
 						<Text>{""}</Text>
 
-						<DidiButton
-							onPress={() => {
-								this.navigate("SignupConfirmed", {});
-							}}
-							title={strings.signup.registrationEmailSent.buttonText}
-						/>
+						<DidiButton onPress={() => {}} title={strings.signup.registrationValidated.buttonEnter} />
 					</View>
 				</SafeAreaView>
 			</Fragment>
