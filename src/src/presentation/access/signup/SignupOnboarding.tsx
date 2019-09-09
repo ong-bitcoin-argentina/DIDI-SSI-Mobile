@@ -23,16 +23,10 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<Fragment>
-				<StatusBar
-					backgroundColor={themes.darkNavigation}
-					barStyle="light-content"
-				/>
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={styles.area}>
 					<View style={styles.body}>
-						<DidiButton
-							onPress={() => this.navigate("SignupEnterPhone", {})}
-							title="Siguiente"
-						/>
+						<DidiButton onPress={() => this.navigate("SignupEnterPhone", {})} title="Siguiente" />
 					</View>
 				</SafeAreaView>
 			</Fragment>
