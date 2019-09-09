@@ -4,7 +4,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { ForgotPasswordEmailSentProps } from "./ForgotPasswordEmailSent";
 
 import strings from "../resources/strings";
-import { ForgotPasswordEnterEmailProps } from "../forgotPassword/ForgotPasswordEnterEmail";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import { StatusBar, View, Text, Image, StyleSheet } from "react-native";
 import themes from "../../resources/themes";

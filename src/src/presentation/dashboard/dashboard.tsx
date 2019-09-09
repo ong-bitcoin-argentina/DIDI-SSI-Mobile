@@ -5,6 +5,7 @@ import themes from "../resources/themes";
 import commonStyles from "../access/resources/commonStyles";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
+import DidiButton from "../util/DidiButton";
 
 export type DashboardScreenNavigation = {};
 export type DashboardScreenProps = {};
@@ -15,14 +16,16 @@ export class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenState,
 	DashboardScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("dashboard");
+	static navigationOptions = NavigationHeaderStyle.gone;
+
 	render() {
 		return (
 			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="dark-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
-						<Text style={commonStyles.text.emphasis}>Hola, soy un dashboard.</Text>
+						<Text style={commonStyles.text.emphasis}>Dashboard en construccion</Text>
+						<DidiButton title="Log Out" onPress={() => this.goToRoot()} />
 					</View>
 				</SafeAreaView>
 			</Fragment>

@@ -29,4 +29,11 @@ export default abstract class NavigationEnabledComponent<Props, State, Nav> exte
 			nav.goBack();
 		}
 	}
+
+	goToRoot() {
+		const nav = this.navigation();
+		if (nav) {
+			nav.popToTop();
+		}
+	}
 }

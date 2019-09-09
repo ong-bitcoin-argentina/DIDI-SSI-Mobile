@@ -10,7 +10,6 @@ import commonStyles from "../resources/commonStyles";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import Validator from "../helpers/validator";
-import { SignupEnterEmailProps } from "./SignupEnterEmail";
 import { SignupConfirmEmailProps } from "./SignupConfirmEmail";
 
 export type SignupEnterEmailProps = {};
