@@ -1,6 +1,5 @@
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-export class SignupConfirmEmailScreen extends NavigationEnabledComponent<
-	{},
-	{},
-	{}
-> {}
+
+export type SignupConfirmEmailProps = {};
+
+export class SignupConfirmEmailScreen extends NavigationEnabledComponent<{}, {}, {}> {}

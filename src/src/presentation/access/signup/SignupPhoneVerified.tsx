@@ -47,7 +47,12 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 
 						<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.message}</Text>
 
-						<DidiButton onPress={() => {}} title={strings.signup.phoneVerified.next} />
+						<DidiButton
+							onPress={() => {
+								this.navigate("SignupEnterEmail", {});
+							}}
+							title={strings.signup.phoneVerified.next}
+						/>
 					</View>
 				</SafeAreaView>
 			</Fragment>

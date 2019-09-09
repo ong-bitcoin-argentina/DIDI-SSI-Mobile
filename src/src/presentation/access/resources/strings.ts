@@ -44,6 +44,14 @@ export default {
 			cellNumber: "Número de celular",
 			message: "Continua con la configuración del Back up de identidad digital",
 			next: "Siguiente"
+		},
+		enterEmail: {
+			messageHead:
+				"Ingrese su email y una contraseña para que pueda recuperar su Identidad Digital en caso de perder el teléfono.",
+			emailTitle: "E-mail",
+			passwordTitle: "Password",
+			repeatPasswordTitle: "Repetir Contraseña",
+			backupGenerate: "Generar Backup"
 		}
 	},
 	accessCommon: {
