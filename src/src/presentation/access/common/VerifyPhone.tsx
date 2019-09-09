@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import {
 	SafeAreaView,
 	StatusBar,
-	StyleSheet,
 	View,
 	Text,
 	Image,
@@ -36,7 +35,6 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 
 	render() {
 		const theme = this.theme();
-		const style = styles(theme);
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={theme.darkNavigation} barStyle="light-content" />
@@ -52,7 +50,7 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 							}}
 							theme={theme}
 						/>
-						<Image style={style.contentImage} source={this.contentImageSource()} />
+						<Image style={commonStyles.image.image} source={this.contentImageSource()} />
 						<Text style={commonStyles.text.normal}>{strings.accessCommon.verifyPhone.resendCode}</Text>
 						<DidiButton
 							disabled={!this.canPressContinueButton()}
@@ -79,14 +77,4 @@ export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
 	private canPressContinueButton(): boolean {
 		return this.state ? Validator.isPhoneNumber(this.state.inputCode) : false;
 	}
-}
-
-function styles(theme: DidiTheme) {
-	return StyleSheet.create({
-		contentImage: {
-			width: 185,
-			height: 160,
-			alignSelf: "center"
-		}
-	});
 }

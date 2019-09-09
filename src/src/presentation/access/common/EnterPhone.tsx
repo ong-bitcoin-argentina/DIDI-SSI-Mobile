@@ -51,7 +51,7 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 							}}
 							theme={theme}
 						/>
-						<Image style={style.contentImage} source={this.contentImageSource()} />
+						<Image style={commonStyles.image.image} source={this.contentImageSource()} />
 						<DidiButton
 							disabled={!this.canPressContinueButton()}
 							onPress={event => this.didPressContinueButton(event)}
@@ -86,11 +86,6 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 
 function styles(theme: DidiTheme) {
 	return StyleSheet.create({
-		contentImage: {
-			width: 185,
-			height: 160,
-			alignSelf: "center"
-		},
 		countryContainer: {
 			alignSelf: "center",
 			flexDirection: "row",
