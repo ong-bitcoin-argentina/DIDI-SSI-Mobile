@@ -21,7 +21,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="dark-content" />
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
 						<Text style={commonStyles.text.emphasis}>Dashboard en construccion</Text>
