@@ -59,7 +59,7 @@ export class SignupEnterPhoneScreen extends NavigationEnabledComponent<
 						/>
 
 						<DidiButton
-							onPress={() => this.navigate("SignupVerifyPhone", {})}
+							onPress={() => this.navigate("SignupVerifyPhone", { phoneNumber: this.state.inputPhoneNumber })}
 							disabled={!this.canPressContinueButton()}
 							title={strings.accessCommon.recoverButtonText}
 						/>

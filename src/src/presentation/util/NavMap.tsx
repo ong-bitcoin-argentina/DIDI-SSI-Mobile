@@ -3,18 +3,14 @@ import { NavigationContainer, createStackNavigator } from "react-navigation";
 import NavigationEnabledComponent from "./NavigationEnabledComponent";
 
 export interface NavigationEnabledComponentConstructor<Props, Navigation> {
-	new (props: Readonly<Props>): NavigationEnabledComponent<
-		Props,
-		{},
-		Navigation
-	>;
+	new (props: Readonly<Props>): NavigationEnabledComponent<Props, {}, Navigation>;
 }
 
 type NavTree<Nav> = {
 	[K in Extract<keyof Nav, string>]: NavMap<Nav[K]>;
 };
 
-type AnyConstructor = NavigationEnabledComponentConstructor<{}, {}>;
+type AnyConstructor = NavigationEnabledComponentConstructor<any, any>;
 
 export default class NavMap<Props> {
 	static from<T extends AnyConstructor>(
@@ -27,10 +23,7 @@ export default class NavMap<Props> {
 	private current: AnyConstructor;
 	private rest: { [name: string]: AnyConstructor };
 
-	private constructor(
-		ctor: AnyConstructor,
-		to: { [name: string]: NavMap<{}> }
-	) {
+	private constructor(ctor: AnyConstructor, to: { [name: string]: NavMap<{}> }) {
 		this.current = ctor;
 
 		const rest: { [name: string]: AnyConstructor } = {};

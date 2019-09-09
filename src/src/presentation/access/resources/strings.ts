@@ -38,6 +38,12 @@ export default {
 		barTitle: "Registro",
 		enterPhone: {
 			messageHead: "Ingresa tu teléfono para registrarte en la aplicación"
+		},
+		phoneVerified: {
+			messageHead: "Su número de teléfono fue validado con éxito",
+			cellNumber: "Número de celular",
+			message: "Continua con la configuración del Back up de identidad digital",
+			next: "Siguiente"
 		}
 	},
 	accessCommon: {
@@ -47,13 +53,13 @@ export default {
 		enterPhone: {
 			messageHead: "Carga tu numero de celular",
 			cellPlaceholder: "011 + número sin el 15",
-			cellNumber: "Número de celular",
+			cellNumber: "Número de celular"
 		},
 		verifyPhone: {
 			messageHead: "Ingresá el código de 6 digitos para verificar tu celular",
 			codeTitle: "Código de validacion",
-			codePlaceholder:"6 digitos",
-			resendCode:"¿No recibiste el código?",
+			codePlaceholder: "6 digitos",
+			resendCode: "¿No recibiste el código?"
 		}
 	}
 };

@@ -13,6 +13,7 @@ import { SignupEnterPhoneScreen } from "./signup/SignupEnterPhone";
 import { SignupVerifyPhoneScreen } from "./signup/SignupVerifyPhone";
 import { SignupEnterEmailScreen } from "./signup/SignupEnterEmail";
 import { SignupConfirmEmailScreen } from "./signup/SignupConfirmEmail";
+import { SignupPhoneVerifiedScreen } from "./signup/SignupPhoneVerified";
 
 import { ForgotPasswordEnterEmailScreen } from "./forgotPassword/ForgotPasswordEnterEmail";
 import { ForgotPasswordNewPasswordScreen } from "./forgotPassword/ForgotPasswordNewPassword";
@@ -28,8 +29,10 @@ const login = NavMap.from(LoginEnterPhoneScreen, {
 const signup = NavMap.from(SignupOnboardingScreen, {
 	SignupEnterPhone: NavMap.from(SignupEnterPhoneScreen, {
 		SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
-			SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
-				SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen)
+			SignupPhoneVerified: NavMap.from(SignupPhoneVerifiedScreen, {
+				SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
+					SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen)
+				})
 			})
 		})
 	})

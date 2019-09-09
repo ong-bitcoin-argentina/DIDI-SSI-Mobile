@@ -10,10 +10,13 @@ import DidiTextInput from "../../util/DidiTextInput";
 import DidiButton from "../../util/DidiButton";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { ForgotPasswordNewPasswordProps } from "./ForgotPasswordNewPassword";
 
 export type ForgotPasswordConfirmEmailProps = {};
 
-export interface ForgotPasswordConfirmEmailNavigation {}
+export interface ForgotPasswordConfirmEmailNavigation {
+	ForgotPasswordNewPassword: ForgotPasswordNewPasswordProps
+}
 
 interface ForgotPasswordConfirmEmailState {
 	code: string;

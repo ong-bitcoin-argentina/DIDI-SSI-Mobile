@@ -1,13 +1,5 @@
 import React, { Fragment } from "react";
-import {
-	SafeAreaView,
-	StatusBar,
-	View,
-	Text,
-	Image,
-	ImageSourcePropType,
-	GestureResponderEvent
-} from "react-native";
+import { SafeAreaView, StatusBar, View, Text, Image, ImageSourcePropType, GestureResponderEvent } from "react-native";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiButton from "../../util/DidiButton";
@@ -23,14 +15,13 @@ export interface VerifyPhoneState {
 	inputCode?: string;
 }
 
-export abstract class VerifyPhoneScreen<Nav> extends NavigationEnabledComponent<
-	VerifyPhoneProps,
-	VerifyPhoneState,
+export abstract class VerifyPhoneScreen<
+	Props extends VerifyPhoneProps,
+	State extends VerifyPhoneState,
 	Nav
-> {
-	constructor(props: VerifyPhoneProps) {
+> extends NavigationEnabledComponent<Props, State, Nav> {
+	constructor(props: Props) {
 		super(props);
-		this.state = {};
 	}
 
 	render() {

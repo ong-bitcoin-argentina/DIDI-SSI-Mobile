@@ -1,18 +1,24 @@
 import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
-import { VerifyPhoneScreen, VerifyPhoneProps } from "../common/VerifyPhone";
+import { VerifyPhoneScreen, VerifyPhoneProps, VerifyPhoneState } from "../common/VerifyPhone";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
 import themes from "../../styles/themes";
 import DidiTheme from "../../styles/DidiTheme";
-import { SignupEnterEmailProps } from "./SignupEnterEmail";
+import { SignupPhoneVerifiedProps } from "./SignupPhoneVerified";
 
-export type SignupVerifyPhoneProps = VerifyPhoneProps;
-
-export interface SignupVerifyPhoneNavigation {
-	SignupEnterEmail: SignupEnterEmailProps;
+export interface SignupVerifyPhoneProps extends VerifyPhoneProps {
+	phoneNumber: string;
 }
 
-export class SignupVerifyPhoneScreen extends VerifyPhoneScreen<SignupVerifyPhoneNavigation> {
+export interface SignupVerifyPhoneNavigation {
+	SignupPhoneVerified: SignupPhoneVerifiedProps;
+}
+
+export class SignupVerifyPhoneScreen extends VerifyPhoneScreen<
+	SignupVerifyPhoneProps,
+	VerifyPhoneState,
+	SignupVerifyPhoneNavigation
+> {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Registro");
 
 	protected contentImageSource(): ImageSourcePropType {
@@ -20,7 +26,7 @@ export class SignupVerifyPhoneScreen extends VerifyPhoneScreen<SignupVerifyPhone
 	}
 
 	protected didPressContinueButton(event: GestureResponderEvent): void {
-		this.navigate("SignupEnterEmail", {});
+		this.navigate("SignupPhoneVerified", { phoneNumber: this.props.phoneNumber });
 	}
 
 	protected theme(): DidiTheme {

@@ -7,10 +7,13 @@ import commonStyles from "../resources/commonStyles";
 import strings from "../resources/strings";
 import DidiButton from "../../util/DidiButton";
 import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import { ForgotPasswordConfirmEmailProps } from "./ForgotPasswordConfirmEmail";
 
 export type ForgotPasswordEmailSentProps = {};
 
-export interface ForgotPasswordEmailSentNavigation {}
+export interface ForgotPasswordEmailSentNavigation {
+	ForgotPasswordConfirmEmail: ForgotPasswordConfirmEmailProps
+}
 
 export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 	ForgotPasswordEmailSentProps,
