@@ -38,7 +38,7 @@ export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 	sendEmail = () => {
 		// TODO send verification email....
 		this.navigate("ForgotPasswordEmailSent", { email: this.state.inputEmail });
-	}
+	};
 
 	render() {
 		return (
@@ -60,7 +60,7 @@ export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 							}}
 						/>
 
-						<Text>{""}</Text>
+						<View />
 
 						<DidiButton
 							onPress={this.sendEmail}

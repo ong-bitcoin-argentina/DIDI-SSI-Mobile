@@ -10,7 +10,7 @@ export default {
 		explanation: {
 			messageMotivesTitle: "Si quieres recuperar la cuenta es porque:",
 			messageMotives: ["Te robaron el teléfono", "Cambiaste tu nro. de teléfono", "Perdiste tu teléfono"],
-			rememberEmailMessage: "Debes recordar tu email y contraseña de resguardo para recuperar su cuenta",
+			rememberEmailMessage: "Debes recordar tu email y contraseña de resguardo para recuperar tu cuenta",
 			startButtonText: "Iniciar"
 		},
 		passwordRecover: {
@@ -36,13 +36,16 @@ export default {
 	},
 	signup: {
 		barTitle: "Registro",
+		onboarding: {
+			close: "Cerrar"
+		},
 		enterPhone: {
 			messageHead: "Ingresa tu teléfono para registrarte en la aplicación"
 		},
 		phoneVerified: {
 			messageHead: "Su número de teléfono fue validado con éxito",
 			cellNumber: "Número de celular",
-			message: "Continua con la configuración del Back up de identidad digital",
+			message: "Continúa con la configuración del Back up de identidad digital",
 			next: "Siguiente"
 		},
 		enterEmail: {
@@ -55,7 +58,7 @@ export default {
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirá un email para validar su cuenta. Deberá hacer click en el link y asi completar la generacion del backup de su identidad",
+				"Recibirá un email para validar su cuenta. Deberá hacer click en el link y así completar la generación del backup de su identidad",
 			buttonText: "Ver mis E-mails"
 		},
 		registrationValidated: {
@@ -73,9 +76,9 @@ export default {
 			cellNumber: "Número de celular"
 		},
 		verifyPhone: {
-			messageHead: "Ingresá el código de 6 digitos para verificar tu celular",
-			codeTitle: "Código de validacion",
-			codePlaceholder: "6 digitos",
+			messageHead: "Ingresa el código de 6 dígitos para verificar tu celular",
+			codeTitle: "Código de validación",
+			codePlaceholder: "6 dígitos",
 			resendCode: "¿No recibiste el código?"
 		}
 	}

@@ -12,7 +12,7 @@ import { ForgotPasswordConfirmEmailProps } from "./ForgotPasswordConfirmEmail";
 export type ForgotPasswordEmailSentProps = {};
 
 export interface ForgotPasswordEmailSentNavigation {
-	ForgotPasswordConfirmEmail: ForgotPasswordConfirmEmailProps
+	ForgotPasswordConfirmEmail: ForgotPasswordConfirmEmailProps;
 }
 
 export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
@@ -28,7 +28,7 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
-						<Text>{""}</Text>
+						<View />
 
 						<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
 
@@ -36,7 +36,7 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 							{strings.recovery.passwordRecoverEmailSent.message}
 						</Text>
 
-						<Text>{""}</Text>
+						<View />
 
 						<DidiButton
 							onPress={() => {

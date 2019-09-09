@@ -62,7 +62,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 							}}
 						/>
 
-						<Text>{""}</Text>
+						<View />
 
 						<DidiButton
 							onPress={() => {

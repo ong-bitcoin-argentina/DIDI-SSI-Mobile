@@ -32,11 +32,8 @@ export class RecoveryExplanationScreen extends NavigationEnabledComponent<
 						<Text style={commonStyles.text.normal}>{strings.recovery.explanation.messageMotivesTitle}</Text>
 
 						<View>
-							{strings.recovery.explanation.messageMotives.map(motive => (
-								<Text
-									key={strings.recovery.explanation.messageMotives.indexOf(motive)}
-									style={[commonStyles.text.emphasis, { textAlign: "left" }]}
-								>
+							{strings.recovery.explanation.messageMotives.map((motive, index) => (
+								<Text key={index} style={[commonStyles.text.emphasis, { textAlign: "left" }]}>
 									{"- " + motive}
 								</Text>
 							))}

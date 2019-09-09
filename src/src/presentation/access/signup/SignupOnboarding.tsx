@@ -20,6 +20,7 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import { SignupEnterPhoneProps } from "./SignupEnterPhone";
 import onboardingPages, { OnboardingPage } from "../resources/onboardingPages";
 import commonStyles from "../resources/commonStyles";
+import strings from "../resources/strings";
 
 export type SignupOnboardingProps = {};
 
@@ -93,7 +94,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 			<View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
 				<View pointerEvents="box-none" style={styles.closeArea}>
 					<TouchableOpacity style={styles.closeContainer} onPress={() => this.goBack()}>
-						<Text style={styles.closeButtonText}>Cerrar</Text>
+						<Text style={styles.closeButtonText}>{strings.signup.onboarding.close}</Text>
 						<Image style={styles.closeButtonImage} source={require("../resources/images/onboardingExit.png")} />
 					</TouchableOpacity>
 				</View>

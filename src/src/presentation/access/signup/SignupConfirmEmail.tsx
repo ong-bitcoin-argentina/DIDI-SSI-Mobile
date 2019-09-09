@@ -29,7 +29,7 @@ export class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
-						<Text>{""}</Text>
+						<View />
 
 						<Text style={[commonStyles.text.normal, styles.message]}>
 							{strings.signup.registrationEmailSent.message}
@@ -37,7 +37,7 @@ export class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 
 						<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
 
-						<Text>{""}</Text>
+						<View />
 
 						<DidiButton
 							onPress={() => {

@@ -55,7 +55,7 @@ export class ForgotPasswordConfirmEmailScreen extends NavigationEnabledComponent
 							}}
 						/>
 
-						<Text>{""}</Text>
+						<View />
 
 						<DidiButton
 							onPress={() => {
