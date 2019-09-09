@@ -13,7 +13,7 @@ import {
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
-import DidiTheme from "../../styles/DidiTheme";
+import DidiTheme from "../../resources/DidiTheme";
 import commonStyles from "../resources/commonStyles";
 import strings from "../resources/strings";
 

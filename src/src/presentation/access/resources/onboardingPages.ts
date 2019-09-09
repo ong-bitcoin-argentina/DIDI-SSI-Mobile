@@ -1,5 +1,5 @@
 import { ImageSourcePropType } from "react-native";
-import { Color } from "../../styles/colors";
+import { Color } from "../../resources/colors";
 
 export interface OnboardingPage {
 	image: ImageSourcePropType;

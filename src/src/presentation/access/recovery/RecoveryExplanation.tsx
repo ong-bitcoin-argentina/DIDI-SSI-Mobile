@@ -4,9 +4,9 @@ import React, { Fragment } from "react";
 
 import DidiButton from "../../util/DidiButton";
 import strings from "../resources/strings";
-import themes from "../../styles/themes";
+import themes from "../../resources/themes";
 import { RecoveryEnterEmailProps } from "./RecoveryEnterEmail";
-import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";
 
 export type RecoveryExplanationProps = {};

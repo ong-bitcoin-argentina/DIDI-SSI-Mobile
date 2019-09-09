@@ -1,5 +1,5 @@
 import { NavigationStackScreenOptions } from "react-navigation";
-import themes from "../styles/themes";
+import themes from "../resources/themes";
 import DidiTheme from "./DidiTheme";
 
 function defaultStyle(theme: DidiTheme): NavigationStackScreenOptions {

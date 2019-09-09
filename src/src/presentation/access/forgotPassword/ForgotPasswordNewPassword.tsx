@@ -3,23 +3,23 @@ import React, { Fragment } from "react";
 
 import DidiButton from "../../util/DidiButton";
 import strings from "../resources/strings";
-import themes from "../../styles/themes";
+import themes from "../../resources/themes";
 import DidiTextInput from "../../util/DidiTextInput";
-import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DashboardScreenProps } from "../dashboard/dashboard";
+import { DashboardScreenProps } from "../../dashboard/dashboard";
 
 interface ForgotPasswordNewPasswordState {
 	key: string;
 	keyDup: string;
 }
 
-export type ForgotPasswordNewPasswordProps = {
-	Dashboard: DashboardScreenProps;
-};
+export type ForgotPasswordNewPasswordProps = {};
 
-export interface ForgotPasswordNewPasswordNavigation {}
+export interface ForgotPasswordNewPasswordNavigation {
+	Dashboard: DashboardScreenProps;
+}
 
 export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 	ForgotPasswordNewPasswordProps,

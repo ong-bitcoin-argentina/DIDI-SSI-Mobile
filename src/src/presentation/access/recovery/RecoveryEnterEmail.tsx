@@ -4,9 +4,9 @@ import React, { Fragment } from "react";
 
 import DidiButton from "../../util/DidiButton";
 import strings from "../resources/strings";
-import themes from "../../styles/themes";
+import themes from "../../resources/themes";
 import DidiTextInput from "../../util/DidiTextInput";
-import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import { RecoveryEnterPhoneProps } from "./RecoveryEnterPhone";
 import { ForgotPasswordEnterEmailProps } from "../forgotPassword/ForgotPasswordEnterEmail";
 import commonStyles from "../resources/commonStyles";

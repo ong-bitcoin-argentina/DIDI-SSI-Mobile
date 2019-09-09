@@ -6,8 +6,8 @@ import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import DidiButton from "../util/DidiButton";
-import NavigationHeaderStyle from "../styles/NavigationHeaderStyle";
-import themes from "../styles/themes";
+import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
+import themes from "../resources/themes";
 import commonStyles from "./resources/commonStyles";
 
 export type StartAccessProps = {};

@@ -1,15 +1,14 @@
 import { Text, View, SafeAreaView, StatusBar } from "react-native";
 import React, { Fragment } from "react";
 
-import strings from "../resources/strings";
-import themes from "../../styles/themes";
-import commonStyles from "../resources/commonStyles";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import themes from "../resources/themes";
+import commonStyles from "../access/resources/commonStyles";
+import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
+import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 
 export type DashboardScreenNavigation = {};
 export type DashboardScreenProps = {};
-interface DashboardScreenState {}
+type DashboardScreenState = {};
 
 export class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenProps,

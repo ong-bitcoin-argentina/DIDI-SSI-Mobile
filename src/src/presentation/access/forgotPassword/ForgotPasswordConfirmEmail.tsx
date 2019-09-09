@@ -4,18 +4,18 @@ import { SafeAreaView } from "react-navigation";
 
 import Validator from "../helpers/validator";
 import strings from "../resources/strings";
-import themes from "../../styles/themes";
+import themes from "../../resources/themes";
 import commonStyles from "../resources/commonStyles";
 import DidiTextInput from "../../util/DidiTextInput";
 import DidiButton from "../../util/DidiButton";
-import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { ForgotPasswordNewPasswordProps } from "./ForgotPasswordNewPassword";
 
 export type ForgotPasswordConfirmEmailProps = {};
 
 export interface ForgotPasswordConfirmEmailNavigation {
-	ForgotPasswordNewPassword: ForgotPasswordNewPasswordProps
+	ForgotPasswordNewPassword: ForgotPasswordNewPasswordProps;
 }
 
 interface ForgotPasswordConfirmEmailState {

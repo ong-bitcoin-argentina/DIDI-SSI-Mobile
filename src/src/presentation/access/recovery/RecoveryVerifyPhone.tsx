@@ -1,10 +1,10 @@
 import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
 import { VerifyPhoneScreen, VerifyPhoneProps, VerifyPhoneState } from "../common/VerifyPhone";
-import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
-import themes from "../../styles/themes";
-import DidiTheme from "../../styles/DidiTheme";
-import { DashboardScreenProps } from "../dashboard/dashboard";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
+import DidiTheme from "../../resources/DidiTheme";
+import { DashboardScreenProps } from "../../dashboard/dashboard";
 
 export type RecoveryVerifyPhoneProps = VerifyPhoneProps;
 

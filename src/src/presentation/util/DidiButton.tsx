@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps, Text, StyleProp, TextStyle } from "react-native";
-import themes from "../styles/themes";
-import DidiTheme from "../styles/DidiTheme";
+import themes from "../resources/themes";
+import DidiTheme from "../resources/DidiTheme";
 
 export interface DidiButtonProps extends TouchableOpacityProps {
 	title: string;

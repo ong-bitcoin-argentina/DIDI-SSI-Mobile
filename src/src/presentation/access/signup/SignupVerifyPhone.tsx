@@ -1,9 +1,9 @@
 import { ImageSourcePropType, GestureResponderEvent } from "react-native";
 
 import { VerifyPhoneScreen, VerifyPhoneProps, VerifyPhoneState } from "../common/VerifyPhone";
-import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
-import themes from "../../styles/themes";
-import DidiTheme from "../../styles/DidiTheme";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
+import DidiTheme from "../../resources/DidiTheme";
 import { SignupPhoneVerifiedProps } from "./SignupPhoneVerified";
 
 export interface SignupVerifyPhoneProps extends VerifyPhoneProps {

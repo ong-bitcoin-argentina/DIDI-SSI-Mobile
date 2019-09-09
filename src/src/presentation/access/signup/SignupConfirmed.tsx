@@ -4,10 +4,10 @@ import React, { Fragment } from "react";
 
 import DidiButton from "../../util/DidiButton";
 import strings from "../resources/strings";
-import themes from "../../styles/themes";
-import NavigationHeaderStyle from "../../styles/NavigationHeaderStyle";
+import themes from "../../resources/themes";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";
-import { DashboardScreenProps } from "../dashboard/dashboard";
+import { DashboardScreenProps } from "../../dashboard/dashboard";
 
 export interface SignupConfirmedNavigation {
 	Dashboard: DashboardScreenProps;

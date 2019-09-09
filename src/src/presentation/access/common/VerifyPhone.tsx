@@ -4,7 +4,7 @@ import { SafeAreaView, StatusBar, View, Text, Image, ImageSourcePropType, Gestur
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
-import DidiTheme from "../../styles/DidiTheme";
+import DidiTheme from "../../resources/DidiTheme";
 import commonStyles from "../resources/commonStyles";
 import Validator from "../helpers/validator";
 import strings from "../resources/strings";
