@@ -1,9 +1,9 @@
 import React from "react";
 import { createAppContainer } from "react-navigation";
 
-import AccessNavigator from "./presentation/access/AccessNavigator";
+import AppNavigator from "./presentation/AppNavigator";
 
-const AppContainer = createAppContainer(AccessNavigator.navigator());
+const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
 	render() {
