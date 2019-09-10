@@ -9,7 +9,7 @@ const colors = {
 	primaryDark: "#205196",
 	primaryText: "#FFF",
 
-	secondary: "#67DAC6",
+	secondary: "#24cdd2",
 	secondaryDark: "#448B7F",
 	secondaryText: "#FFF"
 };

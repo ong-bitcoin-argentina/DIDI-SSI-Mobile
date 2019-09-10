@@ -1,6 +1,11 @@
 export default {
 	recovery: {
 		barTitle: "Recuperar Cuenta",
+		startAccess: {
+			recoveryButton: "Recuperar Cuenta",
+			createButton: "Crear Cuenta",
+			loginButton: "Ingresar"
+		},
 		enterEmail: {
 			messageHead: "Ingresa tu email y contraseña",
 			emailTitle: "E-mail",

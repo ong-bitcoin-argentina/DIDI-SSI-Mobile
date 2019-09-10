@@ -9,6 +9,7 @@ import DidiButton from "../util/DidiButton";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import themes from "../resources/themes";
 import commonStyles from "./resources/commonStyles";
+import strings from "./resources/strings";
 
 export type StartAccessProps = {};
 
@@ -26,28 +27,25 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<Image
-							style={{ alignSelf: "center", resizeMode: "center" }}
-							source={require("../resources/images/didiLogo.png")}
-						/>
+					<View style={[commonStyles.view.body, styles.imageContainer]}>
+						<Image style={styles.didiLogo} source={require("../resources/images/didiLogo.png")} />
 					</View>
-					<View style={commonStyles.view.body}>
+					<View style={[commonStyles.view.body, styles.buttonContainer]}>
 						<DidiButton
 							onPress={() => this.navigate("LoginEnterPhone", {})}
 							style={styles.secondaryButton}
-							title="Ingresar"
+							title={strings.recovery.startAccess.loginButton}
 						/>
 						<DidiButton
 							onPress={() => this.navigate("SignupOnboarding", {})}
 							style={styles.primaryButton}
-							title="Crear Cuenta"
+							title={strings.recovery.startAccess.createButton}
 						/>
 						<DidiButton
 							onPress={() => this.navigate("RecoveryExplanation", {})}
 							style={styles.transparentButton}
 							titleStyle={styles.transparentButtonText}
-							title="Recuperar Cuenta"
+							title={strings.recovery.startAccess.recoveryButton + " >"}
 						/>
 					</View>
 				</SafeAreaView>
@@ -57,11 +55,27 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 }
 
 const styles = StyleSheet.create({
+	imageContainer: {
+		flex: 2,
+		flexDirection: "row"
+	},
+	buttonContainer: {
+		flex: 1,
+		justifyContent: "flex-end",
+		marginBottom: 10
+	},
+	didiLogo: {
+		height: 200,
+		width: 200,
+		resizeMode: "contain",
+		alignSelf: "flex-end"
+	},
 	transparentButton: {
 		backgroundColor: themes.background
 	},
 	transparentButtonText: {
-		color: themes.foreground
+		color: themes.foreground,
+		fontWeight: "bold"
 	},
 	primaryButton: {
 		backgroundColor: themes.primaryTheme.button
