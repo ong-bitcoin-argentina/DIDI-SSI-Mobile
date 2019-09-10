@@ -2,8 +2,8 @@
  * @format
  */
 
-import HomeScreen from '../src/presentation/HomeScreen';
+import { DashboardScreen } from "../src/presentation/dashboard/Dashboard";
 
-it('test', () => {
-        expect(HomeScreen.name).toBe('HomeScreen')
-})
+it("test", () => {
+	expect(DashboardScreen.name).toBe("DashboardScreen");
+});

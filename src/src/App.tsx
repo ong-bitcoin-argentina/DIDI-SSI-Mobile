@@ -2,7 +2,7 @@ import React from "react";
 import { createAppContainer } from "react-navigation";
 
 import AccessNavigator from "./presentation/access/AccessNavigator";
-import { DashboardScreen } from "./presentation/dashboard/Dashboard";
+import { DashboardScreen } from "./presentation/dashboard/dashboard";
 
 const AppContainer = createAppContainer(AccessNavigator.navigator());
 

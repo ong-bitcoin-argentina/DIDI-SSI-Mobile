@@ -22,7 +22,7 @@ import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEm
 import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswordConfirmEmail";
 
 import NavMap from "../util/NavMap";
-import { DashboardScreen } from "../dashboard/Dashboard";
+import { DashboardScreen } from "../dashboard/dashboard";
 
 const login = NavMap.from(LoginEnterPhoneScreen, {
 	LoginVerifyPhone: NavMap.from(LoginVerifyPhoneScreen)

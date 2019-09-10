@@ -13,38 +13,60 @@ interface DidiCardProps {
 }
 
 export default class DidiCard extends Component<DidiCardProps, {}> {
+	private renderKeyValue() {
+		return (
+			<View style={{ marginTop: 20 }}>
+				{this.props.data.map((elem, index) => {
+					return (
+						<View key={index} style={styles.data}>
+							<View style={styles.dataRow}>
+								<Text style={styles.dataRowLabel}>{elem.label}</Text>
+								<Text style={styles.dataRowValue}>{elem.value}</Text>
+							</View>
+						</View>
+					);
+				})}
+			</View>
+		);
+	}
+
+	private renderTitle() {
+		return (
+			<View style={styles.headerData}>
+				<Text style={styles.category}>{this.props.category}</Text>
+				<Text style={styles.title}>{this.props.title}</Text>
+				<Text style={styles.timing}>{this.props.timing}</Text>
+			</View>
+		);
+	}
+
+	private renderIcon() {
+		return (
+			<View style={styles.headerIconContainer}>
+				<Image style={styles.icon} source={this.props.icon} />
+			</View>
+		);
+	}
+
 	render() {
 		return (
 			<Fragment>
-				<View style={[styles.body, this.props.cardStyles]}>
+				<View style={[styles.body, styles.card, this.props.cardStyles]}>
 					<View style={styles.headerContainer}>
-						<View style={styles.header}>
-							<View style={styles.headerIconContainer}>
-								<Image style={styles.icon} source={this.props.icon} />
-							</View>
-							<View style={styles.headerData}>
-								<Text style={styles.category}>{this.props.category}</Text>
-								<Text style={styles.title}>{this.props.title}</Text>
-								<Text style={styles.timing}>{this.props.timing}</Text>
-							</View>
-						</View>
-						<View style={styles.imageContainer}>
-							<Image style={styles.image} source={this.props.image} />
+						{this.renderIcon()}
+						<View
+							style={{
+								flexDirection: "column",
+								flexGrow: 1,
+								justifyContent: "space-between"
+							}}
+						>
+							{this.renderTitle()}
+							{this.renderKeyValue()}
 						</View>
 					</View>
-					<View style={styles.data}>
-						{this.props.data.map(elem => {
-							return (
-								<View key={elem.label + "-label"} style={styles.dataRow}>
-									<Text key={elem.label + "-label"} style={styles.dataRowLabel}>
-										{elem.label}
-									</Text>
-									<Text key={elem.label + "-value"} style={styles.dataRowValue}>
-										{elem.value}
-									</Text>
-								</View>
-							);
-						})}
+					<View style={styles.imageContainer}>
+						<Image style={styles.image} source={this.props.image} />
 					</View>
 				</View>
 			</Fragment>
@@ -54,11 +76,16 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 
 const styles = StyleSheet.create({
 	headerContainer: {
-		flexDirection: "row"
+		flexDirection: "row",
+		marginHorizontal: 25,
+		marginVertical: 25,
+		alignItems: "stretch",
+		justifyContent: "flex-start",
+		flexGrow: 1
 	},
+	card: {},
 	data: {
-		justifyContent: "center",
-		margin: 10
+		justifyContent: "center"
 	},
 	dataRow: {
 		justifyContent: "center",
@@ -74,30 +101,20 @@ const styles = StyleSheet.create({
 		fontWeight: "100",
 		fontSize: 14,
 		color: "#FFF",
-		marginLeft: 10,
-		marginRight: 10
+		marginLeft: 10
 	},
 	body: {
 		borderRadius: 10,
-		flexDirection: "column"
-	},
-	header: {
-		marginHorizontal: 10,
-		flexDirection: "row",
-		justifyContent: "flex-start",
-		flex: 1
+		flexDirection: "column",
+		flex: 0
 	},
 	headerIconContainer: {
-		justifyContent: "center"
-	},
-	invIcon: {
-		margin: 10
+		justifyContent: "flex-start"
 	},
 	icon: {
-		margin: 10
+		marginRight: 25
 	},
 	headerData: {
-		marginLeft: 20,
 		textAlign: "left",
 		justifyContent: "center"
 	},
@@ -117,9 +134,9 @@ const styles = StyleSheet.create({
 	},
 
 	imageContainer: {
-		justifyContent: "flex-end"
+		position: "absolute",
+		top: 10,
+		right: 10
 	},
-	image: {
-		margin: 10
-	}
+	image: {}
 });

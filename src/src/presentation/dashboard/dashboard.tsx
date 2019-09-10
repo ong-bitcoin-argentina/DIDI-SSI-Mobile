@@ -22,12 +22,25 @@ export class DashboardScreen extends NavigationEnabledComponent<
 	render() {
 		let cardProps = {
 			icon: require("../resources/images/placeIcon.png"),
-			image: require("../resources/images/blankIcon.png"),
+			image: require("../access/resources/images/arg.png"),
 			category: "Cursos",
 			title: "Maestro Pizzero",
 			timing: "Anual",
 			cardStyles: styles.cardStyles,
-			data: [{ label: "Horas acumuladas", value: "60 hs" }, { label: "Promedio", value: "7 / 10" }]
+			data: [
+				{ label: "Horas 1", value: "60 hs" },
+				{ label: "Promedio", value: "7 / 10" },
+				{ label: "Horas 2", value: "60 hs" },
+				{ label: "Promedio", value: "7 / 10" },
+				{ label: "Horas 3", value: "60 hs" },
+				{ label: "Promedio", value: "7 / 10" },
+				{ label: "Horas 4", value: "60 hs" },
+				{ label: "Promedio", value: "7 / 10" },
+				{ label: "Horas 5", value: "60 hs" },
+				{ label: "Promedio", value: "7 / 10" },
+				{ label: "Horas 6", value: "60 hs" },
+				{ label: "Promedio", value: "7 / 10" }
+			]
 		};
 
 		return (
@@ -35,7 +48,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
-						<Text style={commonStyles.text.emphasis}>Dashboard en construccion</Text>
+						<Text style={[commonStyles.text.emphasis]}>Dashboard en construccion</Text>
 						<DidiButton title="Log Out" onPress={() => this.goToRoot()} />
 
 						<DidiCard
