@@ -4,7 +4,7 @@ import { VerifyPhoneScreen, VerifyPhoneProps, VerifyPhoneState } from "../common
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 import DidiTheme from "../../resources/DidiTheme";
-import { DashboardScreenProps } from "../../dashboard/dashboard";
+import { DashboardScreenProps } from "../../dashboard/Dashboard";
 
 export type LoginVerifyPhoneProps = VerifyPhoneProps;
 

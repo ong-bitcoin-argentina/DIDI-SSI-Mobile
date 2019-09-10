@@ -7,7 +7,7 @@ import strings from "../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";
-import { DashboardScreenProps } from "../../dashboard/dashboard";
+import { DashboardScreenProps } from "../../dashboard/Dashboard";
 
 export interface SignupConfirmedNavigation {
 	Dashboard: DashboardScreenProps;
