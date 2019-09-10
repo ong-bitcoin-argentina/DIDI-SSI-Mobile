@@ -9,7 +9,7 @@ interface DidiCardProps {
 	title: string;
 	timing: string;
 	cardStyles?: StyleProp<TextStyle>;
-	data: { label: number; value: string }[];
+	data: { label: string; value: string }[];
 }
 
 export default class DidiCard extends Component<DidiCardProps, {}> {
