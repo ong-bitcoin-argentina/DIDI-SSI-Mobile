@@ -51,6 +51,7 @@ export class ForgotPasswordConfirmEmailScreen extends NavigationEnabledComponent
 							placeholder=""
 							tagImage={require("../resources/images/phone.png")}
 							textInputProps={{
+								keyboardType: "number-pad",
 								onChangeText: text => this.setState({ code: text })
 							}}
 						/>

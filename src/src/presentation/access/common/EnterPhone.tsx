@@ -47,6 +47,7 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 							placeholder={strings.accessCommon.enterPhone.cellPlaceholder}
 							tagImage={this.tagImageSource()}
 							textInputProps={{
+								keyboardType: "phone-pad",
 								onChangeText: text => this.setState({ inputPhoneNumber: text })
 							}}
 							theme={theme}

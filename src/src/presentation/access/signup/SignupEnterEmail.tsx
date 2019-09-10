@@ -60,6 +60,7 @@ export class SignupEnterEmailScreen extends NavigationEnabledComponent<
 							placeholder=""
 							tagImage={require("../resources/images/email.png")}
 							textInputProps={{
+								keyboardType: "email-address",
 								onChangeText: text => this.setState({ email: text })
 							}}
 						/>
@@ -79,6 +80,7 @@ export class SignupEnterEmailScreen extends NavigationEnabledComponent<
 							placeholder=""
 							tagImage={require("../resources/images/key.png")}
 							textInputProps={{
+								secureTextEntry: true,
 								onChangeText: text => this.setState({ keyDup: text })
 							}}
 						/>

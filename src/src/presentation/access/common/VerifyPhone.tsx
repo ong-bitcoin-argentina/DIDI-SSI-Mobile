@@ -37,6 +37,7 @@ export abstract class VerifyPhoneScreen<
 							placeholder={strings.accessCommon.verifyPhone.codePlaceholder}
 							tagImage={this.tagImageSource()}
 							textInputProps={{
+								keyboardType: "number-pad",
 								onChangeText: text => this.setState({ inputCode: text })
 							}}
 							theme={theme}

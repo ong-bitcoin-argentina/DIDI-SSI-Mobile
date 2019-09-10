@@ -55,6 +55,7 @@ export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 							placeholder=""
 							tagImage={require("../resources/images/email.png")}
 							textInputProps={{
+								keyboardType: "email-address",
 								onChangeText: text => this.setState({ inputEmail: text })
 							}}
 						/>

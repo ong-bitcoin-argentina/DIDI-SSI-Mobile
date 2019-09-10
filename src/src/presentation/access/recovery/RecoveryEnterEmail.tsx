@@ -52,6 +52,7 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 							placeholder=""
 							tagImage={require("../resources/images/email.png")}
 							textInputProps={{
+								keyboardType: "email-address",
 								onChangeText: text => this.setState({ email: text })
 							}}
 						/>

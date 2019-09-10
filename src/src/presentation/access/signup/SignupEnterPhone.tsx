@@ -54,6 +54,7 @@ export class SignupEnterPhoneScreen extends NavigationEnabledComponent<
 							placeholder={strings.accessCommon.enterPhone.cellPlaceholder}
 							tagImage={require("../resources/images/phone.png")}
 							textInputProps={{
+								keyboardType: "phone-pad",
 								onChangeText: text => this.setState({ inputPhoneNumber: text })
 							}}
 						/>
