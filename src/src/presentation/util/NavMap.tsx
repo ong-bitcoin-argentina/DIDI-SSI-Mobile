@@ -1,4 +1,5 @@
 import { NavigationContainer, createStackNavigator } from "react-navigation";
+import { withMappedNavigationParams } from "react-navigation-props-mapper";
 
 import NavigationEnabledComponent from "./NavigationEnabledComponent";
 
@@ -27,7 +28,7 @@ export default class NavMap<Props> {
 	private rest: { [name: string]: AnyConstructor };
 
 	private constructor(ctor: AnyConstructor, to: { [name: string]: NavMap<{}> }) {
-		this.current = ctor;
+		this.current = withMappedNavigationParams()(ctor);
 
 		const rest: { [name: string]: AnyConstructor } = {};
 		Object.entries(to).forEach(([name, nav]) => {
