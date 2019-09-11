@@ -27,8 +27,4 @@ export class RecoveryVerifyPhoneScreen extends VerifyPhoneScreen<
 		// TODO: End login flow
 		this.navigate("Dashboard", {});
 	}
-
-	protected theme(): DidiTheme {
-		return themes.primaryTheme;
-	}
 }

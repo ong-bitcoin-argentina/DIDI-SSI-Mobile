@@ -22,8 +22,4 @@ export class RecoveryEnterPhoneScreen extends EnterPhoneScreen<RecoveryEnterPhon
 	protected didPressContinueButton(event: GestureResponderEvent): void {
 		this.navigate("RecoveryVerifyPhone", {});
 	}
-
-	protected theme(): DidiTheme {
-		return themes.primaryTheme;
-	}
 }

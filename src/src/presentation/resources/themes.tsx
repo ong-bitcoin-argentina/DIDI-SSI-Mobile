@@ -16,33 +16,11 @@ const primaryTheme: DidiTheme = {
 	buttonDisabled: colors.textFaded,
 	buttonDisabledText: colors.text,
 
-	opposite(): DidiTheme {
-		return secondaryTheme;
-	}
-};
-
-const secondaryTheme: DidiTheme = {
-	background: colors.background,
-	foreground: colors.text,
-	foregroundFaded: colors.textFaded,
-
-	navigation: colors.secondary,
-	darkNavigation: colors.secondaryDark,
-	navigationText: colors.secondaryText,
-
-	button: colors.secondary,
-	buttonText: colors.secondaryText,
-
-	buttonDisabled: colors.textFaded,
-	buttonDisabledText: colors.text,
-
-	opposite(): DidiTheme {
-		return primaryTheme;
-	}
+	navigationIconEnabled: colors.background,
+	navigationIconDisabled: colors.primaryLight
 };
 
 export default {
 	...primaryTheme,
-	primaryTheme,
-	secondaryTheme
+	primaryTheme
 };
