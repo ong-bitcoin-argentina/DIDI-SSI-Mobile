@@ -57,8 +57,8 @@ export class DashboardScreen extends NavigationEnabledComponent<
 					<View style={commonStyles.view.body}>
 						<ScrollView>
 							<View style={styles.menu}>
-														<Text style={[commonStyles.text.emphasis]}>Dashboard en construccion</Text>
-						<DidiButton title="Log Out" onPress={() => this.navigate("Access", {})} />
+								<Text style={[commonStyles.text.emphasis]}>Dashboard en construccion</Text>
+								<DidiButton title="Log Out" onPress={() => this.navigate("Access", {})} />
 							</View>
 
 							<DidiCard
