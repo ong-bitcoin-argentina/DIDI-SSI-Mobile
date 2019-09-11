@@ -9,7 +9,6 @@ import DidiButton from "../util/DidiButton";
 import DidiCard from "./Card";
 import { StartAccessProps } from "../access/StartAccess";
 import colors from "../resources/colors";
-import { FlatList } from "react-native-gesture-handler";
 import CardDataBuilder from "./CardDataBuilder";
 
 export interface DashboardScreenNavigation {
