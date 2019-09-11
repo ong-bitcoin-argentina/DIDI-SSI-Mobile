@@ -10,8 +10,10 @@ interface DidiCardProps {
 	title: string;
 	timing: string;
 	cardStyles?: StyleProp<TextStyle>;
+	textStyles?: StyleProp<TextStyle>;
 	data: { label: string; value: string; id: string }[];
 	showDataHorizontally?: boolean;
+	child?: React.Component;
 }
 
 export default class DidiCard extends Component<DidiCardProps, {}> {
@@ -32,8 +34,8 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 				renderItem={({ item }) => {
 					return (
 						<View style={styles.dataColumn}>
-							<Text style={styles.dataColLabel}>{item.label}</Text>
-							<Text style={styles.dataColValue}>{item.value}</Text>
+							<Text style={[styles.dataColLabel, this.props.textStyles]}>{item.label}</Text>
+							<Text style={[styles.dataColValue, this.props.textStyles]}>{item.value}</Text>
 						</View>
 					);
 				}}
@@ -49,8 +51,8 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 				renderItem={({ item }) => {
 					return (
 						<View style={styles.dataRow}>
-							<Text style={styles.dataRowLabel}>{item.label}</Text>
-							<Text style={styles.dataRowValue}>{item.value}</Text>
+							<Text style={[styles.dataRowLabel, this.props.textStyles]}>{item.label}</Text>
+							<Text style={[styles.dataRowValue, this.props.textStyles]}>{item.value}</Text>
 						</View>
 					);
 				}}
@@ -61,9 +63,9 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 	private renderTitle() {
 		return (
 			<View style={styles.headerData}>
-				<Text style={styles.category}>{this.props.category}</Text>
-				<Text style={styles.title}>{this.props.title}</Text>
-				<Text style={styles.timing}>{this.props.timing}</Text>
+				<Text style={[styles.category, this.props.textStyles]}>{this.props.category}</Text>
+				<Text style={[styles.title, this.props.textStyles]}>{this.props.title}</Text>
+				<Text style={[styles.timing, this.props.textStyles]}>{this.props.timing}</Text>
 			</View>
 		);
 	}
@@ -91,6 +93,7 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 						>
 							{this.renderTitle()}
 							{this.renderKeyValue()}
+							{this.props.child}
 						</View>
 					</View>
 					<View style={styles.imageContainer}>
@@ -111,7 +114,9 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start",
 		flexGrow: 1
 	},
-	card: {},
+	card: {
+		marginBottom: 10
+	},
 	data: {
 		justifyContent: "center"
 	},
@@ -123,23 +128,19 @@ const styles = StyleSheet.create({
 		flexDirection: "row"
 	},
 	dataColLabel: {
-		fontSize: 14,
-		color: "#FFF"
+		fontSize: 14
 	},
 	dataColValue: {
 		fontWeight: "bold",
-		fontSize: 14,
-		color: "#FFF"
+		fontSize: 14
 	},
 	dataRowLabel: {
 		fontSize: 14,
-		color: "#FFF",
 		flex: 1
 	},
 	dataRowValue: {
 		fontWeight: "100",
 		fontSize: 14,
-		color: "#FFF",
 		marginLeft: 10
 	},
 	body: {
@@ -160,18 +161,15 @@ const styles = StyleSheet.create({
 		justifyContent: "center"
 	},
 	category: {
-		fontWeight: "100",
-		fontSize: 12,
-		color: "#FFF"
+		fontWeight: "500",
+		fontSize: 12
 	},
 	title: {
-		fontWeight: "500",
-		fontSize: 16,
-		color: "#FFF"
+		fontWeight: "bold",
+		fontSize: 16
 	},
 	timing: {
-		fontSize: 12,
-		color: "#FFF"
+		fontSize: 12
 	},
 
 	imageContainer: {

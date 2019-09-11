@@ -23,6 +23,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Home");
 
+	
 	render() {
 		let cards = [
 			{
@@ -32,9 +33,11 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				title: "Mi Evolución",
 				timing: "16.06.2019",
 				cardStyles: StyleSheet.create({
+					textStyle: {
+						color: "#FFF"
+					},
 					style: {
-						backgroundColor: colors.primary,
-						marginBottom: 10
+						backgroundColor: colors.primary
 					}
 				}),
 				data: [
@@ -52,9 +55,11 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				title: "Maestro Pizzero",
 				timing: "Anual",
 				cardStyles: StyleSheet.create({
+					textStyle: {
+						color: "#FFF"
+					},
 					style: {
-						backgroundColor: colors.secondary,
-						marginBottom: 10
+						backgroundColor: colors.secondary
 					}
 				}),
 				data: [{ id: "1", label: "Horas acumuladas", value: "60 hs" }, { id: "2", label: "Promedio", value: "7 / 10" }],
@@ -67,9 +72,11 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				title: "Liliana Martinez",
 				timing: "Vivienda",
 				cardStyles: StyleSheet.create({
+					textStyle: {
+						color: "#FFF"
+					},
 					style: {
-						backgroundColor: "#13c7e0",
-						marginBottom: 10
+						backgroundColor: "#13c7e0"
 					}
 				}),
 				data: [
@@ -89,12 +96,40 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				title: "Los Martinez",
 				timing: "Quincenal",
 				cardStyles: StyleSheet.create({
+					textStyle: {
+						color: "#FFF"
+					},
 					style: {
-						backgroundColor: "#906ecd",
-						marginBottom: 10
+						backgroundColor: "#906ecd"
 					}
 				}),
 				data: [{ id: "1", label: "Acumulado", value: "$12.000" }, { id: "2", label: "Cuota", value: "6 / 6" }],
+				horizontal: false
+			},
+			{
+				icon: require("../resources/images/validationIcon.png"),
+				image: require("../resources/images/blankIcon.png"),
+				category: "Documento Identidad",
+				title: "Liliana Martinez",
+				timing: "Nombre",
+				cardStyles: StyleSheet.create({
+					textStyle: {
+						color: colors.secondary
+					},
+					style: {
+						backgroundColor: "#FFF",
+						borderColor: colors.secondary,
+						borderWidth: 2
+					}
+				}),
+				data: [],
+				child: (
+					<DidiButton
+						style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
+						title="ValidarId"
+						onPress={() => {}}
+					/>
+				),
 				horizontal: false
 			}
 		];
@@ -120,8 +155,10 @@ export class DashboardScreen extends NavigationEnabledComponent<
 										title={card.title}
 										timing={card.timing}
 										cardStyles={card.cardStyles.style}
+										textStyles={card.cardStyles.textStyle}
 										data={card.data}
 										showDataHorizontally={card.horizontal}
+										child={card.child}
 									/>
 								);
 							})}
