@@ -7,8 +7,11 @@ import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import DidiButton from "../util/DidiButton";
 import DidiCard from "./Card";
+import { StartAccessProps } from "../access/StartAccess";
 
-export type DashboardScreenNavigation = {};
+export interface DashboardScreenNavigation {
+	Access: StartAccessProps;
+}
 export type DashboardScreenProps = {};
 type DashboardScreenState = {};
 
@@ -17,7 +20,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenState,
 	DashboardScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.gone;
+	static navigationOptions = NavigationHeaderStyle.withTitle("Home");
 
 	render() {
 		let cardProps = {
@@ -54,8 +57,8 @@ export class DashboardScreen extends NavigationEnabledComponent<
 					<View style={commonStyles.view.body}>
 						<ScrollView>
 							<View style={styles.menu}>
-								<Text style={[commonStyles.text.emphasis]}>Dashboard en construccion</Text>
-								<DidiButton title="Log Out" onPress={() => this.goToRoot()} />
+														<Text style={[commonStyles.text.emphasis]}>Dashboard en construccion</Text>
+						<DidiButton title="Log Out" onPress={() => this.navigate("Access", {})} />
 							</View>
 
 							<DidiCard

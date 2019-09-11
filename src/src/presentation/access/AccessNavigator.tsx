@@ -21,52 +21,60 @@ import { ForgotPasswordNewPasswordScreen } from "./forgotPassword/ForgotPassword
 import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEmailSent";
 import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswordConfirmEmail";
 
-import NavMap from "../util/NavMap";
-import { DashboardScreen } from "../dashboard/Dashboard";
+import NavMap, { NavTree } from "../util/NavMap";
+import { DashboardScreenProps } from "../dashboard/Dashboard";
 
-const login = NavMap.from(LoginEnterPhoneScreen, {
-	LoginVerifyPhone: NavMap.from(LoginVerifyPhoneScreen)
-});
+interface AccessSwitchTarget {
+	Dashboard: DashboardScreenProps;
+}
 
-const signup = NavMap.from(SignupOnboardingScreen, {
-	SignupEnterPhone: NavMap.from(SignupEnterPhoneScreen, {
-		SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
-			SignupPhoneVerified: NavMap.from(SignupPhoneVerifiedScreen, {
-				SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
-					SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen, {
-						SignupConfirmed: NavMap.from(SignupConfirmedScreen, {
-							Dashboard: NavMap.from(DashboardScreen)
+function login(then: NavTree<AccessSwitchTarget>) {
+	return NavMap.from(LoginEnterPhoneScreen, {
+		LoginVerifyPhone: NavMap.from(LoginVerifyPhoneScreen, then)
+	});
+}
+
+function signup(then: NavTree<AccessSwitchTarget>) {
+	return NavMap.from(SignupOnboardingScreen, {
+		SignupEnterPhone: NavMap.from(SignupEnterPhoneScreen, {
+			SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
+				SignupPhoneVerified: NavMap.from(SignupPhoneVerifiedScreen, {
+					SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
+						SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen, {
+							SignupConfirmed: NavMap.from(SignupConfirmedScreen, then)
 						})
 					})
 				})
 			})
 		})
-	})
-});
+	});
+}
 
-const forgotPassword = NavMap.from(ForgotPasswordEnterEmailScreen, {
-	ForgotPasswordEmailSent: NavMap.from(ForgotPasswordEmailSentScreen, {
-		ForgotPasswordConfirmEmail: NavMap.from(ForgotPasswordConfirmEmailScreen, {
-			ForgotPasswordNewPassword: NavMap.from(ForgotPasswordNewPasswordScreen, {
-				Dashboard: NavMap.from(DashboardScreen)
+function forgotPassword(then: NavTree<AccessSwitchTarget>) {
+	return NavMap.from(ForgotPasswordEnterEmailScreen, {
+		ForgotPasswordEmailSent: NavMap.from(ForgotPasswordEmailSentScreen, {
+			ForgotPasswordConfirmEmail: NavMap.from(ForgotPasswordConfirmEmailScreen, {
+				ForgotPasswordNewPassword: NavMap.from(ForgotPasswordNewPasswordScreen, then)
 			})
 		})
-	})
-});
+	});
+}
 
-const recovery = NavMap.from(RecoveryExplanationScreen, {
-	RecoveryEnterEmail: NavMap.from(RecoveryEnterEmailScreen, {
-		RecoveryEnterPhone: NavMap.from(RecoveryEnterPhoneScreen, {
-			RecoveryVerifyPhone: NavMap.from(RecoveryVerifyPhoneScreen, {
-				Dashboard: NavMap.from(DashboardScreen)
-			})
-		}),
-		ForgotPasswordEnterEmail: forgotPassword
-	})
-});
+function recovery(then: NavTree<AccessSwitchTarget>) {
+	return NavMap.from(RecoveryExplanationScreen, {
+		RecoveryEnterEmail: NavMap.from(RecoveryEnterEmailScreen, {
+			RecoveryEnterPhone: NavMap.from(RecoveryEnterPhoneScreen, {
+				RecoveryVerifyPhone: NavMap.from(RecoveryVerifyPhoneScreen, then)
+			}),
+			ForgotPasswordEnterEmail: forgotPassword(then)
+		})
+	});
+}
 
-export default NavMap.from(StartAccessScreen, {
-	LoginEnterPhone: login,
-	SignupOnboarding: signup,
-	RecoveryExplanation: recovery
-});
+export default function(then: NavTree<AccessSwitchTarget>) {
+	return NavMap.from(StartAccessScreen, {
+		LoginEnterPhone: login(then),
+		SignupOnboarding: signup(then),
+		RecoveryExplanation: recovery(then)
+	});
+}
