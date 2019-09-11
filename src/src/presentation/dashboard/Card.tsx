@@ -1,6 +1,7 @@
 import { Component, Fragment } from "react";
 import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle } from "react-native";
 import React from "react";
+import { FlatList } from "react-native-gesture-handler";
 
 interface DidiCardProps {
 	icon: ImageSourcePropType;
@@ -9,24 +10,51 @@ interface DidiCardProps {
 	title: string;
 	timing: string;
 	cardStyles?: StyleProp<TextStyle>;
-	data: { label: string; value: string }[];
+	data: { label: string; value: string; id: string }[];
+	showDataHorizontally?: boolean;
 }
 
 export default class DidiCard extends Component<DidiCardProps, {}> {
 	private renderKeyValue() {
 		return (
 			<View style={{ marginTop: 20 }}>
-				{this.props.data.map((elem, index) => {
+				{this.props.showDataHorizontally ? this.renderKeyValueHorizontal() : this.renderKeyValueVerticel()}
+			</View>
+		);
+	}
+
+	private renderKeyValueHorizontal() {
+		return (
+			<FlatList
+				data={this.props.data}
+				numColumns={3}
+				keyExtractor={item => item.id}
+				renderItem={({ item }) => {
 					return (
-						<View key={index} style={styles.data}>
-							<View style={styles.dataRow}>
-								<Text style={styles.dataRowLabel}>{elem.label}</Text>
-								<Text style={styles.dataRowValue}>{elem.value}</Text>
-							</View>
+						<View style={styles.dataColumn}>
+							<Text style={styles.dataColLabel}>{item.label}</Text>
+							<Text style={styles.dataColValue}>{item.value}</Text>
 						</View>
 					);
-				})}
-			</View>
+				}}
+			/>
+		);
+	}
+
+	private renderKeyValueVerticel() {
+		return (
+			<FlatList
+				data={this.props.data}
+				keyExtractor={item => item.id}
+				renderItem={({ item }) => {
+					return (
+						<View style={styles.dataRow}>
+							<Text style={styles.dataRowLabel}>{item.label}</Text>
+							<Text style={styles.dataRowValue}>{item.value}</Text>
+						</View>
+					);
+				}}
+			/>
 		);
 	}
 
@@ -87,12 +115,23 @@ const styles = StyleSheet.create({
 	data: {
 		justifyContent: "center"
 	},
+	dataColumn: {
+		width: "33%"
+	},
 	dataRow: {
 		justifyContent: "center",
 		flexDirection: "row"
 	},
+	dataColLabel: {
+		fontSize: 14,
+		color: "#FFF"
+	},
+	dataColValue: {
+		fontWeight: "bold",
+		fontSize: 14,
+		color: "#FFF"
+	},
 	dataRowLabel: {
-		fontWeight: "100",
 		fontSize: 14,
 		color: "#FFF",
 		flex: 1
@@ -112,6 +151,8 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start"
 	},
 	icon: {
+		height: 30,
+		width: 27,
 		marginRight: 25
 	},
 	headerData: {
@@ -138,5 +179,8 @@ const styles = StyleSheet.create({
 		top: 10,
 		right: 10
 	},
-	image: {}
+	image: {
+		height: 64,
+		width: 64
+	}
 });
