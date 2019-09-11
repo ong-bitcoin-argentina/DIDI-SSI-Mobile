@@ -7,6 +7,9 @@ import React from "react";
 import { Image, ImageSourcePropType } from "react-native";
 import themes from "../resources/themes";
 import strings from "./resources/strings";
+import { RoundsScreen } from "./rounds/RoundsScreen";
+import { DocumentsScreen } from "./documents/DocumentsScreen";
+import { SettingsScreen } from "./settings/SettingsScreen";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -39,19 +42,19 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				require("./resources/images/homeIcon.png")
 			),
 			DashboardRounds: screen(
-				DashboardScreen,
+				RoundsScreen,
 				"DashboardRounds",
 				strings.tabNames.rounds,
 				require("./resources/images/roundIcon.png")
 			),
 			DashboardDocuments: screen(
-				DashboardScreen,
+				DocumentsScreen,
 				"DashboardDocuments",
 				strings.tabNames.documents,
 				require("./resources/images/documentIcon.png")
 			),
 			DashboardSettings: screen(
-				DashboardScreen,
+				SettingsScreen,
 				"DashboardSettings",
 				strings.tabNames.settings,
 				require("./resources/images/settingsIcon.png")
