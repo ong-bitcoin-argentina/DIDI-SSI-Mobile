@@ -10,6 +10,7 @@ import DidiCard from "./Card";
 import { StartAccessProps } from "../access/StartAccess";
 import colors from "../resources/colors";
 import { FlatList } from "react-native-gesture-handler";
+import CardDataBuilder from "./CardDataBuilder";
 
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
@@ -23,47 +24,6 @@ export class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Home");
-
-	private renderKeyValueHorizontal(
-		data: { label: string; value: string; id: string }[],
-		textStyles?: StyleProp<TextStyle>
-	) {
-		return (
-			<FlatList
-				data={data}
-				numColumns={3}
-				keyExtractor={item => item.id}
-				renderItem={({ item }) => {
-					return (
-						<View style={styles.dataColumn}>
-							<Text style={[styles.dataColLabel, textStyles]}>{item.label}</Text>
-							<Text style={[styles.dataColValue, textStyles]}>{item.value}</Text>
-						</View>
-					);
-				}}
-			/>
-		);
-	}
-
-	private renderKeyValueVerticel(
-		data: { label: string; value: string; id: string }[],
-		textStyles?: StyleProp<TextStyle>
-	) {
-		return (
-			<FlatList
-				data={data}
-				keyExtractor={item => item.id}
-				renderItem={({ item }) => {
-					return (
-						<View style={styles.dataRow}>
-							<Text style={[styles.dataRowLabel, textStyles]}>{item.label}</Text>
-							<Text style={[styles.dataRowValue, textStyles]}>{item.value}</Text>
-						</View>
-					);
-				}}
-			/>
-		);
-	}
 
 	private getCards() {
 		return [
@@ -79,14 +39,15 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						backgroundColor: colors.primary
 					}
 				}),
-				child: this.renderKeyValueVerticel(
+				child: CardDataBuilder.createCardData(
 					[
 						{ id: "1", label: "Validaciónes:", value: " " },
 						{ id: "2", label: "Celu", value: "✓" },
 						{ id: "3", label: "Mail", value: "X " },
 						{ id: "4", label: "ID", value: "✓" }
 					],
-					styles.textStyleWhite
+					styles.textStyleWhite,
+					false
 				)
 			},
 			{
@@ -101,9 +62,10 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						backgroundColor: colors.secondary
 					}
 				}),
-				child: this.renderKeyValueVerticel(
+				child: CardDataBuilder.createCardData(
 					[{ id: "1", label: "Horas acumuladas", value: "60 hs" }, { id: "2", label: "Promedio", value: "7 / 10" }],
-					styles.textStyleWhite
+					styles.textStyleWhite,
+					false
 				)
 			},
 			{
@@ -118,7 +80,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						backgroundColor: "#13c7e0"
 					}
 				}),
-				child: this.renderKeyValueHorizontal(
+				child: CardDataBuilder.createCardData(
 					[
 						{ id: "1", label: "Dirección", value: "M. Belgrano" },
 						{ id: "2", label: "Nro.", value: "0376" },
@@ -127,7 +89,8 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						{ id: "5", label: "Testigos", value: "4" },
 						{ id: "6", label: "Titulo", value: "En curso" }
 					],
-					styles.textStyleWhite
+					styles.textStyleWhite,
+					true
 				)
 			},
 			{
@@ -142,9 +105,10 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						backgroundColor: "#906ecd"
 					}
 				}),
-				child: this.renderKeyValueVerticel(
+				child: CardDataBuilder.createCardData(
 					[{ id: "1", label: "Acumulado", value: "$12.000" }, { id: "2", label: "Cuota", value: "6 / 6" }],
-					styles.textStyleWhite
+					styles.textStyleWhite,
+					false
 				)
 			},
 			{
@@ -216,31 +180,6 @@ const styles = StyleSheet.create({
 	menu: {
 		marginBottom: 10
 	},
-
-	dataColumn: {
-		width: "33%"
-	},
-	dataRow: {
-		justifyContent: "center",
-		flexDirection: "row"
-	},
-	dataColLabel: {
-		fontSize: 14
-	},
-	dataColValue: {
-		fontWeight: "bold",
-		fontSize: 14
-	},
-	dataRowLabel: {
-		fontSize: 14,
-		flex: 1
-	},
-	dataRowValue: {
-		fontWeight: "100",
-		fontSize: 14,
-		marginLeft: 10
-	},
-
 	textStyleWhite: {
 		color: "#FFF"
 	},
