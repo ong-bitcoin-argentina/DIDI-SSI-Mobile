@@ -1,4 +1,4 @@
-import { Text, View, SafeAreaView, StatusBar, StyleSheet, ScrollView } from "react-native";
+import { Text, View, SafeAreaView, StatusBar, StyleSheet, ScrollView, StyleProp, TextStyle } from "react-native";
 import React, { Fragment } from "react";
 
 import themes from "../resources/themes";
@@ -9,6 +9,7 @@ import DidiButton from "../util/DidiButton";
 import DidiCard from "./Card";
 import { StartAccessProps } from "../access/StartAccess";
 import colors from "../resources/colors";
+import { FlatList } from "react-native-gesture-handler";
 
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
@@ -23,116 +24,156 @@ export class DashboardScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Home");
 
-	
-	render() {
-		let cards = [
+	private renderKeyValueHorizontal(
+		data: { label: string; value: string; id: string }[],
+		textStyles?: StyleProp<TextStyle>
+	) {
+		return (
+			<FlatList
+				data={data}
+				numColumns={3}
+				keyExtractor={item => item.id}
+				renderItem={({ item }) => {
+					return (
+						<View style={styles.dataColumn}>
+							<Text style={[styles.dataColLabel, textStyles]}>{item.label}</Text>
+							<Text style={[styles.dataColValue, textStyles]}>{item.value}</Text>
+						</View>
+					);
+				}}
+			/>
+		);
+	}
+
+	private renderKeyValueVerticel(
+		data: { label: string; value: string; id: string }[],
+		textStyles?: StyleProp<TextStyle>
+	) {
+		return (
+			<FlatList
+				data={data}
+				keyExtractor={item => item.id}
+				renderItem={({ item }) => {
+					return (
+						<View style={styles.dataRow}>
+							<Text style={[styles.dataRowLabel, textStyles]}>{item.label}</Text>
+							<Text style={[styles.dataRowValue, textStyles]}>{item.value}</Text>
+						</View>
+					);
+				}}
+			/>
+		);
+	}
+
+	private getCards() {
+		return [
 			{
 				icon: require("../resources/images/progressIcon.png"),
 				image: require("../resources/images/precentageSample.png"),
 				category: "Proceso",
 				title: "Mi Evolución",
-				timing: "16.06.2019",
+				subTitle: "16.06.2019",
+				textStyle: styles.textStyleWhite,
 				cardStyles: StyleSheet.create({
-					textStyle: {
-						color: "#FFF"
-					},
 					style: {
 						backgroundColor: colors.primary
 					}
 				}),
-				data: [
-					{ id: "1", label: "Validaciónes:", value: " " },
-					{ id: "2", label: "Celu", value: "✓" },
-					{ id: "3", label: "Mail", value: "X " },
-					{ id: "4", label: "ID", value: "✓" }
-				],
-				horizontal: false
+				child: this.renderKeyValueVerticel(
+					[
+						{ id: "1", label: "Validaciónes:", value: " " },
+						{ id: "2", label: "Celu", value: "✓" },
+						{ id: "3", label: "Mail", value: "X " },
+						{ id: "4", label: "ID", value: "✓" }
+					],
+					styles.textStyleWhite
+				)
 			},
 			{
 				icon: require("../resources/images/placeIcon.png"),
 				image: require("../resources/images/blankIcon.png"),
 				category: "Cursos",
 				title: "Maestro Pizzero",
-				timing: "Anual",
+				subTitle: "Anual",
+				textStyle: styles.textStyleWhite,
 				cardStyles: StyleSheet.create({
-					textStyle: {
-						color: "#FFF"
-					},
 					style: {
 						backgroundColor: colors.secondary
 					}
 				}),
-				data: [{ id: "1", label: "Horas acumuladas", value: "60 hs" }, { id: "2", label: "Promedio", value: "7 / 10" }],
-				horizontal: false
+				child: this.renderKeyValueVerticel(
+					[{ id: "1", label: "Horas acumuladas", value: "60 hs" }, { id: "2", label: "Promedio", value: "7 / 10" }],
+					styles.textStyleWhite
+				)
 			},
 			{
 				icon: require("../resources/images/addressIcon.png"),
 				image: require("../resources/images/blankIcon.png"),
 				category: "Propiedad",
 				title: "Liliana Martinez",
-				timing: "Vivienda",
+				subTitle: "Vivienda",
+				textStyle: styles.textStyleWhite,
 				cardStyles: StyleSheet.create({
-					textStyle: {
-						color: "#FFF"
-					},
 					style: {
 						backgroundColor: "#13c7e0"
 					}
 				}),
-				data: [
-					{ id: "1", label: "Dirección", value: "M. Belgrano" },
-					{ id: "2", label: "Nro.", value: "0376" },
-					{ id: "3", label: "Barrio", value: "31" },
-					{ id: "4", label: "Folio", value: "#230495" },
-					{ id: "5", label: "Testigos", value: "4" },
-					{ id: "6", label: "Titulo", value: "En curso" }
-				],
-				horizontal: true
+				child: this.renderKeyValueHorizontal(
+					[
+						{ id: "1", label: "Dirección", value: "M. Belgrano" },
+						{ id: "2", label: "Nro.", value: "0376" },
+						{ id: "3", label: "Barrio", value: "31" },
+						{ id: "4", label: "Folio", value: "#230495" },
+						{ id: "5", label: "Testigos", value: "4" },
+						{ id: "6", label: "Titulo", value: "En curso" }
+					],
+					styles.textStyleWhite
+				)
 			},
 			{
 				icon: require("../resources/images/rondaIcon.png"),
 				image: require("../resources/images/blankIcon.png"),
 				category: "Ronda",
 				title: "Los Martinez",
-				timing: "Quincenal",
+				subTitle: "Quincenal",
+				textStyle: styles.textStyleWhite,
 				cardStyles: StyleSheet.create({
-					textStyle: {
-						color: "#FFF"
-					},
 					style: {
 						backgroundColor: "#906ecd"
 					}
 				}),
-				data: [{ id: "1", label: "Acumulado", value: "$12.000" }, { id: "2", label: "Cuota", value: "6 / 6" }],
-				horizontal: false
+				child: this.renderKeyValueVerticel(
+					[{ id: "1", label: "Acumulado", value: "$12.000" }, { id: "2", label: "Cuota", value: "6 / 6" }],
+					styles.textStyleWhite
+				)
 			},
 			{
 				icon: require("../resources/images/validationIcon.png"),
 				image: require("../resources/images/blankIcon.png"),
 				category: "Documento Identidad",
 				title: "Liliana Martinez",
-				timing: "Nombre",
+				subTitle: "Nombre",
+				textStyle: styles.textStyleBlue,
 				cardStyles: StyleSheet.create({
-					textStyle: {
-						color: colors.secondary
-					},
 					style: {
 						backgroundColor: "#FFF",
 						borderColor: colors.secondary,
 						borderWidth: 2
 					}
 				}),
-				data: [],
 				child: (
 					<DidiButton
 						style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
 						title="ValidarId"
 						onPress={() => {}}
 					/>
-				),
-				horizontal: false
+				)
 			}
 		];
+	}
+
+	render() {
+		let cards = this.getCards();
 
 		return (
 			<Fragment>
@@ -153,11 +194,9 @@ export class DashboardScreen extends NavigationEnabledComponent<
 										image={card.image}
 										category={card.category}
 										title={card.title}
-										timing={card.timing}
+										subTitle={card.subTitle}
 										cardStyles={card.cardStyles.style}
-										textStyles={card.cardStyles.textStyle}
-										data={card.data}
-										showDataHorizontally={card.horizontal}
+										textStyles={card.textStyle}
 										child={card.child}
 									/>
 								);
@@ -171,18 +210,41 @@ export class DashboardScreen extends NavigationEnabledComponent<
 }
 
 const styles = StyleSheet.create({
-	cardStyles: {
-		backgroundColor: "#13c7e0",
-		marginBottom: 10
-	},
-	cardStyles2: {
-		backgroundColor: "#aab245",
-		marginBottom: 10
-	},
 	scroll: {
 		justifyContent: "space-evenly"
 	},
 	menu: {
 		marginBottom: 10
+	},
+
+	dataColumn: {
+		width: "33%"
+	},
+	dataRow: {
+		justifyContent: "center",
+		flexDirection: "row"
+	},
+	dataColLabel: {
+		fontSize: 14
+	},
+	dataColValue: {
+		fontWeight: "bold",
+		fontSize: 14
+	},
+	dataRowLabel: {
+		fontSize: 14,
+		flex: 1
+	},
+	dataRowValue: {
+		fontWeight: "100",
+		fontSize: 14,
+		marginLeft: 10
+	},
+
+	textStyleWhite: {
+		color: "#FFF"
+	},
+	textStyleBlue: {
+		color: colors.secondary
 	}
 });
