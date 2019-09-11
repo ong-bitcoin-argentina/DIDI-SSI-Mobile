@@ -10,11 +10,15 @@
 		"ios": "react-native run-ios"
 	},
 	"dependencies": {
+		"@types/react-navigation-material-bottom-tabs": "^0.3.2",
 		"react": "16.8.6",
 		"react-native": "0.60.5",
 		"react-native-gesture-handler": "^1.4.1",
+		"react-native-paper": "^2.16.0",
 		"react-native-reanimated": "^1.2.0",
+		"react-native-vector-icons": "^6.6.0",
 		"react-navigation": "^3.12.1",
+		"react-navigation-material-bottom-tabs": "^2.0.1",
 		"react-navigation-props-mapper": "^1.0.1"
 	},
 	"devDependencies": {
