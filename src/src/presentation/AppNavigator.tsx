@@ -13,5 +13,5 @@ export default createSwitchNavigator({
 	}).stackNavigator("Access"),
 	Dashboard: DashboardNavigator({
 		Access: NavMap.placeholder(StartAccessScreen)
-	}).stackNavigator("Dashboard")
+	})
 });

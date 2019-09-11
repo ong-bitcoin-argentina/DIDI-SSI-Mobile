@@ -15,5 +15,6 @@ export default interface DidiTheme {
 	buttonDisabled: Color;
 	buttonDisabledText: Color;
 
-	opposite(): DidiTheme;
+	navigationIconActive: Color;
+	navigationIconInactive: Color;
 }

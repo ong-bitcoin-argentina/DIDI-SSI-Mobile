@@ -17,7 +17,7 @@ export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<
 	VerifyPhoneState,
 	LoginVerifyPhoneNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar", themes.secondaryTheme);
+	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar");
 
 	protected contentImageSource(): ImageSourcePropType {
 		return require("../resources/images/loginVerify.png");
@@ -26,9 +26,5 @@ export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<
 	protected didPressContinueButton(event: GestureResponderEvent): void {
 		// TODO: End login flow
 		this.navigate("Dashboard", {});
-	}
-
-	protected theme(): DidiTheme {
-		return themes.secondaryTheme;
 	}
 }

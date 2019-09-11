@@ -13,7 +13,7 @@ export interface LoginEnterPhoneNavigation {
 }
 
 export class LoginEnterPhoneScreen extends EnterPhoneScreen<LoginEnterPhoneNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar", themes.secondaryTheme);
+	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar");
 
 	protected contentImageSource(): ImageSourcePropType {
 		return require("../resources/images/login.png");
@@ -21,9 +21,5 @@ export class LoginEnterPhoneScreen extends EnterPhoneScreen<LoginEnterPhoneNavig
 
 	protected didPressContinueButton(event: GestureResponderEvent): void {
 		this.navigate("LoginVerifyPhone", {});
-	}
-
-	protected theme(): DidiTheme {
-		return themes.secondaryTheme;
 	}
 }

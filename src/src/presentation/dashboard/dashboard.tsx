@@ -8,6 +8,7 @@ import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import DidiButton from "../util/DidiButton";
 import DidiCard from "./Card";
 import { StartAccessProps } from "../access/StartAccess";
+import colors from "../resources/colors";
 
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
@@ -32,15 +33,15 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				timing: "16.06.2019",
 				cardStyles: StyleSheet.create({
 					style: {
-						backgroundColor: "#2f77dc",
+						backgroundColor: colors.primary,
 						marginBottom: 10
 					}
 				}),
 				data: [
 					{ id: "1", label: "Validaciónes:", value: " " },
-					{ id: "2", label: "Celu", value: "OK" },
-					{ id: "3", label: "Mail", value: "MISSING" },
-					{ id: "4", label: "ID", value: "OK" }
+					{ id: "2", label: "Celu", value: "✓" },
+					{ id: "3", label: "Mail", value: "X " },
+					{ id: "4", label: "ID", value: "✓" }
 				],
 				horizontal: false
 			},
@@ -52,7 +53,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				timing: "Anual",
 				cardStyles: StyleSheet.create({
 					style: {
-						backgroundColor: "#13c7e0",
+						backgroundColor: colors.secondary,
 						marginBottom: 10
 					}
 				}),
@@ -83,7 +84,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 			},
 			{
 				icon: require("../resources/images/rondaIcon.png"),
-				image: require("../resources/images/plusIcon.png"),
+				image: require("../resources/images/blankIcon.png"),
 				category: "Ronda",
 				title: "Los Martinez",
 				timing: "Quincenal",

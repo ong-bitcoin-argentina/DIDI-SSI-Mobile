@@ -10,6 +10,7 @@ import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import themes from "../resources/themes";
 import commonStyles from "./resources/commonStyles";
 import strings from "./resources/strings";
+import colors from "../resources/colors";
 
 export type StartAccessProps = {};
 
@@ -78,9 +79,9 @@ const styles = StyleSheet.create({
 		fontWeight: "bold"
 	},
 	primaryButton: {
-		backgroundColor: themes.primaryTheme.button
+		backgroundColor: colors.primary
 	},
 	secondaryButton: {
-		backgroundColor: themes.secondaryTheme.button
+		backgroundColor: colors.secondary
 	}
 });

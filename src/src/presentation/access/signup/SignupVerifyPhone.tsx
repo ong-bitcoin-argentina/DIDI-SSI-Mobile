@@ -28,8 +28,4 @@ export class SignupVerifyPhoneScreen extends VerifyPhoneScreen<
 	protected didPressContinueButton(event: GestureResponderEvent): void {
 		this.navigate("SignupPhoneVerified", { phoneNumber: this.props.phoneNumber });
 	}
-
-	protected theme(): DidiTheme {
-		return themes.primaryTheme;
-	}
 }

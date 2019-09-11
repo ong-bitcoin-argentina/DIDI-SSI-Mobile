@@ -6,11 +6,11 @@ const colors = {
 	textFaded: "#9B9B9B",
 
 	primary: "#2f77dc",
+	primaryLight: "#acc6eb",
 	primaryDark: "#205196",
 	primaryText: "#FFF",
 
 	secondary: "#24cdd2",
-	secondaryDark: "#448B7F",
 	secondaryText: "#FFF"
 };
 

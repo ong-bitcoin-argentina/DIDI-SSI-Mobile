@@ -7,7 +7,6 @@ import DidiButton from "../../util/DidiButton";
 import strings from "../resources/strings";
 import themes from "../../resources/themes";
 import DidiTextInput from "../../util/DidiTextInput";
-import { SignupEnterPhoneProps } from "../signup/SignupEnterPhone";
 import commonStyles from "../resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import { SignupVerifyPhoneProps } from "./SignupVerifyPhone";

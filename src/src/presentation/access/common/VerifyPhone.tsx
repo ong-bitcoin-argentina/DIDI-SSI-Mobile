@@ -4,10 +4,10 @@ import { SafeAreaView, StatusBar, View, Text, Image, ImageSourcePropType, Gestur
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
-import DidiTheme from "../../resources/DidiTheme";
 import commonStyles from "../resources/commonStyles";
 import Validator from "../helpers/validator";
 import strings from "../resources/strings";
+import themes from "../../resources/themes";
 
 export type VerifyPhoneProps = {};
 
@@ -25,10 +25,9 @@ export abstract class VerifyPhoneScreen<
 	}
 
 	render() {
-		const theme = this.theme();
 		return (
 			<Fragment>
-				<StatusBar backgroundColor={theme.darkNavigation} barStyle="light-content" />
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
 						<Text style={commonStyles.text.emphasis}>{strings.accessCommon.verifyPhone.messageHead}</Text>
@@ -40,7 +39,6 @@ export abstract class VerifyPhoneScreen<
 								keyboardType: "number-pad",
 								onChangeText: text => this.setState({ inputCode: text })
 							}}
-							theme={theme}
 						/>
 						<Image style={commonStyles.image.image} source={this.contentImageSource()} />
 						<Text style={commonStyles.text.normal}>{strings.accessCommon.verifyPhone.resendCode}</Text>
@@ -48,15 +46,12 @@ export abstract class VerifyPhoneScreen<
 							disabled={!this.canPressContinueButton()}
 							onPress={event => this.didPressContinueButton(event)}
 							title={strings.accessCommon.validateButtonText}
-							theme={theme}
 						/>
 					</View>
 				</SafeAreaView>
 			</Fragment>
 		);
 	}
-
-	protected abstract theme(): DidiTheme;
 
 	protected abstract contentImageSource(): ImageSourcePropType;
 
