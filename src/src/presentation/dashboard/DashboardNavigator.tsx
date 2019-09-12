@@ -1,14 +1,13 @@
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import { StartAccessProps } from "../access/StartAccess";
-import { DashboardScreen } from "./Dashboard";
+import DashboardScreen from "./Dashboard";
 import NavMap, { NavTree, NavigationEnabledComponentConstructor } from "../util/NavMap";
 import React from "react";
 import { Image, ImageSourcePropType } from "react-native";
 import themes from "../resources/themes";
 import strings from "../resources/strings";
 import { RoundsScreen } from "./rounds/RoundsScreen";
-import { DocumentsScreen } from "./documents/DocumentsScreen";
 import SettingsScreen from "./settings/SettingsScreen";
 import DocumentsNavigator from "./documents/DocumentsNavigator";
 import { NavigationContainer } from "react-navigation";

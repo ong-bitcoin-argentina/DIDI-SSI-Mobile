@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, StyleProp, TextStyle, FlatList } from "react-na
 import React from "react";
 
 interface DidiCardProps {
-	data: { label: string; value: string; id: string }[];
+	data: { label: string; value: string }[];
 	isHorizontal: boolean;
 	textStyles?: StyleProp<TextStyle>;
 }
@@ -16,7 +16,7 @@ export default class DidiCardData extends Component<DidiCardProps, {}> {
 			<FlatList
 				data={data}
 				numColumns={3}
-				keyExtractor={item => item.id}
+				keyExtractor={item => item.label}
 				renderItem={({ item }) => {
 					return (
 						<View style={styles.dataColumn}>
@@ -35,7 +35,7 @@ export default class DidiCardData extends Component<DidiCardProps, {}> {
 		return (
 			<FlatList
 				data={data}
-				keyExtractor={item => item.id}
+				keyExtractor={item => item.label}
 				renderItem={({ item }) => {
 					return (
 						<View style={styles.dataRow}>

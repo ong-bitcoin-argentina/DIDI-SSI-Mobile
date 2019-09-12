@@ -23,144 +23,100 @@ import colors from "../resources/colors";
 import DidiCardData from "./CardData";
 import strings from "../resources/strings";
 import DropdownMenu from "../util/DropdownMenu";
+import { connect } from "react-redux";
+import { LoggedInStoreContent, RecentActivity, Document } from "../../model/StoreContent";
 
+export type DashboardScreenProps = {};
+interface DashboardScreenInternalProps extends DashboardScreenProps {
+	documents: Document[];
+	recentActivity: RecentActivity[];
+}
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
 }
-export type DashboardScreenProps = {};
 type DashboardScreenState = {};
 
-export class DashboardScreen extends NavigationEnabledComponent<
-	DashboardScreenProps,
+class DashboardScreen extends NavigationEnabledComponent<
+	DashboardScreenInternalProps,
 	DashboardScreenState,
 	DashboardScreenNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Home");
 
-	private getCards() {
-		return [
-			{
-				icon: require("../resources/images/progressIcon.png"),
-				image: require("../resources/images/precentageSample.png"),
-				category: "Proceso",
-				title: "Mi Evolución",
-				subTitle: "16.06.2019",
-				textStyle: styles.textStyleWhite,
-				cardStyles: StyleSheet.create({
-					style: {
-						backgroundColor: colors.primary
-					}
-				}),
-				child: (
-					<DidiCardData
-						data={[
-							{ id: "1", label: "Validaciónes:", value: " " },
-							{ id: "2", label: "Celu", value: "✓" },
-							{ id: "3", label: "Mail", value: "X " },
-							{ id: "4", label: "ID", value: "✓" }
-						]}
-						textStyles={styles.textStyleWhite}
-						isHorizontal={false}
-					/>
-				)
-			},
-			{
-				icon: require("../resources/images/placeIcon.png"),
-				image: require("../resources/images/blankIcon.png"),
-				category: "Cursos",
-				title: "Maestro Pizzero",
-				subTitle: "Anual",
-				textStyle: styles.textStyleWhite,
-				cardStyles: StyleSheet.create({
-					style: {
-						backgroundColor: colors.secondary
-					}
-				}),
-				child: (
-					<DidiCardData
-						data={[
-							{ id: "1", label: "Horas acumuladas", value: "60 hs" },
-							{ id: "2", label: "Promedio", value: "7 / 10" }
-						]}
-						textStyles={styles.textStyleWhite}
-						isHorizontal={false}
-					/>
-				)
-			},
-			{
-				icon: require("../resources/images/addressIcon.png"),
-				image: require("../resources/images/blankIcon.png"),
-				category: "Propiedad",
-				title: "Liliana Martinez",
-				subTitle: "Vivienda",
-				textStyle: styles.textStyleWhite,
-				cardStyles: StyleSheet.create({
-					style: {
-						backgroundColor: "#13c7e0"
-					}
-				}),
-				child: (
-					<DidiCardData
-						data={[
-							{ id: "1", label: "Dirección", value: "M.Belgrano" },
-							{ id: "2", label: "Nro.", value: "0376" },
-							{ id: "3", label: "Barrio", value: "31" },
-							{ id: "4", label: "Folio", value: "#230495" },
-							{ id: "5", label: "Testigos", value: "4" },
-							{ id: "6", label: "Titulo", value: "En curso" }
-						]}
-						textStyles={styles.textStyleWhite}
-						isHorizontal={true}
-					/>
-				)
-			},
-			{
-				icon: require("../resources/images/rondaIcon.png"),
-				image: require("../resources/images/blankIcon.png"),
-				category: "Ronda",
-				title: "Los Martinez",
-				subTitle: "Quincenal",
-				textStyle: styles.textStyleWhite,
-				cardStyles: StyleSheet.create({
-					style: {
-						backgroundColor: "#906ecd"
-					}
-				}),
-				child: (
-					<DidiCardData
-						data={[{ id: "1", label: "Acumulado", value: "$12.000" }, { id: "2", label: "Cuota", value: "6 / 6" }]}
-						textStyles={styles.textStyleWhite}
-						isHorizontal={false}
-					/>
-				)
-			},
-			{
-				icon: require("../resources/images/validationIcon.png"),
-				image: require("../resources/images/blankIcon.png"),
-				category: "Documento Identidad",
-				title: "Liliana Martinez",
-				subTitle: "Nombre",
-				textStyle: styles.textStyleBlue,
-				cardStyles: StyleSheet.create({
-					style: {
-						backgroundColor: "#FFF",
-						borderColor: colors.secondary,
-						borderWidth: 2
-					}
-				}),
-				child: (
-					<DidiButton
-						style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
-						title="Validar Id"
-						onPress={() => {}}
-					/>
-				)
-			}
-		];
+	private evolutionCard() {
+		return {
+			icon: require("../resources/images/progressIcon.png"),
+			image: require("../resources/images/precentageSample.png"),
+			category: "Proceso",
+			title: "Mi Evolución",
+			subTitle: "16.06.2019",
+			textStyle: styles.textStyleWhite,
+			cardStyles: StyleSheet.create({
+				style: {
+					backgroundColor: colors.primary
+				}
+			}),
+			child: (
+				<DidiCardData
+					data={[
+						{ label: "Validaciónes:", value: " " },
+						{ label: "Celu", value: "✓" },
+						{ label: "Mail", value: "X " },
+						{ label: "ID", value: "✓" }
+					]}
+					textStyles={styles.textStyleWhite}
+					isHorizontal={false}
+				/>
+			)
+		};
+	}
+
+	private identityCard() {
+		return {
+			icon: require("../resources/images/validationIcon.png"),
+			image: require("../resources/images/blankIcon.png"),
+			category: "Documento Identidad",
+			title: "Liliana Martinez",
+			subTitle: "Nombre",
+			textStyle: styles.textStyleBlue,
+			cardStyles: StyleSheet.create({
+				style: {
+					backgroundColor: "#FFF",
+					borderColor: colors.secondary,
+					borderWidth: 2
+				}
+			}),
+			child: (
+				<DidiButton
+					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
+					title="Validar Id"
+					onPress={() => {}}
+				/>
+			)
+		};
+	}
+
+	private documentToCard(document: Document) {
+		return {
+			icon: document.icon,
+			image: document.image,
+			category: document.category,
+			title: document.title,
+			subTitle: document.subtitle,
+			textStyle: styles.textStyleWhite,
+			cardStyles: StyleSheet.create({
+				style: {
+					backgroundColor: colors.secondary
+				}
+			}),
+			child: (
+				<DidiCardData data={document.data} textStyles={styles.textStyleWhite} isHorizontal={document.isHorizontal} />
+			)
+		};
 	}
 
 	private renderCards() {
-		let cards = this.getCards();
+		let cards = [this.evolutionCard(), ...this.props.documents.map(this.documentToCard), this.identityCard()];
 		return cards.map((card, index) => {
 			return (
 				<DidiCard
@@ -179,37 +135,10 @@ export class DashboardScreen extends NavigationEnabledComponent<
 		});
 	}
 
-	private getRecentActivities() {
-		return [
-			{
-				icon: require("../resources/images/docsIcon.png"),
-				title: "Documentos",
-				description: "Documento Identidad",
-				state: "Validado",
-				date: "12/09/2018"
-			},
-			{
-				icon: require("../resources/images/rondaIcon.png"),
-				title: "Ronda Los Martinez",
-				description: "Cuota 2/12",
-				state: "Pagado",
-				date: "12/09/2018"
-			},
-			{
-				icon: require("../resources/images/coursesIcon.png"),
-				title: "Cursos",
-				description: "Maestro Pizzero",
-				state: "Terminado",
-				date: "12/09/2018"
-			}
-		];
-	}
-
 	private renderRecentActivities() {
-		let activities = this.getRecentActivities();
 		return (
 			<View>
-				{activities.map((activity, index) => {
+				{this.props.recentActivity.map((activity, index) => {
 					return (
 						<DidiActivity
 							key={index}
@@ -251,6 +180,12 @@ export class DashboardScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+export default connect(
+	(state: LoggedInStoreContent): DashboardScreenProps => {
+		return { recentActivity: state.recentActivity, documents: state.documents };
+	}
+)(DashboardScreen);
 
 const styles = StyleSheet.create({
 	body: {

@@ -6,9 +6,23 @@ export interface Identity {
 	image: ImageSourcePropType;
 }
 
-interface Document {}
+export interface Document {
+	icon: ImageSourcePropType;
+	image: ImageSourcePropType;
+	category: string;
+	title: string;
+	subtitle: string;
+	isHorizontal: boolean;
+	data: Array<{ label: string; value: string }>;
+}
 
-interface RecentActivity {}
+export interface RecentActivity {
+	icon: ImageSourcePropType;
+	title: string;
+	description: string;
+	state: string;
+	date: string;
+}
 
 export interface LoggedInStoreContent {
 	loggedIn: true;
