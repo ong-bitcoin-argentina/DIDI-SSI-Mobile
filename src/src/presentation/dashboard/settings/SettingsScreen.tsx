@@ -56,12 +56,12 @@ export class SettingsScreen extends NavigationEnabledComponent<
 		return (
 			<View style={styles.identityCartouche}>
 				<View style={{ flexDirection: "row", alignItems: "center" }}>
-					<Image style={{ marginRight: 10, width: 70, height: 70 }} source={this.person.image} />
-					<View style={{ flex: 1, flexDirection: "column" }}>
-						<Text style={{ fontSize: 18 }}>{this.person.name}</Text>
+					<Image style={styles.identityImage} source={this.person.image} />
+					<View style={styles.identityIdContainer}>
+						<Text style={styles.identityName}>{this.person.name}</Text>
 						<View style={{ marginTop: 3, flexDirection: "row" }}>
-							<Text style={{ fontSize: 12, color: colors.primary, fontWeight: "bold" }}>ID: </Text>
-							<Text style={{ fontSize: 12 }}>{this.person.id}</Text>
+							<Text style={styles.identityIdLabel}>ID: </Text>
+							<Text style={styles.identityId}>{this.person.id}</Text>
 						</View>
 					</View>
 					<Image style={{ marginHorizontal: 10 }} source={require("../resources/images/openPersonDetail.png")} />
@@ -74,19 +74,9 @@ export class SettingsScreen extends NavigationEnabledComponent<
 		return (
 			<View key={index}>
 				<TouchableOpacity onPress={button.action} style={{ marginTop: 10, flexDirection: "row" }}>
-					<View style={{ flex: 1 }} />
-					<Text
-						style={{
-							marginTop: 10,
-							marginBottom: 10,
-							flex: 8,
-							alignSelf: "center",
-							flexDirection: "row"
-						}}
-					>
-						{button.name}
-					</Text>
-					<View style={{ flex: 1, justifyContent: "center" }}>
+					<View style={styles.buttonSpacer} />
+					<Text style={styles.buttonText}>{button.name}</Text>
+					<View style={styles.buttonChevron}>
 						<Image source={require("../resources/images/chevronBlueRight.png")} />
 					</View>
 				</TouchableOpacity>
@@ -144,9 +134,43 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		backgroundColor: colors.lightBackground
 	},
+	identityName: {
+		fontSize: 18
+	},
+	identityImage: {
+		marginRight: 10,
+		width: 70,
+		height: 70
+	},
+	identityIdContainer: {
+		flex: 1,
+		flexDirection: "column"
+	},
+	identityIdLabel: {
+		fontSize: 12,
+		color: colors.primary,
+		fontWeight: "bold"
+	},
+	identityId: {
+		fontSize: 12
+	},
 	buttonContainer: {
 		flex: 1,
 		backgroundColor: colors.lightBackground
+	},
+	buttonSpacer: {
+		flex: 1
+	},
+	buttonText: {
+		marginTop: 10,
+		marginBottom: 10,
+		flex: 8,
+		alignSelf: "center",
+		flexDirection: "row"
+	},
+	buttonChevron: {
+		flex: 1,
+		justifyContent: "center"
 	},
 	buttonUnderline: {
 		...baseStyles.cartoucheWidth,
