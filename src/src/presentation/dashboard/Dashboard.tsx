@@ -1,4 +1,14 @@
-import { Text, View, SafeAreaView, StatusBar, StyleSheet, ScrollView, StyleProp, TextStyle } from "react-native";
+import {
+	Text,
+	View,
+	SafeAreaView,
+	StatusBar,
+	StyleSheet,
+	ScrollView,
+	StyleProp,
+	TextStyle,
+	TouchableOpacity
+} from "react-native";
 import React, { Fragment } from "react";
 
 import { StartAccessProps } from "../access/StartAccess";
@@ -212,6 +222,13 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						/>
 					);
 				})}
+				<View>
+					<TouchableOpacity onPress={() => {}}>
+						<Text style={[commonStyles.text.emphasis, styles.text]}>
+							{strings.dashboard.recentActivities.loadMore + " +"}
+						</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}
@@ -228,9 +245,11 @@ export class DashboardScreen extends NavigationEnabledComponent<
 								<DidiButton title="Log Out" onPress={() => this.navigate("Access", {})} />
 							</View>
 
-							{this.renderCards()}
+							{/*this.renderCards()*/}
 
-							<DropdownMenu label={strings.dashboard.recentActivities}>{this.renderRecentActivities()}</DropdownMenu>
+							<DropdownMenu label={strings.dashboard.recentActivities.label}>
+								{this.renderRecentActivities()}
+							</DropdownMenu>
 						</ScrollView>
 					</View>
 				</SafeAreaView>
@@ -245,6 +264,9 @@ const styles = StyleSheet.create({
 	},
 	menu: {
 		marginBottom: 10
+	},
+	text: {
+		fontSize: 14
 	},
 	activities: {
 		backgroundColor: "#FFF",

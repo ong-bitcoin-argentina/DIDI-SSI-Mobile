@@ -1,6 +1,9 @@
 export default {
 	dashboard: {
-		recentActivities: "Actividades recientes"
+		recentActivities: {
+			label: "Actividades recientes",
+			loadMore: "Cargar más"
+		}
 	},
 	recovery: {
 		barTitle: "Recuperar Cuenta",
