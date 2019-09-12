@@ -86,5 +86,16 @@ export default {
 			codePlaceholder: "6 dígitos",
 			resendCode: "¿No recibiste el código?"
 		}
+	},
+	tabNames: {
+		home: "Inicio",
+		rounds: "Rondas",
+		documents: "Documentos",
+		settings: "Configuración"
+	},
+	settings: {
+		account: "Cuenta",
+		preferences: "Preferencias de Didi",
+		about: "Acerca de Didi"
 	}
 };

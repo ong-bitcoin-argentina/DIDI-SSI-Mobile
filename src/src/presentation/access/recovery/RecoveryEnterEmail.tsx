@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, StatusBa
 import React, { Fragment } from "react";
 
 import DidiButton from "../../util/DidiButton";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";

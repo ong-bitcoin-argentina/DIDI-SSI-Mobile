@@ -2,6 +2,8 @@ export type Color = string;
 
 const colors = {
 	background: "#F3F3F3",
+	lightBackground: "#FFF",
+	backgroundSeparator: "#C8C8C8",
 	text: "#4A4A4A",
 	textFaded: "#9B9B9B",
 

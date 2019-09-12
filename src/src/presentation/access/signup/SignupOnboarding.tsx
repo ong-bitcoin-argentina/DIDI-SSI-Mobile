@@ -20,7 +20,7 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import { SignupEnterPhoneProps } from "./SignupEnterPhone";
 import onboardingPages, { OnboardingPage } from "../resources/onboardingPages";
 import commonStyles from "../resources/commonStyles";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 
 export type SignupOnboardingProps = {};
 

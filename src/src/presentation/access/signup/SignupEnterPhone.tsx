@@ -4,7 +4,7 @@ import React, { Fragment } from "react";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import DidiButton from "../../util/DidiButton";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import DidiTextInput from "../../util/DidiTextInput";
 import commonStyles from "../resources/commonStyles";

@@ -3,7 +3,7 @@ import { StatusBar, View, Text, Image, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
 import Validator from "../helpers/validator";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import commonStyles from "../resources/commonStyles";
 import DidiTextInput from "../../util/DidiTextInput";

@@ -5,7 +5,7 @@ import { StatusBar, SafeAreaView, View, Text } from "react-native";
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 
 export interface DocumentsScreenNavigation {}
 export type DocumentsScreenProps = {};

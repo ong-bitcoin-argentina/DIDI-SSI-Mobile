@@ -9,7 +9,7 @@ import DidiButton from "../util/DidiButton";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import themes from "../resources/themes";
 import commonStyles from "./resources/commonStyles";
-import strings from "./resources/strings";
+import strings from "../resources/strings";
 import colors from "../resources/colors";
 
 export type StartAccessProps = {};
