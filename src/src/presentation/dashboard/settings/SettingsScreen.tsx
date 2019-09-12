@@ -8,8 +8,12 @@ import strings from "../../resources/strings";
 import colors from "../../resources/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import DidiButton from "../../util/DidiButton";
+import { connect } from "react-redux";
+import StoreContent, { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
 
-export interface SettingsScreenProps {}
+export interface SettingsScreenProps {
+	person: Identity;
+}
 
 type SettingsScreenState = {};
 
@@ -25,24 +29,12 @@ interface SettingsButton {
 	action: () => void;
 }
 
-interface SettingsPerson {
-	name: string;
-	id: string;
-	image: ImageSourcePropType;
-}
-
-export class SettingsScreen extends NavigationEnabledComponent<
+class SettingsScreen extends NavigationEnabledComponent<
 	SettingsScreenProps,
 	SettingsScreenState,
 	SettingsScreenNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.tabNames.settings);
-
-	private person: SettingsPerson = {
-		id: "<persona.id>",
-		name: "<Nombre Persona>",
-		image: require("../../access/resources/images/arg.png")
-	};
 
 	buttons(): SettingsButton[] {
 		return [
@@ -56,12 +48,12 @@ export class SettingsScreen extends NavigationEnabledComponent<
 		return (
 			<View style={styles.identityCartouche}>
 				<View style={{ flexDirection: "row", alignItems: "center" }}>
-					<Image style={styles.identityImage} source={this.person.image} />
+					<Image style={styles.identityImage} source={this.props.person.image} />
 					<View style={styles.identityIdContainer}>
-						<Text style={styles.identityName}>{this.person.name}</Text>
+						<Text style={styles.identityName}>{this.props.person.name}</Text>
 						<View style={{ marginTop: 3, flexDirection: "row" }}>
 							<Text style={styles.identityIdLabel}>ID: </Text>
-							<Text style={styles.identityId}>{this.person.id}</Text>
+							<Text style={styles.identityId}>{this.props.person.id}</Text>
 						</View>
 					</View>
 					<Image style={{ marginHorizontal: 10 }} source={require("../resources/images/openPersonDetail.png")} />
@@ -106,6 +98,12 @@ export class SettingsScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+export default connect(
+	(state: LoggedInStoreContent): SettingsScreenProps => {
+		return { person: state.identity };
+	}
+)(SettingsScreen);
 
 const baseStyles = {
 	cartoucheWidth: {

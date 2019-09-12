@@ -9,7 +9,7 @@ import themes from "../resources/themes";
 import strings from "../resources/strings";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import { DocumentsScreen } from "./documents/DocumentsScreen";
-import { SettingsScreen } from "./settings/SettingsScreen";
+import SettingsScreen from "./settings/SettingsScreen";
 import DocumentsNavigator from "./documents/DocumentsNavigator";
 import { NavigationContainer } from "react-navigation";
 
