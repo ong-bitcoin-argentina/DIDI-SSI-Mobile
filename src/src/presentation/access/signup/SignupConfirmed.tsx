@@ -3,7 +3,7 @@ import { Text, View, Image, SafeAreaView, StatusBar, StyleSheet } from "react-na
 import React, { Fragment } from "react";
 
 import DidiButton from "../../util/DidiButton";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";

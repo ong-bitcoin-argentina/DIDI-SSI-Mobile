@@ -6,7 +6,7 @@ import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import commonStyles from "../resources/commonStyles";
 import Validator from "../helpers/validator";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 export type VerifyPhoneProps = {};

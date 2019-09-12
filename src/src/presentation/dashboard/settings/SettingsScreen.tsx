@@ -4,7 +4,7 @@ import React from "react";
 import { StatusBar, SafeAreaView, View, Text, StyleSheet, Image, ImageSourcePropType } from "react-native";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import themes from "../../resources/themes";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 import colors from "../../resources/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import DidiButton from "../../util/DidiButton";

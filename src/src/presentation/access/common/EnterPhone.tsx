@@ -15,7 +15,7 @@ import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import DidiTheme from "../../resources/DidiTheme";
 import commonStyles from "../resources/commonStyles";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 export type EnterPhoneProps = {};

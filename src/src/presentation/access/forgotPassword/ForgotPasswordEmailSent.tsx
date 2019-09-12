@@ -4,7 +4,7 @@ import { StatusBar, View, Image, Text, StyleSheet } from "react-native";
 import themes from "../../resources/themes";
 import { SafeAreaView } from "react-navigation";
 import commonStyles from "../resources/commonStyles";
-import strings from "../resources/strings";
+import strings from "../../resources/strings";
 import DidiButton from "../../util/DidiButton";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import { ForgotPasswordConfirmEmailProps } from "./ForgotPasswordConfirmEmail";
