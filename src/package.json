@@ -7,7 +7,8 @@
 		"test": "jest",
 		"lint": "tslint --project tsconfig.json",
 		"android": "react-native run-android",
-		"ios": "react-native run-ios"
+		"ios": "react-native run-ios",
+		"build": "cd android && ./gradlew assembleRelease"
 	},
 	"dependencies": {
 		"@types/react-navigation-material-bottom-tabs": "^0.3.2",
