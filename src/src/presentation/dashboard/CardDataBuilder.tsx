@@ -58,18 +58,23 @@ export default class CardDataBuilder {
 
 const styles = StyleSheet.create({
 	dataColumn: {
+		marginTop: 5,
+		flex: 1,
 		width: "33%"
 	},
 	dataRow: {
+		flex: 1,
 		justifyContent: "center",
 		flexDirection: "row"
 	},
 	dataColLabel: {
-		fontSize: 14
+		marginRight: 6,
+		fontSize: 12
 	},
 	dataColValue: {
+		marginRight: 6,
 		fontWeight: "bold",
-		fontSize: 14
+		fontSize: 13
 	},
 	dataRowLabel: {
 		fontSize: 14,
