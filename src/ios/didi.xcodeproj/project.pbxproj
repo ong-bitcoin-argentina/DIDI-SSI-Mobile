@@ -44,7 +44,9 @@
 		00E356EE1AD99517003FC87E /* didiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = didiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* didiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = didiTests.m; sourceTree = "<group>"; };
+		02DD5055E689F390702EB68B /* Pods-didiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didiTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-didiTests/Pods-didiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		09FE99F01E6052D3DCE15489 /* libPods-didi-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-didi-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DB72BA9CC13033B293A9F3E /* Pods-didi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-didi/Pods-didi.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* didi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = didi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = didi/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = didi/AppDelegate.m; sourceTree = "<group>"; };
@@ -52,21 +54,27 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = didi/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = didi/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = didi/main.m; sourceTree = "<group>"; };
+		1C36000ADBA9B651924D0689 /* Pods-didi-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-didi-tvOS/Pods-didi-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		1ED559754FF8A12DAD8D0CDC /* libPods-didi-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-didi-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C5E8B1D139F5D02564C4D21 /* Pods-didiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didiTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-didiTests/Pods-didiTests.release.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* didi-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "didi-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* didi-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "didi-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32B02F232A87C197DF50E4A6 /* Pods-didi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi.release.xcconfig"; path = "Target Support Files/Pods-didi/Pods-didi.release.xcconfig"; sourceTree = "<group>"; };
+		3422A5DD1F7C97DF3D2FD195 /* Pods-didi-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-didi-tvOS/Pods-didi-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		530C72860CF3D902C0E39076 /* Pods-didi-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-didi-tvOSTests/Pods-didi-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		69BAD01050B76C45767EE4BD /* Pods-didi-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-didi-tvOSTests/Pods-didi-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		8215FF85AA7C6556A75EB2F2 /* Pods-didiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didiTests.debug.xcconfig"; path = "Target Support Files/Pods-didiTests/Pods-didiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8A1B4C1D88C53B5DD102F427 /* Pods-didi-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi-tvOS.release.xcconfig"; path = "Target Support Files/Pods-didi-tvOS/Pods-didi-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		8A71D42B786062AE35BB20D3 /* libPods-didi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-didi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7BB8C03266B0F1F8711330B /* Pods-didi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi.release.xcconfig"; path = "Pods/Target Support Files/Pods-didi/Pods-didi.release.xcconfig"; sourceTree = "<group>"; };
 		BA2DBABD1699012AEE1C524D /* Pods-didi-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-didi-tvOS/Pods-didi-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C628EBF293ABCA11B3754026 /* libPods-didiTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-didiTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90162535F6F4572BD35A6B1 /* Pods-didi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi.debug.xcconfig"; path = "Target Support Files/Pods-didi/Pods-didi.debug.xcconfig"; sourceTree = "<group>"; };
 		D0F94C49B2678AEC0950DDB5 /* Pods-didiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didiTests.release.xcconfig"; path = "Target Support Files/Pods-didiTests/Pods-didiTests.release.xcconfig"; sourceTree = "<group>"; };
+		D338BDEAE658C22A94BB039C /* Pods-didi-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-didi-tvOSTests/Pods-didi-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		FE0348BF41233E3F02D95CC9 /* Pods-didi-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-didi-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-didi-tvOSTests/Pods-didi-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +201,14 @@
 				69BAD01050B76C45767EE4BD /* Pods-didi-tvOSTests.release.xcconfig */,
 				8215FF85AA7C6556A75EB2F2 /* Pods-didiTests.debug.xcconfig */,
 				D0F94C49B2678AEC0950DDB5 /* Pods-didiTests.release.xcconfig */,
+				0DB72BA9CC13033B293A9F3E /* Pods-didi.debug.xcconfig */,
+				A7BB8C03266B0F1F8711330B /* Pods-didi.release.xcconfig */,
+				1C36000ADBA9B651924D0689 /* Pods-didi-tvOS.debug.xcconfig */,
+				3422A5DD1F7C97DF3D2FD195 /* Pods-didi-tvOS.release.xcconfig */,
+				FE0348BF41233E3F02D95CC9 /* Pods-didi-tvOSTests.debug.xcconfig */,
+				D338BDEAE658C22A94BB039C /* Pods-didi-tvOSTests.release.xcconfig */,
+				02DD5055E689F390702EB68B /* Pods-didiTests.debug.xcconfig */,
+				2C5E8B1D139F5D02564C4D21 /* Pods-didiTests.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -378,15 +394,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-didiTests-checkManifestLockResult.txt",
 			);
@@ -414,15 +426,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-didi-checkManifestLockResult.txt",
 			);
@@ -436,15 +444,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-didi-tvOS-checkManifestLockResult.txt",
 			);
@@ -458,15 +462,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-didi-tvOSTests-checkManifestLockResult.txt",
 			);
@@ -480,13 +480,9 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 			);
 			name = "Start Packager";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,13 +495,9 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 			);
 			name = "Start Packager";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -580,7 +572,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8215FF85AA7C6556A75EB2F2 /* Pods-didiTests.debug.xcconfig */;
+			baseConfigurationReference = 02DD5055E689F390702EB68B /* Pods-didiTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -603,7 +595,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0F94C49B2678AEC0950DDB5 /* Pods-didiTests.release.xcconfig */;
+			baseConfigurationReference = 2C5E8B1D139F5D02564C4D21 /* Pods-didiTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -623,7 +615,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C90162535F6F4572BD35A6B1 /* Pods-didi.debug.xcconfig */;
+			baseConfigurationReference = 0DB72BA9CC13033B293A9F3E /* Pods-didi.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -643,7 +635,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 32B02F232A87C197DF50E4A6 /* Pods-didi.release.xcconfig */;
+			baseConfigurationReference = A7BB8C03266B0F1F8711330B /* Pods-didi.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -662,7 +654,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA2DBABD1699012AEE1C524D /* Pods-didi-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 1C36000ADBA9B651924D0689 /* Pods-didi-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -690,7 +682,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A1B4C1D88C53B5DD102F427 /* Pods-didi-tvOS.release.xcconfig */;
+			baseConfigurationReference = 3422A5DD1F7C97DF3D2FD195 /* Pods-didi-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -718,7 +710,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 530C72860CF3D902C0E39076 /* Pods-didi-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = FE0348BF41233E3F02D95CC9 /* Pods-didi-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -745,7 +737,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 69BAD01050B76C45767EE4BD /* Pods-didi-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = D338BDEAE658C22A94BB039C /* Pods-didi-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
