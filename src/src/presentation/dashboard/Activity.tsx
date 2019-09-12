@@ -2,7 +2,7 @@ import { Component, Fragment } from "react";
 import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle } from "react-native";
 import React from "react";
 
-interface DidiCardProps {
+interface DidiActivityProps {
 	icon: ImageSourcePropType;
 	title: string;
 	description: string;
@@ -12,7 +12,7 @@ interface DidiCardProps {
 	style?: StyleProp<TextStyle>;
 }
 
-export default class DidiActivity extends Component<DidiCardProps, {}> {
+export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderTitle() {
 		return (
 			<View style={styles.titleData}>

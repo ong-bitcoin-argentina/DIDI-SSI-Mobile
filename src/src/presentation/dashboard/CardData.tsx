@@ -1,23 +1,17 @@
-import { Text, View, StyleProp, TextStyle, StyleSheet } from "react-native";
-
-import { FlatList } from "react-native-gesture-handler";
+import { Component, Fragment } from "react";
+import { Text, View, StyleSheet, StyleProp, TextStyle, FlatList } from "react-native";
 import React from "react";
 
-export default class CardDataBuilder {
-	static createCardData(
-		data: { label: string; value: string; id: string }[],
-		textStyles: StyleProp<TextStyle>,
-		isHorizontal: boolean
-	) {
-		return isHorizontal
-			? CardDataBuilder.renderKeyValueHorizontal(data, textStyles)
-			: CardDataBuilder.renderKeyValueVerticel(data, textStyles);
-	}
+interface DidiCardProps {
+	data: { label: string; value: string; id: string }[];
+	isHorizontal: boolean;
+	textStyles?: StyleProp<TextStyle>;
+}
 
-	private static renderKeyValueHorizontal(
-		data: { label: string; value: string; id: string }[],
-		textStyles?: StyleProp<TextStyle>
-	) {
+export default class DidiCardData extends Component<DidiCardProps, {}> {
+	private renderKeyValueHorizontal() {
+		let data = this.props.data;
+		let textStyles = this.props.textStyles;
 		return (
 			<FlatList
 				data={data}
@@ -35,10 +29,9 @@ export default class CardDataBuilder {
 		);
 	}
 
-	private static renderKeyValueVerticel(
-		data: { label: string; value: string; id: string }[],
-		textStyles?: StyleProp<TextStyle>
-	) {
+	private renderKeyValueVerticel() {
+		let data = this.props.data;
+		let textStyles = this.props.textStyles;
 		return (
 			<FlatList
 				data={data}
@@ -52,6 +45,17 @@ export default class CardDataBuilder {
 					);
 				}}
 			/>
+		);
+	}
+
+	render() {
+		return (
+			<Fragment>
+				<View>
+					{this.props.isHorizontal && this.renderKeyValueHorizontal()}
+					{!this.props.isHorizontal && this.renderKeyValueVerticel()}
+				</View>
+			</Fragment>
 		);
 	}
 }

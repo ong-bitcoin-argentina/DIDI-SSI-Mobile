@@ -10,7 +10,7 @@ import DidiButton from "../util/DidiButton";
 import DidiCard from "./Card";
 import DidiActivity from "./Activity";
 import colors from "../resources/colors";
-import CardDataBuilder from "./CardDataBuilder";
+import DidiCardData from "./CardData";
 import strings from "../resources/strings";
 import DropdownMenu from "../util/DropdownMenu";
 
@@ -41,15 +41,17 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						backgroundColor: colors.primary
 					}
 				}),
-				child: CardDataBuilder.createCardData(
-					[
-						{ id: "1", label: "Validaciónes:", value: " " },
-						{ id: "2", label: "Celu", value: "✓" },
-						{ id: "3", label: "Mail", value: "X " },
-						{ id: "4", label: "ID", value: "✓" }
-					],
-					styles.textStyleWhite,
-					false
+				child: (
+					<DidiCardData
+						data={[
+							{ id: "1", label: "Validaciónes:", value: " " },
+							{ id: "2", label: "Celu", value: "✓" },
+							{ id: "3", label: "Mail", value: "X " },
+							{ id: "4", label: "ID", value: "✓" }
+						]}
+						textStyles={styles.textStyleWhite}
+						isHorizontal={false}
+					/>
 				)
 			},
 			{
@@ -64,10 +66,15 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						backgroundColor: colors.secondary
 					}
 				}),
-				child: CardDataBuilder.createCardData(
-					[{ id: "1", label: "Horas acumuladas", value: "60 hs" }, { id: "2", label: "Promedio", value: "7 / 10" }],
-					styles.textStyleWhite,
-					false
+				child: (
+					<DidiCardData
+						data={[
+							{ id: "1", label: "Horas acumuladas", value: "60 hs" },
+							{ id: "2", label: "Promedio", value: "7 / 10" }
+						]}
+						textStyles={styles.textStyleWhite}
+						isHorizontal={false}
+					/>
 				)
 			},
 			{
@@ -82,17 +89,19 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						backgroundColor: "#13c7e0"
 					}
 				}),
-				child: CardDataBuilder.createCardData(
-					[
-						{ id: "1", label: "Dirección", value: "M.Belgrano" },
-						{ id: "2", label: "Nro.", value: "0376" },
-						{ id: "3", label: "Barrio", value: "31" },
-						{ id: "4", label: "Folio", value: "#230495" },
-						{ id: "5", label: "Testigos", value: "4" },
-						{ id: "6", label: "Titulo", value: "En curso" }
-					],
-					styles.textStyleWhite,
-					true
+				child: (
+					<DidiCardData
+						data={[
+							{ id: "1", label: "Dirección", value: "M.Belgrano" },
+							{ id: "2", label: "Nro.", value: "0376" },
+							{ id: "3", label: "Barrio", value: "31" },
+							{ id: "4", label: "Folio", value: "#230495" },
+							{ id: "5", label: "Testigos", value: "4" },
+							{ id: "6", label: "Titulo", value: "En curso" }
+						]}
+						textStyles={styles.textStyleWhite}
+						isHorizontal={true}
+					/>
 				)
 			},
 			{
@@ -107,10 +116,12 @@ export class DashboardScreen extends NavigationEnabledComponent<
 						backgroundColor: "#906ecd"
 					}
 				}),
-				child: CardDataBuilder.createCardData(
-					[{ id: "1", label: "Acumulado", value: "$12.000" }, { id: "2", label: "Cuota", value: "6 / 6" }],
-					styles.textStyleWhite,
-					false
+				child: (
+					<DidiCardData
+						data={[{ id: "1", label: "Acumulado", value: "$12.000" }, { id: "2", label: "Cuota", value: "6 / 6" }]}
+						textStyles={styles.textStyleWhite}
+						isHorizontal={false}
+					/>
 				)
 			},
 			{
