@@ -4,5 +4,10 @@ export default {
 		rounds: "Rondas",
 		documents: "Documentos",
 		settings: "Configuración"
+	},
+	settings: {
+		account: "Cuenta",
+		preferences: "Preferencias de Didi",
+		about: "Acerca de Didi"
 	}
 };
