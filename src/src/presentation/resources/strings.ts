@@ -1,4 +1,7 @@
 export default {
+	dashboard: {
+		recentActivities: "Actividades recientes"
+	},
 	recovery: {
 		barTitle: "Recuperar Cuenta",
 		startAccess: {

@@ -10,7 +10,6 @@ interface DidiCardProps {
 	subTitle: string;
 	cardStyles?: StyleProp<TextStyle>;
 	textStyles?: StyleProp<TextStyle>;
-	child?: any;
 }
 
 export default class DidiCard extends Component<DidiCardProps, {}> {
@@ -46,7 +45,7 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 							}}
 						>
 							{this.renderTitle()}
-							{this.props.child}
+							{this.props.children}
 						</View>
 					</View>
 					<View style={styles.imageContainer}>

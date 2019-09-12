@@ -1,15 +1,18 @@
 import { Text, View, SafeAreaView, StatusBar, StyleSheet, ScrollView, StyleProp, TextStyle } from "react-native";
 import React, { Fragment } from "react";
 
+import { StartAccessProps } from "../access/StartAccess";
 import themes from "../resources/themes";
 import commonStyles from "../access/resources/commonStyles";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import DidiButton from "../util/DidiButton";
 import DidiCard from "./Card";
-import { StartAccessProps } from "../access/StartAccess";
+import DidiActivity from "./Activity";
 import colors from "../resources/colors";
 import CardDataBuilder from "./CardDataBuilder";
+import strings from "../resources/strings";
+import DropdownMenu from "../util/DropdownMenu";
 
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
@@ -135,9 +138,74 @@ export class DashboardScreen extends NavigationEnabledComponent<
 		];
 	}
 
-	render() {
+	private renderCards() {
 		let cards = this.getCards();
+		return cards.map((card, index) => {
+			return (
+				<DidiCard
+					key={index}
+					icon={card.icon}
+					image={card.image}
+					category={card.category}
+					title={card.title}
+					subTitle={card.subTitle}
+					cardStyles={card.cardStyles.style}
+					textStyles={card.textStyle}
+				>
+					{card.child}
+				</DidiCard>
+			);
+		});
+	}
 
+	private getRecentActivities() {
+		return [
+			{
+				icon: require("../resources/images/docsIcon.png"),
+				title: "Documentos",
+				description: "Documento Identidad",
+				state: "Validado",
+				date: "12/09/2018"
+			},
+			{
+				icon: require("../resources/images/rondaIcon.png"),
+				title: "Ronda Los Martinez",
+				description: "Cuota 2/12",
+				state: "Pagado",
+				date: "12/09/2018"
+			},
+			{
+				icon: require("../resources/images/coursesIcon.png"),
+				title: "Cursos",
+				description: "Maestro Pizzero",
+				state: "Terminado",
+				date: "12/09/2018"
+			}
+		];
+	}
+
+	private renderRecentActivities() {
+		let activities = this.getRecentActivities();
+		return (
+			<View>
+				{activities.map((activity, index) => {
+					return (
+						<DidiActivity
+							key={index}
+							icon={activity.icon}
+							title={activity.title}
+							description={activity.description}
+							state={activity.state}
+							date={activity.date}
+							style={styles.activities}
+						/>
+					);
+				})}
+			</View>
+		);
+	}
+
+	render() {
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -149,21 +217,9 @@ export class DashboardScreen extends NavigationEnabledComponent<
 								<DidiButton title="Log Out" onPress={() => this.navigate("Access", {})} />
 							</View>
 
-							{cards.map((card, index) => {
-								return (
-									<DidiCard
-										key={index}
-										icon={card.icon}
-										image={card.image}
-										category={card.category}
-										title={card.title}
-										subTitle={card.subTitle}
-										cardStyles={card.cardStyles.style}
-										textStyles={card.textStyle}
-										child={card.child}
-									/>
-								);
-							})}
+							{this.renderCards()}
+
+							<DropdownMenu label={strings.dashboard.recentActivities}>{this.renderRecentActivities()}</DropdownMenu>
 						</ScrollView>
 					</View>
 				</SafeAreaView>
@@ -177,6 +233,10 @@ const styles = StyleSheet.create({
 		justifyContent: "space-evenly"
 	},
 	menu: {
+		marginBottom: 10
+	},
+	activities: {
+		backgroundColor: "#FFF",
 		marginBottom: 10
 	},
 	textStyleWhite: {
