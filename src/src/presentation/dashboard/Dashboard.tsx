@@ -81,7 +81,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				}),
 				child: CardDataBuilder.createCardData(
 					[
-						{ id: "1", label: "Dirección", value: "M. Belgrano" },
+						{ id: "1", label: "Dirección", value: "M.Belgrano" },
 						{ id: "2", label: "Nro.", value: "0376" },
 						{ id: "3", label: "Barrio", value: "31" },
 						{ id: "4", label: "Folio", value: "#230495" },
@@ -127,7 +127,7 @@ export class DashboardScreen extends NavigationEnabledComponent<
 				child: (
 					<DidiButton
 						style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
-						title="ValidarId"
+						title="Validar Id"
 						onPress={() => {}}
 					/>
 				)
