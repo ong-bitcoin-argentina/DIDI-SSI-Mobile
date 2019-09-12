@@ -238,15 +238,9 @@ export class DashboardScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
+					<View style={[commonStyles.view.body, styles.body]}>
 						<ScrollView>
-							<View style={styles.menu}>
-								<Text style={[commonStyles.text.emphasis]}>Dashboard en construccion</Text>
-								<DidiButton title="Log Out" onPress={() => this.navigate("Access", {})} />
-							</View>
-
-							{/*this.renderCards()*/}
-
+							{this.renderCards()}
 							<DropdownMenu label={strings.dashboard.recentActivities.label}>
 								{this.renderRecentActivities()}
 							</DropdownMenu>
@@ -259,6 +253,10 @@ export class DashboardScreen extends NavigationEnabledComponent<
 }
 
 const styles = StyleSheet.create({
+	body: {
+		marginTop: 10,
+		marginBottom: 10
+	},
 	scroll: {
 		justifyContent: "space-evenly"
 	},
