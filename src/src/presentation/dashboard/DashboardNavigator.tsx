@@ -10,20 +10,17 @@ import strings from "../resources/strings";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import { DocumentsScreen } from "./documents/DocumentsScreen";
 import { SettingsScreen } from "./settings/SettingsScreen";
+import DocumentsNavigator from "./documents/DocumentsNavigator";
+import { NavigationContainer } from "react-navigation";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
 }
 
 export default function(then: NavTree<DashboardSwitchTarget>) {
-	function screen(
-		constructor: NavigationEnabledComponentConstructor<any, any>,
-		navName: string,
-		title: string,
-		image: ImageSourcePropType
-	) {
+	function screen(constructor: NavigationContainer, title: string, image: ImageSourcePropType) {
 		return {
-			screen: NavMap.from(constructor, then).stackNavigator(navName),
+			screen: constructor,
 			navigationOptions: {
 				title,
 				tabBarIcon: ({ focused, tintColor }: { focused: boolean; tintColor: string }) => (
@@ -36,26 +33,22 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 	return createMaterialBottomTabNavigator(
 		{
 			DashboardHome: screen(
-				DashboardScreen,
-				"DashboardHome",
+				NavMap.from(DashboardScreen, then).stackNavigator("DashboardHome"),
 				strings.tabNames.home,
 				require("./resources/images/homeIcon.png")
 			),
 			DashboardRounds: screen(
-				RoundsScreen,
-				"DashboardRounds",
+				NavMap.from(RoundsScreen, then).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
 				require("./resources/images/roundIcon.png")
 			),
 			DashboardDocuments: screen(
-				DocumentsScreen,
-				"DashboardDocuments",
+				DocumentsNavigator,
 				strings.tabNames.documents,
 				require("./resources/images/documentIcon.png")
 			),
 			DashboardSettings: screen(
-				SettingsScreen,
-				"DashboardSettings",
+				NavMap.from(SettingsScreen, then).stackNavigator("DashboardSettings"),
 				strings.tabNames.settings,
 				require("./resources/images/settingsIcon.png")
 			)
