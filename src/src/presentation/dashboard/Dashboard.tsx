@@ -145,7 +145,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<ScrollView style={styles.body}>
+					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContainer}>
 						{this.renderCards()}
 						<DropdownMenu label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
@@ -158,7 +158,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 }
 
 export default connect(
-	(state: LoggedInStoreContent): DashboardScreenProps => {
+	(state: LoggedInStoreContent): DashboardScreenInternalProps => {
 		return { recentActivity: state.recentActivity, documents: state.documents };
 	}
 )(DashboardScreen);
@@ -166,8 +166,10 @@ export default connect(
 const styles = StyleSheet.create({
 	body: {
 		width: "100%",
-		paddingHorizontal: 20,
-		paddingVertical: 15
+		paddingHorizontal: 20
+	},
+	scrollContainer: {
+		paddingTop: 15
 	},
 	menu: {
 		marginBottom: 10

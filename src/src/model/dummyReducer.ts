@@ -15,6 +15,7 @@ const defaultContent: StoreContent = {
 			category: "Cursos",
 			title: "Maestro Pizzero",
 			subtitle: "Anual",
+			filterType: "other",
 			data: [{ label: "Horas acumuladas", value: "60 hs" }, { label: "Promedio", value: "7 / 10" }],
 			isHorizontal: false
 		},
@@ -24,6 +25,7 @@ const defaultContent: StoreContent = {
 			category: "Propiedad",
 			title: "Liliana Martinez",
 			subtitle: "Vivienda",
+			filterType: "livingPlace",
 			data: [
 				{ label: "Dirección", value: "M.Belgrano" },
 				{ label: "Nro.", value: "0376" },
@@ -40,8 +42,24 @@ const defaultContent: StoreContent = {
 			category: "Ronda",
 			title: "Los Martinez",
 			subtitle: "Quincenal",
+			filterType: "other",
 			data: [{ label: "Acumulado", value: "$12.000" }, { label: "Cuota", value: "6 / 6" }],
 			isHorizontal: false
+		},
+		{
+			icon: require("../presentation/dashboard/resources/images/documentIcon.png"),
+			image: require("../presentation/resources/images/blankIcon.png"),
+			category: "Documento Identidad",
+			title: "Liliana Martinez",
+			subtitle: "Nombre",
+			filterType: "identity",
+			data: [
+				{ label: "Número", value: "25.390.189" },
+				{ label: "Nacionalidad", value: "🇦🇷" },
+				{ label: "Fecha Nac.", value: "16.06.76" },
+				{ label: "Sexo", value: "F" }
+			],
+			isHorizontal: true
 		}
 	],
 	recentActivity: [

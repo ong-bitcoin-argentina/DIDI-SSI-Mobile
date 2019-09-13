@@ -1,12 +1,12 @@
 import { createMaterialTopTabNavigator, createStackNavigator } from "react-navigation";
-import { NavigationEnabledComponentConstructor } from "../../util/NavMap";
 import themes from "../../resources/themes";
-import { DocumentsScreen } from "./DocumentsScreen";
+import DocumentsScreen from "./DocumentsScreen";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import { DocumentFilterType } from "../../../model/StoreContent";
 
-function screen(constructor: NavigationEnabledComponentConstructor<any, any>, title: string) {
+function screen(title: string, filter: (type: DocumentFilterType) => boolean) {
 	return {
-		screen: constructor,
+		screen: DocumentsScreen(filter),
 		navigationOptions: {
 			title
 		}
@@ -17,9 +17,9 @@ export default createStackNavigator(
 	{
 		DocumentsScreen: createMaterialTopTabNavigator(
 			{
-				DocumentsAll: screen(DocumentsScreen, "Todos"),
-				DocumentsLivingPlace: screen(DocumentsScreen, "Vivienda"),
-				DocumentsIdentity: screen(DocumentsScreen, "Identidad")
+				DocumentsAll: screen("Todos", type => true),
+				DocumentsLivingPlace: screen("Vivienda", type => type === "livingPlace"),
+				DocumentsIdentity: screen("Identidad", type => type === "identity")
 			},
 			{
 				tabBarOptions: {

@@ -6,12 +6,15 @@ export interface Identity {
 	image: ImageSourcePropType;
 }
 
+export type DocumentFilterType = "livingPlace" | "identity" | "other";
+
 export interface Document {
 	icon: ImageSourcePropType;
 	image: ImageSourcePropType;
 	category: string;
 	title: string;
 	subtitle: string;
+	filterType: DocumentFilterType;
 	isHorizontal: boolean;
 	data: Array<{ label: string; value: string }>;
 }
