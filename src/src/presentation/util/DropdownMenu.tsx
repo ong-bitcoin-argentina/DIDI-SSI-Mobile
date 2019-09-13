@@ -6,13 +6,17 @@ import themes from "../resources/themes";
 interface DropdownMenuProps {
 	label: string;
 	style?: StyleProp<TextStyle>;
-	child?: any;
 }
 
-export default class DropdownMenu extends React.Component<DropdownMenuProps, {}> {
-	state = {
-		visible: true
-	};
+interface DropdownMenuState {
+	visible: boolean;
+}
+
+export default class DropdownMenu extends React.Component<DropdownMenuProps, DropdownMenuState> {
+	constructor(props: DropdownMenuProps) {
+		super(props);
+		this.state = { visible: true };
+	}
 
 	toggleVisible() {
 		this.state.visible ? this.hide() : this.show();
