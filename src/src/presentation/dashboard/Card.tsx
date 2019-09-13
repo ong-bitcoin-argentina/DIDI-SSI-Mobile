@@ -1,14 +1,13 @@
 import { Component, Fragment } from "react";
-import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle } from "react-native";
+import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle, ViewProps } from "react-native";
 import React from "react";
 
-export interface DidiCardProps {
+export interface DidiCardProps extends ViewProps {
 	icon: ImageSourcePropType;
 	image?: ImageSourcePropType;
 	category: string;
 	title: string;
 	subTitle: string;
-	cardStyle?: StyleProp<TextStyle>;
 	textStyle?: StyleProp<TextStyle>;
 }
 
@@ -33,28 +32,20 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 
 	render() {
 		return (
-			<Fragment>
-				<View style={[styles.body, styles.card, this.props.cardStyle]}>
-					<View style={styles.headerContainer}>
-						{this.renderIcon()}
-						<View
-							style={{
-								flexDirection: "column",
-								flexGrow: 1,
-								justifyContent: "space-between"
-							}}
-						>
-							{this.renderTitle()}
-							{this.props.children}
-						</View>
+			<View {...this.props} style={[styles.body, styles.card, this.props.style]}>
+				<View style={styles.headerContainer}>
+					{this.renderIcon()}
+					<View style={styles.textContainer}>
+						{this.renderTitle()}
+						{this.props.children}
 					</View>
-					{this.props.image && (
-						<View style={styles.imageContainer}>
-							<Image style={styles.image} source={this.props.image} />
-						</View>
-					)}
 				</View>
-			</Fragment>
+				{this.props.image && (
+					<View style={styles.imageContainer}>
+						<Image style={styles.image} source={this.props.image} />
+					</View>
+				)}
+			</View>
 		);
 	}
 }
@@ -67,6 +58,11 @@ const styles = StyleSheet.create({
 		alignItems: "stretch",
 		justifyContent: "flex-start",
 		flexGrow: 1
+	},
+	textContainer: {
+		flexDirection: "column",
+		flexGrow: 1,
+		justifyContent: "space-between"
 	},
 	card: {
 		marginBottom: 10,

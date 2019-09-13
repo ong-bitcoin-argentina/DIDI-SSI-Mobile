@@ -52,7 +52,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			title: "Mi Evolución",
 			subTitle: "16.06.2019",
 			textStyle: styles.textStyleWhite,
-			cardStyle: cardStyles.evolution,
+			style: cardStyles.evolution,
 			children: (
 				<DidiCardData
 					data={[
@@ -75,7 +75,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			title: "Liliana Martinez",
 			subTitle: "Nombre",
 			textStyle: styles.textStyleBlue,
-			cardStyle: cardStyles.identityIncomplete,
+			style: cardStyles.identityIncomplete,
 			children: (
 				<DidiButton
 					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
@@ -94,7 +94,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			title: document.title,
 			subTitle: document.subtitle,
 			textStyle: styles.textStyleWhite,
-			cardStyle: cardStyles.document,
+			style: cardStyles.document,
 			children: <DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
 		};
 	}
