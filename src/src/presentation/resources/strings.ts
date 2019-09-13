@@ -93,6 +93,11 @@ export default {
 			resendCode: "¿No recibiste el código?"
 		}
 	},
+	documentFilters: {
+		all: "Todos",
+		livingPlace: "Vivienda",
+		identity: "Identidad"
+	},
 	tabNames: {
 		home: "Inicio",
 		rounds: "Rondas",

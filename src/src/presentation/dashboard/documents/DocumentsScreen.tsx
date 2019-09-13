@@ -4,16 +4,17 @@ import React from "react";
 import { StatusBar, SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import strings from "../../resources/strings";
 import { Document, DocumentFilterType, LoggedInStoreContent } from "../../../model/StoreContent";
 import { connect } from "react-redux";
 import colors from "../../resources/colors";
 import DidiCard, { DidiCardProps } from "../Card";
 import { AddChildren } from "../../../util/ReactExtensions";
 import DidiCardData from "../CardData";
+import { DashboardScreenProps } from "../Dashboard";
 
-export type DocumentsScreenNavigation = {};
+export type DocumentsScreenNavigation = {
+	DashboardHome: DashboardScreenProps;
+};
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenInternalProps extends DocumentsScreenProps {
@@ -30,8 +31,6 @@ class DocumentsScreen extends NavigationEnabledComponent<
 	DocumentsScreenState,
 	DocumentsScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.tabNames.documents);
-
 	render() {
 		return (
 			<Fragment>

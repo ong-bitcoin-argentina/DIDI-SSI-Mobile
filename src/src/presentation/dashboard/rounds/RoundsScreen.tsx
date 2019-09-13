@@ -6,8 +6,11 @@ import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
+import { DashboardScreenProps } from "../Dashboard";
 
-export interface RoundsScreenNavigation {}
+export interface RoundsScreenNavigation {
+	DashboardHome: DashboardScreenProps;
+}
 export type RoundsScreenProps = {};
 type RoundsScreenState = {};
 
@@ -16,7 +19,11 @@ export class RoundsScreen extends NavigationEnabledComponent<
 	RoundsScreenState,
 	RoundsScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.tabNames.rounds);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<RoundsScreenNavigation, "DashboardHome">(
+		strings.tabNames.rounds,
+		"DashboardHome",
+		{}
+	);
 
 	render() {
 		return (

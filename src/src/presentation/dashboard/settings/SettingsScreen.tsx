@@ -10,6 +10,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import DidiButton from "../../util/DidiButton";
 import { connect } from "react-redux";
 import StoreContent, { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
+import { DashboardScreenProps } from "../Dashboard";
+import { StartAccessProps } from "../../access/StartAccess";
 
 export interface SettingsScreenProps {
 	person: Identity;
@@ -18,7 +20,8 @@ export interface SettingsScreenProps {
 type SettingsScreenState = {};
 
 export interface SettingsScreenNavigation {
-	Access: {};
+	Access: StartAccessProps;
+	DashboardHome: DashboardScreenProps;
 	SettingsAccount: {};
 	SettingsPreferences: {};
 	SettingsAbout: {};
@@ -34,7 +37,11 @@ class SettingsScreen extends NavigationEnabledComponent<
 	SettingsScreenState,
 	SettingsScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.tabNames.settings);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<SettingsScreenNavigation, "DashboardHome">(
+		strings.tabNames.settings,
+		"DashboardHome",
+		{}
+	);
 
 	buttons(): SettingsButton[] {
 		return [
