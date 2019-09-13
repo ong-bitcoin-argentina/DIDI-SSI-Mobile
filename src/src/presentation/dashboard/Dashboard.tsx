@@ -71,7 +71,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 	private incompleteIdentityCard(): AddChildren<DidiCardProps> {
 		return {
 			icon: require("../resources/images/validationIcon.png"),
-			image: require("../resources/images/blankIcon.png"),
 			category: "Documento Identidad",
 			title: "Liliana Martinez",
 			subTitle: "Nombre",

@@ -4,7 +4,7 @@ import React from "react";
 
 export interface DidiCardProps {
 	icon: ImageSourcePropType;
-	image: ImageSourcePropType;
+	image?: ImageSourcePropType;
 	category: string;
 	title: string;
 	subTitle: string;
@@ -48,9 +48,11 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 							{this.props.children}
 						</View>
 					</View>
-					<View style={styles.imageContainer}>
-						<Image style={styles.image} source={this.props.image} />
-					</View>
+					{this.props.image && (
+						<View style={styles.imageContainer}>
+							<Image style={styles.image} source={this.props.image} />
+						</View>
+					)}
 				</View>
 			</Fragment>
 		);
@@ -83,7 +85,8 @@ const styles = StyleSheet.create({
 	icon: {
 		height: 30,
 		width: 27,
-		marginRight: 25
+		marginRight: 25,
+		resizeMode: "contain"
 	},
 	headerData: {
 		textAlign: "left",

@@ -10,7 +10,7 @@ export type DocumentFilterType = "livingPlace" | "identity" | "other";
 
 export interface Document {
 	icon: ImageSourcePropType;
-	image: ImageSourcePropType;
+	image?: ImageSourcePropType;
 	category: string;
 	title: string;
 	subtitle: string;

@@ -11,7 +11,6 @@ const defaultContent: StoreContent = {
 	documents: [
 		{
 			icon: require("../presentation/resources/images/placeIcon.png"),
-			image: require("../presentation/resources/images/blankIcon.png"),
 			category: "Cursos",
 			title: "Maestro Pizzero",
 			subtitle: "Anual",
@@ -21,7 +20,6 @@ const defaultContent: StoreContent = {
 		},
 		{
 			icon: require("../presentation/resources/images/addressIcon.png"),
-			image: require("../presentation/resources/images/blankIcon.png"),
 			category: "Propiedad",
 			title: "Liliana Martinez",
 			subtitle: "Vivienda",
@@ -38,7 +36,6 @@ const defaultContent: StoreContent = {
 		},
 		{
 			icon: require("../presentation/dashboard/resources/images/roundIcon.png"),
-			image: require("../presentation/resources/images/blankIcon.png"),
 			category: "Ronda",
 			title: "Los Martinez",
 			subtitle: "Quincenal",
@@ -48,7 +45,6 @@ const defaultContent: StoreContent = {
 		},
 		{
 			icon: require("../presentation/dashboard/resources/images/documentIcon.png"),
-			image: require("../presentation/resources/images/blankIcon.png"),
 			category: "Documento Identidad",
 			title: "Liliana Martinez",
 			subtitle: "Nombre",

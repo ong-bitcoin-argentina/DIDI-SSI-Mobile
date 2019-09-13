@@ -1,7 +1,7 @@
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import { StartAccessProps } from "../access/StartAccess";
-import DashboardScreen from "./Dashboard";
+import DashboardScreen, { DashboardScreenProps } from "./Dashboard";
 import NavMap, { NavTree, NavigationEnabledComponentConstructor } from "../util/NavMap";
 import React from "react";
 import { Image, ImageSourcePropType } from "react-native";
@@ -29,15 +29,17 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		};
 	}
 
+	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, then);
+
 	return createMaterialBottomTabNavigator(
 		{
 			DashboardHome: screen(
-				NavMap.from(DashboardScreen, then).stackNavigator("DashboardHome"),
+				dashboardHome.stackNavigator("DashboardHome"),
 				strings.tabNames.home,
 				require("./resources/images/homeIcon.png")
 			),
 			DashboardRounds: screen(
-				NavMap.from(RoundsScreen, then).stackNavigator("DashboardRounds"),
+				NavMap.from(RoundsScreen, { ...then, DashboardHome: dashboardHome }).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
 				require("./resources/images/roundIcon.png")
 			),
