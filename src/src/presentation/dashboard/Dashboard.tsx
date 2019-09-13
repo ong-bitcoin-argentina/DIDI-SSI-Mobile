@@ -145,14 +145,12 @@ class DashboardScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<View style={[commonStyles.view.body, styles.body]}>
-						<ScrollView>
-							{this.renderCards()}
-							<DropdownMenu label={strings.dashboard.recentActivities.label}>
-								{this.renderRecentActivities()}
-							</DropdownMenu>
-						</ScrollView>
-					</View>
+					<ScrollView style={styles.body}>
+						{this.renderCards()}
+						<DropdownMenu label={strings.dashboard.recentActivities.label}>
+							{this.renderRecentActivities()}
+						</DropdownMenu>
+					</ScrollView>
 				</SafeAreaView>
 			</Fragment>
 		);
@@ -167,11 +165,9 @@ export default connect(
 
 const styles = StyleSheet.create({
 	body: {
-		marginTop: 10,
-		marginBottom: 10
-	},
-	scroll: {
-		justifyContent: "space-evenly"
+		width: "100%",
+		paddingHorizontal: 20,
+		paddingVertical: 15
 	},
 	menu: {
 		marginBottom: 10
