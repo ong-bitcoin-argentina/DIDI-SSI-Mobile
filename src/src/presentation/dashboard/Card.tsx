@@ -69,7 +69,8 @@ const styles = StyleSheet.create({
 		flexGrow: 1
 	},
 	card: {
-		marginBottom: 10
+		marginBottom: 10,
+		minHeight: 180
 	},
 	data: {
 		justifyContent: "center"
