@@ -2,23 +2,23 @@ import { Component, Fragment } from "react";
 import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle } from "react-native";
 import React from "react";
 
-interface DidiCardProps {
+export interface DidiCardProps {
 	icon: ImageSourcePropType;
 	image: ImageSourcePropType;
 	category: string;
 	title: string;
 	subTitle: string;
-	cardStyles?: StyleProp<TextStyle>;
-	textStyles?: StyleProp<TextStyle>;
+	cardStyle?: StyleProp<TextStyle>;
+	textStyle?: StyleProp<TextStyle>;
 }
 
 export default class DidiCard extends Component<DidiCardProps, {}> {
 	private renderTitle() {
 		return (
 			<View style={styles.headerData}>
-				<Text style={[styles.category, this.props.textStyles]}>{this.props.category}</Text>
-				<Text style={[styles.title, this.props.textStyles]}>{this.props.title}</Text>
-				<Text style={[styles.subTitle, this.props.textStyles]}>{this.props.subTitle}</Text>
+				<Text style={[styles.category, this.props.textStyle]}>{this.props.category}</Text>
+				<Text style={[styles.title, this.props.textStyle]}>{this.props.title}</Text>
+				<Text style={[styles.subTitle, this.props.textStyle]}>{this.props.subTitle}</Text>
 			</View>
 		);
 	}
@@ -34,7 +34,7 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 	render() {
 		return (
 			<Fragment>
-				<View style={[styles.body, styles.card, this.props.cardStyles]}>
+				<View style={[styles.body, styles.card, this.props.cardStyle]}>
 					<View style={styles.headerContainer}>
 						{this.renderIcon()}
 						<View

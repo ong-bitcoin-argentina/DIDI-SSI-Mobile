@@ -17,7 +17,7 @@ import commonStyles from "../access/resources/commonStyles";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import DidiButton from "../util/DidiButton";
-import DidiCard from "./Card";
+import DidiCard, { DidiCardProps } from "./Card";
 import DidiActivity from "./Activity";
 import colors from "../resources/colors";
 import DidiCardData from "./CardData";
@@ -25,6 +25,7 @@ import strings from "../resources/strings";
 import DropdownMenu from "../util/DropdownMenu";
 import { connect } from "react-redux";
 import { LoggedInStoreContent, RecentActivity, Document } from "../../model/StoreContent";
+import { AddChildren } from "../../util/ReactExtensions";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
@@ -43,7 +44,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Home");
 
-	private evolutionCard() {
+	private evolutionCard(): AddChildren<DidiCardProps> {
 		return {
 			icon: require("../resources/images/progressIcon.png"),
 			image: require("../resources/images/precentageSample.png"),
@@ -51,12 +52,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 			title: "Mi Evolución",
 			subTitle: "16.06.2019",
 			textStyle: styles.textStyleWhite,
-			cardStyles: StyleSheet.create({
-				style: {
-					backgroundColor: colors.primary
-				}
-			}),
-			child: (
+			cardStyle: cardStyles.evolution,
+			children: (
 				<DidiCardData
 					data={[
 						{ label: "Validaciónes:", value: " " },
@@ -71,7 +68,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		};
 	}
 
-	private identityCard() {
+	private incompleteIdentityCard(): AddChildren<DidiCardProps> {
 		return {
 			icon: require("../resources/images/validationIcon.png"),
 			image: require("../resources/images/blankIcon.png"),
@@ -79,14 +76,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 			title: "Liliana Martinez",
 			subTitle: "Nombre",
 			textStyle: styles.textStyleBlue,
-			cardStyles: StyleSheet.create({
-				style: {
-					backgroundColor: "#FFF",
-					borderColor: colors.secondary,
-					borderWidth: 2
-				}
-			}),
-			child: (
+			cardStyle: cardStyles.identityIncomplete,
+			children: (
 				<DidiButton
 					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
 					title="Validar Id"
@@ -96,7 +87,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		};
 	}
 
-	private documentToCard(document: Document) {
+	private documentToCard(document: Document): AddChildren<DidiCardProps> {
 		return {
 			icon: document.icon,
 			image: document.image,
@@ -104,34 +95,21 @@ class DashboardScreen extends NavigationEnabledComponent<
 			title: document.title,
 			subTitle: document.subtitle,
 			textStyle: styles.textStyleWhite,
-			cardStyles: StyleSheet.create({
-				style: {
-					backgroundColor: colors.secondary
-				}
-			}),
-			child: (
+			cardStyle: cardStyles.document,
+			children: (
 				<DidiCardData data={document.data} textStyles={styles.textStyleWhite} isHorizontal={document.isHorizontal} />
 			)
 		};
 	}
 
 	private renderCards() {
-		let cards = [this.evolutionCard(), ...this.props.documents.map(this.documentToCard), this.identityCard()];
+		const cards: Array<AddChildren<DidiCardProps>> = [
+			this.evolutionCard(),
+			...this.props.documents.map(this.documentToCard),
+			this.incompleteIdentityCard()
+		];
 		return cards.map((card, index) => {
-			return (
-				<DidiCard
-					key={index}
-					icon={card.icon}
-					image={card.image}
-					category={card.category}
-					title={card.title}
-					subTitle={card.subTitle}
-					cardStyles={card.cardStyles.style}
-					textStyles={card.textStyle}
-				>
-					{card.child}
-				</DidiCard>
-			);
+			return <DidiCard key={index} {...card} />;
 		});
 	}
 
@@ -210,5 +188,19 @@ const styles = StyleSheet.create({
 	},
 	textStyleBlue: {
 		color: colors.secondary
+	}
+});
+
+const cardStyles = StyleSheet.create({
+	evolution: {
+		backgroundColor: colors.primary
+	},
+	identityIncomplete: {
+		backgroundColor: "#FFF",
+		borderColor: colors.secondary,
+		borderWidth: 2
+	},
+	document: {
+		backgroundColor: colors.secondary
 	}
 });
