@@ -17,7 +17,7 @@ const defaultContent: StoreContent = {
 			subtitle: "Anual",
 			filterType: "other",
 			data: [{ label: "Horas acumuladas", value: "60 hs" }, { label: "Promedio", value: "7 / 10" }],
-			isHorizontal: false
+			columns: 1
 		},
 		{
 			icon: require("../presentation/resources/images/addressIcon.png"),
@@ -34,7 +34,7 @@ const defaultContent: StoreContent = {
 				{ label: "Testigos", value: "4" },
 				{ label: "Titulo", value: "En curso" }
 			],
-			isHorizontal: true
+			columns: 3
 		},
 		{
 			icon: require("../presentation/dashboard/resources/images/roundIcon.png"),
@@ -44,7 +44,7 @@ const defaultContent: StoreContent = {
 			subtitle: "Quincenal",
 			filterType: "other",
 			data: [{ label: "Acumulado", value: "$12.000" }, { label: "Cuota", value: "6 / 6" }],
-			isHorizontal: false
+			columns: 1
 		},
 		{
 			icon: require("../presentation/dashboard/resources/images/documentIcon.png"),
@@ -59,7 +59,7 @@ const defaultContent: StoreContent = {
 				{ label: "Fecha Nac.", value: "16.06.76" },
 				{ label: "Sexo", value: "F" }
 			],
-			isHorizontal: true
+			columns: 2
 		}
 	],
 	recentActivity: [

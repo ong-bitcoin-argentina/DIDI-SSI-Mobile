@@ -58,9 +58,7 @@ class DocumentsScreen extends NavigationEnabledComponent<
 			subTitle: document.subtitle,
 			textStyle: styles.textStyleWhite,
 			cardStyle: cardStyles.document,
-			children: (
-				<DidiCardData data={document.data} textStyles={styles.textStyleWhite} isHorizontal={document.isHorizontal} />
-			)
+			children: <DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
 		};
 	}
 }

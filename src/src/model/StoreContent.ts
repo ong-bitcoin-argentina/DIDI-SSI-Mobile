@@ -15,7 +15,7 @@ export interface Document {
 	title: string;
 	subtitle: string;
 	filterType: DocumentFilterType;
-	isHorizontal: boolean;
+	columns: 1 | 2 | 3;
 	data: Array<{ label: string; value: string }>;
 }
 

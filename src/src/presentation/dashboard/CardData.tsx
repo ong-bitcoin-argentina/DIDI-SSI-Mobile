@@ -3,19 +3,18 @@ import { Text, View, StyleSheet, StyleProp, TextStyle, FlatList } from "react-na
 import React from "react";
 
 interface DidiCardProps {
-	data: { label: string; value: string }[];
-	isHorizontal: boolean;
+	data: Array<{ label: string; value: string }>;
+	columns: 1 | 2 | 3;
 	textStyles?: StyleProp<TextStyle>;
 }
 
 export default class DidiCardData extends Component<DidiCardProps, {}> {
 	private renderKeyValueHorizontal() {
-		let data = this.props.data;
-		let textStyles = this.props.textStyles;
+		const { data, textStyles, columns } = this.props;
 		return (
 			<FlatList
 				data={data}
-				numColumns={3}
+				numColumns={columns}
 				keyExtractor={item => item.label}
 				renderItem={({ item }) => {
 					return (
@@ -29,9 +28,8 @@ export default class DidiCardData extends Component<DidiCardProps, {}> {
 		);
 	}
 
-	private renderKeyValueVerticel() {
-		let data = this.props.data;
-		let textStyles = this.props.textStyles;
+	private renderKeyValueVertical() {
+		const { data, textStyles } = this.props;
 		return (
 			<FlatList
 				data={data}
@@ -51,10 +49,7 @@ export default class DidiCardData extends Component<DidiCardProps, {}> {
 	render() {
 		return (
 			<Fragment>
-				<View>
-					{this.props.isHorizontal && this.renderKeyValueHorizontal()}
-					{!this.props.isHorizontal && this.renderKeyValueVerticel()}
-				</View>
+				<View>{this.props.columns === 1 ? this.renderKeyValueVertical() : this.renderKeyValueHorizontal()}</View>
 			</Fragment>
 		);
 	}

@@ -62,7 +62,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						{ label: "ID", value: "✓" }
 					]}
 					textStyles={styles.textStyleWhite}
-					isHorizontal={false}
+					columns={1}
 				/>
 			)
 		};
@@ -96,9 +96,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			subTitle: document.subtitle,
 			textStyle: styles.textStyleWhite,
 			cardStyle: cardStyles.document,
-			children: (
-				<DidiCardData data={document.data} textStyles={styles.textStyleWhite} isHorizontal={document.isHorizontal} />
-			)
+			children: <DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
 		};
 	}
 
