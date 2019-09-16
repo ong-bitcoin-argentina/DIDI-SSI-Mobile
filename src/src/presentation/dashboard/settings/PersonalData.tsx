@@ -1,6 +1,7 @@
 import { Component, Fragment } from "react";
-import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle } from "react-native";
+import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle, ViewProps } from "react-native";
 import React from "react";
+import colors from "../../resources/colors";
 
 export enum PersonalDataStatus {
 	Approved = "Approved",
@@ -9,21 +10,20 @@ export enum PersonalDataStatus {
 	Null = ""
 }
 
-interface PersonalDataProps {
+interface PersonalDataProps extends ViewProps {
 	label: string;
 	value: string;
 	state: PersonalDataStatus;
 
-	style?: StyleProp<TextStyle>;
-	textStyles?: StyleProp<TextStyle>;
+	textStyle?: StyleProp<TextStyle>;
 }
 
 export default class PersonalData extends Component<PersonalDataProps, {}> {
 	private renderData() {
 		return (
 			<View style={styles.labelAndData}>
-				<Text style={[styles.label, this.props.textStyles]}>{this.props.label}</Text>
-				<Text style={[styles.value, this.props.textStyles]}>{this.props.value}</Text>
+				<Text style={[styles.label, this.props.textStyle]}>{this.props.label}</Text>
+				<Text style={[styles.value, this.props.textStyle]}>{this.props.value}</Text>
 			</View>
 		);
 	}
@@ -34,7 +34,7 @@ export default class PersonalData extends Component<PersonalDataProps, {}> {
 
 	render() {
 		return (
-			<View style={[styles.data, this.props.style]}>
+			<View {...this.props} style={[styles.data, this.props.style]}>
 				<View style={styles.body}>
 					<View style={styles.column}>{this.renderData()}</View>
 					{this.renderIcon()}
@@ -75,11 +75,12 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	value: {
-		fontWeight: "500",
-		fontSize: 12
+		fontWeight: "normal",
+		fontSize: 15
 	},
 	label: {
-		fontWeight: "bold",
-		fontSize: 16
+		fontWeight: "normal",
+		fontSize: 12,
+		color: colors.textFaded
 	}
 });

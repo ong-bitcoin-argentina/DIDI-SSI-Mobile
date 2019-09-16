@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
 		width: "100%"
 	},
 	dropdownContents: {
-		marginTop: -20
+		marginTop: 0
 	},
 	activities: {
 		backgroundColor: "#FFF",

@@ -13,18 +13,17 @@ export interface UserDataProps extends ViewProps {
 }
 
 export default class UserDataScreen extends NavigationEnabledComponent<UserDataProps, {}, {}> {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Home");
+	static navigationOptions = NavigationHeaderStyle.withTitle("Mi Perfil");
 
 	renderState() {
 		return (
 			<ScrollView>
 				<View>
 					<DropdownMenu
-						color={colors.primary}
-						textColor={colors.secondaryText}
+						headerContainerStyle={{ backgroundColor: colors.primary }}
+						headerTextStyle={{ color: colors.secondaryText }}
 						style={styles.personalDataDropdown}
 						label={strings.dashboard.userData.personalDataLabel}
-						round={true}
 					>
 						<View style={styles.dropdownContents}>
 							{this.props.personalData.map((data, index) => {
@@ -53,14 +52,12 @@ export default class UserDataScreen extends NavigationEnabledComponent<UserDataP
 const styles = StyleSheet.create({
 	personalDataDropdown: {
 		marginTop: 20,
-		marginLeft: 10,
-		marginRight: 10
+		marginHorizontal: 10,
+		borderRadius: 10,
+		overflow: "hidden"
 	},
 	dropdownContents: {
-		backgroundColor: themes.buttonDisabled,
-		marginTop: -20,
-		marginLeft: 10,
-		marginRight: 10
+		backgroundColor: colors.darkBackground
 	},
 	personalDataElement: {
 		marginBottom: 10
