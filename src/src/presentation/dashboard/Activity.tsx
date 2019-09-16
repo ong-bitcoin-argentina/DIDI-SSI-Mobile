@@ -1,15 +1,15 @@
 import { Component, Fragment } from "react";
-import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle } from "react-native";
+import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle, ViewProps } from "react-native";
 import React from "react";
+import colors from "../resources/colors";
 
-interface DidiActivityProps {
+interface DidiActivityProps extends ViewProps {
 	icon: ImageSourcePropType;
 	title: string;
 	description: string;
 	state: string;
 	date: string;
 	textStyles?: StyleProp<TextStyle>;
-	style?: StyleProp<TextStyle>;
 }
 
 export default class DidiActivity extends Component<DidiActivityProps, {}> {
@@ -17,7 +17,7 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 		return (
 			<View style={styles.titleData}>
 				<Text style={[styles.title, this.props.textStyles]}>{this.props.title}</Text>
-				<Text style={[styles.subTitle, this.props.textStyles]}>{this.props.description}</Text>
+				<Text style={[styles.description, this.props.textStyles]}>{this.props.description}</Text>
 			</View>
 		);
 	}
@@ -25,8 +25,8 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderState() {
 		return (
 			<View style={styles.stateData}>
-				<Text style={[styles.title, this.props.textStyles]}>{this.props.state}</Text>
-				<Text style={[styles.subTitle, this.props.textStyles]}>{this.props.date}</Text>
+				<Text style={[styles.state, this.props.textStyles]}>{this.props.state}</Text>
+				<Text style={[styles.date, this.props.textStyles]}>{this.props.date}</Text>
 			</View>
 		);
 	}
@@ -41,15 +41,13 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 
 	render() {
 		return (
-			<Fragment>
-				<View style={[styles.activity, this.props.style]}>
-					<View style={styles.body}>
-						{this.renderIcon()}
-						<View style={styles.column}>{this.renderTitle()}</View>
-						<View style={styles.column}>{this.renderState()}</View>
-					</View>
+			<View {...this.props} style={[styles.activity, this.props.style]}>
+				<View style={styles.body}>
+					{this.renderIcon()}
+					<View style={styles.column}>{this.renderTitle()}</View>
+					<View style={styles.column}>{this.renderState()}</View>
 				</View>
-			</Fragment>
+			</View>
 		);
 	}
 }
@@ -57,8 +55,8 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 const styles = StyleSheet.create({
 	body: {
 		flexDirection: "row",
-		marginHorizontal: 25,
-		marginVertical: 10,
+		marginHorizontal: 16,
+		marginVertical: 16,
 		alignItems: "stretch",
 		justifyContent: "flex-start",
 		flexGrow: 1
@@ -71,9 +69,9 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start"
 	},
 	icon: {
-		height: 40,
-		width: 40,
-		marginRight: 25
+		height: 32,
+		width: 32,
+		marginRight: 12
 	},
 	titleData: {
 		textAlign: "left",
@@ -89,12 +87,24 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		flex: 1
 	},
-	subTitle: {
-		fontWeight: "500",
-		fontSize: 12
-	},
 	title: {
 		fontWeight: "bold",
-		fontSize: 16
+		fontSize: 14
+	},
+	description: {
+		fontWeight: "normal",
+		fontSize: 12,
+		color: colors.textFaded
+	},
+	state: {
+		fontWeight: "bold",
+		fontSize: 14,
+		textAlign: "right"
+	},
+	date: {
+		fontWeight: "normal",
+		fontSize: 12,
+		color: colors.textFaded,
+		textAlign: "right"
 	}
 });

@@ -1,11 +1,10 @@
 import React, { Fragment } from "react";
-import { TouchableOpacity, StyleProp, TextStyle, Text, StyleSheet, View } from "react-native";
+import { TouchableOpacity, StyleProp, TextStyle, Text, StyleSheet, View, ViewProps } from "react-native";
 import commonStyles from "../access/resources/commonStyles";
 import themes from "../resources/themes";
 
-interface DropdownMenuProps {
+interface DropdownMenuProps extends ViewProps {
 	label: string;
-	style?: StyleProp<TextStyle>;
 }
 
 interface DropdownMenuState {
@@ -33,7 +32,7 @@ export default class DropdownMenu extends React.Component<DropdownMenuProps, Dro
 	render() {
 		const { visible } = this.state;
 		return (
-			<Fragment>
+			<View {...this.props}>
 				<TouchableOpacity
 					style={[styles.dropdown, this.props.style]}
 					onPress={() => {
@@ -47,7 +46,7 @@ export default class DropdownMenu extends React.Component<DropdownMenuProps, Dro
 					</View>
 				</TouchableOpacity>
 				{visible && this.props.children}
-			</Fragment>
+			</View>
 		);
 	}
 }
@@ -59,17 +58,15 @@ const styles = StyleSheet.create({
 	},
 	labelContainer: {
 		flexDirection: "row",
-		marginBottom: 10
+		marginVertical: 16
 	},
 	label: {
-		backgroundColor: themes.buttonDisabled,
 		flex: 1,
 		justifyContent: "flex-start",
 		textAlign: "left",
 		marginLeft: 10
 	},
 	icon: {
-		backgroundColor: themes.buttonDisabled,
 		justifyContent: "flex-end"
 	}
 });
