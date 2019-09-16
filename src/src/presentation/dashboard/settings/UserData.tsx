@@ -6,6 +6,7 @@ import DropdownMenu from "../../util/DropdownMenu";
 import strings from "../../resources/strings";
 import PersonalData, { PersonalDataStatus } from "./PersonalData";
 import colors from "../../resources/colors";
+import themes from "../../resources/themes";
 
 export interface UserDataProps extends ViewProps {
 	personalData: Array<{ label: string; value: string; state: PersonalDataStatus }>;
@@ -23,18 +24,21 @@ export default class UserDataScreen extends NavigationEnabledComponent<UserDataP
 						textColor={colors.secondaryText}
 						style={styles.personalDataDropdown}
 						label={strings.dashboard.userData.personalDataLabel}
+						round={true}
 					>
-						{this.props.personalData.map((data, index) => {
-							return (
-								<PersonalData
-									key={index}
-									label={data.label}
-									value={data.value}
-									state={data.state}
-									style={styles.personalDataElement}
-								/>
-							);
-						})}
+						<View style={styles.dropdownContents}>
+							{this.props.personalData.map((data, index) => {
+								return (
+									<PersonalData
+										key={index}
+										label={data.label}
+										value={data.value}
+										state={data.state}
+										style={styles.personalDataElement}
+									/>
+								);
+							})}
+						</View>
 					</DropdownMenu>
 				</View>
 			</ScrollView>
@@ -52,7 +56,13 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		marginRight: 10
 	},
+	dropdownContents: {
+		backgroundColor: themes.buttonDisabled,
+		marginTop: -20,
+		marginLeft: 10,
+		marginRight: 10
+	},
 	personalDataElement: {
-		marginTop: 10
+		marginBottom: 10
 	}
 });

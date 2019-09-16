@@ -7,7 +7,8 @@ import {
 	ScrollView,
 	StyleProp,
 	TextStyle,
-	TouchableOpacity
+	TouchableOpacity,
+	ViewStyle
 } from "react-native";
 import React, { Fragment } from "react";
 
@@ -128,7 +129,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 				})}
 				<View>
 					<TouchableOpacity onPress={() => {}}>
-						<Text style={[commonStyles.text.emphasis, styles.text]}>
+						<Text style={[commonStyles.text.emphasis, styles.loadMoreText]}>
 							{strings.dashboard.recentActivities.loadMore + " +"}
 						</Text>
 					</TouchableOpacity>
@@ -144,7 +145,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContainer}>
 						{this.renderCards()}
-						<DropdownMenu label={strings.dashboard.recentActivities.label}>
+						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
 						</DropdownMenu>
 					</ScrollView>
@@ -162,8 +163,7 @@ export default connect(
 
 const styles = StyleSheet.create({
 	body: {
-		width: "100%",
-		paddingHorizontal: 20
+		width: "100%"
 	},
 	scrollContainer: {
 		paddingTop: 15
@@ -171,12 +171,16 @@ const styles = StyleSheet.create({
 	menu: {
 		marginBottom: 10
 	},
-	text: {
-		fontSize: 14
+	loadMoreText: {
+		fontSize: 14,
+		marginVertical: 16
+	},
+	dropdown: {
+		backgroundColor: colors.darkBackground
 	},
 	activities: {
 		backgroundColor: "#FFF",
-		marginBottom: 10
+		marginBottom: 2
 	},
 	textStyleWhite: {
 		color: "#FFF"
@@ -186,16 +190,22 @@ const styles = StyleSheet.create({
 	}
 });
 
+const commonCardStyle: ViewStyle = {
+	marginHorizontal: 20
+};
 const cardStyles = StyleSheet.create({
 	evolution: {
+		...commonCardStyle,
 		backgroundColor: colors.primary
 	},
 	identityIncomplete: {
+		...commonCardStyle,
 		backgroundColor: "#FFF",
 		borderColor: colors.secondary,
 		borderWidth: 2
 	},
 	document: {
+		...commonCardStyle,
 		backgroundColor: colors.secondary
 	}
 });

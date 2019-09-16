@@ -34,14 +34,12 @@ export default class PersonalData extends Component<PersonalDataProps, {}> {
 
 	render() {
 		return (
-			<Fragment>
-				<View style={[styles.data, this.props.style]}>
-					<View style={styles.body}>
-						<View style={styles.column}>{this.renderData()}</View>
-						{this.renderIcon()}
-					</View>
+			<View style={[styles.data, this.props.style]}>
+				<View style={styles.body}>
+					<View style={styles.column}>{this.renderData()}</View>
+					{this.renderIcon()}
 				</View>
-			</Fragment>
+			</View>
 		);
 	}
 }
