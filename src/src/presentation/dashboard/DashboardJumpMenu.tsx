@@ -60,7 +60,7 @@ const actions: IActionProps[] = [
 		...actionCommon,
 		icon: require("./resources/images/jumpToEditProfile.png"),
 		text: "Editar Perfil",
-		name: "SettingsProfile"
+		name: "UserData"
 	},
 	{
 		...actionCommon,
