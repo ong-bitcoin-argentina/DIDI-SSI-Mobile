@@ -4,22 +4,44 @@ import { StartAccessProps } from "../access/StartAccess";
 import DashboardScreen, { DashboardScreenProps } from "./Dashboard";
 import NavMap, { NavTree, NavigationEnabledComponentConstructor } from "../util/NavMap";
 import React from "react";
-import { Image, ImageSourcePropType } from "react-native";
+import { Image, ImageSourcePropType, ViewProps, View, StyleSheet } from "react-native";
 import themes from "../resources/themes";
 import strings from "../resources/strings";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import SettingsScreen from "./settings/SettingsScreen";
 import DocumentsNavigator from "./documents/DocumentsNavigator";
-import { NavigationContainer } from "react-navigation";
+import { NavigationContainer, NavigationScreenProp, NavigationState } from "react-navigation";
+import DashboardJumpMenu from "./DashboardJumpMenu";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
 }
 
+interface DashboardNavigatorProps extends ViewProps {
+	navigation: NavigationScreenProp<NavigationState>;
+}
+
 export default function(then: NavTree<DashboardSwitchTarget>) {
-	function screen(constructor: NavigationContainer, title: string, image: ImageSourcePropType) {
+	function screen(InnerNavigator: NavigationContainer, title: string, image: ImageSourcePropType) {
+		class DashboardNavigator extends React.Component<DashboardNavigatorProps> {
+			static router = InnerNavigator.router;
+			render() {
+				const { navigation } = this.props;
+				return (
+					<View style={{ flex: 1 }}>
+						<DashboardJumpMenu
+							navigation={navigation}
+							showJumpButton={true}
+							style={[StyleSheet.absoluteFill, { zIndex: 1 }]}
+						/>
+						<InnerNavigator navigation={navigation} style={[StyleSheet.absoluteFill, { zIndex: 0 }]} />
+					</View>
+				);
+			}
+		}
+
 		return {
-			screen: constructor,
+			screen: DashboardNavigator,
 			navigationOptions: {
 				title,
 				tabBarIcon: ({ focused, tintColor }: { focused: boolean; tintColor: string }) => (
