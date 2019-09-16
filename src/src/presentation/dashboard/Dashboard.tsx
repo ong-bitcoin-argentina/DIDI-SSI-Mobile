@@ -113,7 +113,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private renderRecentActivities() {
 		return (
-			<View>
+			<View style={styles.dropdownContents}>
 				{this.props.recentActivity.map((activity, index) => {
 					return (
 						<DidiActivity
@@ -176,7 +176,11 @@ const styles = StyleSheet.create({
 		marginVertical: 16
 	},
 	dropdown: {
-		backgroundColor: colors.darkBackground
+		backgroundColor: colors.darkBackground,
+		width: "100%"
+	},
+	dropdownContents: {
+		marginTop: -20
 	},
 	activities: {
 		backgroundColor: "#FFF",
