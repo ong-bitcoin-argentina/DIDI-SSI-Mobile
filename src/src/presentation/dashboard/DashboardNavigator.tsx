@@ -29,12 +29,12 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				const { navigation } = this.props;
 				return (
 					<View style={{ flex: 1 }}>
+						<InnerNavigator navigation={navigation} style={[StyleSheet.absoluteFill, { zIndex: 0, elevation: 0 }]} />
 						<DashboardJumpMenu
 							navigation={navigation}
 							showJumpButton={true}
-							style={[StyleSheet.absoluteFill, { zIndex: 1 }]}
+							style={[StyleSheet.absoluteFill, { zIndex: 1, elevation: 1 }]}
 						/>
-						<InnerNavigator navigation={navigation} style={[StyleSheet.absoluteFill, { zIndex: 0 }]} />
 					</View>
 				);
 			}
