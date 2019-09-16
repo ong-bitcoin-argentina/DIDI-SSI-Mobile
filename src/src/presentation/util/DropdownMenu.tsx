@@ -6,6 +6,8 @@ import themes from "../resources/themes";
 interface DropdownMenuProps {
 	label: string;
 	style?: StyleProp<TextStyle>;
+	color?: string;
+	textColor?: string;
 }
 
 interface DropdownMenuState {
@@ -32,6 +34,8 @@ export default class DropdownMenu extends React.Component<DropdownMenuProps, Dro
 
 	render() {
 		const { visible } = this.state;
+		const textColor = this.props.textColor ? this.props.textColor : "";
+		const color = this.props.color ? this.props.color : themes.buttonDisabled;
 		return (
 			<Fragment>
 				<TouchableOpacity
@@ -41,9 +45,11 @@ export default class DropdownMenu extends React.Component<DropdownMenuProps, Dro
 					}}
 				>
 					<View style={styles.labelContainer}>
-						<Text style={[commonStyles.text.emphasis, styles.label]}>{this.props.label}</Text>
-						{visible && <Text style={styles.icon}>▼</Text>}
-						{!visible && <Text style={styles.icon}>◀</Text>}
+						<Text style={[commonStyles.text.emphasis, styles.label, { color: textColor, backgroundColor: color }]}>
+							{this.props.label}
+						</Text>
+						{visible && <Text style={[styles.icon, { backgroundColor: color }]}>▼</Text>}
+						{!visible && <Text style={[styles.icon, { backgroundColor: color }]}>◀</Text>}
 					</View>
 				</TouchableOpacity>
 				{visible && this.props.children}
@@ -62,14 +68,12 @@ const styles = StyleSheet.create({
 		marginBottom: 10
 	},
 	label: {
-		backgroundColor: themes.buttonDisabled,
 		flex: 1,
 		justifyContent: "flex-start",
 		textAlign: "left",
 		marginLeft: 10
 	},
 	icon: {
-		backgroundColor: themes.buttonDisabled,
 		justifyContent: "flex-end"
 	}
 });

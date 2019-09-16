@@ -11,6 +11,7 @@ import { RoundsScreen } from "./rounds/RoundsScreen";
 import SettingsScreen from "./settings/SettingsScreen";
 import DocumentsNavigator from "./documents/DocumentsNavigator";
 import { NavigationContainer } from "react-navigation";
+import SettingsNavigator from "./settings/SettingsNavigator";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -49,7 +50,7 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				require("./resources/images/documentIcon.png")
 			),
 			DashboardSettings: screen(
-				NavMap.from(SettingsScreen, then).stackNavigator("DashboardSettings"),
+				SettingsNavigator.stackNavigator("DashboardSettings"),
 				strings.tabNames.settings,
 				require("./resources/images/settingsIcon.png")
 			)

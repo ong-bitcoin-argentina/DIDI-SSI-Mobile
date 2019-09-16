@@ -1,17 +1,18 @@
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
 import React from "react";
-import { StatusBar, SafeAreaView, View, Text, StyleSheet, Image, ImageSourcePropType } from "react-native";
+import { StatusBar, SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 import strings from "../../resources/strings";
 import colors from "../../resources/colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import DidiButton from "../../util/DidiButton";
 import { connect } from "react-redux";
-import StoreContent, { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
+import { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
 import { DashboardScreenProps } from "../Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
+import { UserDataProps } from "./UserData";
+import { PersonalDataStatus } from "./PersonalData";
 
 export interface SettingsScreenProps {
 	person: Identity;
@@ -22,6 +23,7 @@ type SettingsScreenState = {};
 export interface SettingsScreenNavigation {
 	Access: StartAccessProps;
 	DashboardHome: DashboardScreenProps;
+	UserData: UserDataProps;
 	SettingsAccount: {};
 	SettingsPreferences: {};
 	SettingsAbout: {};
@@ -51,21 +53,58 @@ class SettingsScreen extends NavigationEnabledComponent<
 		];
 	}
 
+	getPersonalData() {
+		return [
+			{
+				label: "Nombre Completo",
+				value: "Liliana Beatriz Martinez",
+				state: PersonalDataStatus.Null
+			},
+			{
+				label: "Celular",
+				value: "15 3344 6677",
+				state: PersonalDataStatus.Approved
+			},
+			{
+				label: "E-mail",
+				value: "lilita87@hotmail.com",
+				state: PersonalDataStatus.Approved
+			},
+			{
+				label: "DU / CI / Pasaporte",
+				value: "30.000.111",
+				state: PersonalDataStatus.Pending
+			},
+			{
+				label: "Nacionalidad",
+				value: "Argentina",
+				state: PersonalDataStatus.Pending
+			},
+			{
+				label: "Domicilio",
+				value: "Manzana 24, Seccion 3, Edificio 1",
+				state: PersonalDataStatus.Rejected
+			}
+		];
+	}
+
 	renderCartouche() {
 		return (
-			<View style={styles.identityCartouche}>
-				<View style={{ flexDirection: "row", alignItems: "center" }}>
-					<Image style={styles.identityImage} source={this.props.person.image} />
-					<View style={styles.identityIdContainer}>
-						<Text style={styles.identityName}>{this.props.person.name}</Text>
-						<View style={{ marginTop: 3, flexDirection: "row" }}>
-							<Text style={styles.identityIdLabel}>ID: </Text>
-							<Text style={styles.identityId}>{this.props.person.id}</Text>
+			<TouchableOpacity onPress={() => this.navigate("UserData", { personalData: this.getPersonalData() })}>
+				<View style={styles.identityCartouche}>
+					<View style={{ flexDirection: "row", alignItems: "center" }}>
+						<Image style={styles.identityImage} source={this.props.person.image} />
+						<View style={styles.identityIdContainer}>
+							<Text style={styles.identityName}>{this.props.person.name}</Text>
+							<View style={{ marginTop: 3, flexDirection: "row" }}>
+								<Text style={styles.identityIdLabel}>ID: </Text>
+								<Text style={styles.identityId}>{this.props.person.id}</Text>
+							</View>
 						</View>
+						<Image style={{ marginHorizontal: 10 }} source={require("../resources/images/openPersonDetail.png")} />
 					</View>
-					<Image style={{ marginHorizontal: 10 }} source={require("../resources/images/openPersonDetail.png")} />
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	}
 

@@ -3,6 +3,9 @@ export default {
 		recentActivities: {
 			label: "Actividades recientes",
 			loadMore: "Cargar más"
+		},
+		userData: {
+			personalDataLabel: "Datos personales"
 		}
 	},
 	recovery: {
