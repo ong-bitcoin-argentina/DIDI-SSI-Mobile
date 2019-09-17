@@ -12,7 +12,6 @@ import { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
 import { DashboardScreenProps } from "../Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./UserData";
-import { PersonalDataStatus } from "./PersonalData";
 
 export interface SettingsScreenProps {
 	person: Identity;

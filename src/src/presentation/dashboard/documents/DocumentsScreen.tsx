@@ -99,6 +99,7 @@ const cardStyles = StyleSheet.create({
 		borderWidth: 2
 	},
 	document: {
-		backgroundColor: colors.secondary
+		backgroundColor: colors.secondary,
+		marginBottom: 15
 	}
 });
