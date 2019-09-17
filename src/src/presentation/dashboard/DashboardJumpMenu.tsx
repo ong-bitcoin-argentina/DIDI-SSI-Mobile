@@ -34,7 +34,8 @@ export default class DashboardJumpMenu extends React.Component<DashboardJumpMenu
 const actionCommon: Omit<IActionProps, "name"> = {
 	textBackground: "transparent",
 	textColor: "#FFF",
-	color: colors.primary
+	color: colors.primary,
+	textElevation: 0
 };
 
 const actions: IActionProps[] = [
