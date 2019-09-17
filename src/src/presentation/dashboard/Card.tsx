@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between"
 	},
 	card: {
-		marginBottom: 10,
 		minHeight: 180
 	},
 	data: {

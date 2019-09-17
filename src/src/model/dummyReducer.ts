@@ -4,9 +4,9 @@ import StoreContent from "./StoreContent";
 const defaultContent: StoreContent = {
 	loggedIn: true,
 	identity: {
-		id: "<persona.id>",
-		name: "<Nombre Persona>",
-		image: require("../presentation/access/resources/images/arg.png")
+		id: "Lili.Martinez",
+		name: "Liliana Martinez",
+		image: require("../presentation/dashboard/resources/images/samplePerson.png")
 	},
 	documents: [
 		{

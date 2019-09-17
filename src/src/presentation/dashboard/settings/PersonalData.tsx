@@ -1,8 +1,7 @@
-import { Component } from "react";
-import { Text, View, StyleProp, TextStyle, StyleSheet } from "react-native";
-import React from "react";
-import colors from "../../resources/colors";
+import { ViewProps, StyleProp, TextStyle, View, Text, StyleSheet } from "react-native";
+import React, { Component } from "react";
 import strings from "../../resources/strings";
+import colors from "../../resources/colors";
 
 export enum PersonalDataStatus {
 	Approved = "Approved",
@@ -11,21 +10,20 @@ export enum PersonalDataStatus {
 	Null = ""
 }
 
-interface PersonalDataProps {
+interface PersonalDataProps extends ViewProps {
 	label: string;
 	value: string;
 	state: PersonalDataStatus;
 
-	style?: StyleProp<TextStyle>;
-	textStyles?: StyleProp<TextStyle>;
+	textStyle?: StyleProp<TextStyle>;
 }
 
 export default class PersonalData extends Component<PersonalDataProps, {}> {
 	private renderData() {
 		return (
 			<View style={styles.labelAndData}>
-				<Text style={[styles.label, this.props.textStyles]}>{this.props.label}</Text>
-				<Text style={[styles.value, this.props.textStyles]}>{this.props.value}</Text>
+				<Text style={[styles.label, this.props.textStyle]}>{this.props.label}</Text>
+				<Text style={[styles.value, this.props.textStyle]}>{this.props.value}</Text>
 			</View>
 		);
 	}
@@ -64,7 +62,7 @@ export default class PersonalData extends Component<PersonalDataProps, {}> {
 
 	render() {
 		return (
-			<View style={[styles.data, this.props.style]}>
+			<View {...this.props} style={[styles.data, this.props.style]}>
 				<View style={styles.body}>
 					<View style={styles.column}>{this.renderData()}</View>
 					{this.renderState()}
@@ -105,37 +103,42 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	value: {
-		fontWeight: "500",
-		fontSize: 12
+		fontWeight: "normal",
+		fontSize: 15
 	},
 	label: {
-		fontWeight: "bold",
-		fontSize: 16
+		fontWeight: "normal",
+		fontSize: 12,
+		color: colors.textFaded
 	},
 
 	stateContainer: {
 		backgroundColor: colors.lightBackground,
 		textAlign: "center",
 		flexDirection: "row",
-		width: 120,
+		width: 90,
+		paddingVertical: 3,
 		borderRadius: 20,
-		paddingLeft: 5,
-		paddingRight: 5
+		paddingLeft: 5
 	},
 	stateContainerRejected: {
 		backgroundColor: colors.error
 	},
 
 	stateText: {
-		marginBottom: 5,
-		alignSelf: "flex-end"
+		fontSize: 10,
+		marginLeft: 5,
+		alignSelf: "flex-end",
+		textAlignVertical: "center"
 	},
 	stateIcon: {
+		fontSize: 10,
 		alignSelf: "flex-start",
+		textAlignVertical: "center",
 		textAlign: "center",
-		width: 20,
-		borderRadius: 20,
-		margin: 5
+		width: 15,
+		height: 15,
+		borderRadius: 20
 	},
 	stateIconApproved: {
 		backgroundColor: "#6ecc62",

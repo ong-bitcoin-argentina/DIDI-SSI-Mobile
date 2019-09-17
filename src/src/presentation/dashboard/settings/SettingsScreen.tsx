@@ -12,7 +12,6 @@ import { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
 import { DashboardScreenProps } from "../Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./UserData";
-import { PersonalDataStatus } from "./PersonalData";
 
 export interface SettingsScreenProps {
 	person: Identity;
@@ -53,44 +52,9 @@ class SettingsScreen extends NavigationEnabledComponent<
 		];
 	}
 
-	getPersonalData() {
-		return [
-			{
-				label: "Nombre Completo",
-				value: "Liliana Beatriz Martinez",
-				state: PersonalDataStatus.Null
-			},
-			{
-				label: "Celular",
-				value: "15 3344 6677",
-				state: PersonalDataStatus.Approved
-			},
-			{
-				label: "E-mail",
-				value: "lilita87@hotmail.com",
-				state: PersonalDataStatus.Approved
-			},
-			{
-				label: "DU / CI / Pasaporte",
-				value: "30.000.111",
-				state: PersonalDataStatus.Pending
-			},
-			{
-				label: "Nacionalidad",
-				value: "Argentina",
-				state: PersonalDataStatus.Pending
-			},
-			{
-				label: "Domicilio",
-				value: "Manzana 24, Seccion 3, Edificio 1",
-				state: PersonalDataStatus.Rejected
-			}
-		];
-	}
-
 	renderCartouche() {
 		return (
-			<TouchableOpacity onPress={() => this.navigate("UserData", { personalData: this.getPersonalData() })}>
+			<TouchableOpacity onPress={() => this.navigate("UserData", {})}>
 				<View style={styles.identityCartouche}>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
 						<Image style={styles.identityImage} source={this.props.person.image} />

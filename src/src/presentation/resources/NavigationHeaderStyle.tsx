@@ -23,7 +23,7 @@ type NavigationFunction = (args: {
 	navigationOptions: NavigationStackScreenOptions;
 }) => NavigationStackScreenOptions;
 
-type NavigationOptions = NavigationFunction | NavigationStackScreenOptions;
+export type NavigationOptions = NavigationFunction | NavigationStackScreenOptions;
 
 const styles = {
 	withTitle(title: string): NavigationOptions {

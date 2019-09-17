@@ -1,15 +1,4 @@
-import {
-	Text,
-	View,
-	SafeAreaView,
-	StatusBar,
-	StyleSheet,
-	ScrollView,
-	StyleProp,
-	TextStyle,
-	TouchableOpacity,
-	ViewStyle
-} from "react-native";
+import { Text, View, SafeAreaView, StatusBar, StyleSheet, ScrollView, TouchableOpacity, ViewStyle } from "react-native";
 import React, { Fragment } from "react";
 
 import { StartAccessProps } from "../access/StartAccess";
@@ -25,16 +14,23 @@ import DidiCardData from "./CardData";
 import strings from "../resources/strings";
 import DropdownMenu from "../util/DropdownMenu";
 import { connect } from "react-redux";
-import { LoggedInStoreContent, RecentActivity, Document } from "../../model/StoreContent";
+import { LoggedInStoreContent, RecentActivity, Document, Identity } from "../../model/StoreContent";
 import { AddChildren } from "../../util/ReactExtensions";
+import HomeHeader from "./home/HomeHeader";
+import { DocumentsScreenProps } from "./documents/DocumentsScreen";
+import { UserDataProps } from "./settings/UserData";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
+	person: Identity;
 	documents: Document[];
 	recentActivity: RecentActivity[];
 }
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
+	DashboardDocuments: DocumentsScreenProps;
+	ValidateID: {}; // TODO: Implement
+	UserData: UserDataProps;
 }
 type DashboardScreenState = {};
 
@@ -43,7 +39,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenState,
 	DashboardScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Home");
+	static navigationOptions = NavigationHeaderStyle.gone;
 
 	private evolutionCard(): AddChildren<DidiCardProps> {
 		return {
@@ -59,7 +55,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 					data={[
 						{ label: "Validaciónes:", value: " " },
 						{ label: "Celu", value: "✓" },
-						{ label: "Mail", value: "X " },
+						{ label: "Mail", value: "ｘ" },
 						{ label: "ID", value: "✓" }
 					]}
 					textStyles={styles.textStyleWhite}
@@ -81,7 +77,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 				<DidiButton
 					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
 					title="Validar Id"
-					onPress={() => {}}
+					onPress={() => this.navigate("ValidateID", {})}
 				/>
 			)
 		};
@@ -142,8 +138,13 @@ class DashboardScreen extends NavigationEnabledComponent<
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContainer}>
+				<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
+					<ScrollView style={styles.body}>
+						<HomeHeader
+							person={this.props.person}
+							onPersonPress={() => this.navigate("UserData", {})}
+							onBellPress={() => this.navigate("DashboardDocuments", {})}
+						/>
 						{this.renderCards()}
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
@@ -157,16 +158,18 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 export default connect(
 	(state: LoggedInStoreContent): DashboardScreenInternalProps => {
-		return { recentActivity: state.recentActivity, documents: state.documents };
+		return {
+			person: state.identity,
+			recentActivity: state.recentActivity,
+			documents: state.documents
+		};
 	}
 )(DashboardScreen);
 
 const styles = StyleSheet.create({
 	body: {
+		backgroundColor: colors.background,
 		width: "100%"
-	},
-	scrollContainer: {
-		paddingTop: 15
 	},
 	menu: {
 		marginBottom: 10
@@ -177,10 +180,11 @@ const styles = StyleSheet.create({
 	},
 	dropdown: {
 		backgroundColor: colors.darkBackground,
-		width: "100%"
+		width: "100%",
+		marginTop: 20
 	},
 	dropdownContents: {
-		marginTop: -20
+		marginTop: 0
 	},
 	activities: {
 		backgroundColor: "#FFF",
@@ -195,7 +199,8 @@ const styles = StyleSheet.create({
 });
 
 const commonCardStyle: ViewStyle = {
-	marginHorizontal: 20
+	marginHorizontal: 20,
+	marginTop: 15
 };
 const cardStyles = StyleSheet.create({
 	evolution: {
