@@ -37,7 +37,12 @@ export default class DropdownMenu extends React.Component<DropdownMenuProps, Dro
 		const { visible } = this.state;
 		const textColor = this.props.textColor ? this.props.textColor : "";
 		const backgroundColor = this.props.color ? this.props.color : themes.buttonDisabled;
-		const round = this.props.round ? styles.rounded : {};
+
+		let round = {};
+		if (this.props.round) {
+			round = visible ? styles.rounded : styles.round;
+		}
+
 		return (
 			<View {...this.props}>
 				<TouchableOpacity
@@ -62,6 +67,9 @@ const styles = StyleSheet.create({
 	rounded: {
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20
+	},
+	round: {
+		borderRadius: 20
 	},
 	dropdown: {
 		marginRight: 5,

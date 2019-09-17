@@ -1,4 +1,4 @@
-import { View, StyleSheet, ViewProps, Text, ScrollView } from "react-native";
+import { View, StyleSheet, ViewProps, ScrollView } from "react-native";
 import React from "react";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
@@ -57,10 +57,12 @@ const styles = StyleSheet.create({
 		marginRight: 10
 	},
 	dropdownContents: {
-		backgroundColor: themes.buttonDisabled,
+		backgroundColor: "#f2f2f2",
 		marginTop: -20,
 		marginLeft: 10,
-		marginRight: 10
+		marginRight: 10,
+		borderBottomLeftRadius: 20,
+		borderBottomRightRadius: 20
 	},
 	personalDataElement: {
 		marginBottom: 10

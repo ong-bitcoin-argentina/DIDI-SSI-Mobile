@@ -1,6 +1,8 @@
-import { Component, Fragment } from "react";
-import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle } from "react-native";
+import { Component } from "react";
+import { Text, View, StyleProp, TextStyle, StyleSheet } from "react-native";
 import React from "react";
+import colors from "../../resources/colors";
+import strings from "../../resources/strings";
 
 export enum PersonalDataStatus {
 	Approved = "Approved",
@@ -28,8 +30,36 @@ export default class PersonalData extends Component<PersonalDataProps, {}> {
 		);
 	}
 
-	private renderIcon() {
-		return <View style={styles.iconContainer}>{/* <Image style={styles.icon} source={this.props.icon} /> */}</View>;
+	private getState() {
+		switch (this.props.state) {
+			case PersonalDataStatus.Approved:
+				return (
+					<View style={styles.stateContainer}>
+						<Text style={[styles.stateIcon, styles.stateIconApproved]}>✓</Text>
+						<Text style={styles.stateText}>{strings.dashboard.userData.states.approved}</Text>
+					</View>
+				);
+			case PersonalDataStatus.Pending:
+				return (
+					<View style={styles.stateContainer}>
+						<Text style={[styles.stateIcon, styles.stateIconPending]}>!</Text>
+						<Text style={styles.stateText}>{strings.dashboard.userData.states.pending}</Text>
+					</View>
+				);
+			case PersonalDataStatus.Rejected:
+				return (
+					<View style={[styles.stateContainer, styles.stateContainerRejected]}>
+						<Text style={[styles.stateIcon, styles.stateIconRejected]}>X</Text>
+						<Text style={styles.stateText}>{strings.dashboard.userData.states.rejected}</Text>
+					</View>
+				);
+			default:
+				return <Text></Text>;
+		}
+	}
+
+	private renderState() {
+		return <View style={styles.iconContainer}>{this.getState()}</View>;
 	}
 
 	render() {
@@ -37,7 +67,7 @@ export default class PersonalData extends Component<PersonalDataProps, {}> {
 			<View style={[styles.data, this.props.style]}>
 				<View style={styles.body}>
 					<View style={styles.column}>{this.renderData()}</View>
-					{this.renderIcon()}
+					{this.renderState()}
 				</View>
 			</View>
 		);
@@ -81,5 +111,41 @@ const styles = StyleSheet.create({
 	label: {
 		fontWeight: "bold",
 		fontSize: 16
+	},
+
+	stateContainer: {
+		backgroundColor: colors.lightBackground,
+		textAlign: "center",
+		flexDirection: "row",
+		width: 120,
+		borderRadius: 20,
+		paddingLeft: 5,
+		paddingRight: 5
+	},
+	stateContainerRejected: {
+		backgroundColor: colors.error
+	},
+
+	stateText: {
+		marginBottom: 5,
+		alignSelf: "flex-end"
+	},
+	stateIcon: {
+		alignSelf: "flex-start",
+		textAlign: "center",
+		width: 20,
+		borderRadius: 20,
+		margin: 5
+	},
+	stateIconApproved: {
+		backgroundColor: "#6ecc62",
+		color: colors.secondaryText
+	},
+	stateIconPending: {
+		backgroundColor: "#e9c622"
+	},
+	stateIconRejected: {
+		backgroundColor: "#e03c7a",
+		color: colors.secondaryText
 	}
 });

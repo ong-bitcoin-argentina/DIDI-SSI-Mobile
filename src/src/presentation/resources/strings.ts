@@ -5,7 +5,12 @@ export default {
 			loadMore: "Cargar más"
 		},
 		userData: {
-			personalDataLabel: "Datos personales"
+			personalDataLabel: "Datos personales",
+			states: {
+				approved: "Aprobado",
+				pending: "Pendiente",
+				rejected: "Rechazado"
+			}
 		}
 	},
 	recovery: {

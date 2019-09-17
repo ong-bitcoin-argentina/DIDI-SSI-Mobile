@@ -8,6 +8,8 @@ const colors = {
 	text: "#4A4A4A",
 	textFaded: "#9B9B9B",
 
+	error: "#f5bbd1",
+
 	primary: "#2f77dc",
 	primaryLight: "#acc6eb",
 	primaryDark: "#205196",
