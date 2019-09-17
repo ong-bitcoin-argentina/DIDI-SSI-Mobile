@@ -59,7 +59,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 					data={[
 						{ label: "Validaciónes:", value: " " },
 						{ label: "Celu", value: "✓" },
-						{ label: "Mail", value: "X " },
+						{ label: "Mail", value: "ｘ" },
 						{ label: "ID", value: "✓" }
 					]}
 					textStyles={styles.textStyleWhite}
