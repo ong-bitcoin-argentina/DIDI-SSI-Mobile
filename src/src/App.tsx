@@ -7,7 +7,8 @@ import store from "./model/store";
 import AppNavigator from "./presentation/AppNavigator";
 
 YellowBox.ignoreWarnings([
-	"Warning: componentWillReceiveProps is deprecated and will be removed in the next major version." // External error in SafeArea
+	"Warning: componentWillReceiveProps is deprecated and will be removed in the next major version.", // External error in SafeArea
+	"Warning: ViewPagerAndroid has been extracted from react-native core and will be removed in a future release." // External error in MaterialTopTabNavigator (Android only)
 ]);
 
 const AppContainer = createAppContainer(AppNavigator);
