@@ -22,7 +22,7 @@ import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEm
 import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswordConfirmEmail";
 
 import NavMap, { NavTree } from "../util/NavMap";
-import { DashboardScreenProps } from "../dashboard/Dashboard";
+import { DashboardScreenProps } from "../dashboard/home/Dashboard";
 
 interface AccessSwitchTarget {
 	Dashboard: DashboardScreenProps;

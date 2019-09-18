@@ -6,7 +6,7 @@ import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import { DashboardScreenProps } from "../Dashboard";
+import { DashboardScreenProps } from "../home/Dashboard";
 
 export interface RoundsScreenNavigation {
 	DashboardHome: DashboardScreenProps;

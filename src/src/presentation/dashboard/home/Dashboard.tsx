@@ -1,24 +1,24 @@
 import { Text, View, SafeAreaView, StatusBar, StyleSheet, ScrollView, TouchableOpacity, ViewStyle } from "react-native";
 import React, { Fragment } from "react";
 
-import { StartAccessProps } from "../access/StartAccess";
-import themes from "../resources/themes";
-import commonStyles from "../access/resources/commonStyles";
-import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
-import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
-import DidiButton from "../util/DidiButton";
-import DidiCard, { DidiCardProps } from "./DidiCard";
+import { StartAccessProps } from "../../access/StartAccess";
+import themes from "../../resources/themes";
+import commonStyles from "../../access/resources/commonStyles";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import DidiButton from "../../util/DidiButton";
+import DidiCard, { DidiCardProps } from "../common/DidiCard";
 import DidiActivity from "./DidiActivity";
-import colors from "../resources/colors";
-import DidiCardData from "./DidiCardData";
-import strings from "../resources/strings";
-import DropdownMenu from "../util/DropdownMenu";
+import colors from "../../resources/colors";
+import DidiCardData from "../common/DidiCardData";
+import strings from "../../resources/strings";
+import DropdownMenu from "../../util/DropdownMenu";
 import { connect } from "react-redux";
-import { LoggedInStoreContent, RecentActivity, Document, Identity } from "../../model/StoreContent";
-import { AddChildren } from "../../util/ReactExtensions";
-import HomeHeader from "./home/HomeHeader";
-import { DocumentsScreenProps } from "./documents/DocumentsScreen";
-import { UserDataProps } from "./settings/UserData";
+import { LoggedInStoreContent, RecentActivity, Document, Identity } from "../../../model/StoreContent";
+import { AddChildren } from "../../../util/ReactExtensions";
+import HomeHeader from "./HomeHeader";
+import { DocumentsScreenProps } from "../documents/DocumentsScreen";
+import { UserDataProps } from "../settings/UserData";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
@@ -52,8 +52,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private evolutionCard(): AddChildren<DidiCardProps> {
 		return {
-			icon: require("../resources/images/progressIcon.png"),
-			image: require("../resources/images/precentageSample.png"),
+			icon: require("../../resources/images/progressIcon.png"),
+			image: require("../../resources/images/precentageSample.png"),
 			category: "Proceso",
 			title: "Mi Evolución",
 			subTitle: "16.06.2019",
@@ -76,7 +76,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private incompleteIdentityCard(): AddChildren<DidiCardProps> {
 		return {
-			icon: require("../resources/images/validationIcon.png"),
+			icon: require("../../resources/images/validationIcon.png"),
 			category: "Documento Identidad",
 			title: "Liliana Martinez",
 			subTitle: "Nombre",
@@ -95,7 +95,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private completeIdentityCard(): AddChildren<DidiCardProps> {
 		return {
-			icon: require("./resources/images/documentIcon.png"),
+			icon: require("../resources/images/documentIcon.png"),
 			category: "Documento Identidad",
 			title: "Liliana Martinez",
 			subTitle: "Nombre",

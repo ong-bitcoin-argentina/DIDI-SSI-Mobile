@@ -7,10 +7,10 @@ import themes from "../../resources/themes";
 import { Document, DocumentFilterType, LoggedInStoreContent } from "../../../model/StoreContent";
 import { connect } from "react-redux";
 import colors from "../../resources/colors";
-import DidiCard, { DidiCardProps } from "../DidiCard";
+import DidiCard, { DidiCardProps } from "../common/DidiCard";
 import { AddChildren } from "../../../util/ReactExtensions";
-import DidiCardData from "../DidiCardData";
-import { DashboardScreenProps } from "../Dashboard";
+import DidiCardData from "../common/DidiCardData";
+import { DashboardScreenProps } from "../home/Dashboard";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;

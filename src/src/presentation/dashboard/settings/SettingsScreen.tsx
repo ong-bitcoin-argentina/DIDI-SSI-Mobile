@@ -9,7 +9,7 @@ import colors from "../../resources/colors";
 import DidiButton from "../../util/DidiButton";
 import { connect } from "react-redux";
 import { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
-import { DashboardScreenProps } from "../Dashboard";
+import { DashboardScreenProps } from "../home/Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./UserData";
 

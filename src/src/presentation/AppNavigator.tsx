@@ -3,7 +3,7 @@ import AccessNavigator from "./access/AccessNavigator";
 import DashboardNavigator from "./dashboard/DashboardNavigator";
 import { createSwitchNavigator } from "react-navigation";
 import NavMap from "./util/NavMap";
-import DashboardScreen from "./dashboard/Dashboard";
+import DashboardScreen from "./dashboard/home/Dashboard";
 import { StartAccessScreen } from "./access/StartAccess";
 
 export default createSwitchNavigator({

@@ -6,7 +6,7 @@ import commonStyles from "./access/resources/commonStyles";
 import NavigationEnabledComponent from "./util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "./resources/NavigationHeaderStyle";
 import { StartAccessProps, StartAccessScreen } from "./access/StartAccess";
-import { DashboardScreenProps } from "./dashboard/Dashboard";
+import { DashboardScreenProps } from "./dashboard/home/Dashboard";
 
 export interface SplashScreenNavigation {
 	Access: StartAccessProps;

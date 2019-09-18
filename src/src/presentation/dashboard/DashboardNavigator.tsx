@@ -1,7 +1,7 @@
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import { StartAccessProps } from "../access/StartAccess";
-import DashboardScreen, { DashboardScreenProps } from "./Dashboard";
+import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import NavMap, { NavTree, NavigationEnabledComponentConstructor } from "../util/NavMap";
 import React from "react";
 import { Image, ImageSourcePropType, ViewProps, View, StyleSheet } from "react-native";

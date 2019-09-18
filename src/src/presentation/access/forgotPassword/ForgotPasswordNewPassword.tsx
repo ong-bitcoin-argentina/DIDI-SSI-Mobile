@@ -8,7 +8,7 @@ import DidiTextInput from "../../util/DidiTextInput";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import commonStyles from "../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DashboardScreenProps } from "../../dashboard/Dashboard";
+import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 
 interface ForgotPasswordNewPasswordState {
 	key: string;
