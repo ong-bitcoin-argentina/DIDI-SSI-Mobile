@@ -12,6 +12,8 @@ import commonStyles from "./resources/commonStyles";
 import strings from "../resources/strings";
 import colors from "../resources/colors";
 
+import Background from "./resources/images/startAccessBackground.svg";
+
 export type StartAccessProps = {};
 
 export interface StartAccessNavigation {
@@ -27,7 +29,10 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
+				<View style={StyleSheet.absoluteFill}>
+					<Background width="100%" height="100%" preserveAspectRatio="xMidYMin slice" />
+				</View>
+				<SafeAreaView style={[commonStyles.view.area, { backgroundColor: "transparent" }]}>
 					<View style={[commonStyles.view.body, styles.imageContainer]}>
 						<Image style={styles.didiLogo} source={require("../resources/images/didiLogo.png")} />
 					</View>
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
 		alignSelf: "flex-end"
 	},
 	transparentButton: {
-		backgroundColor: themes.background
+		backgroundColor: "transparent"
 	},
 	transparentButtonText: {
 		color: themes.foreground,
