@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, View, Image } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
@@ -8,11 +8,9 @@ import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import DidiButton from "../util/DidiButton";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import themes from "../resources/themes";
-import commonStyles from "./resources/commonStyles";
 import strings from "../resources/strings";
 import colors from "../resources/colors";
-
-import Background from "./resources/images/startAccessBackground.svg";
+import { SplashContent } from "../SplashScreen";
 
 export type StartAccessProps = {};
 
@@ -27,55 +25,29 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<View style={StyleSheet.absoluteFill}>
-					<Background width="100%" height="100%" preserveAspectRatio="xMidYMin slice" />
-				</View>
-				<SafeAreaView style={[commonStyles.view.area, { backgroundColor: "transparent" }]}>
-					<View style={[commonStyles.view.body, styles.imageContainer]}>
-						<Image style={styles.didiLogo} source={require("../resources/images/didiLogo.png")} />
-					</View>
-					<View style={[commonStyles.view.body, styles.buttonContainer]}>
-						<DidiButton
-							onPress={() => this.navigate("LoginEnterPhone", {})}
-							style={styles.secondaryButton}
-							title={strings.recovery.startAccess.loginButton}
-						/>
-						<DidiButton
-							onPress={() => this.navigate("SignupOnboarding", {})}
-							style={styles.primaryButton}
-							title={strings.recovery.startAccess.createButton}
-						/>
-						<DidiButton
-							onPress={() => this.navigate("RecoveryExplanation", {})}
-							style={styles.transparentButton}
-							titleStyle={styles.transparentButtonText}
-							title={strings.recovery.startAccess.recoveryButton + " >"}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<SplashContent>
+				<DidiButton
+					onPress={() => this.navigate("LoginEnterPhone", {})}
+					style={styles.secondaryButton}
+					title={strings.recovery.startAccess.loginButton}
+				/>
+				<DidiButton
+					onPress={() => this.navigate("SignupOnboarding", {})}
+					style={styles.primaryButton}
+					title={strings.recovery.startAccess.createButton}
+				/>
+				<DidiButton
+					onPress={() => this.navigate("RecoveryExplanation", {})}
+					style={styles.transparentButton}
+					titleStyle={styles.transparentButtonText}
+					title={strings.recovery.startAccess.recoveryButton + " >"}
+				/>
+			</SplashContent>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	imageContainer: {
-		flex: 2,
-		flexDirection: "row"
-	},
-	buttonContainer: {
-		flex: 1,
-		justifyContent: "flex-end",
-		marginBottom: 10
-	},
-	didiLogo: {
-		height: 200,
-		width: 200,
-		resizeMode: "contain",
-		alignSelf: "flex-end"
-	},
 	transparentButton: {
 		backgroundColor: "transparent"
 	},
