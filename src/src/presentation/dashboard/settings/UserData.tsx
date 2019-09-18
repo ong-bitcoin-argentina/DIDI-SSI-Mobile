@@ -4,45 +4,43 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DropdownMenu from "../../util/DropdownMenu";
 import strings from "../../resources/strings";
-import PersonalData, { PersonalDataStatus } from "./PersonalData";
+import PersonalData from "./PersonalData";
 import colors from "../../resources/colors";
+import { LoggedInStoreContent, Identity } from "../../../model/StoreContent";
+import { connect } from "react-redux";
 
-export interface UserDataProps extends ViewProps {}
+export interface UserDataProps extends ViewProps {
+	identity: Identity;
+}
 
-export default class UserDataScreen extends NavigationEnabledComponent<UserDataProps, {}, {}> {
+class UserDataScreen extends NavigationEnabledComponent<UserDataProps, {}, {}> {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Mi Perfil");
 
 	getPersonalData() {
 		return [
 			{
 				label: "Nombre Completo",
-				value: "Liliana Beatriz Martinez",
-				state: PersonalDataStatus.Null
+				value: this.props.identity.fullName
 			},
 			{
 				label: "Celular",
-				value: "15 3344 6677",
-				state: PersonalDataStatus.Approved
+				value: this.props.identity.cellPhone
 			},
 			{
 				label: "E-mail",
-				value: "lilita87@hotmail.com",
-				state: PersonalDataStatus.Approved
+				value: this.props.identity.email
 			},
 			{
 				label: "DU / CI / Pasaporte",
-				value: "30.000.111",
-				state: PersonalDataStatus.Pending
+				value: this.props.identity.document
 			},
 			{
 				label: "Nacionalidad",
-				value: "Argentina",
-				state: PersonalDataStatus.Pending
+				value: this.props.identity.nationality
 			},
 			{
 				label: "Domicilio",
-				value: "Manzana 24, Seccion 3, Edificio 1",
-				state: PersonalDataStatus.Rejected
+				value: this.props.identity.address
 			}
 		];
 	}
@@ -63,8 +61,8 @@ export default class UserDataScreen extends NavigationEnabledComponent<UserDataP
 									<PersonalData
 										key={index}
 										label={data.label}
-										value={data.value}
-										state={data.state}
+										value={data.value.value}
+										state={data.value.state}
 										style={styles.personalDataElement}
 									/>
 								);
@@ -80,6 +78,14 @@ export default class UserDataScreen extends NavigationEnabledComponent<UserDataP
 		return <View>{this.renderState()}</View>;
 	}
 }
+
+export default connect(
+	(state: LoggedInStoreContent): UserDataProps => {
+		return {
+			identity: state.identity
+		};
+	}
+)(UserDataScreen);
 
 const styles = StyleSheet.create({
 	personalDataDropdown: {

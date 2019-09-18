@@ -1,12 +1,37 @@
 import StoreAction from "./StoreAction";
-import StoreContent from "./StoreContent";
+import StoreContent, { ValidationState } from "./StoreContent";
 
 const defaultContent: StoreContent = {
 	loggedIn: true,
 	identity: {
 		id: "Lili.Martinez",
 		name: "Liliana Martinez",
-		image: require("../presentation/dashboard/resources/images/samplePerson.png")
+		image: require("../presentation/dashboard/resources/images/samplePerson.png"),
+
+		fullName: {
+			value: "Liliana Beatriz Martinez",
+			state: ValidationState.None
+		},
+		cellPhone: {
+			value: "15 3344 6677",
+			state: ValidationState.Approved
+		},
+		email: {
+			value: "lilita87@hotmail.com",
+			state: ValidationState.Approved
+		},
+		document: {
+			value: "30.000.111",
+			state: ValidationState.Pending
+		},
+		nationality: {
+			value: "Argentina",
+			state: ValidationState.Pending
+		},
+		address: {
+			value: "Manzana 24, Seccion 3, Edificio 1",
+			state: ValidationState.Rejected
+		}
 	},
 	documents: [
 		{

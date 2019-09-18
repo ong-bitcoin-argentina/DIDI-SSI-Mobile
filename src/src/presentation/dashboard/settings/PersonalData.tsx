@@ -2,18 +2,12 @@ import { ViewProps, StyleProp, TextStyle, View, Text, StyleSheet } from "react-n
 import React, { Component } from "react";
 import strings from "../../resources/strings";
 import colors from "../../resources/colors";
-
-export enum PersonalDataStatus {
-	Approved = "Approved",
-	Pending = "Pending",
-	Rejected = "Rejected",
-	Null = ""
-}
+import { ValidationState } from "../../../model/StoreContent";
 
 interface PersonalDataProps extends ViewProps {
 	label: string;
 	value: string;
-	state: PersonalDataStatus;
+	state?: ValidationState;
 
 	textStyle?: StyleProp<TextStyle>;
 }
@@ -30,29 +24,29 @@ export default class PersonalData extends Component<PersonalDataProps, {}> {
 
 	private getState() {
 		switch (this.props.state) {
-			case PersonalDataStatus.Approved:
+			case ValidationState.Approved:
 				return (
 					<View style={styles.stateContainer}>
 						<Text style={[styles.stateIcon, styles.stateIconApproved]}>✓</Text>
 						<Text style={styles.stateText}>{strings.dashboard.userData.states.approved}</Text>
 					</View>
 				);
-			case PersonalDataStatus.Pending:
+			case ValidationState.Pending:
 				return (
 					<View style={styles.stateContainer}>
 						<Text style={[styles.stateIcon, styles.stateIconPending]}>!</Text>
 						<Text style={styles.stateText}>{strings.dashboard.userData.states.pending}</Text>
 					</View>
 				);
-			case PersonalDataStatus.Rejected:
+			case ValidationState.Rejected:
 				return (
 					<View style={[styles.stateContainer, styles.stateContainerRejected]}>
 						<Text style={[styles.stateIcon, styles.stateIconRejected]}>X</Text>
 						<Text style={styles.stateText}>{strings.dashboard.userData.states.rejected}</Text>
 					</View>
 				);
-			case PersonalDataStatus.Null:
-				return null;
+			default:
+				return;
 		}
 	}
 
