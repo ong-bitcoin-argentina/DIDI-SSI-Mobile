@@ -9,11 +9,13 @@ import colors from "../../resources/colors";
 import { LoggedInStoreContent, Identity } from "../../../model/StoreContent";
 import { connect } from "react-redux";
 
-export interface UserDataProps extends ViewProps {
+export type UserDataProps = ViewProps;
+
+interface UserDataInternalProps extends UserDataProps {
 	identity: Identity;
 }
 
-class UserDataScreen extends NavigationEnabledComponent<UserDataProps, {}, {}> {
+class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, {}, {}> {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Mi Perfil");
 
 	getPersonalData() {
@@ -80,7 +82,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataProps, {}, {}> {
 }
 
 export default connect(
-	(state: LoggedInStoreContent): UserDataProps => {
+	(state: LoggedInStoreContent): UserDataInternalProps => {
 		return {
 			identity: state.identity
 		};
