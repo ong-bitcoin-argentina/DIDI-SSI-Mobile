@@ -2,13 +2,10 @@ import { Component, Fragment } from "react";
 import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle, ViewProps } from "react-native";
 import React from "react";
 import colors from "../resources/colors";
+import { RecentActivity } from "../../model/StoreContent";
 
 interface DidiActivityProps extends ViewProps {
-	icon: ImageSourcePropType;
-	title: string;
-	description: string;
-	state: string;
-	date: string;
+	activity: RecentActivity;
 	textStyles?: StyleProp<TextStyle>;
 }
 
@@ -16,8 +13,8 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderTitle() {
 		return (
 			<View style={styles.titleData}>
-				<Text style={[styles.title, this.props.textStyles]}>{this.props.title}</Text>
-				<Text style={[styles.description, this.props.textStyles]}>{this.props.description}</Text>
+				<Text style={[styles.title, this.props.textStyles]}>{this.props.activity.title}</Text>
+				<Text style={[styles.description, this.props.textStyles]}>{this.props.activity.description}</Text>
 			</View>
 		);
 	}
@@ -25,8 +22,8 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderState() {
 		return (
 			<View style={styles.stateData}>
-				<Text style={[styles.state, this.props.textStyles]}>{this.props.state}</Text>
-				<Text style={[styles.date, this.props.textStyles]}>{this.props.date}</Text>
+				<Text style={[styles.state, this.props.textStyles]}>{this.props.activity.state}</Text>
+				<Text style={[styles.date, this.props.textStyles]}>{this.props.activity.date}</Text>
 			</View>
 		);
 	}
@@ -34,7 +31,7 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderIcon() {
 		return (
 			<View style={styles.iconContainer}>
-				<Image style={styles.icon} source={this.props.icon} />
+				<Image style={styles.icon} source={this.props.activity.icon} />
 			</View>
 		);
 	}

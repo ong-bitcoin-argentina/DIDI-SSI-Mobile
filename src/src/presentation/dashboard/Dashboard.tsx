@@ -111,17 +111,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		return (
 			<View style={styles.dropdownContents}>
 				{this.props.recentActivity.map((activity, index) => {
-					return (
-						<DidiActivity
-							key={index}
-							icon={activity.icon}
-							title={activity.title}
-							description={activity.description}
-							state={activity.state}
-							date={activity.date}
-							style={styles.activities}
-						/>
-					);
+					return <DidiActivity key={index} activity={activity} style={styles.activities} />;
 				})}
 				<View>
 					<TouchableOpacity onPress={() => {}}>
