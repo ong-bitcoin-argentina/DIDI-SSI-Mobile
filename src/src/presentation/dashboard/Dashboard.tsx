@@ -32,7 +32,9 @@ export interface DashboardScreenNavigation {
 	ValidateID: {}; // TODO: Implement
 	UserData: UserDataProps;
 }
-type DashboardScreenState = {};
+interface DashboardScreenState {
+	isIdentityComplete: boolean;
+}
 
 class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenInternalProps,
@@ -40,6 +42,13 @@ class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.gone;
+
+	constructor(props: DashboardScreenInternalProps) {
+		super(props);
+		this.state = {
+			isIdentityComplete: false
+		};
+	}
 
 	private evolutionCard(): AddChildren<DidiCardProps> {
 		return {
@@ -53,7 +62,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			children: (
 				<DidiCardData
 					data={[
-						{ label: "Validaciónes:", value: " " },
+						{ label: "Validaciones:", value: " " },
 						{ label: "Celu", value: "✓" },
 						{ label: "Mail", value: "ｘ" },
 						{ label: "ID", value: "✓" }
@@ -77,7 +86,31 @@ class DashboardScreen extends NavigationEnabledComponent<
 				<DidiButton
 					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
 					title="Validar Id"
-					onPress={() => this.navigate("ValidateID", {})}
+					// TODO: onPress={() => this.navigate("ValidateID", {})}
+					onPress={() => this.setState({ isIdentityComplete: !this.state.isIdentityComplete })}
+				/>
+			)
+		};
+	}
+
+	private completeIdentityCard(): AddChildren<DidiCardProps> {
+		return {
+			icon: require("./resources/images/documentIcon.png"),
+			category: "Documento Identidad",
+			title: "Liliana Martinez",
+			subTitle: "Nombre",
+			textStyle: styles.textStyleWhite,
+			style: cardStyles.identityComplete,
+			children: (
+				<DidiCardData
+					data={[
+						{ label: "Número", value: "25.390.189" },
+						{ label: "Nacionalidad", value: "🇦🇷" },
+						{ label: "Fecha Nac.", value: "16.06.76" },
+						{ label: "Sexo", value: "F" }
+					]}
+					textStyles={styles.textStyleWhite}
+					columns={2}
 				/>
 			)
 		};
@@ -100,7 +133,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		const cards: Array<AddChildren<DidiCardProps>> = [
 			this.evolutionCard(),
 			...this.props.documents.map(this.documentToCard),
-			this.incompleteIdentityCard()
+			this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()
 		];
 		return cards.map((card, index) => {
 			return <DidiCard key={index} {...card} />;
@@ -202,6 +235,10 @@ const cardStyles = StyleSheet.create({
 		backgroundColor: "#FFF",
 		borderColor: colors.secondary,
 		borderWidth: 2
+	},
+	identityComplete: {
+		...commonCardStyle,
+		backgroundColor: colors.secondary
 	},
 	document: {
 		...commonCardStyle,

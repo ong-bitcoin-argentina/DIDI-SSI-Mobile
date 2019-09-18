@@ -70,17 +70,19 @@ const defaultContent: StoreContent = {
 		},
 		{
 			icon: require("../presentation/dashboard/resources/images/documentIcon.png"),
-			category: "Documento Identidad",
+			category: "Licencia de Conducir",
 			title: "Liliana Martinez",
-			subtitle: "Nombre",
+			subtitle: "Titular",
 			filterType: "identity",
 			data: [
 				{ label: "Número", value: "25.390.189" },
-				{ label: "Nacionalidad", value: "🇦🇷" },
 				{ label: "Fecha Nac.", value: "16.06.76" },
-				{ label: "Sexo", value: "F" }
+				{ label: "Categoría", value: "B.1" },
+				{ label: "Nacionalidad", value: "Argentina" },
+				{ label: "Sexo", value: "F" },
+				{ label: "Vencimiento", value: "24.07.24" }
 			],
-			columns: 2
+			columns: 3
 		}
 	],
 	recentActivity: [
