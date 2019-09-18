@@ -51,8 +51,8 @@ export default class PersonalData extends Component<PersonalDataProps, {}> {
 						<Text style={styles.stateText}>{strings.dashboard.userData.states.rejected}</Text>
 					</View>
 				);
-			default:
-				return <Text></Text>;
+			case PersonalDataStatus.Null:
+				return null;
 		}
 	}
 
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		width: 15,
 		height: 15,
-		borderRadius: 20
+		borderRadius: 7.5
 	},
 	stateIconApproved: {
 		backgroundColor: "#6ecc62",
