@@ -1,13 +1,14 @@
 import { View, StyleSheet, ViewProps, ScrollView } from "react-native";
 import React from "react";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import DropdownMenu from "../../util/DropdownMenu";
-import strings from "../../resources/strings";
+import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
+import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
+import DropdownMenu from "../../../util/DropdownMenu";
+import strings from "../../../resources/strings";
 import PersonalData from "./PersonalData";
-import colors from "../../resources/colors";
-import { LoggedInStoreContent, Identity } from "../../../model/StoreContent";
+import colors from "../../../resources/colors";
+import { LoggedInStoreContent, Identity } from "../../../../model/StoreContent";
 import { connect } from "react-redux";
+import UserHeadingComponent from "./UserHeading";
 
 export type UserDataProps = ViewProps;
 
@@ -47,9 +48,26 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, {
 		];
 	}
 
-	renderState() {
+	getUserData() {
+		return {
+			user: "@lili.martinez",
+			profileImage: require("../../resources/images/avatar.png"),
+			backgroundImage: require("../../resources/images/bg.jpg"),
+			cameraIcon: require("../../resources/images/camera-icon.png")
+		};
+	}
+
+	render() {
+		const userData = this.getUserData();
 		return (
 			<ScrollView>
+				<UserHeadingComponent
+					user={userData.user}
+					profileImage={userData.profileImage}
+					backgroundImage={userData.backgroundImage}
+					cameraIcon={userData.cameraIcon}
+				/>
+
 				<View>
 					<DropdownMenu
 						headerContainerStyle={{ backgroundColor: colors.primary }}
@@ -74,10 +92,6 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, {
 				</View>
 			</ScrollView>
 		);
-	}
-
-	render() {
-		return <View>{this.renderState()}</View>;
 	}
 }
 

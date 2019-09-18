@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
-import { UserDataProps } from "./UserData";
+import { UserDataProps } from "./userData/UserData";
 
 export interface SettingsScreenProps {
 	person: Identity;

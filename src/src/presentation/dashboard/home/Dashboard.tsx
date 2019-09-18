@@ -18,7 +18,7 @@ import { LoggedInStoreContent, RecentActivity, Document, Identity } from "../../
 import { AddChildren } from "../../../util/ReactExtensions";
 import HomeHeader from "./HomeHeader";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
-import { UserDataProps } from "../settings/UserData";
+import { UserDataProps } from "../settings/userData/UserData";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
