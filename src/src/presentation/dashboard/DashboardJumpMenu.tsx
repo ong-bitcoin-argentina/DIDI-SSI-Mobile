@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ViewProps } from "react-native";
+import { View, ViewProps, Text, StyleSheet } from "react-native";
 import { FloatingAction, IActionProps } from "react-native-floating-action";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 import colors from "../resources/colors";
@@ -31,6 +31,14 @@ export default class DashboardJumpMenu extends React.Component<DashboardJumpMenu
 	}
 }
 
+const styles = StyleSheet.create({
+	icon: {
+		fontFamily: "MaterialIcons-Regular",
+		fontSize: 21,
+		color: colors.primaryText
+	}
+});
+
 const actionCommon: Omit<IActionProps, "name"> = {
 	textBackground: "transparent",
 	textColor: "#FFF",
@@ -41,31 +49,31 @@ const actionCommon: Omit<IActionProps, "name"> = {
 const actions: IActionProps[] = [
 	{
 		...actionCommon,
-		icon: require("./resources/images/share.png"),
+		icon: <Text style={styles.icon}></Text>,
 		text: "Compartir",
 		name: "share"
 	},
 	{
 		...actionCommon,
-		icon: require("./resources/images/roundIcon.png"),
+		icon: <Text style={styles.icon}></Text>,
 		text: "Armar Ronda",
 		name: "DashboardRounds"
 	},
 	{
 		...actionCommon,
-		icon: require("./resources/images/jumpToDocuments.png"),
+		icon: <Text style={styles.icon}></Text>,
 		text: "Ver Documentos",
 		name: "DashboardDocuments"
 	},
 	{
 		...actionCommon,
-		icon: require("./resources/images/jumpToEditProfile.png"),
+		icon: <Text style={styles.icon}></Text>,
 		text: "Editar Perfil",
 		name: "UserData"
 	},
 	{
 		...actionCommon,
-		icon: require("./resources/images/documentIcon.png"),
+		icon: <Text style={styles.icon}></Text>,
 		text: "Ver ID",
 		name: "viewId"
 	}

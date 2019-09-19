@@ -13,6 +13,9 @@ import { DashboardScreenProps } from "../home/Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./userData/UserData";
 
+import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
+import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
+
 export interface SettingsScreenProps {
 	person: Identity;
 }
@@ -65,7 +68,7 @@ class SettingsScreen extends NavigationEnabledComponent<
 								<Text style={styles.identityId}>{this.props.person.id}</Text>
 							</View>
 						</View>
-						<Image style={{ marginHorizontal: 10 }} source={require("../resources/images/openPersonDetail.png")} />
+						<OpenPersonDetail width="24" height="18" style={{ marginHorizontal: 10 }} />
 					</View>
 				</View>
 			</TouchableOpacity>
@@ -79,7 +82,7 @@ class SettingsScreen extends NavigationEnabledComponent<
 					<View style={styles.buttonSpacer} />
 					<Text style={styles.buttonText}>{button.name}</Text>
 					<View style={styles.buttonChevron}>
-						<Image source={require("../resources/images/chevronBlueRight.png")} />
+						<ChevronBlueRight />
 					</View>
 				</TouchableOpacity>
 				<View style={styles.buttonUnderline} />

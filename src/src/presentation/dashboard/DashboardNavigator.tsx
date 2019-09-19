@@ -4,7 +4,7 @@ import { StartAccessProps } from "../access/StartAccess";
 import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import NavMap, { NavTree, NavigationEnabledComponentConstructor } from "../util/NavMap";
 import React from "react";
-import { Image, ImageSourcePropType, ViewProps, View, StyleSheet } from "react-native";
+import { Text, ViewProps, View, StyleSheet } from "react-native";
 import themes from "../resources/themes";
 import strings from "../resources/strings";
 import { RoundsScreen } from "./rounds/RoundsScreen";
@@ -22,7 +22,7 @@ interface DashboardNavigatorProps extends ViewProps {
 }
 
 export default function(then: NavTree<DashboardSwitchTarget>) {
-	function screen(InnerNavigator: NavigationContainer, title: string, image: ImageSourcePropType) {
+	function screen(InnerNavigator: NavigationContainer, title: string, image: string) {
 		class DashboardNavigator extends React.Component<DashboardNavigatorProps> {
 			static router = InnerNavigator.router;
 			render() {
@@ -45,7 +45,9 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 			navigationOptions: {
 				title,
 				tabBarIcon: ({ focused, tintColor }: { focused: boolean; tintColor: string }) => (
-					<Image source={image} style={{ tintColor, width: 24, height: 24 }} />
+					<View style={{ width: 24, height: 24 }}>
+						<Text style={{ color: tintColor, fontSize: 24, fontFamily: "MaterialIcons-Regular" }}>{image}</Text>
+					</View>
 				)
 			}
 		};
@@ -55,26 +57,14 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 
 	return createMaterialBottomTabNavigator(
 		{
-			DashboardHome: screen(
-				dashboardHome.stackNavigator("DashboardHome"),
-				strings.tabNames.home,
-				require("./resources/images/homeIcon.png")
-			),
+			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, ""),
 			DashboardRounds: screen(
 				NavMap.from(RoundsScreen, { ...then, DashboardHome: dashboardHome }).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
-				require("./resources/images/roundIcon.png")
+				""
 			),
-			DashboardDocuments: screen(
-				DocumentsNavigator,
-				strings.tabNames.documents,
-				require("./resources/images/documentIcon.png")
-			),
-			DashboardSettings: screen(
-				SettingsNavigator.stackNavigator("DashboardSettings"),
-				strings.tabNames.settings,
-				require("./resources/images/settingsIcon.png")
-			)
+			DashboardDocuments: screen(DocumentsNavigator, strings.tabNames.documents, ""),
+			DashboardSettings: screen(SettingsNavigator.stackNavigator("DashboardSettings"), strings.tabNames.settings, "")
 		},
 		{
 			initialRouteName: "DashboardHome",
