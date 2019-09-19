@@ -53,5 +53,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MaterialIcons-Regular.ttf</string>
+		<string>RobotoCondensed-Bold.ttf</string>
+		<string>RobotoCondensed-BoldItalic.ttf</string>
+		<string>RobotoCondensed-Regular.ttf</string>
+		<string>RobotoCondensed-RegularItalic.ttf</string>
+	</array>
 </dict>
 </plist>
