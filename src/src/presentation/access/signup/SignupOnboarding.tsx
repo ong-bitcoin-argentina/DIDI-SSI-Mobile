@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import {
-	SafeAreaView,
 	StatusBar,
 	StyleSheet,
 	View,
@@ -117,11 +116,14 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 	}
 
 	private renderCard(page: OnboardingPage) {
+		const CardBackground = page.image;
 		return (
 			<TouchableWithoutFeedback onPress={() => this.advancePage()}>
 				<View style={[commonStyles.view.area, styles.card, styles.cardArea]}>
 					<View style={styles.cardContainer}>
-						<Image style={styles.image} source={page.image} />
+						<View style={styles.imageContainer}>
+							<CardBackground width="100%" height="100%" style={styles.image} />
+						</View>
 						<Text style={commonStyles.text.emphasis}>{page.title}</Text>
 						<Text style={commonStyles.text.normal}>{page.body}</Text>
 					</View>
@@ -193,7 +195,7 @@ const styles = StyleSheet.create({
 		elevation: 5
 	},
 	cardContainer: {
-		paddingHorizontal: 20,
+		padding: 20,
 		alignItems: "stretch",
 		justifyContent: "space-evenly",
 		flex: 1
@@ -218,9 +220,11 @@ const styles = StyleSheet.create({
 		marginHorizontal: 20,
 		justifyContent: "center"
 	},
+	imageContainer: {
+		flexGrow: 1,
+		flexShrink: 1
+	},
 	image: {
-		width: 300,
-		height: 300,
 		alignSelf: "center"
 	},
 	backgroundImage: {
