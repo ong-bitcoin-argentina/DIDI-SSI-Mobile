@@ -52,8 +52,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, {
 		return {
 			user: "@lili.martinez",
 			profileImage: require("../../resources/images/avatar.png"),
-			backgroundImage: require("../../resources/images/bg.jpg"),
-			cameraIcon: require("../../resources/images/camera-icon.png")
+			backgroundImage: require("../../resources/images/bg.jpg")
 		};
 	}
 
@@ -65,7 +64,6 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, {
 					user={userData.user}
 					profileImage={userData.profileImage}
 					backgroundImage={userData.backgroundImage}
-					cameraIcon={userData.cameraIcon}
 				/>
 
 				<View>

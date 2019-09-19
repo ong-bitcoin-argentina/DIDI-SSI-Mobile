@@ -7,7 +7,6 @@ interface UserHeadingProps extends ViewProps {
 	user: string;
 	profileImage: ImageSourcePropType;
 	backgroundImage: ImageSourcePropType;
-	cameraIcon: ImageSourcePropType;
 }
 
 export default class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
@@ -32,7 +31,7 @@ export default class UserHeadingComponent extends React.Component<UserHeadingPro
 						this.openBgImagePicker();
 					}}
 				>
-					<Image style={styles.cameraIcon} source={this.props.cameraIcon} />
+					<Text style={styles.cameraIcon}></Text>
 				</TouchableOpacity>
 
 				<Text style={[commonStyles.text.emphasis, styles.userLabel]}>{this.props.user}</Text>
@@ -61,12 +60,17 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		top: 170,
 		right: 20,
-		width: 30,
-		height: 30
+		width: 40,
+		height: 40,
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: colors.primary,
+		borderRadius: 20
 	},
 	cameraIcon: {
-		width: 30,
-		height: 30
+		fontSize: 20,
+		fontFamily: "MaterialIcons-Regular",
+		color: colors.primaryText
 	},
 	userLabel: {
 		marginTop: 40,

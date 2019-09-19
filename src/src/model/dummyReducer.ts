@@ -6,7 +6,7 @@ const defaultContent: StoreContent = {
 	identity: {
 		id: "Lili.Martinez",
 		name: "Liliana Martinez",
-		image: require("../presentation/dashboard/resources/images/samplePerson.png"),
+		image: require("../presentation/dashboard/resources/images/avatar.png"),
 
 		fullName: {
 			value: "Liliana Beatriz Martinez",
