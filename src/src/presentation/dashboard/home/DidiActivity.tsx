@@ -31,7 +31,7 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderIcon() {
 		return (
 			<View style={styles.iconContainer}>
-				<Image style={styles.icon} source={this.props.activity.icon} />
+				<Text style={styles.icon}>{this.props.activity.icon}</Text>
 			</View>
 		);
 	}
@@ -63,12 +63,20 @@ const styles = StyleSheet.create({
 		flex: 0
 	},
 	iconContainer: {
-		justifyContent: "flex-start"
-	},
-	icon: {
+		justifyContent: "center",
+		alignItems: "center",
 		height: 32,
 		width: 32,
-		marginRight: 12
+		marginRight: 12,
+		borderRadius: 16,
+		backgroundColor: colors.secondary
+	},
+	icon: {
+		fontSize: 20,
+		textAlign: "center",
+		textAlignVertical: "center",
+		color: colors.secondaryText,
+		fontFamily: "MaterialIcons-Regular"
 	},
 	titleData: {
 		textAlign: "left",

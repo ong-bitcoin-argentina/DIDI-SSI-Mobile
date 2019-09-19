@@ -52,7 +52,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private evolutionCard(): AddChildren<DidiCardProps> {
 		return {
-			icon: require("../../resources/images/progressIcon.png"),
+			icon: "",
 			image: require("../../resources/images/precentageSample.png"),
 			category: "Proceso",
 			title: "Mi Evolución",
@@ -76,7 +76,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private incompleteIdentityCard(): AddChildren<DidiCardProps> {
 		return {
-			icon: require("../../resources/images/validationIcon.png"),
+			icon: "",
 			category: "Documento Identidad",
 			title: "Liliana Martinez",
 			subTitle: "Nombre",
@@ -95,7 +95,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private completeIdentityCard(): AddChildren<DidiCardProps> {
 		return {
-			icon: require("../resources/images/documentIcon.png"),
+			icon: "",
 			category: "Documento Identidad",
 			title: "Liliana Martinez",
 			subTitle: "Nombre",

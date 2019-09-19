@@ -35,7 +35,7 @@ const defaultContent: StoreContent = {
 	},
 	documents: [
 		{
-			icon: require("../presentation/resources/images/placeIcon.png"),
+			icon: "",
 			category: "Cursos",
 			title: "Maestro Pizzero",
 			subtitle: "Anual",
@@ -44,7 +44,7 @@ const defaultContent: StoreContent = {
 			columns: 1
 		},
 		{
-			icon: require("../presentation/resources/images/addressIcon.png"),
+			icon: "",
 			category: "Propiedad",
 			title: "Liliana Martinez",
 			subtitle: "Vivienda",
@@ -60,7 +60,7 @@ const defaultContent: StoreContent = {
 			columns: 3
 		},
 		{
-			icon: require("../presentation/dashboard/resources/images/roundIcon.png"),
+			icon: "",
 			category: "Ronda",
 			title: "Los Martinez",
 			subtitle: "Quincenal",
@@ -69,7 +69,7 @@ const defaultContent: StoreContent = {
 			columns: 1
 		},
 		{
-			icon: require("../presentation/dashboard/resources/images/documentIcon.png"),
+			icon: "",
 			category: "Licencia de Conducir",
 			title: "Liliana Martinez",
 			subtitle: "Titular",
@@ -87,21 +87,21 @@ const defaultContent: StoreContent = {
 	],
 	recentActivity: [
 		{
-			icon: require("../presentation/resources/images/docsIcon.png"),
+			icon: "",
 			title: "Documentos",
 			description: "Documento Identidad",
 			state: "Validado",
 			date: "12/09/2018"
 		},
 		{
-			icon: require("../presentation/resources/images/rondaIcon.png"),
+			icon: "",
 			title: "Ronda Los Martinez",
 			description: "Cuota 2/12",
 			state: "Pagado",
 			date: "12/09/2018"
 		},
 		{
-			icon: require("../presentation/resources/images/coursesIcon.png"),
+			icon: "",
 			title: "Cursos",
 			description: "Maestro Pizzero",
 			state: "Terminado",

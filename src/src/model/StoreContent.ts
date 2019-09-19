@@ -28,7 +28,7 @@ export interface Identity {
 export type DocumentFilterType = "livingPlace" | "identity" | "other";
 
 export interface Document {
-	icon: ImageSourcePropType;
+	icon: string;
 	image?: ImageSourcePropType;
 	category: string;
 	title: string;
@@ -39,7 +39,7 @@ export interface Document {
 }
 
 export interface RecentActivity {
-	icon: ImageSourcePropType;
+	icon: string;
 	title: string;
 	description: string;
 	state: string;

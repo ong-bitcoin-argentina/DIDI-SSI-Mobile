@@ -3,7 +3,7 @@ import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyl
 import React from "react";
 
 export interface DidiCardProps extends ViewProps {
-	icon: ImageSourcePropType;
+	icon: string;
 	image?: ImageSourcePropType;
 	category: string;
 	title: string;
@@ -25,7 +25,7 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 	private renderIcon() {
 		return (
 			<View style={styles.headerIconContainer}>
-				<Image style={styles.icon} source={this.props.icon} />
+				<Text style={[styles.icon, this.props.textStyle]}>{this.props.icon}</Text>
 			</View>
 		);
 	}
@@ -80,9 +80,10 @@ const styles = StyleSheet.create({
 	},
 	icon: {
 		height: 30,
-		width: 27,
+		width: 30,
 		marginRight: 25,
-		resizeMode: "contain"
+		fontFamily: "MaterialIcons-Regular",
+		fontSize: 30
 	},
 	headerData: {
 		textAlign: "left",

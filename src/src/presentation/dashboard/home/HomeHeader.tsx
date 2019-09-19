@@ -21,7 +21,7 @@ export default class HomeHeader extends React.Component<HomeHeaderProps> {
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
-					<Image source={require("../resources/images/notificationBell.png")} />
+					<Text style={styles.bell}></Text>
 				</TouchableOpacity>
 			</View>
 		);
@@ -45,6 +45,11 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		paddingVertical: 25,
 		paddingHorizontal: 20
+	},
+	bell: {
+		fontFamily: "MaterialIcons-Regular",
+		fontSize: 24,
+		color: themes.navigationText
 	},
 	image: {
 		width: 46,
