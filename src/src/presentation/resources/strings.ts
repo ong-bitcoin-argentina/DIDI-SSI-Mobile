@@ -166,6 +166,11 @@ export default {
 			header: "Digitalizando el DNI",
 			description:
 				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara."
+		},
+		explainBack: {
+			title: "Paso 2/4",
+			header: "Digitalizando el DNI",
+			description: "Ahora da vuelta el DNI y sácale una foto del dorso."
 		}
 	}
 };

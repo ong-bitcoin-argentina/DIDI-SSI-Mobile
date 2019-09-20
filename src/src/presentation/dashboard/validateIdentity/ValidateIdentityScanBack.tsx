@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar } from "react-native";
+import { StyleSheet, SafeAreaView, StatusBar } from "react-native";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiCamera from "../common/DidiCamera";
@@ -8,18 +8,15 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
 import strings from "../../resources/strings";
-import { ValidateIdentityExplainBackProps } from "./ValidateIdentityExplainBack";
 
-export interface ValidateIdentityScanFrontNavigation {
-	ValidateIdentityExplainBack: ValidateIdentityExplainBackProps;
-}
-export type ValidateIdentityScanFrontProps = {};
-type ValidateIdentityScanFrontState = {};
+export interface ValidateIdentityScanBackNavigation {}
+export type ValidateIdentityScanBackProps = {};
+type ValidateIdentityScanBackState = {};
 
-export class ValidateIdentityScanFrontScreen extends NavigationEnabledComponent<
-	ValidateIdentityScanFrontProps,
-	ValidateIdentityScanFrontState,
-	ValidateIdentityScanFrontNavigation
+export class ValidateIdentityScanBackScreen extends NavigationEnabledComponent<
+	ValidateIdentityScanBackProps,
+	ValidateIdentityScanBackState,
+	ValidateIdentityScanBackNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
 
@@ -28,7 +25,7 @@ export class ValidateIdentityScanFrontScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<DidiCamera onPictureTaken={data => this.navigate("ValidateIdentityExplainBack", {})} />
+					<DidiCamera onPictureTaken={data => {}} />
 				</SafeAreaView>
 			</Fragment>
 		);
