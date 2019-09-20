@@ -19,6 +19,7 @@ import { AddChildren } from "../../../util/ReactExtensions";
 import HomeHeader from "./HomeHeader";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
+import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
@@ -29,7 +30,7 @@ interface DashboardScreenInternalProps extends DashboardScreenProps {
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
 	DashboardDocuments: DocumentsScreenProps;
-	ValidateID: {}; // TODO: Implement
+	ValidateID: ValidateIdentityExplainWhatProps;
 	UserData: UserDataProps;
 }
 interface DashboardScreenState {
@@ -86,8 +87,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 				<DidiButton
 					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
 					title="Validar Id"
-					// TODO: onPress={() => this.navigate("ValidateID", {})}
-					onPress={() => this.setState({ isIdentityComplete: !this.state.isIdentityComplete })}
+					onPress={() => this.navigate("ValidateID", {})}
 				/>
 			)
 		};

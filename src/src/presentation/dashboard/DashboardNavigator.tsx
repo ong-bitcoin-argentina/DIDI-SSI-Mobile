@@ -9,21 +9,23 @@ import themes from "../resources/themes";
 import strings from "../resources/strings";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import DocumentsNavigator from "./documents/DocumentsNavigator";
-import { NavigationContainer, NavigationScreenProp, NavigationState } from "react-navigation";
+import { NavigationContainer, NavigationScreenProp, NavigationState, createStackNavigator } from "react-navigation";
 import DashboardJumpMenu from "./DashboardJumpMenu";
 import SettingsNavigator from "./settings/SettingsNavigator";
+import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
+import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
 }
 
-interface DashboardNavigatorProps extends ViewProps {
+interface NavigatorProps extends ViewProps {
 	navigation: NavigationScreenProp<NavigationState>;
 }
 
 export default function(then: NavTree<DashboardSwitchTarget>) {
 	function screen(InnerNavigator: NavigationContainer, title: string, image: string) {
-		class DashboardNavigator extends React.Component<DashboardNavigatorProps> {
+		class DashboardNavigator extends React.Component<NavigatorProps> {
 			static router = InnerNavigator.router;
 			render() {
 				const { navigation } = this.props;
@@ -55,11 +57,11 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 
 	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, then);
 
-	return createMaterialBottomTabNavigator(
+	const BottomNavigator = createMaterialBottomTabNavigator(
 		{
 			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, ""),
 			DashboardRounds: screen(
-				NavMap.from(RoundsScreen, { ...then, DashboardHome: dashboardHome }).stackNavigator("DashboardRounds"),
+				NavMap.from(RoundsScreen, then).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
 				""
 			),
@@ -73,4 +75,18 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 			barStyle: { backgroundColor: themes.navigation }
 		}
 	);
+
+	class BottomNavigatorComponent extends React.Component<NavigatorProps> {
+		static navigationOptions = NavigationHeaderStyle.gone;
+		static router = BottomNavigator.router;
+
+		render() {
+			const { navigation } = this.props;
+			return <BottomNavigator navigation={navigation} />;
+		}
+	}
+
+	return NavMap.from(BottomNavigatorComponent, {
+		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen))
+	}).stackNavigator("DashboardRoot");
 }

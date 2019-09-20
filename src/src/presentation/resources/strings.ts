@@ -116,5 +116,8 @@ export default {
 		account: "Cuenta",
 		preferences: "Preferencias de Didi",
 		about: "Acerca de Didi"
+	},
+	validateIdentity: {
+		header: "Validar Identidad"
 	}
 };

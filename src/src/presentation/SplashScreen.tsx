@@ -21,7 +21,7 @@ export class SplashScreen extends NavigationEnabledComponent<{}, {}, SplashScree
 
 	componentDidMount() {
 		setTimeout(() => {
-			this.navigate("UserData" as "Dashboard", {});
+			this.navigate("Dashboard", {});
 		}, 100);
 	}
 

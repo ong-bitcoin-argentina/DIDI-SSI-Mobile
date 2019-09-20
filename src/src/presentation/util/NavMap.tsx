@@ -1,4 +1,4 @@
-import { NavigationContainer, createStackNavigator } from "react-navigation";
+import { NavigationContainer, createStackNavigator, StackNavigatorConfig } from "react-navigation";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
 
 import NavigationEnabledComponent from "./NavigationEnabledComponent";
@@ -15,13 +15,13 @@ type AnyConstructor = any;
 
 export default class NavMap<Props> {
 	static from<Prop, Nav>(
-		constructor: NavigationEnabledComponentConstructor<Prop, Nav>,
-		to: NavTree<Nav>
+		constructor: any, // NavigationEnabledComponentConstructor<Prop, Nav>,
+		to: any // NavTree<Nav>
 	): NavMap<Prop> {
 		return new NavMap(constructor, false, to ? to : {});
 	}
 
-	static placeholder<Prop, Nav>(constructor: NavigationEnabledComponentConstructor<Prop, Nav>): NavMap<Prop> {
+	static placeholder<Prop, Nav>(constructor: any /*NavigationEnabledComponentConstructor<Prop, Nav>*/): NavMap<Prop> {
 		return new NavMap(constructor, true, {});
 	}
 
@@ -52,11 +52,12 @@ export default class NavMap<Props> {
 		this.rest = rest;
 	}
 
-	public stackNavigator(rootName: string): NavigationContainer {
+	public stackNavigator(rootName: string, stackConfig?: StackNavigatorConfig): NavigationContainer {
 		const spec = this.rest;
 		spec[rootName] = this.current;
 		return createStackNavigator(spec, {
-			initialRouteName: rootName
+			initialRouteName: rootName,
+			...stackConfig
 		});
 	}
 }
