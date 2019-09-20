@@ -9,9 +9,10 @@ import strings from "../../resources/strings";
 
 import ContentImage from "../resources/images/validateIdentityHow.svg";
 import colors from "../../resources/colors";
+import { ValidateIdentityScanFrontProps } from "./ValidateIdentityScanFront";
 
 export interface ValidateIdentityExplainHowNavigation {
-	// ValidateIdentityHow: ValidateIdentityExplainHowNavigation;
+	ValidateIdentityScanFront: ValidateIdentityScanFrontProps;
 }
 export type ValidateIdentityExplainHowProps = {};
 type ValidateIdentityExplainHowState = {};
@@ -43,7 +44,7 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 				}
 				image={ContentImage}
 				buttonText={strings.validateIdentity.howTo.buttonText}
-				buttonAction={() => {}}
+				buttonAction={() => this.navigate("ValidateIdentityScanFront", {})}
 			/>
 		);
 	}

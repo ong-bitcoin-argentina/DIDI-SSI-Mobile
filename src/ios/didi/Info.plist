@@ -53,6 +53,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Didi requiere acceder a la camara para sacar fotos de documentos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialIcons-Regular.ttf</string>

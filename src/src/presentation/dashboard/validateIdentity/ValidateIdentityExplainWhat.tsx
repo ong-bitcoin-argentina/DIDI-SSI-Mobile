@@ -11,7 +11,7 @@ import ContentImage from "../resources/images/validateIdentityWhat.svg";
 import { ValidateIdentityExplainHowNavigation } from "./ValidateIdentityExplainHow";
 
 export interface ValidateIdentityExplainWhatNavigation {
-	ValidateIdentityHow: ValidateIdentityExplainHowNavigation;
+	ValidateIdentityHow: ValidateIdentityExplainHowProps;
 }
 export type ValidateIdentityExplainWhatProps = {};
 type ValidateIdentityExplainWhatState = {};
