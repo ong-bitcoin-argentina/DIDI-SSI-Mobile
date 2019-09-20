@@ -147,6 +147,19 @@ export default {
 		about: "Acerca de Didi"
 	},
 	validateIdentity: {
-		header: "Validar Identidad"
+		header: "Validar Identidad",
+		welcome: "Bienvenida Lili M.",
+		what: {
+			header: "¿Que es validación de identidad?",
+			description:
+				"Es un simple proceso mediante el cual vas a poder confirmar que vos sos quien decis ser. Y con ello, podrás acceder a todos los servicios de la APP.",
+			buttonText: "Siguiente"
+		},
+		howTo: {
+			header: "¿Como lo hago?",
+			intro: "Sigue estos pasos",
+			steps: ["Busca un lugar iluminado y con fondo claro", "Tene tu DNI a mano", "Acceso a internet o datos moviles"],
+			buttonText: "Comencemos"
+		}
 	}
 };

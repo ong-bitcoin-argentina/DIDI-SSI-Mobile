@@ -16,6 +16,7 @@
 		"@types/react-redux": "^7.1.2",
 		"react": "16.8.6",
 		"react-native": "0.60.5",
+		"react-native-camera": "^3.4.0",
 		"react-native-floating-action": "^1.19.1",
 		"react-native-gesture-handler": "^1.4.1",
 		"react-native-paper": "^2.16.0",

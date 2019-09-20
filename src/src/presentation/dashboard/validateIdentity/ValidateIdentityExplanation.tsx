@@ -1,5 +1,5 @@
 import { StatusBar, SafeAreaView, View, Text, ViewProps, StyleSheet } from "react-native";
-import React, { Fragment, ReactNode } from "react";
+import React, { Fragment, ReactNode, ReactElement } from "react";
 
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
@@ -8,11 +8,12 @@ import DidiButton from "../../util/DidiButton";
 import colors from "../../resources/colors";
 
 export interface ValidateIdentityExplanationProps {
-	title: ReactNode;
-	header: ReactNode;
-	description: ReactNode;
+	title: string;
+	header: string;
+	description: string | ReactElement;
 	image: React.FunctionComponent<SvgProps>;
 	buttonText?: string;
+	buttonAction: () => void;
 }
 
 export default class ValidateIdentityExplanation extends React.Component<ValidateIdentityExplanationProps> {
@@ -25,27 +26,38 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 					<View style={styles.body}>
 						<Text style={styles.title}>{this.props.title}</Text>
 						<Text style={styles.header}>{this.props.header}</Text>
-						<Text style={styles.description}>{this.props.description}</Text>
+						{this.renderDescription()}
 						<ContentImage style={styles.image} />
-						{this.props.buttonText ? this.renderTextButton(this.props.buttonText) : this.renderPhotoButton()}
+						{this.renderButton()}
 					</View>
 				</SafeAreaView>
 			</Fragment>
 		);
 	}
 
-	private renderPhotoButton() {}
+	private renderDescription() {
+		if (typeof this.props.description === "string") {
+			return <Text style={styles.description}>{this.props.description}</Text>;
+		} else {
+			return this.props.description;
+		}
+	}
 
-	private renderTextButton(title: string) {
-		return <DidiButton title={title} />;
+	private renderButton() {
+		if (this.props.buttonText) {
+			return <DidiButton title={this.props.buttonText} onPress={this.props.buttonAction} />;
+		} else {
+		}
 	}
 }
 
 const styles = StyleSheet.create({
 	body: {
 		marginHorizontal: 20,
+		marginTop: 40,
+		marginBottom: 30,
 		alignItems: "stretch",
-		justifyContent: "space-evenly",
+		justifyContent: "space-between",
 		flex: 1
 	},
 	title: {
