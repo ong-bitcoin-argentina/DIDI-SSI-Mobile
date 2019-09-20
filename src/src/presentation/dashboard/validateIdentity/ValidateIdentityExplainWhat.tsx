@@ -8,7 +8,7 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import ContentImage from "../resources/images/validateIdentityWhat.svg";
-import { ValidateIdentityExplainHowNavigation } from "./ValidateIdentityExplainHow";
+import { ValidateIdentityExplainHowProps } from "./ValidateIdentityExplainHow";
 
 export interface ValidateIdentityExplainWhatNavigation {
 	ValidateIdentityHow: ValidateIdentityExplainHowProps;

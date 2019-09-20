@@ -6,6 +6,7 @@ import themes from "../../resources/themes";
 import { SvgProps } from "react-native-svg";
 import DidiButton from "../../util/DidiButton";
 import colors from "../../resources/colors";
+import DidiCamera from "../common/DidiCamera";
 
 export interface ValidateIdentityExplanationProps {
 	title: string;
@@ -47,6 +48,7 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 		if (this.props.buttonText) {
 			return <DidiButton title={this.props.buttonText} onPress={this.props.buttonAction} />;
 		} else {
+			return DidiCamera.cameraButton(this.props.buttonAction);
 		}
 	}
 }

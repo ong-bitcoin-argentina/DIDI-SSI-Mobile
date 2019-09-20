@@ -160,6 +160,12 @@ export default {
 			intro: "Sigue estos pasos",
 			steps: ["Busca un lugar iluminado y con fondo claro", "Tene tu DNI a mano", "Acceso a internet o datos moviles"],
 			buttonText: "Comencemos"
+		},
+		explainFront: {
+			title: "Paso 1/4",
+			header: "Digitalizando el DNI",
+			description:
+				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara."
 		}
 	}
 };

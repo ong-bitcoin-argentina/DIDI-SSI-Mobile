@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity, GestureResponderEvent } from "react-native";
 import { RNCamera, TakePictureResponse } from "react-native-camera";
 
 import colors from "../../resources/colors";
@@ -24,6 +24,14 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 
 	private camera: RNCamera | null = null;
 
+	static cameraButton(onPress?: (event: GestureResponderEvent) => void) {
+		return (
+			<TouchableOpacity style={styles.cameraButton} onPress={onPress}>
+				<Text style={styles.cameraIcon}></Text>
+			</TouchableOpacity>
+		);
+	}
+
 	render() {
 		return (
 			<Fragment>
@@ -42,9 +50,7 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 					notAuthorizedView={<Text style={{ textAlignVertical: "center", flex: 1 }}>Camara no autorizada</Text>}
 					onCameraReady={() => this.setState({ cameraAvailable: true })}
 				/>
-				<View style={[StyleSheet.absoluteFill, { alignItems: "center", justifyContent: "flex-end" }]}>
-					{this.renderPictureButton()}
-				</View>
+				<View style={[StyleSheet.absoluteFill, styles.cameraButtonContainer]}>{this.renderPictureButton()}</View>
 			</Fragment>
 		);
 	}
@@ -62,11 +68,7 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 				</TouchableOpacity>
 			);
 		} else {
-			return (
-				<TouchableOpacity style={styles.cameraButton} onPress={() => this.takePicture()}>
-					<Text style={styles.cameraIcon}></Text>
-				</TouchableOpacity>
-			);
+			return DidiCamera.cameraButton(() => this.takePicture());
 		}
 	}
 
@@ -85,14 +87,19 @@ const styles = StyleSheet.create({
 		justifyContent: "space-evenly",
 		flex: 1
 	},
-	cameraButton: {
+	cameraButtonContainer: {
 		margin: 30,
+		alignItems: "center",
+		justifyContent: "flex-end"
+	},
+	cameraButton: {
 		width: 66,
 		height: 66,
 		backgroundColor: colors.primary,
 		borderRadius: 33,
 		justifyContent: "center",
-		alignItems: "center"
+		alignItems: "center",
+		alignSelf: "center"
 	},
 	cameraIcon: {
 		fontSize: 33,
