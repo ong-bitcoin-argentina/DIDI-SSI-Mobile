@@ -1,4 +1,4 @@
-import { View, StyleSheet, ViewProps, ScrollView } from "react-native";
+import { View, StyleSheet, ViewProps, ScrollView, Text } from "react-native";
 import React from "react";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
@@ -9,6 +9,10 @@ import colors from "../../../resources/colors";
 import { LoggedInStoreContent, Identity } from "../../../../model/StoreContent";
 import { connect } from "react-redux";
 import UserHeadingComponent from "./UserHeading";
+import { ChangePasswordProps } from "../userMenu/ChangePassword";
+import DidiButton from "../../../util/DidiButton";
+import { EditProfileProps } from "../userMenu/EditProfile";
+import { ShareProps } from "../userMenu/Share";
 
 export type UserDataProps = ViewProps;
 
@@ -16,7 +20,15 @@ interface UserDataInternalProps extends UserDataProps {
 	identity: Identity;
 }
 
-class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, {}, {}> {
+type UserDataState = {};
+
+export interface UserDataNavigation {
+	ChangePassword: ChangePasswordProps;
+	EditProfile: EditProfileProps;
+	Share: ShareProps;
+}
+
+class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Mi Perfil");
 
 	getPersonalData() {
@@ -64,6 +76,25 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, {
 					user={userData.user}
 					profileImage={userData.profileImage}
 					backgroundImage={userData.backgroundImage}
+					allowEdit={true}
+				/>
+
+				{/*TODO mover los 3 botones a menu de 3 puntos !!!*/}
+
+				<DidiButton
+					disabled={false}
+					onPress={() => this.navigate("ChangePassword", { person: this.props.identity })}
+					title="ChangePassword"
+				/>
+				<DidiButton
+					disabled={false}
+					onPress={() => this.navigate("EditProfile", { person: this.props.identity, userData: userData })}
+					title="EditProfile"
+				/>
+				<DidiButton
+					disabled={false}
+					onPress={() => this.navigate("Share", { person: this.props.identity })}
+					title="Share"
 				/>
 
 				<View>

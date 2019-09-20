@@ -9,6 +9,10 @@ export default class Validator {
 		return false;
 	}
 
+	static isDocumentNumber(code?: String): boolean {
+		return Validator.isNumber(code);
+	}
+
 	static isNumber(code?: String): boolean {
 		if (code) {
 			const match = code.match("^[0-9]*$");

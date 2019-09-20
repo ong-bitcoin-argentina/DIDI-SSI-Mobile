@@ -10,6 +10,34 @@ export default {
 				approved: "Aprobado",
 				pending: "Pendiente",
 				rejected: "Rechazado"
+			},
+			editProfile: {
+				barTitle: "Editar Perfil",
+				nameMessage: "Nombre completo",
+				cellMessage: "Celular",
+				emailMessage: "E-mail",
+				documentMessage: "DU / CI / Pasaporte",
+				nacionalityMessage: "Nacionalidad",
+				addressMessage: "Domicilio",
+				saveChanges: "Guardar Cambios"
+			},
+			changePassword: {
+				barTitle: "Cambio Contraseña",
+				newPassMessage: "Nueva Contraseña",
+				repeatNewPassMessage: "Repetir Contraseña",
+				oldPassMessage: "Contraseña Actual",
+				changePassword: "Cambiar Contraseña"
+			},
+			share: {
+				barTitle: "Compartir",
+				share: "Compartir",
+
+				personalData: "DatosPersonales",
+				familyMessage: "Familia",
+				coursesMessage: "Cursos",
+				jobsMessage: "Trabajos",
+				titlesMessage: "Títulos",
+				othersMessage: "Otros"
 			}
 		}
 	},
@@ -50,7 +78,8 @@ export default {
 			barTitle: "Recuperar Contraseña",
 			messageHead: "Ingresa tu nueva contraseña",
 			newPassMessage: "Nueva Contraseña",
-			repeatNewPassMessage: "Repetir Contraseña"
+			repeatNewPassMessage: "Repetir Contraseña",
+			oldPassMessage: "Contraseña Actual"
 		}
 	},
 	signup: {

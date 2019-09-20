@@ -7,6 +7,7 @@ interface UserHeadingProps extends ViewProps {
 	user: string;
 	profileImage: ImageSourcePropType;
 	backgroundImage: ImageSourcePropType;
+	allowEdit?: boolean;
 }
 
 export default class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
@@ -25,14 +26,16 @@ export default class UserHeadingComponent extends React.Component<UserHeadingPro
 					<Image style={styles.identityImage} source={this.props.profileImage} />
 				</View>
 
-				<TouchableOpacity
-					style={styles.cameraIconContainer}
-					onPress={() => {
-						this.openBgImagePicker();
-					}}
-				>
-					<Text style={styles.cameraIcon}></Text>
-				</TouchableOpacity>
+				{this.props.allowEdit && (
+					<TouchableOpacity
+						style={styles.cameraIconContainer}
+						onPress={() => {
+							this.openBgImagePicker();
+						}}
+					>
+						<Text style={styles.cameraIcon}></Text>
+					</TouchableOpacity>
+				)}
 
 				<Text style={[commonStyles.text.emphasis, styles.userLabel]}>{this.props.user}</Text>
 			</View>

@@ -7,7 +7,7 @@ export interface DidiTextInputProps {
 	theme?: DidiTheme;
 	viewProps?: ViewProps;
 
-	tagImage: ImageSourcePropType;
+	tagImage?: ImageSourcePropType;
 	description: string;
 	placeholder: NonNullable<TextInputProps["placeholder"]>;
 
@@ -25,7 +25,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 
 		return (
 			<View {...this.props.viewProps} style={rootStyle}>
-				<Image style={style.tagImage} source={this.props.tagImage} />
+				{this.props.tagImage && <Image style={style.tagImage} source={this.props.tagImage} />}
 				<View style={style.textContainer}>
 					<Text style={style.description}>{this.props.description}</Text>
 					<TextInput {...this.props.textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
