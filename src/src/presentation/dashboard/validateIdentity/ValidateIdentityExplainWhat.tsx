@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, StyleSheet } from "react-native";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
@@ -8,9 +8,10 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import ContentImage from "../resources/images/validateIdentityWhat.svg";
+import { ValidateIdentityExplainHowNavigation } from "./ValidateIdentityExplainHow";
 
 export interface ValidateIdentityExplainWhatNavigation {
-	// ValidateIdentityHow: ValidateIdentityExplainHowNavigation;
+	ValidateIdentityHow: ValidateIdentityExplainHowNavigation;
 }
 export type ValidateIdentityExplainWhatProps = {};
 type ValidateIdentityExplainWhatState = {};
@@ -25,17 +26,23 @@ export class ValidateIdentityExplainWhatScreen extends NavigationEnabledComponen
 	render() {
 		return (
 			<ValidateIdentityExplanation
-				title="Bienvenida Lili M."
-				header="¿Que es validación de identidad?"
-				description={
-					<Text>
-						Es un simple proceso mediante el cual vas a poder confirmar que vos sos quien decis ser. Y con ello, podrás
-						acceder a todos los servicios de la <Text style={{ fontWeight: "bold" }}>APP</Text>.
-					</Text>
-				}
+				title={strings.validateIdentity.welcome}
+				header={strings.validateIdentity.what.header}
+				description={<Text style={styles.description}>{strings.validateIdentity.what.description}</Text>}
 				image={ContentImage}
-				buttonText="Siguiente"
+				buttonText={strings.validateIdentity.what.buttonText}
+				buttonAction={() => this.navigate("ValidateIdentityHow", {})}
 			/>
 		);
 	}
 }
+
+const styles = StyleSheet.create({
+	description: {
+		fontSize: 16,
+		textAlign: "center"
+	},
+	bold: {
+		fontWeight: "bold"
+	}
+});
