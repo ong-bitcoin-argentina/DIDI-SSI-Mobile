@@ -8,10 +8,10 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import colors from "../../resources/colors";
-import { ValidateIdentityExplainFrontProps } from "./ValidateIdentityExplainFront";
+import { ValidateIdentityFrontProps } from "./ValidateIdentityFront";
 
 export interface ValidateIdentityExplainHowNavigation {
-	ValidateIdentityExplainFront: ValidateIdentityExplainFrontProps;
+	ValidateIdentityFront: ValidateIdentityFrontProps;
 }
 export type ValidateIdentityExplainHowProps = {};
 type ValidateIdentityExplainHowState = {};
@@ -43,7 +43,7 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 				}
 				image={require("../resources/images/validateIdentityHow.png")}
 				buttonText={strings.validateIdentity.howTo.buttonText}
-				buttonAction={() => this.navigate("ValidateIdentityExplainFront", {})}
+				buttonAction={() => this.navigate("ValidateIdentityFront", {})}
 			/>
 		);
 	}
