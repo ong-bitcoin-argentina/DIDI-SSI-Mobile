@@ -60,22 +60,13 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		];
 	}
 
-	getUserData() {
-		return {
-			user: "@lili.martinez",
-			profileImage: require("../../resources/images/avatar.png"),
-			backgroundImage: require("../../resources/images/bg.jpg")
-		};
-	}
-
 	render() {
-		const userData = this.getUserData();
 		return (
 			<ScrollView>
 				<UserHeadingComponent
-					user={userData.user}
-					profileImage={userData.profileImage}
-					backgroundImage={userData.backgroundImage}
+					user={this.props.identity.id}
+					profileImage={this.props.identity.image}
+					backgroundImage={this.props.identity.backgroundImage}
 					allowEdit={true}
 				/>
 
@@ -88,7 +79,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 				/>
 				<DidiButton
 					disabled={false}
-					onPress={() => this.navigate("EditProfile", { person: this.props.identity, userData: userData })}
+					onPress={() => this.navigate("EditProfile", { person: this.props.identity })}
 					title="EditProfile"
 				/>
 				<DidiButton

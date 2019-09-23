@@ -15,6 +15,7 @@ export interface WithValidationState<T> {
 export interface Identity {
 	id: string;
 	image: ImageSourcePropType;
+	backgroundImage: ImageSourcePropType;
 	name: string;
 
 	fullName: WithValidationState<string>;

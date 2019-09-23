@@ -17,7 +17,7 @@ export default {
 				cellMessage: "Celular",
 				emailMessage: "E-mail",
 				documentMessage: "DU / CI / Pasaporte",
-				nacionalityMessage: "Nacionalidad",
+				nationalityMessage: "Nacionalidad",
 				addressMessage: "Domicilio",
 				saveChanges: "Guardar Cambios"
 			},

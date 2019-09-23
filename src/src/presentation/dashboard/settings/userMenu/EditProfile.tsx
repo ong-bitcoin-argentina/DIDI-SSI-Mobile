@@ -17,11 +17,6 @@ import UserHeadingComponent from "../userData/UserHeading";
 
 export interface EditProfileProps {
 	person: Identity;
-	userData: {
-		user: string;
-		profileImage: ImageSourcePropType;
-		backgroundImage: ImageSourcePropType;
-	};
 }
 
 type EditProfileState = {
@@ -29,7 +24,7 @@ type EditProfileState = {
 	cell: string;
 	email: string;
 	document: string;
-	nacionality: string;
+	nationality: string;
 	address: string;
 };
 
@@ -58,7 +53,7 @@ export default class EditProfileScreen extends NavigationEnabledComponent<
 			return false;
 		}
 
-		return this.state.name.length > 0 && this.state.nacionality.length > 0 && this.state.address.length > 0;
+		return this.state.name.length > 0 && this.state.nationality.length > 0 && this.state.address.length > 0;
 	}
 
 	editProfile() {
@@ -73,6 +68,7 @@ export default class EditProfileScreen extends NavigationEnabledComponent<
 					description={strings.dashboard.userData.editProfile.nameMessage}
 					placeholder=""
 					textInputProps={{
+						defaultValue: this.props.person.name,
 						onChangeText: text => this.setState({ name: text })
 					}}
 				/>
@@ -81,6 +77,7 @@ export default class EditProfileScreen extends NavigationEnabledComponent<
 					placeholder=""
 					textInputProps={{
 						keyboardType: "number-pad",
+						defaultValue: this.props.person.cellPhone.value,
 						onChangeText: text => this.setState({ cell: text })
 					}}
 				/>
@@ -90,6 +87,7 @@ export default class EditProfileScreen extends NavigationEnabledComponent<
 					placeholder=""
 					textInputProps={{
 						keyboardType: "email-address",
+						defaultValue: this.props.person.email.value,
 						onChangeText: text => this.setState({ email: text })
 					}}
 				/>
@@ -99,14 +97,16 @@ export default class EditProfileScreen extends NavigationEnabledComponent<
 					placeholder=""
 					textInputProps={{
 						keyboardType: "number-pad",
+						defaultValue: this.props.person.document.value,
 						onChangeText: text => this.setState({ document: text })
 					}}
 				/>
 				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.nacionalityMessage}
+					description={strings.dashboard.userData.editProfile.nationalityMessage}
 					placeholder=""
 					textInputProps={{
-						onChangeText: text => this.setState({ nacionality: text })
+						defaultValue: this.props.person.nationality.value,
+						onChangeText: text => this.setState({ nationality: text })
 					}}
 				/>
 
@@ -114,6 +114,7 @@ export default class EditProfileScreen extends NavigationEnabledComponent<
 					description={strings.dashboard.userData.editProfile.addressMessage}
 					placeholder=""
 					textInputProps={{
+						defaultValue: this.props.person.address.value,
 						onChangeText: text => this.setState({ address: text })
 					}}
 				/>
@@ -122,16 +123,14 @@ export default class EditProfileScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		let userData = this.props.userData;
-
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<ScrollView>
 					<UserHeadingComponent
-						user={userData.user}
-						profileImage={userData.profileImage}
-						backgroundImage={userData.backgroundImage}
+						user={this.props.person.id}
+						profileImage={this.props.person.image}
+						backgroundImage={this.props.person.backgroundImage}
 					/>
 					<SafeAreaView style={commonStyles.view.area}>
 						<View style={commonStyles.view.body}>

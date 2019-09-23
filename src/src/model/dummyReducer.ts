@@ -4,9 +4,10 @@ import StoreContent, { ValidationState } from "./StoreContent";
 const defaultContent: StoreContent = {
 	loggedIn: true,
 	identity: {
-		id: "Lili.Martinez",
+		id: "@lili.martinez",
 		name: "Liliana Martinez",
 		image: require("../presentation/dashboard/resources/images/avatar.png"),
+		backgroundImage: require("../presentation/dashboard/resources/images/bg.jpg"),
 
 		fullName: {
 			value: "Liliana Beatriz Martinez",
