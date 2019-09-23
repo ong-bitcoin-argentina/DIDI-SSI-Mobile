@@ -7,7 +7,6 @@ import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-import ContentImage from "../resources/images/validateIdentityHow.svg";
 import colors from "../../resources/colors";
 import { ValidateIdentityExplainFrontProps } from "./ValidateIdentityExplainFront";
 
@@ -42,7 +41,7 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 						})}
 					</View>
 				}
-				image={ContentImage}
+				image={require("../resources/images/validateIdentityHow.png")}
 				buttonText={strings.validateIdentity.howTo.buttonText}
 				buttonAction={() => this.navigate("ValidateIdentityExplainFront", {})}
 			/>

@@ -7,7 +7,6 @@ import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-import ContentImage from "../resources/images/validateIdentityExplainBack.svg";
 import { ValidateIdentityScanBackProps } from "./ValidateIdentityScanBack";
 
 export interface ValidateIdentityExplainBackNavigation {
@@ -29,7 +28,7 @@ export class ValidateIdentityExplainBackScreen extends NavigationEnabledComponen
 				title={strings.validateIdentity.explainBack.title}
 				header={strings.validateIdentity.explainBack.header}
 				description={<Text style={styles.description}>{strings.validateIdentity.explainBack.description}</Text>}
-				image={ContentImage}
+				image={require("../resources/images/validateIdentityExplainBack.png")}
 				buttonAction={() => this.navigate("ValidateIdentityScanBack", {})}
 			/>
 		);

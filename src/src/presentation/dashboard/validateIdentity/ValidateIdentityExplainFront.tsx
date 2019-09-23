@@ -7,7 +7,6 @@ import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-import ContentImage from "../resources/images/validateIdentityExplainFront.svg";
 import { ValidateIdentityScanFrontProps } from "./ValidateIdentityScanFront";
 
 export interface ValidateIdentityExplainFrontNavigation {
@@ -29,7 +28,7 @@ export class ValidateIdentityExplainFrontScreen extends NavigationEnabledCompone
 				title={strings.validateIdentity.explainFront.title}
 				header={strings.validateIdentity.explainFront.header}
 				description={<Text style={styles.description}>{strings.validateIdentity.explainFront.description}</Text>}
-				image={ContentImage}
+				image={require("../resources/images/validateIdentityExplainFront.png")}
 				buttonAction={() => this.navigate("ValidateIdentityScanFront", {})}
 			/>
 		);

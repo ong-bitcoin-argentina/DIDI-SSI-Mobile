@@ -1,4 +1,4 @@
-import { StatusBar, SafeAreaView, View, Text, ViewProps, StyleSheet } from "react-native";
+import { StatusBar, SafeAreaView, View, Text, ViewProps, StyleSheet, Image, ImageSourcePropType } from "react-native";
 import React, { Fragment, ReactNode, ReactElement } from "react";
 
 import commonStyles from "../../access/resources/commonStyles";
@@ -12,7 +12,7 @@ export interface ValidateIdentityExplanationProps {
 	title: string;
 	header: string;
 	description: string | ReactElement;
-	image: React.FunctionComponent<SvgProps>;
+	image: ImageSourcePropType;
 	buttonText?: string;
 	buttonAction: () => void;
 }
@@ -28,7 +28,7 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 						<Text style={styles.title}>{this.props.title}</Text>
 						<Text style={styles.header}>{this.props.header}</Text>
 						{this.renderDescription()}
-						<ContentImage style={styles.image} />
+						<Image style={commonStyles.image.image} source={this.props.image} />
 						{this.renderButton()}
 					</View>
 				</SafeAreaView>
