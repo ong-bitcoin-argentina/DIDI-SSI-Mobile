@@ -19,7 +19,7 @@ interface DashboardSwitchTarget {
 	Access: StartAccessProps;
 }
 
-interface NavigatorProps extends ViewProps {
+export interface NavigatorProps extends ViewProps {
 	navigation: NavigationScreenProp<NavigationState>;
 }
 

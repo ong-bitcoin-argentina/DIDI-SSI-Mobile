@@ -3,6 +3,7 @@ import { Text, StyleSheet } from "react-native";
 import { TakePictureResponse } from "react-native-camera/types";
 
 import { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
+import { ValidateIdentitySelfieProps } from "./ValidateIdentitySelfie";
 import {
 	ValidateIdentityTakePhotoProps,
 	ValidateIdentityTakePhotoState,
@@ -11,7 +12,9 @@ import {
 
 import strings from "../../resources/strings";
 
-export interface ValidateIdentityBackNavigation {}
+export interface ValidateIdentityBackNavigation {
+	ValidateIdentitySelfie: ValidateIdentitySelfieProps;
+}
 export type ValidateIdentityBackProps = ValidateIdentityTakePhotoProps;
 type ValidateIdentityBackState = ValidateIdentityTakePhotoState;
 
@@ -28,7 +31,7 @@ export class ValidateIdentityBackScreen extends ValidateIdentityTakePhotoScreen<
 	}
 
 	protected didTakePhoto(data: TakePictureResponse): void {
-		throw new Error("Method not implemented.");
+		this.navigate("ValidateIdentitySelfie", {});
 	}
 
 	protected explanationProps(): Omit<ValidateIdentityExplanationProps, "buttonAction"> {

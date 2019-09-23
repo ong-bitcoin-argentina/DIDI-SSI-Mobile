@@ -171,6 +171,17 @@ export default {
 			title: "Paso 2/4",
 			header: "Digitalizando el DNI",
 			description: "Ahora da vuelta el DNI y sácale una foto del dorso."
+		},
+		explainSelfie: {
+			title: "Paso 3/4",
+			header: "Foto Selfie",
+			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie."
+		},
+		explainLiveness: {
+			title: "Paso 4/4",
+			header: "Prueba de Vida",
+			description:
+				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!"
 		}
 	}
 };
