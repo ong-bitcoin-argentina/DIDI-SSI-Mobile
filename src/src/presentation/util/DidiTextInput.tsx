@@ -11,6 +11,7 @@ export interface DidiTextInputProps {
 	description: string;
 	placeholder: NonNullable<TextInputProps["placeholder"]>;
 
+	stateIndicator?: JSX.Element;
 	textInputProps?: TextInputProps;
 }
 
@@ -27,8 +28,13 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 			<View {...this.props.viewProps} style={rootStyle}>
 				{this.props.tagImage && <Image style={style.tagImage} source={this.props.tagImage} />}
 				<View style={style.textContainer}>
-					<Text style={style.description}>{this.props.description}</Text>
-					<TextInput {...this.props.textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
+					<View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+						<View>
+							<Text style={style.description}>{this.props.description}</Text>
+							<TextInput {...this.props.textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
+						</View>
+						{this.props.stateIndicator}
+					</View>
 					<View style={style.underline} />
 				</View>
 			</View>
@@ -49,7 +55,9 @@ function styles(theme: DidiTheme) {
 		},
 		textInput: {
 			color: theme.foreground,
-			minHeight: 30
+			paddingTop: 6,
+			paddingBottom: 0,
+			fontSize: 16
 		},
 		description: {
 			color: theme.foregroundFaded,
@@ -59,9 +67,12 @@ function styles(theme: DidiTheme) {
 			width: 25,
 			height: 25
 		},
+		stateContainer: {},
 		underline: {
 			backgroundColor: theme.foregroundFaded,
-			height: 1
+			height: 1,
+			marginBottom: 10,
+			marginTop: 6
 		}
 	});
 }
