@@ -4,14 +4,16 @@ import React from "react";
 import { StyleSheet, StatusBar, SafeAreaView, View, Text } from "react-native";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
-import { Identity } from "../../../../model/StoreContent";
+import { Identity, LoggedInStoreContent } from "../../../../model/StoreContent";
 import { UserDataProps } from "../userData/UserData";
 import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DidiButton from "../../../util/DidiButton";
+import { connect } from "react-redux";
 
-export interface ShareProps {
+export type ShareProps = {};
+interface ShareInternalProps {
 	person: Identity;
 }
 
@@ -27,7 +29,7 @@ export interface ShareNavigation {
 	UserData: UserDataProps;
 }
 
-export default class ShareScreen extends NavigationEnabledComponent<ShareProps, ShareState, ShareNavigation> {
+class ShareScreen extends NavigationEnabledComponent<ShareInternalProps, ShareState, ShareNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<ShareNavigation, "UserData">(
 		strings.dashboard.userData.share.barTitle,
 		"UserData",
@@ -69,6 +71,14 @@ export default class ShareScreen extends NavigationEnabledComponent<ShareProps, 
 		);
 	}
 }
+
+export default connect(
+	(state: LoggedInStoreContent): ShareInternalProps => {
+		return {
+			person: state.identity
+		};
+	}
+)(ShareScreen);
 
 const styles = StyleSheet.create({
 	inputs: {

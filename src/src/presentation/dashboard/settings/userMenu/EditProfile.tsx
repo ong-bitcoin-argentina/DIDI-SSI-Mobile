@@ -4,7 +4,7 @@ import React from "react";
 import { StyleSheet, StatusBar, SafeAreaView, View, ScrollView, ImageSourcePropType } from "react-native";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
-import { Identity } from "../../../../model/StoreContent";
+import { Identity, LoggedInStoreContent } from "../../../../model/StoreContent";
 import { UserDataProps } from "../userData/UserData";
 import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
@@ -14,8 +14,10 @@ import Validator from "../../../access/helpers/validator";
 import DropdownMenu from "../../../util/DropdownMenu";
 import colors from "../../../resources/colors";
 import UserHeadingComponent from "../userData/UserHeading";
+import { connect } from "react-redux";
 
-export interface EditProfileProps {
+export type EditProfileProps = {};
+interface EditProfileInternalProps {
 	person: Identity;
 }
 
@@ -32,8 +34,8 @@ export interface EditProfileNavigation {
 	UserData: UserDataProps;
 }
 
-export default class EditProfileScreen extends NavigationEnabledComponent<
-	EditProfileProps,
+class EditProfileScreen extends NavigationEnabledComponent<
+	EditProfileInternalProps,
 	EditProfileState,
 	EditProfileNavigation
 > {
@@ -157,6 +159,14 @@ export default class EditProfileScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+export default connect(
+	(state: LoggedInStoreContent): EditProfileInternalProps => {
+		return {
+			person: state.identity
+		};
+	}
+)(EditProfileScreen);
 
 const styles = StyleSheet.create({
 	area: {

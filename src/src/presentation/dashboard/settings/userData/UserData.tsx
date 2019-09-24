@@ -10,7 +10,6 @@ import { LoggedInStoreContent, Identity } from "../../../../model/StoreContent";
 import { connect } from "react-redux";
 import UserHeadingComponent from "./UserHeading";
 import { ChangePasswordProps } from "../userMenu/ChangePassword";
-import DidiButton from "../../../util/DidiButton";
 import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProps } from "../userMenu/Share";
 
@@ -29,7 +28,26 @@ export interface UserDataNavigation {
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Mi Perfil");
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions("Mi perfil", [
+		{
+			actionTitle: "Cambiar Contraseña",
+			onPress: navigation => {
+				navigation.navigate("ChangePassword", {});
+			}
+		},
+		{
+			actionTitle: "Editar Perfil",
+			onPress: navigation => {
+				navigation.navigate("EditProfile", {});
+			}
+		},
+		{
+			actionTitle: "Compartir",
+			onPress: navigation => {
+				navigation.navigate("Share", {});
+			}
+		}
+	]);
 
 	getPersonalData() {
 		return [
@@ -68,24 +86,6 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 					profileImage={this.props.identity.image}
 					backgroundImage={this.props.identity.backgroundImage}
 					allowEdit={true}
-				/>
-
-				{/*TODO mover los 3 botones a menu de 3 puntos !!!*/}
-
-				<DidiButton
-					disabled={false}
-					onPress={() => this.navigate("ChangePassword", { person: this.props.identity })}
-					title="ChangePassword"
-				/>
-				<DidiButton
-					disabled={false}
-					onPress={() => this.navigate("EditProfile", { person: this.props.identity })}
-					title="EditProfile"
-				/>
-				<DidiButton
-					disabled={false}
-					onPress={() => this.navigate("Share", { person: this.props.identity })}
-					title="Share"
 				/>
 
 				<View>

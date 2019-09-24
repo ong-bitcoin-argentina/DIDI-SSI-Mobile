@@ -3,3 +3,8 @@ declare module "*.svg" {
 	const content: React.StatelessComponent<SvgProps>;
 	export default content;
 }
+
+declare module "react-navigation-header-buttons/src/overflowMenuPressHandlers" {
+	import { onOverflowMenuPressParams } from "react-navigation-header-buttons";
+	export function defaultOnOverflowMenuPress(params: onOverflowMenuPressParams): void;
+}

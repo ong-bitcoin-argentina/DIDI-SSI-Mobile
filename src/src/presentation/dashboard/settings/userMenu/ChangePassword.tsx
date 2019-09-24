@@ -4,14 +4,16 @@ import React from "react";
 import { StyleSheet, StatusBar, SafeAreaView, View, Text } from "react-native";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
-import { Identity } from "../../../../model/StoreContent";
+import { Identity, LoggedInStoreContent } from "../../../../model/StoreContent";
 import { UserDataProps } from "../userData/UserData";
 import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DidiButton from "../../../util/DidiButton";
+import { connect } from "react-redux";
 
-export interface ChangePasswordProps {
+export type ChangePasswordProps = {};
+interface ChangePasswordInternalProps extends ChangePasswordProps {
 	person: Identity;
 }
 
@@ -24,8 +26,8 @@ export interface ChangePasswordNavigation {
 	UserData: UserDataProps;
 }
 
-export default class ChangePasswordScreen extends NavigationEnabledComponent<
-	ChangePasswordProps,
+class ChangePasswordScreen extends NavigationEnabledComponent<
+	ChangePasswordInternalProps,
 	ChangePasswordState,
 	ChangePasswordNavigation
 > {
@@ -43,7 +45,7 @@ export default class ChangePasswordScreen extends NavigationEnabledComponent<
 		}
 		*/
 
-		return this.state && this.state.key ? this.state.key.length > 0 && this.state.keyDup == this.state.key : false;
+		return this.state && this.state.key ? this.state.key.length > 0 && this.state.keyDup === this.state.key : false;
 	}
 
 	changePassword() {
@@ -103,6 +105,14 @@ export default class ChangePasswordScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+export default connect(
+	(state: LoggedInStoreContent): ChangePasswordInternalProps => {
+		return {
+			person: state.identity
+		};
+	}
+)(ChangePasswordScreen);
 
 const styles = StyleSheet.create({
 	inputs: {
