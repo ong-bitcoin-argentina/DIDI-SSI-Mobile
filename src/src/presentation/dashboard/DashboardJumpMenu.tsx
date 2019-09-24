@@ -49,9 +49,15 @@ const actionCommon: Omit<IActionProps, "name"> = {
 const actions: IActionProps[] = [
 	{
 		...actionCommon,
+		icon: <Text style={styles.icon}></Text>,
+		text: "Escanear Credenciales",
+		name: "StartCredentialInteraction"
+	},
+	{
+		...actionCommon,
 		icon: <Text style={styles.icon}></Text>,
 		text: "Compartir",
-		name: "share"
+		name: "Share"
 	},
 	{
 		...actionCommon,

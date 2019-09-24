@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Text, StyleSheet, View, TouchableOpacity, GestureResponderEvent } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity, GestureResponderEvent, ViewProps } from "react-native";
 import { RNCamera, TakePictureResponse } from "react-native-camera";
 
 import colors from "../../resources/colors";
@@ -47,7 +47,7 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 						buttonPositive: "Ok",
 						buttonNegative: "Cancelar"
 					}}
-					notAuthorizedView={<Text style={{ textAlignVertical: "center", flex: 1 }}>Camara no autorizada</Text>}
+					notAuthorizedView={<Text style={styles.notAuthorized}>Camara no autorizada</Text>}
 					onCameraReady={() => this.setState({ cameraAvailable: true })}
 				/>
 				<View style={[StyleSheet.absoluteFill, styles.cameraButtonContainer]}>{this.renderPictureButton()}</View>
@@ -85,6 +85,10 @@ const styles = StyleSheet.create({
 	body: {
 		alignSelf: "stretch",
 		justifyContent: "space-evenly",
+		flex: 1
+	},
+	notAuthorized: {
+		textAlignVertical: "center",
 		flex: 1
 	},
 	cameraButtonContainer: {

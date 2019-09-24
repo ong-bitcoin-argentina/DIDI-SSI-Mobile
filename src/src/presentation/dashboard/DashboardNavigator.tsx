@@ -14,6 +14,7 @@ import DashboardJumpMenu from "./DashboardJumpMenu";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
+import CredentialNavigator from "./credentials/CredentialNavigator";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -87,6 +88,7 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 	}
 
 	return NavMap.from(BottomNavigatorComponent, {
-		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen))
+		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen)),
+		StartCredentialInteraction: CredentialNavigator(NavMap.placeholder(DashboardScreen))
 	}).stackNavigator("DashboardRoot");
 }
