@@ -4,13 +4,14 @@ import React from "react";
 import { StyleSheet, StatusBar, SafeAreaView, View, Text } from "react-native";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
-import { Identity, LoggedInStoreContent } from "../../../../model/StoreContent";
 import { UserDataProps } from "../userData/UserData";
 import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DidiButton from "../../../util/DidiButton";
 import { connect } from "react-redux";
+import { Identity } from "../../../../model/data/Identity";
+import { StoreContent } from "../../../../model/store";
 
 export type ChangePasswordProps = {};
 interface ChangePasswordInternalProps extends ChangePasswordProps {
@@ -107,7 +108,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 }
 
 export default connect(
-	(state: LoggedInStoreContent): ChangePasswordInternalProps => {
+	(state: StoreContent): ChangePasswordInternalProps => {
 		return {
 			person: state.identity
 		};

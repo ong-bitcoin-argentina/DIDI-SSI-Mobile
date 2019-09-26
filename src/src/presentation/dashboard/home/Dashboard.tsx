@@ -14,12 +14,15 @@ import DidiCardData from "../common/DidiCardData";
 import strings from "../../resources/strings";
 import DropdownMenu from "../../util/DropdownMenu";
 import { connect } from "react-redux";
-import { LoggedInStoreContent, RecentActivity, Document, Identity } from "../../../model/StoreContent";
+import { Document } from "../../../model/data/Document";
+import { Identity } from "../../../model/data/Identity";
+import { RecentActivity } from "../../../model/data/RecentActivity";
 import { AddChildren } from "../../../util/ReactExtensions";
 import HomeHeader from "./HomeHeader";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
+import { StoreContent } from "../../../model/store";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
@@ -180,7 +183,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 }
 
 export default connect(
-	(state: LoggedInStoreContent): DashboardScreenInternalProps => {
+	(state: StoreContent): DashboardScreenInternalProps => {
 		return {
 			person: state.identity,
 			recentActivity: state.recentActivity,

@@ -8,13 +8,14 @@ import strings from "../../resources/strings";
 import colors from "../../resources/colors";
 import DidiButton from "../../util/DidiButton";
 import { connect } from "react-redux";
-import { Identity, LoggedInStoreContent } from "../../../model/StoreContent";
+import { Identity } from "../../../model/data/Identity";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./userData/UserData";
 
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
+import { StoreContent } from "../../../model/store";
 
 export interface SettingsScreenProps {
 	person: Identity;
@@ -113,7 +114,7 @@ class SettingsScreen extends NavigationEnabledComponent<
 }
 
 export default connect(
-	(state: LoggedInStoreContent): SettingsScreenProps => {
+	(state: StoreContent): SettingsScreenProps => {
 		return { person: state.identity };
 	}
 )(SettingsScreen);

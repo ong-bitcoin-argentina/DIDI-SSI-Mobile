@@ -1,7 +1,7 @@
 import { ViewProps, StyleProp, TextStyle, View, Text, StyleSheet } from "react-native";
 import React, { Component } from "react";
 import strings from "../../../resources/strings";
-import { ValidationState } from "../../../../model/StoreContent";
+import { ValidationState } from "../../../../model/data/Identity";
 import colors from "../../../resources/colors";
 
 interface PersonalDataProps extends ViewProps {

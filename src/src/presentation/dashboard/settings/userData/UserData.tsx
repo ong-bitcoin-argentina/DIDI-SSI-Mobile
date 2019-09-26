@@ -6,12 +6,13 @@ import DropdownMenu from "../../../util/DropdownMenu";
 import strings from "../../../resources/strings";
 import PersonalData from "./PersonalData";
 import colors from "../../../resources/colors";
-import { LoggedInStoreContent, Identity } from "../../../../model/StoreContent";
 import { connect } from "react-redux";
 import UserHeadingComponent from "./UserHeading";
 import { ChangePasswordProps } from "../userMenu/ChangePassword";
 import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProps } from "../userMenu/Share";
+import { StoreContent } from "../../../../model/store";
+import { Identity } from "../../../../model/data/Identity";
 
 export type UserDataProps = ViewProps;
 
@@ -116,7 +117,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 }
 
 export default connect(
-	(state: LoggedInStoreContent): UserDataInternalProps => {
+	(state: StoreContent): UserDataInternalProps => {
 		return {
 			identity: state.identity
 		};

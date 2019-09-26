@@ -4,13 +4,14 @@ import React from "react";
 import { StatusBar, SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
-import { Document, DocumentFilterType, LoggedInStoreContent } from "../../../model/StoreContent";
+import { Document, DocumentFilterType } from "../../../model/data/Document";
 import { connect } from "react-redux";
 import colors from "../../resources/colors";
 import DidiCard, { DidiCardProps } from "../common/DidiCard";
 import { AddChildren } from "../../../util/ReactExtensions";
 import DidiCardData from "../common/DidiCardData";
 import { DashboardScreenProps } from "../home/Dashboard";
+import { StoreContent } from "../../../model/store";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;
@@ -64,7 +65,7 @@ class DocumentsScreen extends NavigationEnabledComponent<
 
 export default function(filter: (type: DocumentFilterType) => boolean) {
 	return connect(
-		(state: LoggedInStoreContent): DocumentsScreenInternalProps => {
+		(state: StoreContent): DocumentsScreenInternalProps => {
 			return {
 				filter,
 				documents: state.documents

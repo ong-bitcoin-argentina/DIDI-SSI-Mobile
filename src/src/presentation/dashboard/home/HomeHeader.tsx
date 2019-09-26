@@ -1,5 +1,5 @@
 import { Text, View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { Identity } from "../../../model/StoreContent";
+import { Identity } from "../../../model/data/Identity";
 import React from "react";
 import themes from "../../resources/themes";
 
