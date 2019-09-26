@@ -47,3 +47,5 @@ declare module "react-native-uport-signer" {
 	}
 	export const RNUportHDSigner: RNUportHDSignerType;
 }
+
+declare module "ethr-did-resolver";

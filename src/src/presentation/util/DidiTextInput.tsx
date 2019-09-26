@@ -49,7 +49,6 @@ function styles(theme: DidiTheme) {
 			alignItems: "center"
 		},
 		textContainer: {
-			marginLeft: 30,
 			flex: 1,
 			flexDirection: "column"
 		},
@@ -65,7 +64,8 @@ function styles(theme: DidiTheme) {
 		},
 		tagImage: {
 			width: 25,
-			height: 25
+			height: 25,
+			marginRight: 30
 		},
 		stateContainer: {},
 		underline: {

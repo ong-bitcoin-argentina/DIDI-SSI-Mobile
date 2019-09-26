@@ -33,7 +33,7 @@ export default class DidiQRScanner extends React.Component<DidiQRScannerProps, D
 						buttonPositive: "Ok",
 						buttonNegative: "Cancelar"
 					}}
-					onBarCodeRead={event => this.onScanQR(event.type + event.data)}
+					onBarCodeRead={event => this.onScanQR(event.data)}
 					notAuthorizedView={<Text style={styles.notAuthorized}>Camara no autorizada</Text>}
 					onCameraReady={() => this.setState({ cameraAvailable: true })}
 				/>

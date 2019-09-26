@@ -4,6 +4,8 @@ import { Fragment } from "react";
 import { StatusBar, View, Text, Alert } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
+import parseJWT from "../../../uPort/parseJWT";
+
 import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import DidiQRScanner from "../common/DidiQRScanner";
@@ -33,7 +35,14 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private onScanQR(content: string) {
-		alert(content);
+	private async onScanQR(content: string) {
+		const prefix = "me.uport:req/";
+		const toParse = content.replace(prefix, "");
+		try {
+			const res = await parseJWT(toParse);
+			alert(JSON.stringify(res.payload));
+		} catch (error) {
+			alert(error);
+		}
 	}
 }
