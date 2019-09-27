@@ -1,11 +1,18 @@
 import { Document } from "../data/Document";
 
-export interface DocumentAction {
-	type: never;
+interface DocumentActionEnsure {
+	type: "DOCUMENT_ENSURE";
+	content: Document;
 }
+interface DocumentActionDelete {
+	type: "DOCUMENT_DELETE";
+	content: Document;
+}
+export type DocumentAction = DocumentActionEnsure | DocumentActionDelete;
 
 const defaultContent: Document[] = [
 	{
+		type: "didi",
 		icon: "",
 		category: "Cursos",
 		title: "Maestro Pizzero",
@@ -15,6 +22,7 @@ const defaultContent: Document[] = [
 		columns: 1
 	},
 	{
+		type: "didi",
 		icon: "",
 		category: "Propiedad",
 		title: "Liliana Martinez",
@@ -31,6 +39,7 @@ const defaultContent: Document[] = [
 		columns: 3
 	},
 	{
+		type: "didi",
 		icon: "",
 		category: "Ronda",
 		title: "Los Martinez",
@@ -40,6 +49,7 @@ const defaultContent: Document[] = [
 		columns: 1
 	},
 	{
+		type: "didi",
 		icon: "",
 		category: "Licencia de Conducir",
 		title: "Liliana Martinez",
@@ -58,9 +68,14 @@ const defaultContent: Document[] = [
 ];
 
 export function documentReducer(state: Document[] | undefined, action: DocumentAction): Document[] {
-	if (state) {
-		return state;
-	} else {
+	if (state === undefined) {
 		return defaultContent;
+	}
+
+	switch (action.type) {
+		case "DOCUMENT_ENSURE":
+			return [...state, action.content];
+		case "DOCUMENT_DELETE":
+			return [];
 	}
 }

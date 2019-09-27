@@ -23,6 +23,7 @@ import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
 import { StoreContent } from "../../../model/store";
+import { flattenClaim } from "../../../uPort/VerifiedClaim";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
@@ -54,16 +55,17 @@ class DashboardScreen extends NavigationEnabledComponent<
 		};
 	}
 
-	private evolutionCard(): AddChildren<DidiCardProps> {
-		return {
-			icon: "",
-			image: require("../../resources/images/precentageSample.png"),
-			category: "Proceso",
-			title: "Mi Evolución",
-			subTitle: "16.06.2019",
-			textStyle: styles.textStyleWhite,
-			style: cardStyles.evolution,
-			children: (
+	private evolutionCard(): JSX.Element {
+		return (
+			<DidiCard
+				icon=""
+				image={require("../../resources/images/precentageSample.png")}
+				category="Proceso"
+				title="Mi Evolución"
+				subTitle="16.06.2019"
+				textStyle={styles.textStyleWhite}
+				style={cardStyles.evolution}
+			>
 				<DidiCardData
 					data={[
 						{ label: "Validaciones:", value: " " },
@@ -74,37 +76,39 @@ class DashboardScreen extends NavigationEnabledComponent<
 					textStyles={styles.textStyleWhite}
 					columns={1}
 				/>
-			)
-		};
+			</DidiCard>
+		);
 	}
 
-	private incompleteIdentityCard(): AddChildren<DidiCardProps> {
-		return {
-			icon: "",
-			category: "Documento Identidad",
-			title: "Liliana Martinez",
-			subTitle: "Nombre",
-			textStyle: styles.textStyleBlue,
-			style: cardStyles.identityIncomplete,
-			children: (
+	private incompleteIdentityCard(): JSX.Element {
+		return (
+			<DidiCard
+				icon=""
+				category="Documento Identidad"
+				title="Liliana Martinez"
+				subTitle="Nombre"
+				textStyle={styles.textStyleBlue}
+				style={cardStyles.identityIncomplete}
+			>
 				<DidiButton
 					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
 					title="Validar Id"
 					onPress={() => this.navigate("ValidateID", {})}
 				/>
-			)
-		};
+			</DidiCard>
+		);
 	}
 
-	private completeIdentityCard(): AddChildren<DidiCardProps> {
-		return {
-			icon: "",
-			category: "Documento Identidad",
-			title: "Liliana Martinez",
-			subTitle: "Nombre",
-			textStyle: styles.textStyleWhite,
-			style: cardStyles.identityComplete,
-			children: (
+	private completeIdentityCard(): JSX.Element {
+		return (
+			<DidiCard
+				icon=""
+				category="Documento Identidad"
+				title="Liliana Martinez"
+				subTitle="Nombre"
+				textStyle={styles.textStyleBlue}
+				style={cardStyles.identityIncomplete}
+			>
 				<DidiCardData
 					data={[
 						{ label: "Número", value: "25.390.189" },
@@ -115,32 +119,54 @@ class DashboardScreen extends NavigationEnabledComponent<
 					textStyles={styles.textStyleWhite}
 					columns={2}
 				/>
-			)
-		};
+			</DidiCard>
+		);
 	}
 
-	private documentToCard(document: Document): AddChildren<DidiCardProps> {
-		return {
-			icon: document.icon,
-			image: document.image,
-			category: document.category,
-			title: document.title,
-			subTitle: document.subtitle,
-			textStyle: styles.textStyleWhite,
-			style: cardStyles.document,
-			children: <DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
-		};
+	private documentToCard(document: Document, index: number) {
+		switch (document.type) {
+			case "didi":
+				return (
+					<DidiCard
+						key={index}
+						icon={document.icon}
+						image={document.image}
+						category={document.category}
+						title={document.title}
+						subTitle={document.subtitle}
+						textStyle={styles.textStyleWhite}
+						style={cardStyles.document}
+					>
+						<DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
+					</DidiCard>
+				);
+			case "uPort":
+				const { root, rest } = flattenClaim(document.claim.claims);
+				const data = Object.entries(rest).map(([key, value]) => {
+					return { label: key, value };
+				});
+				return (
+					<DidiCard
+						key={index}
+						icon=""
+						category="Credencial"
+						title={root === "" ? "(Multiples credenciales)" : root}
+						subTitle={document.claim.issuer}
+						textStyle={styles.textStyleWhite}
+						style={cardStyles.document}
+					>
+						<DidiCardData data={data} textStyles={styles.textStyleWhite} columns={1} />
+					</DidiCard>
+				);
+		}
 	}
 
 	private renderCards() {
-		const cards: Array<AddChildren<DidiCardProps>> = [
+		return [
 			this.evolutionCard(),
 			...this.props.documents.map(this.documentToCard),
 			this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()
 		];
-		return cards.map((card, index) => {
-			return <DidiCard key={index} {...card} />;
-		});
 	}
 
 	private renderRecentActivities() {

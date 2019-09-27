@@ -12,6 +12,7 @@ import { AddChildren } from "../../../util/ReactExtensions";
 import DidiCardData from "../common/DidiCardData";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { StoreContent } from "../../../model/store";
+import { flattenClaim } from "../../../uPort/VerifiedClaim";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;
@@ -38,28 +39,49 @@ class DocumentsScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
-						{this.props.documents
-							.filter(card => this.props.filter(card.filterType))
-							.map((card, index) => {
-								return <DidiCard key={index} {...this.documentToCard(card)} />;
-							})}
+						{this.props.documents.filter(card => this.props.filter(card.filterType)).map(this.documentToCard)}
 					</ScrollView>
 				</SafeAreaView>
 			</Fragment>
 		);
 	}
 
-	private documentToCard(document: Document): AddChildren<DidiCardProps> {
-		return {
-			icon: document.icon,
-			image: document.image,
-			category: document.category,
-			title: document.title,
-			subTitle: document.subtitle,
-			textStyle: styles.textStyleWhite,
-			style: cardStyles.document,
-			children: <DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
-		};
+	private documentToCard(document: Document, index: number) {
+		switch (document.type) {
+			case "didi":
+				return (
+					<DidiCard
+						key={index}
+						icon={document.icon}
+						image={document.image}
+						category={document.category}
+						title={document.title}
+						subTitle={document.subtitle}
+						textStyle={styles.textStyleWhite}
+						style={cardStyles.document}
+					>
+						<DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
+					</DidiCard>
+				);
+			case "uPort":
+				const { root, rest } = flattenClaim(document.claim.claims);
+				const data = Object.entries(rest).map(([key, value]) => {
+					return { label: key, value };
+				});
+				return (
+					<DidiCard
+						key={index}
+						icon=""
+						category="Credencial"
+						title={root === "" ? "(Multiples credenciales)" : root}
+						subTitle={document.claim.issuer}
+						textStyle={styles.textStyleWhite}
+						style={cardStyles.document}
+					>
+						<DidiCardData data={data} textStyles={styles.textStyleWhite} columns={1} />
+					</DidiCard>
+				);
+		}
 	}
 }
 
