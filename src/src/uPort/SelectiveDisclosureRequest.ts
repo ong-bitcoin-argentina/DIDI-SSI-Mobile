@@ -1,7 +1,5 @@
-export interface VerifiedClaimSelector {
-	name: string;
-	issuer?: string;
-}
+import { parseStructure } from "./parseMap";
+import { VerifiedClaimSelector } from "./VerifiedClaimSelector";
 
 export interface SelectiveDisclosureRequest {
 	type: "SelectiveDisclosureRequest";
@@ -14,5 +12,9 @@ export interface SelectiveDisclosureRequest {
 export function parseSelectiveDisclosureRequest(
 	payload: any
 ): { error: "MISSING_FIELD"; checked: string[] } | { error: null; payload: SelectiveDisclosureRequest } {
-	return { error: "MISSING_FIELD", checked: [] };
+	return parseStructure(
+		payload,
+		{ type: "SelectiveDisclosureRequest" },
+		{ verifiedClaims: "verified", ownClaims: "requested", callback: "callback", issuer: "iss" }
+	);
 }

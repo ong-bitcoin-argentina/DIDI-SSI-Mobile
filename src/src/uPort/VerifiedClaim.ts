@@ -1,3 +1,5 @@
+import { parseStructure } from "./parseMap";
+
 type Claim = { [name: string]: Claim | string };
 
 export interface VerifiedClaim {
@@ -10,30 +12,15 @@ export interface VerifiedClaim {
 export function parseVerifiedClaim(
 	payload: any
 ): { error: "MISSING_FIELD"; checked: string[] } | { error: null; payload: VerifiedClaim } {
-	const map = {
-		issuer: "iss",
-		subject: "sub",
-		claims: "claim"
-	};
-
-	const result: { [name: string]: any } = {
-		type: "VerifiedClaim"
-	};
-	const missingFields: string[] = [];
-
-	Object.entries(map).forEach(([target, source]) => {
-		if (payload[source]) {
-			result[target] = payload[source];
-		} else {
-			missingFields.push(source);
+	return parseStructure(
+		payload,
+		{ type: "VerifiedClaim" },
+		{
+			issuer: "iss",
+			subject: "sub",
+			claims: "claim"
 		}
-	});
-
-	if (missingFields.length === 0) {
-		return { error: null, payload: result as VerifiedClaim };
-	} else {
-		return { error: "MISSING_FIELD", checked: missingFields };
-	}
+	);
 }
 
 type FlattenedClaim = { [name: string]: string };

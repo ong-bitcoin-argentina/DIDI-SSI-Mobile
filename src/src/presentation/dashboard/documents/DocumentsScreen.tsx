@@ -6,13 +6,9 @@ import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
 import { Document, DocumentFilterType } from "../../../model/data/Document";
 import { connect } from "react-redux";
-import colors from "../../resources/colors";
-import DidiCard, { DidiCardProps } from "../common/DidiCard";
-import { AddChildren } from "../../../util/ReactExtensions";
-import DidiCardData from "../common/DidiCardData";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { StoreContent } from "../../../model/store";
-import { flattenClaim } from "../../../uPort/VerifiedClaim";
+import { documentToCard } from "../common/documentToCard";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;
@@ -26,8 +22,6 @@ interface DocumentsScreenInternalProps extends DocumentsScreenProps {
 
 type DocumentsScreenState = {};
 
-const filterTypes: DocumentFilterType[] = ["identity", "livingPlace", "other"];
-
 class DocumentsScreen extends NavigationEnabledComponent<
 	DocumentsScreenInternalProps,
 	DocumentsScreenState,
@@ -39,49 +33,11 @@ class DocumentsScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
-						{this.props.documents.filter(card => this.props.filter(card.filterType)).map(this.documentToCard)}
+						{this.props.documents.filter(card => this.props.filter(card.filterType)).map(documentToCard)}
 					</ScrollView>
 				</SafeAreaView>
 			</Fragment>
 		);
-	}
-
-	private documentToCard(document: Document, index: number) {
-		switch (document.type) {
-			case "didi":
-				return (
-					<DidiCard
-						key={index}
-						icon={document.icon}
-						image={document.image}
-						category={document.category}
-						title={document.title}
-						subTitle={document.subtitle}
-						textStyle={styles.textStyleWhite}
-						style={cardStyles.document}
-					>
-						<DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
-					</DidiCard>
-				);
-			case "uPort":
-				const { root, rest } = flattenClaim(document.claim.claims);
-				const data = Object.entries(rest).map(([key, value]) => {
-					return { label: key, value };
-				});
-				return (
-					<DidiCard
-						key={index}
-						icon=""
-						category="Credencial"
-						title={root === "" ? "(Multiples credenciales)" : root}
-						subTitle={document.claim.issuer}
-						textStyle={styles.textStyleWhite}
-						style={cardStyles.document}
-					>
-						<DidiCardData data={data} textStyles={styles.textStyleWhite} columns={1} />
-					</DidiCard>
-				);
-		}
 	}
 }
 
@@ -98,31 +54,15 @@ export default function(filter: (type: DocumentFilterType) => boolean) {
 
 const styles = StyleSheet.create({
 	body: {
-		width: "100%",
-		paddingHorizontal: 20
+		width: "100%"
 	},
 	scrollContent: {
-		paddingTop: 15
+		paddingBottom: 15
 	},
 	text: {
 		fontSize: 14
 	},
 	textStyleWhite: {
 		color: "#FFF"
-	}
-});
-
-const cardStyles = StyleSheet.create({
-	evolution: {
-		backgroundColor: colors.primary
-	},
-	identityIncomplete: {
-		backgroundColor: "#FFF",
-		borderColor: colors.secondary,
-		borderWidth: 2
-	},
-	document: {
-		backgroundColor: colors.secondary,
-		marginBottom: 15
 	}
 });

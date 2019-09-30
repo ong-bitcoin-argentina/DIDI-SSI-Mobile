@@ -35,13 +35,18 @@ declare module "react-native-uport-signer" {
 		deleteSeed(address: KeyAddress): void;
 		showSeed(address: KeyAddress, explanation: string): Promise<SeedPhrase>;
 
-		signJWT(address: KeyAddress, path: DerivationPath, jwt: Base64EncodedJWT, explanation: string): ExpandedJWT;
+		signJwt(
+			address: KeyAddress,
+			path: DerivationPath,
+			jwt: Base64EncodedJWT,
+			explanation: string
+		): Promise<ExpandedJWT>;
 		signEthereumTransaction(
 			address: KeyAddress,
 			path: DerivationPath,
 			jwt: Base64EncodedJWT,
 			explanation: string
-		): ExpandedJWT;
+		): Promise<ExpandedJWT>;
 
 		UPORT_ROOT_DERIVATION_PATH: DerivationPath;
 	}

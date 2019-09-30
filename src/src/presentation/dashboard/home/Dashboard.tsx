@@ -7,7 +7,7 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import DidiCard, { DidiCardProps } from "../common/DidiCard";
+import DidiCard from "../common/DidiCard";
 import DidiActivity from "./DidiActivity";
 import colors from "../../resources/colors";
 import DidiCardData from "../common/DidiCardData";
@@ -17,13 +17,12 @@ import { connect } from "react-redux";
 import { Document } from "../../../model/data/Document";
 import { Identity } from "../../../model/data/Identity";
 import { RecentActivity } from "../../../model/data/RecentActivity";
-import { AddChildren } from "../../../util/ReactExtensions";
 import HomeHeader from "./HomeHeader";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
 import { StoreContent } from "../../../model/store";
-import { flattenClaim } from "../../../uPort/VerifiedClaim";
+import { documentToCard, commonCardStyle } from "../common/documentToCard";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
@@ -123,48 +122,10 @@ class DashboardScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private documentToCard(document: Document, index: number) {
-		switch (document.type) {
-			case "didi":
-				return (
-					<DidiCard
-						key={index}
-						icon={document.icon}
-						image={document.image}
-						category={document.category}
-						title={document.title}
-						subTitle={document.subtitle}
-						textStyle={styles.textStyleWhite}
-						style={cardStyles.document}
-					>
-						<DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
-					</DidiCard>
-				);
-			case "uPort":
-				const { root, rest } = flattenClaim(document.claim.claims);
-				const data = Object.entries(rest).map(([key, value]) => {
-					return { label: key, value };
-				});
-				return (
-					<DidiCard
-						key={index}
-						icon=""
-						category="Credencial"
-						title={root === "" ? "(Multiples credenciales)" : root}
-						subTitle={document.claim.issuer}
-						textStyle={styles.textStyleWhite}
-						style={cardStyles.document}
-					>
-						<DidiCardData data={data} textStyles={styles.textStyleWhite} columns={1} />
-					</DidiCard>
-				);
-		}
-	}
-
 	private renderCards() {
 		return [
 			this.evolutionCard(),
-			...this.props.documents.map(this.documentToCard),
+			...this.props.documents.map(documentToCard),
 			this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()
 		];
 	}
@@ -250,10 +211,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const commonCardStyle: ViewStyle = {
-	marginHorizontal: 20,
-	marginTop: 15
-};
 const cardStyles = StyleSheet.create({
 	evolution: {
 		...commonCardStyle,
@@ -266,10 +223,6 @@ const cardStyles = StyleSheet.create({
 		borderWidth: 2
 	},
 	identityComplete: {
-		...commonCardStyle,
-		backgroundColor: colors.secondary
-	},
-	document: {
 		...commonCardStyle,
 		backgroundColor: colors.secondary
 	}

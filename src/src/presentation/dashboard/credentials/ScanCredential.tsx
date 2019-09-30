@@ -1,7 +1,7 @@
 import React from "react";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
-import { StatusBar, View } from "react-native";
+import { StatusBar, View, Modal, Text } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
 import parseJWT from "../../../uPort/parseJWT";
@@ -12,6 +12,8 @@ import DidiQRScanner from "../common/DidiQRScanner";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import { Document } from "../../../model/data/Document";
 import { connect } from "react-redux";
+import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
+import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
 
 export type ScanCredentialProps = {};
 interface ScanCredentialsDispatchProps {
@@ -20,9 +22,12 @@ interface ScanCredentialsDispatchProps {
 type ScanCredentialInternalProps = ScanCredentialProps & ScanCredentialsDispatchProps;
 
 type ScanCredentialState = {};
-export interface ScanCredentialNavigation {}
+export interface ScanCredentialNavigation {
+	ScanCredentialToAdd: ScanCredentialToAddProps;
+	ScanDisclosureRequest: ScanDisclosureRequestProps;
+}
 
-class ScanCredentialScreen extends NavigationEnabledComponent<
+export default class ScanCredentialScreen extends NavigationEnabledComponent<
 	ScanCredentialInternalProps,
 	ScanCredentialState,
 	ScanCredentialNavigation
@@ -47,28 +52,26 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 		const toParse = content.replace(prefix, "");
 		try {
 			const res = await parseJWT(toParse);
-			if (res.error === null && res.payload.type === "VerifiedClaim") {
-				this.props.addCredential({
-					type: "uPort",
-					claim: res.payload,
-					filterType: "other",
-					jwt: toParse
-				});
-				alert("YES");
-			} else {
+			if (res.error !== null) {
 				alert(JSON.stringify(res));
+			} else {
+				switch (res.payload.type) {
+					case "SelectiveDisclosureRequest":
+						this.navigate("ScanDisclosureRequest", {
+							request: res.payload,
+							requestJWT: toParse
+						});
+					case "SelectiveDisclosureResponse":
+						return;
+					case "VerifiedClaim":
+						this.navigate("ScanCredentialToAdd", {
+							credential: res.payload,
+							jwt: toParse
+						});
+				}
 			}
 		} catch (error) {
 			alert(error);
 		}
 	}
 }
-
-export default connect(
-	null,
-	(dispatch): ScanCredentialsDispatchProps => {
-		return {
-			addCredential: (credential: Document) => dispatch({ type: "DOCUMENT_ENSURE", content: credential })
-		};
-	}
-)(ScanCredentialScreen);
