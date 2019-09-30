@@ -1,6 +1,5 @@
 import React from "react";
 
-import DidiCardData from "./DidiCardData";
 import DidiCard from "./DidiCard";
 
 import { flattenClaim } from "../../../uPort/VerifiedClaim";
@@ -13,17 +12,16 @@ export function documentToCard(document: Document, index: number) {
 		case "didi":
 			return (
 				<DidiCard
-					key={index}
+					key={"didi" + index}
 					icon={document.icon}
-					image={document.image}
 					category={document.category}
 					title={document.title}
 					subTitle={document.subtitle}
 					textStyle={styles.textStyleWhite}
 					style={styles.document}
-				>
-					<DidiCardData data={document.data} textStyles={styles.textStyleWhite} columns={document.columns} />
-				</DidiCard>
+					data={document.data}
+					columns={document.columns}
+				/>
 			);
 		case "uPort":
 			const { root, rest } = flattenClaim(document.claim.claims);
@@ -33,16 +31,16 @@ export function documentToCard(document: Document, index: number) {
 			const issuer = document.claim.issuer.replace("did:ethr:0x", "").slice(0, 20);
 			return (
 				<DidiCard
-					key={index}
+					key={document.jwt}
 					icon=""
 					category="Credencial"
 					title={root === "" ? "(Multiples credenciales)" : root}
 					subTitle={"Emisor: " + issuer + "..."}
 					textStyle={styles.textStyleWhite}
 					style={styles.document}
-				>
-					<DidiCardData data={data} textStyles={styles.textStyleWhite} columns={1} />
-				</DidiCard>
+					data={data}
+					columns={1}
+				/>
 			);
 	}
 }

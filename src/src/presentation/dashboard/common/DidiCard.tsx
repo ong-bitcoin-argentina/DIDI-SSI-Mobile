@@ -1,5 +1,15 @@
 import { Component, Fragment } from "react";
-import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle, ViewProps } from "react-native";
+import {
+	Text,
+	View,
+	Image,
+	StyleSheet,
+	ImageSourcePropType,
+	StyleProp,
+	TextStyle,
+	ViewProps,
+	ViewStyle
+} from "react-native";
 import React from "react";
 
 export interface DidiCardProps extends ViewProps {
@@ -8,6 +18,8 @@ export interface DidiCardProps extends ViewProps {
 	category: string;
 	title: string;
 	subTitle: string;
+	data?: Array<{ label: string; value: string }>;
+	columns?: 1 | 2 | 3;
 	textStyle?: StyleProp<TextStyle>;
 }
 
@@ -30,6 +42,31 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 		);
 	}
 
+	private renderKeyValuePairs() {
+		const { textStyle } = this.props;
+		const columns = this.props.columns || 1;
+		const data = this.props.data || [];
+
+		const columnStyle: ViewStyle = {
+			flexDirection: columns === 1 ? "row" : "column",
+			width: `${100 / columns}%`
+		};
+		const valueStyle: TextStyle =
+			columns === 1 ? { marginBottom: 0, textAlign: "right" } : { marginBottom: 5, textAlign: "left" };
+		return (
+			<View style={styles.keyValueContainer}>
+				{data.map((item, index) => {
+					return (
+						<View key={index} style={[columnStyle]}>
+							<Text style={[styles.dataLabel, textStyle]}>{item.label}</Text>
+							<Text style={[styles.dataValue, textStyle, valueStyle]}>{item.value}</Text>
+						</View>
+					);
+				})}
+			</View>
+		);
+	}
+
 	render() {
 		return (
 			<View {...this.props} style={[styles.body, styles.card, this.props.style]}>
@@ -37,6 +74,7 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 					{this.renderIcon()}
 					<View style={styles.textContainer}>
 						{this.renderTitle()}
+						{this.renderKeyValuePairs()}
 						{this.props.children}
 					</View>
 				</View>
@@ -60,9 +98,10 @@ const styles = StyleSheet.create({
 		flexGrow: 1
 	},
 	textContainer: {
+		flex: 1,
 		flexDirection: "column",
-		flexGrow: 1,
-		justifyContent: "space-between"
+		justifyContent: "space-between",
+		alignItems: "stretch"
 	},
 	card: {
 		minHeight: 180
@@ -110,5 +149,18 @@ const styles = StyleSheet.create({
 	image: {
 		height: 64,
 		width: 64
+	},
+	keyValueContainer: {
+		flexDirection: "row",
+		flexWrap: "wrap"
+	},
+	dataLabel: {
+		fontSize: 13,
+		paddingRight: 5
+	},
+	dataValue: {
+		fontWeight: "bold",
+		fontSize: 13,
+		flexGrow: 1
 	}
 });

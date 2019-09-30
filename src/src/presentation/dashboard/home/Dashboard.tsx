@@ -10,7 +10,6 @@ import DidiButton from "../../util/DidiButton";
 import DidiCard from "../common/DidiCard";
 import DidiActivity from "./DidiActivity";
 import colors from "../../resources/colors";
-import DidiCardData from "../common/DidiCardData";
 import strings from "../../resources/strings";
 import DropdownMenu from "../../util/DropdownMenu";
 import { connect } from "react-redux";
@@ -64,18 +63,14 @@ class DashboardScreen extends NavigationEnabledComponent<
 				subTitle="16.06.2019"
 				textStyle={styles.textStyleWhite}
 				style={cardStyles.evolution}
-			>
-				<DidiCardData
-					data={[
-						{ label: "Validaciones:", value: " " },
-						{ label: "Celu", value: "✓" },
-						{ label: "Mail", value: "ｘ" },
-						{ label: "ID", value: "✓" }
-					]}
-					textStyles={styles.textStyleWhite}
-					columns={1}
-				/>
-			</DidiCard>
+				data={[
+					{ label: "Validaciones:", value: " " },
+					{ label: "Celu", value: "✓" },
+					{ label: "Mail", value: "ｘ" },
+					{ label: "ID", value: "✓" }
+				]}
+				columns={1}
+			/>
 		);
 	}
 
@@ -107,27 +102,15 @@ class DashboardScreen extends NavigationEnabledComponent<
 				subTitle="Nombre"
 				textStyle={styles.textStyleBlue}
 				style={cardStyles.identityIncomplete}
-			>
-				<DidiCardData
-					data={[
-						{ label: "Número", value: "25.390.189" },
-						{ label: "Nacionalidad", value: "🇦🇷" },
-						{ label: "Fecha Nac.", value: "16.06.76" },
-						{ label: "Sexo", value: "F" }
-					]}
-					textStyles={styles.textStyleWhite}
-					columns={2}
-				/>
-			</DidiCard>
+				data={[
+					{ label: "Número", value: "25.390.189" },
+					{ label: "Nacionalidad", value: "🇦🇷" },
+					{ label: "Fecha Nac.", value: "16.06.76" },
+					{ label: "Sexo", value: "F" }
+				]}
+				columns={2}
+			/>
 		);
-	}
-
-	private renderCards() {
-		return [
-			this.evolutionCard(),
-			...this.props.documents.map(documentToCard),
-			this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()
-		];
 	}
 
 	private renderRecentActivities() {
@@ -158,7 +141,9 @@ class DashboardScreen extends NavigationEnabledComponent<
 							onPersonPress={() => this.navigate("UserData", {})}
 							onBellPress={() => this.navigate("DashboardDocuments", {})}
 						/>
-						{this.renderCards()}
+						{this.evolutionCard()}
+						{this.props.documents.map(documentToCard)}
+						{this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()}
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
 						</DropdownMenu>

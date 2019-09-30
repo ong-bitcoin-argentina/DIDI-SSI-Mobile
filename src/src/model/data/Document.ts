@@ -1,4 +1,3 @@
-import { ImageSourcePropType } from "react-native";
 import { VerifiedClaim } from "../../uPort/VerifiedClaim";
 
 export type DocumentFilterType = "livingPlace" | "identity" | "other";
@@ -6,7 +5,6 @@ export type DocumentFilterType = "livingPlace" | "identity" | "other";
 interface DidiDocument {
 	type: "didi";
 	icon: string;
-	image?: ImageSourcePropType;
 	category: string;
 	title: string;
 	subtitle: string;

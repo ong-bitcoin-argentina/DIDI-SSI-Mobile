@@ -63,7 +63,7 @@ const defaultContent: Document[] = [
 			{ label: "Sexo", value: "F" },
 			{ label: "Vencimiento", value: "24.07.24" }
 		],
-		columns: 3
+		columns: 2
 	}
 ];
 
@@ -74,7 +74,7 @@ export function documentReducer(state: Document[] | undefined, action: DocumentA
 
 	switch (action.type) {
 		case "DOCUMENT_ENSURE":
-			return [...state, action.content];
+			return [action.content, ...state];
 		case "DOCUMENT_DELETE":
 			return [];
 	}
