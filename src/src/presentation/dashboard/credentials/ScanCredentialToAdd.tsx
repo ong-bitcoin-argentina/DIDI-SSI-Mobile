@@ -14,6 +14,7 @@ import { Document } from "../../../model/data/Document";
 import { VerifiedClaim } from "../../../uPort/VerifiedClaim";
 import { documentToCard } from "../common/documentToCard";
 import { StoreContent } from "../../../model/store";
+import { ScanCredentialProps } from "./ScanCredential";
 
 export type ScanCredentialToAddProps = {
 	jwt: string;
@@ -30,7 +31,9 @@ type ScanCredentialToAddInternalProps = ScanCredentialToAddProps &
 	ScanCredentialToAddDispatchProps;
 
 type ScanCredentialToAddState = {};
-export interface ScanCredentialToAddNavigation {}
+export interface ScanCredentialToAddNavigation {
+	ScanCredential: ScanCredentialProps;
+}
 
 class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	ScanCredentialToAddInternalProps,
@@ -48,7 +51,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 						{documentToCard(this.documentToAdd(), 0)}
 						<Text style={commonStyles.text.normal}>¿Agregar esta credencial?</Text>
 						<DidiButton style={styles.button} title="Si" onPress={() => this.acceptCredential()} />
-						<DidiButton style={styles.button} title="No" onPress={() => this.goBack()} />
+						<DidiButton style={styles.button} title="No" onPress={() => this.replace("ScanCredential", {})} />
 					</View>
 				</SafeAreaView>
 			</Fragment>

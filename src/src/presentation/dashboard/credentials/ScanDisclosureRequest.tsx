@@ -19,6 +19,7 @@ import { StoreContent } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
 import { flattenClaim, Claim } from "../../../uPort/VerifiedClaim";
 import TypedObject from "../../../util/TypedObject";
+import { ScanCredentialProps } from "./ScanCredential";
 
 export interface ScanDisclosureRequestProps {
 	request: SelectiveDisclosureRequest;
@@ -31,7 +32,9 @@ interface ScanDisclosureRequestStateProps {
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps & ScanDisclosureRequestStateProps;
 
 type ScanDisclosureRequestState = {};
-export interface ScanDisclosureRequestNavigation {}
+export interface ScanDisclosureRequestNavigation {
+	ScanCredential: ScanCredentialProps;
+}
 
 class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	ScanDisclosureRequestInternalProps,
@@ -49,7 +52,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 						<Text>{JSON.stringify(this.props.request)}</Text>
 						<Text style={commonStyles.text.normal}>¿Enviar datos?</Text>
 						<DidiButton style={styles.button} title="Si" onPress={() => this.answerRequest()} />
-						<DidiButton style={styles.button} title="No" onPress={() => this.goBack()} />
+						<DidiButton style={styles.button} title="No" onPress={() => this.replace("ScanCredential", {})} />
 					</View>
 				</SafeAreaView>
 			</Fragment>
@@ -105,10 +108,14 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 			verified
 		});
 
-		return fetch(this.props.request.callback, {
+		const result = await fetch(this.props.request.callback, {
 			method: "POST",
 			body: JSON.stringify({ access_token })
 		});
+
+		this.replace("ScanCredential", {});
+
+		return result;
 	}
 
 	private selectClaims(): { error: true; missing: string[] } | { error: false; own: Claim; verified: string[] } {

@@ -23,6 +23,13 @@ export default abstract class NavigationEnabledComponent<Props, State, Nav> exte
 		}
 	}
 
+	replace<Target extends Extract<keyof Nav, string>>(target: Target, props: Nav[Target]) {
+		const nav = this.navigation();
+		if (nav) {
+			nav.replace(target, props);
+		}
+	}
+
 	goBack() {
 		const nav = this.navigation();
 		if (nav) {

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Text, StyleSheet, View, ViewProps } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { RNCamera } from "react-native-camera";
 
 export interface DidiQRScannerProps {
@@ -7,15 +7,13 @@ export interface DidiQRScannerProps {
 }
 interface DidiQRScannerState {
 	cameraAvailable: boolean;
-	isScanning: boolean;
 }
 
 export default class DidiQRScanner extends React.Component<DidiQRScannerProps, DidiQRScannerState> {
 	constructor(props: DidiQRScannerProps) {
 		super(props);
 		this.state = {
-			cameraAvailable: false,
-			isScanning: true
+			cameraAvailable: false
 		};
 	}
 
@@ -33,7 +31,7 @@ export default class DidiQRScanner extends React.Component<DidiQRScannerProps, D
 						buttonPositive: "Ok",
 						buttonNegative: "Cancelar"
 					}}
-					onBarCodeRead={event => this.onScanQR(event.data)}
+					onBarCodeRead={event => this.onBarCodeRead(event.data)}
 					notAuthorizedView={<Text style={styles.notAuthorized}>Camara no autorizada</Text>}
 					onCameraReady={() => this.setState({ cameraAvailable: true })}
 				/>
@@ -44,11 +42,8 @@ export default class DidiQRScanner extends React.Component<DidiQRScannerProps, D
 		);
 	}
 
-	private onScanQR(content: string): void {
-		if (this.state.isScanning) {
-			this.setState({ isScanning: false });
-			this.props.onQRScanned(content);
-		}
+	private onBarCodeRead(content: string) {
+		this.props.onQRScanned(content);
 	}
 }
 

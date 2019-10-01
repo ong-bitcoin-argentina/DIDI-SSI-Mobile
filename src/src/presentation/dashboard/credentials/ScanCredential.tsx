@@ -1,7 +1,7 @@
 import React from "react";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
-import { StatusBar, View, Modal, Text } from "react-native";
+import { StatusBar, View, Modal, Text, Vibration } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
 import parseJWT from "../../../uPort/parseJWT";
@@ -21,7 +21,9 @@ interface ScanCredentialsDispatchProps {
 }
 type ScanCredentialInternalProps = ScanCredentialProps & ScanCredentialsDispatchProps;
 
-type ScanCredentialState = {};
+interface ScanCredentialState {
+	pendingScan?: string;
+}
 export interface ScanCredentialNavigation {
 	ScanCredentialToAdd: ScanCredentialToAddProps;
 	ScanDisclosureRequest: ScanDisclosureRequestProps;
@@ -33,6 +35,11 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 	ScanCredentialNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
+
+	constructor(props: ScanCredentialInternalProps) {
+		super(props);
+		this.state = {};
+	}
 
 	render() {
 		return (
@@ -48,23 +55,34 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	private async onScanQR(content: string) {
-		const prefix = "me.uport:req/";
-		const toParse = content.replace(prefix, "");
+		if (this.state.pendingScan === content) {
+			return;
+		}
+		this.setState({ pendingScan: content });
+
+		Vibration.vibrate(400, false);
+
+		let willNavigate = false;
 		try {
+			const prefix = "me.uport:req/";
+			const toParse = content.replace(prefix, "");
 			const res = await parseJWT(toParse);
+
 			if (res.error !== null) {
 				alert(JSON.stringify(res));
 			} else {
 				switch (res.payload.type) {
 					case "SelectiveDisclosureRequest":
-						this.navigate("ScanDisclosureRequest", {
+						willNavigate = true;
+						this.replace("ScanDisclosureRequest", {
 							request: res.payload,
 							requestJWT: toParse
 						});
 					case "SelectiveDisclosureResponse":
 						return;
 					case "VerifiedClaim":
-						this.navigate("ScanCredentialToAdd", {
+						willNavigate = true;
+						this.replace("ScanCredentialToAdd", {
 							credential: res.payload,
 							jwt: toParse
 						});
@@ -72,6 +90,10 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 			}
 		} catch (error) {
 			alert(error);
+		} finally {
+			if (!willNavigate) {
+				this.setState({ pendingScan: undefined });
+			}
 		}
 	}
 }
