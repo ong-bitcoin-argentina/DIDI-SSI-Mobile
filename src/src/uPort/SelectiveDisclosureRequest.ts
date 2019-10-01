@@ -1,12 +1,11 @@
 import { parseStructure } from "./parseMap";
-import { VerifiedClaimSelector } from "./VerifiedClaimSelector";
 
 export interface SelectiveDisclosureRequest {
 	type: "SelectiveDisclosureRequest";
 	issuer: string;
 	callback: string;
 	ownClaims: string[];
-	verifiedClaims: VerifiedClaimSelector[];
+	verifiedClaims: string[];
 }
 
 export function parseSelectiveDisclosureRequest(

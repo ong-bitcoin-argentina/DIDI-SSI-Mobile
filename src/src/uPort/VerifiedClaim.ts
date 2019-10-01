@@ -1,6 +1,6 @@
 import { parseStructure } from "./parseMap";
 
-type Claim = { [name: string]: Claim | string };
+export type Claim = { [name: string]: Claim | string };
 
 export interface VerifiedClaim {
 	type: "VerifiedClaim";

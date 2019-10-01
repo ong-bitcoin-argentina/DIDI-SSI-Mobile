@@ -2,7 +2,7 @@ import { VerifiedClaim } from "../../uPort/VerifiedClaim";
 
 export type DocumentFilterType = "livingPlace" | "identity" | "other";
 
-interface DidiDocument {
+export interface DidiDocument {
 	type: "didi";
 	icon: string;
 	category: string;
@@ -13,7 +13,7 @@ interface DidiDocument {
 	data: Array<{ label: string; value: string }>;
 }
 
-interface UPortDocument {
+export interface UPortDocument {
 	type: "uPort";
 	filterType: "other";
 	jwt: string;
