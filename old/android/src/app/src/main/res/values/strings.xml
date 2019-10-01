@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Didi</string>
+
+    <string name="access_enter">Ingresar</string>
+    <string name="access_createAccount">Crear cuenta</string>
+    <string name="access_recoverAccount">Recuperar cuenta</string>
+
+    <string name="enterPhone_message">Cargá tu número de celular</string>
+    <string name="enterPhone_country">Argentina +54</string>
+    <string name="enterPhone_phoneNumber_info">Número de celular</string>
+    <string name="enterPhone_phoneNumber_placeholder">011 + número sin el 15</string>
+    <string name="enterPhone_confirm">Validar</string>
+
+    <string name="recovery_explanation_text1">Si quieres recuperar la cuenta es porque:</string>
+    <string name="recovery_explanation_text2">-Te robaron el teléfono\n-Cambiaste tu nro. de teléfono\n-Perdiste tu teléfono</string>
+    <string name="recovery_explanation_text3">Debes recordar tu email y contraseña de resguardo para recuperar su cuenta</string>
+    <string name="recovery_explanation_confirm">Iniciar</string>
+
+    <string name="onboarding_close">Cerrar</string>
+    <string name="onboarding_title_1">¿Qué podes hacer?</string>
+    <string name="onboarding_title_2">Podés generar certificados</string>
+    <string name="onboarding_title_3">Alcanzá tus metas de ahorro</string>
+    <string name="onboarding_description_1">Con Didi vas a poder armar rondas comunitarias de plata y crear tu identidad digital sin intermediarios y de manera segura.</string>
+    <string name="onboarding_description_2">Con Didi vas a poder acceder a todos tus certificados de cursos y propiedades.</string>
+    <string name="onboarding_description_3">Podés crear Rondas y así conseguir la plata que estabas necesitando de manera facil y confiable.</string>
+</resources>

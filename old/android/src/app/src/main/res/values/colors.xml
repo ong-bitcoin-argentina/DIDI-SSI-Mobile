@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4C63D1</color>
+    <color name="colorPrimaryDark">#4C5E9E</color>
+    <color name="colorOnPrimary">#FFF</color>
+    <color name="colorAccent">#4BC6CC</color>
+
+    <color name="colorSecondary">#67DAC6</color>
+    <color name="colorSecondaryDark">#448B7F</color>
+    <color name="colorOnSecondary">#FFF</color>
+
+    <color name="onboarding_1">#8351C5</color>
+    <color name="onboarding_2">#CB296E</color>
+    <color name="onboarding_3">#6ECD55</color>
+</resources>
