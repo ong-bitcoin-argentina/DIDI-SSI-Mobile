@@ -10,6 +10,7 @@ import { DashboardScreenProps } from "./dashboard/home/Dashboard";
 import { AddChildren } from "../util/ReactExtensions";
 
 import Background from "./access/resources/images/startAccessBackground.svg";
+import { RNUportHDSigner } from "react-native-uport-signer";
 
 export interface SplashScreenNavigation {
 	Access: StartAccessProps;
@@ -20,9 +21,13 @@ export class SplashScreen extends NavigationEnabledComponent<{}, {}, SplashScree
 	static navigationOptions = NavigationHeaderStyle.gone;
 
 	componentDidMount() {
-		setTimeout(() => {
-			this.navigate("Dashboard", {});
-		}, 100);
+		RNUportHDSigner.hasSeed().then(hasSeed => {
+			if (hasSeed) {
+				this.navigate("Dashboard", {});
+			} else {
+				this.navigate("Access", {});
+			}
+		});
 	}
 
 	render() {
