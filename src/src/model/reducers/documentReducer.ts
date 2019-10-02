@@ -17,11 +17,22 @@ export function documentReducer(state: UPortDocument[] | undefined, action: Docu
 		return defaultContent;
 	}
 
+	function matches(doc: UPortDocument) {
+		return doc.jwt === action.content.jwt;
+	}
 	switch (action.type) {
 		case "DOCUMENT_ENSURE":
-			return [action.content, ...state];
+			if (state.find(matches)) {
+				return state;
+			} else {
+				return [action.content, ...state];
+			}
 		case "DOCUMENT_DELETE":
-			return [];
+			if (state.find(matches)) {
+				return state.filter(matches);
+			} else {
+				return state;
+			}
 		default:
 			return state;
 	}

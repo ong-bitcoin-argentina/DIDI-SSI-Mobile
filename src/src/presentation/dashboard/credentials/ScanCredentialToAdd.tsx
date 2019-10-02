@@ -49,11 +49,23 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={styles.body}>
 						{uPortDocumentToCard(this.documentToAdd())}
-						<Text style={commonStyles.text.normal}>¿Agregar esta credencial?</Text>
-						<DidiButton style={styles.button} title="Si" onPress={() => this.acceptCredential()} />
-						<DidiButton style={styles.button} title="No" onPress={() => this.replace("ScanCredential", {})} />
+						{this.props.documents.find(doc => doc.jwt === this.props.jwt) ? this.renderExisting() : this.renderNew()}
 					</View>
 				</SafeAreaView>
+			</Fragment>
+		);
+	}
+
+	private renderExisting() {
+		return <Text style={commonStyles.text.normal}>Ya dispones de esta credencial</Text>;
+	}
+
+	private renderNew() {
+		return (
+			<Fragment>
+				<Text style={commonStyles.text.normal}>¿Agregar esta credencial?</Text>
+				<DidiButton style={styles.button} title="Si" onPress={() => this.acceptCredential()} />
+				<DidiButton style={styles.button} title="No" onPress={() => this.replace("ScanCredential", {})} />
 			</Fragment>
 		);
 	}
