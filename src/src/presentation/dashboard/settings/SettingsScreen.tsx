@@ -1,21 +1,23 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
 import React from "react";
 import { StatusBar, SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
+
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 import strings from "../../resources/strings";
 import colors from "../../resources/colors";
 import DidiButton from "../../util/DidiButton";
-import { connect } from "react-redux";
 import { Identity } from "../../../model/data/Identity";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./userData/UserData";
+import { UportIdentityProps } from "./UportIdentity";
+import { StoreContent } from "../../../model/store";
 
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
-import { StoreContent } from "../../../model/store";
 
 export interface SettingsScreenProps {
 	person: Identity;
@@ -27,6 +29,7 @@ export interface SettingsScreenNavigation {
 	Access: StartAccessProps;
 	DashboardHome: DashboardScreenProps;
 	UserData: UserDataProps;
+	UportIdentity: UportIdentityProps;
 	SettingsAccount: {};
 	SettingsPreferences: {};
 	SettingsAbout: {};
@@ -52,7 +55,8 @@ class SettingsScreen extends NavigationEnabledComponent<
 		return [
 			{ name: strings.settings.account, action: () => this.navigate("SettingsAccount", {}) },
 			{ name: strings.settings.preferences, action: () => this.navigate("SettingsPreferences", {}) },
-			{ name: strings.settings.about, action: () => this.navigate("SettingsAbout", {}) }
+			{ name: strings.settings.about, action: () => this.navigate("SettingsAbout", {}) },
+			{ name: strings.settings.uPort, action: () => this.navigate("UportIdentity", {}) }
 		];
 	}
 

@@ -51,7 +51,7 @@ const actions: IActionProps[] = [
 		...actionCommon,
 		icon: <Text style={styles.icon}></Text>,
 		text: "Escanear Credenciales",
-		name: "StartCredentialInteraction"
+		name: "ScanCredential"
 	},
 	{
 		...actionCommon,

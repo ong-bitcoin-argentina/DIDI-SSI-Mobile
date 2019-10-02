@@ -89,6 +89,6 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 
 	return NavMap.from(BottomNavigatorComponent, {
 		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen)),
-		StartCredentialInteraction: CredentialNavigator(NavMap.placeholder(DashboardScreen))
+		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen))
 	}).stackNavigator("DashboardRoot");
 }
