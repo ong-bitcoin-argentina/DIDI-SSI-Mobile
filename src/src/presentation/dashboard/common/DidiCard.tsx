@@ -57,7 +57,7 @@ export default class DidiCard extends Component<DidiCardProps, {}> {
 			<View style={styles.keyValueContainer}>
 				{data.map((item, index) => {
 					return (
-						<View key={index} style={[columnStyle]}>
+						<View key={index} style={columnStyle}>
 							<Text style={[styles.dataLabel, textStyle]}>{item.label}</Text>
 							<Text style={[styles.dataValue, textStyle, valueStyle]}>{item.value}</Text>
 						</View>
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
 	dataValue: {
 		fontWeight: "bold",
 		fontSize: 13,
-		flexGrow: 1
+		flexGrow: 1,
+		flexShrink: 1
 	}
 });
