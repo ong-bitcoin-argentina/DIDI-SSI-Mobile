@@ -1,7 +1,6 @@
 import React from "react";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
-import { StatusBar, View, Modal, Text, Vibration } from "react-native";
+import { StatusBar, View, Vibration } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
 import parseJWT from "../../../uPort/parseJWT";
@@ -10,8 +9,8 @@ import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import DidiQRScanner from "../common/DidiQRScanner";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Document } from "../../../model/data/Document";
-import { connect } from "react-redux";
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
 
@@ -62,38 +61,35 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 
 		Vibration.vibrate(400, false);
 
-		let willNavigate = false;
-		try {
-			const prefix = "me.uport:req/";
-			const toParse = content.replace(prefix, "");
-			const res = await parseJWT(toParse);
+		const prefix = "me.uport:req/";
+		const toParse = content.replace(prefix, "");
+		const parse = await parseJWT(toParse);
 
-			if (res.error !== null) {
-				alert(JSON.stringify(res));
-			} else {
-				switch (res.payload.type) {
+		switch (parse._tag) {
+			case "Left":
+				this.setState({ pendingScan: undefined });
+				if (__DEV__) {
+					console.warn(parse.left);
+				} else {
+					alert("Hubo un error al leer el codigo QR");
+				}
+				break;
+			case "Right":
+				switch (parse.right.type) {
 					case "SelectiveDisclosureRequest":
-						willNavigate = true;
 						this.replace("ScanDisclosureRequest", {
-							request: res.payload,
+							request: parse.right,
 							requestJWT: toParse
 						});
-					case "SelectiveDisclosureResponse":
-						return;
+						break;
 					case "VerifiedClaim":
-						willNavigate = true;
 						this.replace("ScanCredentialToAdd", {
-							credential: res.payload,
+							credential: parse.right,
 							jwt: toParse
 						});
+						break;
 				}
-			}
-		} catch (error) {
-			alert(error);
-		} finally {
-			if (!willNavigate) {
-				this.setState({ pendingScan: undefined });
-			}
+				break;
 		}
 	}
 }
