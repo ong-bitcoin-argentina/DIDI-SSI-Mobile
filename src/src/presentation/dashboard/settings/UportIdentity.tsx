@@ -1,14 +1,13 @@
 import React from "react";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
-import { StatusBar, View, Text, Alert, TouchableOpacity, ListView } from "react-native";
-import { SafeAreaView, FlatList } from "react-navigation";
+import { StatusBar, View, Text, Clipboard, ToastAndroid } from "react-native";
+import { SafeAreaView } from "react-navigation";
 
 import { RNUportHDSigner, SeedPhrase, KeyAddress } from "react-native-uport-signer";
 
 import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
-import DidiQRScanner from "../common/DidiQRScanner";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
@@ -17,6 +16,7 @@ export type UportIdentityProps = {};
 interface UportIdentityState {
 	seeds?: KeyAddress[];
 	importSeed?: SeedPhrase;
+	deleteIdentityOnNextTap: boolean;
 }
 export interface UportIdentityNavigation {}
 
@@ -29,7 +29,9 @@ export default class UportIdentityScreen extends NavigationEnabledComponent<
 
 	constructor(props: UportIdentityProps) {
 		super(props);
-		this.state = {};
+		this.state = {
+			deleteIdentityOnNextTap: false
+		};
 	}
 
 	componentDidMount() {
@@ -42,50 +44,60 @@ export default class UportIdentityScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={commonStyles.view.body}>
-						<DidiButton title="Create Seed" onPress={() => this.createAddress()} />
-						<DidiTextInput
-							description="Import Seed"
-							placeholder="12 words"
-							textInputProps={{ onChangeText: text => this.setState({ importSeed: text }) }}
-						/>
-						<DidiButton
-							title="Import"
-							onPress={() => {
-								this.importSeed();
-							}}
-						/>
-						{this.renderSeeds()}
+						{this.state.seeds ? this.renderWithSeeds(this.state.seeds) : this.renderLoading()}
 					</View>
 				</SafeAreaView>
 			</Fragment>
 		);
 	}
 
-	private renderSeeds() {
-		if (this.state.seeds) {
-			return (
-				<FlatList
-					data={this.state.seeds}
-					numColumns={1}
-					keyExtractor={seed => seed}
-					renderItem={({ item }) => this.renderSeed(item)}
-				/>
-			);
+	private renderLoading() {
+		return <Text style={commonStyles.text.emphasis}>Cargando</Text>;
+	}
+
+	private renderWithSeeds(seeds: string[]) {
+		if (seeds.length === 0) {
+			return this.renderEmpty();
 		} else {
-			return <Text style={{ flex: 1 }}>Loading</Text>;
+			const seed = seeds[0];
+			return (
+				<Fragment>
+					<Text style={commonStyles.text.emphasis}>Identidad activa:</Text>
+					<Text style={commonStyles.text.normal}>{seed}</Text>
+					<DidiButton title="Mostrar Frase de Backup" onPress={() => this.showPhrase(seed)} />
+					<DidiButton title="Copiar Frase de Backup" onPress={() => this.copyPhrase(seed)} />
+					{this.state.deleteIdentityOnNextTap ? (
+						<DidiButton
+							style={{ backgroundColor: "red" }}
+							title="Eliminar Identidad"
+							onPress={() => this.deleteSeed(seed)}
+						/>
+					) : (
+						<DidiButton title="Eliminar Identidad" onPress={() => this.setState({ deleteIdentityOnNextTap: true })} />
+					)}
+				</Fragment>
+			);
 		}
 	}
 
-	private renderSeed(seed: KeyAddress) {
+	private renderEmpty() {
 		return (
-			<TouchableOpacity
-				style={{ margin: 10 }}
-				onPress={() => {
-					this.showSeed(seed);
-				}}
-			>
-				<Text>{seed}</Text>
-			</TouchableOpacity>
+			<Fragment>
+				<DidiButton title="Crear Identidad" onPress={() => this.createAddress()} />
+				<View>
+					<DidiTextInput
+						description="Importar Identidad"
+						placeholder="12 palabras"
+						textInputProps={{ onChangeText: text => this.setState({ importSeed: text }) }}
+					/>
+					<DidiButton
+						title="Importar"
+						onPress={() => {
+							this.importSeed();
+						}}
+					/>
+				</View>
+			</Fragment>
 		);
 	}
 
@@ -95,10 +107,23 @@ export default class UportIdentityScreen extends NavigationEnabledComponent<
 		});
 	}
 
-	private showSeed(seed: KeyAddress) {
+	private showPhrase(seed: KeyAddress) {
 		RNUportHDSigner.showSeed(seed, "Reasons").then(phrase => {
 			alert(phrase);
 		});
+	}
+
+	private copyPhrase(seed: KeyAddress) {
+		RNUportHDSigner.showSeed(seed, "Reasons").then(phrase => {
+			Clipboard.setString(phrase);
+			ToastAndroid.show("Copiado", ToastAndroid.SHORT);
+		});
+	}
+
+	private deleteSeed(seed: KeyAddress) {
+		RNUportHDSigner.deleteSeed(seed);
+		this.setState({ deleteIdentityOnNextTap: false });
+		this.reloadAddresses();
 	}
 
 	private importSeed() {
