@@ -13,7 +13,6 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import DropdownMenu from "../../util/DropdownMenu";
 import { connect } from "react-redux";
-import { Document } from "../../../model/data/Document";
 import { Identity } from "../../../model/data/Identity";
 import { RecentActivity } from "../../../model/data/RecentActivity";
 import HomeHeader from "./HomeHeader";
@@ -21,12 +20,15 @@ import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
 import { StoreContent } from "../../../model/store";
-import { documentToCard, commonCardStyle } from "../common/documentToCard";
+import { sampleDocumentToCard, uPortDocumentToCard, commonCardStyle } from "../common/documentToCard";
+import { SampleDocument } from "../../../model/data/SampleDocument";
+import { UPortDocument } from "../../../model/data/UPortDocument";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
 	person: Identity;
-	documents: Document[];
+	documents: UPortDocument[];
+	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }
 export interface DashboardScreenNavigation {
@@ -142,7 +144,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 							onBellPress={() => this.navigate("DashboardDocuments", {})}
 						/>
 						{this.evolutionCard()}
-						{this.props.documents.map(documentToCard)}
+						{this.props.documents.map(uPortDocumentToCard)}
+						{this.props.samples.map(sampleDocumentToCard)}
 						{this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()}
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
@@ -159,7 +162,8 @@ export default connect(
 		return {
 			person: state.identity,
 			recentActivity: state.recentActivity,
-			documents: state.documents
+			documents: state.documents,
+			samples: state.samples
 		};
 	}
 )(DashboardScreen);

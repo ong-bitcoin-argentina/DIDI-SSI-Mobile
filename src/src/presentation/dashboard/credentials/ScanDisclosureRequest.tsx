@@ -13,7 +13,7 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 
-import { Document, UPortDocument } from "../../../model/data/Document";
+import { UPortDocument } from "../../../model/data/UPortDocument";
 import { SelectiveDisclosureRequest } from "../../../uPort/SelectiveDisclosureRequest";
 import { StoreContent } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
@@ -27,7 +27,7 @@ export interface ScanDisclosureRequestProps {
 }
 interface ScanDisclosureRequestStateProps {
 	identity: Identity;
-	documents: Document[];
+	documents: UPortDocument[];
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps & ScanDisclosureRequestStateProps;
 
@@ -172,19 +172,10 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		const { request, documents } = this.props;
 		return request.verifiedClaims.map(selector => {
 			const selected = documents.find(document => {
-				switch (document.type) {
-					case "didi":
-						return false;
-					case "uPort":
-						const { root } = flattenClaim(document.claim.claims);
-						return root === selector;
-				}
+				const { root } = flattenClaim(document.claim.claims);
+				return root === selector;
 			});
-			if (selected && selected.type === "uPort") {
-				return { selector, value: selected };
-			} else {
-				return { selector };
-			}
+			return { selector, value: selected };
 		});
 	}
 }

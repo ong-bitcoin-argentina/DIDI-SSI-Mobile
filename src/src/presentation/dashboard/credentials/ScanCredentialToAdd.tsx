@@ -10,9 +10,9 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 
-import { Document } from "../../../model/data/Document";
+import { UPortDocument } from "../../../model/data/UPortDocument";
 import { VerifiedClaim } from "../../../uPort/VerifiedClaim";
-import { documentToCard } from "../common/documentToCard";
+import { uPortDocumentToCard } from "../common/documentToCard";
 import { StoreContent } from "../../../model/store";
 import { ScanCredentialProps } from "./ScanCredential";
 
@@ -21,10 +21,10 @@ export type ScanCredentialToAddProps = {
 	credential: VerifiedClaim;
 };
 interface ScanCredentialToAddStateProps {
-	documents: Document[];
+	documents: UPortDocument[];
 }
 interface ScanCredentialToAddDispatchProps {
-	addCredential(credential: Document): void;
+	addCredential(credential: UPortDocument): void;
 }
 type ScanCredentialToAddInternalProps = ScanCredentialToAddProps &
 	ScanCredentialToAddStateProps &
@@ -48,7 +48,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={styles.body}>
-						{documentToCard(this.documentToAdd(), 0)}
+						{uPortDocumentToCard(this.documentToAdd())}
 						<Text style={commonStyles.text.normal}>¿Agregar esta credencial?</Text>
 						<DidiButton style={styles.button} title="Si" onPress={() => this.acceptCredential()} />
 						<DidiButton style={styles.button} title="No" onPress={() => this.replace("ScanCredential", {})} />
@@ -58,11 +58,9 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private documentToAdd(): Document {
+	private documentToAdd(): UPortDocument {
 		return {
-			type: "uPort",
 			claim: this.props.credential,
-			filterType: "other",
 			jwt: this.props.jwt
 		};
 	}
@@ -81,7 +79,7 @@ export default connect(
 	},
 	(dispatch): ScanCredentialToAddDispatchProps => {
 		return {
-			addCredential: (credential: Document) => dispatch({ type: "DOCUMENT_ENSURE", content: credential })
+			addCredential: (credential: UPortDocument) => dispatch({ type: "DOCUMENT_ENSURE", content: credential })
 		};
 	}
 )(ScanCredentialToAddScreen);

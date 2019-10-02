@@ -37,9 +37,5 @@ const defaultContent: Identity = {
 };
 
 export function identityReducer(state: Identity | undefined, action: IdentityAction): Identity {
-	if (state) {
-		return state;
-	} else {
-		return defaultContent;
-	}
+	return state || defaultContent;
 }
