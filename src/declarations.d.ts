@@ -54,3 +54,4 @@ declare module "react-native-uport-signer" {
 }
 
 declare module "ethr-did-resolver";
+declare module "redux-persist-fs-storage";

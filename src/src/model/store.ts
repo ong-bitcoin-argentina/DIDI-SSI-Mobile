@@ -1,4 +1,7 @@
-import { createStore, combineReducers, Store, Reducer } from "redux";
+import { createStore, combineReducers, Store, Reducer, AnyAction } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
+import FSStorage from "redux-persist-fs-storage";
+
 import { documentReducer, DocumentAction } from "./reducers/documentReducer";
 import { identityReducer, IdentityAction } from "./reducers/identityReducer";
 import { recentActivityReducer, RecentActivityAction } from "./reducers/recentActivityReducer";
@@ -25,6 +28,15 @@ const reducer: Reducer<StoreContent, StoreAction> = combineReducers({
 	recentActivity: recentActivityReducer
 });
 
-const store: Store<StoreContent, StoreAction> = createStore(reducer);
+const persistedReducer = persistReducer(
+	{
+		key: "root",
+		keyPrefix: "",
+		storage: FSStorage()
+	},
+	reducer
+);
 
-export default store;
+export const store = createStore(persistedReducer) as Store<any, AnyAction>;
+
+export const persistor = persistStore(store);
