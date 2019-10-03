@@ -39,11 +39,7 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<DidiQRScanner onQRScanned={content => this.onScanQR(content)} />
-					</View>
-				</SafeAreaView>
+				<DidiQRScanner onQRScanned={content => this.onScanQR(content)} />
 			</Fragment>
 		);
 	}
