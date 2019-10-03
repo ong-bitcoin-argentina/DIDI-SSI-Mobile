@@ -6,7 +6,11 @@ import ScanDisclosureRequestScreen from "./ScanDisclosureRequest";
 
 export default function(then: NavTree<DashboardScreenProps>) {
 	return NavMap.from(ScanCredentialScreen, {
-		ScanCredentialToAdd: NavMap.from(ScanCredentialToAddScreen, {}),
-		ScanDisclosureRequest: NavMap.from(ScanDisclosureRequestScreen, {})
+		ScanCredentialToAdd: NavMap.from(ScanCredentialToAddScreen, {
+			ScanCredential: NavMap.placeholder(ScanCredentialScreen)
+		}),
+		ScanDisclosureRequest: NavMap.from(ScanDisclosureRequestScreen, {
+			ScanCredential: NavMap.placeholder(ScanCredentialScreen)
+		})
 	});
 }

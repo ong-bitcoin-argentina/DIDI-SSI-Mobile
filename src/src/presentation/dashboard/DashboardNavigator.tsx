@@ -1,7 +1,7 @@
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import { StartAccessProps } from "../access/StartAccess";
-import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
+import DashboardScreen, { DashboardScreenProps, DashboardScreenNavigation } from "./home/Dashboard";
 import NavMap, { NavTree, NavigationEnabledComponentConstructor } from "../util/NavMap";
 import React from "react";
 import { Text, ViewProps, View, StyleSheet } from "react-native";
@@ -15,6 +15,7 @@ import SettingsNavigator from "./settings/SettingsNavigator";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import CredentialNavigator from "./credentials/CredentialNavigator";
+import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -57,17 +58,25 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 	}
 
 	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, then);
+	const dashboardPlaceholder: NavMap<DashboardScreenProps> = NavMap.placeholder(DashboardScreen);
 
 	const BottomNavigator = createMaterialBottomTabNavigator(
 		{
 			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, ""),
 			DashboardRounds: screen(
-				NavMap.from(RoundsScreen, then).stackNavigator("DashboardRounds"),
+				NavMap.from(RoundsScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
 				""
 			),
 			DashboardDocuments: screen(DocumentsNavigator, strings.tabNames.documents, ""),
-			DashboardSettings: screen(SettingsNavigator.stackNavigator("DashboardSettings"), strings.tabNames.settings, "")
+			DashboardSettings: screen(
+				SettingsNavigator({
+					...then,
+					DashboardHome: dashboardPlaceholder
+				}).stackNavigator("DashboardSettings"),
+				strings.tabNames.settings,
+				""
+			)
 		},
 		{
 			initialRouteName: "DashboardHome",
@@ -77,7 +86,7 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		}
 	);
 
-	class BottomNavigatorComponent extends React.Component<NavigatorProps> {
+	class BottomNavigatorComponent extends NavigationEnabledComponent<NavigatorProps, {}, {}> {
 		static navigationOptions = NavigationHeaderStyle.gone;
 		static router = BottomNavigator.router;
 

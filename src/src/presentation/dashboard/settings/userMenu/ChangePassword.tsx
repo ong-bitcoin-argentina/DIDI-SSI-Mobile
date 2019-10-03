@@ -23,9 +23,7 @@ type ChangePasswordState = {
 	key: string;
 	keyDup: string;
 };
-export interface ChangePasswordNavigation {
-	UserData: UserDataProps;
-}
+export interface ChangePasswordNavigation {}
 
 class ChangePasswordScreen extends NavigationEnabledComponent<
 	ChangePasswordInternalProps,
@@ -47,7 +45,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 
 	changePassword() {
 		// TODO change password !!!
-		this.navigate("UserData", {});
+		this.goBack();
 	}
 
 	render() {

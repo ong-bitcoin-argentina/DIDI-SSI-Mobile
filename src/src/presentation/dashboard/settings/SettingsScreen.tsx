@@ -30,9 +30,6 @@ export interface SettingsScreenNavigation {
 	DashboardHome: DashboardScreenProps;
 	UserData: UserDataProps;
 	UportIdentity: UportIdentityProps;
-	SettingsAccount: {};
-	SettingsPreferences: {};
-	SettingsAbout: {};
 }
 
 interface SettingsButton {
@@ -52,9 +49,9 @@ class SettingsScreen extends NavigationEnabledComponent<
 
 	buttons(): SettingsButton[] {
 		return [
-			{ name: strings.settings.account, action: () => this.navigate("SettingsAccount", {}) },
-			{ name: strings.settings.preferences, action: () => this.navigate("SettingsPreferences", {}) },
-			{ name: strings.settings.about, action: () => this.navigate("SettingsAbout", {}) },
+			{ name: strings.settings.account, action: () => {} },
+			{ name: strings.settings.preferences, action: () => {} },
+			{ name: strings.settings.about, action: () => {} },
 			{ name: strings.settings.uPort, action: () => this.navigate("UportIdentity", {}) }
 		];
 	}

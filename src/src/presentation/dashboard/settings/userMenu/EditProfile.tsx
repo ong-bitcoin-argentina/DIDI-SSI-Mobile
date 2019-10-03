@@ -31,9 +31,7 @@ type EditProfileState = {
 	address: string;
 };
 
-export interface EditProfileNavigation {
-	UserData: UserDataProps;
-}
+export interface EditProfileNavigation {}
 
 class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileInternalProps,
@@ -57,7 +55,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 	editProfile() {
 		// TODO !!!
-		this.navigate("UserData", {});
+		this.goBack();
 	}
 
 	renderInputs() {

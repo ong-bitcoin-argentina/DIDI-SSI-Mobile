@@ -25,9 +25,7 @@ type ShareProfileState = {
 	titles: boolean;
 	others: boolean;
 };
-export interface ShareProfileNavigation {
-	UserData: UserDataProps;
-}
+export interface ShareProfileNavigation {}
 
 class ShareProfileScreen extends NavigationEnabledComponent<
 	ShareProfileInternalProps,
@@ -43,7 +41,7 @@ class ShareProfileScreen extends NavigationEnabledComponent<
 
 	share() {
 		// TODO
-		this.navigate("UserData", {});
+		this.goBack();
 	}
 
 	render() {

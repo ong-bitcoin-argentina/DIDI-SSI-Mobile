@@ -9,13 +9,15 @@ import { ValidateIdentityBackScreen } from "./ValidateIdentityBack";
 import { ValidateIdentitySelfieScreen } from "./ValidateIdentitySelfie";
 import { ValidateIdentityLivenessScreen } from "./ValidateIdentityLiveness";
 
-export default function(then: NavTree<DashboardScreenProps>) {
+export default function(then: NavMap<DashboardScreenProps>) {
 	return NavMap.from(ValidateIdentityExplainWhatScreen, {
 		ValidateIdentityHow: NavMap.from(ValidateIdentityExplainHowScreen, {
 			ValidateIdentityFront: NavMap.from(ValidateIdentityFrontScreen, {
 				ValidateIdentityBack: NavMap.from(ValidateIdentityBackScreen, {
 					ValidateIdentitySelfie: NavMap.from(ValidateIdentitySelfieScreen, {
-						ValidateIdentityLiveness: NavMap.from(ValidateIdentityLivenessScreen, {})
+						ValidateIdentityLiveness: NavMap.from(ValidateIdentityLivenessScreen, {
+							DashboardRoot: then
+						})
 					})
 				})
 			})

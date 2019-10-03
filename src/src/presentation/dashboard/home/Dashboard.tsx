@@ -12,7 +12,7 @@ import DidiActivity from "./DidiActivity";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import DropdownMenu from "../../util/DropdownMenu";
-import { connect } from "react-redux";
+import { connect, ConnectedComponent } from "react-redux";
 import { Identity } from "../../../model/data/Identity";
 import { RecentActivity } from "../../../model/data/RecentActivity";
 import HomeHeader from "./HomeHeader";
