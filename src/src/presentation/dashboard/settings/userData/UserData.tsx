@@ -45,7 +45,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		{
 			actionTitle: "Compartir",
 			onPress: navigation => {
-				navigation.navigate("Share", {});
+				navigation.navigate("ShareProfile", {});
 			}
 		}
 	]);

@@ -16,6 +16,8 @@ import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNaviga
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import CredentialNavigator from "./credentials/CredentialNavigator";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
+import ShareCredentialScreen from "./credentials/ShareCredential";
+import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -98,6 +100,9 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 
 	return NavMap.from(BottomNavigatorComponent, {
 		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen)),
-		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen))
+		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen)),
+		ShareCredential: NavMap.from(ShareCredentialScreen, {
+			ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {})
+		})
 	}).stackNavigator("DashboardRoot");
 }

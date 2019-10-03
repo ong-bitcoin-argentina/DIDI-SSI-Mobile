@@ -3,6 +3,13 @@ import { View, ViewProps, Text, StyleSheet } from "react-native";
 import { FloatingAction, IActionProps } from "react-native-floating-action";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 import colors from "../resources/colors";
+import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
+import { ScanCredentialProps } from "./credentials/ScanCredential";
+import { RoundsScreenProps } from "./rounds/RoundsScreen";
+import { DocumentsScreenProps } from "./documents/DocumentsScreen";
+import { UserDataProps } from "./settings/userData/UserData";
+import { EditProfileProps } from "./settings/userMenu/EditProfile";
+import { ShareCredentialProps } from "./credentials/ShareCredential";
 
 export interface DashboardJumpMenuProps extends ViewProps {
 	navigation: NavigationScreenProp<NavigationState>;
@@ -13,7 +20,20 @@ interface DashboardJumpMenuState {
 	showJumpMenu: boolean;
 }
 
-export default class DashboardJumpMenu extends React.Component<DashboardJumpMenuProps, DashboardJumpMenuState> {
+export interface DashboardJumpNavigation {
+	ScanCredential: ScanCredentialProps;
+	ShareCredential: ShareCredentialProps;
+	DashboardRounds: RoundsScreenProps;
+	DashboardDocuments: DocumentsScreenProps;
+	UserData: UserDataProps;
+	EditProfile: EditProfileProps;
+}
+
+export default class DashboardJumpMenu extends NavigationEnabledComponent<
+	DashboardJumpMenuProps,
+	DashboardJumpMenuState,
+	DashboardJumpNavigation
+> {
 	render() {
 		if (!this.props.showJumpButton) {
 			return;
@@ -24,7 +44,7 @@ export default class DashboardJumpMenu extends React.Component<DashboardJumpMenu
 					color="#FFBD10"
 					overlayColor="rgba(0, 0, 0, 0.66)"
 					actions={actions}
-					onPressItem={name => name && this.props.navigation.navigate(name, {})}
+					onPressItem={name => name && this.navigate(name as keyof DashboardJumpNavigation, {})}
 				/>
 			</View>
 		);
@@ -46,7 +66,7 @@ const actionCommon: Omit<IActionProps, "name"> = {
 	textElevation: 0
 };
 
-const actions: IActionProps[] = [
+const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 	{
 		...actionCommon,
 		icon: <Text style={styles.icon}></Text>,
@@ -57,7 +77,7 @@ const actions: IActionProps[] = [
 		...actionCommon,
 		icon: <Text style={styles.icon}></Text>,
 		text: "Compartir",
-		name: "Share"
+		name: "ShareCredential"
 	},
 	{
 		...actionCommon,
@@ -75,12 +95,12 @@ const actions: IActionProps[] = [
 		...actionCommon,
 		icon: <Text style={styles.icon}></Text>,
 		text: "Editar Perfil",
-		name: "UserData"
+		name: "EditProfile"
 	},
 	{
 		...actionCommon,
 		icon: <Text style={styles.icon}></Text>,
 		text: "Ver ID",
-		name: "viewId"
+		name: "UserData"
 	}
 ];
