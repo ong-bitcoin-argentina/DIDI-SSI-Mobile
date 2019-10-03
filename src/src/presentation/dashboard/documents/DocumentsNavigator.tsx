@@ -28,7 +28,7 @@ export default createStackNavigator(
 						backgroundColor: themes.navigation
 					}
 				},
-				navigationOptions: NavigationHeaderStyle.withTitleAndBackButton<DocumentsScreenNavigation, "DashboardHome">(
+				navigationOptions: NavigationHeaderStyle.withTitleAndFakeBackButton<DocumentsScreenNavigation, "DashboardHome">(
 					strings.tabNames.documents,
 					"DashboardHome",
 					{}

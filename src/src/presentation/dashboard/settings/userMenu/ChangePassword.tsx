@@ -32,11 +32,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 	ChangePasswordState,
 	ChangePasswordNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<ChangePasswordNavigation, "UserData">(
-		strings.dashboard.userData.changePassword.barTitle,
-		"UserData",
-		{}
-	);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changePassword.barTitle);
 
 	private canPressContinueButton(): boolean {
 		// TODO validate password !!!

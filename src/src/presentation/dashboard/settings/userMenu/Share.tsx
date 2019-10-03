@@ -31,11 +31,7 @@ export interface ShareNavigation {
 }
 
 class ShareScreen extends NavigationEnabledComponent<ShareInternalProps, ShareState, ShareNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<ShareNavigation, "UserData">(
-		strings.dashboard.userData.share.barTitle,
-		"UserData",
-		{}
-	);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.share.barTitle);
 
 	private canPressContinueButton(): boolean {
 		// TODO

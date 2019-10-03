@@ -45,11 +45,10 @@ class SettingsScreen extends NavigationEnabledComponent<
 	SettingsScreenState,
 	SettingsScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<SettingsScreenNavigation, "DashboardHome">(
-		strings.tabNames.settings,
-		"DashboardHome",
-		{}
-	);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
+		SettingsScreenNavigation,
+		"DashboardHome"
+	>(strings.tabNames.settings, "DashboardHome", {});
 
 	buttons(): SettingsButton[] {
 		return [

@@ -40,11 +40,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileState,
 	EditProfileNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<EditProfileNavigation, "UserData">(
-		strings.dashboard.userData.editProfile.barTitle,
-		"UserData",
-		{}
-	);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.editProfile.barTitle);
 
 	private canPressContinueButton(): boolean {
 		if (

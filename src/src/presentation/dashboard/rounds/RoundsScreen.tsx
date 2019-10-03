@@ -19,7 +19,7 @@ export class RoundsScreen extends NavigationEnabledComponent<
 	RoundsScreenState,
 	RoundsScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<RoundsScreenNavigation, "DashboardHome">(
+	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<RoundsScreenNavigation, "DashboardHome">(
 		strings.tabNames.rounds,
 		"DashboardHome",
 		{}
