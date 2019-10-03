@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import UserHeadingComponent from "./UserHeading";
 import { ChangePasswordProps } from "../userMenu/ChangePassword";
 import { EditProfileProps } from "../userMenu/EditProfile";
-import { ShareProps } from "../userMenu/Share";
+import { ShareProfileProps } from "../userMenu/ShareProfile";
 import { StoreContent } from "../../../../model/store";
 import { Identity } from "../../../../model/data/Identity";
 
@@ -25,7 +25,7 @@ type UserDataState = {};
 export interface UserDataNavigation {
 	ChangePassword: ChangePasswordProps;
 	EditProfile: EditProfileProps;
-	Share: ShareProps;
+	ShareProfile: ShareProfileProps;
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {

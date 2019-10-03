@@ -7,18 +7,17 @@ import strings from "../../../resources/strings";
 import { UserDataProps } from "../userData/UserData";
 import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
-import DidiTextInput from "../../../util/DidiTextInput";
 import DidiButton from "../../../util/DidiButton";
 import { connect } from "react-redux";
 import { Identity } from "../../../../model/data/Identity";
 import { StoreContent } from "../../../../model/store";
 
-export type ShareProps = {};
-interface ShareInternalProps {
+export type ShareProfileProps = {};
+interface ShareProfileInternalProps {
 	person: Identity;
 }
 
-type ShareState = {
+type ShareProfileState = {
 	personalData: boolean;
 	family: boolean;
 	courses: boolean;
@@ -26,11 +25,15 @@ type ShareState = {
 	titles: boolean;
 	others: boolean;
 };
-export interface ShareNavigation {
+export interface ShareProfileNavigation {
 	UserData: UserDataProps;
 }
 
-class ShareScreen extends NavigationEnabledComponent<ShareInternalProps, ShareState, ShareNavigation> {
+class ShareProfileScreen extends NavigationEnabledComponent<
+	ShareProfileInternalProps,
+	ShareProfileState,
+	ShareProfileNavigation
+> {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.share.barTitle);
 
 	private canPressContinueButton(): boolean {
@@ -69,13 +72,14 @@ class ShareScreen extends NavigationEnabledComponent<ShareInternalProps, ShareSt
 	}
 }
 
-export default connect(
-	(state: StoreContent): ShareInternalProps => {
+const connected = connect(
+	(state: StoreContent): ShareProfileInternalProps => {
 		return {
 			person: state.identity
 		};
 	}
-)(ShareScreen);
+)(ShareProfileScreen);
+export { connected as ShareProfileScreen };
 
 const styles = StyleSheet.create({
 	inputs: {
