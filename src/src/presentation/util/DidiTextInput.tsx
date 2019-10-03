@@ -27,9 +27,9 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		return (
 			<View {...this.props.viewProps} style={rootStyle}>
 				{this.props.tagImage && <Image style={style.tagImage} source={this.props.tagImage} />}
-				<View style={style.textContainer}>
-					<View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-						<View>
+				<View style={style.lineContainer}>
+					<View style={style.stateContainer}>
+						<View style={style.inputContainer}>
 							<Text style={style.description}>{this.props.description}</Text>
 							<TextInput {...this.props.textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
 						</View>
@@ -48,7 +48,15 @@ function styles(theme: DidiTheme) {
 			flexDirection: "row",
 			alignItems: "center"
 		},
-		textContainer: {
+		inputContainer: {
+			flex: 1
+		},
+		stateContainer: {
+			flexDirection: "row",
+			justifyContent: "space-between",
+			alignItems: "center"
+		},
+		lineContainer: {
 			flex: 1,
 			flexDirection: "column"
 		},
@@ -67,7 +75,6 @@ function styles(theme: DidiTheme) {
 			height: 25,
 			marginRight: 30
 		},
-		stateContainer: {},
 		underline: {
 			backgroundColor: theme.foregroundFaded,
 			height: 1,

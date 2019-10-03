@@ -68,7 +68,7 @@ const styles = {
 		};
 	},
 
-	withTitleAndBackButton<Navigation, K extends keyof Navigation>(
+	withTitleAndFakeBackButton<Navigation, K extends keyof Navigation>(
 		title: string,
 		target: K,
 		props: Navigation[K]

@@ -23,20 +23,14 @@ type ChangePasswordState = {
 	key: string;
 	keyDup: string;
 };
-export interface ChangePasswordNavigation {
-	UserData: UserDataProps;
-}
+export interface ChangePasswordNavigation {}
 
 class ChangePasswordScreen extends NavigationEnabledComponent<
 	ChangePasswordInternalProps,
 	ChangePasswordState,
 	ChangePasswordNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<ChangePasswordNavigation, "UserData">(
-		strings.dashboard.userData.changePassword.barTitle,
-		"UserData",
-		{}
-	);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changePassword.barTitle);
 
 	private canPressContinueButton(): boolean {
 		// TODO validate password !!!
@@ -51,7 +45,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 
 	changePassword() {
 		// TODO change password !!!
-		this.navigate("UserData", {});
+		this.goBack();
 	}
 
 	render() {

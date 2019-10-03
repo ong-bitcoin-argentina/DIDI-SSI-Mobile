@@ -2,10 +2,15 @@ import { NavigationContainer, createStackNavigator, StackNavigatorConfig } from 
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
 
 import NavigationEnabledComponent from "./NavigationEnabledComponent";
+import { ConnectedComponent } from "react-redux";
 
 export interface NavigationEnabledComponentConstructor<Props, Navigation> {
 	new (props: Readonly<Props>): NavigationEnabledComponent<Props, {}, Navigation>;
 }
+
+type NavMapComponentConstructor<Props, Navigation, InnerProps> =
+	| NavigationEnabledComponentConstructor<Props, Navigation>
+	| ConnectedComponent<NavigationEnabledComponentConstructor<InnerProps, Navigation>, Props>;
 
 export type NavTree<Nav> = {
 	[K in Extract<keyof Nav, string>]: NavMap<Nav[K]>;
@@ -14,14 +19,16 @@ export type NavTree<Nav> = {
 type AnyConstructor = any;
 
 export default class NavMap<Props> {
-	static from<Prop, Nav>(
-		constructor: any, // NavigationEnabledComponentConstructor<Prop, Nav>,
-		to: any // NavTree<Nav>
+	static from<Prop, Nav, InnerProp = Prop>(
+		constructor: NavMapComponentConstructor<Prop, Nav, InnerProp>,
+		to: NavTree<Nav>
 	): NavMap<Prop> {
 		return new NavMap(constructor, false, to ? to : {});
 	}
 
-	static placeholder<Prop, Nav>(constructor: any /*NavigationEnabledComponentConstructor<Prop, Nav>*/): NavMap<Prop> {
+	static placeholder<Prop, Nav, InnerProp = Prop>(
+		constructor: NavMapComponentConstructor<Prop, Nav, InnerProp>
+	): NavMap<Prop> {
 		return new NavMap(constructor, true, {});
 	}
 

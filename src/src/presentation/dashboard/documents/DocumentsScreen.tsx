@@ -4,11 +4,12 @@ import React from "react";
 import { StatusBar, SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
-import { Document, DocumentFilterType } from "../../../model/data/Document";
+import { DocumentFilterType, SampleDocument } from "../../../model/data/SampleDocument";
 import { connect } from "react-redux";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { StoreContent } from "../../../model/store";
-import { documentToCard } from "../common/documentToCard";
+import { uPortDocumentToCard, sampleDocumentToCard } from "../common/documentToCard";
+import { UPortDocument } from "../../../model/data/UPortDocument";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;
@@ -16,7 +17,8 @@ export type DocumentsScreenNavigation = {
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenInternalProps extends DocumentsScreenProps {
-	documents: Document[];
+	documents: UPortDocument[];
+	samples: SampleDocument[];
 	filter: (type: DocumentFilterType) => boolean;
 }
 
@@ -33,7 +35,8 @@ class DocumentsScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
-						{this.props.documents.filter(card => this.props.filter(card.filterType)).map(documentToCard)}
+						{this.props.filter("other") && this.props.documents.map(uPortDocumentToCard)}
+						{this.props.samples.filter(sample => this.props.filter(sample.filterType)).map(sampleDocumentToCard)}
 					</ScrollView>
 				</SafeAreaView>
 			</Fragment>
@@ -46,6 +49,7 @@ export default function(filter: (type: DocumentFilterType) => boolean) {
 		(state: StoreContent): DocumentsScreenInternalProps => {
 			return {
 				filter,
+				samples: state.samples,
 				documents: state.documents
 			};
 		}

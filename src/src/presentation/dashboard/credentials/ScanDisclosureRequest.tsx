@@ -13,7 +13,7 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 
-import { Document, UPortDocument } from "../../../model/data/Document";
+import { UPortDocument } from "../../../model/data/UPortDocument";
 import { SelectiveDisclosureRequest } from "../../../uPort/SelectiveDisclosureRequest";
 import { StoreContent } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
@@ -27,7 +27,7 @@ export interface ScanDisclosureRequestProps {
 }
 interface ScanDisclosureRequestStateProps {
 	identity: Identity;
-	documents: Document[];
+	documents: UPortDocument[];
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps & ScanDisclosureRequestStateProps;
 
@@ -73,13 +73,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	}
 
 	private async answerRequest() {
-		const claims = this.selectClaims();
-		if (claims.error) {
-			alert(`Faltan credenciales: ${claims.missing.join(", ")}`);
-			return;
-		}
-		const { own, verified } = claims;
-
+		const { missing, own, verified } = this.selectClaims();
 		const addresses = await RNUportHDSigner.listSeedAddresses();
 
 		const addressToUse = addresses.length === 0 ? (await RNUportHDSigner.createSeed("simple")).address : addresses[0];
@@ -113,12 +107,18 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 			body: JSON.stringify({ access_token })
 		});
 
+		if (missing.length > 0) {
+			alert(`Respuesta enviada. Puede ocurrir un error por falta de credenciales: ${missing.join(", ")}`);
+		} else {
+			alert("Respuesta enviada");
+		}
+
 		this.replace("ScanCredential", {});
 
 		return result;
 	}
 
-	private selectClaims(): { error: true; missing: string[] } | { error: false; own: Claim; verified: string[] } {
+	private selectClaims(): { missing: string[]; own: Claim; verified: string[] } {
 		const verified: { [selector: string]: UPortDocument } = {};
 		const missing: string[] = [];
 
@@ -129,13 +129,10 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 				missing.push(vc.selector);
 			}
 		});
-		if (missing.length > 0) {
-			return { error: true, missing };
-		}
 
 		const own = this.selectOwnClaims();
 		return {
-			error: false,
+			missing,
 			own: {
 				...own,
 				...TypedObject.mapValues(verified, v => {
@@ -175,19 +172,10 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		const { request, documents } = this.props;
 		return request.verifiedClaims.map(selector => {
 			const selected = documents.find(document => {
-				switch (document.type) {
-					case "didi":
-						return false;
-					case "uPort":
-						const { root } = flattenClaim(document.claim.claims);
-						return root === selector;
-				}
+				const { root } = flattenClaim(document.claim.claims);
+				return root === selector;
 			});
-			if (selected && selected.type === "uPort") {
-				return { selector, value: selected };
-			} else {
-				return { selector };
-			}
+			return { selector, value: selected };
 		});
 	}
 }

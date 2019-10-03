@@ -31,20 +31,14 @@ type EditProfileState = {
 	address: string;
 };
 
-export interface EditProfileNavigation {
-	UserData: UserDataProps;
-}
+export interface EditProfileNavigation {}
 
 class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileInternalProps,
 	EditProfileState,
 	EditProfileNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndBackButton<EditProfileNavigation, "UserData">(
-		strings.dashboard.userData.editProfile.barTitle,
-		"UserData",
-		{}
-	);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.editProfile.barTitle);
 
 	private canPressContinueButton(): boolean {
 		if (
@@ -61,7 +55,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 	editProfile() {
 		// TODO !!!
-		this.navigate("UserData", {});
+		this.goBack();
 	}
 
 	renderInputs() {

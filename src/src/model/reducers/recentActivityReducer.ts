@@ -32,9 +32,5 @@ export function recentActivityReducer(
 	state: RecentActivity[] | undefined,
 	action: RecentActivityAction
 ): RecentActivity[] {
-	if (state) {
-		return state;
-	} else {
-		return defaultContent;
-	}
+	return state || defaultContent;
 }

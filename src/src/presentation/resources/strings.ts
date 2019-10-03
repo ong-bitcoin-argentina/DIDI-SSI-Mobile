@@ -144,7 +144,8 @@ export default {
 	settings: {
 		account: "Cuenta",
 		preferences: "Preferencias de Didi",
-		about: "Acerca de Didi"
+		about: "Acerca de Didi",
+		uPort: "Identidad uPort"
 	},
 	validateIdentity: {
 		header: "Validar Identidad",

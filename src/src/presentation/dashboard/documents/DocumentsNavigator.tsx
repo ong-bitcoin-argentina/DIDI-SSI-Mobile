@@ -2,7 +2,7 @@ import { createMaterialTopTabNavigator, createStackNavigator } from "react-navig
 import themes from "../../resources/themes";
 import DocumentsScreen, { DocumentsScreenNavigation } from "./DocumentsScreen";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import { DocumentFilterType } from "../../../model/data/Document";
+import { DocumentFilterType } from "../../../model/data/SampleDocument";
 import strings from "../../resources/strings";
 
 function screen(title: string, filter: (type: DocumentFilterType) => boolean) {
@@ -28,7 +28,7 @@ export default createStackNavigator(
 						backgroundColor: themes.navigation
 					}
 				},
-				navigationOptions: NavigationHeaderStyle.withTitleAndBackButton<DocumentsScreenNavigation, "DashboardHome">(
+				navigationOptions: NavigationHeaderStyle.withTitleAndFakeBackButton<DocumentsScreenNavigation, "DashboardHome">(
 					strings.tabNames.documents,
 					"DashboardHome",
 					{}
