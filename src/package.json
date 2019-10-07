@@ -16,6 +16,7 @@
 		"@types/react-navigation-material-bottom-tabs": "^0.3.2",
 		"@types/react-redux": "^7.1.2",
 		"did-jwt": "^3.0.0",
+		"did-jwt-vc": "^0.1.1",
 		"did-resolver": "^1.0.0",
 		"ethr-did-resolver": "^1.0.1",
 		"fp-ts": "^2.0.5",

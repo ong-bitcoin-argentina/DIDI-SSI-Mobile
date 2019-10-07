@@ -61,7 +61,11 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 		switch (parse._tag) {
 			case "Left":
 				alert("Hubo un error al leer el codigo QR");
-				console.warn(parse.left);
+				if (parse.left instanceof Error) {
+					console.warn(`${parse.left.name}\n\n${parse.left.message}\n\n${parse.left.stack}`);
+				} else {
+					console.warn(parse.left);
+				}
 
 				this.setState({ failedScans: [content, ...this.state.failedScans] });
 				setTimeout(() => {

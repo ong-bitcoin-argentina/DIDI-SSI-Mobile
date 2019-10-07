@@ -17,7 +17,7 @@ import { UPortDocument } from "../../../model/data/UPortDocument";
 import { SelectiveDisclosureRequest } from "../../../uPort/SelectiveDisclosureRequest";
 import { StoreContent } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
-import { flattenClaim, Claim } from "../../../uPort/VerifiedClaim";
+import { flattenClaim, Claim } from "../../../uPort/Claim";
 import TypedObject from "../../../util/TypedObject";
 import { ScanCredentialProps } from "./ScanCredential";
 
