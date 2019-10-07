@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Atoms / Status / check</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="7" cy="7" r="7"></circle>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Molecules-/-Status-/-pillsCurso" transform="translate(-3.000000, -3.000000)">
+            <g id="Atoms-/-Status-/-check" transform="translate(3.000000, 3.000000)">
+                <g id="Color/Violeta" stroke-width="1" fill-rule="evenodd">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#F5F5F5" xlink:href="#path-1"></use>
+                    <g id="Color/Green" mask="url(#mask-2)" fill="#6ECC62">
+                        <rect id="Rectangle-2-Copy-34" x="0" y="0" width="14" height="14"></rect>
+                    </g>
+                </g>
+                <polyline id="Path-3" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" points="4.2 7 5.6 9.8 9.8 4.2"></polyline>
+                <path d="M9.24,3.78 C9.47195959,3.47072054 9.91072054,3.40804041 10.22,3.64 C10.5292795,3.87195959 10.5919596,4.31072054 10.36,4.62 L6.16,10.22 C5.84777955,10.6362939 5.20661635,10.5784803 4.97390097,10.1130495 L3.57390097,7.31304952 C3.40100849,6.96726457 3.54116553,6.54679344 3.88695048,6.37390097 C4.23273543,6.20100849 4.65320656,6.34116553 4.82609903,6.68695048 L5.71957428,8.47390097 L9.24,3.78 Z" id="Path-3" fill="#FFFFFF" fill-rule="nonzero"></path>
+                <polyline id="Path-3" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" points="4.2 7 5.6 9.8 9.8 4.2"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>

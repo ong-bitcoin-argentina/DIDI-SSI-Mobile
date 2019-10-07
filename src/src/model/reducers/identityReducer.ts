@@ -11,8 +11,7 @@ const defaultContent: Identity = {
 	backgroundImage: require("../images/bg.jpg"),
 
 	fullName: {
-		value: "Liliana Beatriz Martinez",
-		state: ValidationState.None
+		value: "Liliana Beatriz Martinez"
 	},
 	cellPhone: {
 		value: "15 3344 6677",

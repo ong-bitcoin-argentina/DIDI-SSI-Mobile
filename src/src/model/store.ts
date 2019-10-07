@@ -32,7 +32,8 @@ const persistedReducer = persistReducer(
 	{
 		key: "root",
 		keyPrefix: "",
-		storage: FSStorage()
+		storage: FSStorage(),
+		blacklist: ["samples", "identity", "recentActivity"]
 	},
 	reducer
 );

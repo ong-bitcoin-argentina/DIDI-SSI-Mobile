@@ -3,13 +3,12 @@ import { ImageSourcePropType } from "react-native";
 export enum ValidationState {
 	Approved = "Approved",
 	Pending = "Pending",
-	Rejected = "Rejected",
-	None = "None"
+	Rejected = "Rejected"
 }
 
 export interface WithValidationState<T> {
 	value: T;
-	state: ValidationState;
+	state?: ValidationState;
 }
 
 export interface Identity {
