@@ -1,8 +1,11 @@
+import { RNUportHDSigner } from "react-native-uport-signer";
+
 import { UPortDocument } from "../model/data/UPortDocument";
 import { Claim, flattenClaim } from "./types/Claim";
 import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
 import { Identity } from "../model/data/Identity";
 import TypedObject from "../util/TypedObject";
+import { getCredentials } from "./getCredentials";
 
 function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity): Claim {
 	const result: Claim = {};
@@ -69,4 +72,26 @@ export function getResponseClaims(
 		},
 		verified: TypedObject.values(verified).map(d => d.jwt)
 	};
+}
+
+export interface DisclosureResponseArguments {
+	request: SelectiveDisclosureRequest;
+	requestJWT: string;
+	identity: Identity;
+	documents: UPortDocument[];
+}
+
+export async function createDisclosureResponse(
+	args: DisclosureResponseArguments
+): Promise<{ accessToken: string; missing: string[] }> {
+	const { missing, own, verified } = getResponseClaims(args.request, args.documents, args.identity);
+
+	const credentials = await getCredentials();
+	const accessToken = await credentials.createDisclosureResponse({
+		req: args.requestJWT,
+		own,
+		verified
+	});
+
+	return { accessToken, missing };
 }

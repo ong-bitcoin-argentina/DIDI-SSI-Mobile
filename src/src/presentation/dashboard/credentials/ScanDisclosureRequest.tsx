@@ -11,13 +11,12 @@ import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import { getCredentials } from "../../../uPort/getCredentials";
 import { UPortDocument } from "../../../model/data/UPortDocument";
 import { SelectiveDisclosureRequest } from "../../../uPort/types/SelectiveDisclosureRequest";
 import { StoreContent } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
 import { ScanCredentialProps } from "./ScanCredential";
-import { getResponseClaims } from "../../../uPort/getResponseClaims";
+import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
 
 export interface ScanDisclosureRequestProps {
 	request: SelectiveDisclosureRequest;
@@ -58,24 +57,12 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	}
 
 	private async answerRequest() {
-		const { request, documents, identity } = this.props;
-		const { missing, own, verified } = getResponseClaims(request, documents, identity);
-		const addresses = await RNUportHDSigner.listSeedAddresses();
-
-		const addressToUse = addresses.length === 0 ? (await RNUportHDSigner.createSeed("simple")).address : addresses[0];
-
-		const credentials = getCredentials(addressToUse);
-
 		// tslint:disable-next-line: variable-name
-		const access_token = await credentials.createDisclosureResponse({
-			req: this.props.requestJWT,
-			own,
-			verified
-		});
+		const { accessToken, missing } = await createDisclosureResponse(this.props);
 
 		const result = await fetch(this.props.request.callback, {
 			method: "POST",
-			body: JSON.stringify({ access_token })
+			body: JSON.stringify({ access_token: accessToken })
 		});
 
 		if (missing.length > 0) {
