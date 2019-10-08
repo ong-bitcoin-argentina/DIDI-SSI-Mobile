@@ -7,9 +7,9 @@ import { verifyCredential } from "did-jwt-vc";
 import { Resolver } from "did-resolver";
 import { getResolver } from "ethr-did-resolver";
 
-import { SelectiveDisclosureRequestCodec, SelectiveDisclosureRequest } from "./SelectiveDisclosureRequest";
-import { VerifiedClaimCodec, VerifiedClaim } from "./VerifiedClaim";
-import { LegacyVerifiedClaimCodec } from "./LegacyVerifiedClaim";
+import { SelectiveDisclosureRequestCodec, SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
+import { VerifiedClaimCodec, VerifiedClaim } from "./types/VerifiedClaim";
+import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
 
 // This is required by verifyJWT
 if (typeof Buffer === "undefined") {

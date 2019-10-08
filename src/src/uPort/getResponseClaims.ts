@@ -1,6 +1,6 @@
 import { UPortDocument } from "../model/data/UPortDocument";
-import { Claim, flattenClaim } from "./Claim";
-import { SelectiveDisclosureRequest } from "./SelectiveDisclosureRequest";
+import { Claim, flattenClaim } from "./types/Claim";
+import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
 import { Identity } from "../model/data/Identity";
 import TypedObject from "../util/TypedObject";
 

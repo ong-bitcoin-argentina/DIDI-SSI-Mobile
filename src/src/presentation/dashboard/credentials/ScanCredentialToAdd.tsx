@@ -11,7 +11,7 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 
 import { UPortDocument } from "../../../model/data/UPortDocument";
-import { VerifiedClaim } from "../../../uPort/VerifiedClaim";
+import { VerifiedClaim } from "../../../uPort/types/VerifiedClaim";
 import { uPortDocumentToCard } from "../common/documentToCard";
 import { StoreContent } from "../../../model/store";
 import { ScanCredentialProps } from "./ScanCredential";

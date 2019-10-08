@@ -13,7 +13,7 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import { getCredentials } from "../../../uPort/getCredentials";
 import { UPortDocument } from "../../../model/data/UPortDocument";
-import { SelectiveDisclosureRequest } from "../../../uPort/SelectiveDisclosureRequest";
+import { SelectiveDisclosureRequest } from "../../../uPort/types/SelectiveDisclosureRequest";
 import { StoreContent } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
 import { ScanCredentialProps } from "./ScanCredential";
