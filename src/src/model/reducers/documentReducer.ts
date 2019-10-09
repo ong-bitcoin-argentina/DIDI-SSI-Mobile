@@ -2,13 +2,16 @@ import { UPortDocument } from "../data/UPortDocument";
 
 interface DocumentActionEnsure {
 	type: "DOCUMENT_ENSURE";
-	content: UPortDocument;
+	content: UPortDocument[];
 }
 interface DocumentActionDelete {
 	type: "DOCUMENT_DELETE";
 	content: UPortDocument;
 }
-export type DocumentAction = DocumentActionEnsure | DocumentActionDelete;
+interface DocumentActionDeleteAll {
+	type: "DOCUMENT_DELETE_ALL";
+}
+export type DocumentAction = DocumentActionEnsure | DocumentActionDelete | DocumentActionDeleteAll;
 
 const defaultContent: UPortDocument[] = [];
 
@@ -17,22 +20,21 @@ export function documentReducer(state: UPortDocument[] | undefined, action: Docu
 		return defaultContent;
 	}
 
-	function matches(doc: UPortDocument) {
-		return doc.jwt === action.content.jwt;
-	}
 	switch (action.type) {
 		case "DOCUMENT_ENSURE":
-			if (state.find(matches)) {
+			const toAdd = action.content.filter(doc => !state.find(existing => existing.jwt === doc.jwt));
+			if (toAdd.length === 0) {
 				return state;
 			} else {
-				return [action.content, ...state];
+				return [...toAdd, ...state];
 			}
+
 		case "DOCUMENT_DELETE":
-			if (state.find(matches)) {
-				return state.filter(matches);
-			} else {
-				return state;
-			}
+			return state.filter(doc => doc.jwt !== action.content.jwt);
+
+		case "DOCUMENT_DELETE_ALL":
+			return [];
+
 		default:
 			return state;
 	}
