@@ -22,7 +22,7 @@ export default {
 				saveChanges: "Guardar Cambios"
 			},
 			changePassword: {
-				barTitle: "Cambio Contraseña",
+				barTitle: "Cambio de Contraseña",
 				newPassMessage: "Nueva Contraseña",
 				repeatNewPassMessage: "Repetir Contraseña",
 				oldPassMessage: "Contraseña Actual",
@@ -142,10 +142,9 @@ export default {
 		settings: "Configuración"
 	},
 	settings: {
-		account: "Cuenta",
-		preferences: "Preferencias de Didi",
-		about: "Acerca de Didi",
-		uPort: "Identidad uPort"
+		identityBackup: "Copia de Seguridad",
+		changePassword: "Cambio de Contraseña",
+		about: "Acerca de Didi"
 	},
 	validateIdentity: {
 		header: "Validar Identidad",

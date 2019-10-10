@@ -7,7 +7,6 @@ import strings from "../../../resources/strings";
 import colors from "../../../resources/colors";
 import { connect } from "react-redux";
 import UserHeadingComponent from "./UserHeading";
-import { ChangePasswordProps } from "../userMenu/ChangePassword";
 import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 import { StoreContent } from "../../../../model/store";
@@ -24,19 +23,12 @@ interface UserDataInternalProps extends UserDataProps {
 type UserDataState = {};
 
 export interface UserDataNavigation {
-	ChangePassword: ChangePasswordProps;
 	EditProfile: EditProfileProps;
 	ShareProfile: ShareProfileProps;
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions("Mi perfil", [
-		{
-			actionTitle: "Cambiar Contraseña",
-			onPress: navigation => {
-				navigation.navigate("ChangePassword", {});
-			}
-		},
 		{
 			actionTitle: "Editar Perfil",
 			onPress: navigation => {
