@@ -4,7 +4,7 @@ import UserDataScreen from "./userData/UserData";
 import ChangePasswordScreen from "./userMenu/ChangePassword";
 import EditProfileScreen from "./userMenu/EditProfile";
 import { ShareProfileScreen } from "./userMenu/ShareProfile";
-import UportIdentityScreen from "./UportIdentity";
+import IdentitySettingsScreen from "./identity/IdentitySettings";
 import { StartAccessProps } from "../../access/StartAccess";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { AboutThisAppScreen } from "./AboutThisApp";
@@ -21,7 +21,7 @@ export default function(then: NavTree<SettingsNavigatorNavigation>) {
 			ShareProfile: NavMap.from(ShareProfileScreen, {})
 		}),
 		ChangePassword: NavMap.from(ChangePasswordScreen, {}),
-		UportIdentity: NavMap.from(UportIdentityScreen, {}),
+		IdentitySettings: NavMap.from(IdentitySettingsScreen, {}),
 		AboutThisAppScreen: NavMap.from(AboutThisAppScreen, {}),
 		...then
 	});
