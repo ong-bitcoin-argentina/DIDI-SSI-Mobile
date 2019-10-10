@@ -10,7 +10,8 @@ import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import { KeyRecoveryComponent } from "./KeyRecoveryComponent";
-import KeyDisplayComponent from "./KeyDisplayComponent";
+import { KeyDisplayComponent } from "./KeyDisplayComponent";
+import { CredentialRecoveryComponent } from "./CredentialRecoveryComponent";
 
 export type IdentitySettingsProps = {};
 interface IdentitySettingsState {
@@ -23,7 +24,7 @@ export default class IdentitySettingsScreen extends NavigationEnabledComponent<
 	IdentitySettingsState,
 	IdentitySettingsNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
+	static navigationOptions = NavigationHeaderStyle.withTitle("Copia de Seguridad");
 
 	constructor(props: IdentitySettingsProps) {
 		super(props);
@@ -48,7 +49,12 @@ export default class IdentitySettingsScreen extends NavigationEnabledComponent<
 		} else if (this.state.seeds.length === 0) {
 			return <KeyRecoveryComponent onSeedCreated={() => this.reloadSeeds()} />;
 		} else {
-			return <KeyDisplayComponent seed={this.state.seeds[0]} onSeedDeleted={() => this.reloadSeeds()} />;
+			return (
+				<Fragment>
+					<KeyDisplayComponent seed={this.state.seeds[0]} onSeedDeleted={() => this.reloadSeeds()} />
+					<CredentialRecoveryComponent />
+				</Fragment>
+			);
 		}
 	}
 

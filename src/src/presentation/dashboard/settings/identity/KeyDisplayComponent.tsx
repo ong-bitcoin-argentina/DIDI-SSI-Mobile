@@ -14,7 +14,7 @@ interface KeyDisplayState {
 	deleteIdentityOnNextTap: boolean;
 }
 
-export default class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDisplayState> {
+export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDisplayState> {
 	constructor(props: KeyDisplayProps) {
 		super(props);
 		this.state = {
