@@ -62,6 +62,9 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 		const result = await fetch(this.props.request.callback, {
 			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
 			body: JSON.stringify({ access_token: accessToken })
 		});
 
