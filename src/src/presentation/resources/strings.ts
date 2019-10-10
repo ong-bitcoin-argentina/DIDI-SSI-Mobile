@@ -6,6 +6,7 @@ export default {
 		},
 		userData: {
 			personalDataLabel: "Datos personales",
+			addressDataLabel: "Domicilio Legal",
 			states: {
 				approved: "Aprobado",
 				pending: "Pendiente",

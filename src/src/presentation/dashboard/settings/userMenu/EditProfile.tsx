@@ -106,15 +106,6 @@ class EditProfileScreen extends NavigationEnabledComponent<
 						onChangeText: text => this.setState({ nationality: text })
 					}}
 				/>
-
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.addressMessage}
-					placeholder=""
-					textInputProps={{
-						defaultValue: this.props.person.address.value,
-						onChangeText: text => this.setState({ address: text })
-					}}
-				/>
 			</View>
 		);
 	}

@@ -30,8 +30,11 @@ const defaultContent: Identity = {
 		state: ValidationState.Pending
 	},
 	address: {
-		value: "Manzana 24, Seccion 3, Edificio 1",
-		state: ValidationState.Rejected
+		street: "33",
+		number: "23",
+		neighborhood: "San Martin",
+		postCode: "1234",
+		liveHere: false
 	}
 };
 

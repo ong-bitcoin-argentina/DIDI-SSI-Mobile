@@ -10,7 +10,7 @@ import UserHeadingComponent from "./UserHeading";
 import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 import { StoreContent } from "../../../../model/store";
-import { Identity } from "../../../../model/data/Identity";
+import { Identity, WithValidationState } from "../../../../model/data/Identity";
 import DidiTextInput from "../../../util/DidiTextInput";
 import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 
@@ -43,7 +43,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		}
 	]);
 
-	getPersonalData() {
+	getPersonalData(): Array<{ label: string; value: WithValidationState<string> }> {
 		return [
 			{
 				label: "Nombre Completo",
@@ -64,10 +64,35 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 			{
 				label: "Nacionalidad",
 				value: this.props.identity.nationality
+			}
+		];
+	}
+
+	getAddressData(): Array<{ label: string; value?: string }> {
+		return [
+			{
+				label: "Nombre de Calle / Manzana",
+				value: this.props.identity.address.street
 			},
 			{
-				label: "Domicilio",
-				value: this.props.identity.address
+				label: "Número / Casa",
+				value: this.props.identity.address.number
+			},
+			{
+				label: "Departamento",
+				value: this.props.identity.address.department
+			},
+			{
+				label: "Piso",
+				value: this.props.identity.address.floor
+			},
+			{
+				label: "Barrio",
+				value: this.props.identity.address.neighborhood
+			},
+			{
+				label: "Codigo Postal",
+				value: this.props.identity.address.postCode
 			}
 		];
 	}
@@ -83,33 +108,58 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 				/>
 
 				<View>
-					<DropdownMenu
-						headerContainerStyle={{ backgroundColor: colors.primary }}
-						headerTextStyle={{ color: colors.primaryText }}
-						style={styles.personalDataDropdown}
-						label={strings.dashboard.userData.personalDataLabel}
-					>
-						<View style={styles.dropdownContents}>
-							{this.getPersonalData().map((data, index) => {
-								return (
-									<DidiTextInput
-										key={index}
-										description={data.label}
-										placeholder={""}
-										textInputProps={{
-											editable: false,
-											value: data.value.value
-										}}
-										stateIndicator={
-											data.value.state && <ValidationStateIcon validationState={data.value.state} useWords={true} />
-										}
-									/>
-								);
-							})}
-						</View>
-					</DropdownMenu>
+					{this.renderPersonalData()}
+					{this.renderAddressData()}
 				</View>
 			</ScrollView>
+		);
+	}
+
+	private renderPersonalData() {
+		return this.renderDropdown(strings.dashboard.userData.personalDataLabel, this.getPersonalData(), (data, index) => {
+			return (
+				<DidiTextInput
+					key={index}
+					description={data.label}
+					placeholder={""}
+					textInputProps={{
+						editable: false,
+						value: data.value.value
+					}}
+					stateIndicator={
+						data.value.state && <ValidationStateIcon validationState={data.value.state} useWords={true} />
+					}
+				/>
+			);
+		});
+	}
+
+	private renderAddressData() {
+		return this.renderDropdown(strings.dashboard.userData.addressDataLabel, this.getAddressData(), (item, index) => {
+			return (
+				<DidiTextInput
+					key={index}
+					description={item.label}
+					placeholder={""}
+					textInputProps={{
+						editable: false,
+						value: item.value || "--"
+					}}
+				/>
+			);
+		});
+	}
+
+	private renderDropdown<T>(label: string, data: T[], renderOne: (item: T, index: number) => JSX.Element) {
+		return (
+			<DropdownMenu
+				headerContainerStyle={{ backgroundColor: colors.primary }}
+				headerTextStyle={{ color: colors.primaryText }}
+				style={styles.personalDataDropdown}
+				label={label}
+			>
+				<View style={styles.dropdownContents}>{data.map(renderOne)}</View>
+			</DropdownMenu>
 		);
 	}
 }
