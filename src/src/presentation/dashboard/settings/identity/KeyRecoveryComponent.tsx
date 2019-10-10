@@ -1,12 +1,12 @@
 import React from "react";
-import { View } from "react-native";
+import { View, ViewProps } from "react-native";
 
 import { RNUportHDSigner, SeedPhrase } from "react-native-uport-signer";
 
 import DidiButton from "../../../util/DidiButton";
 import DidiTextInput from "../../../util/DidiTextInput";
 
-export interface KeyRecoveryProps {
+export interface KeyRecoveryProps extends ViewProps {
 	onSeedCreated: () => void;
 }
 interface KeyRecoveryState {
@@ -21,7 +21,7 @@ export class KeyRecoveryComponent extends React.Component<KeyRecoveryProps, KeyR
 
 	render() {
 		return (
-			<View>
+			<View {...this.props}>
 				<DidiButton title="Crear Identidad" onPress={() => this.createAddress()} />
 				<View>
 					<DidiTextInput

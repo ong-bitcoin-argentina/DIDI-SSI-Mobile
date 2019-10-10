@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, ViewProps } from "react-native";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { isLeft } from "fp-ts/lib/Either";
@@ -13,7 +13,7 @@ import TypedArray from "../../../../util/TypedArray";
 import DidiButton from "../../../util/DidiButton";
 import commonStyles from "../../../access/resources/commonStyles";
 
-export type CredentialRecoveryProps = {};
+export type CredentialRecoveryProps = ViewProps;
 interface CredentialRecoveryStateProps {
 	documents: UPortDocument[];
 }
@@ -38,7 +38,7 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 	render() {
 		const currentDocs = this.state.docs || [];
 		return (
-			<View>
+			<View {...this.props}>
 				<Text style={commonStyles.text.normal}>
 					<Text style={commonStyles.text.emphasis}>Credenciales Locales: </Text>
 					{this.props.documents.length}
@@ -52,7 +52,7 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 				<DidiButton title="Borrar Credenciales Locales" onPress={() => this.props.deleteAllDocuments()} />
 				<DidiButton title="Cargar Credenciales Remotas" onPress={() => this.loadRemoteDocs()} />
 				{currentDocs.length > 0 && (
-					<DidiButton title="Agregar Credenciales Remotas a Locales" onPress={() => this.addToLocalDocs(currentDocs)} />
+					<DidiButton title="Importar Credenciales Remotas" onPress={() => this.addToLocalDocs(currentDocs)} />
 				)}
 			</View>
 		);

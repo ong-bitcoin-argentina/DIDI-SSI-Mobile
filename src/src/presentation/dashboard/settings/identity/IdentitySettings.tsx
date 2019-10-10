@@ -51,8 +51,12 @@ export default class IdentitySettingsScreen extends NavigationEnabledComponent<
 		} else {
 			return (
 				<Fragment>
-					<KeyDisplayComponent seed={this.state.seeds[0]} onSeedDeleted={() => this.reloadSeeds()} />
-					<CredentialRecoveryComponent />
+					<KeyDisplayComponent
+						style={{ flex: 1 }}
+						seed={this.state.seeds[0]}
+						onSeedDeleted={() => this.reloadSeeds()}
+					/>
+					<CredentialRecoveryComponent style={{ flex: 1 }} />
 				</Fragment>
 			);
 		}
