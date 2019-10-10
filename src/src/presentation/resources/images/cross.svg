@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+	<title>Atoms / Status / pillsCurso Copy 5</title>
+	<desc>Created with Sketch.</desc>
+	<defs>
+		<rect id="path-1" x="0" y="0" width="20" height="20" rx="10"></rect>
+		<circle id="path-3" cx="7" cy="7" r="7"></circle>
+	</defs>
+	<g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		<g id="Color/Violeta" stroke-width="1" fill-rule="evenodd">
+			<mask id="mask-4" fill="white">
+				<use xlink:href="#path-3"></use>
+			</mask>
+			<use id="Mask" fill="#F5F5F5" xlink:href="#path-3"></use>
+			<g id="Color/Red" mask="url(#mask-4)" fill="#E03C7A">
+				<rect id="Rectangle-2-Copy-44" x="0" y="0" width="14" height="14"></rect>
+			</g>
+		</g>
+	</g>
+	<path d="M4.69497475,10.2949747 C4.42160774,10.5683418 3.97839226,10.5683418 3.70502525,10.2949747 C3.43165825,10.0216077 3.43165825,9.57839226 3.70502525,9.30502525 L9.30502525,3.70502525 C9.57839226,3.43165825 10.0216077,3.43165825 10.2949747,3.70502525 C10.5683418,3.97839226 10.5683418,4.42160774 10.2949747,4.69497475 L4.69497475,10.2949747 Z" id="Path-3" fill="#FFFFFF" fill-rule="nonzero"></path>
+	<path d="M3.70502525,4.69497475 C3.43165825,4.42160774 3.43165825,3.97839226 3.70502525,3.70502525 C3.97839226,3.43165825 4.42160774,3.43165825 4.69497475,3.70502525 L10.3385552,9.34860568 C10.6119222,9.62197268 10.6119222,10.0651882 10.3385552,10.3385552 C10.0651882,10.6119222 9.62197268,10.6119222 9.34860568,10.3385552 L3.70502525,4.69497475 Z" id="Path-3" fill="#FFFFFF" fill-rule="nonzero"></path>
+	<path d="M4.2,9.8 L9.8,4.2" id="Path-3" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+	<path d="M4.2,4.2 L9.84358042,9.84358042" id="Path-3" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>

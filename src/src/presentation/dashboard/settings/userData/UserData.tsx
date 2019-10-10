@@ -4,15 +4,15 @@ import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import DropdownMenu from "../../../util/DropdownMenu";
 import strings from "../../../resources/strings";
-import PersonalData from "./PersonalData";
 import colors from "../../../resources/colors";
 import { connect } from "react-redux";
 import UserHeadingComponent from "./UserHeading";
-import { ChangePasswordProps } from "../userMenu/ChangePassword";
 import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 import { StoreContent } from "../../../../model/store";
 import { Identity } from "../../../../model/data/Identity";
+import DidiTextInput from "../../../util/DidiTextInput";
+import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 
 export type UserDataProps = ViewProps;
 
@@ -23,19 +23,12 @@ interface UserDataInternalProps extends UserDataProps {
 type UserDataState = {};
 
 export interface UserDataNavigation {
-	ChangePassword: ChangePasswordProps;
 	EditProfile: EditProfileProps;
 	ShareProfile: ShareProfileProps;
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions("Mi perfil", [
-		{
-			actionTitle: "Cambiar Contraseña",
-			onPress: navigation => {
-				navigation.navigate("ChangePassword", {});
-			}
-		},
 		{
 			actionTitle: "Editar Perfil",
 			onPress: navigation => {
@@ -92,19 +85,24 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 				<View>
 					<DropdownMenu
 						headerContainerStyle={{ backgroundColor: colors.primary }}
-						headerTextStyle={{ color: colors.secondaryText }}
+						headerTextStyle={{ color: colors.primaryText }}
 						style={styles.personalDataDropdown}
 						label={strings.dashboard.userData.personalDataLabel}
 					>
 						<View style={styles.dropdownContents}>
 							{this.getPersonalData().map((data, index) => {
 								return (
-									<PersonalData
+									<DidiTextInput
 										key={index}
-										label={data.label}
-										value={data.value.value}
-										state={data.value.state}
-										style={styles.personalDataElement}
+										description={data.label}
+										placeholder={""}
+										textInputProps={{
+											editable: false,
+											value: data.value.value
+										}}
+										stateIndicator={
+											data.value.state && <ValidationStateIcon validationState={data.value.state} useWords={true} />
+										}
 									/>
 								);
 							})}
@@ -126,15 +124,13 @@ export default connect(
 
 const styles = StyleSheet.create({
 	personalDataDropdown: {
-		marginTop: 20,
+		marginVertical: 20,
 		marginHorizontal: 10,
 		borderRadius: 10,
 		overflow: "hidden"
 	},
 	dropdownContents: {
+		padding: 16,
 		backgroundColor: colors.darkBackground
-	},
-	personalDataElement: {
-		marginBottom: 10
 	}
 });

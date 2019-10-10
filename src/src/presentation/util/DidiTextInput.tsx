@@ -20,6 +20,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		const theme = this.props.theme ? this.props.theme : themes.primaryTheme;
 		const style = styles(theme);
 		const rootStyle = this.props.viewProps ? [style.root, this.props.viewProps.style] : style.root;
+		const textInputProps = this.props.textInputProps || {};
 		const textInputStyle = this.props.textInputProps
 			? [style.textInput, this.props.textInputProps.style]
 			: style.textInput;
@@ -31,11 +32,11 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 					<View style={style.stateContainer}>
 						<View style={style.inputContainer}>
 							<Text style={style.description}>{this.props.description}</Text>
-							<TextInput {...this.props.textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
+							<TextInput {...textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
 						</View>
 						{this.props.stateIndicator}
 					</View>
-					<View style={style.underline} />
+					{textInputProps.editable !== false && <View style={style.underline} />}
 				</View>
 			</View>
 		);
@@ -54,11 +55,13 @@ function styles(theme: DidiTheme) {
 		stateContainer: {
 			flexDirection: "row",
 			justifyContent: "space-between",
-			alignItems: "center"
+			alignItems: "center",
+			marginBottom: 6
 		},
 		lineContainer: {
 			flex: 1,
-			flexDirection: "column"
+			flexDirection: "column",
+			marginBottom: 10
 		},
 		textInput: {
 			color: theme.foreground,
@@ -77,9 +80,7 @@ function styles(theme: DidiTheme) {
 		},
 		underline: {
 			backgroundColor: theme.foregroundFaded,
-			height: 1,
-			marginBottom: 10,
-			marginTop: 6
+			height: 1
 		}
 	});
 }

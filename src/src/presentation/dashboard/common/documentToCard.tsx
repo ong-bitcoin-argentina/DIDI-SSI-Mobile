@@ -2,7 +2,7 @@ import React from "react";
 
 import DidiCard from "./DidiCard";
 
-import { flattenClaim } from "../../../uPort/VerifiedClaim";
+import { flattenClaim } from "../../../uPort/types/Claim";
 import { ViewStyle, StyleSheet } from "react-native";
 import colors from "../../resources/colors";
 import { SampleDocument } from "../../../model/data/SampleDocument";

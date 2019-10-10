@@ -1,12 +1,10 @@
 import React from "react";
 import { Fragment } from "react";
-import { StatusBar, View, Vibration } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { StatusBar, View, Vibration, YellowBox } from "react-native";
 
 import parseJWT from "../../../uPort/parseJWT";
 
 import themes from "../../resources/themes";
-import commonStyles from "../../access/resources/commonStyles";
 import DidiQRScanner from "../common/DidiQRScanner";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -17,6 +15,7 @@ export type ScanCredentialProps = {};
 
 interface ScanCredentialState {
 	pendingScan?: string;
+	failedScans: string[];
 }
 export interface ScanCredentialNavigation {
 	ScanCredentialToAdd: ScanCredentialToAddProps;
@@ -32,7 +31,9 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 
 	constructor(props: ScanCredentialProps) {
 		super(props);
-		this.state = {};
+		this.state = {
+			failedScans: []
+		};
 	}
 
 	render() {
@@ -45,25 +46,31 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	private async onScanQR(content: string) {
-		if (this.state.pendingScan === content) {
+		if (this.state.pendingScan === content || this.state.failedScans.includes(content)) {
 			return;
 		}
 		this.setState({ pendingScan: content });
 
 		Vibration.vibrate(400, false);
 
-		const prefix = "me.uport:req/";
-		const toParse = content.replace(prefix, "");
+		const startIndex = content.lastIndexOf("/");
+		const endIndex = content.lastIndexOf("?");
+		const toParse = content.substring(startIndex === -1 ? 0 : startIndex + 1, endIndex === -1 ? undefined : endIndex);
 		const parse = await parseJWT(toParse);
 
 		switch (parse._tag) {
 			case "Left":
-				this.setState({ pendingScan: undefined });
-				if (__DEV__) {
-					console.warn(parse.left);
+				alert("Hubo un error al leer el codigo QR");
+				if (parse.left instanceof Error) {
+					console.warn(`${parse.left.name}\n\n${parse.left.message}\n\n${parse.left.stack}`);
 				} else {
-					alert("Hubo un error al leer el codigo QR");
+					console.warn(parse.left);
 				}
+
+				this.setState({ failedScans: [content, ...this.state.failedScans] });
+				setTimeout(() => {
+					this.setState({ pendingScan: undefined });
+				}, 1000);
 				break;
 			case "Right":
 				switch (parse.right.type) {

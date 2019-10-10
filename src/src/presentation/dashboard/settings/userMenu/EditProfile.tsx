@@ -60,7 +60,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 	renderInputs() {
 		return (
-			<View style={styles.inputs}>
+			<View style={styles.dropdownContents}>
 				<DidiTextInput
 					description={strings.dashboard.userData.editProfile.nameMessage}
 					placeholder=""
@@ -129,26 +129,22 @@ class EditProfileScreen extends NavigationEnabledComponent<
 						profileImage={this.props.person.image}
 						backgroundImage={this.props.person.backgroundImage}
 					/>
-					<SafeAreaView style={commonStyles.view.area}>
-						<View style={commonStyles.view.body}>
-							<DropdownMenu
-								headerContainerStyle={{ backgroundColor: colors.primary }}
-								headerTextStyle={{ color: colors.secondaryText }}
-								style={styles.personalDataDropdown}
-								label={strings.dashboard.userData.personalDataLabel}
-							>
-								{this.renderInputs()}
-							</DropdownMenu>
+					<DropdownMenu
+						headerContainerStyle={{ backgroundColor: colors.primary }}
+						headerTextStyle={{ color: colors.primaryText }}
+						style={styles.personalDataDropdown}
+						label={strings.dashboard.userData.personalDataLabel}
+					>
+						{this.renderInputs()}
+					</DropdownMenu>
 
-							<DidiButton
-								onPress={() => {
-									this.editProfile();
-								}}
-								disabled={!this.canPressContinueButton()}
-								title={strings.dashboard.userData.editProfile.saveChanges}
-							/>
-						</View>
-					</SafeAreaView>
+					<DidiButton
+						onPress={() => {
+							this.editProfile();
+						}}
+						disabled={!this.canPressContinueButton()}
+						title={strings.dashboard.userData.editProfile.saveChanges}
+					/>
 				</ScrollView>
 			</Fragment>
 		);
@@ -180,9 +176,13 @@ const styles = StyleSheet.create({
 	},
 	personalDataDropdown: {
 		marginTop: 20,
-		marginBottom: 20,
 		marginHorizontal: 10,
 		borderRadius: 10,
-		overflow: "hidden"
+		overflow: "hidden",
+		backgroundColor: colors.darkBackground
+	},
+	dropdownContents: {
+		padding: 16,
+		backgroundColor: colors.darkBackground
 	}
 });

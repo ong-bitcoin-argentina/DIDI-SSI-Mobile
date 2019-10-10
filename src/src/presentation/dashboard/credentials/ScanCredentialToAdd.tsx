@@ -11,10 +11,12 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 
 import { UPortDocument } from "../../../model/data/UPortDocument";
-import { VerifiedClaim } from "../../../uPort/VerifiedClaim";
+import { VerifiedClaim } from "../../../uPort/types/VerifiedClaim";
 import { uPortDocumentToCard } from "../common/documentToCard";
 import { StoreContent } from "../../../model/store";
 import { ScanCredentialProps } from "./ScanCredential";
+import StoreAction from "../../../model/StoreAction";
+import { Dispatch } from "redux";
 
 export type ScanCredentialToAddProps = {
 	jwt: string;
@@ -89,9 +91,9 @@ export default connect(
 			documents: state.documents
 		};
 	},
-	(dispatch): ScanCredentialToAddDispatchProps => {
+	(dispatch: Dispatch<StoreAction>): ScanCredentialToAddDispatchProps => {
 		return {
-			addCredential: (credential: UPortDocument) => dispatch({ type: "DOCUMENT_ENSURE", content: credential })
+			addCredential: (credential: UPortDocument) => dispatch({ type: "DOCUMENT_ENSURE", content: [credential] })
 		};
 	}
 )(ScanCredentialToAddScreen);

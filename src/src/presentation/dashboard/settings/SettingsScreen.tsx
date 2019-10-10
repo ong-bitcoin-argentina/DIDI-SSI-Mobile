@@ -13,8 +13,10 @@ import { Identity } from "../../../model/data/Identity";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./userData/UserData";
-import { UportIdentityProps } from "./UportIdentity";
+import { IdentitySettingsProps } from "./identity/IdentitySettings";
+import { ChangePasswordProps } from "./userMenu/ChangePassword";
 import { StoreContent } from "../../../model/store";
+import { AboutThisAppScreenProps } from "./AboutThisApp";
 
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
@@ -29,7 +31,9 @@ export interface SettingsScreenNavigation {
 	Access: StartAccessProps;
 	DashboardHome: DashboardScreenProps;
 	UserData: UserDataProps;
-	UportIdentity: UportIdentityProps;
+	IdentitySettings: IdentitySettingsProps;
+	ChangePassword: ChangePasswordProps;
+	AboutThisAppScreen: AboutThisAppScreenProps;
 }
 
 interface SettingsButton {
@@ -49,10 +53,9 @@ class SettingsScreen extends NavigationEnabledComponent<
 
 	buttons(): SettingsButton[] {
 		return [
-			{ name: strings.settings.account, action: () => {} },
-			{ name: strings.settings.preferences, action: () => {} },
-			{ name: strings.settings.about, action: () => {} },
-			{ name: strings.settings.uPort, action: () => this.navigate("UportIdentity", {}) }
+			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
+			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
+			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) }
 		];
 	}
 

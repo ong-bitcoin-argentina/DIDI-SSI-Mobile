@@ -14,8 +14,8 @@ const SelectiveDisclosureRequestOuterCodec = t.type({
 	type: t.literal("shareReq"),
 	iss: t.string,
 	callback: t.string,
-	requested: t.array(t.string),
-	verified: t.array(t.string)
+	requested: t.union([t.array(t.string), t.undefined]),
+	verified: t.union([t.array(t.string), t.undefined])
 });
 type SelectiveDisclosureRequestTransport = typeof SelectiveDisclosureRequestOuterCodec._A;
 
@@ -32,8 +32,8 @@ export const SelectiveDisclosureRequestCodec = new t.Type<
 				type: "SelectiveDisclosureRequest",
 				issuer: i.iss,
 				callback: i.callback,
-				ownClaims: i.requested,
-				verifiedClaims: i.verified
+				ownClaims: i.requested || [],
+				verifiedClaims: i.verified || []
 			})
 		),
 	a => {
