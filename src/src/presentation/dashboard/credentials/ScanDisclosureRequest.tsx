@@ -4,8 +4,6 @@ import { StatusBar, View, Modal, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 
-import { RNUportHDSigner } from "react-native-uport-signer";
-
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
@@ -17,6 +15,7 @@ import { StoreContent } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
 import { ScanCredentialProps } from "./ScanCredential";
 import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
+import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
 
 export interface ScanDisclosureRequestProps {
 	request: SelectiveDisclosureRequest;
@@ -57,26 +56,26 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	}
 
 	private async answerRequest() {
-		// tslint:disable-next-line: variable-name
-		const { accessToken, missing } = await createDisclosureResponse(this.props);
+		try {
+			const { accessToken, missing } = await createDisclosureResponse(this.props);
+			try {
+				const success = await submitDisclosureResponse(this.props.request.callback, accessToken);
 
-		const result = await fetch(this.props.request.callback, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({ access_token: accessToken })
-		});
+				if (!success) {
+					alert("Respuesta rechazada por servidor");
+				} else if (missing.length > 0) {
+					alert(`Respuesta enviada. Puede ocurrir un error por falta de credenciales: ${missing.join(", ")}`);
+				} else {
+					alert("Respuesta enviada");
+				}
 
-		if (missing.length > 0) {
-			alert(`Respuesta enviada. Puede ocurrir un error por falta de credenciales: ${missing.join(", ")}`);
-		} else {
-			alert("Respuesta enviada");
+				this.replace("ScanCredential", {});
+			} catch (e) {
+				alert(`Error en la conexion: ${e}`);
+			}
+		} catch (e) {
+			alert(`Error al generar respuesta: ${e}`);
 		}
-
-		this.replace("ScanCredential", {});
-
-		return result;
 	}
 }
 
