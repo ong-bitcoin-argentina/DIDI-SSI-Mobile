@@ -12,6 +12,7 @@ import commonStyles from "../../../access/resources/commonStyles";
 export type CredentialRecoveryProps = ViewProps;
 interface CredentialRecoveryStateProps {
 	tokens: string[];
+	trustGraphUri: string;
 }
 interface CredentialRecoveryDispatchProps {
 	recoverTokens(tokens: string[]): void;
@@ -55,7 +56,7 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 	}
 
 	private async loadRemoteDocs() {
-		const tg = await TrustGraphClient.create();
+		const tg = await TrustGraphClient.create(this.props.trustGraphUri);
 		const tokens = await tg.getJWTs();
 		this.setState({ tokens });
 	}
@@ -78,7 +79,8 @@ const connected = didiConnect(
 	CredentialRecoveryComponent,
 	(store): CredentialRecoveryStateProps => {
 		return {
-			tokens: store.tokens
+			tokens: store.tokens,
+			trustGraphUri: store.serviceSettings.trustGraphUri
 		};
 	},
 	(dispatch): CredentialRecoveryDispatchProps => {

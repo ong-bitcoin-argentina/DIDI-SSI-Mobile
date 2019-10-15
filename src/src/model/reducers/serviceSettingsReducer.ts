@@ -6,7 +6,8 @@ export interface ServiceSettingAction {
 }
 
 const defaultSettings: ServiceSettings = {
-	sharePrefix: "http://192.168.2.144:1234"
+	sharePrefix: "http://192.168.2.144:1234",
+	trustGraphUri: "https://edge.uport.me/graphql"
 };
 
 export function serviceSettingsReducer(

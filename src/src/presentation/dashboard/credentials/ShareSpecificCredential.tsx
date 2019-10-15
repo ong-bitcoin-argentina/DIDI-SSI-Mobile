@@ -37,7 +37,7 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={[commonStyles.view.body, { width: "90%" }]}>
-						<Text style={commonStyles.text.normal}>strings.share.explanation</Text>
+						<Text style={commonStyles.text.normal}>{strings.share.explanation}</Text>
 						<QRCode size={0.9 * Dimensions.get("window").width} value={this.props.document.jwt} />
 						<DidiButton
 							title="Compartir Enlace"

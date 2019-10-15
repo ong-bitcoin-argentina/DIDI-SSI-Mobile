@@ -50,7 +50,7 @@ class ServiceSettingsScreen extends NavigationEnabledComponent<
 									description={key}
 									placeholder=""
 									textInputProps={{
-										defaultValue: this.props.serviceSettings.sharePrefix,
+										defaultValue: this.props.serviceSettings[key],
 										onChangeText: text => this.setState({ [key]: text })
 									}}
 								/>
