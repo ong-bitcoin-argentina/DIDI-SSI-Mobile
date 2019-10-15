@@ -10,17 +10,22 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { CredentialDocument } from "../../../model/data/CredentialDocument";
 import DidiButton from "../../util/DidiButton";
 import strings from "../../resources/strings";
+import { didiConnect } from "../../../model/store";
 
 export interface ShareSpecificCredentialProps {
 	document: CredentialDocument;
 }
+interface ShareSpecificCredentialStateProps {
+	sharePrefix: string;
+}
+type ShareSpecificCredentialInternalProps = ShareSpecificCredentialProps & ShareSpecificCredentialStateProps;
 
 type ShareSpecificCredentialState = {};
 
 export type ShareSpecificCredentialNavigation = {};
 
-export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
-	ShareSpecificCredentialProps,
+class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
+	ShareSpecificCredentialInternalProps,
 	ShareSpecificCredentialState,
 	ShareSpecificCredentialNavigation
 > {
@@ -38,7 +43,10 @@ export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 							title="Compartir Enlace"
 							onPress={() => {
 								const jwt = this.props.document.jwt;
-								Share.share({ title: strings.share.title, message: `http://192.168.2.144:1234/${jwt}` });
+								Share.share({
+									title: strings.share.title,
+									message: `${this.props.sharePrefix}/${jwt}`
+								});
 							}}
 						/>
 					</View>
@@ -47,3 +55,14 @@ export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+const connected = didiConnect(
+	ShareSpecificCredentialScreen,
+	(state): ShareSpecificCredentialStateProps => {
+		return {
+			sharePrefix: state.serviceSettings.sharePrefix
+		};
+	}
+);
+
+export { connected as ShareSpecificCredentialScreen };

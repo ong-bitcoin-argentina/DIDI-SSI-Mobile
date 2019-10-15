@@ -20,6 +20,7 @@ import { AboutThisAppScreenProps } from "./AboutThisApp";
 
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
+import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
 
 export interface SettingsScreenProps {
 	person: Identity;
@@ -34,6 +35,7 @@ export interface SettingsScreenNavigation {
 	IdentitySettings: IdentitySettingsProps;
 	ChangePassword: ChangePasswordProps;
 	AboutThisAppScreen: AboutThisAppScreenProps;
+	ServiceSettings: ServiceSettingsScreenProps;
 }
 
 interface SettingsButton {
@@ -55,7 +57,8 @@ class SettingsScreen extends NavigationEnabledComponent<
 		return [
 			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
-			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) }
+			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) },
+			{ name: "Configuracion de Servicios", action: () => this.navigate("ServiceSettings", {}) }
 		];
 	}
 
