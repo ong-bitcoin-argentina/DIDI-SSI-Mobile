@@ -76,8 +76,10 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 				switch (parse.right.type) {
 					case "SelectiveDisclosureRequest":
 						this.replace("ScanDisclosureRequest", {
-							request: parse.right,
-							requestJWT: toParse
+							request: {
+								content: parse.right,
+								jwt: toParse
+							}
 						});
 						break;
 					case "VerifiedClaim":

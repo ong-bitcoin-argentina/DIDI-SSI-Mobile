@@ -9,22 +9,26 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import { CredentialDocument } from "../../../model/data/CredentialDocument";
-import { SelectiveDisclosureRequest } from "../../../uPort/types/SelectiveDisclosureRequest";
 import { didiConnect } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
 import { ScanCredentialProps } from "./ScanCredential";
 import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
 import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
+import { RequestDocument } from "../../../model/data/RequestDocument";
 
 export interface ScanDisclosureRequestProps {
-	request: SelectiveDisclosureRequest;
-	requestJWT: string;
+	request: RequestDocument;
 }
 interface ScanDisclosureRequestStateProps {
 	identity: Identity;
 	credentials: CredentialDocument[];
 }
-type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps & ScanDisclosureRequestStateProps;
+interface ScanDisclosureRequestDispatchProps {
+	storeRequest(request: RequestDocument): void;
+}
+type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
+	ScanDisclosureRequestStateProps &
+	ScanDisclosureRequestDispatchProps;
 
 type ScanDisclosureRequestState = {};
 export interface ScanDisclosureRequestNavigation {
@@ -38,13 +42,17 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
 
+	componentDidMount() {
+		this.props.storeRequest(this.props.request);
+	}
+
 	render() {
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={styles.body}>
-						<Text>{JSON.stringify(this.props.request)}</Text>
+						<Text>{JSON.stringify(this.props.request.content)}</Text>
 						<Text style={commonStyles.text.normal}>¿Enviar datos?</Text>
 						<DidiButton style={styles.button} title="Si" onPress={() => this.answerRequest()} />
 						<DidiButton style={styles.button} title="No" onPress={() => this.replace("ScanCredential", {})} />
@@ -58,7 +66,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		try {
 			const { accessToken, missing } = await createDisclosureResponse(this.props);
 			try {
-				const success = await submitDisclosureResponse(this.props.request.callback, accessToken);
+				const success = await submitDisclosureResponse(this.props.request.content.callback, accessToken);
 
 				if (!success) {
 					alert("Respuesta rechazada por servidor");
@@ -84,6 +92,11 @@ export default didiConnect(
 		return {
 			identity: state.identity,
 			credentials: state.credentials
+		};
+	},
+	(dispatch): ScanDisclosureRequestDispatchProps => {
+		return {
+			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] })
 		};
 	}
 );

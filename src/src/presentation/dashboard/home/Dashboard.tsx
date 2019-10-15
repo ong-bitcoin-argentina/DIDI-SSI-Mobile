@@ -22,6 +22,7 @@ import { didiConnect } from "../../../model/store";
 import { sampleDocumentToCard, uPortDocumentToCard, commonCardStyle } from "../common/documentToCard";
 import { SampleDocument } from "../../../model/data/SampleDocument";
 import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { NotificationScreenProps } from "./NotificationScreen";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
@@ -35,6 +36,7 @@ export interface DashboardScreenNavigation {
 	DashboardDocuments: DocumentsScreenProps;
 	ValidateID: ValidateIdentityExplainWhatProps;
 	UserData: UserDataProps;
+	NotificationScreen: NotificationScreenProps;
 }
 interface DashboardScreenState {
 	isIdentityComplete: boolean;
@@ -140,7 +142,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						<HomeHeader
 							person={this.props.person}
 							onPersonPress={() => this.navigate("UserData", {})}
-							onBellPress={() => this.navigate("DashboardDocuments", {})}
+							onBellPress={() => this.navigate("NotificationScreen", {})}
 						/>
 						{this.evolutionCard()}
 						{this.props.credentials.map(uPortDocumentToCard)}

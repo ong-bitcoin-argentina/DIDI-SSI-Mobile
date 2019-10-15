@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
-import { connect, Matching, GetProps, DispatchProp, ConnectedComponent } from "react-redux";
-import { Dispatch, AnyAction } from "redux";
+import { connect, Matching, GetProps, ConnectedComponent } from "react-redux";
+import { Dispatch } from "redux";
 import { Either } from "fp-ts/lib/Either";
 
 import { StoreContent, StoreAction } from "./store";
@@ -12,6 +12,7 @@ import { sampleDocuments } from "./samples/sampleDocuments";
 
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { credentialSelector } from "./selector/credentialSelector";
+import { requestSelector } from "./selector/requestSelector";
 
 import { SampleDocument } from "./data/SampleDocument";
 import { Identity } from "./data/Identity";
@@ -23,7 +24,8 @@ export type StoreAction = NormalizedStoreAction;
 
 export interface StoreContent extends NormalizedStoreContent {
 	credentials: CredentialDocument[];
-	parsedTokens: Either<any, CredentialDocument | RequestDocument>[];
+	requests: RequestDocument[];
+	parsedTokens: Array<Either<any, CredentialDocument | RequestDocument>>;
 	samples: SampleDocument[];
 	identity: Identity;
 	recentActivity: RecentActivity[];
@@ -34,6 +36,7 @@ function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StatePro
 		return mapStateToProps({
 			...state,
 			credentials: credentialSelector(state),
+			requests: requestSelector(state),
 			parsedTokens: parsedTokenSelector(state),
 			identity: sampleIdentity,
 			recentActivity: sampleRecentActivity,

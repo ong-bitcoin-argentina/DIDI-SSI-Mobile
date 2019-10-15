@@ -18,6 +18,7 @@ import CredentialNavigator from "./credentials/CredentialNavigator";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import ShareCredentialScreen from "./credentials/ShareCredential";
 import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
+import { NotificationScreen } from "./home/NotificationScreen";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -103,6 +104,7 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen)),
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
 			ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {})
-		})
+		}),
+		NotificationScreen: NavMap.from(NotificationScreen, {})
 	}).stackNavigator("DashboardRoot");
 }
