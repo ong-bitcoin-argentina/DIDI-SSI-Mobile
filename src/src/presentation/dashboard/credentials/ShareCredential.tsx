@@ -37,6 +37,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 					{this.props.credentials.length > 0 ? (
 						<FlatList
 							style={{ width: "100%" }}
+							contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 8 }}
 							data={this.props.credentials}
 							keyExtractor={doc => doc.jwt}
 							renderItem={item => this.renderCard(item.item)}

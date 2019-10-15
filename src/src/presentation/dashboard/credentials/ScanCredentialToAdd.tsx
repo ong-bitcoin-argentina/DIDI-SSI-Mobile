@@ -93,7 +93,8 @@ const styles = StyleSheet.create({
 		width: "100%",
 		alignItems: "stretch",
 		justifyContent: "space-evenly",
-		flex: 1
+		flex: 1,
+		paddingHorizontal: 20
 	},
 	button: {
 		width: "80%",

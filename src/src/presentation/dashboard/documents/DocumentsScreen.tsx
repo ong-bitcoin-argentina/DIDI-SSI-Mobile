@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
 		width: "100%"
 	},
 	scrollContent: {
-		paddingBottom: 15
+		paddingHorizontal: 20,
+		paddingVertical: 8
 	},
 	text: {
 		fontSize: 14
