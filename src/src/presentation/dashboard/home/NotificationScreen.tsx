@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { StatusBar, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { Text, StatusBar, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../../access/resources/commonStyles";
@@ -18,7 +18,9 @@ interface NotificationScreenStateProps {
 }
 type NotificationScreenInternalProps = NotificationScreenProps & NotificationScreenStateProps;
 
-type NotificationScreenState = {};
+type NotificationScreenState = {
+	showExpired: boolean;
+};
 export interface NotificationScreenNavigation {
 	ScanDisclosureRequest: ScanDisclosureRequestProps;
 }
@@ -30,26 +32,49 @@ class NotificationScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Notificationes");
 
+	constructor(props: NotificationScreenInternalProps) {
+		super(props);
+		this.state = {
+			showExpired: false
+		};
+	}
+
 	render() {
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
-						{this.props.requests.map(rq => {
-							return (
-								<RequestCard key={rq.jwt} request={rq}>
-									<DidiButton
-										title="Enviar"
-										style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
-										onPress={() => this.onSendResponse(rq)}
-									/>
-								</RequestCard>
-							);
-						})}
+						<DidiButton
+							title={this.state.showExpired ? "Ocultar peticiones vencidas" : "Mostrar peticiones vencidas"}
+							onPress={() => this.setState({ showExpired: !this.state.showExpired })}
+						/>
+						{this.props.requests
+							.filter(rq => this.state.showExpired || RequestDocument.isValidNow(rq))
+							.map(rq => this.renderRequest(rq))}
 					</ScrollView>
 				</SafeAreaView>
 			</Fragment>
+		);
+	}
+
+	private renderRequest(request: RequestDocument) {
+		const now = Math.floor(Date.now() / 1000);
+		const isActive = request.content.expireAt ? now < request.content.expireAt : true;
+		return (
+			<RequestCard key={request.jwt} request={request}>
+				<View style={{ marginTop: 10 }}>
+					{isActive ? (
+						<DidiButton
+							title="Enviar"
+							style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
+							onPress={() => this.onSendResponse(request)}
+						/>
+					) : (
+						<Text>Fecha límite superada.</Text>
+					)}
+				</View>
+			</RequestCard>
 		);
 	}
 

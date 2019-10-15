@@ -1,22 +1,34 @@
 import * as t from "io-ts";
 import { either } from "fp-ts/lib/Either";
 
-const SelectiveDisclosureRequestInnerCodec = t.type({
-	type: t.literal("SelectiveDisclosureRequest"),
-	issuer: t.string,
-	callback: t.string,
-	ownClaims: t.array(t.string),
-	verifiedClaims: t.array(t.string)
-});
+const SelectiveDisclosureRequestInnerCodec = t.intersection([
+	t.type({
+		type: t.literal("SelectiveDisclosureRequest"),
+		issuer: t.string,
+		callback: t.string,
+		ownClaims: t.array(t.string),
+		verifiedClaims: t.array(t.string)
+	}),
+	t.partial({
+		issuedAt: t.number,
+		expireAt: t.number
+	})
+]);
 export type SelectiveDisclosureRequest = typeof SelectiveDisclosureRequestInnerCodec._A;
 
-const SelectiveDisclosureRequestOuterCodec = t.type({
-	type: t.literal("shareReq"),
-	iss: t.string,
-	callback: t.string,
-	requested: t.union([t.array(t.string), t.undefined]),
-	verified: t.union([t.array(t.string), t.undefined])
-});
+const SelectiveDisclosureRequestOuterCodec = t.intersection([
+	t.type({
+		type: t.literal("shareReq"),
+		iss: t.string,
+		callback: t.string
+	}),
+	t.partial({
+		requested: t.array(t.string),
+		verified: t.array(t.string),
+		iat: t.number,
+		exp: t.number
+	})
+]);
 type SelectiveDisclosureRequestTransport = typeof SelectiveDisclosureRequestOuterCodec._A;
 
 export const SelectiveDisclosureRequestCodec = new t.Type<
@@ -33,7 +45,9 @@ export const SelectiveDisclosureRequestCodec = new t.Type<
 				issuer: i.iss,
 				callback: i.callback,
 				ownClaims: i.requested || [],
-				verifiedClaims: i.verified || []
+				verifiedClaims: i.verified || [],
+				issuedAt: i.iat,
+				expireAt: i.exp
 			})
 		),
 	a => {
@@ -42,7 +56,9 @@ export const SelectiveDisclosureRequestCodec = new t.Type<
 			iss: a.issuer,
 			callback: a.callback,
 			requested: a.ownClaims,
-			verified: a.verifiedClaims
+			verified: a.verifiedClaims,
+			iat: a.issuedAt,
+			exp: a.expireAt
 		};
 	}
 );
