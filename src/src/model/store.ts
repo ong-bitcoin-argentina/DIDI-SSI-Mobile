@@ -1,43 +1,69 @@
-import { createStore, combineReducers, Store, Reducer, AnyAction } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
-import FSStorage from "redux-persist-fs-storage";
+import { ComponentType } from "react";
+import { connect, Matching, GetProps, DispatchProp, ConnectedComponent } from "react-redux";
+import { Dispatch, AnyAction } from "redux";
+import { Either } from "fp-ts/lib/Either";
 
-import { documentReducer, DocumentAction } from "./reducers/documentReducer";
-import { identityReducer, IdentityAction } from "./reducers/identityReducer";
-import { recentActivityReducer, RecentActivityAction } from "./reducers/recentActivityReducer";
-import { sampleDocumentReducer } from "./reducers/sampleDocumentReducer";
+import { StoreContent, StoreAction } from "./store";
+import { NormalizedStoreContent, NormalizedStoreAction } from "./normalizedStore";
+
+import { sampleIdentity } from "./samples/sampleIdentity";
+import { sampleRecentActivity } from "./samples/sampleRecentActivity";
+import { sampleDocuments } from "./samples/sampleDocuments";
+
+import { parsedTokenSelector } from "./selector/parsedTokenSelector";
+import { credentialSelector } from "./selector/credentialSelector";
 
 import { SampleDocument } from "./data/SampleDocument";
-import { UPortDocument } from "./data/UPortDocument";
 import { Identity } from "./data/Identity";
 import { RecentActivity } from "./data/RecentActivity";
+import { CredentialDocument } from "./data/CredentialDocument";
+import { RequestDocument } from "./data/RequestDocument";
 
-export type StoreContent = {
+export type StoreAction = NormalizedStoreAction;
+
+export interface StoreContent extends NormalizedStoreContent {
+	credentials: CredentialDocument[];
+	parsedTokens: Either<any, CredentialDocument | RequestDocument>[];
 	samples: SampleDocument[];
-	documents: UPortDocument[];
 	identity: Identity;
 	recentActivity: RecentActivity[];
-};
+}
 
-export type StoreAction = DocumentAction | IdentityAction | RecentActivityAction;
+function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StateProps) {
+	return (state: NormalizedStoreContent): StateProps => {
+		return mapStateToProps({
+			...state,
+			credentials: credentialSelector(state),
+			parsedTokens: parsedTokenSelector(state),
+			identity: sampleIdentity,
+			recentActivity: sampleRecentActivity,
+			samples: sampleDocuments
+		});
+	};
+}
 
-const reducer: Reducer<StoreContent, StoreAction> = combineReducers({
-	samples: sampleDocumentReducer,
-	documents: documentReducer,
-	identity: identityReducer,
-	recentActivity: recentActivityReducer
-});
+export function didiConnect<StateProps, Component extends ComponentType<Matching<StateProps, GetProps<Component>>>>(
+	component: Component,
+	mapStateToProps: (state: StoreContent) => StateProps
+): ConnectedComponent<Component, Omit<GetProps<Component>, keyof StateProps>>;
 
-const persistedReducer = persistReducer(
-	{
-		key: "root",
-		keyPrefix: "",
-		storage: FSStorage(),
-		blacklist: ["samples", "identity", "recentActivity"]
-	},
-	reducer
-);
+export function didiConnect<
+	StateProps,
+	DispatchProps,
+	Component extends ComponentType<Matching<StateProps & DispatchProps, GetProps<Component>>>
+>(
+	component: Component,
+	mapStateToProps: (state: StoreContent) => StateProps,
+	mapDispatchToProps: (dispatch: Dispatch<StoreAction>) => DispatchProps
+): ConnectedComponent<Component, Omit<GetProps<Component>, keyof StateProps | keyof DispatchProps>>;
 
-export const store = createStore(persistedReducer) as Store<any, AnyAction>;
-
-export const persistor = persistStore(store);
+export function didiConnect(component: any, mapStateToProps: any, mapDispatchToProps?: any) {
+	if (mapDispatchToProps) {
+		return connect(
+			mapState(mapStateToProps),
+			mapDispatchToProps
+		)(component);
+	} else {
+		return connect(mapState(mapStateToProps))(component);
+	}
+}

@@ -1,10 +1,6 @@
 import { RecentActivity } from "../data/RecentActivity";
 
-export interface RecentActivityAction {
-	type: never;
-}
-
-const defaultContent: RecentActivity[] = [
+export const sampleRecentActivity: RecentActivity[] = [
 	{
 		icon: "",
 		title: "Documentos",
@@ -27,10 +23,3 @@ const defaultContent: RecentActivity[] = [
 		date: "12/09/2018"
 	}
 ];
-
-export function recentActivityReducer(
-	state: RecentActivity[] | undefined,
-	action: RecentActivityAction
-): RecentActivity[] {
-	return state || defaultContent;
-}

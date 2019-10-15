@@ -12,22 +12,21 @@ import DidiActivity from "./DidiActivity";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import DropdownMenu from "../../util/DropdownMenu";
-import { connect, ConnectedComponent } from "react-redux";
 import { Identity } from "../../../model/data/Identity";
 import { RecentActivity } from "../../../model/data/RecentActivity";
 import HomeHeader from "./HomeHeader";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
-import { StoreContent } from "../../../model/store";
+import { didiConnect } from "../../../model/store";
 import { sampleDocumentToCard, uPortDocumentToCard, commonCardStyle } from "../common/documentToCard";
 import { SampleDocument } from "../../../model/data/SampleDocument";
-import { UPortDocument } from "../../../model/data/UPortDocument";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
 	person: Identity;
-	documents: UPortDocument[];
+	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }
@@ -144,7 +143,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 							onBellPress={() => this.navigate("DashboardDocuments", {})}
 						/>
 						{this.evolutionCard()}
-						{this.props.documents.map(uPortDocumentToCard)}
+						{this.props.credentials.map(uPortDocumentToCard)}
 						{this.props.samples.map(sampleDocumentToCard)}
 						{this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()}
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
@@ -157,16 +156,17 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 }
 
-export default connect(
-	(state: StoreContent): DashboardScreenInternalProps => {
+export default didiConnect(
+	DashboardScreen,
+	(state): DashboardScreenInternalProps => {
 		return {
 			person: state.identity,
 			recentActivity: state.recentActivity,
-			documents: state.documents,
+			credentials: state.credentials,
 			samples: state.samples
 		};
 	}
-)(DashboardScreen);
+);
 
 const styles = StyleSheet.create({
 	body: {

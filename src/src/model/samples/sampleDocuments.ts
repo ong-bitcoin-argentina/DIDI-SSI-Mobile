@@ -1,10 +1,6 @@
 import { SampleDocument } from "../data/SampleDocument";
 
-export interface SampleDocumentAction {
-	type: never;
-}
-
-const defaultContent: SampleDocument[] = [
+export const sampleDocuments: SampleDocument[] = [
 	{
 		icon: "",
 		category: "Cursos",
@@ -56,10 +52,3 @@ const defaultContent: SampleDocument[] = [
 		columns: 2
 	}
 ];
-
-export function sampleDocumentReducer(
-	state: SampleDocument[] | undefined,
-	action: SampleDocumentAction
-): SampleDocument[] {
-	return state || defaultContent;
-}

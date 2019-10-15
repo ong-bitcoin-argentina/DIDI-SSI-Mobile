@@ -10,7 +10,7 @@ import commonStyles from "../../../access/resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
 import { connect } from "react-redux";
 import { Identity } from "../../../../model/data/Identity";
-import { StoreContent } from "../../../../model/store";
+import { StoreContent, didiConnect } from "../../../../model/store";
 
 export type ShareProfileProps = {};
 interface ShareProfileInternalProps {
@@ -70,13 +70,14 @@ class ShareProfileScreen extends NavigationEnabledComponent<
 	}
 }
 
-const connected = connect(
-	(state: StoreContent): ShareProfileInternalProps => {
+const connected = didiConnect(
+	ShareProfileScreen,
+	(state): ShareProfileInternalProps => {
 		return {
 			person: state.identity
 		};
 	}
-)(ShareProfileScreen);
+);
 export { connected as ShareProfileScreen };
 
 const styles = StyleSheet.create({

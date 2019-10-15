@@ -2,16 +2,15 @@ import React from "react";
 import { Fragment } from "react";
 import { StatusBar, View, Modal, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { connect } from "react-redux";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import { UPortDocument } from "../../../model/data/UPortDocument";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
 import { SelectiveDisclosureRequest } from "../../../uPort/types/SelectiveDisclosureRequest";
-import { StoreContent } from "../../../model/store";
+import { didiConnect } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
 import { ScanCredentialProps } from "./ScanCredential";
 import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
@@ -23,7 +22,7 @@ export interface ScanDisclosureRequestProps {
 }
 interface ScanDisclosureRequestStateProps {
 	identity: Identity;
-	documents: UPortDocument[];
+	credentials: CredentialDocument[];
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps & ScanDisclosureRequestStateProps;
 
@@ -79,14 +78,15 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	}
 }
 
-export default connect(
-	(state: StoreContent): ScanDisclosureRequestStateProps => {
+export default didiConnect(
+	ScanDisclosureRequestScreen,
+	(state): ScanDisclosureRequestStateProps => {
 		return {
 			identity: state.identity,
-			documents: state.documents
+			credentials: state.credentials
 		};
 	}
-)(ScanDisclosureRequestScreen);
+);
 
 const styles = StyleSheet.create({
 	body: {

@@ -15,7 +15,7 @@ import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./userData/UserData";
 import { IdentitySettingsProps } from "./identity/IdentitySettings";
 import { ChangePasswordProps } from "./userMenu/ChangePassword";
-import { StoreContent } from "../../../model/store";
+import { StoreContent, didiConnect } from "../../../model/store";
 import { AboutThisAppScreenProps } from "./AboutThisApp";
 
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
@@ -116,11 +116,12 @@ class SettingsScreen extends NavigationEnabledComponent<
 	}
 }
 
-export default connect(
-	(state: StoreContent): SettingsScreenProps => {
+export default didiConnect(
+	SettingsScreen,
+	(state): SettingsScreenProps => {
 		return { person: state.identity };
 	}
-)(SettingsScreen);
+);
 
 const baseStyles = {
 	cartoucheWidth: {

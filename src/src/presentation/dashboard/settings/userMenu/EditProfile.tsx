@@ -1,21 +1,18 @@
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
 import React from "react";
-import { StyleSheet, StatusBar, SafeAreaView, View, ScrollView, ImageSourcePropType } from "react-native";
+import { StyleSheet, StatusBar, View, ScrollView } from "react-native";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
-import { UserDataProps } from "../userData/UserData";
 import themes from "../../../resources/themes";
-import commonStyles from "../../../access/resources/commonStyles";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DidiButton from "../../../util/DidiButton";
 import Validator from "../../../access/helpers/validator";
 import DropdownMenu from "../../../util/DropdownMenu";
 import colors from "../../../resources/colors";
 import UserHeadingComponent from "../userData/UserHeading";
-import { connect } from "react-redux";
 import { Identity } from "../../../../model/data/Identity";
-import { StoreContent } from "../../../../model/store";
+import { didiConnect } from "../../../../model/store";
 
 export type EditProfileProps = {};
 interface EditProfileInternalProps {
@@ -142,13 +139,14 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	}
 }
 
-export default connect(
-	(state: StoreContent): EditProfileInternalProps => {
+export default didiConnect(
+	EditProfileScreen,
+	(state): EditProfileInternalProps => {
 		return {
 			person: state.identity
 		};
 	}
-)(EditProfileScreen);
+);
 
 const styles = StyleSheet.create({
 	area: {

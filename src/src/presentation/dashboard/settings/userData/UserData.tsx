@@ -5,11 +5,10 @@ import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import DropdownMenu from "../../../util/DropdownMenu";
 import strings from "../../../resources/strings";
 import colors from "../../../resources/colors";
-import { connect } from "react-redux";
 import UserHeadingComponent from "./UserHeading";
 import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
-import { StoreContent } from "../../../../model/store";
+import { didiConnect } from "../../../../model/store";
 import { Identity, WithValidationState } from "../../../../model/data/Identity";
 import DidiTextInput from "../../../util/DidiTextInput";
 import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
@@ -164,13 +163,14 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	}
 }
 
-export default connect(
-	(state: StoreContent): UserDataInternalProps => {
+export default didiConnect(
+	UserDataScreen,
+	(state): UserDataInternalProps => {
 		return {
 			identity: state.identity
 		};
 	}
-)(UserDataScreen);
+);
 
 const styles = StyleSheet.create({
 	personalDataDropdown: {

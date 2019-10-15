@@ -82,8 +82,10 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 						break;
 					case "VerifiedClaim":
 						this.replace("ScanCredentialToAdd", {
-							credential: parse.right,
-							jwt: toParse
+							credential: {
+								content: parse.right,
+								jwt: toParse
+							}
 						});
 						break;
 				}

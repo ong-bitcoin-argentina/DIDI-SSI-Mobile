@@ -24,11 +24,22 @@ const resolver = new Resolver(ethrDidResolver);
 const JWTCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec]);
 const AttemptCodec = t.union([JWTCodec, LegacyVerifiedClaimCodec]);
 
+export function unverifiedParseJWT(
+	jwt: string
+): Either.Either<any, SelectiveDisclosureRequest | VerifiedClaim> {
+	try {
+		const decode = JWTDecode(jwt)
+		return AttemptCodec.decode(decode)
+	} catch (e) {
+		return Either.left(e)
+	}
+}
+
 export default async function parseJWT(
 	jwt: string
 ): Promise<Either.Either<any, SelectiveDisclosureRequest | VerifiedClaim>> {
 	try {
-		const unverifiedContent = AttemptCodec.decode(JWTDecode(jwt));
+		const unverifiedContent = unverifiedParseJWT(jwt);
 		if (Either.isLeft(unverifiedContent)) {
 			return unverifiedContent;
 		}
@@ -36,6 +47,7 @@ export default async function parseJWT(
 		const { payload } = await (unverifiedContent.right.type === "VerifiedClaim"
 			? verifyCredential(jwt, resolver)
 			: verifyJWT(jwt, { resolver }));
+
 		return JWTCodec.decode(payload);
 	} catch (e) {
 		return Either.left(e);

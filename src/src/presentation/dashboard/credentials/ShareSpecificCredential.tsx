@@ -7,11 +7,11 @@ import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { UPortDocument } from "../../../model/data/UPortDocument";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
 import DidiButton from "../../util/DidiButton";
 
 export interface ShareSpecificCredentialProps {
-	document: UPortDocument;
+	document: CredentialDocument;
 }
 
 type ShareSpecificCredentialState = {};

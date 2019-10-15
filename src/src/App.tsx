@@ -4,7 +4,7 @@ import { YellowBox } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { store, persistor } from "./model/store";
+import { store, persistor } from "./model/normalizedStore";
 import AppNavigator from "./presentation/AppNavigator";
 import { SplashContent } from "./presentation/SplashScreen";
 

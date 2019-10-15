@@ -6,7 +6,7 @@ import { flattenClaim } from "../../../uPort/types/Claim";
 import { ViewStyle, StyleSheet } from "react-native";
 import colors from "../../resources/colors";
 import { SampleDocument } from "../../../model/data/SampleDocument";
-import { UPortDocument } from "../../../model/data/UPortDocument";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
 
 export function sampleDocumentToCard(document: SampleDocument, index: number) {
 	return (
@@ -24,12 +24,12 @@ export function sampleDocumentToCard(document: SampleDocument, index: number) {
 	);
 }
 
-export function uPortDocumentToCard(document: UPortDocument) {
-	const { root, rest } = flattenClaim(document.claim.claims);
+export function uPortDocumentToCard(document: CredentialDocument) {
+	const { root, rest } = flattenClaim(document.content.claims);
 	const data = Object.entries(rest).map(([key, value]) => {
 		return { label: key, value };
 	});
-	const issuer = document.claim.issuer.replace("did:ethr:0x", "").slice(0, 20);
+	const issuer = document.content.issuer.replace("did:ethr:0x", "").slice(0, 20);
 	return (
 		<DidiCard
 			key={document.jwt}
