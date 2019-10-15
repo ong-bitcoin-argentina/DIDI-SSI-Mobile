@@ -147,6 +147,10 @@ export default {
 		changePassword: "Cambio de Contraseña",
 		about: "Acerca de Didi"
 	},
+	share: {
+		title: "Credencial Didi",
+		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi"
+	},
 	validateIdentity: {
 		header: "Validar Identidad",
 		welcome: "Bienvenida Lili M.",
