@@ -8,5 +8,5 @@ export async function submitDisclosureResponse(callback: string, accessToken: st
 	});
 
 	const body = await response.json();
-	return typeof body === "object" && body.status === "success" && body.data === true;
+	return typeof body === "object" && body.status === "success";
 }

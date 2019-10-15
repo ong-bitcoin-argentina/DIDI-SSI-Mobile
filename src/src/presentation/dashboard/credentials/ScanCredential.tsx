@@ -79,6 +79,9 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 							request: {
 								content: parse.right,
 								jwt: toParse
+							},
+							onGoBack: screen => {
+								screen.replace("ScanCredential", {});
 							}
 						});
 						break;
