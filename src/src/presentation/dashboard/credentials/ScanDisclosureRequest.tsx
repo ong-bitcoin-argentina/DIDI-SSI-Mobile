@@ -1,6 +1,6 @@
 import React from "react";
 import { Fragment } from "react";
-import { StatusBar, View, Modal, Text, StyleSheet } from "react-native";
+import { StatusBar, View, Modal, Text, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -71,19 +71,19 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 				const success = await submitDisclosureResponse(this.props.request.content.callback, accessToken);
 
 				if (!success) {
-					alert("Respuesta rechazada por servidor");
+					Alert.alert("Respuesta rechazada por servidor");
 				} else if (missing.length > 0) {
-					alert(`Respuesta enviada. Puede ocurrir un error por falta de credenciales: ${missing.join(", ")}`);
+					Alert.alert("Respuesta enviada", `Puede ocurrir un error por falta de credenciales: ${missing.join(", ")}`);
 				} else {
-					alert("Respuesta enviada");
+					Alert.alert("Respuesta enviada");
 				}
 
 				this.props.onGoBack(this);
 			} catch (e) {
-				alert(`Error en la conexion: ${e}`);
+				Alert.alert("Error en la conexion", JSON.stringify(e));
 			}
 		} catch (e) {
-			alert(`Error al generar respuesta: ${e}`);
+			Alert.alert("Error al generar respuesta", JSON.stringify(e));
 		}
 	}
 }
