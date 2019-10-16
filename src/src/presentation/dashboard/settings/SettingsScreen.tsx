@@ -21,6 +21,7 @@ import { AboutThisAppScreenProps } from "./AboutThisApp";
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
 import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
+import { JWTDecoderScanScreenProps } from "./JWTDecoderScanScreen";
 
 export interface SettingsScreenProps {
 	person: Identity;
@@ -36,6 +37,7 @@ export interface SettingsScreenNavigation {
 	ChangePassword: ChangePasswordProps;
 	AboutThisAppScreen: AboutThisAppScreenProps;
 	ServiceSettings: ServiceSettingsScreenProps;
+	JWTDecoderScreen: JWTDecoderScanScreenProps;
 }
 
 interface SettingsButton {
@@ -58,7 +60,8 @@ class SettingsScreen extends NavigationEnabledComponent<
 			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) },
-			{ name: "Configuracion de Servicios", action: () => this.navigate("ServiceSettings", {}) }
+			{ name: "Configuracion de Servicios", action: () => this.navigate("ServiceSettings", {}) },
+			{ name: "Decodificar JWT", action: () => this.navigate("JWTDecoderScreen", {}) }
 		];
 	}
 
