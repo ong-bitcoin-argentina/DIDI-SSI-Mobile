@@ -40,7 +40,7 @@ export const SelectiveDisclosureRequestCodec = new t.Type<
 	SelectiveDisclosureRequestInnerCodec.is,
 	(u, c) =>
 		either.chain(SelectiveDisclosureRequestOuterCodec.validate(u, c), i =>
-			t.success({
+			t.success<SelectiveDisclosureRequest>({
 				type: "SelectiveDisclosureRequest",
 				issuer: i.iss,
 				callback: i.callback,

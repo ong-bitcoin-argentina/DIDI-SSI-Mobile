@@ -28,11 +28,14 @@ export function uPortDocumentToCard(document: CredentialDocument) {
 		return { label: key, value };
 	});
 	const issuer = document.content.issuer.replace("did:ethr:0x", "").slice(0, 20);
+	const category = document.content.issuedAt
+		? new Date(document.content.issuedAt * 1000).toLocaleString()
+		: "Credencial";
 	return (
 		<CredentialCard
 			key={document.jwt}
 			icon=""
-			category="Credencial"
+			category={category}
 			title={root === "" ? "(Multiples credenciales)" : root}
 			subTitle={"Emisor: " + issuer + "..."}
 			data={data}
