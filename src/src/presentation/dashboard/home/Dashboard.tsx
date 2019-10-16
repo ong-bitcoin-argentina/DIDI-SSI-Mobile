@@ -7,27 +7,27 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import DidiCard from "../common/DidiCard";
+import CredentialCard from "../common/CredentialCard";
 import DidiActivity from "./DidiActivity";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import DropdownMenu from "../../util/DropdownMenu";
-import { connect, ConnectedComponent } from "react-redux";
 import { Identity } from "../../../model/data/Identity";
 import { RecentActivity } from "../../../model/data/RecentActivity";
 import HomeHeader from "./HomeHeader";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
-import { StoreContent } from "../../../model/store";
-import { sampleDocumentToCard, uPortDocumentToCard, commonCardStyle } from "../common/documentToCard";
+import { didiConnect } from "../../../model/store";
+import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToCard";
 import { SampleDocument } from "../../../model/data/SampleDocument";
-import { UPortDocument } from "../../../model/data/UPortDocument";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { NotificationScreenProps } from "./NotificationScreen";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
 	person: Identity;
-	documents: UPortDocument[];
+	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }
@@ -36,6 +36,7 @@ export interface DashboardScreenNavigation {
 	DashboardDocuments: DocumentsScreenProps;
 	ValidateID: ValidateIdentityExplainWhatProps;
 	UserData: UserDataProps;
+	NotificationScreen: NotificationScreenProps;
 }
 interface DashboardScreenState {
 	isIdentityComplete: boolean;
@@ -57,14 +58,13 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private evolutionCard(): JSX.Element {
 		return (
-			<DidiCard
+			<CredentialCard
 				icon=""
 				image={require("../../resources/images/precentageSample.png")}
 				category="Proceso"
 				title="Mi Evolución"
 				subTitle="16.06.2019"
-				textStyle={styles.textStyleWhite}
-				style={cardStyles.evolution}
+				color={colors.primary}
 				data={[
 					{ label: "Validaciones:", value: " " },
 					{ label: "Celu", value: "✓" },
@@ -78,32 +78,31 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private incompleteIdentityCard(): JSX.Element {
 		return (
-			<DidiCard
+			<CredentialCard
 				icon=""
 				category="Documento Identidad"
 				title="Liliana Martinez"
 				subTitle="Nombre"
-				textStyle={styles.textStyleBlue}
-				style={cardStyles.identityIncomplete}
+				color={colors.secondary}
+				hollow={true}
 			>
 				<DidiButton
 					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
 					title="Validar Id"
 					onPress={() => this.navigate("ValidateID", {})}
 				/>
-			</DidiCard>
+			</CredentialCard>
 		);
 	}
 
 	private completeIdentityCard(): JSX.Element {
 		return (
-			<DidiCard
+			<CredentialCard
 				icon=""
 				category="Documento Identidad"
 				title="Liliana Martinez"
 				subTitle="Nombre"
-				textStyle={styles.textStyleBlue}
-				style={cardStyles.identityIncomplete}
+				color={colors.secondary}
 				data={[
 					{ label: "Número", value: "25.390.189" },
 					{ label: "Nacionalidad", value: "🇦🇷" },
@@ -141,12 +140,14 @@ class DashboardScreen extends NavigationEnabledComponent<
 						<HomeHeader
 							person={this.props.person}
 							onPersonPress={() => this.navigate("UserData", {})}
-							onBellPress={() => this.navigate("DashboardDocuments", {})}
+							onBellPress={() => this.navigate("NotificationScreen", {})}
 						/>
-						{this.evolutionCard()}
-						{this.props.documents.map(uPortDocumentToCard)}
-						{this.props.samples.map(sampleDocumentToCard)}
-						{this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()}
+						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
+							{this.evolutionCard()}
+							{this.props.credentials.map(uPortDocumentToCard)}
+							{this.props.samples.map(sampleDocumentToCard)}
+							{this.state.isIdentityComplete ? this.completeIdentityCard() : this.incompleteIdentityCard()}
+						</View>
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
 						</DropdownMenu>
@@ -157,16 +158,17 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 }
 
-export default connect(
-	(state: StoreContent): DashboardScreenInternalProps => {
+export default didiConnect(
+	DashboardScreen,
+	(state): DashboardScreenInternalProps => {
 		return {
 			person: state.identity,
 			recentActivity: state.recentActivity,
-			documents: state.documents,
+			credentials: state.credentials,
 			samples: state.samples
 		};
 	}
-)(DashboardScreen);
+);
 
 const styles = StyleSheet.create({
 	body: {
@@ -182,8 +184,7 @@ const styles = StyleSheet.create({
 	},
 	dropdown: {
 		backgroundColor: colors.darkBackground,
-		width: "100%",
-		marginTop: 20
+		width: "100%"
 	},
 	dropdownContents: {
 		marginTop: 0
@@ -191,28 +192,5 @@ const styles = StyleSheet.create({
 	activities: {
 		backgroundColor: "#FFF",
 		marginBottom: 2
-	},
-	textStyleWhite: {
-		color: "#FFF"
-	},
-	textStyleBlue: {
-		color: colors.secondary
-	}
-});
-
-const cardStyles = StyleSheet.create({
-	evolution: {
-		...commonCardStyle,
-		backgroundColor: colors.primary
-	},
-	identityIncomplete: {
-		...commonCardStyle,
-		backgroundColor: "#FFF",
-		borderColor: colors.secondary,
-		borderWidth: 2
-	},
-	identityComplete: {
-		...commonCardStyle,
-		backgroundColor: colors.secondary
 	}
 });

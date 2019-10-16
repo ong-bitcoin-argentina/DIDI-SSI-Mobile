@@ -1,11 +1,10 @@
-import { RNUportHDSigner } from "react-native-uport-signer";
-
-import { UPortDocument } from "../model/data/UPortDocument";
+import { CredentialDocument } from "../model/data/CredentialDocument";
 import { Claim, flattenClaim } from "./types/Claim";
 import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
 import { Identity } from "../model/data/Identity";
 import TypedObject from "../util/TypedObject";
 import { getCredentials } from "./getCredentials";
+import { RequestDocument } from "../model/data/RequestDocument";
 
 function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity): Claim {
 	const result: Claim = {};
@@ -34,11 +33,11 @@ function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity
 
 function selectVerifiedClaims(
 	request: SelectiveDisclosureRequest,
-	documents: UPortDocument[]
-): Array<{ selector: string; value?: UPortDocument }> {
+	documents: CredentialDocument[]
+): Array<{ selector: string; value?: CredentialDocument }> {
 	return request.verifiedClaims.map(selector => {
 		const selected = documents.find(document => {
-			const { root } = flattenClaim(document.claim.claims);
+			const { root } = flattenClaim(document.content.claims);
 			return root === selector;
 		});
 		return { selector, value: selected };
@@ -47,10 +46,10 @@ function selectVerifiedClaims(
 
 export function getResponseClaims(
 	request: SelectiveDisclosureRequest,
-	documents: UPortDocument[],
+	documents: CredentialDocument[],
 	identity: Identity
 ): { missing: string[]; own: Claim; verified: string[] } {
-	const verified: { [selector: string]: UPortDocument } = {};
+	const verified: { [selector: string]: CredentialDocument } = {};
 	const missing: string[] = [];
 
 	selectVerifiedClaims(request, documents).forEach(vc => {
@@ -67,7 +66,7 @@ export function getResponseClaims(
 		own: {
 			...own,
 			...TypedObject.mapValues(verified, v => {
-				return v.claim.claims;
+				return v.content.claims;
 			})
 		},
 		verified: TypedObject.values(verified).map(d => d.jwt)
@@ -75,20 +74,19 @@ export function getResponseClaims(
 }
 
 export interface DisclosureResponseArguments {
-	request: SelectiveDisclosureRequest;
-	requestJWT: string;
+	request: RequestDocument;
 	identity: Identity;
-	documents: UPortDocument[];
+	credentials: CredentialDocument[];
 }
 
 export async function createDisclosureResponse(
 	args: DisclosureResponseArguments
 ): Promise<{ accessToken: string; missing: string[] }> {
-	const { missing, own, verified } = getResponseClaims(args.request, args.documents, args.identity);
+	const { missing, own, verified } = getResponseClaims(args.request.content, args.credentials, args.identity);
 
 	const credentials = await getCredentials();
 	const accessToken = await credentials.createDisclosureResponse({
-		req: args.requestJWT,
+		req: args.request.jwt,
 		own,
 		verified
 	});

@@ -15,11 +15,12 @@ import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./userData/UserData";
 import { IdentitySettingsProps } from "./identity/IdentitySettings";
 import { ChangePasswordProps } from "./userMenu/ChangePassword";
-import { StoreContent } from "../../../model/store";
+import { StoreContent, didiConnect } from "../../../model/store";
 import { AboutThisAppScreenProps } from "./AboutThisApp";
 
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
+import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
 
 export interface SettingsScreenProps {
 	person: Identity;
@@ -34,6 +35,7 @@ export interface SettingsScreenNavigation {
 	IdentitySettings: IdentitySettingsProps;
 	ChangePassword: ChangePasswordProps;
 	AboutThisAppScreen: AboutThisAppScreenProps;
+	ServiceSettings: ServiceSettingsScreenProps;
 }
 
 interface SettingsButton {
@@ -55,7 +57,8 @@ class SettingsScreen extends NavigationEnabledComponent<
 		return [
 			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
-			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) }
+			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) },
+			{ name: "Configuracion de Servicios", action: () => this.navigate("ServiceSettings", {}) }
 		];
 	}
 
@@ -116,11 +119,12 @@ class SettingsScreen extends NavigationEnabledComponent<
 	}
 }
 
-export default connect(
-	(state: StoreContent): SettingsScreenProps => {
+export default didiConnect(
+	SettingsScreen,
+	(state): SettingsScreenProps => {
 		return { person: state.identity };
 	}
-)(SettingsScreen);
+);
 
 const baseStyles = {
 	cartoucheWidth: {

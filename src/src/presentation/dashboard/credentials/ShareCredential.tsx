@@ -7,14 +7,13 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { uPortDocumentToCard } from "../common/documentToCard";
-import { UPortDocument } from "../../../model/data/UPortDocument";
-import { StoreContent } from "../../../model/store";
-import { connect } from "react-redux";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { didiConnect } from "../../../model/store";
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
-	documents: UPortDocument[];
+	credentials: CredentialDocument[];
 }
 
 type ShareCredentialState = {};
@@ -35,10 +34,11 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					{this.props.documents.length > 0 ? (
+					{this.props.credentials.length > 0 ? (
 						<FlatList
 							style={{ width: "100%" }}
-							data={this.props.documents}
+							contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 8 }}
+							data={this.props.credentials}
 							keyExtractor={doc => doc.jwt}
 							renderItem={item => this.renderCard(item.item)}
 						/>
@@ -52,7 +52,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private renderCard(document: UPortDocument) {
+	private renderCard(document: CredentialDocument) {
 		return (
 			<TouchableOpacity onPress={() => this.navigate("ShareSpecificCredential", { document })}>
 				{uPortDocumentToCard(document)}
@@ -61,10 +61,11 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 	}
 }
 
-export default connect(
-	(state: StoreContent): ShareCredentialInternalProps => {
+export default didiConnect(
+	ShareCredentialScreen,
+	(state): ShareCredentialInternalProps => {
 		return {
-			documents: state.documents
+			credentials: state.credentials
 		};
 	}
-)(ShareCredentialScreen);
+);

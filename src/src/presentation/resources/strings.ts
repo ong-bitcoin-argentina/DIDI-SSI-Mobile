@@ -6,6 +6,7 @@ export default {
 		},
 		userData: {
 			personalDataLabel: "Datos personales",
+			addressDataLabel: "Domicilio Legal",
 			states: {
 				approved: "Aprobado",
 				pending: "Pendiente",
@@ -145,6 +146,10 @@ export default {
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
 		about: "Acerca de Didi"
+	},
+	share: {
+		title: "Credencial Didi",
+		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi"
 	},
 	validateIdentity: {
 		header: "Validar Identidad",

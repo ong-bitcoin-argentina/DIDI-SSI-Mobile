@@ -10,7 +10,7 @@ export class TrustGraphClient {
 	private credentials: Credentials;
 	private client: ApolloClient<unknown>;
 
-	private constructor(credentials: Credentials) {
+	private constructor(trustGraphUri: string, credentials: Credentials) {
 		this.credentials = credentials;
 
 		const authLink = setContext(async (_, { headers }) => {
@@ -20,7 +20,7 @@ export class TrustGraphClient {
 			};
 		});
 		const httpLink = new HttpLink({
-			uri: "https://edge.uport.me/graphql"
+			uri: trustGraphUri
 		});
 		this.client = new ApolloClient({
 			link: authLink.concat(httpLink),
@@ -28,8 +28,8 @@ export class TrustGraphClient {
 		});
 	}
 
-	static async create(): Promise<TrustGraphClient> {
-		return new TrustGraphClient(await getCredentials());
+	static async create(trustGraphUri: string): Promise<TrustGraphClient> {
+		return new TrustGraphClient(trustGraphUri, await getCredentials());
 	}
 
 	async getJWTs(): Promise<string[]> {

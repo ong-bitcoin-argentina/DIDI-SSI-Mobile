@@ -8,6 +8,7 @@ import IdentitySettingsScreen from "./identity/IdentitySettings";
 import { StartAccessProps } from "../../access/StartAccess";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { AboutThisAppScreen } from "./AboutThisApp";
+import { ServiceSettingsScreen } from "./ServiceSettingsScreen";
 
 interface SettingsNavigatorNavigation {
 	Access: StartAccessProps;
@@ -23,6 +24,7 @@ export default function(then: NavTree<SettingsNavigatorNavigation>) {
 		ChangePassword: NavMap.from(ChangePasswordScreen, {}),
 		IdentitySettings: NavMap.from(IdentitySettingsScreen, {}),
 		AboutThisAppScreen: NavMap.from(AboutThisAppScreen, {}),
+		ServiceSettings: NavMap.from(ServiceSettingsScreen, {}),
 		...then
 	});
 }

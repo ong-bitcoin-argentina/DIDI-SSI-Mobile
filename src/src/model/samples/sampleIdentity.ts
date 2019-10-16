@@ -1,10 +1,6 @@
 import { Identity, ValidationState } from "../data/Identity";
 
-export interface IdentityAction {
-	type: never;
-}
-
-const defaultContent: Identity = {
+export const sampleIdentity: Identity = {
 	id: "@lili.martinez",
 	name: "Liliana Martinez",
 	image: require("../images/avatar.png"),
@@ -30,11 +26,10 @@ const defaultContent: Identity = {
 		state: ValidationState.Pending
 	},
 	address: {
-		value: "Manzana 24, Seccion 3, Edificio 1",
-		state: ValidationState.Rejected
+		street: "33",
+		number: "23",
+		neighborhood: "San Martin",
+		postCode: "1234",
+		liveHere: false
 	}
 };
-
-export function identityReducer(state: Identity | undefined, action: IdentityAction): Identity {
-	return state || defaultContent;
-}

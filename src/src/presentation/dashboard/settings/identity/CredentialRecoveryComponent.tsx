@@ -1,12 +1,8 @@
 import React from "react";
 import { View, Text, ViewProps } from "react-native";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { isLeft } from "fp-ts/lib/Either";
+import { isRight } from "fp-ts/lib/Either";
 
-import StoreAction from "../../../../model/StoreAction";
-import { StoreContent } from "../../../../model/store";
-import { UPortDocument } from "../../../../model/data/UPortDocument";
+import { didiConnect } from "../../../../model/store";
 import parseJWT from "../../../../uPort/parseJWT";
 import { TrustGraphClient } from "../../../../uPort/TrustGraphClient";
 import TypedArray from "../../../../util/TypedArray";
@@ -15,18 +11,20 @@ import commonStyles from "../../../access/resources/commonStyles";
 
 export type CredentialRecoveryProps = ViewProps;
 interface CredentialRecoveryStateProps {
-	documents: UPortDocument[];
+	tokens: string[];
+	trustGraphUri: string;
+	ethrDidUri: string;
 }
 interface CredentialRecoveryDispatchProps {
-	recoverDocuments(docs: UPortDocument[]): void;
-	deleteAllDocuments(): void;
+	recoverTokens(tokens: string[]): void;
+	deleteAllTokens(): void;
 }
 type CredentialRecoveryInternalProps = CredentialRecoveryProps &
 	CredentialRecoveryStateProps &
 	CredentialRecoveryDispatchProps;
 
 interface CredentialRecoverState {
-	docs?: string[];
+	tokens?: string[];
 }
 
 class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInternalProps, CredentialRecoverState> {
@@ -36,20 +34,20 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 	}
 
 	render() {
-		const currentDocs = this.state.docs || [];
+		const currentDocs = this.state.tokens || [];
 		return (
 			<View {...this.props}>
 				<Text style={commonStyles.text.normal}>
 					<Text style={commonStyles.text.emphasis}>Credenciales Locales: </Text>
-					{this.props.documents.length}
+					{this.props.tokens.length}
 				</Text>
 
 				<Text style={commonStyles.text.normal}>
 					<Text style={commonStyles.text.emphasis}>Credenciales Remotas: </Text>
-					{this.state.docs === undefined ? "Sin Cargar" : this.state.docs.length}
+					{this.state.tokens === undefined ? "Sin Cargar" : this.state.tokens.length}
 				</Text>
 
-				<DidiButton title="Borrar Credenciales Locales" onPress={() => this.props.deleteAllDocuments()} />
+				<DidiButton title="Borrar Credenciales Locales" onPress={() => this.props.deleteAllTokens()} />
 				<DidiButton title="Cargar Credenciales Remotas" onPress={() => this.loadRemoteDocs()} />
 				{currentDocs.length > 0 && (
 					<DidiButton title="Importar Credenciales Remotas" onPress={() => this.addToLocalDocs(currentDocs)} />
@@ -59,45 +57,40 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 	}
 
 	private async loadRemoteDocs() {
-		const tg = await TrustGraphClient.create();
-		const docs = await tg.getJWTs();
-		this.setState({ docs });
+		const tg = await TrustGraphClient.create(this.props.trustGraphUri);
+		const tokens = await tg.getJWTs();
+		this.setState({ tokens });
 	}
 
 	private async addToLocalDocs(received: string[]) {
-		const parseToken = async (token: string): Promise<UPortDocument | undefined> => {
-			if (this.props.documents.find(doc => token === doc.jwt)) {
-				return undefined;
-			}
-
-			const parsed = await parseJWT(token);
-			if (isLeft(parsed)) {
-				throw parsed.left;
-			} else if (parsed.right.type === "VerifiedClaim") {
-				return {
-					jwt: token,
-					claim: parsed.right
-				};
+		const acceptToken = async (token: string): Promise<string | undefined> => {
+			if (this.props.tokens.includes(token) || isRight(await parseJWT(token, this.props.ethrDidUri))) {
+				return token;
 			} else {
 				return undefined;
 			}
 		};
 
-		const docs = TypedArray.flatMap(await Promise.all(received.map(parseToken)), x => x);
-		this.props.recoverDocuments(docs);
+		const verifiedTokens = TypedArray.flatMap(await Promise.all(received.map(acceptToken)), x => x);
+		this.props.recoverTokens(verifiedTokens);
 	}
 }
 
-const connected = connect(
-	(store: StoreContent): CredentialRecoveryStateProps => {
-		return { documents: store.documents };
-	},
-	(dispatch: Dispatch<StoreAction>): CredentialRecoveryDispatchProps => {
+const connected = didiConnect(
+	CredentialRecoveryComponent,
+	(store): CredentialRecoveryStateProps => {
 		return {
-			recoverDocuments: (docs: UPortDocument[]) => dispatch({ type: "DOCUMENT_ENSURE", content: docs }),
-			deleteAllDocuments: () => dispatch({ type: "DOCUMENT_DELETE_ALL" })
+			tokens: store.tokens,
+			trustGraphUri: store.serviceSettings.trustGraphUri,
+			ethrDidUri: store.serviceSettings.ethrDidUri
+		};
+	},
+	(dispatch): CredentialRecoveryDispatchProps => {
+		return {
+			recoverTokens: (docs: string[]) => dispatch({ type: "TOKEN_ENSURE", content: docs }),
+			deleteAllTokens: () => dispatch({ type: "TOKEN_DELETE_ALL" })
 		};
 	}
-)(CredentialRecoveryComponent);
+);
 
 export { connected as CredentialRecoveryComponent };

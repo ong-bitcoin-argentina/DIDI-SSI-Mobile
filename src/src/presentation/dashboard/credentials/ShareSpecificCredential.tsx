@@ -1,25 +1,31 @@
 import React from "react";
 import { Fragment } from "react";
-import { Text, StatusBar, SafeAreaView, View, Dimensions, Clipboard, ToastAndroid } from "react-native";
+import { Text, StatusBar, SafeAreaView, View, Dimensions, Share } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
 import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { UPortDocument } from "../../../model/data/UPortDocument";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
 import DidiButton from "../../util/DidiButton";
+import strings from "../../resources/strings";
+import { didiConnect } from "../../../model/store";
 
 export interface ShareSpecificCredentialProps {
-	document: UPortDocument;
+	document: CredentialDocument;
 }
+interface ShareSpecificCredentialStateProps {
+	sharePrefix: string;
+}
+type ShareSpecificCredentialInternalProps = ShareSpecificCredentialProps & ShareSpecificCredentialStateProps;
 
 type ShareSpecificCredentialState = {};
 
 export type ShareSpecificCredentialNavigation = {};
 
-export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
-	ShareSpecificCredentialProps,
+class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
+	ShareSpecificCredentialInternalProps,
 	ShareSpecificCredentialState,
 	ShareSpecificCredentialNavigation
 > {
@@ -31,14 +37,16 @@ export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={[commonStyles.view.body, { width: "90%" }]}>
-						<Text style={commonStyles.text.normal}>Escanea el siguiente codigo QR con otra aplicacion Didi</Text>
+						<Text style={commonStyles.text.normal}>{strings.share.explanation}</Text>
 						<QRCode size={0.9 * Dimensions.get("window").width} value={this.props.document.jwt} />
-						<Text style={commonStyles.text.normal}>O copia un texto equivalente</Text>
 						<DidiButton
-							title="Copiar"
+							title="Compartir Enlace"
 							onPress={() => {
-								Clipboard.setString(this.props.document.jwt);
-								ToastAndroid.show("Copiado", ToastAndroid.SHORT);
+								const jwt = this.props.document.jwt;
+								Share.share({
+									title: strings.share.title,
+									message: `${this.props.sharePrefix}/${jwt}`
+								});
 							}}
 						/>
 					</View>
@@ -47,3 +55,14 @@ export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+const connected = didiConnect(
+	ShareSpecificCredentialScreen,
+	(state): ShareSpecificCredentialStateProps => {
+		return {
+			sharePrefix: state.serviceSettings.sharePrefix
+		};
+	}
+);
+
+export { connected as ShareSpecificCredentialScreen };

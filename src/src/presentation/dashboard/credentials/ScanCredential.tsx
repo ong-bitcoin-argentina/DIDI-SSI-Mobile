@@ -10,8 +10,13 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
+import { didiConnect } from "../../../model/store";
 
 export type ScanCredentialProps = {};
+interface ScanCredentialStateProps {
+	ethrDidUri: string;
+}
+type ScanCredentialInternalProps = ScanCredentialProps & ScanCredentialStateProps;
 
 interface ScanCredentialState {
 	pendingScan?: string;
@@ -22,14 +27,14 @@ export interface ScanCredentialNavigation {
 	ScanDisclosureRequest: ScanDisclosureRequestProps;
 }
 
-export default class ScanCredentialScreen extends NavigationEnabledComponent<
-	ScanCredentialProps,
+class ScanCredentialScreen extends NavigationEnabledComponent<
+	ScanCredentialInternalProps,
 	ScanCredentialState,
 	ScanCredentialNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
 
-	constructor(props: ScanCredentialProps) {
+	constructor(props: ScanCredentialInternalProps) {
 		super(props);
 		this.state = {
 			failedScans: []
@@ -56,7 +61,7 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 		const startIndex = content.lastIndexOf("/");
 		const endIndex = content.lastIndexOf("?");
 		const toParse = content.substring(startIndex === -1 ? 0 : startIndex + 1, endIndex === -1 ? undefined : endIndex);
-		const parse = await parseJWT(toParse);
+		const parse = await parseJWT(toParse, this.props.ethrDidUri);
 
 		switch (parse._tag) {
 			case "Left":
@@ -76,14 +81,21 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 				switch (parse.right.type) {
 					case "SelectiveDisclosureRequest":
 						this.replace("ScanDisclosureRequest", {
-							request: parse.right,
-							requestJWT: toParse
+							request: {
+								content: parse.right,
+								jwt: toParse
+							},
+							onGoBack: screen => {
+								screen.replace("ScanCredential", {});
+							}
 						});
 						break;
 					case "VerifiedClaim":
 						this.replace("ScanCredentialToAdd", {
-							credential: parse.right,
-							jwt: toParse
+							credential: {
+								content: parse.right,
+								jwt: toParse
+							}
 						});
 						break;
 				}
@@ -91,3 +103,12 @@ export default class ScanCredentialScreen extends NavigationEnabledComponent<
 		}
 	}
 }
+
+const connected = didiConnect(
+	ScanCredentialScreen,
+	(state): ScanCredentialStateProps => {
+		return { ethrDidUri: state.serviceSettings.ethrDidUri };
+	}
+);
+
+export { connected as ScanCredentialScreen };

@@ -1,6 +1,6 @@
 import { VerifiedClaim } from "../../uPort/types/VerifiedClaim";
 
-export interface UPortDocument {
+export interface CredentialDocument {
 	jwt: string;
-	claim: VerifiedClaim;
+	content: VerifiedClaim;
 }

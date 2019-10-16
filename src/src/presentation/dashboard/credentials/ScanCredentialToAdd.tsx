@@ -3,30 +3,25 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
 import { StatusBar, View, Modal, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { connect } from "react-redux";
 
 import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 
-import { UPortDocument } from "../../../model/data/UPortDocument";
-import { VerifiedClaim } from "../../../uPort/types/VerifiedClaim";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
 import { uPortDocumentToCard } from "../common/documentToCard";
-import { StoreContent } from "../../../model/store";
 import { ScanCredentialProps } from "./ScanCredential";
-import StoreAction from "../../../model/StoreAction";
-import { Dispatch } from "redux";
+import { didiConnect } from "../../../model/store";
 
-export type ScanCredentialToAddProps = {
-	jwt: string;
-	credential: VerifiedClaim;
-};
+export interface ScanCredentialToAddProps {
+	credential: CredentialDocument;
+}
 interface ScanCredentialToAddStateProps {
-	documents: UPortDocument[];
+	existingTokens: string[];
 }
 interface ScanCredentialToAddDispatchProps {
-	addCredential(credential: UPortDocument): void;
+	addCredential(credential: CredentialDocument): void;
 }
 type ScanCredentialToAddInternalProps = ScanCredentialToAddProps &
 	ScanCredentialToAddStateProps &
@@ -50,8 +45,8 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={styles.body}>
-						{uPortDocumentToCard(this.documentToAdd())}
-						{this.props.documents.find(doc => doc.jwt === this.props.jwt) ? this.renderExisting() : this.renderNew()}
+						{uPortDocumentToCard(this.props.credential)}
+						{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
 					</View>
 				</SafeAreaView>
 			</Fragment>
@@ -72,38 +67,34 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private documentToAdd(): UPortDocument {
-		return {
-			claim: this.props.credential,
-			jwt: this.props.jwt
-		};
-	}
-
 	private acceptCredential() {
-		this.props.addCredential(this.documentToAdd());
+		this.props.addCredential(this.props.credential);
 		this.goBack();
 	}
 }
 
-export default connect(
-	(state: StoreContent): ScanCredentialToAddStateProps => {
+const connected = didiConnect(
+	ScanCredentialToAddScreen,
+	(state): ScanCredentialToAddStateProps => {
 		return {
-			documents: state.documents
+			existingTokens: state.tokens
 		};
 	},
-	(dispatch: Dispatch<StoreAction>): ScanCredentialToAddDispatchProps => {
+	(dispatch): ScanCredentialToAddDispatchProps => {
 		return {
-			addCredential: (credential: UPortDocument) => dispatch({ type: "DOCUMENT_ENSURE", content: [credential] })
+			addCredential: (credential: CredentialDocument) => dispatch({ type: "TOKEN_ENSURE", content: [credential.jwt] })
 		};
 	}
-)(ScanCredentialToAddScreen);
+);
+export { connected as ScanCredentialToAddScreen };
 
 const styles = StyleSheet.create({
 	body: {
 		width: "100%",
 		alignItems: "stretch",
 		justifyContent: "space-evenly",
-		flex: 1
+		flex: 1,
+		paddingHorizontal: 20
 	},
 	button: {
 		width: "80%",

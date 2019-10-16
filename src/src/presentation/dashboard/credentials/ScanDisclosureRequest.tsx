@@ -2,31 +2,35 @@ import React from "react";
 import { Fragment } from "react";
 import { StatusBar, View, Modal, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { connect } from "react-redux";
-
-import { RNUportHDSigner } from "react-native-uport-signer";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import { UPortDocument } from "../../../model/data/UPortDocument";
-import { SelectiveDisclosureRequest } from "../../../uPort/types/SelectiveDisclosureRequest";
-import { StoreContent } from "../../../model/store";
+import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { didiConnect } from "../../../model/store";
 import { Identity } from "../../../model/data/Identity";
 import { ScanCredentialProps } from "./ScanCredential";
 import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
+import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
+import { RequestDocument } from "../../../model/data/RequestDocument";
+import { RequestCard } from "../common/RequestCard";
 
 export interface ScanDisclosureRequestProps {
-	request: SelectiveDisclosureRequest;
-	requestJWT: string;
+	request: RequestDocument;
+	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
 	identity: Identity;
-	documents: UPortDocument[];
+	credentials: CredentialDocument[];
 }
-type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps & ScanDisclosureRequestStateProps;
+interface ScanDisclosureRequestDispatchProps {
+	storeRequest(request: RequestDocument): void;
+}
+type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
+	ScanDisclosureRequestStateProps &
+	ScanDisclosureRequestDispatchProps;
 
 type ScanDisclosureRequestState = {};
 export interface ScanDisclosureRequestNavigation {
@@ -40,16 +44,20 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
 
+	componentDidMount() {
+		this.props.storeRequest(this.props.request);
+	}
+
 	render() {
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={styles.body}>
-						<Text>{JSON.stringify(this.props.request)}</Text>
+						<RequestCard style={{ marginHorizontal: 20 }} request={this.props.request} />
 						<Text style={commonStyles.text.normal}>¿Enviar datos?</Text>
 						<DidiButton style={styles.button} title="Si" onPress={() => this.answerRequest()} />
-						<DidiButton style={styles.button} title="No" onPress={() => this.replace("ScanCredential", {})} />
+						<DidiButton style={styles.button} title="No" onPress={() => this.props.onGoBack(this)} />
 					</View>
 				</SafeAreaView>
 			</Fragment>
@@ -57,37 +65,43 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	}
 
 	private async answerRequest() {
-		// tslint:disable-next-line: variable-name
-		const { accessToken, missing } = await createDisclosureResponse(this.props);
+		try {
+			const { accessToken, missing } = await createDisclosureResponse(this.props);
+			try {
+				const success = await submitDisclosureResponse(this.props.request.content.callback, accessToken);
 
-		const result = await fetch(this.props.request.callback, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({ access_token: accessToken })
-		});
+				if (!success) {
+					alert("Respuesta rechazada por servidor");
+				} else if (missing.length > 0) {
+					alert(`Respuesta enviada. Puede ocurrir un error por falta de credenciales: ${missing.join(", ")}`);
+				} else {
+					alert("Respuesta enviada");
+				}
 
-		if (missing.length > 0) {
-			alert(`Respuesta enviada. Puede ocurrir un error por falta de credenciales: ${missing.join(", ")}`);
-		} else {
-			alert("Respuesta enviada");
+				this.props.onGoBack(this);
+			} catch (e) {
+				alert(`Error en la conexion: ${e}`);
+			}
+		} catch (e) {
+			alert(`Error al generar respuesta: ${e}`);
 		}
-
-		this.replace("ScanCredential", {});
-
-		return result;
 	}
 }
 
-export default connect(
-	(state: StoreContent): ScanDisclosureRequestStateProps => {
+export default didiConnect(
+	ScanDisclosureRequestScreen,
+	(state): ScanDisclosureRequestStateProps => {
 		return {
 			identity: state.identity,
-			documents: state.documents
+			credentials: state.credentials
+		};
+	},
+	(dispatch): ScanDisclosureRequestDispatchProps => {
+		return {
+			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] })
 		};
 	}
-)(ScanDisclosureRequestScreen);
+);
 
 const styles = StyleSheet.create({
 	body: {
