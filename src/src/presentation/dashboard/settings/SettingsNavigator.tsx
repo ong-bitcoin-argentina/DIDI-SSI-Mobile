@@ -9,6 +9,7 @@ import { StartAccessProps } from "../../access/StartAccess";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { AboutThisAppScreen } from "./AboutThisApp";
 import { ServiceSettingsScreen } from "./ServiceSettingsScreen";
+import { JWTDecoderScanScreen } from "./JWTDecoderScanScreen";
 
 interface SettingsNavigatorNavigation {
 	Access: StartAccessProps;
@@ -25,6 +26,7 @@ export default function(then: NavTree<SettingsNavigatorNavigation>) {
 		IdentitySettings: NavMap.from(IdentitySettingsScreen, {}),
 		AboutThisAppScreen: NavMap.from(AboutThisAppScreen, {}),
 		ServiceSettings: NavMap.from(ServiceSettingsScreen, {}),
+		JWTDecoderScreen: NavMap.from(JWTDecoderScanScreen, {}),
 		...then
 	});
 }

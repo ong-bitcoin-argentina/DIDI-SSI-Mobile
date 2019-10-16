@@ -1,6 +1,6 @@
 import React from "react";
 import { Fragment } from "react";
-import { StatusBar, View, Vibration, YellowBox } from "react-native";
+import { StatusBar, View, Vibration, YellowBox, Alert } from "react-native";
 
 import parseJWT from "../../../uPort/parseJWT";
 
@@ -65,7 +65,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 
 		switch (parse._tag) {
 			case "Left":
-				alert("Hubo un error al leer el codigo QR");
+				Alert.alert("Hubo un error al leer el codigo QR");
 				if (parse.left instanceof Error) {
 					console.warn(`${parse.left.name}\n\n${parse.left.message}\n\n${parse.left.stack}`);
 				} else {

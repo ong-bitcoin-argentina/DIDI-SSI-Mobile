@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Clipboard, ToastAndroid, ViewProps } from "react-native";
+import { View, Text, Clipboard, ToastAndroid, ViewProps, Alert } from "react-native";
 
 import { RNUportHDSigner, KeyAddress } from "react-native-uport-signer";
 
@@ -28,8 +28,8 @@ export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDis
 			<View {...this.props}>
 				<Text style={commonStyles.text.emphasis}>Identidad activa:</Text>
 				<Text style={commonStyles.text.normal}>{seed}</Text>
-				<DidiButton title="Mostrar Frase de Backup" onPress={() => this.showPhrase(seed)} />
-				<DidiButton title="Copiar Frase de Backup" onPress={() => this.copyPhrase(seed)} />
+				<DidiButton title="Mostrar Frase de Respaldo" onPress={() => this.showPhrase(seed)} />
+				<DidiButton title="Copiar Frase de Respaldo" onPress={() => this.copyPhrase(seed)} />
 				{this.state.deleteIdentityOnNextTap ? (
 					<DidiButton
 						style={{ backgroundColor: "red" }}
@@ -45,7 +45,7 @@ export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDis
 
 	private showPhrase(seed: KeyAddress) {
 		RNUportHDSigner.showSeed(seed, "Reasons").then(phrase => {
-			alert(phrase);
+			Alert.alert("Frase de Respaldo", phrase);
 		});
 	}
 

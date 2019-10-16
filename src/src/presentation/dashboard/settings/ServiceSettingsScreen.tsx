@@ -1,7 +1,7 @@
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { Fragment } from "react";
 import React from "react";
-import { StatusBar, SafeAreaView, View, Text } from "react-native";
+import { StatusBar, SafeAreaView, View, Text, ScrollView } from "react-native";
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
@@ -10,6 +10,7 @@ import { ServiceSettings } from "../../../model/data/ServiceSettings";
 import TypedObject from "../../../util/TypedObject";
 import DidiTextInput from "../../util/DidiTextInput";
 import DidiButton from "../../util/DidiButton";
+import { defaultServiceSettings } from "../../../model/reducers/serviceSettingsReducer";
 
 export type ServiceSettingsScreenProps = {};
 interface ServiceSettingsScreenStateProps {
@@ -48,16 +49,20 @@ class ServiceSettingsScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<View style={[commonStyles.view.body, { marginVertical: 30, justifyContent: "flex-start" }]}>
+					<ScrollView style={{}} contentContainerStyle={{ padding: 30, justifyContent: "flex-start" }}>
+						<Text style={[commonStyles.text.emphasis, { marginBottom: 20 }]}>
+							Dejar un input vacio y guardar lo retorna a su valor por defecto
+						</Text>
 						{TypedObject.keys(this.props.serviceSettings).map(key => {
+							const description = `${displayNames[key]}\nDefault: ${defaultServiceSettings[key]}\nActual: ${this.props.serviceSettings[key]}`;
 							return (
 								<DidiTextInput
 									key={key}
-									description={displayNames[key]}
-									placeholder=""
+									description={description}
+									placeholder={defaultServiceSettings[key]}
 									textInputProps={{
 										defaultValue: this.props.serviceSettings[key],
-										onChangeText: text => this.setState({ [key]: text })
+										onChangeText: text => this.setState({ [key]: text ? text : defaultServiceSettings[key] })
 									}}
 								/>
 							);
@@ -69,7 +74,7 @@ class ServiceSettingsScreen extends NavigationEnabledComponent<
 								this.goBack();
 							}}
 						/>
-					</View>
+					</ScrollView>
 				</SafeAreaView>
 			</Fragment>
 		);
