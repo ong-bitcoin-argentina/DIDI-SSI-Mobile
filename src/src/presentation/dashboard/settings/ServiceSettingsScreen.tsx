@@ -25,6 +25,12 @@ type ServiceSettingsScreenInternalProps = ServiceSettingsScreenProps &
 type ServiceSettingsScreenState = Partial<ServiceSettings>;
 export type ServiceSettingsScreenNavigation = {};
 
+const displayNames: { [K in keyof ServiceSettings]: string } = {
+	ethrDidUri: "ethr-did-resolver URI",
+	sharePrefix: "Share URI Prefix",
+	trustGraphUri: "TrustGraph (Mouro) URI"
+};
+
 class ServiceSettingsScreen extends NavigationEnabledComponent<
 	ServiceSettingsScreenInternalProps,
 	ServiceSettingsScreenState,
@@ -42,12 +48,12 @@ class ServiceSettingsScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
+					<View style={[commonStyles.view.body, { marginVertical: 30, justifyContent: "flex-start" }]}>
 						{TypedObject.keys(this.props.serviceSettings).map(key => {
 							return (
 								<DidiTextInput
 									key={key}
-									description={key}
+									description={displayNames[key]}
 									placeholder=""
 									textInputProps={{
 										defaultValue: this.props.serviceSettings[key],

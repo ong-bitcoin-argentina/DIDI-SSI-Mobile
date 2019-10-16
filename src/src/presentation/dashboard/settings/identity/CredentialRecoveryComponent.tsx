@@ -13,6 +13,7 @@ export type CredentialRecoveryProps = ViewProps;
 interface CredentialRecoveryStateProps {
 	tokens: string[];
 	trustGraphUri: string;
+	ethrDidUri: string;
 }
 interface CredentialRecoveryDispatchProps {
 	recoverTokens(tokens: string[]): void;
@@ -63,7 +64,7 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 
 	private async addToLocalDocs(received: string[]) {
 		const acceptToken = async (token: string): Promise<string | undefined> => {
-			if (this.props.tokens.includes(token) || isRight(await parseJWT(token))) {
+			if (this.props.tokens.includes(token) || isRight(await parseJWT(token, this.props.ethrDidUri))) {
 				return token;
 			} else {
 				return undefined;
@@ -80,7 +81,8 @@ const connected = didiConnect(
 	(store): CredentialRecoveryStateProps => {
 		return {
 			tokens: store.tokens,
-			trustGraphUri: store.serviceSettings.trustGraphUri
+			trustGraphUri: store.serviceSettings.trustGraphUri,
+			ethrDidUri: store.serviceSettings.ethrDidUri
 		};
 	},
 	(dispatch): CredentialRecoveryDispatchProps => {

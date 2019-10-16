@@ -7,7 +7,8 @@ export interface ServiceSettingAction {
 
 const defaultSettings: ServiceSettings = {
 	sharePrefix: "http://192.168.2.144:1234",
-	trustGraphUri: "https://edge.uport.me/graphql"
+	trustGraphUri: "https://edge.uport.me/graphql",
+	ethrDidUri: "https://rinkeby.infura.io/ethr-did"
 };
 
 export function serviceSettingsReducer(
