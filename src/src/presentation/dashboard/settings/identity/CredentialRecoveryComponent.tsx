@@ -71,7 +71,7 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 			}
 		};
 
-		const verifiedTokens = TypedArray.flatMap(await Promise.all(received.map(acceptToken)), x => x);
+		const verifiedTokens = TypedArray.flatMap(await Promise.all(received.reverse().map(acceptToken)), x => x);
 		this.props.recoverTokens(verifiedTokens);
 	}
 }
