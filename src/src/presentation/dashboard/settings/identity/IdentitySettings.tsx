@@ -37,7 +37,7 @@ export default class IdentitySettingsScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>{this.renderContent()}</View>
+					<View style={[commonStyles.view.body, { flexDirection: "row" }]}>{this.renderContent()}</View>
 				</SafeAreaView>
 			</Fragment>
 		);
