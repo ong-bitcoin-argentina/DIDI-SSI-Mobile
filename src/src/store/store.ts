@@ -21,6 +21,7 @@ import { CredentialDocument } from "../model/CredentialDocument";
 import { RequestDocument } from "../model/RequestDocument";
 import { DerivedCredential } from "../model/DerivedCredential";
 import { microCredentialSelector } from "./selector/microCredentialSelector";
+import { JWTParseError } from "../uPort/parseJWT";
 
 export type StoreAction = NormalizedStoreAction;
 
@@ -28,7 +29,7 @@ export interface StoreContent extends NormalizedStoreContent {
 	credentials: Array<DerivedCredential<CredentialDocument>>;
 	microCredentials: CredentialDocument[];
 	requests: RequestDocument[];
-	parsedTokens: Array<Either<any, CredentialDocument | RequestDocument>>;
+	parsedTokens: Array<Either<JWTParseError, CredentialDocument | RequestDocument>>;
 	samples: SampleDocument[];
 	identity: Identity;
 	recentActivity: RecentActivity[];
