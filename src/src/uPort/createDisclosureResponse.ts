@@ -76,13 +76,13 @@ export function getResponseClaims(
 export interface DisclosureResponseArguments {
 	request: RequestDocument;
 	identity: Identity;
-	credentials: CredentialDocument[];
+	microCredentials: CredentialDocument[];
 }
 
 export async function createDisclosureResponse(
 	args: DisclosureResponseArguments
 ): Promise<{ accessToken: string; missing: string[] }> {
-	const { missing, own, verified } = getResponseClaims(args.request.content, args.credentials, args.identity);
+	const { missing, own, verified } = getResponseClaims(args.request.content, args.microCredentials, args.identity);
 
 	const credentials = await getCredentials();
 	const accessToken = await credentials.createDisclosureResponse({

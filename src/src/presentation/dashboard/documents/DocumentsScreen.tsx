@@ -9,6 +9,7 @@ import { DashboardScreenProps } from "../home/Dashboard";
 import { didiConnect } from "../../../store/store";
 import { uPortDocumentToCard, sampleDocumentToCard } from "../common/documentToCard";
 import { CredentialDocument } from "../../../model/CredentialDocument";
+import { DerivedCredential } from "../../../model/DerivedCredential";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;
@@ -16,7 +17,7 @@ export type DocumentsScreenNavigation = {
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenInternalProps extends DocumentsScreenProps {
-	credentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
 	samples: SampleDocument[];
 	filter: (type: DocumentFilterType) => boolean;
 }

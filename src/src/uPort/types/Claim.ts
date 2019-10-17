@@ -5,7 +5,7 @@ export const ClaimCodec = t.record(t.string, JSONValueCodec);
 
 export type Claim = typeof ClaimCodec._A;
 
-type FlattenedClaim = Record<string, string>;
+export type FlattenedClaim = Record<string, string>;
 
 export function flattenClaim(rootClaim: Claim): { root: string; rest: FlattenedClaim } {
 	const entries = Object.entries(rootClaim);

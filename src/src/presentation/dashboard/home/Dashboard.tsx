@@ -23,11 +23,12 @@ import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToC
 import { SampleDocument } from "../../../model/SampleDocument";
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { NotificationScreenProps } from "./NotificationScreen";
+import { DerivedCredential } from "../../../model/DerivedCredential";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
 	person: Identity;
-	credentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }

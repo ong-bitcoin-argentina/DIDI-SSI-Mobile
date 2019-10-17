@@ -19,11 +19,14 @@ import { Identity } from "../model/Identity";
 import { RecentActivity } from "../model/RecentActivity";
 import { CredentialDocument } from "../model/CredentialDocument";
 import { RequestDocument } from "../model/RequestDocument";
+import { DerivedCredential } from "../model/DerivedCredential";
+import { microCredentialSelector } from "./selector/microCredentialSelector";
 
 export type StoreAction = NormalizedStoreAction;
 
 export interface StoreContent extends NormalizedStoreContent {
-	credentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
+	microCredentials: CredentialDocument[];
 	requests: RequestDocument[];
 	parsedTokens: Array<Either<any, CredentialDocument | RequestDocument>>;
 	samples: SampleDocument[];
@@ -36,6 +39,7 @@ function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StatePro
 		return mapStateToProps({
 			...state,
 			credentials: credentialSelector(state),
+			microCredentials: microCredentialSelector(state),
 			requests: requestSelector(state),
 			parsedTokens: parsedTokenSelector(state),
 			identity: sampleIdentity,

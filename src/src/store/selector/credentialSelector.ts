@@ -1,18 +1,9 @@
 import { createSelector } from "reselect";
 
-import { parsedTokenSelector } from "./parsedTokenSelector";
-import { isRight } from "fp-ts/lib/Either";
-import TypedArray from "../../util/TypedArray";
-import { CredentialDocument } from "../../model/CredentialDocument";
+import { microCredentialSelector } from "./microCredentialSelector";
+import { deriveCredentials } from "../../model/DerivedCredential";
 
 export const credentialSelector = createSelector(
-	parsedTokenSelector,
-	tokens =>
-		TypedArray.flatMap(tokens, (tk): CredentialDocument | null => {
-			if (isRight(tk) && tk.right.content.type === "VerifiedClaim") {
-				return tk.right as CredentialDocument;
-			} else {
-				return null;
-			}
-		})
+	microCredentialSelector,
+	mc => deriveCredentials(mc)
 );

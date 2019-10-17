@@ -13,6 +13,7 @@ import { CredentialDocument } from "../../../model/CredentialDocument";
 import { uPortDocumentToCard } from "../common/documentToCard";
 import { ScanCredentialProps } from "./ScanCredential";
 import { didiConnect } from "../../../store/store";
+import { liftToDerivedCredential } from "../../../model/DerivedCredential";
 
 export interface ScanCredentialToAddProps {
 	credential: CredentialDocument;
@@ -45,7 +46,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={styles.body}>
-						{uPortDocumentToCard(this.props.credential)}
+						{uPortDocumentToCard(liftToDerivedCredential(this.props.credential), 0)}
 						{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
 					</View>
 				</SafeAreaView>
