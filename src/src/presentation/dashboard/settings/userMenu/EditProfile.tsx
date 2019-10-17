@@ -11,8 +11,8 @@ import Validator from "../../../access/helpers/validator";
 import DropdownMenu from "../../../util/DropdownMenu";
 import colors from "../../../resources/colors";
 import UserHeadingComponent from "../userData/UserHeading";
-import { Identity } from "../../../../model/data/Identity";
-import { didiConnect } from "../../../../model/store";
+import { Identity } from "../../../../model/Identity";
+import { didiConnect } from "../../../../store/store";
 
 export type EditProfileProps = {};
 interface EditProfileInternalProps {

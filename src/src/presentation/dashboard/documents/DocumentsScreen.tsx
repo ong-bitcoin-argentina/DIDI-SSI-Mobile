@@ -4,11 +4,12 @@ import React from "react";
 import { StatusBar, SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
-import { DocumentFilterType, SampleDocument } from "../../../model/data/SampleDocument";
+import { DocumentFilterType, SampleDocument } from "../../../model/SampleDocument";
 import { DashboardScreenProps } from "../home/Dashboard";
-import { didiConnect } from "../../../model/store";
+import { didiConnect } from "../../../store/store";
 import { uPortDocumentToCard, sampleDocumentToCard } from "../common/documentToCard";
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { CredentialDocument } from "../../../model/CredentialDocument";
+import { DerivedCredential } from "../../../model/DerivedCredential";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;
@@ -16,7 +17,7 @@ export type DocumentsScreenNavigation = {
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenInternalProps extends DocumentsScreenProps {
-	credentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
 	samples: SampleDocument[];
 	filter: (type: DocumentFilterType) => boolean;
 }

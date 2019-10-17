@@ -2,7 +2,7 @@ import React from "react";
 import { Fragment } from "react";
 import { StatusBar, View, Vibration, YellowBox, Alert } from "react-native";
 
-import parseJWT from "../../../uPort/parseJWT";
+import parseJWT, { JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
 
 import themes from "../../resources/themes";
 import DidiQRScanner from "../common/DidiQRScanner";
@@ -10,7 +10,8 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
-import { didiConnect } from "../../../model/store";
+import { didiConnect } from "../../../store/store";
+import { isLeft, isRight } from "fp-ts/lib/Either";
 
 export type ScanCredentialProps = {};
 interface ScanCredentialStateProps {
@@ -19,8 +20,7 @@ interface ScanCredentialStateProps {
 type ScanCredentialInternalProps = ScanCredentialProps & ScanCredentialStateProps;
 
 interface ScanCredentialState {
-	pendingScan?: string;
-	failedScans: string[];
+	scanPaused: boolean;
 }
 export interface ScanCredentialNavigation {
 	ScanCredentialToAdd: ScanCredentialToAddProps;
@@ -37,7 +37,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 	constructor(props: ScanCredentialInternalProps) {
 		super(props);
 		this.state = {
-			failedScans: []
+			scanPaused: false
 		};
 	}
 
@@ -51,56 +51,89 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	private async onScanQR(content: string) {
-		if (this.state.pendingScan === content || this.state.failedScans.includes(content)) {
+		if (this.state.scanPaused) {
 			return;
 		}
-		this.setState({ pendingScan: content });
+		this.setState({ scanPaused: true });
+
+		const tokenPart = "[-_=a-zA-Z0-9]+";
+		const matches = content.match(new RegExp(`${tokenPart}\\.${tokenPart}\\.${tokenPart}`, "g")) || [];
+		if (matches.length === 0) {
+			this.showAlert("No hay credenciales", "El codigo QR escaneado no contiene credenciales");
+			return;
+		}
+		const toParse = matches.find(match => isRight(unverifiedParseJWT(match))) || matches[0];
+
+		const unverifiedParse = unverifiedParseJWT(toParse);
+		if (isLeft(unverifiedParse)) {
+			const { title, subtitle } = this.errorMessage(unverifiedParse.left);
+			this.showAlert(title, subtitle);
+			return;
+		}
 
 		Vibration.vibrate(400, false);
 
-		const startIndex = content.lastIndexOf("/");
-		const endIndex = content.lastIndexOf("?");
-		const toParse = content.substring(startIndex === -1 ? 0 : startIndex + 1, endIndex === -1 ? undefined : endIndex);
 		const parse = await parseJWT(toParse, this.props.ethrDidUri);
 
-		switch (parse._tag) {
-			case "Left":
-				Alert.alert("Hubo un error al leer el codigo QR");
-				if (parse.left instanceof Error) {
-					console.warn(`${parse.left.name}\n\n${parse.left.message}\n\n${parse.left.stack}`);
-				} else {
-					console.warn(parse.left);
-				}
-
-				this.setState({ failedScans: [content, ...this.state.failedScans] });
-				setTimeout(() => {
-					this.setState({ pendingScan: undefined });
-				}, 1000);
-				break;
-			case "Right":
-				switch (parse.right.type) {
-					case "SelectiveDisclosureRequest":
-						this.replace("ScanDisclosureRequest", {
-							request: {
-								content: parse.right,
-								jwt: toParse
-							},
-							onGoBack: screen => {
-								screen.replace("ScanCredential", {});
-							}
-						});
-						break;
-					case "VerifiedClaim":
-						this.replace("ScanCredentialToAdd", {
-							credential: {
-								content: parse.right,
-								jwt: toParse
-							}
-						});
-						break;
-				}
-				break;
+		if (isLeft(parse)) {
+			const { title, subtitle } = this.errorMessage(parse.left);
+			this.showAlert(title, subtitle);
+		} else {
+			switch (parse.right.type) {
+				case "SelectiveDisclosureRequest":
+					this.replace("ScanDisclosureRequest", {
+						request: {
+							content: parse.right,
+							jwt: toParse
+						},
+						onGoBack: screen => {
+							screen.replace("ScanCredential", {});
+						}
+					});
+					break;
+				case "VerifiedClaim":
+					this.replace("ScanCredentialToAdd", {
+						credential: {
+							content: parse.right,
+							jwt: toParse
+						}
+					});
+					break;
+			}
 		}
+	}
+
+	private errorMessage(error: JWTParseError): { title: string; subtitle?: string } {
+		const displayTimestamp = (ts: number) => new Date(ts * 1000).toLocaleString();
+		const displayError = (e: unknown) => (e instanceof Error ? e.message : JSON.stringify(e));
+
+		switch (error.type) {
+			case "AFTER_EXP":
+				return {
+					title: "Credencial Vencida",
+					subtitle: `Hora actual: ${displayTimestamp(error.current)}, Vencimiento: ${displayTimestamp(error.expected)}`
+				};
+			case "BEFORE_IAT":
+				return {
+					title: "Error de Horario",
+					subtitle: "Esta credencial indica que fue emitida en el futuro. Verifique la hora de su dispositivo."
+				};
+			case "RESOLVER_CREATION_ERROR":
+				return { title: "Error de Conexión", subtitle: "Verifique tener acceso a internet." };
+			case "JWT_DECODE_ERROR":
+				console.warn(displayError(error.error));
+				return { title: "Error al Decodificar", subtitle: "Error al extraer credenciales." };
+			case "SHAPE_DECODE_ERROR":
+				return { title: "Error al Interpretar Credencial", subtitle: displayError(error.error) };
+			case "VERIFICATION_ERROR":
+				console.warn(displayError(error.error));
+				return { title: "Error al Verificar Credencial", subtitle: "Verifique tener acceso a internet." };
+		}
+	}
+
+	private showAlert(title: string, subtitle?: string) {
+		const unpause = () => this.setState({ scanPaused: false });
+		Alert.alert(title, subtitle, [{ text: "OK", onPress: unpause }], { onDismiss: unpause });
 	}
 }
 

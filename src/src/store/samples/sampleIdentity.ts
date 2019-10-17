@@ -1,4 +1,4 @@
-import { Identity, ValidationState } from "../data/Identity";
+import { Identity, ValidationState } from "../../model/Identity";
 
 export const sampleIdentity: Identity = {
 	id: "@lili.martinez",

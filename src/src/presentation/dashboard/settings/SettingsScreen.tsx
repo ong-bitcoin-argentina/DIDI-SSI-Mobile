@@ -9,13 +9,13 @@ import themes from "../../resources/themes";
 import strings from "../../resources/strings";
 import colors from "../../resources/colors";
 import DidiButton from "../../util/DidiButton";
-import { Identity } from "../../../model/data/Identity";
+import { Identity } from "../../../model/Identity";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { StartAccessProps } from "../../access/StartAccess";
 import { UserDataProps } from "./userData/UserData";
 import { IdentitySettingsProps } from "./identity/IdentitySettings";
 import { ChangePasswordProps } from "./userMenu/ChangePassword";
-import { StoreContent, didiConnect } from "../../../model/store";
+import { StoreContent, didiConnect } from "../../../store/store";
 import { AboutThisAppScreenProps } from "./AboutThisApp";
 
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";

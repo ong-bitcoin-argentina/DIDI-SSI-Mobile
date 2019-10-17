@@ -16,6 +16,8 @@ export const VerifiedClaimInnerCodec = t.intersection([
 ]);
 export type VerifiedClaim = typeof VerifiedClaimInnerCodec._A;
 
+export type ClaimMetadata = Omit<VerifiedClaim, "type" | "claims">;
+
 const VerifiedClaimOuterCodec = t.intersection([
 	t.type({
 		iss: t.string,

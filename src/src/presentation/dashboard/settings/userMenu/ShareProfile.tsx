@@ -9,8 +9,8 @@ import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
 import { connect } from "react-redux";
-import { Identity } from "../../../../model/data/Identity";
-import { StoreContent, didiConnect } from "../../../../model/store";
+import { Identity } from "../../../../model/Identity";
+import { StoreContent, didiConnect } from "../../../../store/store";
 
 export type ShareProfileProps = {};
 interface ShareProfileInternalProps {

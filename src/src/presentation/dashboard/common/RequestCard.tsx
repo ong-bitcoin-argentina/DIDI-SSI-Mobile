@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, ViewProps, View, StyleSheet } from "react-native";
 
 import DidiCardBody from "./DidiCardBody";
-import { RequestDocument } from "../../../model/data/RequestDocument";
+import { RequestDocument } from "../../../model/RequestDocument";
 import colors from "../../resources/colors";
 
 export interface RequestCardProps extends ViewProps {

@@ -12,22 +12,23 @@ import DidiActivity from "./DidiActivity";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import DropdownMenu from "../../util/DropdownMenu";
-import { Identity } from "../../../model/data/Identity";
-import { RecentActivity } from "../../../model/data/RecentActivity";
+import { Identity } from "../../../model/Identity";
+import { RecentActivity } from "../../../model/RecentActivity";
 import HomeHeader from "./HomeHeader";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
-import { didiConnect } from "../../../model/store";
+import { didiConnect } from "../../../store/store";
 import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToCard";
-import { SampleDocument } from "../../../model/data/SampleDocument";
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { SampleDocument } from "../../../model/SampleDocument";
+import { CredentialDocument } from "../../../model/CredentialDocument";
 import { NotificationScreenProps } from "./NotificationScreen";
+import { DerivedCredential } from "../../../model/DerivedCredential";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {
 	person: Identity;
-	credentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }

@@ -14,18 +14,22 @@ import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { credentialSelector } from "./selector/credentialSelector";
 import { requestSelector } from "./selector/requestSelector";
 
-import { SampleDocument } from "./data/SampleDocument";
-import { Identity } from "./data/Identity";
-import { RecentActivity } from "./data/RecentActivity";
-import { CredentialDocument } from "./data/CredentialDocument";
-import { RequestDocument } from "./data/RequestDocument";
+import { SampleDocument } from "../model/SampleDocument";
+import { Identity } from "../model/Identity";
+import { RecentActivity } from "../model/RecentActivity";
+import { CredentialDocument } from "../model/CredentialDocument";
+import { RequestDocument } from "../model/RequestDocument";
+import { DerivedCredential } from "../model/DerivedCredential";
+import { microCredentialSelector } from "./selector/microCredentialSelector";
+import { JWTParseError } from "../uPort/parseJWT";
 
 export type StoreAction = NormalizedStoreAction;
 
 export interface StoreContent extends NormalizedStoreContent {
-	credentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
+	microCredentials: CredentialDocument[];
 	requests: RequestDocument[];
-	parsedTokens: Array<Either<any, CredentialDocument | RequestDocument>>;
+	parsedTokens: Array<Either<JWTParseError, CredentialDocument | RequestDocument>>;
 	samples: SampleDocument[];
 	identity: Identity;
 	recentActivity: RecentActivity[];
@@ -36,6 +40,7 @@ function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StatePro
 		return mapStateToProps({
 			...state,
 			credentials: credentialSelector(state),
+			microCredentials: microCredentialSelector(state),
 			requests: requestSelector(state),
 			parsedTokens: parsedTokenSelector(state),
 			identity: sampleIdentity,

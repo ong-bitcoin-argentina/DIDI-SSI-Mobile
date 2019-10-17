@@ -26,8 +26,9 @@ export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDis
 		const seed = this.props.seed;
 		return (
 			<View {...this.props}>
-				<Text style={commonStyles.text.emphasis}>Identidad activa:</Text>
+				<Text style={commonStyles.text.emphasis}>Identidad activa (DID):</Text>
 				<Text style={commonStyles.text.normal}>{seed}</Text>
+				<DidiButton title="Copiar DID" onPress={() => this.copyDID(seed)} />
 				<DidiButton title="Mostrar Frase de Respaldo" onPress={() => this.showPhrase(seed)} />
 				<DidiButton title="Copiar Frase de Respaldo" onPress={() => this.copyPhrase(seed)} />
 				{this.state.deleteIdentityOnNextTap ? (
@@ -41,6 +42,11 @@ export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDis
 				)}
 			</View>
 		);
+	}
+
+	private copyDID(seed: KeyAddress) {
+		Clipboard.setString(seed);
+		ToastAndroid.show("Copiado", ToastAndroid.SHORT);
 	}
 
 	private showPhrase(seed: KeyAddress) {

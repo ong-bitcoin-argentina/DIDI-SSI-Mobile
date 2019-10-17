@@ -1,4 +1,4 @@
-import { RecentActivity } from "../data/RecentActivity";
+import { RecentActivity } from "../../model/RecentActivity";
 
 export const sampleRecentActivity: RecentActivity[] = [
 	{

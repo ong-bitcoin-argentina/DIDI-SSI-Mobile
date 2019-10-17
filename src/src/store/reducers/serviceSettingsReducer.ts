@@ -1,4 +1,4 @@
-import { ServiceSettings } from "../data/ServiceSettings";
+import { ServiceSettings } from "../../model/ServiceSettings";
 
 export interface ServiceSettingAction {
 	type: "SERVICE_SETTINGS_SET";

@@ -2,7 +2,7 @@ import { createMaterialTopTabNavigator, createStackNavigator } from "react-navig
 import themes from "../../resources/themes";
 import DocumentsScreen, { DocumentsScreenNavigation } from "./DocumentsScreen";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import { DocumentFilterType } from "../../../model/data/SampleDocument";
+import { DocumentFilterType } from "../../../model/SampleDocument";
 import strings from "../../resources/strings";
 
 function screen(title: string, filter: (type: DocumentFilterType) => boolean) {

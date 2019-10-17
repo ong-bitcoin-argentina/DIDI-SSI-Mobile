@@ -20,6 +20,7 @@ import ShareCredentialScreen from "./credentials/ShareCredential";
 import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
 import { NotificationScreen } from "./home/NotificationScreen";
 import ScanDisclosureRequestScreen from "./credentials/ScanDisclosureRequest";
+import { ShareMicroCredentialScreen } from "./credentials/ShareMicroCredential";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -104,6 +105,9 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen)),
 		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen)),
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
+			ShareMicroCredential: NavMap.from(ShareMicroCredentialScreen, {
+				ShareSpecificCredential: NavMap.placeholder(ShareSpecificCredentialScreen)
+			}),
 			ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {})
 		}),
 		NotificationScreen: NavMap.from(NotificationScreen, {

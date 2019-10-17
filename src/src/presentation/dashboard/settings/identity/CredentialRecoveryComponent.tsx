@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, ViewProps } from "react-native";
 import { isRight } from "fp-ts/lib/Either";
 
-import { didiConnect } from "../../../../model/store";
+import { didiConnect } from "../../../../store/store";
 import parseJWT from "../../../../uPort/parseJWT";
 import { TrustGraphClient } from "../../../../uPort/TrustGraphClient";
 import TypedArray from "../../../../util/TypedArray";
@@ -71,7 +71,7 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 			}
 		};
 
-		const verifiedTokens = TypedArray.flatMap(await Promise.all(received.map(acceptToken)), x => x);
+		const verifiedTokens = TypedArray.flatMap(await Promise.all(received.reverse().map(acceptToken)), x => x);
 		this.props.recoverTokens(verifiedTokens);
 	}
 }

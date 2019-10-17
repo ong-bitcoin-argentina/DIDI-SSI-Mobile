@@ -8,14 +8,15 @@ import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
-import { didiConnect } from "../../../model/store";
-import { Identity } from "../../../model/data/Identity";
+import { CredentialDocument } from "../../../model/CredentialDocument";
+import { didiConnect } from "../../../store/store";
+import { Identity } from "../../../model/Identity";
 import { ScanCredentialProps } from "./ScanCredential";
 import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
 import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
-import { RequestDocument } from "../../../model/data/RequestDocument";
+import { RequestDocument } from "../../../model/RequestDocument";
 import { RequestCard } from "../common/RequestCard";
+import { DerivedCredential } from "../../../model/DerivedCredential";
 
 export interface ScanDisclosureRequestProps {
 	request: RequestDocument;
@@ -23,7 +24,8 @@ export interface ScanDisclosureRequestProps {
 }
 interface ScanDisclosureRequestStateProps {
 	identity: Identity;
-	credentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
+	microCredentials: CredentialDocument[];
 }
 interface ScanDisclosureRequestDispatchProps {
 	storeRequest(request: RequestDocument): void;
@@ -66,7 +68,11 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 	private async answerRequest() {
 		try {
-			const { accessToken, missing } = await createDisclosureResponse(this.props);
+			const { accessToken, missing } = await createDisclosureResponse({
+				request: this.props.request,
+				identity: this.props.identity,
+				microCredentials: this.props.microCredentials
+			});
 			try {
 				const success = await submitDisclosureResponse(this.props.request.content.callback, accessToken);
 
@@ -93,7 +99,8 @@ export default didiConnect(
 	(state): ScanDisclosureRequestStateProps => {
 		return {
 			identity: state.identity,
-			credentials: state.credentials
+			credentials: state.credentials,
+			microCredentials: state.microCredentials
 		};
 	},
 	(dispatch): ScanDisclosureRequestDispatchProps => {

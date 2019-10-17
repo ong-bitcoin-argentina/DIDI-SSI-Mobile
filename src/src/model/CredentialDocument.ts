@@ -1,4 +1,4 @@
-import { VerifiedClaim } from "../../uPort/types/VerifiedClaim";
+import { VerifiedClaim } from "../uPort/types/VerifiedClaim";
 
 export interface CredentialDocument {
 	jwt: string;
