@@ -11,7 +11,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
 import { didiConnect } from "../../../store/store";
-import { isLeft } from "fp-ts/lib/Either";
+import { isLeft, isRight } from "fp-ts/lib/Either";
 
 export type ScanCredentialProps = {};
 interface ScanCredentialStateProps {
@@ -62,7 +62,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			this.showAlert("No hay credenciales", "El codigo QR escaneado no contiene credenciales");
 			return;
 		}
-		const toParse = matches[0];
+		const toParse = matches.find(match => isRight(unverifiedParseJWT(match))) || matches[0];
 
 		const unverifiedParse = unverifiedParseJWT(toParse);
 		if (isLeft(unverifiedParse)) {
