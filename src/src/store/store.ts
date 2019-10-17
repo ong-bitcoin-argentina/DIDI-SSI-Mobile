@@ -14,11 +14,11 @@ import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { credentialSelector } from "./selector/credentialSelector";
 import { requestSelector } from "./selector/requestSelector";
 
-import { SampleDocument } from "./data/SampleDocument";
-import { Identity } from "./data/Identity";
-import { RecentActivity } from "./data/RecentActivity";
-import { CredentialDocument } from "./data/CredentialDocument";
-import { RequestDocument } from "./data/RequestDocument";
+import { SampleDocument } from "../model/SampleDocument";
+import { Identity } from "../model/Identity";
+import { RecentActivity } from "../model/RecentActivity";
+import { CredentialDocument } from "../model/CredentialDocument";
+import { RequestDocument } from "../model/RequestDocument";
 
 export type StoreAction = NormalizedStoreAction;
 

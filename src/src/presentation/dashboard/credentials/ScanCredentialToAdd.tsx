@@ -9,10 +9,10 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { CredentialDocument } from "../../../model/CredentialDocument";
 import { uPortDocumentToCard } from "../common/documentToCard";
 import { ScanCredentialProps } from "./ScanCredential";
-import { didiConnect } from "../../../model/store";
+import { didiConnect } from "../../../store/store";
 
 export interface ScanCredentialToAddProps {
 	credential: CredentialDocument;

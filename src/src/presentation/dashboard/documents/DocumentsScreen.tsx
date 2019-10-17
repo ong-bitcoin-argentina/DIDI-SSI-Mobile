@@ -4,11 +4,11 @@ import React from "react";
 import { StatusBar, SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import commonStyles from "../../access/resources/commonStyles";
 import themes from "../../resources/themes";
-import { DocumentFilterType, SampleDocument } from "../../../model/data/SampleDocument";
+import { DocumentFilterType, SampleDocument } from "../../../model/SampleDocument";
 import { DashboardScreenProps } from "../home/Dashboard";
-import { didiConnect } from "../../../model/store";
+import { didiConnect } from "../../../store/store";
 import { uPortDocumentToCard, sampleDocumentToCard } from "../common/documentToCard";
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { CredentialDocument } from "../../../model/CredentialDocument";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;

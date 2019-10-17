@@ -4,8 +4,8 @@ import CredentialCard from "./CredentialCard";
 
 import { flattenClaim } from "../../../uPort/types/Claim";
 import colors from "../../resources/colors";
-import { SampleDocument } from "../../../model/data/SampleDocument";
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { SampleDocument } from "../../../model/SampleDocument";
+import { CredentialDocument } from "../../../model/CredentialDocument";
 
 export function sampleDocumentToCard(document: SampleDocument, index: number) {
 	return (

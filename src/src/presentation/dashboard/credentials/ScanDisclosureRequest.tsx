@@ -8,13 +8,13 @@ import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
-import { didiConnect } from "../../../model/store";
-import { Identity } from "../../../model/data/Identity";
+import { CredentialDocument } from "../../../model/CredentialDocument";
+import { didiConnect } from "../../../store/store";
+import { Identity } from "../../../model/Identity";
 import { ScanCredentialProps } from "./ScanCredential";
 import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
 import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
-import { RequestDocument } from "../../../model/data/RequestDocument";
+import { RequestDocument } from "../../../model/RequestDocument";
 import { RequestCard } from "../common/RequestCard";
 
 export interface ScanDisclosureRequestProps {

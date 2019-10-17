@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, ViewProps } from "react-native";
 import { isRight } from "fp-ts/lib/Either";
 
-import { didiConnect } from "../../../../model/store";
+import { didiConnect } from "../../../../store/store";
 import parseJWT from "../../../../uPort/parseJWT";
 import { TrustGraphClient } from "../../../../uPort/TrustGraphClient";
 import TypedArray from "../../../../util/TypedArray";

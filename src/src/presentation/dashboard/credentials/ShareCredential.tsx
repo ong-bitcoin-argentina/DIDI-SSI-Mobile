@@ -7,8 +7,8 @@ import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { uPortDocumentToCard } from "../common/documentToCard";
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
-import { didiConnect } from "../../../model/store";
+import { CredentialDocument } from "../../../model/CredentialDocument";
+import { didiConnect } from "../../../store/store";
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 
 export type ShareCredentialProps = {};

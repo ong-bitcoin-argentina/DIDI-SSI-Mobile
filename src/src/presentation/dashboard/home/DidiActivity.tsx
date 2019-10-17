@@ -2,7 +2,7 @@ import { Component, Fragment } from "react";
 import { Text, View, Image, StyleSheet, ImageSourcePropType, StyleProp, TextStyle, ViewProps } from "react-native";
 import React from "react";
 import colors from "../../resources/colors";
-import { RecentActivity } from "../../../model/data/RecentActivity";
+import { RecentActivity } from "../../../model/RecentActivity";
 
 interface DidiActivityProps extends ViewProps {
 	activity: RecentActivity;

@@ -8,8 +8,8 @@ import colors from "../../../resources/colors";
 import UserHeadingComponent from "./UserHeading";
 import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
-import { didiConnect } from "../../../../model/store";
-import { Identity, WithValidationState } from "../../../../model/data/Identity";
+import { didiConnect } from "../../../../store/store";
+import { Identity, WithValidationState } from "../../../../model/Identity";
 import DidiTextInput from "../../../util/DidiTextInput";
 import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 

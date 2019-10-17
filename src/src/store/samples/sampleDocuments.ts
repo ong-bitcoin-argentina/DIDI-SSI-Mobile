@@ -1,4 +1,4 @@
-import { SampleDocument } from "../data/SampleDocument";
+import { SampleDocument } from "../../model/SampleDocument";
 
 export const sampleDocuments: SampleDocument[] = [
 	{

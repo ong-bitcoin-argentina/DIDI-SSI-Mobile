@@ -7,10 +7,10 @@ import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { CredentialDocument } from "../../../model/data/CredentialDocument";
+import { CredentialDocument } from "../../../model/CredentialDocument";
 import DidiButton from "../../util/DidiButton";
 import strings from "../../resources/strings";
-import { didiConnect } from "../../../model/store";
+import { didiConnect } from "../../../store/store";
 
 export interface ShareSpecificCredentialProps {
 	document: CredentialDocument;

@@ -10,7 +10,7 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
-import { didiConnect } from "../../../model/store";
+import { didiConnect } from "../../../store/store";
 
 export type ScanCredentialProps = {};
 interface ScanCredentialStateProps {

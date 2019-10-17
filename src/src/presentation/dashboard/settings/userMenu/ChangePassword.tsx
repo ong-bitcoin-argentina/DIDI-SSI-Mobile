@@ -8,8 +8,8 @@ import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DidiButton from "../../../util/DidiButton";
-import { Identity } from "../../../../model/data/Identity";
-import { didiConnect } from "../../../../model/store";
+import { Identity } from "../../../../model/Identity";
+import { didiConnect } from "../../../../store/store";
 
 export type ChangePasswordProps = {};
 interface ChangePasswordInternalProps extends ChangePasswordProps {
