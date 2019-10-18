@@ -1,5 +1,5 @@
 import * as t from "io-ts";
-import { Either, left, isLeft } from "fp-ts/lib/Either";
+import { Either, left, isLeft, right } from "fp-ts/lib/Either";
 import JWTDecode from "jwt-decode";
 
 import { verifyJWT } from "did-jwt";
@@ -10,14 +10,16 @@ import { getResolver } from "ethr-did-resolver";
 import { SelectiveDisclosureRequestCodec, SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
 import { VerifiedClaimCodec, VerifiedClaim } from "./types/VerifiedClaim";
 import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
+import { ForwardedRequestCodec } from "./types/ForwardedRequest";
 
 // This is required by verifyJWT
 if (typeof Buffer === "undefined") {
 	global.Buffer = require("buffer").Buffer;
 }
 
-const JWTCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec]);
-const AttemptCodec = t.union([JWTCodec, LegacyVerifiedClaimCodec]);
+const PublicCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec]);
+const ParseCodec = t.union([PublicCodec, ForwardedRequestCodec]);
+const TransportCodec = t.union([ParseCodec, LegacyVerifiedClaimCodec]);
 
 export type JWTParseError =
 	| {
@@ -36,18 +38,21 @@ export type JWTParseError =
 export function unverifiedParseJWT(jwt: string): Either<JWTParseError, SelectiveDisclosureRequest | VerifiedClaim> {
 	try {
 		const decoded = JWTDecode(jwt);
-		const parsed = AttemptCodec.decode(decoded);
+		const parsed = TransportCodec.decode(decoded);
 		if (isLeft(parsed)) {
 			return left({ type: "SHAPE_DECODE_ERROR", error: parsed.left });
 		}
 
+		const unverified = parsed.right;
 		const now = Math.floor(Date.now() / 1000);
-		if (parsed.right.expireAt !== undefined && parsed.right.expireAt < now) {
-			return left({ type: "AFTER_EXP", expected: parsed.right.expireAt, current: now });
-		} else if (parsed.right.issuedAt !== undefined && now < parsed.right.issuedAt) {
-			return left({ type: "BEFORE_IAT", expected: parsed.right.issuedAt, current: now });
+		if (unverified.expireAt !== undefined && unverified.expireAt < now) {
+			return left({ type: "AFTER_EXP", expected: unverified.expireAt, current: now });
+		} else if (unverified.issuedAt !== undefined && now < unverified.issuedAt) {
+			return left({ type: "BEFORE_IAT", expected: unverified.issuedAt, current: now });
+		} else if (unverified.type === "ForwardedRequest") {
+			return unverifiedParseJWT(unverified.forwarded);
 		} else {
-			return parsed;
+			return right(unverified);
 		}
 	} catch (e) {
 		return left({ type: "JWT_DECODE_ERROR", error: e });
@@ -76,11 +81,17 @@ export default async function parseJWT(
 				? verifyCredential(jwt, resolver)
 				: verifyJWT(jwt, { resolver }));
 
-			const verified = JWTCodec.decode(payload);
-			if (isLeft(verified)) {
-				return left({ type: "SHAPE_DECODE_ERROR", error: verified.left });
+			const parsed = ParseCodec.decode(payload);
+			if (isLeft(parsed)) {
+				return left({ type: "SHAPE_DECODE_ERROR", error: parsed.left });
 			}
-			return verified;
+
+			const verified = parsed.right;
+			if (verified.type === "ForwardedRequest") {
+				return parseJWT(verified.forwarded, ethrUri);
+			} else {
+				return right(verified);
+			}
 		} catch (e) {
 			return left({ type: "VERIFICATION_ERROR", error: e });
 		}
