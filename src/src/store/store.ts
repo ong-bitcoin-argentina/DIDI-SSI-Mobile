@@ -1,4 +1,3 @@
-import { Either } from "fp-ts/lib/Either";
 import { ComponentType } from "react";
 import { connect, ConnectedComponent, GetProps, Matching } from "react-redux";
 import { Dispatch } from "redux";
@@ -9,7 +8,6 @@ import { Identity } from "../model/Identity";
 import { RecentActivity } from "../model/RecentActivity";
 import { RequestDocument } from "../model/RequestDocument";
 import { SampleDocument } from "../model/SampleDocument";
-import { JWTParseError } from "../uPort/parseJWT";
 
 import { NormalizedStoreAction, NormalizedStoreContent } from "./normalizedStore";
 import { sampleDocuments } from "./samples/sampleDocuments";
@@ -27,7 +25,7 @@ export interface StoreContent extends NormalizedStoreContent {
 	credentials: Array<DerivedCredential<CredentialDocument>>;
 	microCredentials: CredentialDocument[];
 	requests: RequestDocument[];
-	parsedTokens: Array<Either<JWTParseError, CredentialDocument | RequestDocument>>;
+	parsedTokens: Array<CredentialDocument | RequestDocument>;
 	samples: SampleDocument[];
 	identity: Identity;
 	recentActivity: RecentActivity[];
