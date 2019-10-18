@@ -1,19 +1,19 @@
-import React from "react";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import { StatusBar, View, Modal, Text, StyleSheet } from "react-native";
+import React, { Fragment } from "react";
+import { Modal, StatusBar, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
-import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { uPortDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { uPortDocumentToCard } from "../common/documentToCard";
-import { ScanCredentialProps } from "./ScanCredential";
-import { didiConnect } from "../../../store/store";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
+import { didiConnect } from "../../../store/store";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
+
+import { ScanCredentialProps } from "./ScanCredential";
 
 export interface ScanCredentialToAddProps {
 	credential: CredentialDocument;

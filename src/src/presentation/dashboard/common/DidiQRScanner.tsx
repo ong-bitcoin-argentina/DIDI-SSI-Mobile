@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { RNCamera } from "react-native-camera";
 
 export interface DidiQRScannerProps {

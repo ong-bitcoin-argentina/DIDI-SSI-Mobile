@@ -1,26 +1,28 @@
+import React from "react";
+import { StyleSheet, Text, View, ViewProps } from "react-native";
+import { createStackNavigator, NavigationContainer, NavigationScreenProp, NavigationState } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
+import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
+import NavMap, { NavigationEnabledComponentConstructor, NavTree } from "../util/NavMap";
+
 import { StartAccessProps } from "../access/StartAccess";
-import DashboardScreen, { DashboardScreenProps, DashboardScreenNavigation } from "./home/Dashboard";
-import NavMap, { NavTree, NavigationEnabledComponentConstructor } from "../util/NavMap";
-import React from "react";
-import { Text, ViewProps, View, StyleSheet } from "react-native";
-import themes from "../resources/themes";
+import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import strings from "../resources/strings";
-import { RoundsScreen } from "./rounds/RoundsScreen";
-import DocumentsNavigator from "./documents/DocumentsNavigator";
-import { NavigationContainer, NavigationScreenProp, NavigationState, createStackNavigator } from "react-navigation";
+import themes from "../resources/themes";
+
+import CredentialNavigator from "./credentials/CredentialNavigator";
+import ScanDisclosureRequestScreen from "./credentials/ScanDisclosureRequest";
+import ShareCredentialScreen from "./credentials/ShareCredential";
+import { ShareMicroCredentialScreen } from "./credentials/ShareMicroCredential";
+import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
 import DashboardJumpMenu from "./DashboardJumpMenu";
+import DocumentsNavigator from "./documents/DocumentsNavigator";
+import DashboardScreen, { DashboardScreenNavigation, DashboardScreenProps } from "./home/Dashboard";
+import { NotificationScreen } from "./home/NotificationScreen";
+import { RoundsScreen } from "./rounds/RoundsScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
-import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
-import CredentialNavigator from "./credentials/CredentialNavigator";
-import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
-import ShareCredentialScreen from "./credentials/ShareCredential";
-import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
-import { NotificationScreen } from "./home/NotificationScreen";
-import ScanDisclosureRequestScreen from "./credentials/ScanDisclosureRequest";
-import { ShareMicroCredentialScreen } from "./credentials/ShareMicroCredential";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;

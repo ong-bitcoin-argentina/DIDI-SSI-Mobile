@@ -1,8 +1,9 @@
-import { Component } from "react";
-import { Text, View, StyleSheet, TextStyle, ViewStyle } from "react-native";
-import React from "react";
-import DidiCardBody, { DidiCardBodyProps } from "./DidiCardBody";
+import React, { Component } from "react";
+import { StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
+
 import colors from "../../resources/colors";
+
+import DidiCardBody, { DidiCardBodyProps } from "./DidiCardBody";
 
 export interface CredentialCardProps extends DidiCardBodyProps {
 	category: string;

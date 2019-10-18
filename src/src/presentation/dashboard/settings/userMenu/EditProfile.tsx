@@ -1,18 +1,19 @@
+import React, { Fragment } from "react";
+import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+
+import DidiButton from "../../../util/DidiButton";
+import DidiTextInput from "../../../util/DidiTextInput";
+import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import React from "react";
-import { StyleSheet, StatusBar, View, ScrollView } from "react-native";
+
+import { Identity } from "../../../../model/Identity";
+import { didiConnect } from "../../../../store/store";
+import Validator from "../../../access/helpers/validator";
+import colors from "../../../resources/colors";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
-import DidiTextInput from "../../../util/DidiTextInput";
-import DidiButton from "../../../util/DidiButton";
-import Validator from "../../../access/helpers/validator";
-import DropdownMenu from "../../../util/DropdownMenu";
-import colors from "../../../resources/colors";
 import UserHeadingComponent from "../userData/UserHeading";
-import { Identity } from "../../../../model/Identity";
-import { didiConnect } from "../../../../store/store";
 
 export type EditProfileProps = {};
 interface EditProfileInternalProps {

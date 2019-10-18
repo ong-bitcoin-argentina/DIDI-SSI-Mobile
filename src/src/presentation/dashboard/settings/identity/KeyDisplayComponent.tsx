@@ -1,7 +1,6 @@
 import React from "react";
-import { View, Text, Clipboard, ToastAndroid, ViewProps, Alert } from "react-native";
-
-import { RNUportHDSigner, KeyAddress } from "react-native-uport-signer";
+import { Alert, Clipboard, Text, ToastAndroid, View, ViewProps } from "react-native";
+import { KeyAddress, RNUportHDSigner } from "react-native-uport-signer";
 
 import commonStyles from "../../../access/resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";

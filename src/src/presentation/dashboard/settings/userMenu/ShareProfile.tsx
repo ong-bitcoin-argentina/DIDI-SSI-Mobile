@@ -1,16 +1,17 @@
-import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import React from "react";
-import { StyleSheet, StatusBar, SafeAreaView, View, Text } from "react-native";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
-import strings from "../../../resources/strings";
-import { UserDataProps } from "../userData/UserData";
-import themes from "../../../resources/themes";
+import React, { Fragment } from "react";
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { connect } from "react-redux";
+
 import commonStyles from "../../../access/resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
-import { connect } from "react-redux";
+import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
+
 import { Identity } from "../../../../model/Identity";
-import { StoreContent, didiConnect } from "../../../../store/store";
+import { didiConnect, StoreContent } from "../../../../store/store";
+import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
+import strings from "../../../resources/strings";
+import themes from "../../../resources/themes";
+import { UserDataProps } from "../userData/UserData";
 
 export type ShareProfileProps = {};
 interface ShareProfileInternalProps {

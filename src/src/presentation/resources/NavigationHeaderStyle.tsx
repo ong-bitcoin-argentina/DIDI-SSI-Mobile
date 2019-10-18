@@ -1,11 +1,12 @@
-import { NavigationStackScreenOptions, HeaderBackButton } from "react-navigation";
-import themes from "../resources/themes";
-import DidiTheme from "./DidiTheme";
 import React from "react";
 import { Text } from "react-native";
-import { HeaderButtons, HeaderButton, Item, HeaderButtonProps } from "react-navigation-header-buttons";
+import { HeaderBackButton, NavigationStackScreenOptions } from "react-navigation";
+import { HeaderButton, HeaderButtonProps, HeaderButtons, Item } from "react-navigation-header-buttons";
 import { defaultOnOverflowMenuPress } from "react-navigation-header-buttons/src/overflowMenuPressHandlers";
 
+import themes from "../resources/themes";
+
+import DidiTheme from "./DidiTheme";
 import VerticalMore from "./images/verticalMore.svg";
 
 function defaultStyle(theme: DidiTheme): NavigationStackScreenOptions {

@@ -1,17 +1,18 @@
-import React from "react";
-import { Fragment } from "react";
-import { View, Text, StatusBar, SafeAreaView, FlatList, TouchableOpacity } from "react-native";
+import React, { Fragment } from "react";
+import { FlatList, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
-import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { uPortDocumentToCard } from "../common/documentToCard";
+
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { didiConnect } from "../../../store/store";
-import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 import { DerivedCredential } from "../../../model/DerivedCredential";
+import { didiConnect } from "../../../store/store";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
+
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
+import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {

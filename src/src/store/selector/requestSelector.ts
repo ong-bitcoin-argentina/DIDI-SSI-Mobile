@@ -1,9 +1,11 @@
+import { isRight } from "fp-ts/lib/Either";
 import { createSelector } from "reselect";
 
-import { parsedTokenSelector } from "./parsedTokenSelector";
-import { isRight } from "fp-ts/lib/Either";
 import TypedArray from "../../util/TypedArray";
+
 import { RequestDocument } from "../../model/RequestDocument";
+
+import { parsedTokenSelector } from "./parsedTokenSelector";
 
 export const requestSelector = createSelector(
 	parsedTokenSelector,

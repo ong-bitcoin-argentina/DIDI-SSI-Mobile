@@ -1,7 +1,7 @@
 import { ImageSourcePropType } from "react-native";
 import { SvgProps } from "react-native-svg";
-import { Color } from "../../resources/colors";
 
+import { Color } from "../../resources/colors";
 import Image1 from "../resources/images/onboarding1.svg";
 import Image2 from "../resources/images/onboarding2.svg";
 import Image3 from "../resources/images/onboarding3.svg";

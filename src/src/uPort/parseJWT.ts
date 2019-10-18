@@ -1,19 +1,20 @@
-import * as t from "io-ts";
-import { Either, left, isLeft, right } from "fp-ts/lib/Either";
-import JWTDecode from "jwt-decode";
-
 import { verifyJWT } from "did-jwt";
 import { verifyCredential } from "did-jwt-vc";
 import { Resolver } from "did-resolver";
 import { getResolver } from "ethr-did-resolver";
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import * as t from "io-ts";
+import JWTDecode from "jwt-decode";
 
+import { assertUnreachable } from "../util/assertUnreachable";
+
+import { CredentialDocument } from "../model/CredentialDocument";
+import { RequestDocument } from "../model/RequestDocument";
+
+import { ForwardedRequestCodec } from "./types/ForwardedRequest";
+import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
 import { SelectiveDisclosureRequestCodec } from "./types/SelectiveDisclosureRequest";
 import { VerifiedClaimCodec } from "./types/VerifiedClaim";
-import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
-import { ForwardedRequestCodec } from "./types/ForwardedRequest";
-import { RequestDocument } from "../model/RequestDocument";
-import { CredentialDocument } from "../model/CredentialDocument";
-import { assertUnreachable } from "../util/assertUnreachable";
 
 // This is required by verifyJWT
 if (typeof Buffer === "undefined") {

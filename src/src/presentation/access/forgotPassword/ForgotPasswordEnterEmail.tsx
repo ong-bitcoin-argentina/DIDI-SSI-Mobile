@@ -1,17 +1,18 @@
 import React, { Fragment } from "react";
-
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { ForgotPasswordEmailSentProps } from "./ForgotPasswordEmailSent";
-
-import strings from "../../resources/strings";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import { StatusBar, View, Text, Image, StyleSheet } from "react-native";
-import themes from "../../resources/themes";
+import { Image, StatusBar, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import commonStyles from "../resources/commonStyles";
-import DidiTextInput from "../../util/DidiTextInput";
+
 import DidiButton from "../../util/DidiButton";
+import DidiTextInput from "../../util/DidiTextInput";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import commonStyles from "../resources/commonStyles";
+
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
+import themes from "../../resources/themes";
 import Validator from "../helpers/validator";
+
+import { ForgotPasswordEmailSentProps } from "./ForgotPasswordEmailSent";
 
 export type ForgotPasswordEnterEmailProps = {};
 

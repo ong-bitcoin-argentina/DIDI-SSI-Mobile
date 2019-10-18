@@ -1,16 +1,16 @@
-import React from "react";
-import { Fragment } from "react";
-import { Text, StatusBar, SafeAreaView, View, Dimensions, Share } from "react-native";
+import React, { Fragment } from "react";
+import { Dimensions, SafeAreaView, Share, StatusBar, Text, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
-import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { CredentialDocument } from "../../../model/CredentialDocument";
 import DidiButton from "../../util/DidiButton";
-import strings from "../../resources/strings";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+
+import { CredentialDocument } from "../../../model/CredentialDocument";
 import { didiConnect } from "../../../store/store";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
+import themes from "../../resources/themes";
 
 export interface ShareSpecificCredentialProps {
 	document: CredentialDocument;

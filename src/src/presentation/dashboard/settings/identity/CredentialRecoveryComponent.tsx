@@ -1,13 +1,14 @@
-import React from "react";
-import { View, Text, ViewProps } from "react-native";
 import { isRight } from "fp-ts/lib/Either";
+import React from "react";
+import { Text, View, ViewProps } from "react-native";
+
+import TypedArray from "../../../../util/TypedArray";
+import commonStyles from "../../../access/resources/commonStyles";
+import DidiButton from "../../../util/DidiButton";
 
 import { didiConnect } from "../../../../store/store";
 import parseJWT from "../../../../uPort/parseJWT";
 import { TrustGraphClient } from "../../../../uPort/TrustGraphClient";
-import TypedArray from "../../../../util/TypedArray";
-import DidiButton from "../../../util/DidiButton";
-import commonStyles from "../../../access/resources/commonStyles";
 
 export type CredentialRecoveryProps = ViewProps;
 interface CredentialRecoveryStateProps {

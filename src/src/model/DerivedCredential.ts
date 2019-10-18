@@ -1,5 +1,5 @@
-import { VerifiedClaim, ClaimMetadata } from "../uPort/types/VerifiedClaim";
-import { FlattenedClaim, flattenClaim } from "../uPort/types/Claim";
+import { flattenClaim, FlattenedClaim } from "../uPort/types/Claim";
+import { ClaimMetadata, VerifiedClaim } from "../uPort/types/VerifiedClaim";
 
 export interface DerivedCredentialSource {
 	content: VerifiedClaim;

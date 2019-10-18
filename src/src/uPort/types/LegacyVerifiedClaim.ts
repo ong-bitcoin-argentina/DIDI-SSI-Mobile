@@ -1,5 +1,6 @@
-import * as t from "io-ts";
 import { either } from "fp-ts/lib/Either";
+import * as t from "io-ts";
+
 import { ClaimCodec } from "./Claim";
 import { VerifiedClaim, VerifiedClaimInnerCodec } from "./VerifiedClaim";
 

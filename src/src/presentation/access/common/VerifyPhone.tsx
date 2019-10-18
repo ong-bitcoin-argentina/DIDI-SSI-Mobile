@@ -1,13 +1,14 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, View, Text, Image, ImageSourcePropType, GestureResponderEvent } from "react-native";
+import { GestureResponderEvent, Image, ImageSourcePropType, SafeAreaView, StatusBar, Text, View } from "react-native";
 
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
-import Validator from "../helpers/validator";
+
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
+import Validator from "../helpers/validator";
 
 export type VerifyPhoneProps = {};
 

@@ -1,16 +1,18 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
-import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
-import { SignupOnboardingProps } from "./signup/SignupOnboarding";
-import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import DidiButton from "../util/DidiButton";
-import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
-import themes from "../resources/themes";
-import strings from "../resources/strings";
+import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
+
 import colors from "../resources/colors";
+import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
+import strings from "../resources/strings";
+import themes from "../resources/themes";
 import { SplashContent } from "../SplashScreen";
+
+import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
+import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
+import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 
 export type StartAccessProps = {};
 

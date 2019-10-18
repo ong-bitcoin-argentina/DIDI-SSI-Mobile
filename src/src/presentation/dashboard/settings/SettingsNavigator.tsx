@@ -1,15 +1,17 @@
 import NavMap, { NavTree } from "../../util/NavMap";
+
+import { StartAccessProps } from "../../access/StartAccess";
+import { DashboardScreenProps } from "../home/Dashboard";
+
+import { AboutThisAppScreen } from "./AboutThisApp";
+import IdentitySettingsScreen from "./identity/IdentitySettings";
+import { JWTDecoderScanScreen } from "./JWTDecoderScanScreen";
+import { ServiceSettingsScreen } from "./ServiceSettingsScreen";
 import SettingsScreen from "./SettingsScreen";
 import UserDataScreen from "./userData/UserData";
 import ChangePasswordScreen from "./userMenu/ChangePassword";
 import EditProfileScreen from "./userMenu/EditProfile";
 import { ShareProfileScreen } from "./userMenu/ShareProfile";
-import IdentitySettingsScreen from "./identity/IdentitySettings";
-import { StartAccessProps } from "../../access/StartAccess";
-import { DashboardScreenProps } from "../home/Dashboard";
-import { AboutThisAppScreen } from "./AboutThisApp";
-import { ServiceSettingsScreen } from "./ServiceSettingsScreen";
-import { JWTDecoderScanScreen } from "./JWTDecoderScanScreen";
 
 interface SettingsNavigatorNavigation {
 	Access: StartAccessProps;

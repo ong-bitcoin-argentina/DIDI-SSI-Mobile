@@ -1,10 +1,12 @@
-import { SplashScreen } from "./SplashScreen";
-import AccessNavigator from "./access/AccessNavigator";
-import DashboardNavigator from "./dashboard/DashboardNavigator";
 import { createSwitchNavigator } from "react-navigation";
+
 import NavMap from "./util/NavMap";
-import DashboardScreen from "./dashboard/home/Dashboard";
+
+import AccessNavigator from "./access/AccessNavigator";
 import { StartAccessScreen } from "./access/StartAccess";
+import DashboardNavigator from "./dashboard/DashboardNavigator";
+import DashboardScreen from "./dashboard/home/Dashboard";
+import { SplashScreen } from "./SplashScreen";
 
 export default createSwitchNavigator({
 	Spash: SplashScreen,

@@ -1,29 +1,31 @@
-import { Text, View, SafeAreaView, StatusBar, StyleSheet, ScrollView, TouchableOpacity, ViewStyle } from "react-native";
 import React, { Fragment } from "react";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 
-import { StartAccessProps } from "../../access/StartAccess";
-import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import CredentialCard from "../common/CredentialCard";
-import DidiActivity from "./DidiActivity";
-import colors from "../../resources/colors";
-import strings from "../../resources/strings";
 import DropdownMenu from "../../util/DropdownMenu";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import CredentialCard from "../common/CredentialCard";
+import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToCard";
+
+import { CredentialDocument } from "../../../model/CredentialDocument";
+import { DerivedCredential } from "../../../model/DerivedCredential";
 import { Identity } from "../../../model/Identity";
 import { RecentActivity } from "../../../model/RecentActivity";
-import HomeHeader from "./HomeHeader";
+import { SampleDocument } from "../../../model/SampleDocument";
+import { didiConnect } from "../../../store/store";
+import { StartAccessProps } from "../../access/StartAccess";
+import colors from "../../resources/colors";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
+import themes from "../../resources/themes";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
-import { didiConnect } from "../../../store/store";
-import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToCard";
-import { SampleDocument } from "../../../model/SampleDocument";
-import { CredentialDocument } from "../../../model/CredentialDocument";
+
+import DidiActivity from "./DidiActivity";
+import HomeHeader from "./HomeHeader";
 import { NotificationScreenProps } from "./NotificationScreen";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenInternalProps extends DashboardScreenProps {

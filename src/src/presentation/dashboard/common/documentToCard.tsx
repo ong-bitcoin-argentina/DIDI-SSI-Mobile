@@ -1,11 +1,11 @@
 import React from "react";
 
-import CredentialCard from "./CredentialCard";
-
-import colors from "../../resources/colors";
-import { SampleDocument } from "../../../model/SampleDocument";
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
+import { SampleDocument } from "../../../model/SampleDocument";
+import colors from "../../resources/colors";
+
+import CredentialCard from "./CredentialCard";
 
 export function sampleDocumentToCard(document: SampleDocument, index: number) {
 	return (

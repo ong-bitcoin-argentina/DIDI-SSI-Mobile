@@ -1,15 +1,16 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import React from "react";
-import { StatusBar, SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { Fragment } from "react";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+
 import commonStyles from "../../access/resources/commonStyles";
-import themes from "../../resources/themes";
-import { DocumentFilterType, SampleDocument } from "../../../model/SampleDocument";
-import { DashboardScreenProps } from "../home/Dashboard";
-import { didiConnect } from "../../../store/store";
-import { uPortDocumentToCard, sampleDocumentToCard } from "../common/documentToCard";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToCard";
+
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
+import { DocumentFilterType, SampleDocument } from "../../../model/SampleDocument";
+import { didiConnect } from "../../../store/store";
+import themes from "../../resources/themes";
+import { DashboardScreenProps } from "../home/Dashboard";
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;

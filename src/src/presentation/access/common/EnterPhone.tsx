@@ -1,20 +1,21 @@
 import React, { Fragment } from "react";
 import {
+	GestureResponderEvent,
+	Image,
+	ImageSourcePropType,
 	SafeAreaView,
 	StatusBar,
 	StyleSheet,
-	View,
 	Text,
-	Image,
-	ImageSourcePropType,
-	GestureResponderEvent
+	View
 } from "react-native";
 
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
-import DidiTheme from "../../resources/DidiTheme";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
+
+import DidiTheme from "../../resources/DidiTheme";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 

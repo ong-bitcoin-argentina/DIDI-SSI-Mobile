@@ -1,14 +1,14 @@
 import React from "react";
 import { BackHandler, NativeEventSubscription } from "react-native";
+import { TakePictureResponse } from "react-native-camera/types";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
+import DidiCamera from "../common/DidiCamera";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-import DidiCamera from "../common/DidiCamera";
-import { TakePictureResponse } from "react-native-camera/types";
+import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
 
 export type ValidateIdentityTakePhotoProps = {};
 

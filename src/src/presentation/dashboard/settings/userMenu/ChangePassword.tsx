@@ -1,15 +1,16 @@
+import React, { Fragment } from "react";
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+
+import commonStyles from "../../../access/resources/commonStyles";
+import DidiButton from "../../../util/DidiButton";
+import DidiTextInput from "../../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import React from "react";
-import { StyleSheet, StatusBar, SafeAreaView, View, Text } from "react-native";
+
+import { Identity } from "../../../../model/Identity";
+import { didiConnect } from "../../../../store/store";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
-import commonStyles from "../../../access/resources/commonStyles";
-import DidiTextInput from "../../../util/DidiTextInput";
-import DidiButton from "../../../util/DidiButton";
-import { Identity } from "../../../../model/Identity";
-import { didiConnect } from "../../../../store/store";
 
 export type ChangePasswordProps = {};
 interface ChangePasswordInternalProps extends ChangePasswordProps {

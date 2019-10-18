@@ -1,5 +1,6 @@
-import * as t from "io-ts";
 import { either, Right } from "fp-ts/lib/Either";
+import * as t from "io-ts";
+
 import { ClaimCodec } from "./Claim";
 
 export const VerifiedClaimInnerCodec = t.intersection([

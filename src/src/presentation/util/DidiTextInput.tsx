@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
-import { StyleSheet, Text, View, Image, TextInput, ImageSourcePropType, ViewProps, TextInputProps } from "react-native";
-import themes from "../resources/themes";
+import { Image, ImageSourcePropType, StyleSheet, Text, TextInput, TextInputProps, View, ViewProps } from "react-native";
+
 import DidiTheme from "../resources/DidiTheme";
+import themes from "../resources/themes";
 
 export interface DidiTextInputProps {
 	theme?: DidiTheme;

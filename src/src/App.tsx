@@ -1,12 +1,12 @@
 import React from "react";
-import { createAppContainer } from "react-navigation";
 import { YellowBox } from "react-native";
+import { createAppContainer } from "react-navigation";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { store, persistor } from "./store/normalizedStore";
 import AppNavigator from "./presentation/AppNavigator";
 import { SplashContent } from "./presentation/SplashScreen";
+import { persistor, store } from "./store/normalizedStore";
 
 YellowBox.ignoreWarnings([
 	"Warning: componentWillReceiveProps is deprecated and will be removed in the next major version.", // External error in SafeArea

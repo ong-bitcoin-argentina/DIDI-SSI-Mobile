@@ -1,27 +1,27 @@
-import { Fragment } from "react";
-import React from "react";
-import { StatusBar, SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { Fragment } from "react";
+import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import themes from "../../resources/themes";
-import strings from "../../resources/strings";
-import colors from "../../resources/colors";
 import DidiButton from "../../util/DidiButton";
-import { Identity } from "../../../model/Identity";
-import { DashboardScreenProps } from "../home/Dashboard";
-import { StartAccessProps } from "../../access/StartAccess";
-import { UserDataProps } from "./userData/UserData";
-import { IdentitySettingsProps } from "./identity/IdentitySettings";
-import { ChangePasswordProps } from "./userMenu/ChangePassword";
-import { StoreContent, didiConnect } from "../../../store/store";
-import { AboutThisAppScreenProps } from "./AboutThisApp";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
+import { Identity } from "../../../model/Identity";
+import { didiConnect, StoreContent } from "../../../store/store";
+import { StartAccessProps } from "../../access/StartAccess";
+import colors from "../../resources/colors";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
+import themes from "../../resources/themes";
+import { DashboardScreenProps } from "../home/Dashboard";
 import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
-import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
+import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
+
+import { AboutThisAppScreenProps } from "./AboutThisApp";
+import { IdentitySettingsProps } from "./identity/IdentitySettings";
 import { JWTDecoderScanScreenProps } from "./JWTDecoderScanScreen";
+import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
+import { UserDataProps } from "./userData/UserData";
+import { ChangePasswordProps } from "./userMenu/ChangePassword";
 
 export interface SettingsScreenProps {
 	person: Identity;

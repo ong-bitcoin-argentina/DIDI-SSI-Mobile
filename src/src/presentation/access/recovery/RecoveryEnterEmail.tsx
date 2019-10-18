@@ -1,16 +1,18 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, StatusBar } from "react-native";
 import React, { Fragment } from "react";
+import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import DidiButton from "../../util/DidiButton";
+import DidiTextInput from "../../util/DidiTextInput";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import commonStyles from "../resources/commonStyles";
+
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
-import DidiTextInput from "../../util/DidiTextInput";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import { RecoveryEnterPhoneProps } from "./RecoveryEnterPhone";
 import { ForgotPasswordEnterEmailProps } from "../forgotPassword/ForgotPasswordEnterEmail";
-import commonStyles from "../resources/commonStyles";
 import Validator from "../helpers/validator";
+
+import { RecoveryEnterPhoneProps } from "./RecoveryEnterPhone";
 
 export type RecoveryEnterEmailProps = {};
 

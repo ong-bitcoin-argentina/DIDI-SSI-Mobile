@@ -1,13 +1,13 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { ValidateIdentityExplainHowProps } from "./ValidateIdentityExplainHow";
+import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 
 export interface ValidateIdentityExplainWhatNavigation {
 	ValidateIdentityHow: ValidateIdentityExplainHowProps;

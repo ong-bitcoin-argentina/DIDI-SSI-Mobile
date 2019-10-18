@@ -1,5 +1,7 @@
 import NavMap, { NavTree } from "../../util/NavMap";
+
 import { DashboardScreenProps } from "../home/Dashboard";
+
 import { ScanCredentialScreen } from "./ScanCredential";
 import { ScanCredentialToAddScreen } from "./ScanCredentialToAdd";
 import ScanDisclosureRequestScreen from "./ScanDisclosureRequest";

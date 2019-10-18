@@ -1,17 +1,17 @@
-import React from "react";
-import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import { StatusBar, View, Text } from "react-native";
+import React, { Fragment } from "react";
+import { StatusBar, Text, View } from "react-native";
+import { RNUportHDSigner } from "react-native-uport-signer";
 import { SafeAreaView } from "react-navigation";
 
-import { RNUportHDSigner } from "react-native-uport-signer";
-
-import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
+import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
+
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
-import { KeyRecoveryComponent } from "./KeyRecoveryComponent";
-import { KeyDisplayComponent } from "./KeyDisplayComponent";
+import themes from "../../../resources/themes";
+
 import { CredentialRecoveryComponent } from "./CredentialRecoveryComponent";
+import { KeyDisplayComponent } from "./KeyDisplayComponent";
+import { KeyRecoveryComponent } from "./KeyRecoveryComponent";
 
 export type IdentitySettingsProps = {};
 interface IdentitySettingsState {

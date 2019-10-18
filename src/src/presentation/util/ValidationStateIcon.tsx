@@ -1,14 +1,13 @@
 import React from "react";
-import { StyleSheet, View, Text, ViewProps } from "react-native";
+import { StyleSheet, Text, View, ViewProps } from "react-native";
 import { SvgProps } from "react-native-svg";
 
 import { ValidationState } from "../../model/Identity";
 import colors from "../resources/colors";
-import strings from "../resources/strings";
-
-import Checkmark from "../resources/images/checkmark.svg";
 import Alert from "../resources/images/alert.svg";
+import Checkmark from "../resources/images/checkmark.svg";
 import Cross from "../resources/images/cross.svg";
+import strings from "../resources/strings";
 
 interface ValidationStateIconProps extends ViewProps {
 	validationState: ValidationState;

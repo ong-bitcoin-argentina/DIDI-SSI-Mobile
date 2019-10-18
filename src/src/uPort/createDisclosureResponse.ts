@@ -1,10 +1,12 @@
+import TypedObject from "../util/TypedObject";
+
 import { CredentialDocument } from "../model/CredentialDocument";
+import { Identity } from "../model/Identity";
+import { RequestDocument } from "../model/RequestDocument";
+
+import { getCredentials } from "./getCredentials";
 import { Claim, flattenClaim } from "./types/Claim";
 import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
-import { Identity } from "../model/Identity";
-import TypedObject from "../util/TypedObject";
-import { getCredentials } from "./getCredentials";
-import { RequestDocument } from "../model/RequestDocument";
 
 function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity): Claim {
 	const result: Claim = {};

@@ -1,13 +1,15 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { Text, View, Image, SafeAreaView, StatusBar } from "react-native";
 import React, { Fragment } from "react";
+import { Image, SafeAreaView, StatusBar, Text, View } from "react-native";
 
 import DidiButton from "../../util/DidiButton";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import commonStyles from "../resources/commonStyles";
+
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
+
 import { RecoveryEnterEmailProps } from "./RecoveryEnterEmail";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import commonStyles from "../resources/commonStyles";
 
 export type RecoveryExplanationProps = {};
 

@@ -1,14 +1,15 @@
-import { Text, View, Image, SafeAreaView, StatusBar } from "react-native";
 import React, { Fragment } from "react";
+import { Image, SafeAreaView, StatusBar, Text, View } from "react-native";
 
 import DidiButton from "../../util/DidiButton";
+import DidiTextInput from "../../util/DidiTextInput";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import commonStyles from "../resources/commonStyles";
+
+import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
-import DidiTextInput from "../../util/DidiTextInput";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import commonStyles from "../resources/commonStyles";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 
 interface ForgotPasswordNewPasswordState {
 	key: string;

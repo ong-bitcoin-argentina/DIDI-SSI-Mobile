@@ -1,17 +1,17 @@
-import React from "react";
-import { Fragment } from "react";
-import { StatusBar, View, Vibration, YellowBox, Alert } from "react-native";
+import { isLeft, isRight } from "fp-ts/lib/Either";
+import React, { Fragment } from "react";
+import { Alert, StatusBar, Vibration, View, YellowBox } from "react-native";
 
-import parseJWT, { JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
-
-import themes from "../../resources/themes";
-import DidiQRScanner from "../common/DidiQRScanner";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import DidiQRScanner from "../common/DidiQRScanner";
+
+import { didiConnect } from "../../../store/store";
+import parseJWT, { JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
+
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
-import { didiConnect } from "../../../store/store";
-import { isLeft, isRight } from "fp-ts/lib/Either";
 
 export type ScanCredentialProps = {};
 interface ScanCredentialStateProps {

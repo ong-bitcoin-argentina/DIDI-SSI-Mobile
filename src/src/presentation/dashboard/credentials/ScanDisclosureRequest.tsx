@@ -1,22 +1,23 @@
-import React from "react";
-import { Fragment } from "react";
-import { StatusBar, View, Modal, Text, StyleSheet, Alert } from "react-native";
+import React, { Fragment } from "react";
+import { Alert, Modal, StatusBar, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
-import { CredentialDocument } from "../../../model/CredentialDocument";
-import { didiConnect } from "../../../store/store";
-import { Identity } from "../../../model/Identity";
-import { ScanCredentialProps } from "./ScanCredential";
-import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
-import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
-import { RequestDocument } from "../../../model/RequestDocument";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
+
+import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
+import { Identity } from "../../../model/Identity";
+import { RequestDocument } from "../../../model/RequestDocument";
+import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
+import { didiConnect } from "../../../store/store";
+import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
+
+import { ScanCredentialProps } from "./ScanCredential";
 
 export interface ScanDisclosureRequestProps {
 	request: RequestDocument;

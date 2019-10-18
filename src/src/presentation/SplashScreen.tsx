@@ -1,16 +1,16 @@
-import { View, SafeAreaView, StatusBar, Image, StyleSheet } from "react-native";
 import React, { Fragment } from "react";
+import { Image, SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import { RNUportHDSigner } from "react-native-uport-signer";
 
-import themes from "./resources/themes";
+import { AddChildren } from "../util/ReactExtensions";
 import commonStyles from "./access/resources/commonStyles";
 import NavigationEnabledComponent from "./util/NavigationEnabledComponent";
-import NavigationHeaderStyle from "./resources/NavigationHeaderStyle";
-import { StartAccessProps } from "./access/StartAccess";
-import { DashboardScreenProps } from "./dashboard/home/Dashboard";
-import { AddChildren } from "../util/ReactExtensions";
 
 import Background from "./access/resources/images/startAccessBackground.svg";
-import { RNUportHDSigner } from "react-native-uport-signer";
+import { StartAccessProps } from "./access/StartAccess";
+import { DashboardScreenProps } from "./dashboard/home/Dashboard";
+import NavigationHeaderStyle from "./resources/NavigationHeaderStyle";
+import themes from "./resources/themes";
 
 export interface SplashScreenNavigation {
 	Access: StartAccessProps;

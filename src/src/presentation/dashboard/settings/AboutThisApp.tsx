@@ -1,10 +1,11 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import React from "react";
-import { StatusBar, SafeAreaView, View, Text } from "react-native";
+import React, { Fragment } from "react";
+import { SafeAreaView, StatusBar, Text, View } from "react-native";
+
 import commonStyles from "../../access/resources/commonStyles";
-import themes from "../../resources/themes";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
 
 export type AboutThisAppScreenProps = {};
 type AboutThisAppScreenState = {};

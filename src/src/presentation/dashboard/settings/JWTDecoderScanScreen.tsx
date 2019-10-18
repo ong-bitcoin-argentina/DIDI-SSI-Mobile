@@ -1,11 +1,12 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import React from "react";
-import { StatusBar, Alert } from "react-native";
-import themes from "../../resources/themes";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import DidiQRScanner from "../common/DidiQRScanner";
 import JwtDecode from "jwt-decode";
+import React, { Fragment } from "react";
+import { Alert, StatusBar } from "react-native";
+
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import DidiQRScanner from "../common/DidiQRScanner";
+
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
 
 export type JWTDecoderScanScreenProps = {};
 type JWTDecoderScanScreenState = {
