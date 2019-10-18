@@ -80,23 +80,17 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			this.showAlert(title, subtitle);
 		} else {
 			switch (parse.right.type) {
-				case "SelectiveDisclosureRequest":
+				case "RequestDocument":
 					this.replace("ScanDisclosureRequest", {
-						request: {
-							content: parse.right,
-							jwt: toParse
-						},
+						request: parse.right,
 						onGoBack: screen => {
 							screen.replace("ScanCredential", {});
 						}
 					});
 					break;
-				case "VerifiedClaim":
+				case "CredentialDocument":
 					this.replace("ScanCredentialToAdd", {
-						credential: {
-							content: parse.right,
-							jwt: toParse
-						}
+						credential: parse.right
 					});
 					break;
 			}
