@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
-import { Image, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
@@ -8,7 +9,6 @@ import commonStyles from "../resources/commonStyles";
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import themes from "../../resources/themes";
 
 export interface SignupConfirmedNavigation {
 	Dashboard: DashboardScreenProps;
@@ -25,30 +25,22 @@ export class SignupConfirmedScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+			<DidiScreen>
+				<View />
 
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<View />
+				<Text style={[commonStyles.text.normal, styles.message]}>{strings.signup.registrationValidated.message}</Text>
 
-						<Text style={[commonStyles.text.normal, styles.message]}>
-							{strings.signup.registrationValidated.message}
-						</Text>
+				<Image source={require("../resources/images/emailConfirmed.png")} style={commonStyles.image.image} />
 
-						<Image source={require("../resources/images/emailConfirmed.png")} style={commonStyles.image.image} />
+				<View />
 
-						<View />
-
-						<DidiButton
-							onPress={() => {
-								this.navigate("Dashboard", {});
-							}}
-							title={strings.signup.registrationValidated.buttonEnter}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+				<DidiButton
+					onPress={() => {
+						this.navigate("Dashboard", {});
+					}}
+					title={strings.signup.registrationValidated.buttonEnter}
+				/>
+			</DidiScreen>
 		);
 	}
 }

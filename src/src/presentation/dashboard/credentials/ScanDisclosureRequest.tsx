@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
-import { Alert, Modal, StatusBar, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import React from "react";
+import { Alert, StyleSheet, Text } from "react-native";
 
 import commonStyles from "../../access/resources/commonStyles";
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
@@ -15,7 +15,6 @@ import { submitDisclosureResponse } from "../../../services/issuer/submitDisclos
 import { didiConnect } from "../../../store/store";
 import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import themes from "../../resources/themes";
 
 import { ScanCredentialProps } from "./ScanCredential";
 
@@ -53,17 +52,12 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={styles.body}>
-						<RequestCard style={{ marginHorizontal: 20 }} request={this.props.request} />
-						<Text style={commonStyles.text.normal}>¿Enviar datos?</Text>
-						<DidiButton style={styles.button} title="Si" onPress={() => this.answerRequest()} />
-						<DidiButton style={styles.button} title="No" onPress={() => this.props.onGoBack(this)} />
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<DidiScreen style={styles.body}>
+				<RequestCard style={{ marginHorizontal: 20 }} request={this.props.request} />
+				<Text style={commonStyles.text.normal}>¿Enviar datos?</Text>
+				<DidiButton style={styles.button} title="Si" onPress={() => this.answerRequest()} />
+				<DidiButton style={styles.button} title="No" onPress={() => this.props.onGoBack(this)} />
+			</DidiScreen>
 		);
 	}
 
@@ -113,10 +107,7 @@ export default didiConnect(
 
 const styles = StyleSheet.create({
 	body: {
-		width: "100%",
-		alignItems: "stretch",
-		justifyContent: "space-evenly",
-		flex: 1
+		width: "100%"
 	},
 	button: {
 		width: "80%",

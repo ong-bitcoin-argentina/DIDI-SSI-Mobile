@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
-import { Modal, StatusBar, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { StyleSheet, Text } from "react-native";
 
 import commonStyles from "../../access/resources/commonStyles";
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { uPortDocumentToCard } from "../common/documentToCard";
@@ -11,7 +11,6 @@ import { CredentialDocument } from "../../../model/CredentialDocument";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
 import { didiConnect } from "../../../store/store";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import themes from "../../resources/themes";
 
 import { ScanCredentialProps } from "./ScanCredential";
 
@@ -42,15 +41,10 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={styles.body}>
-						{uPortDocumentToCard(liftToDerivedCredential(this.props.credential), 0)}
-						{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<DidiScreen style={styles.body}>
+				{uPortDocumentToCard(liftToDerivedCredential(this.props.credential), 0)}
+				{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
+			</DidiScreen>
 		);
 	}
 
@@ -92,9 +86,6 @@ export { connected as ScanCredentialToAddScreen };
 const styles = StyleSheet.create({
 	body: {
 		width: "100%",
-		alignItems: "stretch",
-		justifyContent: "space-evenly",
-		flex: 1,
 		paddingHorizontal: 20
 	},
 	button: {

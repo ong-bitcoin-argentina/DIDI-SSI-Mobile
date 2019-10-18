@@ -1,17 +1,14 @@
-import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
-import { connect } from "react-redux";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import commonStyles from "../../../access/resources/commonStyles";
+import { DidiScreen } from "../../../common/DidiScreen";
 import DidiButton from "../../../util/DidiButton";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { Identity } from "../../../../model/Identity";
-import { didiConnect, StoreContent } from "../../../../store/store";
+import { didiConnect } from "../../../../store/store";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
-import themes from "../../../resources/themes";
-import { UserDataProps } from "../userData/UserData";
 
 export type ShareProfileProps = {};
 interface ShareProfileInternalProps {
@@ -47,26 +44,21 @@ class ShareProfileScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<View style={styles.inputs}>
-							<Text>TODO!!</Text>
-						</View>
+			<DidiScreen>
+				<View style={styles.inputs}>
+					<Text>TODO!!</Text>
+				</View>
 
-						<View style={styles.button}>
-							<DidiButton
-								onPress={() => {
-									this.share();
-								}}
-								disabled={!this.canPressContinueButton()}
-								title={strings.dashboard.userData.share.share}
-							/>
-						</View>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+				<View style={styles.button}>
+					<DidiButton
+						onPress={() => {
+							this.share();
+						}}
+						disabled={!this.canPressContinueButton()}
+						title={strings.dashboard.userData.share.share}
+					/>
+				</View>
+			</DidiScreen>
 		);
 	}
 }

@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import commonStyles from "../../../access/resources/commonStyles";
+import { DidiScreen } from "../../../common/DidiScreen";
 import DidiButton from "../../../util/DidiButton";
 import DidiTextInput from "../../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
@@ -10,7 +10,6 @@ import { Identity } from "../../../../model/Identity";
 import { didiConnect } from "../../../../store/store";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
-import themes from "../../../resources/themes";
 
 export type ChangePasswordProps = {};
 interface ChangePasswordInternalProps extends ChangePasswordProps {
@@ -49,53 +48,48 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<View style={styles.inputs}>
-							<DidiTextInput
-								description={strings.recovery.passwordChange.oldPassMessage}
-								placeholder=""
-								tagImage={require("../../../access/resources/images/key.png")}
-								textInputProps={{
-									secureTextEntry: true,
-									onChangeText: text => this.setState({ oldKey: text })
-								}}
-							/>
-							<DidiTextInput
-								description={strings.dashboard.userData.changePassword.newPassMessage}
-								placeholder=""
-								tagImage={require("../../../access/resources/images/key.png")}
-								textInputProps={{
-									secureTextEntry: true,
-									onChangeText: text => this.setState({ key: text })
-								}}
-							/>
+			<DidiScreen>
+				<View style={styles.inputs}>
+					<DidiTextInput
+						description={strings.recovery.passwordChange.oldPassMessage}
+						placeholder=""
+						tagImage={require("../../../access/resources/images/key.png")}
+						textInputProps={{
+							secureTextEntry: true,
+							onChangeText: text => this.setState({ oldKey: text })
+						}}
+					/>
+					<DidiTextInput
+						description={strings.dashboard.userData.changePassword.newPassMessage}
+						placeholder=""
+						tagImage={require("../../../access/resources/images/key.png")}
+						textInputProps={{
+							secureTextEntry: true,
+							onChangeText: text => this.setState({ key: text })
+						}}
+					/>
 
-							<DidiTextInput
-								description={strings.dashboard.userData.changePassword.repeatNewPassMessage}
-								placeholder=""
-								tagImage={require("../../../access/resources/images/key.png")}
-								textInputProps={{
-									secureTextEntry: true,
-									onChangeText: text => this.setState({ keyDup: text })
-								}}
-							/>
-						</View>
+					<DidiTextInput
+						description={strings.dashboard.userData.changePassword.repeatNewPassMessage}
+						placeholder=""
+						tagImage={require("../../../access/resources/images/key.png")}
+						textInputProps={{
+							secureTextEntry: true,
+							onChangeText: text => this.setState({ keyDup: text })
+						}}
+					/>
+				</View>
 
-						<View style={styles.button}>
-							<DidiButton
-								onPress={() => {
-									this.changePassword();
-								}}
-								disabled={!this.canPressContinueButton()}
-								title={strings.dashboard.userData.changePassword.changePassword}
-							/>
-						</View>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+				<View style={styles.button}>
+					<DidiButton
+						onPress={() => {
+							this.changePassword();
+						}}
+						disabled={!this.canPressContinueButton()}
+						title={strings.dashboard.userData.changePassword.changePassword}
+					/>
+				</View>
+			</DidiScreen>
 		);
 	}
 }

@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
-import { Image, SafeAreaView, StatusBar, Text, View } from "react-native";
+import React from "react";
+import { Image, Text } from "react-native";
 
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -8,7 +9,6 @@ import commonStyles from "../resources/commonStyles";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import themes from "../../resources/themes";
 import Validator from "../helpers/validator";
 
 import { SignupConfirmEmailProps } from "./SignupConfirmEmail";
@@ -41,61 +41,56 @@ export class SignupEnterEmailScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<Text style={commonStyles.text.emphasis}>{strings.signup.enterEmail.messageHead}</Text>
+			<DidiScreen>
+				<Text style={commonStyles.text.emphasis}>{strings.signup.enterEmail.messageHead}</Text>
 
-						<Image
-							source={
-								this.canPressContinueButton()
-									? require("../resources/images/save.png")
-									: require("../resources/images/saveClean.png")
-							}
-							style={commonStyles.image.image}
-						/>
+				<Image
+					source={
+						this.canPressContinueButton()
+							? require("../resources/images/save.png")
+							: require("../resources/images/saveClean.png")
+					}
+					style={commonStyles.image.image}
+				/>
 
-						<DidiTextInput
-							description={strings.signup.enterEmail.emailTitle}
-							placeholder=""
-							tagImage={require("../resources/images/email.png")}
-							textInputProps={{
-								keyboardType: "email-address",
-								onChangeText: text => this.setState({ email: text })
-							}}
-						/>
+				<DidiTextInput
+					description={strings.signup.enterEmail.emailTitle}
+					placeholder=""
+					tagImage={require("../resources/images/email.png")}
+					textInputProps={{
+						keyboardType: "email-address",
+						onChangeText: text => this.setState({ email: text })
+					}}
+				/>
 
-						<DidiTextInput
-							description={strings.signup.enterEmail.passwordTitle}
-							placeholder=""
-							tagImage={require("../resources/images/key.png")}
-							textInputProps={{
-								secureTextEntry: true,
-								onChangeText: text => this.setState({ key: text })
-							}}
-						/>
+				<DidiTextInput
+					description={strings.signup.enterEmail.passwordTitle}
+					placeholder=""
+					tagImage={require("../resources/images/key.png")}
+					textInputProps={{
+						secureTextEntry: true,
+						onChangeText: text => this.setState({ key: text })
+					}}
+				/>
 
-						<DidiTextInput
-							description={strings.signup.enterEmail.repeatPasswordTitle}
-							placeholder=""
-							tagImage={require("../resources/images/key.png")}
-							textInputProps={{
-								secureTextEntry: true,
-								onChangeText: text => this.setState({ keyDup: text })
-							}}
-						/>
+				<DidiTextInput
+					description={strings.signup.enterEmail.repeatPasswordTitle}
+					placeholder=""
+					tagImage={require("../resources/images/key.png")}
+					textInputProps={{
+						secureTextEntry: true,
+						onChangeText: text => this.setState({ keyDup: text })
+					}}
+				/>
 
-						<DidiButton
-							onPress={() => {
-								this.navigate("SignupConfirmEmail", {});
-							}}
-							disabled={!this.canPressContinueButton()}
-							title={strings.signup.enterEmail.backupGenerate}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+				<DidiButton
+					onPress={() => {
+						this.navigate("SignupConfirmEmail", {});
+					}}
+					disabled={!this.canPressContinueButton()}
+					title={strings.signup.enterEmail.backupGenerate}
+				/>
+			</DidiScreen>
 		);
 	}
 }

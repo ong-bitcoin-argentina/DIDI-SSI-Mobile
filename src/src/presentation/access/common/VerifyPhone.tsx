@@ -1,13 +1,13 @@
-import React, { Fragment } from "react";
-import { GestureResponderEvent, Image, ImageSourcePropType, SafeAreaView, StatusBar, Text, View } from "react-native";
+import React from "react";
+import { GestureResponderEvent, Image, ImageSourcePropType, Text } from "react-native";
 
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
 
 import strings from "../../resources/strings";
-import themes from "../../resources/themes";
 import Validator from "../helpers/validator";
 
 export type VerifyPhoneProps = {};
@@ -27,30 +27,25 @@ export abstract class VerifyPhoneScreen<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<Text style={commonStyles.text.emphasis}>{strings.accessCommon.verifyPhone.messageHead}</Text>
-						<DidiTextInput
-							description={strings.accessCommon.verifyPhone.codeTitle}
-							placeholder={strings.accessCommon.verifyPhone.codePlaceholder}
-							tagImage={this.tagImageSource()}
-							textInputProps={{
-								keyboardType: "number-pad",
-								onChangeText: text => this.setState({ inputCode: text })
-							}}
-						/>
-						<Image style={commonStyles.image.image} source={this.contentImageSource()} />
-						<Text style={commonStyles.text.normal}>{strings.accessCommon.verifyPhone.resendCode}</Text>
-						<DidiButton
-							disabled={!this.canPressContinueButton()}
-							onPress={event => this.didPressContinueButton(event)}
-							title={strings.accessCommon.validateButtonText}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<DidiScreen>
+				<Text style={commonStyles.text.emphasis}>{strings.accessCommon.verifyPhone.messageHead}</Text>
+				<DidiTextInput
+					description={strings.accessCommon.verifyPhone.codeTitle}
+					placeholder={strings.accessCommon.verifyPhone.codePlaceholder}
+					tagImage={this.tagImageSource()}
+					textInputProps={{
+						keyboardType: "number-pad",
+						onChangeText: text => this.setState({ inputCode: text })
+					}}
+				/>
+				<Image style={commonStyles.image.image} source={this.contentImageSource()} />
+				<Text style={commonStyles.text.normal}>{strings.accessCommon.verifyPhone.resendCode}</Text>
+				<DidiButton
+					disabled={!this.canPressContinueButton()}
+					onPress={event => this.didPressContinueButton(event)}
+					title={strings.accessCommon.validateButtonText}
+				/>
+			</DidiScreen>
 		);
 	}
 

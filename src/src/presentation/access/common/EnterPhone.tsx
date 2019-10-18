@@ -1,23 +1,13 @@
-import React, { Fragment } from "react";
-import {
-	GestureResponderEvent,
-	Image,
-	ImageSourcePropType,
-	SafeAreaView,
-	StatusBar,
-	StyleSheet,
-	Text,
-	View
-} from "react-native";
+import React from "react";
+import { GestureResponderEvent, Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
 
-import DidiTheme from "../../resources/DidiTheme";
 import strings from "../../resources/strings";
-import themes from "../../resources/themes";
 
 export type EnterPhoneProps = {};
 
@@ -33,33 +23,28 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<Text style={commonStyles.text.emphasis}>{strings.accessCommon.enterPhone.messageHead}</Text>
-						<View style={styles.countryContainer}>
-							<Image style={styles.countryImage} source={this.countryImageSource()} />
-							<Text style={commonStyles.text.normal}>{strings.accessCommon.place}</Text>
-						</View>
-						<DidiTextInput
-							description={strings.accessCommon.enterPhone.cellNumber}
-							placeholder={strings.accessCommon.enterPhone.cellPlaceholder}
-							tagImage={this.tagImageSource()}
-							textInputProps={{
-								keyboardType: "phone-pad",
-								onChangeText: text => this.setState({ inputPhoneNumber: text })
-							}}
-						/>
-						<Image style={commonStyles.image.image} source={this.contentImageSource()} />
-						<DidiButton
-							disabled={!this.canPressContinueButton()}
-							onPress={event => this.didPressContinueButton(event)}
-							title={strings.accessCommon.validateButtonText}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<DidiScreen>
+				<Text style={commonStyles.text.emphasis}>{strings.accessCommon.enterPhone.messageHead}</Text>
+				<View style={styles.countryContainer}>
+					<Image style={styles.countryImage} source={this.countryImageSource()} />
+					<Text style={commonStyles.text.normal}>{strings.accessCommon.place}</Text>
+				</View>
+				<DidiTextInput
+					description={strings.accessCommon.enterPhone.cellNumber}
+					placeholder={strings.accessCommon.enterPhone.cellPlaceholder}
+					tagImage={this.tagImageSource()}
+					textInputProps={{
+						keyboardType: "phone-pad",
+						onChangeText: text => this.setState({ inputPhoneNumber: text })
+					}}
+				/>
+				<Image style={commonStyles.image.image} source={this.contentImageSource()} />
+				<DidiButton
+					disabled={!this.canPressContinueButton()}
+					onPress={event => this.didPressContinueButton(event)}
+					title={strings.accessCommon.validateButtonText}
+				/>
+			</DidiScreen>
 		);
 	}
 

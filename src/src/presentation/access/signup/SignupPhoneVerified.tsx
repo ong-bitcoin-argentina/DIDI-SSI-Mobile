@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
-import { Image, SafeAreaView, StatusBar, Text, View } from "react-native";
+import React from "react";
+import { Image, Text } from "react-native";
 
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -8,7 +9,6 @@ import commonStyles from "../resources/commonStyles";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import themes from "../../resources/themes";
 
 import { SignupEnterEmailProps } from "./SignupEnterEmail";
 
@@ -29,34 +29,29 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.messageHead}</Text>
+			<DidiScreen>
+				<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.messageHead}</Text>
 
-						<DidiTextInput
-							description={strings.signup.phoneVerified.cellNumber}
-							placeholder={this.props.phoneNumber}
-							tagImage={require("../resources/images/phone.png")}
-							textInputProps={{
-								editable: false
-							}}
-						/>
+				<DidiTextInput
+					description={strings.signup.phoneVerified.cellNumber}
+					placeholder={this.props.phoneNumber}
+					tagImage={require("../resources/images/phone.png")}
+					textInputProps={{
+						editable: false
+					}}
+				/>
 
-						<Image source={require("../resources/images/accountCreate.png")} style={commonStyles.image.image} />
+				<Image source={require("../resources/images/accountCreate.png")} style={commonStyles.image.image} />
 
-						<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.message}</Text>
+				<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.message}</Text>
 
-						<DidiButton
-							onPress={() => {
-								this.navigate("SignupEnterEmail", {});
-							}}
-							title={strings.signup.phoneVerified.next}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+				<DidiButton
+					onPress={() => {
+						this.navigate("SignupEnterEmail", {});
+					}}
+					title={strings.signup.phoneVerified.next}
+				/>
+			</DidiScreen>
 		);
 	}
 }

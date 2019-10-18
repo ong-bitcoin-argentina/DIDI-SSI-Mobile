@@ -1,6 +1,5 @@
-import React, { Fragment, ReactElement, ReactNode } from "react";
-import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, Text, View, ViewProps } from "react-native";
-import { SvgProps } from "react-native-svg";
+import React, { Fragment, ReactElement } from "react";
+import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
 
 import commonStyles from "../../access/resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
@@ -20,7 +19,6 @@ export interface ValidateIdentityExplanationProps {
 
 export default class ValidateIdentityExplanation extends React.Component<ValidateIdentityExplanationProps> {
 	render() {
-		const ContentImage = this.props.image;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
