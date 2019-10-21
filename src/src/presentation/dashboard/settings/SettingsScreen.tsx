@@ -17,11 +17,11 @@ import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
 import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 
 import { AboutThisAppScreenProps } from "./AboutThisApp";
+import { ChangePasswordProps } from "./ChangePassword";
 import { IdentitySettingsProps } from "./identity/IdentitySettings";
 import { JWTDecoderScanScreenProps } from "./JWTDecoderScanScreen";
 import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
 import { UserDataProps } from "./userData/UserData";
-import { ChangePasswordProps } from "./userMenu/ChangePassword";
 
 export interface SettingsScreenProps {
 	person: Identity;

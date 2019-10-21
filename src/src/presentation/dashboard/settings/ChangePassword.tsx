@@ -1,15 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import { DidiScreen } from "../../../common/DidiScreen";
-import DidiButton from "../../../util/DidiButton";
-import DidiTextInput from "../../../util/DidiTextInput";
-import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
+import { DidiScreen } from "../../common/DidiScreen";
+import DidiButton from "../../util/DidiButton";
+import DidiTextInput from "../../util/DidiTextInput";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import { Identity } from "../../../../model/Identity";
-import { didiConnect } from "../../../../store/store";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
-import strings from "../../../resources/strings";
+import { Identity } from "../../../model/Identity";
+import { didiConnect } from "../../../store/store";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
 
 export type ChangePasswordProps = {};
 interface ChangePasswordInternalProps extends ChangePasswordProps {
@@ -53,7 +53,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 					<DidiTextInput
 						description={strings.recovery.passwordChange.oldPassMessage}
 						placeholder=""
-						tagImage={require("../../../access/resources/images/key.png")}
+						tagImage={require("../../access/resources/images/key.png")}
 						textInputProps={{
 							secureTextEntry: true,
 							onChangeText: text => this.setState({ oldKey: text })
@@ -62,7 +62,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 					<DidiTextInput
 						description={strings.dashboard.userData.changePassword.newPassMessage}
 						placeholder=""
-						tagImage={require("../../../access/resources/images/key.png")}
+						tagImage={require("../../access/resources/images/key.png")}
 						textInputProps={{
 							secureTextEntry: true,
 							onChangeText: text => this.setState({ key: text })
@@ -72,7 +72,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 					<DidiTextInput
 						description={strings.dashboard.userData.changePassword.repeatNewPassMessage}
 						placeholder=""
-						tagImage={require("../../../access/resources/images/key.png")}
+						tagImage={require("../../access/resources/images/key.png")}
 						textInputProps={{
 							secureTextEntry: true,
 							onChangeText: text => this.setState({ keyDup: text })

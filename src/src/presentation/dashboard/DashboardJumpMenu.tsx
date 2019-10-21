@@ -12,7 +12,6 @@ import { ShareCredentialProps } from "./credentials/ShareCredential";
 import { DocumentsScreenProps } from "./documents/DocumentsScreen";
 import { RoundsScreenProps } from "./rounds/RoundsScreen";
 import { UserDataProps } from "./settings/userData/UserData";
-import { EditProfileProps } from "./settings/userMenu/EditProfile";
 
 export interface DashboardJumpMenuProps extends ViewProps {
 	navigation: NavigationScreenProp<NavigationState>;
@@ -29,7 +28,6 @@ export interface DashboardJumpNavigation {
 	DashboardRounds: RoundsScreenProps;
 	DashboardDocuments: DocumentsScreenProps;
 	UserData: UserDataProps;
-	EditProfile: EditProfileProps;
 }
 
 export default class DashboardJumpMenu extends NavigationEnabledComponent<
@@ -93,12 +91,6 @@ const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 		icon: <Text style={styles.icon}></Text>,
 		text: "Ver Documentos",
 		name: "DashboardDocuments"
-	},
-	{
-		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
-		text: "Editar Perfil",
-		name: "EditProfile"
 	},
 	{
 		...actionCommon,
