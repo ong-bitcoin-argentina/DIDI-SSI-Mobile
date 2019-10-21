@@ -31,7 +31,14 @@ export abstract class ValidateIdentityTakePhotoScreen<
 
 	render() {
 		if (this.state.isScanning) {
-			return <DidiCamera onPictureTaken={data => this.didTakePhoto(data)} />;
+			return (
+				<DidiCamera
+					onPictureTaken={data => {
+						this.didTakePhoto(data);
+						this.setState({ isScanning: false });
+					}}
+				/>
+			);
 		} else {
 			return (
 				<ValidateIdentityExplanation
@@ -44,8 +51,7 @@ export abstract class ValidateIdentityTakePhotoScreen<
 
 	componentDidMount() {
 		this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-			const navigation = this.navigation();
-			if (this.state.isScanning && navigation && navigation.isFocused) {
+			if (this.state.isScanning) {
 				this.setState({ isScanning: false });
 				return true;
 			} else {

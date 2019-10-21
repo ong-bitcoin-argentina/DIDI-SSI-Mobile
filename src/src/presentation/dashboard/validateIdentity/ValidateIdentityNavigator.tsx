@@ -1,4 +1,4 @@
-import NavMap, { NavTree } from "../../util/NavMap";
+import NavMap from "../../util/NavMap";
 
 import { DashboardScreenProps } from "../home/Dashboard";
 
