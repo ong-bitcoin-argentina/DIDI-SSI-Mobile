@@ -1,31 +1,35 @@
-import { GestureResponderEvent, ImageSourcePropType } from "react-native";
+import React from "react";
+import { GestureResponderEvent } from "react-native";
 
-import { VerifyPhoneProps, VerifyPhoneScreen, VerifyPhoneState } from "../common/VerifyPhone";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { VerifyPhoneScreen } from "../common/VerifyPhone";
 
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
-import DidiTheme from "../../resources/DidiTheme";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import themes from "../../resources/themes";
 
-export type LoginVerifyPhoneProps = VerifyPhoneProps;
+export type LoginVerifyPhoneProps = {};
 
 export type LoginVerifyPhoneNavigation = {
 	Dashboard: DashboardScreenProps;
 };
 
-export class LoginVerifyPhoneScreen extends VerifyPhoneScreen<
+export class LoginVerifyPhoneScreen extends NavigationEnabledComponent<
 	LoginVerifyPhoneProps,
-	VerifyPhoneState,
+	{},
 	LoginVerifyPhoneNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar");
 
-	protected contentImageSource(): ImageSourcePropType {
-		return require("../resources/images/loginVerify.png");
+	render() {
+		return (
+			<VerifyPhoneScreen
+				contentImageSource={require("../resources/images/loginVerify.png")}
+				onPressContinueButton={() => this.onPressContinueButton()}
+			/>
+		);
 	}
 
-	protected didPressContinueButton(event: GestureResponderEvent): void {
-		// TODO: End login flow
+	private onPressContinueButton() {
 		this.navigate("Dashboard", {});
 	}
 }

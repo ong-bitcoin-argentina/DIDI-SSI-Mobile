@@ -1,31 +1,34 @@
-import { GestureResponderEvent, ImageSourcePropType } from "react-native";
+import React from "react";
 
-import { VerifyPhoneProps, VerifyPhoneScreen, VerifyPhoneState } from "../common/VerifyPhone";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { VerifyPhoneProps, VerifyPhoneScreen } from "../common/VerifyPhone";
 
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
-import DidiTheme from "../../resources/DidiTheme";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import themes from "../../resources/themes";
 
-export type RecoveryVerifyPhoneProps = VerifyPhoneProps;
+export type RecoveryVerifyPhoneProps = {};
 
 export type RecoveryVerifyPhoneNavigation = {
 	Dashboard: DashboardScreenProps;
 };
 
-export class RecoveryVerifyPhoneScreen extends VerifyPhoneScreen<
+export class RecoveryVerifyPhoneScreen extends NavigationEnabledComponent<
 	RecoveryVerifyPhoneProps,
-	VerifyPhoneState,
+	{},
 	RecoveryVerifyPhoneNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Recuperar cuenta");
 
-	protected contentImageSource(): ImageSourcePropType {
-		return require("../resources/images/phoneRecover.png");
+	render() {
+		return (
+			<VerifyPhoneScreen
+				contentImageSource={require("../resources/images/phoneRecover.png")}
+				onPressContinueButton={() => this.onPressContinueButton()}
+			/>
+		);
 	}
 
-	protected didPressContinueButton(event: GestureResponderEvent): void {
-		// TODO: End login flow
+	private onPressContinueButton() {
 		this.navigate("Dashboard", {});
 	}
 }
