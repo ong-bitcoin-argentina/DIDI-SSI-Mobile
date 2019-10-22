@@ -1,21 +1,23 @@
 import React from "react";
-import { GestureResponderEvent, Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import DidiTextInput from "../../util/DidiTextInput";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
 
 import strings from "../../resources/strings";
 
-export type EnterPhoneProps = {};
+export interface EnterPhoneProps {
+	contentImageSource: ImageSourcePropType;
+	onPressContinueButton(inputPhoneNumber: string): void;
+}
 
 export interface EnterPhoneState {
 	inputPhoneNumber?: string;
 }
 
-export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<EnterPhoneProps, EnterPhoneState, Nav> {
+export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, EnterPhoneState> {
 	constructor(props: EnterPhoneProps) {
 		super(props);
 		this.state = {};
@@ -25,10 +27,12 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 		return (
 			<DidiScreen>
 				<Text style={commonStyles.text.emphasis}>{strings.accessCommon.enterPhone.messageHead}</Text>
+
 				<View style={styles.countryContainer}>
 					<Image style={styles.countryImage} source={this.countryImageSource()} />
 					<Text style={commonStyles.text.normal}>{strings.accessCommon.place}</Text>
 				</View>
+
 				<DidiTextInput
 					description={strings.accessCommon.enterPhone.cellNumber}
 					placeholder={strings.accessCommon.enterPhone.cellPlaceholder}
@@ -38,19 +42,17 @@ export abstract class EnterPhoneScreen<Nav> extends NavigationEnabledComponent<E
 						onChangeText: text => this.setState({ inputPhoneNumber: text })
 					}}
 				/>
-				<Image style={commonStyles.image.image} source={this.contentImageSource()} />
+
+				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
+
 				<DidiButton
 					disabled={!this.canPressContinueButton()}
-					onPress={event => this.didPressContinueButton(event)}
+					onPress={() => this.props.onPressContinueButton(this.state.inputPhoneNumber!)}
 					title={strings.accessCommon.validateButtonText}
 				/>
 			</DidiScreen>
 		);
 	}
-
-	protected abstract contentImageSource(): ImageSourcePropType;
-
-	protected abstract didPressContinueButton(event: GestureResponderEvent): void;
 
 	private countryImageSource(): ImageSourcePropType {
 		return require("../resources/images/arg.png");

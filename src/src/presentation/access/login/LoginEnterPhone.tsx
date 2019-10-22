@@ -1,27 +1,35 @@
-import { GestureResponderEvent, ImageSourcePropType } from "react-native";
+import React from "react";
 
-import { EnterPhoneProps, EnterPhoneScreen } from "../common/EnterPhone";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { EnterPhoneScreen } from "../common/EnterPhone";
 
-import DidiTheme from "../../resources/DidiTheme";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import themes from "../../resources/themes";
 
 import { LoginVerifyPhoneProps } from "./LoginVerifyPhone";
 
-export type LoginEnterPhoneProps = EnterPhoneProps;
+export type LoginEnterPhoneProps = {};
 
 export interface LoginEnterPhoneNavigation {
 	LoginVerifyPhone: LoginVerifyPhoneProps;
 }
 
-export class LoginEnterPhoneScreen extends EnterPhoneScreen<LoginEnterPhoneNavigation> {
+export class LoginEnterPhoneScreen extends NavigationEnabledComponent<
+	LoginEnterPhoneProps,
+	{},
+	LoginEnterPhoneNavigation
+> {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Ingresar");
 
-	protected contentImageSource(): ImageSourcePropType {
-		return require("../resources/images/login.png");
+	render() {
+		return (
+			<EnterPhoneScreen
+				contentImageSource={require("../resources/images/login.png")}
+				onPressContinueButton={() => this.onPressContinueButton()}
+			/>
+		);
 	}
 
-	protected didPressContinueButton(event: GestureResponderEvent): void {
+	private onPressContinueButton() {
 		this.navigate("LoginVerifyPhone", {});
 	}
 }
