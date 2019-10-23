@@ -6,7 +6,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiQRScanner from "../common/DidiQRScanner";
 
 import { didiConnect } from "../../../store/store";
-import parseJWT, { JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
+import parseJWT, { compareParseResults, JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 
@@ -62,9 +62,9 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			this.showAlert("No hay credenciales", "El codigo QR escaneado no contiene credenciales");
 			return;
 		}
-		const toParse = matches.find(match => isRight(unverifiedParseJWT(match))) || matches[0];
+		const parseResults = matches.map(unverifiedParseJWT);
+		const unverifiedParse = parseResults.sort(compareParseResults)[0];
 
-		const unverifiedParse = unverifiedParseJWT(toParse);
 		if (isLeft(unverifiedParse)) {
 			const { title, subtitle } = this.errorMessage(unverifiedParse.left);
 			this.showAlert(title, subtitle);
@@ -73,7 +73,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 
 		Vibration.vibrate(400, false);
 
-		const parse = await parseJWT(toParse, this.props.ethrDidUri);
+		const parse = await parseJWT(unverifiedParse.right.jwt, this.props.ethrDidUri);
 
 		if (isLeft(parse)) {
 			const { title, subtitle } = this.errorMessage(parse.left);
