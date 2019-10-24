@@ -1,12 +1,13 @@
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
-import DidiButton from "../../util/DidiButton";
-import DidiTextInput from "../../util/DidiTextInput";
-import commonStyles from "../resources/commonStyles";
+import commonStyles from "../access/resources/commonStyles";
+import DidiButton from "../util/DidiButton";
+import DidiTextInput from "../util/DidiTextInput";
 
-import strings from "../../resources/strings";
+import strings from "../resources/strings";
+
+import { DidiScreen } from "./DidiScreen";
 
 export interface EnterPhoneProps {
 	contentImageSource: ImageSourcePropType;
@@ -55,11 +56,11 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 	}
 
 	private countryImageSource(): ImageSourcePropType {
-		return require("../resources/images/arg.png");
+		return require("../access/resources/images/arg.png");
 	}
 
 	private tagImageSource(): ImageSourcePropType {
-		return require("../resources/images/phone.png");
+		return require("../access/resources/images/phone.png");
 	}
 
 	private canPressContinueButton(): boolean {

@@ -9,6 +9,8 @@ import IdentitySettingsScreen from "./identity/IdentitySettings";
 import { JWTDecoderScanScreen } from "./JWTDecoderScanScreen";
 import { ServiceSettingsScreen } from "./ServiceSettingsScreen";
 import SettingsScreen from "./SettingsScreen";
+import { ChangePhoneEnterScreen } from "./userData/ChangePhoneEnterPhone";
+import { ChangePhoneVerifyScreen } from "./userData/ChangePhoneVerifyPhone";
 import UserDataScreen from "./userData/UserData";
 import { ShareProfileScreen } from "./userMenu/ShareProfile";
 
@@ -20,7 +22,12 @@ interface SettingsNavigatorNavigation {
 export default function(then: NavTree<SettingsNavigatorNavigation>) {
 	return NavMap.from(SettingsScreen, {
 		UserData: NavMap.from(UserDataScreen, {
-			ShareProfile: NavMap.from(ShareProfileScreen, {})
+			ShareProfile: NavMap.from(ShareProfileScreen, {}),
+			ChangePhoneEnterPhone: NavMap.from(ChangePhoneEnterScreen, {
+				ChangePhoneVerify: NavMap.from(ChangePhoneVerifyScreen, {
+					UserData: NavMap.placeholder(UserDataScreen)
+				})
+			})
 		}),
 		ChangePassword: NavMap.from(ChangePasswordScreen, {}),
 		IdentitySettings: NavMap.from(IdentitySettingsScreen, {}),

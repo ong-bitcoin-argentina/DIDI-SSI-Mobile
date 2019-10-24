@@ -1,8 +1,8 @@
 import React from "react";
 import { GestureResponderEvent } from "react-native";
 
+import { VerifyPhoneScreen } from "../../common/VerifyPhone";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { VerifyPhoneScreen } from "../common/VerifyPhone";
 
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";

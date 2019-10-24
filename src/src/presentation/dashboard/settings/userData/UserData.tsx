@@ -13,6 +13,7 @@ import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 
+import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
 import UserHeadingComponent from "./UserHeading";
 
 export type UserDataProps = ViewProps;
@@ -25,6 +26,7 @@ type UserDataState = {};
 
 export interface UserDataNavigation {
 	ShareProfile: ShareProfileProps;
+	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
@@ -38,7 +40,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		{
 			actionTitle: "Cambiar Teléfono",
 			onPress: navigation => {
-				// TODO: navigation.navigate("ChangePhone", {});
+				navigation.navigate("ChangePhoneEnterPhone", {});
 			}
 		},
 		{

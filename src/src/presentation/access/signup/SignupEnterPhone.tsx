@@ -1,7 +1,7 @@
 import React from "react";
 
+import { EnterPhoneScreen } from "../../common/EnterPhone";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { EnterPhoneScreen } from "../common/EnterPhone";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";

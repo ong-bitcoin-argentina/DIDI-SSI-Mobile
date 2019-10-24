@@ -1,7 +1,7 @@
 import React from "react";
 
+import { VerifyPhoneScreen } from "../../common/VerifyPhone";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { VerifyPhoneScreen } from "../common/VerifyPhone";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 

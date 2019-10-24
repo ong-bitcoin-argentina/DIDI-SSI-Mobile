@@ -1,13 +1,14 @@
 import React from "react";
 import { Image, ImageSourcePropType, Text } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
-import DidiButton from "../../util/DidiButton";
-import DidiTextInput from "../../util/DidiTextInput";
-import commonStyles from "../resources/commonStyles";
+import commonStyles from "../access/resources/commonStyles";
+import DidiButton from "../util/DidiButton";
+import DidiTextInput from "../util/DidiTextInput";
 
-import strings from "../../resources/strings";
-import Validator from "../helpers/validator";
+import Validator from "../access/helpers/validator";
+import strings from "../resources/strings";
+
+import { DidiScreen } from "./DidiScreen";
 
 export interface VerifyPhoneProps {
 	contentImageSource: ImageSourcePropType;
@@ -49,7 +50,7 @@ export class VerifyPhoneScreen extends React.PureComponent<VerifyPhoneProps, Ver
 	}
 
 	private tagImageSource(): ImageSourcePropType {
-		return require("../resources/images/phone.png");
+		return require("../access/resources/images/phone.png");
 	}
 
 	private canPressContinueButton(): boolean {

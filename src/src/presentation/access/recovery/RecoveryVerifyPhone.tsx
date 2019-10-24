@@ -1,7 +1,7 @@
 import React from "react";
 
+import { VerifyPhoneProps, VerifyPhoneScreen } from "../../common/VerifyPhone";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { VerifyPhoneProps, VerifyPhoneScreen } from "../common/VerifyPhone";
 
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
