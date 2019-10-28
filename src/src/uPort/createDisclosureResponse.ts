@@ -81,17 +81,16 @@ export interface DisclosureResponseArguments {
 	microCredentials: CredentialDocument[];
 }
 
-export async function createDisclosureResponse(
-	args: DisclosureResponseArguments
-): Promise<{ accessToken: string; missing: string[] }> {
-	const { missing, own, verified } = getResponseClaims(args.request.content, args.microCredentials, args.identity);
-
+export async function signDisclosureResponse(
+	request: RequestDocument,
+	own: Claim,
+	verified: string[]
+): Promise<string> {
 	const credentials = await getCredentials();
 	const accessToken = await credentials.createDisclosureResponse({
-		req: args.request.jwt,
+		req: request.jwt,
 		own,
 		verified
 	});
-
-	return { accessToken, missing };
+	return accessToken;
 }

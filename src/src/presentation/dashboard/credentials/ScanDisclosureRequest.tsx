@@ -1,5 +1,4 @@
-import { isLeft } from "fp-ts/lib/Either";
-import React, { Fragment } from "react";
+import React from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native";
 
 import { ServiceState } from "../../../services/common/ServiceState";
@@ -15,8 +14,7 @@ import { Identity } from "../../../model/Identity";
 import { RequestDocument } from "../../../model/RequestDocument";
 import { SubmitDisclosureResponseArguments } from "../../../services/issuer/submitDisclosureResponse";
 import { didiConnect } from "../../../store/store";
-import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
-import { unverifiedParseJWT } from "../../../uPort/parseJWT";
+import { getResponseClaims, signDisclosureResponse } from "../../../uPort/createDisclosureResponse";
 import colors from "../../resources/colors";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 
@@ -33,7 +31,7 @@ interface ScanDisclosureRequestStateProps {
 	responseState: ServiceState<SubmitDisclosureResponseArguments, boolean, string>;
 }
 interface ScanDisclosureRequestDispatchProps {
-	sendResponse(callback: string, accessToken: string): void;
+	sendResponse(args: SubmitDisclosureResponseArguments): void;
 	resetResponse(): void;
 	storeRequest(request: RequestDocument): void;
 }
@@ -114,18 +112,13 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		}
 	}
 
-	private async answerRequest() {
-		try {
-			const { accessToken, missing } = await createDisclosureResponse({
-				request: this.props.request,
-				identity: this.props.identity,
-				microCredentials: this.props.microCredentials
-			});
-			this.props.sendResponse(this.props.request.content.callback, accessToken);
-		} catch (e) {
-			Alert.alert("Error al generar respuesta", JSON.stringify(e));
-			return;
-		}
+	private answerRequest() {
+		const { missing, own, verified } = getResponseClaims(
+			this.props.request.content,
+			this.props.microCredentials,
+			this.props.identity
+		);
+		this.props.sendResponse({ request: this.props.request, own, verified });
 	}
 }
 
@@ -141,10 +134,10 @@ export default didiConnect(
 	},
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
-			sendResponse: (callback: string, accessToken: string) =>
+			sendResponse: (args: SubmitDisclosureResponseArguments) =>
 				dispatch({
 					type: "SERVICE_DISCLOSURE_RESPONSE",
-					serviceAction: { type: "START", args: { callback, accessToken } }
+					serviceAction: { type: "START", args }
 				}),
 			resetResponse: () =>
 				dispatch({

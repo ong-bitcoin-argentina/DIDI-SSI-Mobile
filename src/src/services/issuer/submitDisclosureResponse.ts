@@ -1,17 +1,24 @@
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
+import { RequestDocument } from "../../model/RequestDocument";
+import { signDisclosureResponse } from "../../uPort/createDisclosureResponse";
+import { Claim } from "../../uPort/types/Claim";
+
 export interface SubmitDisclosureResponseArguments {
-	callback: string;
-	accessToken: string;
+	request: RequestDocument;
+	own: Claim;
+	verified: string[];
 }
 
 async function submitDisclosureResponse(args: SubmitDisclosureResponseArguments): Promise<boolean> {
-	const response = await fetch(args.callback, {
+	const accessToken = await signDisclosureResponse(args.request, args.own, args.verified);
+
+	const response = await fetch(args.request.content.callback, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({ access_token: args.accessToken })
+		body: JSON.stringify({ access_token: accessToken })
 	});
 
 	const body = await response.json();
