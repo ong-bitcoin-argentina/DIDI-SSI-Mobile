@@ -5,6 +5,7 @@
 	"importStringConfiguration.tabSize": 8,
 	"importStringConfiguration.tabType": "tab",
 	"importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 120,
+	"importSorter.generalConfiguration.exclude": ["^.*\\.d\\.ts$"],
 	"importSorter.sortConfiguration.customOrderingRules.rules": [
 		{
 			"type": "importMember",
