@@ -1,27 +1,28 @@
-import { AnyAction, combineReducers, createStore, Reducer, Store } from "redux";
+import { AnyAction, combineReducers, createStore, Store } from "redux";
+import { combineReducers as combineLoopReducers, install as installReduxLoop } from "redux-loop";
 import { persistReducer, persistStore, StateReconciler } from "redux-persist";
 import FSStorage from "redux-persist-fs-storage";
-import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
+import { PersistPartial } from "redux-persist/es/persistReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
 import { ServiceSettings } from "../model/ServiceSettings";
+import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
-import { ServiceSettingAction, serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
-import { TokenAction, tokenReducer } from "./reducers/tokenReducer";
+import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
+import { tokenReducer } from "./reducers/tokenReducer";
+import { StoreAction } from "./StoreAction";
 
-export type NormalizedStoreAction = TokenAction | ServiceSettingAction;
-
-export type NormalizedStoreContent = {
+export interface PersistedStoreContent {
 	tokens: string[];
 	serviceSettings: ServiceSettings;
-};
+}
 
-const reducer: Reducer<NormalizedStoreContent, NormalizedStoreAction> = combineReducers({
+const reducer = combineReducers<PersistedStoreContent, StoreAction>({
 	tokens: tokenReducer,
 	serviceSettings: serviceSettingsReducer
 });
 
-const stateReconciler: StateReconciler<NormalizedStoreContent> = autoMergeLevel2;
+const stateReconciler: StateReconciler<PersistedStoreContent> = autoMergeLevel2;
 
 const persistedReducer = persistReducer(
 	{
@@ -33,6 +34,21 @@ const persistedReducer = persistReducer(
 	reducer
 );
 
-export const store = createStore(persistedReducer) as Store<any, AnyAction>;
+export interface NormalizedStoreContent {
+	persisted: PersistedStoreContent & PersistPartial;
+	serviceCalls: ServiceCallState;
+}
+
+const storeReducer = combineLoopReducers<NormalizedStoreContent>({
+	persisted: persistedReducer,
+	serviceCalls: serviceCallReducer
+});
+
+export const store = createStore(
+	storeReducer as any,
+	installReduxLoop({
+		DONT_LOG_ERRORS_ON_HANDLED_FAILURES: true
+	})
+) as Store<any, AnyAction>;
 
 export const persistor = persistStore(store);

@@ -7,7 +7,7 @@ import { unverifiedParseJWT } from "../../uPort/parseJWT";
 import { NormalizedStoreContent } from "../normalizedStore";
 
 export const parsedTokenSelector = createSelector(
-	(state: NormalizedStoreContent) => state.tokens,
+	(state: NormalizedStoreContent) => state.persisted.tokens,
 	tokens => {
 		const parsed = tokens.map(unverifiedParseJWT);
 		const documents = TypedArray.flatMap(parsed, tk => (isRight(tk) ? tk.right : undefined));

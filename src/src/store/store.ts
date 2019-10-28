@@ -8,8 +8,10 @@ import { Identity } from "../model/Identity";
 import { RecentActivity } from "../model/RecentActivity";
 import { RequestDocument } from "../model/RequestDocument";
 import { SampleDocument } from "../model/SampleDocument";
+import { ServiceSettings } from "../model/ServiceSettings";
+import { ServiceCallState } from "../services/ServiceStateStore";
 
-import { NormalizedStoreAction, NormalizedStoreContent } from "./normalizedStore";
+import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
 import { sampleDocuments } from "./samples/sampleDocuments";
 import { sampleIdentity } from "./samples/sampleIdentity";
 import { sampleRecentActivity } from "./samples/sampleRecentActivity";
@@ -17,15 +19,19 @@ import { credentialSelector } from "./selector/credentialSelector";
 import { microCredentialSelector } from "./selector/microCredentialSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { requestSelector } from "./selector/requestSelector";
-import { StoreAction, StoreContent } from "./store";
+import { StoreContent } from "./store";
+import { StoreAction } from "./StoreAction";
 
-export type StoreAction = NormalizedStoreAction;
-
-export interface StoreContent extends NormalizedStoreContent {
-	credentials: Array<DerivedCredential<CredentialDocument>>;
-	microCredentials: CredentialDocument[];
-	requests: RequestDocument[];
+export interface StoreContent {
+	tokens: string[];
 	parsedTokens: Array<CredentialDocument | RequestDocument>;
+	microCredentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
+	requests: RequestDocument[];
+
+	serviceSettings: ServiceSettings;
+	serviceCalls: ServiceCallState;
+
 	samples: SampleDocument[];
 	identity: Identity;
 	recentActivity: RecentActivity[];
@@ -34,11 +40,15 @@ export interface StoreContent extends NormalizedStoreContent {
 function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StateProps) {
 	return (state: NormalizedStoreContent): StateProps => {
 		return mapStateToProps({
-			...state,
+			tokens: state.persisted.tokens,
+			parsedTokens: parsedTokenSelector(state),
 			credentials: credentialSelector(state),
 			microCredentials: microCredentialSelector(state),
 			requests: requestSelector(state),
-			parsedTokens: parsedTokenSelector(state),
+
+			serviceCalls: state.serviceCalls,
+			serviceSettings: state.persisted.serviceSettings,
+
 			identity: sampleIdentity,
 			recentActivity: sampleRecentActivity,
 			samples: sampleDocuments

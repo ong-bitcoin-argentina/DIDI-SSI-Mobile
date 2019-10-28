@@ -1,4 +1,5 @@
 import { ServiceSettings } from "../../model/ServiceSettings";
+import { StoreAction } from "../StoreAction";
 
 export interface ServiceSettingAction {
 	type: "SERVICE_SETTINGS_SET";
@@ -11,10 +12,7 @@ export const defaultServiceSettings: ServiceSettings = {
 	ethrDidUri: "https://rinkeby.infura.io/ethr-did"
 };
 
-export function serviceSettingsReducer(
-	state: ServiceSettings | undefined,
-	action: ServiceSettingAction
-): ServiceSettings {
+export function serviceSettingsReducer(state: ServiceSettings | undefined, action: StoreAction): ServiceSettings {
 	if (state === undefined) {
 		return defaultServiceSettings;
 	}

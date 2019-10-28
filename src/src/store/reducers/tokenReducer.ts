@@ -1,3 +1,5 @@
+import { StoreAction } from "../StoreAction";
+
 interface TokenActionEnsure {
 	type: "TOKEN_ENSURE";
 	content: string[];
@@ -7,7 +9,7 @@ interface TokenActionDeleteAll {
 }
 export type TokenAction = TokenActionEnsure | TokenActionDeleteAll;
 
-export function tokenReducer(state: string[] | undefined, action: TokenAction): string[] {
+export function tokenReducer(state: string[] | undefined, action: StoreAction): string[] {
 	if (state === undefined) {
 		return [];
 	}

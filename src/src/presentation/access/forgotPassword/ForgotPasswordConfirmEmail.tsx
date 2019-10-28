@@ -39,9 +39,7 @@ export class ForgotPasswordConfirmEmailScreen extends NavigationEnabledComponent
 	render() {
 		return (
 			<DidiScreen>
-				<Text style={[commonStyles.text.emphasis, styles.messageHead]}>
-					{strings.recovery.passwordRecoverConfirmationCode.messageHead}
-				</Text>
+				<Text style={commonStyles.text.emphasis}>{strings.recovery.passwordRecoverConfirmationCode.messageHead}</Text>
 
 				<Image source={require("../resources/images/phoneRecover.png")} style={commonStyles.image.image} />
 
@@ -68,9 +66,3 @@ export class ForgotPasswordConfirmEmailScreen extends NavigationEnabledComponent
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	messageHead: {
-		fontSize: 19
-	}
-});
