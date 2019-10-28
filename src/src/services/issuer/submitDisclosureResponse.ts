@@ -10,7 +10,7 @@ export interface SubmitDisclosureResponseArguments {
 	verified: string[];
 }
 
-async function submitDisclosureResponse(args: SubmitDisclosureResponseArguments): Promise<boolean> {
+async function submitDisclosureResponse(args: SubmitDisclosureResponseArguments): Promise<void> {
 	const accessToken = await signDisclosureResponse(args.request, args.own, args.verified);
 
 	const response = await fetch(args.request.content.callback, {
@@ -22,20 +22,23 @@ async function submitDisclosureResponse(args: SubmitDisclosureResponseArguments)
 	});
 
 	const body = await response.json();
-	return typeof body === "object" && body.status === "success";
+	if (typeof body === "object" && body.status === "success") {
+		return;
+	} else {
+		return Promise.reject("Respuesta rechazada por servidor");
+	}
 }
 
 export type SubmitDisclosureResponseAction = ServiceAction<
 	"SERVICE_DISCLOSURE_RESPONSE",
 	SubmitDisclosureResponseArguments,
-	boolean,
+	void,
 	string
 >;
 
 export type SubmitDisclosureResponseState = ServiceStateOf<SubmitDisclosureResponseAction>;
 
 export const submitDisclosureResponseReducer = serviceReducer(
-	"SERVICE_DISCLOSURE_RESPONSE",
 	submitDisclosureResponse,
 	(act): act is SubmitDisclosureResponseAction => act.type === "SERVICE_DISCLOSURE_RESPONSE"
 );

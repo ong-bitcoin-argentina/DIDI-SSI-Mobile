@@ -50,11 +50,10 @@ function typedCmdRun<Id, Args, R, E, A extends ServiceAction<Id, Args, R, E>>(
 }
 
 export function serviceReducer<A extends StoreActionTypeValue>(
-	id: IdOf<A>,
 	serviceCall: (args: ArgsOf<A>) => ResultOf<A> | Promise<ResultOf<A>>,
 	actionPredicate: (action: StoreAction) => action is ActionOf<A>
 ) {
-	return (state: StateOf<A> | undefined, action: StoreAction): StateOf<A> | Loop<StateOf<A>, ActionOf<A>> => {
+	return (state: StateOf<A> | undefined, action: StoreAction): StateOf<A> | Loop<StateOf<A>, StoreAction> => {
 		if (state === undefined) {
 			return { state: "NONE" };
 		} else if (!actionPredicate(action)) {
@@ -69,11 +68,11 @@ export function serviceReducer<A extends StoreActionTypeValue>(
 					typedCmdRun<IdOf<A>, ArgsOf<A>, ResultOf<A>, ErrorOf<A>, ActionOf<A>>(
 						serviceCall,
 						serviceAction.args,
-						value => {
-							return { type: id, serviceAction: { type: "SUCCESS", value } };
+						(value: ResultOf<A>): ActionOf<A> => {
+							return { type: action.type, serviceAction: { type: "SUCCESS", value } };
 						},
-						error => {
-							return { type: id, serviceAction: { type: "FAILURE", error } };
+						(error: ErrorOf<A>): ActionOf<A> => {
+							return { type: action.type, serviceAction: { type: "FAILURE", error } };
 						}
 					)
 				);

@@ -12,7 +12,10 @@ import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
 import { Identity } from "../../../model/Identity";
 import { RequestDocument } from "../../../model/RequestDocument";
-import { SubmitDisclosureResponseArguments } from "../../../services/issuer/submitDisclosureResponse";
+import {
+	SubmitDisclosureResponseArguments,
+	SubmitDisclosureResponseState
+} from "../../../services/issuer/submitDisclosureResponse";
 import { didiConnect } from "../../../store/store";
 import { getResponseClaims, signDisclosureResponse } from "../../../uPort/createDisclosureResponse";
 import colors from "../../resources/colors";
@@ -28,7 +31,7 @@ interface ScanDisclosureRequestStateProps {
 	identity: Identity;
 	credentials: Array<DerivedCredential<CredentialDocument>>;
 	microCredentials: CredentialDocument[];
-	responseState: ServiceState<SubmitDisclosureResponseArguments, boolean, string>;
+	responseState: SubmitDisclosureResponseState;
 }
 interface ScanDisclosureRequestDispatchProps {
 	sendResponse(args: SubmitDisclosureResponseArguments): void;
@@ -83,7 +86,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 			case "FAILURE":
 				return (
 					<View style={styles.buttonContainer}>
-						<Text style={commonStyles.text.normal}>Error en la conexion</Text>
+						<Text style={commonStyles.text.normal}>Error en la conexion: {this.props.responseState.error}</Text>
 						<DidiButton style={styles.button} title="Reenviar" onPress={() => this.answerRequest()} />
 						<DidiButton style={styles.button} title="Regresar" onPress={() => this.props.onGoBack(this)} />
 					</View>
@@ -101,13 +104,9 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 			case "FAILURE":
 				return;
 			case "SUCCESS":
-				if (response.value) {
-					Alert.alert("Respuesta enviada");
-					this.props.resetResponse();
-					this.props.onGoBack(this);
-				} else {
-					Alert.alert("Respuesta rechazada por servidor");
-				}
+				Alert.alert("Respuesta enviada");
+				this.props.resetResponse();
+				this.props.onGoBack(this);
 				return;
 		}
 	}
