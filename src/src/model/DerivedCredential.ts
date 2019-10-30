@@ -1,3 +1,5 @@
+import { liftUndefined2 } from "../util/liftUndefined";
+
 import { flattenClaim, FlattenedClaim } from "../uPort/types/Claim";
 import { ClaimMetadata, VerifiedClaim } from "../uPort/types/VerifiedClaim";
 
@@ -53,18 +55,6 @@ function shouldMerge(left: DerivedCredential<unknown>, right: DerivedCredential<
 		left.data.subject === right.data.subject &&
 		issuanceDateAllowsMerge(left.data.issuedAt, right.data.issuedAt)
 	);
-}
-
-function liftUndefined2<T, U, V>(
-	left: T | undefined,
-	right: U | undefined,
-	fn: (left: T, right: U) => V
-): V | undefined {
-	if (left === undefined || right === undefined) {
-		return undefined;
-	} else {
-		return fn(left, right);
-	}
 }
 
 function doMerge<T>(left: DerivedCredential<T>, right: DerivedCredential<T>): DerivedCredential<T> {

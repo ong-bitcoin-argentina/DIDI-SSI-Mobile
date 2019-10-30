@@ -1,23 +1,27 @@
+import { isLeft } from "fp-ts/lib/Either";
+
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
-import { RequestDocument } from "../../model/RequestDocument";
-import { Claim } from "../../uPort/types/Claim";
+import { emptyData, userServiceRequest } from "./userServiceCommon";
 
 export interface SendSmsValidatorArguments {
-	request: RequestDocument;
-	own: Claim;
-	verified: string[];
+	cellPhoneNumber: string;
+	did: string;
 }
 
-async function sendSmsValidator(args: SendSmsValidatorArguments): Promise<void> {
-	return Promise.resolve();
+async function sendSmsValidator(baseUrl: string, args: SendSmsValidatorArguments) {
+	return userServiceRequest(
+		`${baseUrl}/sendSmsValidator`,
+		{ cellPhoneNumber: args.cellPhoneNumber, did: args.did },
+		emptyData
+	);
 }
 
-export type SendSmsValidatorAction = ServiceAction<"SEND_SMS_VALIDATOR", SendSmsValidatorArguments, void, string>;
+export type SendSmsValidatorAction = ServiceAction<"SERVICE_SEND_SMS_VALIDATOR", SendSmsValidatorArguments, {}, string>;
 
 export type SendSmsValidatorState = ServiceStateOf<SendSmsValidatorAction>;
 
 export const sendSmsValidatorReducer = serviceReducer(
-	sendSmsValidator,
-	(act): act is SendSmsValidatorAction => act.type === "SEND_SMS_VALIDATOR"
+	config => (args: SendSmsValidatorArguments) => sendSmsValidator(config.didiUserServer, args),
+	(act): act is SendSmsValidatorAction => act.type === "SERVICE_SEND_SMS_VALIDATOR"
 );

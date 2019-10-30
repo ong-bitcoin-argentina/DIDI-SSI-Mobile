@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 
 import commonStyles from "../access/resources/commonStyles";
 import DidiButton from "../util/DidiButton";
@@ -12,6 +12,7 @@ import { DidiScreen } from "./DidiScreen";
 export interface EnterPhoneProps {
 	contentImageSource: ImageSourcePropType;
 	onPressContinueButton(inputPhoneNumber: string): void;
+	isPending?: boolean;
 }
 
 export interface EnterPhoneState {
@@ -46,11 +47,18 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
 
-				<DidiButton
-					disabled={!this.canPressContinueButton()}
-					onPress={() => this.props.onPressContinueButton(this.state.inputPhoneNumber!)}
-					title={strings.accessCommon.validateButtonText}
-				/>
+				{this.props.isPending ? (
+					<View>
+						<ActivityIndicator />
+						<Text>Loading</Text>
+					</View>
+				) : (
+					<DidiButton
+						disabled={!this.canPressContinueButton()}
+						onPress={() => this.props.onPressContinueButton(this.state.inputPhoneNumber!)}
+						title={strings.accessCommon.validateButtonText}
+					/>
+				)}
 			</DidiScreen>
 		);
 	}

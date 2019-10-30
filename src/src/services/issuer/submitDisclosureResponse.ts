@@ -39,6 +39,6 @@ export type SubmitDisclosureResponseAction = ServiceAction<
 export type SubmitDisclosureResponseState = ServiceStateOf<SubmitDisclosureResponseAction>;
 
 export const submitDisclosureResponseReducer = serviceReducer(
-	submitDisclosureResponse,
+	config => submitDisclosureResponse,
 	(act): act is SubmitDisclosureResponseAction => act.type === "SERVICE_DISCLOSURE_RESPONSE"
 );

@@ -30,7 +30,8 @@ export type ServiceSettingsScreenNavigation = {};
 const displayNames: { [K in keyof ServiceSettings]: string } = {
 	ethrDidUri: "ethr-did-resolver URI",
 	sharePrefix: "Share URI Prefix",
-	trustGraphUri: "TrustGraph (Mouro) URI"
+	trustGraphUri: "TrustGraph (Mouro) URI",
+	didiUserServer: "Didi server (Registration)"
 };
 
 class ServiceSettingsScreen extends NavigationEnabledComponent<

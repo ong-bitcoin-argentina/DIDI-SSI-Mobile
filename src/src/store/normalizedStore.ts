@@ -1,9 +1,11 @@
 import { AnyAction, combineReducers, createStore, Store } from "redux";
-import { combineReducers as combineLoopReducers, install as installReduxLoop } from "redux-loop";
+import { install as installReduxLoop, Loop } from "redux-loop";
 import { persistReducer, persistStore, StateReconciler } from "redux-persist";
 import FSStorage from "redux-persist-fs-storage";
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
+
+import { liftUndefined } from "../util/liftUndefined";
 
 import { ServiceSettings } from "../model/ServiceSettings";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
@@ -39,10 +41,18 @@ export interface NormalizedStoreContent {
 	serviceCalls: ServiceCallState;
 }
 
-const storeReducer = combineLoopReducers<NormalizedStoreContent>({
-	persisted: persistedReducer,
-	serviceCalls: serviceCallReducer
-});
+const storeReducer = (
+	state: NormalizedStoreContent | undefined,
+	action: StoreAction
+): Loop<NormalizedStoreContent, StoreAction> => {
+	const persisted = persistedReducer(liftUndefined(state, s => s.persisted), action);
+	const [serviceCalls, actions] = serviceCallReducer(
+		liftUndefined(state, s => s.serviceCalls),
+		action,
+		persisted.serviceSettings
+	);
+	return [{ persisted, serviceCalls }, actions];
+};
 
 export const store = createStore(
 	storeReducer as any,
