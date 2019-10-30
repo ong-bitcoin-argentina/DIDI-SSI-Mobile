@@ -7,6 +7,8 @@ import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
 
+import { SendMailValidatorArguments, SendMailValidatorState } from "../../../services/user/sendMailValidator";
+import { didiConnect } from "../../../store/store";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import Validator from "../helpers/validator";
@@ -14,6 +16,13 @@ import Validator from "../helpers/validator";
 import { SignupConfirmEmailProps } from "./SignupConfirmEmail";
 
 export type SignupEnterEmailProps = {};
+interface SignupEnterEmailStateProps {
+	requestEmailCodeState: SendMailValidatorState;
+}
+interface SignupEnterEmailDispatchProps {
+	requestEmailCode(args: SendMailValidatorArguments): void;
+}
+type SignupEnterEmailInternalProps = SignupEnterEmailStateProps & SignupEnterEmailDispatchProps & SignupEnterEmailProps;
 
 export interface SignupEnterEmailNavigation {
 	SignupConfirmEmail: SignupConfirmEmailProps;
@@ -25,8 +34,8 @@ interface SignupEnterEmailState {
 	keyDup: string;
 }
 
-export class SignupEnterEmailScreen extends NavigationEnabledComponent<
-	SignupEnterEmailProps,
+class SignupEnterEmailScreen extends NavigationEnabledComponent<
+	SignupEnterEmailInternalProps,
 	SignupEnterEmailState,
 	SignupEnterEmailNavigation
 > {
@@ -36,7 +45,7 @@ export class SignupEnterEmailScreen extends NavigationEnabledComponent<
 		if (!this.state || !Validator.isEmail(this.state.email)) {
 			return false;
 		}
-		return this.state.key ? this.state.key.length > 0 && this.state.keyDup == this.state.key : false;
+		return this.state.key ? this.state.key.length > 0 && this.state.keyDup === this.state.key : false;
 	}
 
 	render() {
@@ -84,13 +93,37 @@ export class SignupEnterEmailScreen extends NavigationEnabledComponent<
 				/>
 
 				<DidiButton
-					onPress={() => {
-						this.navigate("SignupConfirmEmail", {});
-					}}
+					onPress={() => this.onPressContinueButton()}
 					disabled={!this.canPressContinueButton()}
 					title={strings.signup.enterEmail.backupGenerate}
 				/>
 			</DidiScreen>
 		);
 	}
+
+	componentDidUpdate() {
+		if (this.props.requestEmailCodeState.state === "SUCCESS") {
+			this.navigate("SignupConfirmEmail", {});
+		}
+	}
+
+	private onPressContinueButton() {
+		this.props.requestEmailCode({
+			did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d",
+			email: this.state.email
+		});
+	}
 }
+
+const connected = didiConnect(
+	SignupEnterEmailScreen,
+	(state): SignupEnterEmailStateProps => ({
+		requestEmailCodeState: state.serviceCalls.sendMailValidator
+	}),
+	(dispatch): SignupEnterEmailDispatchProps => ({
+		requestEmailCode: (args: SendMailValidatorArguments) =>
+			dispatch({ type: "SERVICE_SEND_EMAIL_VALIDATOR", serviceAction: { type: "START", args } })
+	})
+);
+
+export { connected as SignupEnterEmailScreen };

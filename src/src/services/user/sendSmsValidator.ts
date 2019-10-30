@@ -1,5 +1,3 @@
-import { isLeft } from "fp-ts/lib/Either";
-
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
 import { emptyData, userServiceRequest } from "./userServiceCommon";

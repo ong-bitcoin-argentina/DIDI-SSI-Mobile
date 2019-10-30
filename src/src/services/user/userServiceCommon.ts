@@ -1,14 +1,9 @@
-import { chain, Either, isLeft, left, mapLeft, right, tryCatch } from "fp-ts/lib/Either";
+import { chain, Either, left, mapLeft, right } from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/pipeable";
 import * as t from "io-ts";
 
 import { JSONObject } from "../../util/JSON";
-
-const errorDataCodec = t.type({
-	errorCode: t.string,
-	message: t.string
-});
-export type ErrorData = typeof errorDataCodec._A;
+import { ErrorData, errorDataCodec, serviceErrors } from "../common/serviceErrors";
 
 function userApiWrapperCodec<M extends t.Mixed>(data: M) {
 	return t.union([
@@ -42,20 +37,20 @@ export async function userServiceRequest<A>(
 			body: JSON.stringify(parameters)
 		});
 	} catch (e) {
-		return left({ errorCode: "FETCH_ERR", message: "Error al enviar peticion al servidor." });
+		return left(serviceErrors.common.FETCH_ERR);
 	}
 
 	let body;
 	try {
 		body = await response.json();
 	} catch (e) {
-		return left({ errorCode: "JSON_ERR", message: "Error al interpretar formato de respuesta." });
+		return left(serviceErrors.common.JSON_ERR);
 	}
 
 	return pipe(
 		body,
 		userApiWrapperCodec(dataDecoder).decode,
-		mapLeft(_ => ({ errorCode: "PARSE_ERR", message: "Error al interpretar formato de respuesta." })),
+		mapLeft(_ => serviceErrors.common.PARSE_ERR),
 		chain(responseContent => {
 			switch (responseContent.status) {
 				case "success":
