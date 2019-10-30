@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "react-native";
 
 import { EnterPhoneScreen } from "../../common/EnterPhone";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -40,8 +41,17 @@ class LoginEnterPhoneScreen extends NavigationEnabledComponent<
 	}
 
 	componentDidUpdate() {
-		if (this.props.requestSmsCodeState.state === "SUCCESS") {
-			this.navigate("LoginVerifyPhone", {});
+		const rq = this.props.requestSmsCodeState;
+		switch (rq.state) {
+			case "SUCCESS":
+				this.navigate("LoginVerifyPhone", {});
+				return;
+			case "FAILURE":
+				Alert.alert(`Error ${rq.error.errorCode}`, rq.error.message);
+				return;
+			case "NONE":
+			case "PENDING":
+				return;
 		}
 	}
 

@@ -1,3 +1,8 @@
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import * as t from "io-ts";
+
+import { commonServiceRequest } from "../common/commonServiceRequest";
+import { ErrorData, serviceErrors } from "../common/serviceErrors";
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
 import { RequestDocument } from "../../model/RequestDocument";
@@ -10,30 +15,42 @@ export interface SubmitDisclosureResponseArguments {
 	verified: string[];
 }
 
-async function submitDisclosureResponse(args: SubmitDisclosureResponseArguments): Promise<void> {
-	const accessToken = await signDisclosureResponse(args.request, args.own, args.verified);
+const issuerApiWrapperCodec = t.union([
+	t.type({ status: t.literal("success"), data: t.unknown }),
+	t.type({ status: t.keyof({ fail: null, error: null }), data: t.string })
+]);
 
-	const response = await fetch(args.request.content.callback, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({ access_token: accessToken })
-	});
+async function submitDisclosureResponse(args: SubmitDisclosureResponseArguments): Promise<Either<ErrorData, {}>> {
+	let accessToken;
+	try {
+		accessToken = await signDisclosureResponse(args.request, args.own, args.verified);
+	} catch (e) {
+		return left(serviceErrors.disclosure.SIGNING_ERR);
+	}
 
-	const body = await response.json();
-	if (typeof body === "object" && body.status === "success") {
-		return;
-	} else {
-		return Promise.reject("Respuesta rechazada por servidor");
+	const result = await commonServiceRequest(
+		args.request.content.callback,
+		{ access_token: accessToken },
+		issuerApiWrapperCodec
+	);
+	if (isLeft(result)) {
+		return result;
+	}
+
+	switch (result.right.status) {
+		case "success":
+			return right({});
+		case "error":
+		case "fail":
+			return left(serviceErrors.disclosure.ISSUER_ERR(result.right.data));
 	}
 }
 
 export type SubmitDisclosureResponseAction = ServiceAction<
 	"SERVICE_DISCLOSURE_RESPONSE",
 	SubmitDisclosureResponseArguments,
-	void,
-	string
+	{},
+	ErrorData
 >;
 
 export type SubmitDisclosureResponseState = ServiceStateOf<SubmitDisclosureResponseAction>;

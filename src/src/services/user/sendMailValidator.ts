@@ -1,6 +1,7 @@
+import { ErrorData } from "../common/serviceErrors";
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
-import { emptyData, userServiceRequest } from "./userServiceCommon";
+import { commonUserRequest, emptyData } from "./userServiceCommon";
 
 export interface SendMailValidatorArguments {
 	email: string;
@@ -8,14 +9,14 @@ export interface SendMailValidatorArguments {
 }
 
 async function sendMailValidator(baseUrl: string, args: SendMailValidatorArguments) {
-	return userServiceRequest(`${baseUrl}/sendMailValidator`, { eMail: args.email, did: args.did }, emptyData);
+	return commonUserRequest(`${baseUrl}/sendMailValidator`, { eMail: args.email, did: args.did }, emptyData);
 }
 
 export type SendMailValidatorAction = ServiceAction<
 	"SERVICE_SEND_EMAIL_VALIDATOR",
 	SendMailValidatorArguments,
 	{},
-	string
+	ErrorData
 >;
 
 export type SendMailValidatorState = ServiceStateOf<SendMailValidatorAction>;

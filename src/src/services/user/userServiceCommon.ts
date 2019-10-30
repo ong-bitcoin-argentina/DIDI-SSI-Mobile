@@ -1,63 +1,44 @@
-import { chain, Either, left, mapLeft, right } from "fp-ts/lib/Either";
-import { pipe } from "fp-ts/lib/pipeable";
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
 import { JSONObject } from "../../util/JSON";
-import { ErrorData, errorDataCodec, serviceErrors } from "../common/serviceErrors";
+import { commonServiceRequest } from "../common/commonServiceRequest";
+import { ErrorData, errorDataCodec } from "../common/serviceErrors";
+
+export const emptyData = t.type({});
 
 function userApiWrapperCodec<M extends t.Mixed>(data: M) {
-	return t.union([
-		t.type({
-			status: t.literal("success"),
-			data
-		}),
-		t.intersection([
+	return t.union(
+		[
 			t.type({
-				status: t.literal("failure")
+				status: t.literal("success"),
+				data
 			}),
-			errorDataCodec
-		])
-	]);
+			t.intersection([
+				t.type({
+					status: t.literal("error")
+				}),
+				errorDataCodec
+			])
+		],
+		"userApiWrapperCodec"
+	);
 }
 
-export const emptyData = t.strict({});
-
-export async function userServiceRequest<A>(
+export async function commonUserRequest<A>(
 	url: string,
 	parameters: JSONObject,
 	dataDecoder: t.Type<A, unknown, unknown>
 ): Promise<Either<ErrorData, A>> {
-	let response: Response;
-	try {
-		response = await fetch(url, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json; charset=utf-8"
-			},
-			body: JSON.stringify(parameters)
-		});
-	} catch (e) {
-		return left(serviceErrors.common.FETCH_ERR);
+	const responseContent = await commonServiceRequest(url, parameters, userApiWrapperCodec(dataDecoder));
+	if (isLeft(responseContent)) {
+		return responseContent;
 	}
 
-	let body;
-	try {
-		body = await response.json();
-	} catch (e) {
-		return left(serviceErrors.common.JSON_ERR);
+	switch (responseContent.right.status) {
+		case "success":
+			return right(responseContent.right.data);
+		case "error":
+			return left(responseContent.right);
 	}
-
-	return pipe(
-		body,
-		userApiWrapperCodec(dataDecoder).decode,
-		mapLeft(_ => serviceErrors.common.PARSE_ERR),
-		chain(responseContent => {
-			switch (responseContent.status) {
-				case "success":
-					return right(responseContent.data);
-				case "failure":
-					return left(responseContent);
-			}
-		})
-	);
 }
