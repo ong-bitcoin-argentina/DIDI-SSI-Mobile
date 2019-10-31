@@ -1,5 +1,5 @@
 export default class Validator {
-	static isPhoneNumber(code?: string): boolean {
+	static isValidationCode(code?: string): boolean {
 		if (code) {
 			const match = code.match("^[0-9]{6}$");
 			if (match) {

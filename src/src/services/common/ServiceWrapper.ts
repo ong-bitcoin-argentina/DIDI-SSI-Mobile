@@ -17,7 +17,7 @@ export class ServiceWrapper extends React.Component<ServiceWrapperProps> {
 				this.props.onServiceSuccess();
 				return;
 			case "FAILURE":
-				Alert.alert(`Error ${rq.error.errorCode}`, rq.error.message);
+				Alert.alert("Error", `${rq.error.message}\n\n(Error ${rq.error.errorCode})`);
 				return;
 			case "NONE":
 			case "PENDING":
