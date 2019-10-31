@@ -5,7 +5,11 @@ import { JSONObject } from "../../util/JSON";
 import { commonServiceRequest } from "../common/commonServiceRequest";
 import { ErrorData, errorDataCodec } from "../common/serviceErrors";
 
-export const emptyData = t.type({});
+export const emptyDataCodec = t.type({});
+
+export const singleCertificateCodec = t.type({
+	certificate: t.string
+});
 
 function userApiWrapperCodec<M extends t.Mixed>(data: M) {
 	return t.union(

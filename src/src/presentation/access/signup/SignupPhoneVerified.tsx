@@ -12,9 +12,7 @@ import strings from "../../resources/strings";
 
 import { SignupEnterEmailProps } from "./SignupEnterEmail";
 
-export type SignupPhoneVerifiedProps = {
-	phoneNumber: string;
-};
+export type SignupPhoneVerifiedProps = {};
 
 export interface SignupPhoneVerifiedNavigation {
 	SignupEnterEmail: SignupEnterEmailProps;
@@ -34,7 +32,7 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 
 				<DidiTextInput
 					description={strings.signup.phoneVerified.cellNumber}
-					placeholder={this.props.phoneNumber}
+					placeholder={"<PHONE NUMBER>"}
 					tagImage={require("../resources/images/phone.png")}
 					textInputProps={{
 						editable: false

@@ -7,9 +7,7 @@ import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 
 import { SignupPhoneVerifiedProps } from "./SignupPhoneVerified";
 
-export interface SignupVerifyPhoneProps {
-	phoneNumber: string;
-}
+export type SignupVerifyPhoneProps = {};
 
 export interface SignupVerifyPhoneNavigation {
 	SignupPhoneVerified: SignupPhoneVerifiedProps;
@@ -32,6 +30,6 @@ export class SignupVerifyPhoneScreen extends NavigationEnabledComponent<
 	}
 
 	private onPressContinueButton() {
-		this.navigate("SignupPhoneVerified", { phoneNumber: this.props.phoneNumber });
+		this.navigate("SignupPhoneVerified", {});
 	}
 }

@@ -1,7 +1,7 @@
 import { ErrorData } from "../common/serviceErrors";
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
-import { commonUserRequest, emptyData } from "./userServiceCommon";
+import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface SendSmsValidatorArguments {
 	cellPhoneNumber: string;
@@ -12,7 +12,7 @@ async function sendSmsValidator(baseUrl: string, args: SendSmsValidatorArguments
 	return commonUserRequest(
 		`${baseUrl}/sendSmsValidator`,
 		{ cellPhoneNumber: args.cellPhoneNumber, did: args.did },
-		emptyData
+		emptyDataCodec
 	);
 }
 

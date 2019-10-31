@@ -1,7 +1,7 @@
 import { ErrorData } from "../common/serviceErrors";
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
-import { commonUserRequest, emptyData } from "./userServiceCommon";
+import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
 export interface VerifySmsCodeArguments {
 	validationCode: string;
@@ -12,11 +12,16 @@ async function verifySmsCode(baseUrl: string, args: VerifySmsCodeArguments) {
 	return commonUserRequest(
 		`${baseUrl}/verifySmsCode`,
 		{ validationCode: args.validationCode, did: args.did },
-		emptyData
+		singleCertificateCodec
 	);
 }
 
-export type VerifySmsCodeAction = ServiceAction<"SERVICE_VERIFY_SMS_CODE", VerifySmsCodeArguments, {}, ErrorData>;
+export type VerifySmsCodeAction = ServiceAction<
+	"SERVICE_VERIFY_SMS_CODE",
+	VerifySmsCodeArguments,
+	typeof singleCertificateCodec._A,
+	ErrorData
+>;
 
 export type VerifySmsCodeState = ServiceStateOf<VerifySmsCodeAction>;
 

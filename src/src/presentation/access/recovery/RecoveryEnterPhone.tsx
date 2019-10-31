@@ -1,6 +1,6 @@
 import React from "react";
 
-import { EnterPhoneScreen } from "../../common/EnterPhone";
+import { EnterPhoneWrapper } from "../../common/EnterPhoneWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
@@ -22,14 +22,10 @@ export class RecoveryEnterPhoneScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<EnterPhoneScreen
+			<EnterPhoneWrapper
 				contentImageSource={require("../resources/images/phoneRecover.png")}
-				onPressContinueButton={() => this.onPressContinueButton()}
+				onServiceSuccess={() => this.navigate("RecoveryVerifyPhone", {})}
 			/>
 		);
-	}
-
-	private onPressContinueButton() {
-		this.navigate("RecoveryVerifyPhone", {});
 	}
 }
