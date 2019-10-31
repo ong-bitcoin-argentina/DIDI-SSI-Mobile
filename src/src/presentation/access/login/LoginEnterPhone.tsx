@@ -1,6 +1,6 @@
 import React from "react";
-import { Alert } from "react-native";
 
+import { ServiceWrapper } from "../../../services/common/ServiceWrapper";
 import { EnterPhoneScreen } from "../../common/EnterPhone";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
@@ -32,27 +32,17 @@ class LoginEnterPhoneScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<EnterPhoneScreen
-				contentImageSource={require("../resources/images/login.png")}
-				onPressContinueButton={inputPhoneNumber => this.onPressContinueButton(inputPhoneNumber)}
-				isPending={this.props.requestSmsCodeState.state === "PENDING"}
-			/>
+			<ServiceWrapper
+				serviceState={this.props.requestSmsCodeState}
+				onServiceSuccess={() => this.navigate("LoginVerifyPhone", {})}
+			>
+				<EnterPhoneScreen
+					contentImageSource={require("../resources/images/login.png")}
+					onPressContinueButton={inputPhoneNumber => this.onPressContinueButton(inputPhoneNumber)}
+					isPending={this.props.requestSmsCodeState.state === "PENDING"}
+				/>
+			</ServiceWrapper>
 		);
-	}
-
-	componentDidUpdate() {
-		const rq = this.props.requestSmsCodeState;
-		switch (rq.state) {
-			case "SUCCESS":
-				this.navigate("LoginVerifyPhone", {});
-				return;
-			case "FAILURE":
-				Alert.alert(`Error ${rq.error.errorCode}`, rq.error.message);
-				return;
-			case "NONE":
-			case "PENDING":
-				return;
-		}
 	}
 
 	private onPressContinueButton(inputPhoneNumber: string) {
