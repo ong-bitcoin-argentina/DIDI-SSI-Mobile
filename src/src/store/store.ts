@@ -22,14 +22,12 @@ import { requestSelector } from "./selector/requestSelector";
 import { StoreContent } from "./store";
 import { StoreAction } from "./StoreAction";
 
-export interface StoreContent {
-	tokens: string[];
+export interface StoreContent extends PersistedStoreContent {
 	parsedTokens: Array<CredentialDocument | RequestDocument>;
 	microCredentials: CredentialDocument[];
 	credentials: Array<DerivedCredential<CredentialDocument>>;
 	requests: RequestDocument[];
 
-	serviceSettings: ServiceSettings;
 	serviceCalls: ServiceCallState;
 
 	samples: SampleDocument[];
@@ -40,14 +38,14 @@ export interface StoreContent {
 function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StateProps) {
 	return (state: NormalizedStoreContent): StateProps => {
 		return mapStateToProps({
-			tokens: state.persisted.tokens,
+			...state.persisted,
+
 			parsedTokens: parsedTokenSelector(state),
 			credentials: credentialSelector(state),
 			microCredentials: microCredentialSelector(state),
 			requests: requestSelector(state),
 
 			serviceCalls: state.serviceCalls,
-			serviceSettings: state.persisted.serviceSettings,
 
 			identity: sampleIdentity,
 			recentActivity: sampleRecentActivity,

@@ -28,21 +28,27 @@ import HomeHeader from "./HomeHeader";
 import { NotificationScreenProps } from "./NotificationScreen";
 
 export type DashboardScreenProps = {};
-interface DashboardScreenInternalProps extends DashboardScreenProps {
+interface DashboardScreenStateProps {
 	person: Identity;
 	credentials: Array<DerivedCredential<CredentialDocument>>;
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }
+interface DashboardScreenDispatchProps {
+	login(): void;
+}
+type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
+
+interface DashboardScreenState {
+	isIdentityComplete: boolean;
+}
+
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
 	DashboardDocuments: DocumentsScreenProps;
 	ValidateID: ValidateIdentityExplainWhatProps;
 	UserData: UserDataProps;
 	NotificationScreen: NotificationScreenProps;
-}
-interface DashboardScreenState {
-	isIdentityComplete: boolean;
 }
 
 class DashboardScreen extends NavigationEnabledComponent<
@@ -57,6 +63,10 @@ class DashboardScreen extends NavigationEnabledComponent<
 		this.state = {
 			isIdentityComplete: false
 		};
+	}
+
+	componentDidMount() {
+		this.props.login();
 	}
 
 	private evolutionCard(): JSX.Element {
@@ -163,14 +173,15 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 export default didiConnect(
 	DashboardScreen,
-	(state): DashboardScreenInternalProps => {
-		return {
-			person: state.identity,
-			recentActivity: state.recentActivity,
-			credentials: state.credentials,
-			samples: state.samples
-		};
-	}
+	(state): DashboardScreenStateProps => ({
+		person: state.identity,
+		recentActivity: state.recentActivity,
+		credentials: state.credentials,
+		samples: state.samples
+	}),
+	(dispatch): DashboardScreenDispatchProps => ({
+		login: () => dispatch({ type: "SESSION_LOGIN" })
+	})
 );
 
 const styles = StyleSheet.create({

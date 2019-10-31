@@ -26,7 +26,6 @@ export async function commonServiceRequest<A>(
 	let body: unknown;
 	try {
 		body = await response.json();
-		//return left({ errorCode: "RAW", message: JSON.stringify(body, null, 4) });
 	} catch (e) {
 		return left(serviceErrors.common.JSON_ERR);
 	}
@@ -37,7 +36,8 @@ export async function commonServiceRequest<A>(
 		//mapLeft(_ => serviceErrors.common.PARSE_ERR)
 		mapLeft(err => ({
 			errorCode: "RAW_PARSE_ERR",
-			message: JSON.stringify(err ? err[0].context[err[0].context.length - 1] : [], null, 4)
+			message:
+				JSON.stringify(err ? err[0].context[err[0].context.length - 1] : [], null, 4) + "\n\n" + JSON.stringify(body)
 		}))
 	);
 }

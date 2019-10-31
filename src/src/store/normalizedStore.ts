@@ -7,19 +7,23 @@ import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
 import { liftUndefined } from "../util/liftUndefined";
 
+import { DidiSession } from "../model/DidiSession";
 import { ServiceSettings } from "../model/ServiceSettings";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
 import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
+import { sessionReducer } from "./reducers/sessionReducer";
 import { tokenReducer } from "./reducers/tokenReducer";
 import { StoreAction } from "./StoreAction";
 
 export interface PersistedStoreContent {
+	sessionFlags: DidiSession;
 	tokens: string[];
 	serviceSettings: ServiceSettings;
 }
 
 const reducer = combineReducers<PersistedStoreContent, StoreAction>({
+	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
 	serviceSettings: serviceSettingsReducer
 });
