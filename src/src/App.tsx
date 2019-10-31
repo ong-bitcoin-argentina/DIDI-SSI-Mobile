@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
 import AppNavigator from "./presentation/AppNavigator";
-import { SplashContent } from "./presentation/SplashScreen";
+import { SplashContent } from "./presentation/SplashContent";
 import { persistor, store } from "./store/normalizedStore";
 
 YellowBox.ignoreWarnings([

@@ -8,7 +8,7 @@ import colors from "../resources/colors";
 import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
-import { SplashContent } from "../SplashScreen";
+import { SplashContent } from "../SplashContent";
 
 import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
