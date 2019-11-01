@@ -1,6 +1,6 @@
 import React from "react";
 
-import { VerifyPhoneScreen } from "../../common/VerifyPhone";
+import { VerifyPhoneWrapper } from "../../common/VerifyPhoneWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
@@ -22,14 +22,10 @@ export class SignupVerifyPhoneScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<VerifyPhoneScreen
+			<VerifyPhoneWrapper
 				contentImageSource={require("../resources/images/phoneRecover.png")}
-				onPressContinueButton={() => this.onPressContinueButton()}
+				onServiceSuccess={() => this.navigate("SignupPhoneVerified", {})}
 			/>
 		);
-	}
-
-	private onPressContinueButton() {
-		this.navigate("SignupPhoneVerified", {});
 	}
 }

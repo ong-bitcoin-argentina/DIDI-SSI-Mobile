@@ -1,6 +1,6 @@
 import React from "react";
 
-import { VerifyPhoneProps, VerifyPhoneScreen } from "../../common/VerifyPhone";
+import { VerifyPhoneWrapper } from "../../common/VerifyPhoneWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
@@ -21,14 +21,10 @@ export class RecoveryVerifyPhoneScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<VerifyPhoneScreen
+			<VerifyPhoneWrapper
 				contentImageSource={require("../resources/images/phoneRecover.png")}
-				onPressContinueButton={() => this.onPressContinueButton()}
+				onServiceSuccess={() => this.navigate("Dashboard", {})}
 			/>
 		);
-	}
-
-	private onPressContinueButton() {
-		this.navigate("Dashboard", {});
 	}
 }
