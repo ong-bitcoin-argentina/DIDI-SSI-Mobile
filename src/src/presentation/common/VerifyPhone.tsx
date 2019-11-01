@@ -13,7 +13,7 @@ import { DidiScreen } from "./DidiScreen";
 export interface VerifyPhoneProps {
 	contentImageSource: ImageSourcePropType;
 	onPressContinueButton(inputCode: string): void;
-	isContinuePending?: boolean;
+	isContinuePending: boolean;
 }
 
 interface VerifyPhoneState {

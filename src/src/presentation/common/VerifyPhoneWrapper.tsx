@@ -29,7 +29,7 @@ class VerifyPhoneWrapper extends React.Component<VerifyPhoneWrapperInternalProps
 				onServiceSuccess={() => this.props.onServiceSuccess()}
 			>
 				<VerifyPhoneScreen
-					contentImageSource={require("../resources/images/loginVerify.png")}
+					contentImageSource={this.props.contentImageSource}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
 					isContinuePending={this.props.verifyPhoneCodeState.state === "PENDING"}
 				/>

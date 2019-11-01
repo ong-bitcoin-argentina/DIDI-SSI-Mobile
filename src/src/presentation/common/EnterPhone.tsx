@@ -12,7 +12,7 @@ import { DidiScreen } from "./DidiScreen";
 export interface EnterPhoneProps {
 	contentImageSource: ImageSourcePropType;
 	onPressContinueButton(inputPhoneNumber: string): void;
-	isPending?: boolean;
+	isContinuePending: boolean;
 }
 
 export interface EnterPhoneState {
@@ -48,7 +48,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
 
 				<DidiServiceButton
-					isPending={this.props.isPending || false}
+					isPending={this.props.isContinuePending || false}
 					disabled={!this.canPressContinueButton()}
 					onPress={() => this.props.onPressContinueButton(this.state.inputPhoneNumber!)}
 					title={strings.accessCommon.validateButtonText}

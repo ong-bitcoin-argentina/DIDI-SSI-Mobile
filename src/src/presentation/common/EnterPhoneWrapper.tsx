@@ -31,6 +31,7 @@ class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps> {
 				<EnterPhoneScreen
 					{...this.props}
 					onPressContinueButton={inputPhoneNumber => this.onPressContinueButton(inputPhoneNumber)}
+					isContinuePending={this.props.requestSmsCodeState.state === "PENDING"}
 				/>
 			</ServiceWrapper>
 		);
