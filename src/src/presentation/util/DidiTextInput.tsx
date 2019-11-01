@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, TextInput, TextInputProps, View, ViewProps } from "react-native";
 
 import DidiTheme from "../resources/DidiTheme";
+import strings from "../resources/strings";
 import themes from "../resources/themes";
 
 export interface DidiTextInputProps {
@@ -42,6 +43,65 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 			</View>
 		);
 	}
+
+	static Email = (props: { onChangeText(text: string): void }) => {
+		return (
+			<DidiTextInput
+				description={strings.textInput.email.description}
+				placeholder={strings.textInput.email.placeholder}
+				tagImage={require("../access/resources/images/email.png")}
+				textInputProps={{
+					keyboardType: "email-address",
+					onChangeText: props.onChangeText
+				}}
+			/>
+		);
+	};
+
+	static VerificationCode = (props: { onChangeText(text: string): void }) => {
+		return (
+			<DidiTextInput
+				description={strings.textInput.verificationCode.description}
+				placeholder={strings.textInput.verificationCode.placeholder}
+				tagImage={require("../access/resources/images/phone.png")}
+				textInputProps={{
+					keyboardType: "number-pad",
+					onChangeText: props.onChangeText
+				}}
+			/>
+		);
+	};
+
+	static PhoneNumber = (props: { onChangeText(text: string): void }) => {
+		return (
+			<DidiTextInput
+				description={strings.textInput.cellPhoneNumber.description}
+				placeholder={strings.textInput.cellPhoneNumber.placeholder}
+				tagImage={require("../access/resources/images/phone.png")}
+				textInputProps={{
+					keyboardType: "phone-pad",
+					onChangeText: props.onChangeText
+				}}
+			/>
+		);
+	};
+
+	static Password = (props: {
+		onChangeText(text: string): void;
+		descriptionType: "BASIC" | "OLD" | "NEW" | "REPEAT";
+	}) => {
+		return (
+			<DidiTextInput
+				description={strings.textInput.password[props.descriptionType]}
+				placeholder=""
+				tagImage={require("../access/resources/images/key.png")}
+				textInputProps={{
+					secureTextEntry: true,
+					onChangeText: props.onChangeText
+				}}
+			/>
+		);
+	};
 }
 
 function styles(theme: DidiTheme) {

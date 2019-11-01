@@ -46,25 +46,9 @@ export class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 
 				<Image source={require("../resources/images/emailRecover.png")} style={commonStyles.image.image} />
 
-				<DidiTextInput
-					description={strings.recovery.enterEmail.emailTitle}
-					placeholder=""
-					tagImage={require("../resources/images/email.png")}
-					textInputProps={{
-						keyboardType: "email-address",
-						onChangeText: text => this.setState({ email: text })
-					}}
-				/>
+				<DidiTextInput.Email onChangeText={text => this.setState({ email: text })} />
 
-				<DidiTextInput
-					description={strings.recovery.enterEmail.passwordTitle}
-					placeholder=""
-					tagImage={require("../resources/images/key.png")}
-					textInputProps={{
-						secureTextEntry: true,
-						onChangeText: text => this.setState({ password: text })
-					}}
-				/>
+				<DidiTextInput.Password onChangeText={text => this.setState({ password: text })} descriptionType="BASIC" />
 
 				<TouchableOpacity onPress={() => this.navigate("ForgotPasswordEnterEmail", {})} style={styles.forgotPassword}>
 					<Text>{strings.recovery.enterEmail.forgotPasswordMessage + " >"}</Text>

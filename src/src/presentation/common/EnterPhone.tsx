@@ -35,15 +35,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 					<Text style={commonStyles.text.normal}>{strings.accessCommon.place}</Text>
 				</View>
 
-				<DidiTextInput
-					description={strings.accessCommon.enterPhone.cellNumber}
-					placeholder={strings.accessCommon.enterPhone.cellPlaceholder}
-					tagImage={this.tagImageSource()}
-					textInputProps={{
-						keyboardType: "phone-pad",
-						onChangeText: text => this.setState({ inputPhoneNumber: text })
-					}}
-				/>
+				<DidiTextInput.PhoneNumber onChangeText={text => this.setState({ inputPhoneNumber: text })} />
 
 				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
 
@@ -59,10 +51,6 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 	private countryImageSource(): ImageSourcePropType {
 		return require("../access/resources/images/arg.png");
-	}
-
-	private tagImageSource(): ImageSourcePropType {
-		return require("../access/resources/images/phone.png");
 	}
 
 	private canPressContinueButton(): boolean {

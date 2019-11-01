@@ -62,35 +62,11 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 					style={commonStyles.image.image}
 				/>
 
-				<DidiTextInput
-					description={strings.signup.enterEmail.emailTitle}
-					placeholder=""
-					tagImage={require("../resources/images/email.png")}
-					textInputProps={{
-						keyboardType: "email-address",
-						onChangeText: text => this.setState({ email: text })
-					}}
-				/>
+				<DidiTextInput.Email onChangeText={text => this.setState({ email: text })} />
 
-				<DidiTextInput
-					description={strings.signup.enterEmail.passwordTitle}
-					placeholder=""
-					tagImage={require("../resources/images/key.png")}
-					textInputProps={{
-						secureTextEntry: true,
-						onChangeText: text => this.setState({ key: text })
-					}}
-				/>
+				<DidiTextInput.Password onChangeText={text => this.setState({ key: text })} descriptionType="BASIC" />
 
-				<DidiTextInput
-					description={strings.signup.enterEmail.repeatPasswordTitle}
-					placeholder=""
-					tagImage={require("../resources/images/key.png")}
-					textInputProps={{
-						secureTextEntry: true,
-						onChangeText: text => this.setState({ keyDup: text })
-					}}
-				/>
+				<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
 
 				<DidiButton
 					onPress={() => this.onPressContinueButton()}

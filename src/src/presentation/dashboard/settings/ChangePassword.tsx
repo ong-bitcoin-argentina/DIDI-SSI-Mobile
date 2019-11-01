@@ -50,34 +50,11 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 		return (
 			<DidiScreen>
 				<View style={styles.inputs}>
-					<DidiTextInput
-						description={strings.recovery.passwordChange.oldPassMessage}
-						placeholder=""
-						tagImage={require("../../access/resources/images/key.png")}
-						textInputProps={{
-							secureTextEntry: true,
-							onChangeText: text => this.setState({ oldKey: text })
-						}}
-					/>
-					<DidiTextInput
-						description={strings.dashboard.userData.changePassword.newPassMessage}
-						placeholder=""
-						tagImage={require("../../access/resources/images/key.png")}
-						textInputProps={{
-							secureTextEntry: true,
-							onChangeText: text => this.setState({ key: text })
-						}}
-					/>
+					<DidiTextInput.Password onChangeText={text => this.setState({ oldKey: text })} descriptionType="OLD" />
 
-					<DidiTextInput
-						description={strings.dashboard.userData.changePassword.repeatNewPassMessage}
-						placeholder=""
-						tagImage={require("../../access/resources/images/key.png")}
-						textInputProps={{
-							secureTextEntry: true,
-							onChangeText: text => this.setState({ keyDup: text })
-						}}
-					/>
+					<DidiTextInput.Password onChangeText={text => this.setState({ key: text })} descriptionType="NEW" />
+
+					<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
 				</View>
 
 				<View style={styles.button}>

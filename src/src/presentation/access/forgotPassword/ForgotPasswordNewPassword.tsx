@@ -30,7 +30,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.passwordChange.barTitle);
 
 	private canPressContinueButton(): boolean {
-		return this.state && this.state.key ? this.state.key.length > 0 && this.state.keyDup == this.state.key : false;
+		return this.state && this.state.key ? this.state.key.length > 0 && this.state.keyDup === this.state.key : false;
 	}
 
 	render() {
@@ -40,25 +40,9 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 
 				<Image source={require("../resources/images/recoverPassword.png")} style={commonStyles.image.image} />
 
-				<DidiTextInput
-					description={strings.recovery.passwordChange.newPassMessage}
-					placeholder=""
-					tagImage={require("../resources/images/key.png")}
-					textInputProps={{
-						secureTextEntry: true,
-						onChangeText: text => this.setState({ key: text })
-					}}
-				/>
+				<DidiTextInput.Password onChangeText={text => this.setState({ key: text })} descriptionType="NEW" />
 
-				<DidiTextInput
-					description={strings.recovery.passwordChange.repeatNewPassMessage}
-					placeholder=""
-					tagImage={require("../resources/images/key.png")}
-					textInputProps={{
-						secureTextEntry: true,
-						onChangeText: text => this.setState({ keyDup: text })
-					}}
-				/>
+				<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
 
 				<View />
 

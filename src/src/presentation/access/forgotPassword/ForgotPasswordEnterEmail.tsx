@@ -47,15 +47,7 @@ export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 				</Text>
 				<Image source={require("../resources/images/recoverPassword.png")} style={commonStyles.image.image} />
 
-				<DidiTextInput
-					description={strings.recovery.passwordRecover.emailTitle}
-					placeholder=""
-					tagImage={require("../resources/images/email.png")}
-					textInputProps={{
-						keyboardType: "email-address",
-						onChangeText: text => this.setState({ inputEmail: text })
-					}}
-				/>
+				<DidiTextInput.Email onChangeText={text => this.setState({ inputEmail: text })} />
 
 				<View />
 

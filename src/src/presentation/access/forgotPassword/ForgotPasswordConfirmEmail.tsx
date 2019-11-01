@@ -43,15 +43,7 @@ export class ForgotPasswordConfirmEmailScreen extends NavigationEnabledComponent
 
 				<Image source={require("../resources/images/phoneRecover.png")} style={commonStyles.image.image} />
 
-				<DidiTextInput
-					description={strings.recovery.passwordRecoverConfirmationCode.codeTitle}
-					placeholder=""
-					tagImage={require("../resources/images/phone.png")}
-					textInputProps={{
-						keyboardType: "number-pad",
-						onChangeText: text => this.setState({ code: text })
-					}}
-				/>
+				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ code: text })} />
 
 				<View />
 

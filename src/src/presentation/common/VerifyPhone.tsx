@@ -30,17 +30,13 @@ export class VerifyPhoneScreen extends React.PureComponent<VerifyPhoneProps, Ver
 		return (
 			<DidiScreen>
 				<Text style={commonStyles.text.emphasis}>{strings.accessCommon.verifyPhone.messageHead}</Text>
-				<DidiTextInput
-					description={strings.accessCommon.verifyPhone.codeTitle}
-					placeholder={strings.accessCommon.verifyPhone.codePlaceholder}
-					tagImage={this.tagImageSource()}
-					textInputProps={{
-						keyboardType: "number-pad",
-						onChangeText: text => this.setState({ inputCode: text })
-					}}
-				/>
+
+				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
+
 				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
+
 				<Text style={commonStyles.text.normal}>{strings.accessCommon.verifyPhone.resendCode}</Text>
+
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}
 					onPress={() => this.props.onPressContinueButton(this.state.inputCode!)}
@@ -49,10 +45,6 @@ export class VerifyPhoneScreen extends React.PureComponent<VerifyPhoneProps, Ver
 				/>
 			</DidiScreen>
 		);
-	}
-
-	private tagImageSource(): ImageSourcePropType {
-		return require("../access/resources/images/phone.png");
 	}
 
 	private canPressContinueButton(): boolean {
