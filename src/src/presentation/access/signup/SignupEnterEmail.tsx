@@ -1,8 +1,10 @@
 import React from "react";
 import { Image, Text } from "react-native";
 
+import { ServiceWrapper } from "../../../services/common/ServiceWrapper";
 import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
+import { DidiServiceButton } from "../../util/DidiServiceButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
@@ -68,19 +70,19 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 
 				<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
 
-				<DidiButton
-					onPress={() => this.onPressContinueButton()}
-					disabled={!this.canPressContinueButton()}
-					title={strings.signup.enterEmail.backupGenerate}
-				/>
+				<ServiceWrapper
+					onServiceSuccess={() => this.navigate("SignupConfirmEmail", {})}
+					serviceState={this.props.requestEmailCodeState}
+				>
+					<DidiServiceButton
+						title={strings.signup.enterEmail.backupGenerate}
+						disabled={!this.canPressContinueButton()}
+						onPress={() => this.onPressContinueButton()}
+						isPending={this.props.requestEmailCodeState.state === "PENDING"}
+					/>
+				</ServiceWrapper>
 			</DidiScreen>
 		);
-	}
-
-	componentDidUpdate() {
-		if (this.props.requestEmailCodeState.state === "SUCCESS") {
-			this.navigate("SignupConfirmEmail", {});
-		}
 	}
 
 	private onPressContinueButton() {
