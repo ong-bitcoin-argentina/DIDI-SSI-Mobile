@@ -72,14 +72,13 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 					serviceState={this.props.recoverAccountState}
 					onServiceSuccess={() => this.navigate("RecoveryEnterPhone", {})}
 					resetService={() => this.props.dropRecoverAccount()}
-				>
-					<DidiServiceButton
-						onPress={() => this.onPressContinue()}
-						disabled={!this.canPressContinueButton()}
-						title={strings.accessCommon.recoverButtonText}
-						isPending={this.props.recoverAccountState.state === "PENDING"}
-					/>
-				</ServiceWrapper>
+				/>
+				<DidiServiceButton
+					onPress={() => this.onPressContinue()}
+					disabled={!this.canPressContinueButton()}
+					title={strings.accessCommon.recoverButtonText}
+					isPending={this.props.recoverAccountState.state === "PENDING"}
+				/>
 			</DidiScreen>
 		);
 	}

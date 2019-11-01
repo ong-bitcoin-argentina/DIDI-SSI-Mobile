@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text } from "react-native";
+import { Alert, Image, Text } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
@@ -12,7 +12,9 @@ import strings from "../../resources/strings";
 
 import { SignupEnterEmailProps } from "./SignupEnterEmail";
 
-export type SignupPhoneVerifiedProps = {};
+export interface SignupPhoneVerifiedProps {
+	phoneNumber: string;
+}
 
 export interface SignupPhoneVerifiedNavigation {
 	SignupEnterEmail: SignupEnterEmailProps;
@@ -26,13 +28,14 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.signup.barTitle);
 
 	render() {
+		Alert.alert("", this.props.phoneNumber);
 		return (
 			<DidiScreen>
 				<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.messageHead}</Text>
 
 				<DidiTextInput
 					description={strings.signup.phoneVerified.cellNumber}
-					placeholder={"<PHONE NUMBER>"}
+					placeholder={this.props.phoneNumber}
 					tagImage={require("../resources/images/phone.png")}
 					textInputProps={{
 						editable: false
@@ -45,7 +48,7 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 
 				<DidiButton
 					onPress={() => {
-						this.navigate("SignupEnterEmail", {});
+						this.navigate("SignupEnterEmail", { phoneNumber: this.props.phoneNumber });
 					}}
 					title={strings.signup.phoneVerified.next}
 				/>

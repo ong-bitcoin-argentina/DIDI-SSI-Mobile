@@ -33,6 +33,6 @@ export class ServiceWrapper extends React.Component<ServiceWrapperProps> {
 	}
 
 	render() {
-		return this.props.children;
+		return this.props.children || null;
 	}
 }

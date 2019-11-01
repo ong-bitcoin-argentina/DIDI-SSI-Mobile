@@ -8,7 +8,7 @@ import { didiConnect } from "../../store/store";
 import { EnterPhoneProps, EnterPhoneScreen } from "./EnterPhone";
 
 export interface EnterPhoneWrapperProps {
-	onServiceSuccess(): void;
+	onServiceSuccess(phoneNumber: string): void;
 	contentImageSource: EnterPhoneProps["contentImageSource"];
 }
 interface EnterPhoneWrapperStateProps {
@@ -22,12 +22,16 @@ type LoginEnterPhoneInternalProps = EnterPhoneWrapperProps &
 	EnterPhoneWrapperStateProps &
 	EnterPhoneWrapperDispatchProps;
 
-class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps> {
+class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps, { phoneNumber: string }> {
+	constructor(props: LoginEnterPhoneInternalProps) {
+		super(props);
+		this.state = { phoneNumber: "" };
+	}
 	render() {
 		return (
 			<ServiceWrapper
 				serviceState={this.props.requestSmsCodeState}
-				onServiceSuccess={() => this.props.onServiceSuccess()}
+				onServiceSuccess={() => this.props.onServiceSuccess(this.state.phoneNumber)}
 				resetService={() => this.props.dropRequestSmsCode()}
 			>
 				<EnterPhoneScreen
@@ -40,6 +44,7 @@ class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps> {
 	}
 
 	private onPressContinueButton(inputPhoneNumber: string) {
+		this.setState({ phoneNumber: inputPhoneNumber });
 		this.props.requestSmsCode({
 			cellPhoneNumber: inputPhoneNumber,
 			did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d"

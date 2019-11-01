@@ -1,14 +1,14 @@
 import React from "react";
-import { Image, Text } from "react-native";
+import { Alert, Image, Text } from "react-native";
 
 import { ServiceWrapper } from "../../../services/common/ServiceWrapper";
 import { DidiScreen } from "../../common/DidiScreen";
-import DidiButton from "../../util/DidiButton";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
 
+import { RegisterUserArguments, RegisterUserState } from "../../../services/user/registerUser";
 import { SendMailValidatorArguments, SendMailValidatorState } from "../../../services/user/sendMailValidator";
 import { didiConnect } from "../../../store/store";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
@@ -17,7 +17,9 @@ import Validator from "../helpers/validator";
 
 import { SignupConfirmEmailProps } from "./SignupConfirmEmail";
 
-export type SignupEnterEmailProps = {};
+export interface SignupEnterEmailProps {
+	phoneNumber: string;
+}
 interface SignupEnterEmailStateProps {
 	requestEmailCodeState: SendMailValidatorState;
 }
@@ -52,6 +54,7 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
+		Alert.alert("", this.props.phoneNumber);
 		return (
 			<DidiScreen>
 				<Text style={commonStyles.text.emphasis}>{strings.signup.enterEmail.messageHead}</Text>
@@ -73,16 +76,21 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 
 				<ServiceWrapper
 					serviceState={this.props.requestEmailCodeState}
-					onServiceSuccess={() => this.navigate("SignupConfirmEmail", {})}
+					onServiceSuccess={() =>
+						this.navigate("SignupConfirmEmail", {
+							phoneNumber: this.props.phoneNumber,
+							email: this.state.email,
+							password: this.state.key
+						})
+					}
 					resetService={() => this.props.dropRequestEmailCode()}
-				>
-					<DidiServiceButton
-						title={strings.signup.enterEmail.backupGenerate}
-						disabled={!this.canPressContinueButton()}
-						onPress={() => this.onPressContinueButton()}
-						isPending={this.props.requestEmailCodeState.state === "PENDING"}
-					/>
-				</ServiceWrapper>
+				/>
+				<DidiServiceButton
+					title={strings.signup.enterEmail.backupGenerate}
+					disabled={!this.canPressContinueButton()}
+					onPress={() => this.onPressContinueButton()}
+					isPending={this.props.requestEmailCodeState.state === "PENDING"}
+				/>
 			</DidiScreen>
 		);
 	}
