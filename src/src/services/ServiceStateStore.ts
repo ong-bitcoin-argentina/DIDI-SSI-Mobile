@@ -8,6 +8,7 @@ import {
 	submitDisclosureResponseReducer,
 	SubmitDisclosureResponseState
 } from "./issuer/submitDisclosureResponse";
+import { RecoverAccountAction, recoverAccountReducer, RecoverAccountState } from "./user/recoverAccount";
 import { SendMailValidatorAction, sendMailValidatorReducer, SendMailValidatorState } from "./user/sendMailValidator";
 import { SendSmsValidatorAction, sendSmsValidatorReducer, SendSmsValidatorState } from "./user/sendSmsValidator";
 import { VerifySmsCodeAction, verifySmsCodeReducer, VerifySmsCodeState } from "./user/verifySmsCode";
@@ -18,6 +19,7 @@ export interface ServiceCallState {
 	sendSmsValidator: SendSmsValidatorState;
 	verifySmsCode: VerifySmsCodeState;
 	sendMailValidator: SendMailValidatorState;
+	recoverAccount: RecoverAccountState;
 }
 
 export type ServiceCallAction =
@@ -25,12 +27,14 @@ export type ServiceCallAction =
 	| SubmitDisclosureResponseAction
 	| SendSmsValidatorAction
 	| VerifySmsCodeAction
-	| SendMailValidatorAction;
+	| SendMailValidatorAction
+	| RecoverAccountAction;
 
 export const serviceCallReducer: LiftedLoopReducer<ServiceCallState, StoreAction> = combineReducers({
 	checkDid: checkDidReducer,
 	submitDisclosureResponse: submitDisclosureResponseReducer,
 	sendSmsValidator: sendSmsValidatorReducer,
 	verifySmsCode: verifySmsCodeReducer,
-	sendMailValidator: sendMailValidatorReducer
+	sendMailValidator: sendMailValidatorReducer,
+	recoverAccount: recoverAccountReducer
 });
