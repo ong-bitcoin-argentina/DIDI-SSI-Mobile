@@ -1,12 +1,14 @@
-import { ImageSourcePropType, GestureResponderEvent } from "react-native";
+import React from "react";
+import { Alert } from "react-native";
 
-import { VerifyPhoneScreen, VerifyPhoneProps, VerifyPhoneState } from "../common/VerifyPhone";
+import { VerifyPhoneWrapper } from "../../common/VerifyPhoneWrapper";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import themes from "../../resources/themes";
-import DidiTheme from "../../resources/DidiTheme";
+
 import { SignupPhoneVerifiedProps } from "./SignupPhoneVerified";
 
-export interface SignupVerifyPhoneProps extends VerifyPhoneProps {
+export interface SignupVerifyPhoneProps {
 	phoneNumber: string;
 }
 
@@ -14,18 +16,20 @@ export interface SignupVerifyPhoneNavigation {
 	SignupPhoneVerified: SignupPhoneVerifiedProps;
 }
 
-export class SignupVerifyPhoneScreen extends VerifyPhoneScreen<
+export class SignupVerifyPhoneScreen extends NavigationEnabledComponent<
 	SignupVerifyPhoneProps,
-	VerifyPhoneState,
+	{},
 	SignupVerifyPhoneNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Registro");
 
-	protected contentImageSource(): ImageSourcePropType {
-		return require("../resources/images/loginVerify.png");
-	}
-
-	protected didPressContinueButton(event: GestureResponderEvent): void {
-		this.navigate("SignupPhoneVerified", { phoneNumber: this.props.phoneNumber });
+	render() {
+		Alert.alert("", this.props.phoneNumber);
+		return (
+			<VerifyPhoneWrapper
+				contentImageSource={require("../resources/images/phoneRecover.png")}
+				onServiceSuccess={() => this.navigate("SignupPhoneVerified", { phoneNumber: this.props.phoneNumber })}
+			/>
+		);
 	}
 }

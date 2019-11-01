@@ -1,16 +1,17 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import React from "react";
-import { StatusBar, SafeAreaView, View, Text, ScrollView } from "react-native";
-import commonStyles from "../../access/resources/commonStyles";
-import themes from "../../resources/themes";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import { didiConnect } from "../../../store/store";
-import { ServiceSettings } from "../../../model/ServiceSettings";
+import React, { Fragment } from "react";
+import { SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
+
 import TypedObject from "../../../util/TypedObject";
-import DidiTextInput from "../../util/DidiTextInput";
+import commonStyles from "../../access/resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
+import DidiTextInput from "../../util/DidiTextInput";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+
+import { ServiceSettings } from "../../../model/ServiceSettings";
 import { defaultServiceSettings } from "../../../store/reducers/serviceSettingsReducer";
+import { didiConnect } from "../../../store/store";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
 
 export type ServiceSettingsScreenProps = {};
 interface ServiceSettingsScreenStateProps {
@@ -29,7 +30,8 @@ export type ServiceSettingsScreenNavigation = {};
 const displayNames: { [K in keyof ServiceSettings]: string } = {
 	ethrDidUri: "ethr-did-resolver URI",
 	sharePrefix: "Share URI Prefix",
-	trustGraphUri: "TrustGraph (Mouro) URI"
+	trustGraphUri: "TrustGraph (Mouro) URI",
+	didiUserServer: "Didi server (Registration)"
 };
 
 class ServiceSettingsScreen extends NavigationEnabledComponent<

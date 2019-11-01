@@ -1,16 +1,17 @@
-import React from "react";
-import { Fragment } from "react";
-import { Text, StatusBar, SafeAreaView, View, Dimensions, Share } from "react-native";
+import React, { Fragment } from "react";
+import { Dimensions, SafeAreaView, Share, StatusBar, Text, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
-import themes from "../../resources/themes";
 import commonStyles from "../../access/resources/commonStyles";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { CredentialDocument } from "../../../model/CredentialDocument";
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
-import strings from "../../resources/strings";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+
+import { CredentialDocument } from "../../../model/CredentialDocument";
 import { didiConnect } from "../../../store/store";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
+import themes from "../../resources/themes";
 
 export interface ShareSpecificCredentialProps {
 	document: CredentialDocument;
@@ -33,25 +34,20 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={[commonStyles.view.body, { width: "90%" }]}>
-						<Text style={commonStyles.text.normal}>{strings.share.explanation}</Text>
-						<QRCode size={0.9 * Dimensions.get("window").width} value={this.props.document.jwt} />
-						<DidiButton
-							title="Compartir Enlace"
-							onPress={() => {
-								const jwt = this.props.document.jwt;
-								Share.share({
-									title: strings.share.title,
-									message: `${this.props.sharePrefix}/${jwt}`
-								});
-							}}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<DidiScreen style={{ width: "90%" }}>
+				<Text style={commonStyles.text.normal}>{strings.share.explanation}</Text>
+				<QRCode size={0.9 * Dimensions.get("window").width} value={this.props.document.jwt} />
+				<DidiButton
+					title="Compartir Enlace"
+					onPress={() => {
+						const jwt = this.props.document.jwt;
+						Share.share({
+							title: strings.share.title,
+							message: `${this.props.sharePrefix}/${jwt}`
+						});
+					}}
+				/>
+			</DidiScreen>
 		);
 	}
 }

@@ -1,23 +1,30 @@
-import * as t from "io-ts";
-import { Either, left, isLeft } from "fp-ts/lib/Either";
-import JWTDecode from "jwt-decode";
-
 import { verifyJWT } from "did-jwt";
 import { verifyCredential } from "did-jwt-vc";
 import { Resolver } from "did-resolver";
 import { getResolver } from "ethr-did-resolver";
+import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
+import * as t from "io-ts";
+import JWTDecode from "jwt-decode";
 
-import { SelectiveDisclosureRequestCodec, SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
-import { VerifiedClaimCodec, VerifiedClaim } from "./types/VerifiedClaim";
+import { assertUnreachable } from "../util/assertUnreachable";
+
+import { CredentialDocument } from "../model/CredentialDocument";
+import { RequestDocument } from "../model/RequestDocument";
+
+import { ForwardedRequestCodec } from "./types/ForwardedRequest";
 import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
+import { SelectiveDisclosureRequestCodec } from "./types/SelectiveDisclosureRequest";
+import { VerifiedClaimCodec } from "./types/VerifiedClaim";
 
 // This is required by verifyJWT
 if (typeof Buffer === "undefined") {
+	// tslint:disable-next-line: no-var-requires
 	global.Buffer = require("buffer").Buffer;
 }
 
-const JWTCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec]);
-const AttemptCodec = t.union([JWTCodec, LegacyVerifiedClaimCodec]);
+const PublicCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec]);
+const ParseCodec = t.union([PublicCodec, ForwardedRequestCodec]);
+const TransportCodec = t.union([ParseCodec, LegacyVerifiedClaimCodec]);
 
 export type JWTParseError =
 	| {
@@ -33,31 +40,40 @@ export type JWTParseError =
 			type: "RESOLVER_CREATION_ERROR";
 	  };
 
-export function unverifiedParseJWT(jwt: string): Either<JWTParseError, SelectiveDisclosureRequest | VerifiedClaim> {
+export type JWTParseResult = Either<JWTParseError, RequestDocument | CredentialDocument>;
+
+export function unverifiedParseJWT(jwt: string): JWTParseResult {
 	try {
 		const decoded = JWTDecode(jwt);
-		const parsed = AttemptCodec.decode(decoded);
+		const parsed = TransportCodec.decode(decoded);
 		if (isLeft(parsed)) {
 			return left({ type: "SHAPE_DECODE_ERROR", error: parsed.left });
 		}
 
+		const unverified = parsed.right;
 		const now = Math.floor(Date.now() / 1000);
-		if (parsed.right.expireAt !== undefined && parsed.right.expireAt < now) {
-			return left({ type: "AFTER_EXP", expected: parsed.right.expireAt, current: now });
-		} else if (parsed.right.issuedAt !== undefined && now < parsed.right.issuedAt) {
-			return left({ type: "BEFORE_IAT", expected: parsed.right.issuedAt, current: now });
+		if (unverified.expireAt !== undefined && unverified.expireAt < now) {
+			return left({ type: "AFTER_EXP", expected: unverified.expireAt, current: now });
+		} else if (unverified.issuedAt !== undefined && now < unverified.issuedAt) {
+			return left({ type: "BEFORE_IAT", expected: unverified.issuedAt, current: now });
 		} else {
-			return parsed;
+			switch (unverified.type) {
+				case "SelectiveDisclosureRequest":
+					return right({ type: "RequestDocument", jwt, content: unverified });
+				case "VerifiedClaim":
+					return right({ type: "CredentialDocument", jwt, content: unverified });
+				case "ForwardedRequest":
+					return unverifiedParseJWT(unverified.forwarded);
+				default:
+					return assertUnreachable(unverified);
+			}
 		}
 	} catch (e) {
 		return left({ type: "JWT_DECODE_ERROR", error: e });
 	}
 }
 
-export default async function parseJWT(
-	jwt: string,
-	ethrUri: string
-): Promise<Either<JWTParseError, SelectiveDisclosureRequest | VerifiedClaim>> {
+export default async function parseJWT(jwt: string, ethrUri: string): Promise<JWTParseResult> {
 	const unverifiedContent = unverifiedParseJWT(jwt);
 	if (isLeft(unverifiedContent)) {
 		return unverifiedContent;
@@ -72,19 +88,44 @@ export default async function parseJWT(
 		});
 
 		try {
-			const { payload } = await (unverifiedContent.right.type === "VerifiedClaim"
+			const { payload } = await (unverifiedContent.right.content.type === "VerifiedClaim"
 				? verifyCredential(jwt, resolver)
 				: verifyJWT(jwt, { resolver }));
 
-			const verified = JWTCodec.decode(payload);
-			if (isLeft(verified)) {
-				return left({ type: "SHAPE_DECODE_ERROR", error: verified.left });
+			const parsed = ParseCodec.decode(payload);
+			if (isLeft(parsed)) {
+				return left({ type: "SHAPE_DECODE_ERROR", error: parsed.left });
 			}
-			return verified;
+
+			const verified = parsed.right;
+			switch (verified.type) {
+				case "SelectiveDisclosureRequest":
+					return right({ type: "RequestDocument", jwt, content: verified });
+				case "VerifiedClaim":
+					return right({ type: "CredentialDocument", jwt, content: verified });
+				case "ForwardedRequest":
+					return parseJWT(verified.forwarded, ethrUri);
+				default:
+					return assertUnreachable(verified);
+			}
 		} catch (e) {
 			return left({ type: "VERIFICATION_ERROR", error: e });
 		}
 	} catch (e) {
 		return left({ type: "RESOLVER_CREATION_ERROR" });
+	}
+}
+
+export function compareParseResults(l: JWTParseResult, r: JWTParseResult): number {
+	if (isRight(l)) {
+		return -1;
+	} else if (isRight(r)) {
+		return 1;
+	} else if (r.left.type === "JWT_DECODE_ERROR") {
+		return -1;
+	} else if (l.left.type === "JWT_DECODE_ERROR") {
+		return 1;
+	} else {
+		return 0;
 	}
 }

@@ -1,14 +1,14 @@
 import React from "react";
 import { BackHandler, NativeEventSubscription } from "react-native";
+import { TakePictureResponse } from "react-native-camera/types";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
+import DidiCamera from "../common/DidiCamera";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-import DidiCamera from "../common/DidiCamera";
-import { TakePictureResponse } from "react-native-camera/types";
+import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
 
 export type ValidateIdentityTakePhotoProps = {};
 
@@ -31,7 +31,14 @@ export abstract class ValidateIdentityTakePhotoScreen<
 
 	render() {
 		if (this.state.isScanning) {
-			return <DidiCamera onPictureTaken={data => this.didTakePhoto(data)} />;
+			return (
+				<DidiCamera
+					onPictureTaken={data => {
+						this.didTakePhoto(data);
+						this.setState({ isScanning: false });
+					}}
+				/>
+			);
 		} else {
 			return (
 				<ValidateIdentityExplanation
@@ -44,8 +51,7 @@ export abstract class ValidateIdentityTakePhotoScreen<
 
 	componentDidMount() {
 		this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-			const navigation = this.navigation();
-			if (this.state.isScanning && navigation && navigation.isFocused) {
+			if (this.state.isScanning) {
 				this.setState({ isScanning: false });
 				return true;
 			} else {

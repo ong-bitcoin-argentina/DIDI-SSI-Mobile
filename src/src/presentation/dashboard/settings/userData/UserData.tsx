@@ -1,17 +1,20 @@
-import { View, StyleSheet, ViewProps, ScrollView, Text } from "react-native";
 import React from "react";
-import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
-import DropdownMenu from "../../../util/DropdownMenu";
-import strings from "../../../resources/strings";
-import colors from "../../../resources/colors";
-import UserHeadingComponent from "./UserHeading";
-import { EditProfileProps } from "../userMenu/EditProfile";
-import { ShareProfileProps } from "../userMenu/ShareProfile";
-import { didiConnect } from "../../../../store/store";
-import { Identity, WithValidationState } from "../../../../model/Identity";
+import { ScrollView, StyleSheet, Text, View, ViewProps } from "react-native";
+
 import DidiTextInput from "../../../util/DidiTextInput";
+import DropdownMenu from "../../../util/DropdownMenu";
+import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
+
+import { Identity, WithValidationState } from "../../../../model/Identity";
+import { didiConnect } from "../../../../store/store";
+import colors from "../../../resources/colors";
+import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
+import strings from "../../../resources/strings";
+import { ShareProfileProps } from "../userMenu/ShareProfile";
+
+import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
+import UserHeadingComponent from "./UserHeading";
 
 export type UserDataProps = ViewProps;
 
@@ -22,16 +25,22 @@ interface UserDataInternalProps extends UserDataProps {
 type UserDataState = {};
 
 export interface UserDataNavigation {
-	EditProfile: EditProfileProps;
 	ShareProfile: ShareProfileProps;
+	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions("Mi perfil", [
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions<UserDataNavigation>("Mi perfil", [
 		{
-			actionTitle: "Editar Perfil",
+			actionTitle: "Cambiar Email",
 			onPress: navigation => {
-				navigation.navigate("EditProfile", {});
+				// TODO: navigation.navigate("ChangeEmail", {});
+			}
+		},
+		{
+			actionTitle: "Cambiar Teléfono",
+			onPress: navigation => {
+				navigation.navigate("ChangePhoneEnterPhone", {});
 			}
 		},
 		{

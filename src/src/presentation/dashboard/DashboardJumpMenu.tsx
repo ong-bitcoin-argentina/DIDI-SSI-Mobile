@@ -1,15 +1,17 @@
 import React from "react";
-import { View, ViewProps, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View, ViewProps } from "react-native";
 import { FloatingAction, IActionProps } from "react-native-floating-action";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
-import colors from "../resources/colors";
+
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
+
+import colors from "../resources/colors";
+
 import { ScanCredentialProps } from "./credentials/ScanCredential";
-import { RoundsScreenProps } from "./rounds/RoundsScreen";
-import { DocumentsScreenProps } from "./documents/DocumentsScreen";
-import { UserDataProps } from "./settings/userData/UserData";
-import { EditProfileProps } from "./settings/userMenu/EditProfile";
 import { ShareCredentialProps } from "./credentials/ShareCredential";
+import { DocumentsScreenProps } from "./documents/DocumentsScreen";
+import { RoundsScreenProps } from "./rounds/RoundsScreen";
+import { UserDataProps } from "./settings/userData/UserData";
 
 export interface DashboardJumpMenuProps extends ViewProps {
 	navigation: NavigationScreenProp<NavigationState>;
@@ -26,7 +28,6 @@ export interface DashboardJumpNavigation {
 	DashboardRounds: RoundsScreenProps;
 	DashboardDocuments: DocumentsScreenProps;
 	UserData: UserDataProps;
-	EditProfile: EditProfileProps;
 }
 
 export default class DashboardJumpMenu extends NavigationEnabledComponent<
@@ -90,12 +91,6 @@ const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 		icon: <Text style={styles.icon}></Text>,
 		text: "Ver Documentos",
 		name: "DashboardDocuments"
-	},
-	{
-		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
-		text: "Editar Perfil",
-		name: "EditProfile"
 	},
 	{
 		...actionCommon,

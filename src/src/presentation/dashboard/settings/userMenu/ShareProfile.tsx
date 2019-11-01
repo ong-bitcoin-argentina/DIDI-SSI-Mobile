@@ -1,16 +1,14 @@
-import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
 import React from "react";
-import { StyleSheet, StatusBar, SafeAreaView, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+
+import { DidiScreen } from "../../../common/DidiScreen";
+import DidiButton from "../../../util/DidiButton";
+import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
+
+import { Identity } from "../../../../model/Identity";
+import { didiConnect } from "../../../../store/store";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
-import { UserDataProps } from "../userData/UserData";
-import themes from "../../../resources/themes";
-import commonStyles from "../../../access/resources/commonStyles";
-import DidiButton from "../../../util/DidiButton";
-import { connect } from "react-redux";
-import { Identity } from "../../../../model/Identity";
-import { StoreContent, didiConnect } from "../../../../store/store";
 
 export type ShareProfileProps = {};
 interface ShareProfileInternalProps {
@@ -46,26 +44,21 @@ class ShareProfileScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<View style={styles.inputs}>
-							<Text>TODO!!</Text>
-						</View>
+			<DidiScreen>
+				<View style={styles.inputs}>
+					<Text>TODO!!</Text>
+				</View>
 
-						<View style={styles.button}>
-							<DidiButton
-								onPress={() => {
-									this.share();
-								}}
-								disabled={!this.canPressContinueButton()}
-								title={strings.dashboard.userData.share.share}
-							/>
-						</View>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+				<View style={styles.button}>
+					<DidiButton
+						onPress={() => {
+							this.share();
+						}}
+						disabled={!this.canPressContinueButton()}
+						title={strings.dashboard.userData.share.share}
+					/>
+				</View>
+			</DidiScreen>
 		);
 	}
 }

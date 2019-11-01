@@ -1,12 +1,14 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import React, { Fragment } from "react";
-import { StatusBar, View, Image, Text, StyleSheet } from "react-native";
-import themes from "../../resources/themes";
-import { SafeAreaView } from "react-navigation";
-import commonStyles from "../resources/commonStyles";
-import strings from "../../resources/strings";
+import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import commonStyles from "../resources/commonStyles";
+
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
+
 import { ForgotPasswordConfirmEmailProps } from "./ForgotPasswordConfirmEmail";
 
 export type ForgotPasswordEmailSentProps = {};
@@ -24,29 +26,24 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<View />
+			<DidiScreen>
+				<View />
 
-						<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
+				<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
 
-						<Text style={[commonStyles.text.normal, styles.message]}>
-							{strings.recovery.passwordRecoverEmailSent.message}
-						</Text>
+				<Text style={[commonStyles.text.normal, styles.message]}>
+					{strings.recovery.passwordRecoverEmailSent.message}
+				</Text>
 
-						<View />
+				<View />
 
-						<DidiButton
-							onPress={() => {
-								this.navigate("ForgotPasswordConfirmEmail", {});
-							}}
-							title={strings.recovery.passwordRecoverEmailSent.buttonText}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+				<DidiButton
+					onPress={() => {
+						this.navigate("ForgotPasswordConfirmEmail", {});
+					}}
+					title={strings.recovery.passwordRecoverEmailSent.buttonText}
+				/>
+			</DidiScreen>
 		);
 	}
 }

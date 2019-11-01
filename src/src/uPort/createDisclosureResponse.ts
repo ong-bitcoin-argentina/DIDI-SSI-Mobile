@@ -1,10 +1,12 @@
+import TypedObject from "../util/TypedObject";
+
 import { CredentialDocument } from "../model/CredentialDocument";
+import { Identity } from "../model/Identity";
+import { RequestDocument } from "../model/RequestDocument";
+
+import { getCredentials } from "./getCredentials";
 import { Claim, flattenClaim } from "./types/Claim";
 import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
-import { Identity } from "../model/Identity";
-import TypedObject from "../util/TypedObject";
-import { getCredentials } from "./getCredentials";
-import { RequestDocument } from "../model/RequestDocument";
 
 function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity): Claim {
 	const result: Claim = {};
@@ -79,17 +81,16 @@ export interface DisclosureResponseArguments {
 	microCredentials: CredentialDocument[];
 }
 
-export async function createDisclosureResponse(
-	args: DisclosureResponseArguments
-): Promise<{ accessToken: string; missing: string[] }> {
-	const { missing, own, verified } = getResponseClaims(args.request.content, args.microCredentials, args.identity);
-
+export async function signDisclosureResponse(
+	request: RequestDocument,
+	own: Claim,
+	verified: string[]
+): Promise<string> {
 	const credentials = await getCredentials();
 	const accessToken = await credentials.createDisclosureResponse({
-		req: args.request.jwt,
+		req: request.jwt,
 		own,
 		verified
 	});
-
-	return { accessToken, missing };
+	return accessToken;
 }

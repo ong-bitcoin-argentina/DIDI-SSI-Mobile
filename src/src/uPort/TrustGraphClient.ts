@@ -1,10 +1,11 @@
-import Credentials from "uport-credentials/lib/Credentials";
-import { getCredentials } from "./getCredentials";
-import gql from "graphql-tag";
-import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
+import { ApolloClient } from "apollo-client";
 import { setContext } from "apollo-link-context";
+import { HttpLink } from "apollo-link-http";
+import gql from "graphql-tag";
+import Credentials from "uport-credentials/lib/Credentials";
+
+import { getCredentials } from "./getCredentials";
 
 export class TrustGraphClient {
 	private credentials: Credentials;

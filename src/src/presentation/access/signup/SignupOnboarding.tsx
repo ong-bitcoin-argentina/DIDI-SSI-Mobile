@@ -1,25 +1,27 @@
 import React, { Fragment } from "react";
 import {
+	Dimensions,
+	Image,
+	NativeScrollEvent,
+	NativeSyntheticEvent,
+	ScrollView,
 	StatusBar,
 	StyleSheet,
-	View,
-	ScrollView,
 	Text,
-	Image,
-	Dimensions,
-	TouchableWithoutFeedback,
 	TouchableOpacity,
-	NativeSyntheticEvent,
-	NativeScrollEvent
+	TouchableWithoutFeedback,
+	View
 } from "react-native";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import themes from "../../resources/themes";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import { SignupEnterPhoneProps } from "./SignupEnterPhone";
-import onboardingPages, { OnboardingPage } from "../resources/onboardingPages";
 import commonStyles from "../resources/commonStyles";
+
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
+import themes from "../../resources/themes";
+import onboardingPages, { OnboardingPage } from "../resources/onboardingPages";
+
+import { SignupEnterPhoneProps } from "./SignupEnterPhone";
 
 export type SignupOnboardingProps = {};
 

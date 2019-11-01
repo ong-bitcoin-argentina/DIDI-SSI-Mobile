@@ -1,26 +1,34 @@
-import { createStore, combineReducers, Store, Reducer, AnyAction } from "redux";
-import { persistStore, persistReducer, StateReconciler } from "redux-persist";
+import { AnyAction, combineReducers, createStore, Store } from "redux";
+import { install as installReduxLoop, Loop } from "redux-loop";
+import { persistReducer, persistStore, StateReconciler } from "redux-persist";
 import FSStorage from "redux-persist-fs-storage";
-
-import { tokenReducer, TokenAction } from "./reducers/tokenReducer";
-import { ServiceSettingAction, serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
-import { ServiceSettings } from "../model/ServiceSettings";
-import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
+import { PersistPartial } from "redux-persist/es/persistReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
-export type NormalizedStoreAction = TokenAction | ServiceSettingAction;
+import { liftUndefined } from "../util/liftUndefined";
 
-export type NormalizedStoreContent = {
+import { DidiSession } from "../model/DidiSession";
+import { ServiceSettings } from "../model/ServiceSettings";
+import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
+
+import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
+import { sessionReducer } from "./reducers/sessionReducer";
+import { tokenReducer } from "./reducers/tokenReducer";
+import { StoreAction } from "./StoreAction";
+
+export interface PersistedStoreContent {
+	sessionFlags: DidiSession;
 	tokens: string[];
 	serviceSettings: ServiceSettings;
-};
+}
 
-const reducer: Reducer<NormalizedStoreContent, NormalizedStoreAction> = combineReducers({
+const reducer = combineReducers<PersistedStoreContent, StoreAction>({
+	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
 	serviceSettings: serviceSettingsReducer
 });
 
-const stateReconciler: StateReconciler<NormalizedStoreContent> = autoMergeLevel2;
+const stateReconciler: StateReconciler<PersistedStoreContent> = autoMergeLevel2;
 
 const persistedReducer = persistReducer(
 	{
@@ -32,6 +40,29 @@ const persistedReducer = persistReducer(
 	reducer
 );
 
-export const store = createStore(persistedReducer) as Store<any, AnyAction>;
+export interface NormalizedStoreContent {
+	persisted: PersistedStoreContent & PersistPartial;
+	serviceCalls: ServiceCallState;
+}
+
+const storeReducer = (
+	state: NormalizedStoreContent | undefined,
+	action: StoreAction
+): Loop<NormalizedStoreContent, StoreAction> => {
+	const persisted = persistedReducer(liftUndefined(state, s => s.persisted), action);
+	const [serviceCalls, actions] = serviceCallReducer(
+		liftUndefined(state, s => s.serviceCalls),
+		action,
+		persisted.serviceSettings
+	);
+	return [{ persisted, serviceCalls }, actions];
+};
+
+export const store = createStore(
+	storeReducer as any,
+	installReduxLoop({
+		DONT_LOG_ERRORS_ON_HANDLED_FAILURES: true
+	})
+) as Store<any, AnyAction>;
 
 export const persistor = persistStore(store);

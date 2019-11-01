@@ -1,6 +1,7 @@
 import { SelectiveDisclosureRequest } from "../uPort/types/SelectiveDisclosureRequest";
 
 export interface RequestDocument {
+	type: "RequestDocument";
 	jwt: string;
 	content: SelectiveDisclosureRequest;
 }

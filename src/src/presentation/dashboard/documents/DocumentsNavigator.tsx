@@ -1,9 +1,11 @@
 import { createMaterialTopTabNavigator, createStackNavigator } from "react-navigation";
-import themes from "../../resources/themes";
-import DocumentsScreen, { DocumentsScreenNavigation } from "./DocumentsScreen";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+
 import { DocumentFilterType } from "../../../model/SampleDocument";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
+import themes from "../../resources/themes";
+
+import DocumentsScreen, { DocumentsScreenNavigation } from "./DocumentsScreen";
 
 function screen(title: string, filter: (type: DocumentFilterType) => boolean) {
 	return {

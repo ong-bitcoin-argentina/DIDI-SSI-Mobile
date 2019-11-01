@@ -1,15 +1,16 @@
 import React, { Fragment } from "react";
-import { Text, StatusBar, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../../access/resources/commonStyles";
-import themes from "../../resources/themes";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import { didiConnect } from "../../../store/store";
-import { RequestDocument } from "../../../model/RequestDocument";
-import { RequestCard } from "../common/RequestCard";
 import DidiButton from "../../util/DidiButton";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { RequestCard } from "../common/RequestCard";
+
+import { RequestDocument } from "../../../model/RequestDocument";
+import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
 import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest";
 
 export type NotificationScreenProps = {};

@@ -1,6 +1,7 @@
-import { Text, View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { Identity } from "../../../model/Identity";
 import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import { Identity } from "../../../model/Identity";
 import themes from "../../resources/themes";
 
 export interface HomeHeaderProps {

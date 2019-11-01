@@ -1,5 +1,5 @@
 export default class Validator {
-	static isPhoneNumber(code?: String): boolean {
+	static isValidationCode(code?: string): boolean {
 		if (code) {
 			const match = code.match("^[0-9]{6}$");
 			if (match) {
@@ -9,11 +9,11 @@ export default class Validator {
 		return false;
 	}
 
-	static isDocumentNumber(code?: String): boolean {
+	static isDocumentNumber(code?: string): boolean {
 		return Validator.isNumber(code);
 	}
 
-	static isNumber(code?: String): boolean {
+	static isNumber(code?: string): boolean {
 		if (code) {
 			const match = code.match("^[0-9]*$");
 			if (match) {
@@ -23,7 +23,7 @@ export default class Validator {
 		return false;
 	}
 
-	static isEmail(code?: String): boolean {
+	static isEmail(code?: string): boolean {
 		if (code) {
 			const match = code.match(
 				"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"

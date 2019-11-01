@@ -1,22 +1,27 @@
 import React from "react";
-import { Fragment } from "react";
-import { StatusBar, View, Modal, Text, StyleSheet, Alert } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native";
 
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import themes from "../../resources/themes";
+import { ServiceState } from "../../../services/common/ServiceState";
 import commonStyles from "../../access/resources/commonStyles";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
-import { CredentialDocument } from "../../../model/CredentialDocument";
-import { didiConnect } from "../../../store/store";
-import { Identity } from "../../../model/Identity";
-import { ScanCredentialProps } from "./ScanCredential";
-import { createDisclosureResponse } from "../../../uPort/createDisclosureResponse";
-import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
-import { RequestDocument } from "../../../model/RequestDocument";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
+
+import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
+import { Identity } from "../../../model/Identity";
+import { RequestDocument } from "../../../model/RequestDocument";
+import {
+	SubmitDisclosureResponseArguments,
+	SubmitDisclosureResponseState
+} from "../../../services/issuer/submitDisclosureResponse";
+import { didiConnect } from "../../../store/store";
+import { getResponseClaims, signDisclosureResponse } from "../../../uPort/createDisclosureResponse";
+import colors from "../../resources/colors";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+
+import { ScanCredentialProps } from "./ScanCredential";
 
 export interface ScanDisclosureRequestProps {
 	request: RequestDocument;
@@ -26,22 +31,24 @@ interface ScanDisclosureRequestStateProps {
 	identity: Identity;
 	credentials: Array<DerivedCredential<CredentialDocument>>;
 	microCredentials: CredentialDocument[];
+	responseState: SubmitDisclosureResponseState;
 }
 interface ScanDisclosureRequestDispatchProps {
+	sendResponse(args: SubmitDisclosureResponseArguments): void;
+	resetResponse(): void;
 	storeRequest(request: RequestDocument): void;
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
 	ScanDisclosureRequestStateProps &
 	ScanDisclosureRequestDispatchProps;
 
-type ScanDisclosureRequestState = {};
 export interface ScanDisclosureRequestNavigation {
 	ScanCredential: ScanCredentialProps;
 }
 
 class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	ScanDisclosureRequestInternalProps,
-	ScanDisclosureRequestState,
+	{},
 	ScanDisclosureRequestNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
@@ -52,45 +59,65 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={styles.body}>
-						<RequestCard style={{ marginHorizontal: 20 }} request={this.props.request} />
+			<DidiScreen style={styles.body}>
+				<RequestCard style={{ marginHorizontal: 20 }} request={this.props.request} />
+				{this.renderButtons()}
+			</DidiScreen>
+		);
+	}
+
+	private renderButtons() {
+		switch (this.props.responseState.state) {
+			case "NONE":
+				return (
+					<View style={styles.buttonContainer}>
 						<Text style={commonStyles.text.normal}>¿Enviar datos?</Text>
 						<DidiButton style={styles.button} title="Si" onPress={() => this.answerRequest()} />
 						<DidiButton style={styles.button} title="No" onPress={() => this.props.onGoBack(this)} />
 					</View>
-				</SafeAreaView>
-			</Fragment>
-		);
+				);
+			case "PENDING":
+				return (
+					<View style={styles.buttonContainer}>
+						<ActivityIndicator size="large" color={colors.secondary} />
+						<Text style={commonStyles.text.normal}>Enviando</Text>
+					</View>
+				);
+			case "FAILURE":
+				return (
+					<View style={styles.buttonContainer}>
+						<Text style={commonStyles.text.normal}>Error en la conexion: {this.props.responseState.error}</Text>
+						<DidiButton style={styles.button} title="Reenviar" onPress={() => this.answerRequest()} />
+						<DidiButton style={styles.button} title="Regresar" onPress={() => this.props.onGoBack(this)} />
+					</View>
+				);
+			case "SUCCESS":
+				return undefined;
+		}
 	}
 
-	private async answerRequest() {
-		try {
-			const { accessToken, missing } = await createDisclosureResponse({
-				request: this.props.request,
-				identity: this.props.identity,
-				microCredentials: this.props.microCredentials
-			});
-			try {
-				const success = await submitDisclosureResponse(this.props.request.content.callback, accessToken);
-
-				if (!success) {
-					Alert.alert("Respuesta rechazada por servidor");
-				} else if (missing.length > 0) {
-					Alert.alert("Respuesta enviada", `Puede ocurrir un error por falta de credenciales: ${missing.join(", ")}`);
-				} else {
-					Alert.alert("Respuesta enviada");
-				}
-
+	componentDidUpdate() {
+		const response = this.props.responseState;
+		switch (response.state) {
+			case "NONE":
+			case "PENDING":
+			case "FAILURE":
+				return;
+			case "SUCCESS":
+				Alert.alert("Respuesta enviada");
+				this.props.resetResponse();
 				this.props.onGoBack(this);
-			} catch (e) {
-				Alert.alert("Error en la conexion", JSON.stringify(e));
-			}
-		} catch (e) {
-			Alert.alert("Error al generar respuesta", JSON.stringify(e));
+				return;
 		}
+	}
+
+	private answerRequest() {
+		const { missing, own, verified } = getResponseClaims(
+			this.props.request.content,
+			this.props.microCredentials,
+			this.props.identity
+		);
+		this.props.sendResponse({ request: this.props.request, own, verified });
 	}
 }
 
@@ -100,11 +127,22 @@ export default didiConnect(
 		return {
 			identity: state.identity,
 			credentials: state.credentials,
-			microCredentials: state.microCredentials
+			microCredentials: state.microCredentials,
+			responseState: state.serviceCalls.submitDisclosureResponse
 		};
 	},
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
+			sendResponse: (args: SubmitDisclosureResponseArguments) =>
+				dispatch({
+					type: "SERVICE_DISCLOSURE_RESPONSE",
+					serviceAction: { type: "START", args }
+				}),
+			resetResponse: () =>
+				dispatch({
+					type: "SERVICE_DISCLOSURE_RESPONSE",
+					serviceAction: { type: "DROP" }
+				}),
 			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] })
 		};
 	}
@@ -113,12 +151,13 @@ export default didiConnect(
 const styles = StyleSheet.create({
 	body: {
 		width: "100%",
-		alignItems: "stretch",
-		justifyContent: "space-evenly",
-		flex: 1
+		justifyContent: "flex-start"
 	},
 	button: {
 		width: "80%",
 		alignSelf: "center"
+	},
+	buttonContainer: {
+		justifyContent: "space-around"
 	}
 });

@@ -1,7 +1,9 @@
-import { View, StyleSheet, ViewProps, Image, Text, TouchableOpacity, ImageSourcePropType } from "react-native";
 import React from "react";
-import colors from "../../../resources/colors";
+import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
+
 import commonStyles from "../../../access/resources/commonStyles";
+
+import colors from "../../../resources/colors";
 
 interface UserHeadingProps extends ViewProps {
 	user: string;

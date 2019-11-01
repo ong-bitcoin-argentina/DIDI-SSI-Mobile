@@ -1,35 +1,35 @@
 import { ComponentType } from "react";
-import { connect, Matching, GetProps, ConnectedComponent } from "react-redux";
+import { connect, ConnectedComponent, GetProps, Matching } from "react-redux";
 import { Dispatch } from "redux";
-import { Either } from "fp-ts/lib/Either";
 
-import { StoreContent, StoreAction } from "./store";
-import { NormalizedStoreContent, NormalizedStoreAction } from "./normalizedStore";
-
-import { sampleIdentity } from "./samples/sampleIdentity";
-import { sampleRecentActivity } from "./samples/sampleRecentActivity";
-import { sampleDocuments } from "./samples/sampleDocuments";
-
-import { parsedTokenSelector } from "./selector/parsedTokenSelector";
-import { credentialSelector } from "./selector/credentialSelector";
-import { requestSelector } from "./selector/requestSelector";
-
-import { SampleDocument } from "../model/SampleDocument";
+import { CredentialDocument } from "../model/CredentialDocument";
+import { DerivedCredential } from "../model/DerivedCredential";
 import { Identity } from "../model/Identity";
 import { RecentActivity } from "../model/RecentActivity";
-import { CredentialDocument } from "../model/CredentialDocument";
 import { RequestDocument } from "../model/RequestDocument";
-import { DerivedCredential } from "../model/DerivedCredential";
+import { SampleDocument } from "../model/SampleDocument";
+import { ServiceSettings } from "../model/ServiceSettings";
+import { ServiceCallState } from "../services/ServiceStateStore";
+
+import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
+import { sampleDocuments } from "./samples/sampleDocuments";
+import { sampleIdentity } from "./samples/sampleIdentity";
+import { sampleRecentActivity } from "./samples/sampleRecentActivity";
+import { credentialSelector } from "./selector/credentialSelector";
 import { microCredentialSelector } from "./selector/microCredentialSelector";
-import { JWTParseError } from "../uPort/parseJWT";
+import { parsedTokenSelector } from "./selector/parsedTokenSelector";
+import { requestSelector } from "./selector/requestSelector";
+import { StoreContent } from "./store";
+import { StoreAction } from "./StoreAction";
 
-export type StoreAction = NormalizedStoreAction;
-
-export interface StoreContent extends NormalizedStoreContent {
-	credentials: Array<DerivedCredential<CredentialDocument>>;
+export interface StoreContent extends PersistedStoreContent {
+	parsedTokens: Array<CredentialDocument | RequestDocument>;
 	microCredentials: CredentialDocument[];
+	credentials: Array<DerivedCredential<CredentialDocument>>;
 	requests: RequestDocument[];
-	parsedTokens: Array<Either<JWTParseError, CredentialDocument | RequestDocument>>;
+
+	serviceCalls: ServiceCallState;
+
 	samples: SampleDocument[];
 	identity: Identity;
 	recentActivity: RecentActivity[];
@@ -38,11 +38,15 @@ export interface StoreContent extends NormalizedStoreContent {
 function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StateProps) {
 	return (state: NormalizedStoreContent): StateProps => {
 		return mapStateToProps({
-			...state,
+			...state.persisted,
+
+			parsedTokens: parsedTokenSelector(state),
 			credentials: credentialSelector(state),
 			microCredentials: microCredentialSelector(state),
 			requests: requestSelector(state),
-			parsedTokens: parsedTokenSelector(state),
+
+			serviceCalls: state.serviceCalls,
+
 			identity: sampleIdentity,
 			recentActivity: sampleRecentActivity,
 			samples: sampleDocuments

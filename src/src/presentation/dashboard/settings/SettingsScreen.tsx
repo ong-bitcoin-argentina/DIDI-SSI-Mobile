@@ -1,33 +1,35 @@
-import { Fragment } from "react";
-import React from "react";
-import { StatusBar, SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { connect } from "react-redux";
+import React, { Fragment } from "react";
+import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
-import themes from "../../resources/themes";
-import strings from "../../resources/strings";
-import colors from "../../resources/colors";
 import DidiButton from "../../util/DidiButton";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+
 import { Identity } from "../../../model/Identity";
-import { DashboardScreenProps } from "../home/Dashboard";
+import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
-import { UserDataProps } from "./userData/UserData";
-import { IdentitySettingsProps } from "./identity/IdentitySettings";
-import { ChangePasswordProps } from "./userMenu/ChangePassword";
-import { StoreContent, didiConnect } from "../../../store/store";
-import { AboutThisAppScreenProps } from "./AboutThisApp";
-
-import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
+import colors from "../../resources/colors";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
+import themes from "../../resources/themes";
+import { DashboardScreenProps } from "../home/Dashboard";
 import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
-import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
-import { JWTDecoderScanScreenProps } from "./JWTDecoderScanScreen";
+import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 
-export interface SettingsScreenProps {
+import { AboutThisAppScreenProps } from "./AboutThisApp";
+import { ChangePasswordProps } from "./ChangePassword";
+import { IdentitySettingsProps } from "./identity/IdentitySettings";
+import { JWTDecoderScanScreenProps } from "./JWTDecoderScanScreen";
+import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
+import { UserDataProps } from "./userData/UserData";
+
+export type SettingsScreenProps = {};
+interface SettingsScreenStateProps {
 	person: Identity;
 }
-
-type SettingsScreenState = {};
+interface SettingsScreenDispatchProps {
+	logout(): void;
+}
+type SettingsScreenInternalProps = SettingsScreenProps & SettingsScreenStateProps & SettingsScreenDispatchProps;
 
 export interface SettingsScreenNavigation {
 	Access: StartAccessProps;
@@ -45,11 +47,7 @@ interface SettingsButton {
 	action: () => void;
 }
 
-class SettingsScreen extends NavigationEnabledComponent<
-	SettingsScreenProps,
-	SettingsScreenState,
-	SettingsScreenNavigation
-> {
+class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalProps, {}, SettingsScreenNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		SettingsScreenNavigation,
 		"DashboardHome"
@@ -109,24 +107,26 @@ class SettingsScreen extends NavigationEnabledComponent<
 					<View style={styles.buttonContainer}>
 						{this.buttons().map((button, index) => this.renderButton(button, index))}
 						<View style={styles.logoutButtonContainer}>
-							<DidiButton
-								style={styles.logoutButton}
-								title="Cerrar Sesion"
-								onPress={() => this.navigate("Access", {})}
-							/>
+							<DidiButton style={styles.logoutButton} title="Cerrar Sesion" onPress={() => this.logout()} />
 						</View>
 					</View>
 				</SafeAreaView>
 			</Fragment>
 		);
 	}
+
+	private logout() {
+		this.props.logout();
+		this.navigate("Access", {});
+	}
 }
 
 export default didiConnect(
 	SettingsScreen,
-	(state): SettingsScreenProps => {
-		return { person: state.identity };
-	}
+	(state): SettingsScreenStateProps => ({ person: state.identity }),
+	(dispatch): SettingsScreenDispatchProps => ({
+		logout: () => dispatch({ type: "SESSION_LOGOUT" })
+	})
 );
 
 const baseStyles = {

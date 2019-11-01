@@ -1,17 +1,17 @@
-import React from "react";
-import { Fragment } from "react";
-import { StatusBar, View, Vibration, YellowBox, Alert } from "react-native";
+import { isLeft, isRight } from "fp-ts/lib/Either";
+import React, { Fragment } from "react";
+import { Alert, StatusBar, Vibration, View, YellowBox } from "react-native";
 
-import parseJWT, { JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
-
-import themes from "../../resources/themes";
-import DidiQRScanner from "../common/DidiQRScanner";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import DidiQRScanner from "../common/DidiQRScanner";
+
+import { didiConnect } from "../../../store/store";
+import parseJWT, { compareParseResults, JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import themes from "../../resources/themes";
+
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
-import { didiConnect } from "../../../store/store";
-import { isLeft, isRight } from "fp-ts/lib/Either";
 
 export type ScanCredentialProps = {};
 interface ScanCredentialStateProps {
@@ -62,9 +62,9 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			this.showAlert("No hay credenciales", "El codigo QR escaneado no contiene credenciales");
 			return;
 		}
-		const toParse = matches.find(match => isRight(unverifiedParseJWT(match))) || matches[0];
+		const parseResults = matches.map(unverifiedParseJWT);
+		const unverifiedParse = parseResults.sort(compareParseResults)[0];
 
-		const unverifiedParse = unverifiedParseJWT(toParse);
 		if (isLeft(unverifiedParse)) {
 			const { title, subtitle } = this.errorMessage(unverifiedParse.left);
 			this.showAlert(title, subtitle);
@@ -73,30 +73,24 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 
 		Vibration.vibrate(400, false);
 
-		const parse = await parseJWT(toParse, this.props.ethrDidUri);
+		const parse = await parseJWT(unverifiedParse.right.jwt, this.props.ethrDidUri);
 
 		if (isLeft(parse)) {
 			const { title, subtitle } = this.errorMessage(parse.left);
 			this.showAlert(title, subtitle);
 		} else {
 			switch (parse.right.type) {
-				case "SelectiveDisclosureRequest":
+				case "RequestDocument":
 					this.replace("ScanDisclosureRequest", {
-						request: {
-							content: parse.right,
-							jwt: toParse
-						},
+						request: parse.right,
 						onGoBack: screen => {
 							screen.replace("ScanCredential", {});
 						}
 					});
 					break;
-				case "VerifiedClaim":
+				case "CredentialDocument":
 					this.replace("ScanCredentialToAdd", {
-						credential: {
-							content: parse.right,
-							jwt: toParse
-						}
+						credential: parse.right
 					});
 					break;
 			}

@@ -1,9 +1,8 @@
 import React, { Fragment } from "react";
-import { Text, StyleSheet, View, TouchableOpacity, GestureResponderEvent, ViewProps } from "react-native";
+import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
 import { RNCamera, TakePictureResponse } from "react-native-camera";
 
 import colors from "../../resources/colors";
-
 import Checkmark from "../resources/images/checkmark.svg";
 
 export interface DidiCameraProps {

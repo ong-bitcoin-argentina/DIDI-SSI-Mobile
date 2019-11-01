@@ -1,16 +1,16 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { TakePictureResponse } from "react-native-camera/types";
 
-import { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
+import strings from "../../resources/strings";
+
 import { ValidateIdentityBackProps } from "./ValidateIdentityBack";
+import { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
 import {
 	ValidateIdentityTakePhotoProps,
-	ValidateIdentityTakePhotoState,
-	ValidateIdentityTakePhotoScreen
+	ValidateIdentityTakePhotoScreen,
+	ValidateIdentityTakePhotoState
 } from "./ValidateIdentityTakePhoto";
-
-import strings from "../../resources/strings";
 
 export interface ValidateIdentityFrontNavigation {
 	ValidateIdentityBack: ValidateIdentityBackProps;

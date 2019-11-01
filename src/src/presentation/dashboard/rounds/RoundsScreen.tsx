@@ -1,9 +1,9 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
 import React from "react";
-import { StatusBar, SafeAreaView, View, Text } from "react-native";
-import commonStyles from "../../access/resources/commonStyles";
-import themes from "../../resources/themes";
+import { Text } from "react-native";
+
+import { DidiScreen } from "../../common/DidiScreen";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import { DashboardScreenProps } from "../home/Dashboard";
@@ -27,14 +27,9 @@ export class RoundsScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<Text>Pantalla en construccion</Text>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<DidiScreen>
+				<Text>Pantalla en construccion</Text>
+			</DidiScreen>
 		);
 	}
 }

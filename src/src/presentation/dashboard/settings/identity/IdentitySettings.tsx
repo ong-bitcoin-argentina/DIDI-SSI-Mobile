@@ -1,17 +1,18 @@
-import React from "react";
-import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-import { Fragment } from "react";
-import { StatusBar, View, Text } from "react-native";
+import React, { Fragment } from "react";
+import { StatusBar, Text, View } from "react-native";
+import { RNUportHDSigner } from "react-native-uport-signer";
 import { SafeAreaView } from "react-navigation";
 
-import { RNUportHDSigner } from "react-native-uport-signer";
-
-import themes from "../../../resources/themes";
 import commonStyles from "../../../access/resources/commonStyles";
+import { DidiScreen } from "../../../common/DidiScreen";
+import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
+
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
-import { KeyRecoveryComponent } from "./KeyRecoveryComponent";
-import { KeyDisplayComponent } from "./KeyDisplayComponent";
+import themes from "../../../resources/themes";
+
 import { CredentialRecoveryComponent } from "./CredentialRecoveryComponent";
+import { KeyDisplayComponent } from "./KeyDisplayComponent";
+import { KeyRecoveryComponent } from "./KeyRecoveryComponent";
 
 export type IdentitySettingsProps = {};
 interface IdentitySettingsState {
@@ -33,14 +34,7 @@ export default class IdentitySettingsScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={[commonStyles.view.body, { flexDirection: "row" }]}>{this.renderContent()}</View>
-				</SafeAreaView>
-			</Fragment>
-		);
+		return <DidiScreen style={{ flexDirection: "row" }}>{this.renderContent()}</DidiScreen>;
 	}
 
 	private renderContent() {

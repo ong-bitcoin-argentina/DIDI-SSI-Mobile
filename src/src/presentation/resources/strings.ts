@@ -24,9 +24,6 @@ export default {
 			},
 			changePassword: {
 				barTitle: "Cambio de Contraseña",
-				newPassMessage: "Nueva Contraseña",
-				repeatNewPassMessage: "Repetir Contraseña",
-				oldPassMessage: "Contraseña Actual",
 				changePassword: "Cambiar Contraseña"
 			},
 			share: {
@@ -51,8 +48,6 @@ export default {
 		},
 		enterEmail: {
 			messageHead: "Ingresa tu email y contraseña",
-			emailTitle: "E-mail",
-			passwordTitle: "Password",
 			forgotPasswordMessage: "No recuerdo la contraseña"
 		},
 		explanation: {
@@ -63,7 +58,6 @@ export default {
 		},
 		passwordRecover: {
 			messageHead: "Recuperar Contraseña",
-			emailTitle: "E-mail",
 			forgotPasswordMessage: "No recuerdo la contraseña"
 		},
 		passwordRecoverEmailSent: {
@@ -72,15 +66,11 @@ export default {
 		},
 		passwordRecoverConfirmationCode: {
 			messageHead: "Ingrese el código enviado por email",
-			codeTitle: "Código de validación",
 			buttonText: "OK"
 		},
 		passwordChange: {
 			barTitle: "Recuperar Contraseña",
-			messageHead: "Ingresa tu nueva contraseña",
-			newPassMessage: "Nueva Contraseña",
-			repeatNewPassMessage: "Repetir Contraseña",
-			oldPassMessage: "Contraseña Actual"
+			messageHead: "Ingresa tu nueva contraseña"
 		}
 	},
 	signup: {
@@ -100,15 +90,11 @@ export default {
 		enterEmail: {
 			messageHead:
 				"Ingrese su email y una contraseña para que pueda recuperar su Identidad Digital en caso de perder el teléfono.",
-			emailTitle: "E-mail",
-			passwordTitle: "Password",
-			repeatPasswordTitle: "Repetir Contraseña",
 			backupGenerate: "Generar Backup"
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirá un email para validar su cuenta. Deberá hacer click en el link y así completar la generación del backup de su identidad",
-			buttonText: "Ver mis E-mails"
+				"Recibirás un email para validar tu cuenta. Ingresa el código de 6 dígitos para verificar tu email y así completar la generación del backup de tu identidad"
 		},
 		registrationValidated: {
 			message: "Su E-mail ha sido validado y su Identidad Digital ha sido resguardada.",
@@ -120,14 +106,10 @@ export default {
 		recoverButtonText: "Registrar",
 		place: "Argentina +54",
 		enterPhone: {
-			messageHead: "Carga tu número de celular",
-			cellPlaceholder: "011 + número sin el 15",
-			cellNumber: "Número de celular"
+			messageHead: "Carga tu número de celular"
 		},
 		verifyPhone: {
 			messageHead: "Ingresa el código de 6 dígitos para verificar tu celular",
-			codeTitle: "Código de validación",
-			codePlaceholder: "6 dígitos",
 			resendCode: "¿No recibiste el código?"
 		}
 	},
@@ -187,6 +169,26 @@ export default {
 			header: "Prueba de Vida",
 			description:
 				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!"
+		}
+	},
+	textInput: {
+		email: {
+			description: "E-mail",
+			placeholder: ""
+		},
+		verificationCode: {
+			description: "Código de validación",
+			placeholder: "6 dígitos"
+		},
+		cellPhoneNumber: {
+			description: "Número de celular",
+			placeholder: "011 + número sin el 15"
+		},
+		password: {
+			BASIC: "Contraseña",
+			OLD: "Contraseña Actual",
+			NEW: "Nueva Contraseña",
+			REPEAT: "Repetir Contraseña"
 		}
 	}
 };

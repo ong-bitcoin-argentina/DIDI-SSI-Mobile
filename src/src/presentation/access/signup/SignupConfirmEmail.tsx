@@ -1,56 +1,139 @@
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { Text, View, Image, SafeAreaView, StatusBar, StyleSheet } from "react-native";
-import React, { Fragment } from "react";
+import React from "react";
+import { Alert, Image, StyleSheet, Text } from "react-native";
 
-import DidiButton from "../../util/DidiButton";
-import strings from "../../resources/strings";
-import themes from "../../resources/themes";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import { ServiceWrapper } from "../../../services/common/ServiceWrapper";
+import { DidiScreen } from "../../common/DidiScreen";
+import { DidiServiceButton } from "../../util/DidiServiceButton";
+import DidiTextInput from "../../util/DidiTextInput";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
+
+import { RegisterUserArguments, RegisterUserState } from "../../../services/user/registerUser";
+import { VerifyEmailCodeState } from "../../../services/user/verifyEmailCode";
+import { didiConnect } from "../../../store/store";
+import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
+import Validator from "../helpers/validator";
+
 import { SignupConfirmedProps } from "./SignupConfirmed";
+
+export interface SignupConfirmEmailProps {
+	phoneNumber: string;
+	email: string;
+	password: string;
+}
+interface SignupConfirmEmailStateProps {
+	verifyEmailCodeState: VerifyEmailCodeState;
+	registerUserState: RegisterUserState;
+}
+interface SignupConfirmEmailDispatchProps {
+	verifyEmailCode(validationCode: string): void;
+	dropVerifyEmailCode(): void;
+
+	registerUser(args: RegisterUserArguments): void;
+	dropRegisterUser(): void;
+}
+type SignupConfirmEmailInternalProps = SignupConfirmEmailProps &
+	SignupConfirmEmailStateProps &
+	SignupConfirmEmailDispatchProps;
+
+interface SignupConfirmEmailState {
+	inputCode: string;
+}
 
 export interface SignupConfirmEmailNavigation {
 	SignupConfirmed: SignupConfirmedProps;
 }
 
-export type SignupConfirmEmailProps = {};
-
-export class SignupConfirmEmailScreen extends NavigationEnabledComponent<
-	SignupConfirmEmailProps,
-	{},
+class SignupConfirmEmailScreen extends NavigationEnabledComponent<
+	SignupConfirmEmailInternalProps,
+	SignupConfirmEmailState,
 	SignupConfirmEmailNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.signup.barTitle);
 
+	constructor(props: SignupConfirmEmailInternalProps) {
+		super(props);
+		this.state = {
+			inputCode: ""
+		};
+	}
+
 	render() {
+		Alert.alert("", this.props.phoneNumber);
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+			<DidiScreen>
+				<Text style={[commonStyles.text.normal, styles.message]}>{strings.signup.registrationEmailSent.message}</Text>
 
-				<SafeAreaView style={commonStyles.view.area}>
-					<View style={commonStyles.view.body}>
-						<View />
+				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
 
-						<Text style={[commonStyles.text.normal, styles.message]}>
-							{strings.signup.registrationEmailSent.message}
-						</Text>
+				<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
 
-						<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
-
-						<View />
-
-						<DidiButton
-							onPress={() => {
-								this.navigate("SignupConfirmed", {});
-							}}
-							title={strings.signup.registrationEmailSent.buttonText}
-						/>
-					</View>
-				</SafeAreaView>
-			</Fragment>
+				<ServiceWrapper
+					serviceState={this.props.verifyEmailCodeState}
+					onServiceSuccess={() => this.registerUser()}
+					resetService={() => this.props.dropVerifyEmailCode()}
+				/>
+				<ServiceWrapper
+					serviceState={this.props.registerUserState}
+					onServiceSuccess={() => this.navigate("SignupConfirmed", {})}
+					resetService={() => this.props.dropRegisterUser()}
+				/>
+				<DidiServiceButton
+					disabled={!this.canPressContinueButton()}
+					onPress={() => this.onPressContinueButton()}
+					title={strings.accessCommon.validateButtonText}
+					isPending={
+						this.props.verifyEmailCodeState.state === "PENDING" || this.props.registerUserState.state === "PENDING"
+					}
+				/>
+			</DidiScreen>
 		);
 	}
+
+	private canPressContinueButton(): boolean {
+		return Validator.isValidationCode(this.state.inputCode);
+	}
+
+	private onPressContinueButton() {
+		this.props.verifyEmailCode(this.state.inputCode);
+	}
+
+	private registerUser() {
+		this.props.registerUser({
+			did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d",
+			email: this.props.email,
+			password: this.props.password,
+			phoneNumber: this.props.phoneNumber,
+			privateKeySeed: "qwertyuiop"
+		});
+	}
 }
+
+const connected = didiConnect(
+	SignupConfirmEmailScreen,
+	(state): SignupConfirmEmailStateProps => ({
+		verifyEmailCodeState: state.serviceCalls.verifyEmailCode,
+		registerUserState: state.serviceCalls.registerUser
+	}),
+	(dispatch): SignupConfirmEmailDispatchProps => ({
+		verifyEmailCode: (validationCode: string) =>
+			dispatch({
+				type: "SERVICE_VERIFY_EMAIL_CODE",
+				serviceAction: {
+					type: "START",
+					args: { did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d", validationCode }
+				}
+			}),
+		dropVerifyEmailCode: () => dispatch({ type: "SERVICE_VERIFY_EMAIL_CODE", serviceAction: { type: "DROP" } }),
+
+		registerUser: (args: RegisterUserArguments) =>
+			dispatch({ type: "SERVICE_REGISTER_USER", serviceAction: { type: "START", args } }),
+		dropRegisterUser: () => dispatch({ type: "SERVICE_REGISTER_USER", serviceAction: { type: "DROP" } })
+	})
+);
+
+export { connected as SignupConfirmEmailScreen };
 
 const styles = StyleSheet.create({
 	message: {

@@ -1,12 +1,12 @@
-import { StatusBar, SafeAreaView, View, Text, ViewProps, StyleSheet, Image, ImageSourcePropType } from "react-native";
-import React, { Fragment, ReactNode, ReactElement } from "react";
+import React, { Fragment, ReactElement } from "react";
+import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
 
 import commonStyles from "../../access/resources/commonStyles";
-import themes from "../../resources/themes";
-import { SvgProps } from "react-native-svg";
 import DidiButton from "../../util/DidiButton";
-import colors from "../../resources/colors";
 import DidiCamera from "../common/DidiCamera";
+
+import colors from "../../resources/colors";
+import themes from "../../resources/themes";
 
 export interface ValidateIdentityExplanationProps {
 	title: string;
@@ -19,7 +19,6 @@ export interface ValidateIdentityExplanationProps {
 
 export default class ValidateIdentityExplanation extends React.Component<ValidateIdentityExplanationProps> {
 	render() {
-		const ContentImage = this.props.image;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />

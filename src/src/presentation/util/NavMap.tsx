@@ -1,8 +1,8 @@
-import { NavigationContainer, createStackNavigator, StackNavigatorConfig } from "react-navigation";
+import { createStackNavigator, NavigationContainer, StackNavigatorConfig } from "react-navigation";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
+import { ConnectedComponent } from "react-redux";
 
 import NavigationEnabledComponent from "./NavigationEnabledComponent";
-import { ConnectedComponent } from "react-redux";
 
 export interface NavigationEnabledComponentConstructor<Props, Navigation> {
 	new (props: Readonly<Props>): NavigationEnabledComponent<Props, {}, Navigation>;

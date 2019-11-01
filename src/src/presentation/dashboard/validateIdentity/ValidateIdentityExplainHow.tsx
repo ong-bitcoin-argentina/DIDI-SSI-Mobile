@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 
+import colors from "../../resources/colors";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-import colors from "../../resources/colors";
+import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import { ValidateIdentityFrontProps } from "./ValidateIdentityFront";
 
 export interface ValidateIdentityExplainHowNavigation {

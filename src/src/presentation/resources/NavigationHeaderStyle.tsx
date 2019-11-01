@@ -1,11 +1,18 @@
-import { NavigationStackScreenOptions, HeaderBackButton } from "react-navigation";
-import themes from "../resources/themes";
-import DidiTheme from "./DidiTheme";
 import React from "react";
 import { Text } from "react-native";
-import { HeaderButtons, HeaderButton, Item, HeaderButtonProps } from "react-navigation-header-buttons";
+import {
+	HeaderBackButton,
+	NavigationParams,
+	NavigationScreenProp,
+	NavigationStackScreenOptions,
+	NavigationState
+} from "react-navigation";
+import { HeaderButton, HeaderButtonProps, HeaderButtons, Item } from "react-navigation-header-buttons";
 import { defaultOnOverflowMenuPress } from "react-navigation-header-buttons/src/overflowMenuPressHandlers";
 
+import themes from "../resources/themes";
+
+import DidiTheme from "./DidiTheme";
 import VerticalMore from "./images/verticalMore.svg";
 
 function defaultStyle(theme: DidiTheme): NavigationStackScreenOptions {
@@ -39,9 +46,16 @@ const styles = {
 		return { ...defaultStyle(themes.primaryTheme), title };
 	},
 
-	withTitleAndRightButtonActions(
+	withTitleAndRightButtonActions<Nav>(
 		title: string,
-		actions: Array<{ actionTitle: string; onPress: (navigation: any) => void }>
+		actions: Array<{
+			actionTitle: string;
+			onPress: (
+				navigation: Omit<NavigationScreenProp<NavigationState, NavigationParams>, "navigate"> & {
+					navigate<Target extends Extract<keyof Nav, string>>(target: Target, props: Nav[Target]): void;
+				}
+			) => void;
+		}>
 	): NavigationOptions {
 		return ({ navigation }) => {
 			return {

@@ -1,6 +1,5 @@
 import React from "react";
 import { View, ViewProps } from "react-native";
-
 import { RNUportHDSigner, SeedPhrase } from "react-native-uport-signer";
 
 import DidiButton from "../../../util/DidiButton";

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Image, StyleSheet, ImageSourcePropType, ViewProps } from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, Text, View, ViewProps } from "react-native";
 
 export interface DidiCardBodyProps extends ViewProps {
 	icon: string;

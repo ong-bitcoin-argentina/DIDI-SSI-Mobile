@@ -1,28 +1,25 @@
-import { StartAccessScreen } from "./StartAccess";
+import NavMap, { NavTree } from "../util/NavMap";
 
-import { LoginEnterPhoneScreen } from "./login/LoginEnterPhone";
-import { LoginVerifyPhoneScreen } from "./login/LoginVerifyPhone";
+import { DashboardScreenProps } from "../dashboard/home/Dashboard";
 
-import { RecoveryExplanationScreen } from "./recovery/RecoveryExplanation";
-import { RecoveryEnterEmailScreen } from "./recovery/RecoveryEnterEmail";
-import { RecoveryEnterPhoneScreen } from "./recovery/RecoveryEnterPhone";
-import { RecoveryVerifyPhoneScreen } from "./recovery/RecoveryVerifyPhone";
-
-import { SignupOnboardingScreen } from "./signup/SignupOnboarding";
-import { SignupEnterPhoneScreen } from "./signup/SignupEnterPhone";
-import { SignupVerifyPhoneScreen } from "./signup/SignupVerifyPhone";
-import { SignupEnterEmailScreen } from "./signup/SignupEnterEmail";
-import { SignupConfirmEmailScreen } from "./signup/SignupConfirmEmail";
-import { SignupPhoneVerifiedScreen } from "./signup/SignupPhoneVerified";
-import { SignupConfirmedScreen } from "./signup/SignupConfirmed";
-
+import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswordConfirmEmail";
+import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEmailSent";
 import { ForgotPasswordEnterEmailScreen } from "./forgotPassword/ForgotPasswordEnterEmail";
 import { ForgotPasswordNewPasswordScreen } from "./forgotPassword/ForgotPasswordNewPassword";
-import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEmailSent";
-import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswordConfirmEmail";
-
-import NavMap, { NavTree } from "../util/NavMap";
-import { DashboardScreenProps } from "../dashboard/home/Dashboard";
+import { LoginEnterPhoneScreen } from "./login/LoginEnterPhone";
+import { LoginVerifyPhoneScreen } from "./login/LoginVerifyPhone";
+import { RecoveryEnterEmailScreen } from "./recovery/RecoveryEnterEmail";
+import { RecoveryEnterPhoneScreen } from "./recovery/RecoveryEnterPhone";
+import { RecoveryExplanationScreen } from "./recovery/RecoveryExplanation";
+import { RecoveryVerifyPhoneScreen } from "./recovery/RecoveryVerifyPhone";
+import { SignupConfirmedScreen } from "./signup/SignupConfirmed";
+import { SignupConfirmEmailScreen } from "./signup/SignupConfirmEmail";
+import { SignupEnterEmailScreen } from "./signup/SignupEnterEmail";
+import { SignupEnterPhoneScreen } from "./signup/SignupEnterPhone";
+import { SignupOnboardingScreen } from "./signup/SignupOnboarding";
+import { SignupPhoneVerifiedScreen } from "./signup/SignupPhoneVerified";
+import { SignupVerifyPhoneScreen } from "./signup/SignupVerifyPhone";
+import { StartAccessScreen } from "./StartAccess";
 
 interface AccessSwitchTarget {
 	Dashboard: DashboardScreenProps;

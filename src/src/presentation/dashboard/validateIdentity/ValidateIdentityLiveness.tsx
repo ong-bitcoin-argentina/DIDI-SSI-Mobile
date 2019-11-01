@@ -1,15 +1,15 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { TakePictureResponse } from "react-native-camera/types";
+
+import strings from "../../resources/strings";
 
 import { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
 import {
 	ValidateIdentityTakePhotoProps,
-	ValidateIdentityTakePhotoState,
-	ValidateIdentityTakePhotoScreen
+	ValidateIdentityTakePhotoScreen,
+	ValidateIdentityTakePhotoState
 } from "./ValidateIdentityTakePhoto";
-
-import strings from "../../resources/strings";
 
 export interface ValidateIdentityLivenessNavigation {
 	DashboardRoot: {};

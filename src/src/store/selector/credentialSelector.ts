@@ -1,7 +1,8 @@
 import { createSelector } from "reselect";
 
-import { microCredentialSelector } from "./microCredentialSelector";
 import { deriveCredentials } from "../../model/DerivedCredential";
+
+import { microCredentialSelector } from "./microCredentialSelector";
 
 export const credentialSelector = createSelector(
 	microCredentialSelector,

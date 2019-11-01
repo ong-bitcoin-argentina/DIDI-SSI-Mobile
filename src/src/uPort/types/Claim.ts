@@ -1,5 +1,6 @@
 import * as t from "io-ts";
-import { JSONValueCodec, JSONValue } from "../../util/JSON";
+
+import { JSONValue, JSONValueCodec } from "../../util/JSON";
 
 export const ClaimCodec = t.record(t.string, JSONValueCodec);
 

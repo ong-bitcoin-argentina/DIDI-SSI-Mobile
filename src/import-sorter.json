@@ -1,0 +1,37 @@
+{
+	"generalConfiguration.sortOnBeforeSave": true,
+	"importStringConfiguration.quoteMark": "double",
+	"importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+	"importStringConfiguration.tabSize": 8,
+	"importStringConfiguration.tabType": "tab",
+	"importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 120,
+	"importSorter.generalConfiguration.exclude": ["^.*\\.d\\.ts$"],
+	"importSorter.sortConfiguration.customOrderingRules.rules": [
+		{
+			"type": "importMember",
+			"regex": "^$",
+			"orderLevel": 10,
+			"disableSort": true
+		},
+		{
+			"regex": "common",
+			"orderLevel": 30
+		},
+		{
+			"regex": "util",
+			"orderLevel": 30
+		},
+		{
+			"regex": "^[\\.][\\.]/",
+			"orderLevel": 40
+		},
+		{
+			"regex": "^[\\.]/",
+			"orderLevel": 50
+		},
+		{
+			"regex": ".*/resources/.*",
+			"orderLevel": 60
+		}
+	]
+}
