@@ -94,8 +94,7 @@ export default {
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirá un email para validar su cuenta. Deberá hacer click en el link y así completar la generación del backup de su identidad",
-			buttonText: "Ver mis E-mails"
+				"Recibirás un email para validar tu cuenta. Ingresa el código de 6 dígitos para verificar tu email y así completar la generación del backup de tu identidad"
 		},
 		registrationValidated: {
 			message: "Su E-mail ha sido validado y su Identidad Digital ha sido resguardada.",

@@ -16,6 +16,7 @@ interface VerifyPhoneWrapperStateProps {
 }
 interface VerifyPhoneWrapperDispatchProps {
 	verifyPhoneCode(code: string): void;
+	dropVerifyPhoneCode(): void;
 }
 type VerifyPhoneWrapperInternalProps = VerifyPhoneWrapperProps &
 	VerifyPhoneWrapperStateProps &
@@ -27,6 +28,7 @@ class VerifyPhoneWrapper extends React.Component<VerifyPhoneWrapperInternalProps
 			<ServiceWrapper
 				serviceState={this.props.verifyPhoneCodeState}
 				onServiceSuccess={() => this.props.onServiceSuccess()}
+				resetService={() => this.props.dropVerifyPhoneCode()}
 			>
 				<VerifyPhoneScreen
 					contentImageSource={this.props.contentImageSource}
@@ -55,7 +57,8 @@ const connected = didiConnect(
 					type: "START",
 					args: { did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d", validationCode }
 				}
-			})
+			}),
+		dropVerifyPhoneCode: () => dispatch({ type: "SERVICE_VERIFY_SMS_CODE", serviceAction: { type: "DROP" } })
 	})
 );
 

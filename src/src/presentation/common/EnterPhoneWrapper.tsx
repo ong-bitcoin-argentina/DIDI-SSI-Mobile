@@ -16,6 +16,7 @@ interface EnterPhoneWrapperStateProps {
 }
 interface EnterPhoneWrapperDispatchProps {
 	requestSmsCode(args: SendSmsValidatorArguments): void;
+	dropRequestSmsCode(): void;
 }
 type LoginEnterPhoneInternalProps = EnterPhoneWrapperProps &
 	EnterPhoneWrapperStateProps &
@@ -27,6 +28,7 @@ class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps> {
 			<ServiceWrapper
 				serviceState={this.props.requestSmsCodeState}
 				onServiceSuccess={() => this.props.onServiceSuccess()}
+				resetService={() => this.props.dropRequestSmsCode()}
 			>
 				<EnterPhoneScreen
 					{...this.props}
@@ -55,6 +57,11 @@ const connected = didiConnect(
 			dispatch({
 				type: "SERVICE_SEND_SMS_VALIDATOR",
 				serviceAction: { type: "START", args }
+			}),
+		dropRequestSmsCode: () =>
+			dispatch({
+				type: "SERVICE_SEND_SMS_VALIDATOR",
+				serviceAction: { type: "DROP" }
 			})
 	})
 );

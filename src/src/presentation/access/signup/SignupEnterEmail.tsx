@@ -23,6 +23,7 @@ interface SignupEnterEmailStateProps {
 }
 interface SignupEnterEmailDispatchProps {
 	requestEmailCode(args: SendMailValidatorArguments): void;
+	dropRequestEmailCode(): void;
 }
 type SignupEnterEmailInternalProps = SignupEnterEmailStateProps & SignupEnterEmailDispatchProps & SignupEnterEmailProps;
 
@@ -71,8 +72,9 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 				<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
 
 				<ServiceWrapper
-					onServiceSuccess={() => this.navigate("SignupConfirmEmail", {})}
 					serviceState={this.props.requestEmailCodeState}
+					onServiceSuccess={() => this.navigate("SignupConfirmEmail", {})}
+					resetService={() => this.props.dropRequestEmailCode()}
 				>
 					<DidiServiceButton
 						title={strings.signup.enterEmail.backupGenerate}
@@ -100,7 +102,8 @@ const connected = didiConnect(
 	}),
 	(dispatch): SignupEnterEmailDispatchProps => ({
 		requestEmailCode: (args: SendMailValidatorArguments) =>
-			dispatch({ type: "SERVICE_SEND_EMAIL_VALIDATOR", serviceAction: { type: "START", args } })
+			dispatch({ type: "SERVICE_SEND_EMAIL_VALIDATOR", serviceAction: { type: "START", args } }),
+		dropRequestEmailCode: () => dispatch({ type: "SERVICE_SEND_EMAIL_VALIDATOR", serviceAction: { type: "DROP" } })
 	})
 );
 

@@ -22,6 +22,7 @@ interface SplashScreenStateProps {
 }
 interface SplashScreenDispatchProps {
 	checkDid(): void;
+	dropCheckDid(): void;
 }
 
 class SplashScreen extends NavigationEnabledComponent<
@@ -37,7 +38,11 @@ class SplashScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<ServiceWrapper serviceState={this.props.checkDidState} onServiceSuccess={() => this.onServiceSuccess()}>
+			<ServiceWrapper
+				serviceState={this.props.checkDidState}
+				onServiceSuccess={() => this.onServiceSuccess()}
+				resetService={() => this.props.dropCheckDid()}
+			>
 				<SplashContent />
 			</ServiceWrapper>
 		);
@@ -59,7 +64,8 @@ const connected = didiConnect(
 		isLoggedIn: state.sessionFlags.isLoggedIn
 	}),
 	dispatch => ({
-		checkDid: () => dispatch({ type: "CHECK_DID", serviceAction: { type: "START", args: {} } })
+		checkDid: () => dispatch({ type: "CHECK_DID", serviceAction: { type: "START", args: {} } }),
+		dropCheckDid: () => dispatch({ type: "CHECK_DID", serviceAction: { type: "DROP" } })
 	})
 );
 

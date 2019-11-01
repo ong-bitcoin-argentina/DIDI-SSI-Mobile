@@ -24,6 +24,7 @@ interface RecoveryEnterEmailStateProps {
 }
 interface RecoveryEnterEmailDispatchProps {
 	recoverAccount(email: string, password: string): void;
+	dropRecoverAccount(): void;
 }
 type RecoveryEnterEmailInternalProps = RecoveryEnterEmailProps &
 	RecoveryEnterEmailStateProps &
@@ -70,6 +71,7 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 				<ServiceWrapper
 					serviceState={this.props.recoverAccountState}
 					onServiceSuccess={() => this.navigate("RecoveryEnterPhone", {})}
+					resetService={() => this.props.dropRecoverAccount()}
 				>
 					<DidiServiceButton
 						onPress={() => this.onPressContinue()}
@@ -94,7 +96,8 @@ const connected = didiConnect(
 	}),
 	(dispatch): RecoveryEnterEmailDispatchProps => ({
 		recoverAccount: (email: string, password: string) =>
-			dispatch({ type: "SERVICE_RECOVER_ACCOUNT", serviceAction: { type: "START", args: { email, password } } })
+			dispatch({ type: "SERVICE_RECOVER_ACCOUNT", serviceAction: { type: "START", args: { email, password } } }),
+		dropRecoverAccount: () => dispatch({ type: "SERVICE_RECOVER_ACCOUNT", serviceAction: { type: "DROP" } })
 	})
 );
 
