@@ -1,17 +1,24 @@
+import { isLeft } from "fp-ts/lib/Either";
+
 import { ErrorData } from "../common/serviceErrors";
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+
+import { ensureDid } from "../internal/ensureDid";
 
 import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface SendSmsValidatorArguments {
 	cellPhoneNumber: string;
-	did: string;
 }
 
 async function sendSmsValidator(baseUrl: string, args: SendSmsValidatorArguments) {
+	const didData = await ensureDid();
+	if (isLeft(didData)) {
+		return didData;
+	}
 	return commonUserRequest(
 		`${baseUrl}/sendSmsValidator`,
-		{ cellPhoneNumber: args.cellPhoneNumber, did: args.did },
+		{ cellPhoneNumber: args.cellPhoneNumber, did: didData.right.did },
 		emptyDataCodec
 	);
 }

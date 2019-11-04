@@ -46,8 +46,7 @@ class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps, { 
 	private onPressContinueButton(inputPhoneNumber: string) {
 		this.setState({ phoneNumber: inputPhoneNumber });
 		this.props.requestSmsCode({
-			cellPhoneNumber: inputPhoneNumber,
-			did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d"
+			cellPhoneNumber: inputPhoneNumber
 		});
 	}
 }

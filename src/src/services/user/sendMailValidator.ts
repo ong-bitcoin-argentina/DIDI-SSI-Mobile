@@ -1,15 +1,26 @@
+import { isLeft } from "fp-ts/lib/Either";
+
 import { ErrorData } from "../common/serviceErrors";
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+
+import { ensureDid } from "../internal/ensureDid";
 
 import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface SendMailValidatorArguments {
 	email: string;
-	did: string;
 }
 
 async function sendMailValidator(baseUrl: string, args: SendMailValidatorArguments) {
-	return commonUserRequest(`${baseUrl}/sendMailValidator`, { eMail: args.email, did: args.did }, emptyDataCodec);
+	const didData = await ensureDid();
+	if (isLeft(didData)) {
+		return didData;
+	}
+	return commonUserRequest(
+		`${baseUrl}/sendMailValidator`,
+		{ eMail: args.email, did: didData.right.did },
+		emptyDataCodec
+	);
 }
 
 export type SendMailValidatorAction = ServiceAction<

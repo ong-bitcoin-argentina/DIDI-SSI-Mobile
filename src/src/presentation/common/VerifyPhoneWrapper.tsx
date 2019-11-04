@@ -55,7 +55,7 @@ const connected = didiConnect(
 				type: "SERVICE_VERIFY_SMS_CODE",
 				serviceAction: {
 					type: "START",
-					args: { did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d", validationCode }
+					args: { validationCode }
 				}
 			}),
 		dropVerifyPhoneCode: () => dispatch({ type: "SERVICE_VERIFY_SMS_CODE", serviceAction: { type: "DROP" } })

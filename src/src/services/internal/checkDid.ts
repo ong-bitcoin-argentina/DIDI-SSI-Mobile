@@ -1,10 +1,10 @@
 import { Either, left, right } from "fp-ts/lib/Either";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
-import { ErrorData } from "../common/serviceErrors";
+import { ErrorData, serviceErrors } from "../common/serviceErrors";
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
-async function checkDid(): Promise<Either<ErrorData, string | null>> {
+export async function checkDid(): Promise<Either<ErrorData, string | null>> {
 	return RNUportHDSigner.listSeedAddresses().then(
 		addresses => {
 			if (addresses.length > 0) {
@@ -13,7 +13,7 @@ async function checkDid(): Promise<Either<ErrorData, string | null>> {
 				return right(null);
 			}
 		},
-		err => left({ errorCode: "SIGNER_STORE_ERR", message: "Error al verificar DID almacenado." })
+		err => left(serviceErrors.did.READ_ERROR)
 	);
 }
 

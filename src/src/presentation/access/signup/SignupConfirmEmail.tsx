@@ -60,7 +60,6 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		Alert.alert("", this.props.phoneNumber);
 		return (
 			<DidiScreen>
 				<Text style={[commonStyles.text.normal, styles.message]}>{strings.signup.registrationEmailSent.message}</Text>
@@ -101,11 +100,9 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 
 	private registerUser() {
 		this.props.registerUser({
-			did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d",
 			email: this.props.email,
 			password: this.props.password,
-			phoneNumber: this.props.phoneNumber,
-			privateKeySeed: "qwertyuiop"
+			phoneNumber: this.props.phoneNumber
 		});
 	}
 }
@@ -122,7 +119,7 @@ const connected = didiConnect(
 				type: "SERVICE_VERIFY_EMAIL_CODE",
 				serviceAction: {
 					type: "START",
-					args: { did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d", validationCode }
+					args: { validationCode }
 				}
 			}),
 		dropVerifyEmailCode: () => dispatch({ type: "SERVICE_VERIFY_EMAIL_CODE", serviceAction: { type: "DROP" } }),
