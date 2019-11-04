@@ -19,7 +19,8 @@ async function registerUser(baseUrl: string, args: RegisterUserArguments) {
 	if (isLeft(didData)) {
 		return didData;
 	}
-	const privateKeySeed = await RNUportHDSigner.showSeed(didData.right.address, "");
+	const phrase = await RNUportHDSigner.showSeed(didData.right.address, "");
+	const privateKeySeed = Buffer.from(phrase, "utf8").toString("base64");
 
 	return commonUserRequest(
 		`${baseUrl}/registerUser`,

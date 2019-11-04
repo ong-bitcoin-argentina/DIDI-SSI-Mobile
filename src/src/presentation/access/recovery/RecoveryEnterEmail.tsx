@@ -92,7 +92,8 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 		if (this.props.recoverAccountState.state !== "SUCCESS") {
 			return;
 		}
-		const phrase = this.props.recoverAccountState.value.privateKeySeed;
+		const privateKeySeed = this.props.recoverAccountState.value.privateKeySeed;
+		const phrase = Buffer.from(privateKeySeed, "base64").toString("utf8");
 		await RNUportHDSigner.importSeed(phrase, "simple");
 		this.navigate("RecoveryEnterPhone", {});
 	}
