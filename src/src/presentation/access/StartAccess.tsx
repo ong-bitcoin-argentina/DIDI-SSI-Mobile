@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { StyleSheet } from "react-native";
 
 import DidiButton from "../util/DidiButton";
@@ -10,6 +10,7 @@ import strings from "../resources/strings";
 import themes from "../resources/themes";
 import { SplashContent } from "../SplashContent";
 
+import { AccessSettingsProps } from "./AccessSettings";
 import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
@@ -20,6 +21,7 @@ export interface StartAccessNavigation {
 	LoginEnterPhone: LoginEnterPhoneProps;
 	SignupOnboarding: SignupOnboardingProps;
 	RecoveryExplanation: RecoveryExplanationProps;
+	AccessSettings: AccessSettingsProps;
 }
 
 export class StartAccessScreen extends NavigationEnabledComponent<StartAccessProps, {}, StartAccessNavigation> {
@@ -27,24 +29,31 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 
 	render() {
 		return (
-			<SplashContent>
+			<Fragment>
+				<SplashContent>
+					<DidiButton
+						onPress={() => this.navigate("LoginEnterPhone", {})}
+						style={styles.secondaryButton}
+						title={strings.recovery.startAccess.loginButton}
+					/>
+					<DidiButton
+						onPress={() => this.navigate("SignupOnboarding", {})}
+						style={styles.primaryButton}
+						title={strings.recovery.startAccess.createButton}
+					/>
+					<DidiButton
+						onPress={() => this.navigate("RecoveryExplanation", {})}
+						style={styles.transparentButton}
+						titleStyle={styles.transparentButtonText}
+						title={strings.recovery.startAccess.recoveryButton + " >"}
+					/>
+				</SplashContent>
 				<DidiButton
-					onPress={() => this.navigate("LoginEnterPhone", {})}
-					style={styles.secondaryButton}
-					title={strings.recovery.startAccess.loginButton}
+					title="DEBUG"
+					style={{ position: "absolute", top: 20, right: 20 }}
+					onPress={() => this.navigate("AccessSettings", {})}
 				/>
-				<DidiButton
-					onPress={() => this.navigate("SignupOnboarding", {})}
-					style={styles.primaryButton}
-					title={strings.recovery.startAccess.createButton}
-				/>
-				<DidiButton
-					onPress={() => this.navigate("RecoveryExplanation", {})}
-					style={styles.transparentButton}
-					titleStyle={styles.transparentButtonText}
-					title={strings.recovery.startAccess.recoveryButton + " >"}
-				/>
-			</SplashContent>
+			</Fragment>
 		);
 	}
 }
