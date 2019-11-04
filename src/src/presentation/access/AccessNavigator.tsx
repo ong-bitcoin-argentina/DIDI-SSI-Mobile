@@ -2,6 +2,7 @@ import NavMap, { NavTree } from "../util/NavMap";
 
 import { DashboardScreenProps } from "../dashboard/home/Dashboard";
 
+import { AccessSettingsScreen } from "./AccessSettings";
 import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswordConfirmEmail";
 import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEmailSent";
 import { ForgotPasswordEnterEmailScreen } from "./forgotPassword/ForgotPasswordEnterEmail";
@@ -72,6 +73,7 @@ export default function(then: NavTree<AccessSwitchTarget>) {
 	return NavMap.from(StartAccessScreen, {
 		LoginEnterPhone: login(then),
 		SignupOnboarding: signup(then),
-		RecoveryExplanation: recovery(then)
+		RecoveryExplanation: recovery(then),
+		AccessSettings: NavMap.from(AccessSettingsScreen, {})
 	});
 }
