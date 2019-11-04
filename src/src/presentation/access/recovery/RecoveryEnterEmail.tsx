@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { RNUportHDSigner } from "react-native-uport-signer";
 
 import { ServiceWrapper } from "../../../services/common/ServiceWrapper";
 import { DidiScreen } from "../../common/DidiScreen";
@@ -70,7 +71,7 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 
 				<ServiceWrapper
 					serviceState={this.props.recoverAccountState}
-					onServiceSuccess={() => this.navigate("RecoveryEnterPhone", {})}
+					onServiceSuccess={() => this.regenerateAccount()}
 					resetService={() => this.props.dropRecoverAccount()}
 				/>
 				<DidiServiceButton
@@ -85,6 +86,15 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 
 	private onPressContinue() {
 		this.props.recoverAccount(this.state.email, this.state.password);
+	}
+
+	private async regenerateAccount() {
+		if (this.props.recoverAccountState.state !== "SUCCESS") {
+			return;
+		}
+		const phrase = this.props.recoverAccountState.value.privateKeySeed;
+		await RNUportHDSigner.importSeed(phrase, "simple");
+		this.navigate("RecoveryEnterPhone", {});
 	}
 }
 
