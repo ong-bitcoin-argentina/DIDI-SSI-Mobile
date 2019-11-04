@@ -54,7 +54,6 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		Alert.alert("", this.props.phoneNumber);
 		return (
 			<DidiScreen>
 				<Text style={commonStyles.text.emphasis}>{strings.signup.enterEmail.messageHead}</Text>
@@ -96,10 +95,7 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 	}
 
 	private onPressContinueButton() {
-		this.props.requestEmailCode({
-			did: "did:ethr:0x460fec23bd53610bf6d0ed6c6a1bef5ec86e740d",
-			email: this.state.email
-		});
+		this.props.requestEmailCode({ email: this.state.email });
 	}
 }
 

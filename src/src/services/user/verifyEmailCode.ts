@@ -1,17 +1,25 @@
+import { isLeft } from "fp-ts/lib/Either";
+
 import { ErrorData } from "../common/serviceErrors";
 import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+
+import { ensureDid } from "../internal/ensureDid";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
 export interface VerifyEmailCodeArguments {
 	validationCode: string;
-	did: string;
 }
 
 async function verifyEmailCode(baseUrl: string, args: VerifyEmailCodeArguments) {
+	const didData = await ensureDid();
+	if (isLeft(didData)) {
+		return didData;
+	}
+
 	return commonUserRequest(
 		`${baseUrl}/verifyMailCode`,
-		{ validationCode: args.validationCode, did: args.did },
+		{ validationCode: args.validationCode, did: didData.right.did },
 		singleCertificateCodec
 	);
 }

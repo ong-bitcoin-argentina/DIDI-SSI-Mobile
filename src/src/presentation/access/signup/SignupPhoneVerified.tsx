@@ -28,7 +28,6 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.signup.barTitle);
 
 	render() {
-		Alert.alert("", this.props.phoneNumber);
 		return (
 			<DidiScreen>
 				<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.messageHead}</Text>

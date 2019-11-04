@@ -24,7 +24,6 @@ export class SignupVerifyPhoneScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitle("Registro");
 
 	render() {
-		Alert.alert("", this.props.phoneNumber);
 		return (
 			<VerifyPhoneWrapper
 				contentImageSource={require("../resources/images/phoneRecover.png")}

@@ -19,6 +19,9 @@ export const serviceErrors = {
 		JSON_ERR: error("JSON_ERR", "Error al interpretar formato de respuesta."),
 		PARSE_ERR: error("PARSE_ERR", "Error al interpretar formato de respuesta.")
 	},
+	did: {
+		READ_ERROR: error("SIGNER_STORE_ERR", "Error al obtener DID almacenado.")
+	},
 	disclosure: {
 		SIGNING_ERR: error("SIGNING_ERR", "Error al firmar respuesta a la peticion."),
 		ISSUER_ERR: (text: string) => error("ISSUER_ERR", text)
