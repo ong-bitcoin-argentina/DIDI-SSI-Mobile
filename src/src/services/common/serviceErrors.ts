@@ -26,5 +26,8 @@ export const serviceErrors = {
 	disclosure: {
 		SIGNING_ERR: error("SIGNING_ERR", "Error al firmar respuesta a la peticion."),
 		ISSUER_ERR: (text: string) => error("ISSUER_ERR", text)
+	},
+	trustGraph: {
+		FETCH_ERR: error("FETCH_TG_ERR", "Error al enviar peticion al servidor.")
 	}
 };

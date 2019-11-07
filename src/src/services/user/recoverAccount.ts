@@ -45,9 +45,9 @@ async function doRecoverAccount(args: RecoverAccountArguments): Promise<Either<E
 const recoverAccountComponent = buildComponentServiceCall(doRecoverAccount);
 
 export function recoverAccount(serviceKey: string, email: string, password: string) {
-	return getState(serviceKey, {})(store => {
+	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return recoverAccountComponent(serviceKey, { baseUrl, email, password })(() => {
+		return recoverAccountComponent(serviceKey, { baseUrl, email, password }, () => {
 			return serviceCallSuccess(serviceKey);
 		});
 	});

@@ -9,7 +9,7 @@ function doGetState(get: () => NormalizedStoreContent) {
 	return denormalizeStore(get());
 }
 
-export const getState: ComponentServiceCall<{}, StoreContent> = serviceKey => next => {
+export const getState: ComponentServiceCall<{}, StoreContent> = (serviceKey, args, next) => {
 	return {
 		type: "SERVICE_CALL_START",
 		serviceKey,

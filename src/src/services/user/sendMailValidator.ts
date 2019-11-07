@@ -18,10 +18,10 @@ async function doSendMailValidator(args: SendMailValidatorArguments) {
 const sendMailValidatorComponent = buildComponentServiceCall(doSendMailValidator);
 
 export function sendMailValidator(serviceKey: string, email: string) {
-	return getState(serviceKey, {})(store => {
+	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {})(didData => {
-			return sendMailValidatorComponent(serviceKey, { baseUrl, did: didData.did, email })(() => {
+		return ensureDid(serviceKey, {}, didData => {
+			return sendMailValidatorComponent(serviceKey, { baseUrl, did: didData.did, email }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

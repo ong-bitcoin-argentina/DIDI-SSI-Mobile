@@ -32,10 +32,10 @@ async function doRegisterUser(args: RegisterUserArguments) {
 const registerUserComponent = buildComponentServiceCall(doRegisterUser);
 
 export function registerUser(serviceKey: string, email: string, password: string, phoneNumber: string) {
-	return getState(serviceKey, {})(store => {
+	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {})(didData => {
-			return getPrivateKeySeed(serviceKey, { didAddress: didData.didAddress })(privateKeySeed => {
+		return ensureDid(serviceKey, {}, didData => {
+			return getPrivateKeySeed(serviceKey, { didAddress: didData.didAddress }, privateKeySeed => {
 				const args: RegisterUserArguments = {
 					baseUrl,
 					did: didData.did,
@@ -44,7 +44,7 @@ export function registerUser(serviceKey: string, email: string, password: string
 					password,
 					phoneNumber
 				};
-				return registerUserComponent(serviceKey, args)(() => {
+				return registerUserComponent(serviceKey, args, () => {
 					return serviceCallSuccess(serviceKey);
 				});
 			});

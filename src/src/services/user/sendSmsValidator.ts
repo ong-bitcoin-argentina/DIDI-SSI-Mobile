@@ -22,10 +22,10 @@ async function doSendSmsValidator(args: SendSmsValidatorArguments) {
 const sendSmsValidatorComponent = buildComponentServiceCall(doSendSmsValidator);
 
 export function sendSmsValidator(serviceKey: string, cellPhoneNumber: string) {
-	return getState(serviceKey, {})(store => {
+	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {})(didData => {
-			return sendSmsValidatorComponent(serviceKey, { baseUrl, did: didData.did, cellPhoneNumber })(() => {
+		return ensureDid(serviceKey, {}, didData => {
+			return sendSmsValidatorComponent(serviceKey, { baseUrl, did: didData.did, cellPhoneNumber }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

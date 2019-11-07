@@ -22,10 +22,10 @@ async function doVerifySmsCode(args: VerifySmsCodeArguments) {
 const verifySmsCodeComponent = buildComponentServiceCall(doVerifySmsCode);
 
 export function verifySmsCode(serviceKey: string, validationCode: string) {
-	return getState(serviceKey, {})(store => {
+	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {})(didData => {
-			return verifySmsCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode })(() => {
+		return ensureDid(serviceKey, {}, didData => {
+			return verifySmsCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

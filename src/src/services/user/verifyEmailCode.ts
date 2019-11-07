@@ -22,10 +22,10 @@ async function doVerifyEmailCode(args: VerifyEmailCodeArguments) {
 const verifyEmailCodeComponent = buildComponentServiceCall(doVerifyEmailCode);
 
 export function verifyEmailCode(serviceKey: string, validationCode: string) {
-	return getState(serviceKey, {})(store => {
+	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {})(didData => {
-			return verifyEmailCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode })(() => {
+		return ensureDid(serviceKey, {}, didData => {
+			return verifyEmailCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

@@ -49,7 +49,7 @@ async function doSubmitDisclosureResponse(args: SubmitDisclosureResponseArgument
 const submitDisclosureResponseComponent = buildComponentServiceCall(doSubmitDisclosureResponse);
 
 export function submitDisclosureResponse(serviceKey: string, args: SubmitDisclosureResponseArguments) {
-	return submitDisclosureResponseComponent(serviceKey, args)(() => {
+	return submitDisclosureResponseComponent(serviceKey, args, () => {
 		return serviceCallSuccess(serviceKey);
 	});
 }
