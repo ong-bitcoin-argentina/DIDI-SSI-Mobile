@@ -2,7 +2,6 @@ import React from "react";
 import { Text, View, ViewProps } from "react-native";
 
 import commonStyles from "../../../access/resources/commonStyles";
-import { ServiceObserver } from "../../../common/ServiceObserver";
 import DidiButton from "../../../util/DidiButton";
 
 import { recoverTokens } from "../../../../services/trustGraph/recoverTokens";
@@ -21,8 +20,6 @@ interface CredentialRecoveryDispatchProps {
 type CredentialRecoveryInternalProps = CredentialRecoveryProps &
 	CredentialRecoveryStateProps &
 	CredentialRecoveryDispatchProps;
-
-const serviceKey = "CredentialRecoveryComponent";
 
 class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInternalProps> {
 	render() {
@@ -51,7 +48,7 @@ const connected = didiConnect(
 	},
 	(dispatch): CredentialRecoveryDispatchProps => {
 		return {
-			recoverTokens: () => dispatch(recoverTokens(serviceKey)),
+			recoverTokens: () => dispatch(recoverTokens()),
 			deleteAllTokens: () => dispatch({ type: "TOKEN_DELETE_ALL" })
 		};
 	}

@@ -4,6 +4,10 @@ export default {
 			label: "Actividades recientes",
 			loadMore: "Cargar más"
 		},
+		notifications: {
+			showExpired: "Mostrar peticiones vencidas",
+			hideExpired: "Ocultar peticiones vencidas"
+		},
 		userData: {
 			personalDataLabel: "Datos personales",
 			addressDataLabel: "Domicilio Legal",

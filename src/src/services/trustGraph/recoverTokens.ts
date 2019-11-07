@@ -43,7 +43,8 @@ async function doRecoverTokens(args: RecoverTokensArguments) {
 
 const recoverTokensComponent = buildComponentServiceCall(doRecoverTokens);
 
-export function recoverTokens(serviceKey: string) {
+export function recoverTokens() {
+	const serviceKey = "_recoverTokens";
 	return getState(serviceKey, {}, store => {
 		const { trustGraphUri, ethrDidUri } = store.serviceSettings;
 		// TODO: Combine this and part of TrustGraphClient creation into getSigner
