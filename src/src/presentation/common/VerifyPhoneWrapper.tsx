@@ -1,10 +1,10 @@
 import React from "react";
 
-import { ServiceWrapper } from "../../services/common/ServiceWrapper";
-
-import { VerifySmsCodeState } from "../../services/user/verifySmsCode";
+import { isPendingService } from "../../services/ServiceStateStore";
+import { verifySmsCode } from "../../services/user/verifySmsCode";
 import { didiConnect } from "../../store/store";
 
+import { ServiceObserver } from "./ServiceObserver";
 import { VerifyPhoneProps, VerifyPhoneScreen } from "./VerifyPhone";
 
 interface VerifyPhoneWrapperProps {
@@ -12,30 +12,27 @@ interface VerifyPhoneWrapperProps {
 	contentImageSource: VerifyPhoneProps["contentImageSource"];
 }
 interface VerifyPhoneWrapperStateProps {
-	verifyPhoneCodeState: VerifySmsCodeState;
+	verifyPhoneCodePending: boolean;
 }
 interface VerifyPhoneWrapperDispatchProps {
-	verifyPhoneCode(code: string): void;
-	dropVerifyPhoneCode(): void;
+	verifyPhoneCode: (code: string) => void;
 }
 type VerifyPhoneWrapperInternalProps = VerifyPhoneWrapperProps &
 	VerifyPhoneWrapperStateProps &
 	VerifyPhoneWrapperDispatchProps;
 
+const serviceKey = "VerifyPhone";
+
 class VerifyPhoneWrapper extends React.Component<VerifyPhoneWrapperInternalProps> {
 	render() {
 		return (
-			<ServiceWrapper
-				serviceState={this.props.verifyPhoneCodeState}
-				onServiceSuccess={() => this.props.onServiceSuccess()}
-				resetService={() => this.props.dropVerifyPhoneCode()}
-			>
+			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.props.onServiceSuccess()}>
 				<VerifyPhoneScreen
 					contentImageSource={this.props.contentImageSource}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
-					isContinuePending={this.props.verifyPhoneCodeState.state === "PENDING"}
+					isContinuePending={this.props.verifyPhoneCodePending}
 				/>
-			</ServiceWrapper>
+			</ServiceObserver>
 		);
 	}
 
@@ -47,18 +44,10 @@ class VerifyPhoneWrapper extends React.Component<VerifyPhoneWrapperInternalProps
 const connected = didiConnect(
 	VerifyPhoneWrapper,
 	(state): VerifyPhoneWrapperStateProps => ({
-		verifyPhoneCodeState: state.serviceCalls.verifySmsCode
+		verifyPhoneCodePending: isPendingService(state.serviceCalls[serviceKey])
 	}),
 	(dispatch): VerifyPhoneWrapperDispatchProps => ({
-		verifyPhoneCode: (validationCode: string) =>
-			dispatch({
-				type: "SERVICE_VERIFY_SMS_CODE",
-				serviceAction: {
-					type: "START",
-					args: { validationCode }
-				}
-			}),
-		dropVerifyPhoneCode: () => dispatch({ type: "SERVICE_VERIFY_SMS_CODE", serviceAction: { type: "DROP" } })
+		verifyPhoneCode: (validationCode: string) => dispatch(verifySmsCode(serviceKey, validationCode))
 	})
 );
 

@@ -1,11 +1,17 @@
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import * as t from "io-ts";
+import { RNUportHDSigner } from "react-native-uport-signer";
 
-import { ErrorData } from "../common/serviceErrors";
-import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { ErrorData, serviceErrors } from "../common/serviceErrors";
+
+import { DidData } from "../internal/ensureDid";
+import { getState } from "../internal/getState";
 
 import { commonUserRequest } from "./userServiceCommon";
 
 export interface RecoverAccountArguments {
+	baseUrl: string;
 	email: string;
 	password: string;
 }
@@ -14,20 +20,35 @@ const responseCodec = t.type({
 	privateKeySeed: t.string
 });
 
-async function recoverAccount(baseUrl: string, args: RecoverAccountArguments) {
-	return commonUserRequest(`${baseUrl}/recoverAccount`, { eMail: args.email, password: args.password }, responseCodec);
+async function doRecoverAccount(args: RecoverAccountArguments): Promise<Either<ErrorData, DidData>> {
+	const recoveryResponse = await commonUserRequest(
+		`${args.baseUrl}/recoverAccount`,
+		{ eMail: args.email, password: args.password },
+		responseCodec
+	);
+	if (isLeft(recoveryResponse)) {
+		return recoveryResponse;
+	}
+
+	try {
+		const phrase = Buffer.from(recoveryResponse.right.privateKeySeed, "base64").toString("utf8");
+		const nextAddress = await RNUportHDSigner.importSeed(phrase, "simple");
+
+		const addresses = await RNUportHDSigner.listSeedAddresses();
+		addresses.filter(addr => addr !== nextAddress.address).forEach(RNUportHDSigner.deleteSeed);
+		return right({ didAddress: nextAddress.address, did: `did:ethr:${nextAddress.address}` });
+	} catch (e) {
+		return left(serviceErrors.did.WRITE_ERROR);
+	}
 }
 
-export type RecoverAccountAction = ServiceAction<
-	"SERVICE_RECOVER_ACCOUNT",
-	RecoverAccountArguments,
-	typeof responseCodec._A,
-	ErrorData
->;
+const recoverAccountComponent = buildComponentServiceCall(doRecoverAccount);
 
-export type RecoverAccountState = ServiceStateOf<RecoverAccountAction>;
-
-export const recoverAccountReducer = serviceReducer(
-	config => (args: RecoverAccountArguments) => recoverAccount(config.didiUserServer, args),
-	(act): act is RecoverAccountAction => act.type === "SERVICE_RECOVER_ACCOUNT"
-);
+export function recoverAccount(serviceKey: string, email: string, password: string) {
+	return getState(serviceKey, {})(store => {
+		const baseUrl = store.serviceSettings.didiUserServer;
+		return recoverAccountComponent(serviceKey, { baseUrl, email, password })(() => {
+			return serviceCallSuccess(serviceKey);
+		});
+	});
+}

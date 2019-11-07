@@ -1,39 +1,33 @@
-import { isLeft } from "fp-ts/lib/Either";
-
-import { ErrorData } from "../common/serviceErrors";
-import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
 import { ensureDid } from "../internal/ensureDid";
+import { getState } from "../internal/getState";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
 export interface VerifySmsCodeArguments {
+	baseUrl: string;
+	did: string;
 	validationCode: string;
 }
 
-async function verifySmsCode(baseUrl: string, args: VerifySmsCodeArguments) {
-	const didData = await ensureDid();
-	if (isLeft(didData)) {
-		return didData;
-	}
-
+async function doVerifySmsCode(args: VerifySmsCodeArguments) {
 	return commonUserRequest(
-		`${baseUrl}/verifySmsCode`,
-		{ validationCode: args.validationCode, did: didData.right.did },
+		`${args.baseUrl}/verifySmsCode`,
+		{ validationCode: args.validationCode, did: args.did },
 		singleCertificateCodec
 	);
 }
 
-export type VerifySmsCodeAction = ServiceAction<
-	"SERVICE_VERIFY_SMS_CODE",
-	VerifySmsCodeArguments,
-	typeof singleCertificateCodec._A,
-	ErrorData
->;
+const verifySmsCodeComponent = buildComponentServiceCall(doVerifySmsCode);
 
-export type VerifySmsCodeState = ServiceStateOf<VerifySmsCodeAction>;
-
-export const verifySmsCodeReducer = serviceReducer(
-	config => (args: VerifySmsCodeArguments) => verifySmsCode(config.didiUserServer, args),
-	(act): act is VerifySmsCodeAction => act.type === "SERVICE_VERIFY_SMS_CODE"
-);
+export function verifySmsCode(serviceKey: string, validationCode: string) {
+	return getState(serviceKey, {})(store => {
+		const baseUrl = store.serviceSettings.didiUserServer;
+		return ensureDid(serviceKey, {})(didData => {
+			return verifySmsCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode })(() => {
+				return serviceCallSuccess(serviceKey);
+			});
+		});
+	});
+}

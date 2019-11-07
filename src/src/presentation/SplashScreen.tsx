@@ -1,9 +1,7 @@
 import React from "react";
 
-import { ServiceWrapper } from "../services/common/ServiceWrapper";
 import NavigationEnabledComponent from "./util/NavigationEnabledComponent";
 
-import { CheckDIDState } from "../services/internal/checkDid";
 import { didiConnect } from "../store/store";
 
 import { StartAccessProps } from "./access/StartAccess";
@@ -17,38 +15,17 @@ export interface SplashScreenNavigation {
 }
 
 interface SplashScreenStateProps {
-	checkDidState: CheckDIDState;
 	isLoggedIn: boolean;
 }
-interface SplashScreenDispatchProps {
-	checkDid(): void;
-	dropCheckDid(): void;
-}
 
-class SplashScreen extends NavigationEnabledComponent<
-	SplashScreenStateProps & SplashScreenDispatchProps,
-	{},
-	SplashScreenNavigation
-> {
+class SplashScreen extends NavigationEnabledComponent<SplashScreenStateProps, {}, SplashScreenNavigation> {
 	static navigationOptions = NavigationHeaderStyle.gone;
 
-	componentDidMount() {
-		this.props.checkDid();
-	}
-
 	render() {
-		return (
-			<ServiceWrapper
-				serviceState={this.props.checkDidState}
-				onServiceSuccess={() => this.onServiceSuccess()}
-				resetService={() => this.props.dropCheckDid()}
-			>
-				<SplashContent />
-			</ServiceWrapper>
-		);
+		return <SplashContent />;
 	}
 
-	private onServiceSuccess() {
+	componentDidMount() {
 		if (this.props.isLoggedIn) {
 			this.navigate("Dashboard", {});
 		} else {
@@ -57,16 +34,8 @@ class SplashScreen extends NavigationEnabledComponent<
 	}
 }
 
-const connected = didiConnect(
-	SplashScreen,
-	state => ({
-		checkDidState: state.serviceCalls.checkDid,
-		isLoggedIn: state.sessionFlags.isLoggedIn
-	}),
-	dispatch => ({
-		checkDid: () => dispatch({ type: "CHECK_DID", serviceAction: { type: "START", args: {} } }),
-		dropCheckDid: () => dispatch({ type: "CHECK_DID", serviceAction: { type: "DROP" } })
-	})
-);
+const connected = didiConnect(SplashScreen, state => ({
+	isLoggedIn: state.sessionFlags.isLoggedIn
+}));
 
 export { connected as SplashScreen };

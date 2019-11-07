@@ -1,48 +1,74 @@
-import { combineReducers, LiftedLoopReducer } from "redux-loop";
+import { Action } from "redux";
+import { CmdType, liftState, Loop, loop, LoopReducer } from "redux-loop";
+
+import { ErrorData } from "./common/serviceErrors";
 
 import { StoreAction } from "../store/StoreAction";
 
-import { CheckDIDAction, checkDidReducer, CheckDIDState } from "./internal/checkDid";
-import {
-	SubmitDisclosureResponseAction,
-	submitDisclosureResponseReducer,
-	SubmitDisclosureResponseState
-} from "./issuer/submitDisclosureResponse";
-import { RecoverAccountAction, recoverAccountReducer, RecoverAccountState } from "./user/recoverAccount";
-import { RegisterUserAction, registerUserReducer, RegisterUserState } from "./user/registerUser";
-import { SendMailValidatorAction, sendMailValidatorReducer, SendMailValidatorState } from "./user/sendMailValidator";
-import { SendSmsValidatorAction, sendSmsValidatorReducer, SendSmsValidatorState } from "./user/sendSmsValidator";
-import { VerifyEmailCodeAction, verifyEmailCodeReducer, VerifyEmailCodeState } from "./user/verifyEmailCode";
-import { VerifySmsCodeAction, verifySmsCodeReducer, VerifySmsCodeState } from "./user/verifySmsCode";
+export type SingleServiceCallState =
+	| { state: "IN_PROGRESS"; command: CmdType<StoreAction> }
+	| { state: "SUCCEEDED" }
+	| { state: "FAILED"; error: ErrorData };
 
-export interface ServiceCallState {
-	checkDid: CheckDIDState;
-	submitDisclosureResponse: SubmitDisclosureResponseState;
-	sendSmsValidator: SendSmsValidatorState;
-	verifySmsCode: VerifySmsCodeState;
-	sendMailValidator: SendMailValidatorState;
-	verifyEmailCode: VerifyEmailCodeState;
-	registerUser: RegisterUserState;
-	recoverAccount: RecoverAccountState;
+export function isPendingService(state: SingleServiceCallState | undefined): boolean {
+	if (state === undefined) {
+		return false;
+	} else if (state.state === "IN_PROGRESS") {
+		return true;
+	} else {
+		return false;
+	}
 }
 
+interface ServiceCallStartAction extends Action {
+	type: "SERVICE_CALL_START";
+	serviceKey: string;
+	call: CmdType<StoreAction>;
+}
+interface ServiceCallStopAction extends Action {
+	type: "SERVICE_CALL_DROP";
+	serviceKey: string;
+}
+interface ServiceCallSuccessAction extends Action {
+	type: "SERVICE_CALL_SUCCESS";
+	serviceKey: string;
+}
+interface ServiceCallFailureAction extends Action {
+	type: "SERVICE_CALL_FAILURE";
+	serviceKey: string;
+	error: ErrorData;
+}
 export type ServiceCallAction =
-	| CheckDIDAction
-	| SubmitDisclosureResponseAction
-	| SendSmsValidatorAction
-	| VerifySmsCodeAction
-	| SendMailValidatorAction
-	| VerifyEmailCodeAction
-	| RegisterUserAction
-	| RecoverAccountAction;
+	| ServiceCallStartAction
+	| ServiceCallStopAction
+	| ServiceCallSuccessAction
+	| ServiceCallFailureAction;
 
-export const serviceCallReducer: LiftedLoopReducer<ServiceCallState, StoreAction> = combineReducers({
-	checkDid: checkDidReducer,
-	submitDisclosureResponse: submitDisclosureResponseReducer,
-	sendSmsValidator: sendSmsValidatorReducer,
-	verifySmsCode: verifySmsCodeReducer,
-	sendMailValidator: sendMailValidatorReducer,
-	verifyEmailCode: verifyEmailCodeReducer,
-	registerUser: registerUserReducer,
-	recoverAccount: recoverAccountReducer
-});
+type Dictionary<K extends keyof any, V> = Partial<Record<K, V>>;
+
+export type ServiceCallState = Dictionary<string, SingleServiceCallState>;
+
+export function serviceCallReducer(
+	state: ServiceCallState | undefined,
+	action: StoreAction
+): Loop<ServiceCallState, StoreAction> {
+	const lift = (st: ServiceCallState) => liftState<ServiceCallState, StoreAction>(st);
+
+	if (state === undefined) {
+		return lift({});
+	}
+
+	switch (action.type) {
+		case "SERVICE_CALL_START":
+			return loop({ ...state, [action.serviceKey]: { state: "IN_PROGRESS", command: action.call } }, action.call);
+		case "SERVICE_CALL_DROP":
+			const { [action.serviceKey]: dropped, ...nextState } = state;
+			return lift(nextState);
+		case "SERVICE_CALL_SUCCESS":
+			return lift({ ...state, [action.serviceKey]: { state: "SUCCEEDED" } });
+		case "SERVICE_CALL_FAILURE":
+			return lift({ ...state, [action.serviceKey]: { state: "FAILED", error: action.error } });
+		default:
+			return lift(state);
+	}
+}

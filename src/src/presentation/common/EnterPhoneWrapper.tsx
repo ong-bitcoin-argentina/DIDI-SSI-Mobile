@@ -1,26 +1,27 @@
 import React from "react";
 
-import { ServiceWrapper } from "../../services/common/ServiceWrapper";
-
-import { SendSmsValidatorArguments, SendSmsValidatorState } from "../../services/user/sendSmsValidator";
+import { isPendingService } from "../../services/ServiceStateStore";
+import { sendSmsValidator } from "../../services/user/sendSmsValidator";
 import { didiConnect } from "../../store/store";
 
 import { EnterPhoneProps, EnterPhoneScreen } from "./EnterPhone";
+import { ServiceObserver } from "./ServiceObserver";
 
 export interface EnterPhoneWrapperProps {
 	onServiceSuccess(phoneNumber: string): void;
 	contentImageSource: EnterPhoneProps["contentImageSource"];
 }
 interface EnterPhoneWrapperStateProps {
-	requestSmsCodeState: SendSmsValidatorState;
+	requestSmsCodePending: boolean;
 }
 interface EnterPhoneWrapperDispatchProps {
-	requestSmsCode(args: SendSmsValidatorArguments): void;
-	dropRequestSmsCode(): void;
+	requestSmsCode: (cellPhoneNumber: string) => void;
 }
 type LoginEnterPhoneInternalProps = EnterPhoneWrapperProps &
 	EnterPhoneWrapperStateProps &
 	EnterPhoneWrapperDispatchProps;
+
+const serviceKey = "EnterPhone";
 
 class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps, { phoneNumber: string }> {
 	constructor(props: LoginEnterPhoneInternalProps) {
@@ -29,44 +30,29 @@ class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps, { 
 	}
 	render() {
 		return (
-			<ServiceWrapper
-				serviceState={this.props.requestSmsCodeState}
-				onServiceSuccess={() => this.props.onServiceSuccess(this.state.phoneNumber)}
-				resetService={() => this.props.dropRequestSmsCode()}
-			>
+			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.props.onServiceSuccess(this.state.phoneNumber)}>
 				<EnterPhoneScreen
 					{...this.props}
 					onPressContinueButton={inputPhoneNumber => this.onPressContinueButton(inputPhoneNumber)}
-					isContinuePending={this.props.requestSmsCodeState.state === "PENDING"}
+					isContinuePending={this.props.requestSmsCodePending}
 				/>
-			</ServiceWrapper>
+			</ServiceObserver>
 		);
 	}
 
 	private onPressContinueButton(inputPhoneNumber: string) {
 		this.setState({ phoneNumber: inputPhoneNumber });
-		this.props.requestSmsCode({
-			cellPhoneNumber: inputPhoneNumber
-		});
+		this.props.requestSmsCode(inputPhoneNumber);
 	}
 }
 
 const connected = didiConnect(
 	EnterPhoneWrapper,
 	(state): EnterPhoneWrapperStateProps => ({
-		requestSmsCodeState: state.serviceCalls.sendSmsValidator
+		requestSmsCodePending: isPendingService(state.serviceCalls[serviceKey])
 	}),
 	(dispatch): EnterPhoneWrapperDispatchProps => ({
-		requestSmsCode: (args: SendSmsValidatorArguments) =>
-			dispatch({
-				type: "SERVICE_SEND_SMS_VALIDATOR",
-				serviceAction: { type: "START", args }
-			}),
-		dropRequestSmsCode: () =>
-			dispatch({
-				type: "SERVICE_SEND_SMS_VALIDATOR",
-				serviceAction: { type: "DROP" }
-			})
+		requestSmsCode: (cellPhoneNumber: string) => dispatch(sendSmsValidator(serviceKey, cellPhoneNumber))
 	})
 );
 

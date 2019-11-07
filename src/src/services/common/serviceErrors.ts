@@ -20,7 +20,8 @@ export const serviceErrors = {
 		PARSE_ERR: error("PARSE_ERR", "Error al interpretar formato de respuesta.")
 	},
 	did: {
-		READ_ERROR: error("SIGNER_STORE_ERR", "Error al obtener DID almacenado.")
+		READ_ERROR: error("SIGNER_READ_ERR", "Error al obtener DID almacenado."),
+		WRITE_ERROR: error("SIGNER_WRITE_ERR", "Error al almacenar nuevo DID.")
 	},
 	disclosure: {
 		SIGNING_ERR: error("SIGNING_ERR", "Error al firmar respuesta a la peticion."),

@@ -50,11 +50,7 @@ const storeReducer = (
 	action: StoreAction
 ): Loop<NormalizedStoreContent, StoreAction> => {
 	const persisted = persistedReducer(liftUndefined(state, s => s.persisted), action);
-	const [serviceCalls, actions] = serviceCallReducer(
-		liftUndefined(state, s => s.serviceCalls),
-		action,
-		persisted.serviceSettings
-	);
+	const [serviceCalls, actions] = serviceCallReducer(liftUndefined(state, s => s.serviceCalls), action);
 	return [{ persisted, serviceCalls }, actions];
 };
 
