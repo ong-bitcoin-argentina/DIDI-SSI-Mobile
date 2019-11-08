@@ -137,6 +137,9 @@ export default {
 		title: "Credencial Didi",
 		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi"
 	},
+	services: {
+		changePasswordSuccess: "Contraseña cambiada exitosamente."
+	},
 	validateIdentity: {
 		header: "Validar Identidad",
 		welcome: "Bienvenida Lili M.",

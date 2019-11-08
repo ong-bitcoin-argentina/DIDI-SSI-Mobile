@@ -4,7 +4,7 @@ import { StartAccessProps } from "../../access/StartAccess";
 import { DashboardScreenProps } from "../home/Dashboard";
 
 import { AboutThisAppScreen } from "./AboutThisApp";
-import ChangePasswordScreen from "./ChangePassword";
+import { ChangePasswordScreen } from "./ChangePassword";
 import IdentitySettingsScreen from "./identity/IdentitySettings";
 import { JWTDecoderScanScreen } from "./JWTDecoderScanScreen";
 import { ServiceSettingsScreen } from "./ServiceSettingsScreen";
