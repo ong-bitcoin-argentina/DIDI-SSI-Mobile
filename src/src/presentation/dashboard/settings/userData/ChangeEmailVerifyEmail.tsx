@@ -4,41 +4,39 @@ import { Alert } from "react-native";
 import { VerifyCodeWrapper } from "../../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
-import { changePhoneNumber } from "../../../../services/user/changePhoneNumber";
+import { changeEmail } from "../../../../services/user/changeEmail";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 
 import { UserDataProps } from "./UserData";
 
-export interface ChangePhoneVerifyScreenProps {
-	phoneNumber: string;
+export interface ChangeEmailVerifyScreenProps {
+	email: string;
 }
-export interface ChangePhoneVerifyScreenNavigation {
+export interface ChangeEmailVerifyScreenNavigation {
 	UserData: UserDataProps;
 }
 
-export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
-	ChangePhoneVerifyScreenProps,
+export class ChangeEmailVerifyScreen extends NavigationEnabledComponent<
+	ChangeEmailVerifyScreenProps,
 	{},
-	ChangePhoneVerifyScreenNavigation
+	ChangeEmailVerifyScreenNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Cambiar Teléfono");
 
 	render() {
 		return (
 			<VerifyCodeWrapper
-				description={strings.accessCommon.verify.phoneMessageHead}
+				description={strings.accessCommon.verify.emailMessageHead}
 				contentImageSource={require("../../../access/resources/images/loginVerify.png")}
-				serviceCall={(serviceKey, validationCode) =>
-					changePhoneNumber(serviceKey, this.props.phoneNumber, validationCode)
-				}
+				serviceCall={(serviceKey, validationCode) => changeEmail(serviceKey, this.props.email, validationCode)}
 				onServiceSuccess={() => this.onSuccess()}
 			/>
 		);
 	}
 
 	private onSuccess() {
-		Alert.alert(strings.services.changePhoneSuccess);
+		Alert.alert(strings.services.changeEmailSuccess);
 		this.navigate("UserData", {});
 	}
 }

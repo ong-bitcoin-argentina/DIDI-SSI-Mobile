@@ -24,7 +24,7 @@ export class LoginVerifyPhoneScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<VerifyCodeWrapper
-				description={strings.accessCommon.verifyPhone.messageHead}
+				description={strings.accessCommon.verify.phoneMessageHead}
 				contentImageSource={require("../resources/images/loginVerify.png")}
 				serviceCall={verifySmsCode}
 				onServiceSuccess={() => this.navigate("Dashboard", {})}

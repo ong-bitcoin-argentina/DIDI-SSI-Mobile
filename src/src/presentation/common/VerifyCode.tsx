@@ -36,7 +36,7 @@ export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, Verif
 
 				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
 
-				<Text style={commonStyles.text.normal}>{strings.accessCommon.verifyPhone.resendCode}</Text>
+				<Text style={commonStyles.text.normal}>{strings.accessCommon.verify.resendCode}</Text>
 
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}

@@ -28,7 +28,7 @@ export class SignupVerifyPhoneScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<VerifyCodeWrapper
-				description={strings.accessCommon.verifyPhone.messageHead}
+				description={strings.accessCommon.verify.phoneMessageHead}
 				contentImageSource={require("../resources/images/phoneRecover.png")}
 				serviceCall={verifySmsCode}
 				onServiceSuccess={() => this.navigate("SignupPhoneVerified", { phoneNumber: this.props.phoneNumber })}
