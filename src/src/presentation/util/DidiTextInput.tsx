@@ -44,7 +44,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	}
 
-	static Email = (props: { onChangeText(text: string): void }) => {
+	static Email = (props: { onChangeText: (text: string) => void }) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.email.description}
@@ -72,7 +72,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	};
 
-	static PhoneNumber = (props: { onChangeText(text: string): void }) => {
+	static PhoneNumber = (props: { onChangeText: (text: string) => void }) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.cellPhoneNumber.description}
@@ -87,7 +87,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 	};
 
 	static Password = (props: {
-		onChangeText(text: string): void;
+		onChangeText: (text: string) => void;
 		descriptionType: "BASIC" | "OLD" | "NEW" | "REPEAT";
 	}) => {
 		return (

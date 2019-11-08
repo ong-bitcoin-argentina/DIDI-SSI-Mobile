@@ -1,3 +1,4 @@
+import { boolean } from "io-ts";
 import React from "react";
 
 import { isPendingService } from "../../services/ServiceStateStore";
@@ -10,12 +11,15 @@ import { ServiceObserver } from "./ServiceObserver";
 export interface EnterPhoneWrapperProps {
 	onServiceSuccess(phoneNumber: string): void;
 	contentImageSource: EnterPhoneProps["contentImageSource"];
+	isPasswordRequired: boolean;
+	password: string | null;
 }
+
 interface EnterPhoneWrapperStateProps {
 	requestSmsCodePending: boolean;
 }
 interface EnterPhoneWrapperDispatchProps {
-	requestSmsCode: (cellPhoneNumber: string) => void;
+	requestSmsCode: (cellPhoneNumber: string, password: string | null) => void;
 }
 type LoginEnterPhoneInternalProps = EnterPhoneWrapperProps &
 	EnterPhoneWrapperStateProps &
@@ -33,16 +37,17 @@ class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps, { 
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.props.onServiceSuccess(this.state.phoneNumber)}>
 				<EnterPhoneScreen
 					{...this.props}
-					onPressContinueButton={inputPhoneNumber => this.onPressContinueButton(inputPhoneNumber)}
+					isPasswordRequired={this.props.isPasswordRequired && this.props.password === null}
+					onPressContinueButton={(inputPhoneNumber, password) => this.onPressContinueButton(inputPhoneNumber, password)}
 					isContinuePending={this.props.requestSmsCodePending}
 				/>
 			</ServiceObserver>
 		);
 	}
 
-	private onPressContinueButton(inputPhoneNumber: string) {
+	private onPressContinueButton(inputPhoneNumber: string, password: string | null) {
 		this.setState({ phoneNumber: inputPhoneNumber });
-		this.props.requestSmsCode(inputPhoneNumber);
+		this.props.requestSmsCode(inputPhoneNumber, password || this.props.password);
 	}
 }
 
@@ -52,7 +57,8 @@ const connected = didiConnect(
 		requestSmsCodePending: isPendingService(state.serviceCalls[serviceKey])
 	}),
 	(dispatch): EnterPhoneWrapperDispatchProps => ({
-		requestSmsCode: (cellPhoneNumber: string) => dispatch(sendSmsValidator(serviceKey, cellPhoneNumber))
+		requestSmsCode: (cellPhoneNumber: string, password: string | null) =>
+			dispatch(sendSmsValidator(serviceKey, cellPhoneNumber, password))
 	})
 );
 

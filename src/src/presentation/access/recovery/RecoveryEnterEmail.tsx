@@ -1,6 +1,5 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { RNUportHDSigner } from "react-native-uport-signer";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import { ServiceObserver } from "../../common/ServiceObserver";
@@ -70,7 +69,10 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 					<Text>{strings.recovery.enterEmail.forgotPasswordMessage + " >"}</Text>
 				</TouchableOpacity>
 
-				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.navigate("RecoveryEnterPhone", {})} />
+				<ServiceObserver
+					serviceKey={serviceKey}
+					onSuccess={() => this.navigate("RecoveryEnterPhone", { password: this.state.password })}
+				/>
 				<DidiServiceButton
 					onPress={() => this.onPressContinue()}
 					disabled={!this.canPressContinueButton()}
