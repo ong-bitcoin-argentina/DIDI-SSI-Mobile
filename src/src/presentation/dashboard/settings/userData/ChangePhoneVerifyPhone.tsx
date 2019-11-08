@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert } from "react-native";
 
-import { VerifyPhoneWrapper } from "../../../common/VerifyPhoneWrapper";
+import { VerifyCodeWrapper } from "../../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { changePhoneNumber } from "../../../../services/user/changePhoneNumber";
@@ -26,7 +26,8 @@ export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<VerifyPhoneWrapper
+			<VerifyCodeWrapper
+				description={strings.accessCommon.verifyPhone.messageHead}
 				contentImageSource={require("../../../access/resources/images/loginVerify.png")}
 				serviceCall={(serviceKey, validationCode) =>
 					changePhoneNumber(serviceKey, this.props.phoneNumber, validationCode)

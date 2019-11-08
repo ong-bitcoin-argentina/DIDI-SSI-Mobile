@@ -1,12 +1,8 @@
 import React from "react";
-import { Image, StyleSheet, Text } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
 import { ServiceObserver } from "../../common/ServiceObserver";
-import { DidiServiceButton } from "../../util/DidiServiceButton";
-import DidiTextInput from "../../util/DidiTextInput";
+import { VerifyCodeScreen } from "../../common/VerifyCode";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import commonStyles from "../resources/commonStyles";
 
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { registerUser } from "../../../services/user/registerUser";
@@ -14,7 +10,6 @@ import { verifyEmailCode } from "../../../services/user/verifyEmailCode";
 import { didiConnect } from "../../../store/store";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import Validator from "../helpers/validator";
 
 import { SignupConfirmedProps } from "./SignupConfirmed";
 
@@ -35,10 +30,6 @@ type SignupConfirmEmailInternalProps = SignupConfirmEmailProps &
 	SignupConfirmEmailStateProps &
 	SignupConfirmEmailDispatchProps;
 
-interface SignupConfirmEmailState {
-	inputCode: string;
-}
-
 export interface SignupConfirmEmailNavigation {
 	SignupConfirmed: SignupConfirmedProps;
 }
@@ -48,45 +39,27 @@ const serviceKeyRegister = "SignupConfirmEmail_Register";
 
 class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 	SignupConfirmEmailInternalProps,
-	SignupConfirmEmailState,
+	{},
 	SignupConfirmEmailNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.signup.barTitle);
 
-	constructor(props: SignupConfirmEmailInternalProps) {
-		super(props);
-		this.state = {
-			inputCode: ""
-		};
-	}
-
 	render() {
 		return (
-			<DidiScreen>
-				<Text style={[commonStyles.text.normal, styles.message]}>{strings.signup.registrationEmailSent.message}</Text>
-
-				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
-
-				<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
-
-				<ServiceObserver serviceKey={serviceKeyVerify} onSuccess={() => this.registerUser()} />
+			<ServiceObserver serviceKey={serviceKeyVerify} onSuccess={() => this.registerUser()}>
 				<ServiceObserver serviceKey={serviceKeyRegister} onSuccess={() => this.navigate("SignupConfirmed", {})} />
-				<DidiServiceButton
-					disabled={!this.canPressContinueButton()}
-					onPress={() => this.onPressContinueButton()}
-					title={strings.accessCommon.validateButtonText}
-					isPending={this.props.registerUserPending || this.props.verifyEmailCodePending}
+				<VerifyCodeScreen
+					description={strings.signup.registrationEmailSent.message}
+					contentImageSource={require("../resources/images/emailSent.png")}
+					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
+					isContinuePending={this.props.registerUserPending || this.props.verifyEmailCodePending}
 				/>
-			</DidiScreen>
+			</ServiceObserver>
 		);
 	}
 
-	private canPressContinueButton(): boolean {
-		return Validator.isValidationCode(this.state.inputCode);
-	}
-
-	private onPressContinueButton() {
-		this.props.verifyEmailCode(this.state.inputCode);
+	private onPressContinueButton(inputCode: string) {
+		this.props.verifyEmailCode(inputCode);
 	}
 
 	private registerUser() {
@@ -109,10 +82,3 @@ const connected = didiConnect(
 );
 
 export { connected as SignupConfirmEmailScreen };
-
-const styles = StyleSheet.create({
-	message: {
-		fontSize: 20,
-		textAlign: "center"
-	}
-});
