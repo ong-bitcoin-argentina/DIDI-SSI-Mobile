@@ -11,6 +11,7 @@ import { assertUnreachable } from "../util/assertUnreachable";
 import { CredentialDocument } from "../model/CredentialDocument";
 import { RequestDocument } from "../model/RequestDocument";
 
+import { EthrDID } from "./types/EthrDID";
 import { ForwardedRequestCodec } from "./types/ForwardedRequest";
 import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
 import { SelectiveDisclosureRequestCodec } from "./types/SelectiveDisclosureRequest";
@@ -37,6 +38,11 @@ export type JWTParseError =
 			error: any;
 	  }
 	| {
+			type: "DID_PARSE";
+			field: "issuer" | "subject";
+			value: string;
+	  }
+	| {
 			type: "RESOLVER_CREATION_ERROR";
 	  };
 
@@ -56,12 +62,18 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 			return left({ type: "AFTER_EXP", expected: unverified.expireAt, current: now });
 		} else if (unverified.issuedAt !== undefined && now < unverified.issuedAt) {
 			return left({ type: "BEFORE_IAT", expected: unverified.issuedAt, current: now });
+		} else if (isLeft(EthrDID.fromDID(unverified.issuer))) {
+			return left({ type: "DID_PARSE", field: "issuer", value: unverified.issuer });
 		} else {
 			switch (unverified.type) {
 				case "SelectiveDisclosureRequest":
 					return right({ type: "RequestDocument", jwt, content: unverified });
 				case "VerifiedClaim":
-					return right({ type: "CredentialDocument", jwt, content: unverified });
+					if (isLeft(EthrDID.fromDID(unverified.subject))) {
+						return left({ type: "DID_PARSE", field: "subject", value: unverified.subject });
+					} else {
+						return right({ type: "CredentialDocument", jwt, content: unverified });
+					}
 				case "ForwardedRequest":
 					return unverifiedParseJWT(unverified.forwarded);
 				default:

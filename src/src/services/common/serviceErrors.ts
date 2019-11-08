@@ -21,7 +21,9 @@ export const serviceErrors = {
 	},
 	did: {
 		READ_ERROR: error("SIGNER_READ_ERR", "Error al obtener DID almacenado."),
-		WRITE_ERROR: error("SIGNER_WRITE_ERR", "Error al almacenar nuevo DID.")
+		WRITE_ERROR: error("SIGNER_WRITE_ERR", "Error al almacenar nuevo DID."),
+		PARSE_ADDRESS: (address: string) => error("DID_PARSE_ADDR_ERR", `Error al interpretar direccion DID: ${address}.`),
+		PARSE_DID: (did: string) => error("DID_PARSE_ERR", `Error al interpretar DID: ${did}.`)
 	},
 	disclosure: {
 		SIGNING_ERR: error("SIGNING_ERR", "Error al firmar respuesta a la peticion."),
