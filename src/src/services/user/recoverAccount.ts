@@ -35,7 +35,7 @@ async function doRecoverAccount(args: RecoverAccountArguments): Promise<Either<E
 		const nextAddress = await RNUportHDSigner.importSeed(phrase, "simple");
 
 		const addresses = await RNUportHDSigner.listSeedAddresses();
-		addresses.filter(addr => addr !== nextAddress.address).forEach(RNUportHDSigner.deleteSeed);
+		addresses.filter(addr => addr !== nextAddress.address).forEach(seed => RNUportHDSigner.deleteSeed(seed));
 		return right({ didAddress: nextAddress.address, did: `did:ethr:${nextAddress.address}` });
 	} catch (e) {
 		return left(serviceErrors.did.WRITE_ERROR);
