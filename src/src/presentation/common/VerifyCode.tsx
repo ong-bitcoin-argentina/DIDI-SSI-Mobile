@@ -10,18 +10,19 @@ import strings from "../resources/strings";
 
 import { DidiScreen } from "./DidiScreen";
 
-export interface VerifyPhoneProps {
+export interface VerifyCodeProps {
+	description: string;
 	contentImageSource: ImageSourcePropType;
-	onPressContinueButton(inputCode: string): void;
+	onPressContinueButton: (inputCode: string) => void;
 	isContinuePending: boolean;
 }
 
-interface VerifyPhoneState {
+interface VerifyCodeState {
 	inputCode?: string;
 }
 
-export class VerifyPhoneScreen extends React.PureComponent<VerifyPhoneProps, VerifyPhoneState> {
-	constructor(props: VerifyPhoneProps) {
+export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, VerifyCodeState> {
+	constructor(props: VerifyCodeProps) {
 		super(props);
 		this.state = {};
 	}
@@ -29,13 +30,13 @@ export class VerifyPhoneScreen extends React.PureComponent<VerifyPhoneProps, Ver
 	render() {
 		return (
 			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{strings.accessCommon.verifyPhone.messageHead}</Text>
+				<Text style={commonStyles.text.emphasis}>{this.props.description}</Text>
 
 				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
 
 				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
 
-				<Text style={commonStyles.text.normal}>{strings.accessCommon.verifyPhone.resendCode}</Text>
+				<Text style={commonStyles.text.normal}>{strings.accessCommon.verify.resendCode}</Text>
 
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}

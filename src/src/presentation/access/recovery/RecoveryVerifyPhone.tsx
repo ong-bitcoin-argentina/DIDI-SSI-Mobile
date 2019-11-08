@@ -1,10 +1,12 @@
 import React from "react";
 
-import { VerifyPhoneWrapper } from "../../common/VerifyPhoneWrapper";
+import { VerifyCodeWrapper } from "../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { verifySmsCode } from "../../../services/user/verifySmsCode";
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
 
 export type RecoveryVerifyPhoneProps = {};
 
@@ -21,8 +23,10 @@ export class RecoveryVerifyPhoneScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<VerifyPhoneWrapper
+			<VerifyCodeWrapper
+				description={strings.accessCommon.verify.phoneMessageHead}
 				contentImageSource={require("../resources/images/phoneRecover.png")}
+				serviceCall={verifySmsCode}
 				onServiceSuccess={() => this.navigate("Dashboard", {})}
 			/>
 		);

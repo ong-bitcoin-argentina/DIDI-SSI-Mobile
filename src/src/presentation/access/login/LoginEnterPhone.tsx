@@ -23,6 +23,8 @@ export class LoginEnterPhoneScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<EnterPhoneWrapper
+				isPasswordRequired={true}
+				password={null}
 				contentImageSource={require("../resources/images/login.png")}
 				onServiceSuccess={() => this.navigate("LoginVerifyPhone", {})}
 			/>

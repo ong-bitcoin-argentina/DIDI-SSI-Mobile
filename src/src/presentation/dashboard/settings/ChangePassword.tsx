@@ -1,49 +1,50 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
-import DidiButton from "../../util/DidiButton";
+import { ServiceObserver } from "../../common/ServiceObserver";
+import { DidiServiceButton } from "../../util/DidiServiceButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import { Identity } from "../../../model/Identity";
+import { isPendingService } from "../../../services/ServiceStateStore";
+import { changePassword } from "../../../services/user/changePassword";
 import { didiConnect } from "../../../store/store";
+import Validator from "../../access/helpers/validator";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 export type ChangePasswordProps = {};
-interface ChangePasswordInternalProps extends ChangePasswordProps {
-	person: Identity;
+interface ChangePasswordStateProps {
+	changePasswordPending: boolean;
 }
+interface ChangePasswordDispatchProps {
+	changePassword: (oldPass: string, newPass: string) => void;
+}
+type ChangePasswordInternalProps = ChangePasswordProps & ChangePasswordStateProps & ChangePasswordDispatchProps;
 
 type ChangePasswordState = {
 	oldKey: string;
 	key: string;
 	keyDup: string;
 };
-export interface ChangePasswordNavigation {}
 
-class ChangePasswordScreen extends NavigationEnabledComponent<
-	ChangePasswordInternalProps,
-	ChangePasswordState,
-	ChangePasswordNavigation
-> {
+const serviceKey = "ChangePassword";
+
+class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInternalProps, ChangePasswordState, {}> {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changePassword.barTitle);
 
-	private canPressContinueButton(): boolean {
-		// TODO validate password !!!
-		/*
-		if(!this.state || this.state.oldKey != this.props.person.password) {
-			return false
-		}
-		*/
-
-		return this.state && this.state.key ? this.state.key.length > 0 && this.state.keyDup === this.state.key : false;
+	constructor(props: ChangePasswordInternalProps) {
+		super(props);
+		this.state = {
+			oldKey: "",
+			key: "",
+			keyDup: ""
+		};
 	}
 
-	changePassword() {
-		// TODO change password !!!
-		this.goBack();
+	private canPressContinueButton(): boolean {
+		return this.state.key.length > 0 && Validator.isPassword(this.state.key) && this.state.key === this.state.keyDup;
 	}
 
 	render() {
@@ -58,27 +59,35 @@ class ChangePasswordScreen extends NavigationEnabledComponent<
 				</View>
 
 				<View style={styles.button}>
-					<DidiButton
-						onPress={() => {
-							this.changePassword();
-						}}
-						disabled={!this.canPressContinueButton()}
+					<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.onSuccess()} />
+					<DidiServiceButton
 						title={strings.dashboard.userData.changePassword.changePassword}
+						disabled={!this.canPressContinueButton()}
+						onPress={() => this.props.changePassword(this.state.oldKey, this.state.key)}
+						isPending={this.props.changePasswordPending}
 					/>
 				</View>
 			</DidiScreen>
 		);
 	}
+
+	private onSuccess() {
+		Alert.alert(strings.services.changePasswordSuccess);
+		this.goBack();
+	}
 }
 
-export default didiConnect(
+const connected = didiConnect(
 	ChangePasswordScreen,
-	(state): ChangePasswordInternalProps => {
-		return {
-			person: state.identity
-		};
-	}
+	(state): ChangePasswordStateProps => ({
+		changePasswordPending: isPendingService(state.serviceCalls[serviceKey])
+	}),
+	(dispatch): ChangePasswordDispatchProps => ({
+		changePassword: (oldPassword, newPassword) => dispatch(changePassword(serviceKey, oldPassword, newPassword))
+	})
 );
+
+export { connected as ChangePasswordScreen };
 
 const styles = StyleSheet.create({
 	inputs: {

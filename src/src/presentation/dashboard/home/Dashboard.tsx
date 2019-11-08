@@ -13,6 +13,8 @@ import { DerivedCredential } from "../../../model/DerivedCredential";
 import { Identity } from "../../../model/Identity";
 import { RecentActivity } from "../../../model/RecentActivity";
 import { SampleDocument } from "../../../model/SampleDocument";
+import { isPendingService } from "../../../services/ServiceStateStore";
+import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
@@ -180,7 +182,10 @@ export default didiConnect(
 		samples: state.samples
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
-		login: () => dispatch({ type: "SESSION_LOGIN" })
+		login: () => {
+			dispatch({ type: "SESSION_LOGIN" });
+			dispatch(recoverTokens());
+		}
 	})
 );
 

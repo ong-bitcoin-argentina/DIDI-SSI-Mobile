@@ -13,6 +13,7 @@ import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 
+import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
 import UserHeadingComponent from "./UserHeading";
 
@@ -26,6 +27,7 @@ type UserDataState = {};
 
 export interface UserDataNavigation {
 	ShareProfile: ShareProfileProps;
+	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
 	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
 }
 
@@ -34,7 +36,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		{
 			actionTitle: "Cambiar Email",
 			onPress: navigation => {
-				// TODO: navigation.navigate("ChangeEmail", {});
+				navigation.navigate("ChangeEmailEnterEmail", {});
 			}
 		},
 		{

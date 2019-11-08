@@ -9,6 +9,13 @@ export default class Validator {
 		return false;
 	}
 
+	static isPassword(code?: string): boolean {
+		if (code) {
+			return code.length > 0;
+		}
+		return false;
+	}
+
 	static isDocumentNumber(code?: string): boolean {
 		return Validator.isNumber(code);
 	}

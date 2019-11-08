@@ -1,16 +1,15 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { RNUportHDSigner } from "react-native-uport-signer";
 
-import { ServiceWrapper } from "../../../services/common/ServiceWrapper";
 import { DidiScreen } from "../../common/DidiScreen";
-import DidiButton from "../../util/DidiButton";
+import { ServiceObserver } from "../../common/ServiceObserver";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
 
-import { RecoverAccountState } from "../../../services/user/recoverAccount";
+import { isPendingService } from "../../../services/ServiceStateStore";
+import { recoverAccount } from "../../../services/user/recoverAccount";
 import { didiConnect } from "../../../store/store";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
@@ -21,11 +20,10 @@ import { RecoveryEnterPhoneProps } from "./RecoveryEnterPhone";
 
 export type RecoveryEnterEmailProps = {};
 interface RecoveryEnterEmailStateProps {
-	recoverAccountState: RecoverAccountState;
+	recoverAccountPending: boolean;
 }
 interface RecoveryEnterEmailDispatchProps {
-	recoverAccount(email: string, password: string): void;
-	dropRecoverAccount(): void;
+	recoverAccount: (email: string, password: string) => void;
 }
 type RecoveryEnterEmailInternalProps = RecoveryEnterEmailProps &
 	RecoveryEnterEmailStateProps &
@@ -40,6 +38,8 @@ export interface RecoveryEnterEmailNavigation {
 	ForgotPasswordEnterEmail: ForgotPasswordEnterEmailProps;
 	RecoveryEnterPhone: RecoveryEnterPhoneProps;
 }
+
+const serviceKey = "RecoveryEnterEmail";
 
 class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 	RecoveryEnterEmailInternalProps,
@@ -69,16 +69,15 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 					<Text>{strings.recovery.enterEmail.forgotPasswordMessage + " >"}</Text>
 				</TouchableOpacity>
 
-				<ServiceWrapper
-					serviceState={this.props.recoverAccountState}
-					onServiceSuccess={() => this.regenerateAccount()}
-					resetService={() => this.props.dropRecoverAccount()}
+				<ServiceObserver
+					serviceKey={serviceKey}
+					onSuccess={() => this.navigate("RecoveryEnterPhone", { password: this.state.password })}
 				/>
 				<DidiServiceButton
 					onPress={() => this.onPressContinue()}
 					disabled={!this.canPressContinueButton()}
 					title={strings.accessCommon.recoverButtonText}
-					isPending={this.props.recoverAccountState.state === "PENDING"}
+					isPending={this.props.recoverAccountPending}
 				/>
 			</DidiScreen>
 		);
@@ -87,27 +86,15 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 	private onPressContinue() {
 		this.props.recoverAccount(this.state.email, this.state.password);
 	}
-
-	private async regenerateAccount() {
-		if (this.props.recoverAccountState.state !== "SUCCESS") {
-			return;
-		}
-		const privateKeySeed = this.props.recoverAccountState.value.privateKeySeed;
-		const phrase = Buffer.from(privateKeySeed, "base64").toString("utf8");
-		await RNUportHDSigner.importSeed(phrase, "simple");
-		this.navigate("RecoveryEnterPhone", {});
-	}
 }
 
 const connected = didiConnect(
 	RecoveryEnterEmailScreen,
 	(state): RecoveryEnterEmailStateProps => ({
-		recoverAccountState: state.serviceCalls.recoverAccount
+		recoverAccountPending: isPendingService(state.serviceCalls[serviceKey])
 	}),
 	(dispatch): RecoveryEnterEmailDispatchProps => ({
-		recoverAccount: (email: string, password: string) =>
-			dispatch({ type: "SERVICE_RECOVER_ACCOUNT", serviceAction: { type: "START", args: { email, password } } }),
-		dropRecoverAccount: () => dispatch({ type: "SERVICE_RECOVER_ACCOUNT", serviceAction: { type: "DROP" } })
+		recoverAccount: (email: string, password: string) => dispatch(recoverAccount(serviceKey, email, password))
 	})
 );
 

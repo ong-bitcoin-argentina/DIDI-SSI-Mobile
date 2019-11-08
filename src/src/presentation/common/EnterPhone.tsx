@@ -5,18 +5,21 @@ import commonStyles from "../access/resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import DidiTextInput from "../util/DidiTextInput";
 
+import Validator from "../access/helpers/validator";
 import strings from "../resources/strings";
 
 import { DidiScreen } from "./DidiScreen";
 
 export interface EnterPhoneProps {
 	contentImageSource: ImageSourcePropType;
-	onPressContinueButton(inputPhoneNumber: string): void;
+	isPasswordRequired: boolean;
+	onPressContinueButton(inputPhoneNumber: string, password: string | null): void;
 	isContinuePending: boolean;
 }
 
 export interface EnterPhoneState {
 	inputPhoneNumber?: string;
+	inputPassword?: string;
 }
 
 export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, EnterPhoneState> {
@@ -37,25 +40,38 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 				<DidiTextInput.PhoneNumber onChangeText={text => this.setState({ inputPhoneNumber: text })} />
 
+				{this.props.isPasswordRequired && (
+					<DidiTextInput.Password
+						descriptionType="BASIC"
+						onChangeText={text => this.setState({ inputPassword: text })}
+					/>
+				)}
+
 				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
 
 				<DidiServiceButton
 					isPending={this.props.isContinuePending || false}
 					disabled={!this.canPressContinueButton()}
-					onPress={() => this.props.onPressContinueButton(this.state.inputPhoneNumber!)}
+					onPress={() => this.onPressContinueButton()}
 					title={strings.accessCommon.validateButtonText}
 				/>
 			</DidiScreen>
 		);
 	}
 
-	private countryImageSource(): ImageSourcePropType {
-		return require("../access/resources/images/arg.png");
+	private canPressContinueButton(): boolean {
+		return (
+			Validator.isNumber(this.state.inputPhoneNumber) &&
+			(!this.props.isPasswordRequired || Validator.isPassword(this.state.inputPassword))
+		);
 	}
 
-	private canPressContinueButton(): boolean {
-		const phone = this.state.inputPhoneNumber;
-		return phone ? phone.length > 0 : false;
+	private onPressContinueButton() {
+		this.props.onPressContinueButton(this.state.inputPhoneNumber!, this.state.inputPassword || null);
+	}
+
+	private countryImageSource(): ImageSourcePropType {
+		return require("../access/resources/images/arg.png");
 	}
 }
 

@@ -1,39 +1,33 @@
-import { isLeft } from "fp-ts/lib/Either";
-
-import { ErrorData } from "../common/serviceErrors";
-import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
 import { ensureDid } from "../internal/ensureDid";
+import { getState } from "../internal/getState";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
 export interface VerifyEmailCodeArguments {
+	baseUrl: string;
+	did: string;
 	validationCode: string;
 }
 
-async function verifyEmailCode(baseUrl: string, args: VerifyEmailCodeArguments) {
-	const didData = await ensureDid();
-	if (isLeft(didData)) {
-		return didData;
-	}
-
+async function doVerifyEmailCode(args: VerifyEmailCodeArguments) {
 	return commonUserRequest(
-		`${baseUrl}/verifyMailCode`,
-		{ validationCode: args.validationCode, did: didData.right.did },
+		`${args.baseUrl}/verifyMailCode`,
+		{ validationCode: args.validationCode, did: args.did },
 		singleCertificateCodec
 	);
 }
 
-export type VerifyEmailCodeAction = ServiceAction<
-	"SERVICE_VERIFY_EMAIL_CODE",
-	VerifyEmailCodeArguments,
-	typeof singleCertificateCodec._A,
-	ErrorData
->;
+const verifyEmailCodeComponent = buildComponentServiceCall(doVerifyEmailCode);
 
-export type VerifyEmailCodeState = ServiceStateOf<VerifyEmailCodeAction>;
-
-export const verifyEmailCodeReducer = serviceReducer(
-	config => (args: VerifyEmailCodeArguments) => verifyEmailCode(config.didiUserServer, args),
-	(act): act is VerifyEmailCodeAction => act.type === "SERVICE_VERIFY_EMAIL_CODE"
-);
+export function verifyEmailCode(serviceKey: string, validationCode: string) {
+	return getState(serviceKey, {}, store => {
+		const baseUrl = store.serviceSettings.didiUserServer;
+		return ensureDid(serviceKey, {}, didData => {
+			return verifyEmailCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode }, () => {
+				return serviceCallSuccess(serviceKey);
+			});
+		});
+	});
+}

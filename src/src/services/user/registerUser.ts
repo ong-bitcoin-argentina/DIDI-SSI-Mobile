@@ -1,45 +1,53 @@
-import { isLeft } from "fp-ts/lib/Either";
-import { RNUportHDSigner } from "react-native-uport-signer";
-
-import { ErrorData } from "../common/serviceErrors";
-import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
 import { ensureDid } from "../internal/ensureDid";
+import { getPrivateKeySeed } from "../internal/getPrivateKeySeed";
+import { getState } from "../internal/getState";
 
 import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface RegisterUserArguments {
+	baseUrl: string;
+	did: string;
+	privateKeySeed: string;
 	email: string;
 	password: string;
 	phoneNumber: string;
 }
 
-async function registerUser(baseUrl: string, args: RegisterUserArguments) {
-	const didData = await ensureDid();
-	if (isLeft(didData)) {
-		return didData;
-	}
-	const phrase = await RNUportHDSigner.showSeed(didData.right.address, "");
-	const privateKeySeed = Buffer.from(phrase, "utf8").toString("base64");
-
+async function doRegisterUser(args: RegisterUserArguments) {
 	return commonUserRequest(
-		`${baseUrl}/registerUser`,
+		`${args.baseUrl}/registerUser`,
 		{
 			eMail: args.email,
 			password: args.password,
 			phoneNumber: args.phoneNumber,
-			did: didData.right.did,
-			privateKeySeed
+			did: args.did,
+			privateKeySeed: args.privateKeySeed
 		},
 		emptyDataCodec
 	);
 }
 
-export type RegisterUserAction = ServiceAction<"SERVICE_REGISTER_USER", RegisterUserArguments, {}, ErrorData>;
+const registerUserComponent = buildComponentServiceCall(doRegisterUser);
 
-export type RegisterUserState = ServiceStateOf<RegisterUserAction>;
-
-export const registerUserReducer = serviceReducer(
-	config => (args: RegisterUserArguments) => registerUser(config.didiUserServer, args),
-	(act): act is RegisterUserAction => act.type === "SERVICE_REGISTER_USER"
-);
+export function registerUser(serviceKey: string, email: string, password: string, phoneNumber: string) {
+	return getState(serviceKey, {}, store => {
+		const baseUrl = store.serviceSettings.didiUserServer;
+		return ensureDid(serviceKey, {}, didData => {
+			return getPrivateKeySeed(serviceKey, { didAddress: didData.didAddress }, privateKeySeed => {
+				const args: RegisterUserArguments = {
+					baseUrl,
+					did: didData.did,
+					privateKeySeed,
+					email,
+					password,
+					phoneNumber
+				};
+				return registerUserComponent(serviceKey, args, () => {
+					return serviceCallSuccess(serviceKey);
+				});
+			});
+		});
+	});
+}

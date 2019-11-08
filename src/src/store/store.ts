@@ -8,7 +8,6 @@ import { Identity } from "../model/Identity";
 import { RecentActivity } from "../model/RecentActivity";
 import { RequestDocument } from "../model/RequestDocument";
 import { SampleDocument } from "../model/SampleDocument";
-import { ServiceSettings } from "../model/ServiceSettings";
 import { ServiceCallState } from "../services/ServiceStateStore";
 
 import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
@@ -35,22 +34,26 @@ export interface StoreContent extends PersistedStoreContent {
 	recentActivity: RecentActivity[];
 }
 
+export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
+	return {
+		...store.persisted,
+
+		parsedTokens: parsedTokenSelector(store),
+		credentials: credentialSelector(store),
+		microCredentials: microCredentialSelector(store),
+		requests: requestSelector(store),
+
+		serviceCalls: store.serviceCalls,
+
+		identity: sampleIdentity,
+		recentActivity: sampleRecentActivity,
+		samples: sampleDocuments
+	};
+}
+
 function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StateProps) {
 	return (state: NormalizedStoreContent): StateProps => {
-		return mapStateToProps({
-			...state.persisted,
-
-			parsedTokens: parsedTokenSelector(state),
-			credentials: credentialSelector(state),
-			microCredentials: microCredentialSelector(state),
-			requests: requestSelector(state),
-
-			serviceCalls: state.serviceCalls,
-
-			identity: sampleIdentity,
-			recentActivity: sampleRecentActivity,
-			samples: sampleDocuments
-		});
+		return mapStateToProps(denormalizeStore(state));
 	};
 }
 

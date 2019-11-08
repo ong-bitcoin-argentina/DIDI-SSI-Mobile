@@ -122,6 +122,11 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			case "VERIFICATION_ERROR":
 				console.warn(displayError(error.error));
 				return { title: "Error al Verificar Credencial", subtitle: "Verifique tener acceso a internet." };
+			case "DID_PARSE":
+				return {
+					title: "Error al Interpretar DID",
+					subtitle: `Verifique la configuracion de ${error.field}: "${error.value}"`
+				};
 		}
 	}
 

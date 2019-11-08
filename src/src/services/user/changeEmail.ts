@@ -5,27 +5,28 @@ import { getState } from "../internal/getState";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
-export interface VerifySmsCodeArguments {
+export interface ChangeEmailArguments {
 	baseUrl: string;
 	did: string;
 	validationCode: string;
+	newEmail: string;
 }
 
-async function doVerifySmsCode(args: VerifySmsCodeArguments) {
+async function doChangeEmail(args: ChangeEmailArguments) {
 	return commonUserRequest(
-		`${args.baseUrl}/verifySmsCode`,
-		{ validationCode: args.validationCode, did: args.did },
+		`${args.baseUrl}/changeEmail`,
+		{ eMailValidationCode: args.validationCode, did: args.did, newEMail: args.newEmail },
 		singleCertificateCodec
 	);
 }
 
-const verifySmsCodeComponent = buildComponentServiceCall(doVerifySmsCode);
+const changeEmailComponent = buildComponentServiceCall(doChangeEmail);
 
-export function verifySmsCode(serviceKey: string, validationCode: string) {
+export function changeEmail(serviceKey: string, newEmail: string, validationCode: string) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
 		return ensureDid(serviceKey, {}, didData => {
-			return verifySmsCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode }, () => {
+			return changeEmailComponent(serviceKey, { baseUrl, did: didData.did, validationCode, newEmail }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

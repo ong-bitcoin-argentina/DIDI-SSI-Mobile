@@ -1,38 +1,38 @@
-import { isLeft } from "fp-ts/lib/Either";
-
-import { ErrorData } from "../common/serviceErrors";
-import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
 import { ensureDid } from "../internal/ensureDid";
+import { getState } from "../internal/getState";
 
 import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface SendMailValidatorArguments {
+	baseUrl: string;
+	did: string;
 	email: string;
+	password: string | null;
 }
 
-async function sendMailValidator(baseUrl: string, args: SendMailValidatorArguments) {
-	const didData = await ensureDid();
-	if (isLeft(didData)) {
-		return didData;
-	}
+async function doSendMailValidator(args: SendMailValidatorArguments) {
 	return commonUserRequest(
-		`${baseUrl}/sendMailValidator`,
-		{ eMail: args.email, did: didData.right.did },
+		`${args.baseUrl}/sendMailValidator`,
+		{
+			eMail: args.email,
+			did: args.did,
+			...(args.password ? { password: args.password } : {})
+		},
 		emptyDataCodec
 	);
 }
 
-export type SendMailValidatorAction = ServiceAction<
-	"SERVICE_SEND_EMAIL_VALIDATOR",
-	SendMailValidatorArguments,
-	{},
-	ErrorData
->;
+const sendMailValidatorComponent = buildComponentServiceCall(doSendMailValidator);
 
-export type SendMailValidatorState = ServiceStateOf<SendMailValidatorAction>;
-
-export const sendMailValidatorReducer = serviceReducer(
-	config => (args: SendMailValidatorArguments) => sendMailValidator(config.didiUserServer, args),
-	(act): act is SendMailValidatorAction => act.type === "SERVICE_SEND_EMAIL_VALIDATOR"
-);
+export function sendMailValidator(serviceKey: string, email: string, password: string | null) {
+	return getState(serviceKey, {}, store => {
+		const baseUrl = store.serviceSettings.didiUserServer;
+		return ensureDid(serviceKey, {}, didData => {
+			return sendMailValidatorComponent(serviceKey, { baseUrl, did: didData.did, email, password }, () => {
+				return serviceCallSuccess(serviceKey);
+			});
+		});
+	});
+}

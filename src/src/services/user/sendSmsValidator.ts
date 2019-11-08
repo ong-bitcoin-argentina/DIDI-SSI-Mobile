@@ -1,38 +1,38 @@
-import { isLeft } from "fp-ts/lib/Either";
-
-import { ErrorData } from "../common/serviceErrors";
-import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
 import { ensureDid } from "../internal/ensureDid";
+import { getState } from "../internal/getState";
 
 import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface SendSmsValidatorArguments {
+	baseUrl: string;
+	did: string;
 	cellPhoneNumber: string;
+	password: string | null;
 }
 
-async function sendSmsValidator(baseUrl: string, args: SendSmsValidatorArguments) {
-	const didData = await ensureDid();
-	if (isLeft(didData)) {
-		return didData;
-	}
+async function doSendSmsValidator(args: SendSmsValidatorArguments) {
 	return commonUserRequest(
-		`${baseUrl}/sendSmsValidator`,
-		{ cellPhoneNumber: args.cellPhoneNumber, did: didData.right.did },
+		`${args.baseUrl}/sendSmsValidator`,
+		{
+			cellPhoneNumber: args.cellPhoneNumber,
+			did: args.did,
+			...(args.password ? { password: args.password } : {})
+		},
 		emptyDataCodec
 	);
 }
 
-export type SendSmsValidatorAction = ServiceAction<
-	"SERVICE_SEND_SMS_VALIDATOR",
-	SendSmsValidatorArguments,
-	{},
-	ErrorData
->;
+const sendSmsValidatorComponent = buildComponentServiceCall(doSendSmsValidator);
 
-export type SendSmsValidatorState = ServiceStateOf<SendSmsValidatorAction>;
-
-export const sendSmsValidatorReducer = serviceReducer(
-	config => (args: SendSmsValidatorArguments) => sendSmsValidator(config.didiUserServer, args),
-	(act): act is SendSmsValidatorAction => act.type === "SERVICE_SEND_SMS_VALIDATOR"
-);
+export function sendSmsValidator(serviceKey: string, cellPhoneNumber: string, password: string | null) {
+	return getState(serviceKey, {}, store => {
+		const baseUrl = store.serviceSettings.didiUserServer;
+		return ensureDid(serviceKey, {}, didData => {
+			return sendSmsValidatorComponent(serviceKey, { baseUrl, did: didData.did, cellPhoneNumber, password }, () => {
+				return serviceCallSuccess(serviceKey);
+			});
+		});
+	});
+}

@@ -1,15 +1,15 @@
 import React from "react";
-import { Alert, Image, Text } from "react-native";
+import { Image, Text } from "react-native";
 
-import { ServiceWrapper } from "../../../services/common/ServiceWrapper";
 import { DidiScreen } from "../../common/DidiScreen";
+import { ServiceObserver } from "../../common/ServiceObserver";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import commonStyles from "../resources/commonStyles";
 
-import { RegisterUserArguments, RegisterUserState } from "../../../services/user/registerUser";
-import { SendMailValidatorArguments, SendMailValidatorState } from "../../../services/user/sendMailValidator";
+import { isPendingService } from "../../../services/ServiceStateStore";
+import { sendMailValidator } from "../../../services/user/sendMailValidator";
 import { didiConnect } from "../../../store/store";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
@@ -21,11 +21,10 @@ export interface SignupEnterEmailProps {
 	phoneNumber: string;
 }
 interface SignupEnterEmailStateProps {
-	requestEmailCodeState: SendMailValidatorState;
+	requestEmailCodePending: boolean;
 }
 interface SignupEnterEmailDispatchProps {
-	requestEmailCode(args: SendMailValidatorArguments): void;
-	dropRequestEmailCode(): void;
+	requestEmailCode: (email: string) => void;
 }
 type SignupEnterEmailInternalProps = SignupEnterEmailStateProps & SignupEnterEmailDispatchProps & SignupEnterEmailProps;
 
@@ -38,6 +37,8 @@ interface SignupEnterEmailState {
 	key: string;
 	keyDup: string;
 }
+
+const serviceKey = "SignupEnterEmail";
 
 class SignupEnterEmailScreen extends NavigationEnabledComponent<
 	SignupEnterEmailInternalProps,
@@ -73,41 +74,38 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 
 				<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
 
-				<ServiceWrapper
-					serviceState={this.props.requestEmailCodeState}
-					onServiceSuccess={() =>
+				<ServiceObserver
+					serviceKey={serviceKey}
+					onSuccess={() =>
 						this.navigate("SignupConfirmEmail", {
 							phoneNumber: this.props.phoneNumber,
 							email: this.state.email,
 							password: this.state.key
 						})
 					}
-					resetService={() => this.props.dropRequestEmailCode()}
 				/>
 				<DidiServiceButton
 					title={strings.signup.enterEmail.backupGenerate}
 					disabled={!this.canPressContinueButton()}
 					onPress={() => this.onPressContinueButton()}
-					isPending={this.props.requestEmailCodeState.state === "PENDING"}
+					isPending={this.props.requestEmailCodePending}
 				/>
 			</DidiScreen>
 		);
 	}
 
 	private onPressContinueButton() {
-		this.props.requestEmailCode({ email: this.state.email });
+		this.props.requestEmailCode(this.state.email);
 	}
 }
 
 const connected = didiConnect(
 	SignupEnterEmailScreen,
 	(state): SignupEnterEmailStateProps => ({
-		requestEmailCodeState: state.serviceCalls.sendMailValidator
+		requestEmailCodePending: isPendingService(state.serviceCalls[serviceKey])
 	}),
 	(dispatch): SignupEnterEmailDispatchProps => ({
-		requestEmailCode: (args: SendMailValidatorArguments) =>
-			dispatch({ type: "SERVICE_SEND_EMAIL_VALIDATOR", serviceAction: { type: "START", args } }),
-		dropRequestEmailCode: () => dispatch({ type: "SERVICE_SEND_EMAIL_VALIDATOR", serviceAction: { type: "DROP" } })
+		requestEmailCode: (email: string) => dispatch(sendMailValidator(serviceKey, email, null))
 	})
 );
 

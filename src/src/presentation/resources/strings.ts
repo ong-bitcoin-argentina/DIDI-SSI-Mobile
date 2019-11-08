@@ -4,6 +4,10 @@ export default {
 			label: "Actividades recientes",
 			loadMore: "Cargar más"
 		},
+		notifications: {
+			showExpired: "Mostrar peticiones vencidas",
+			hideExpired: "Ocultar peticiones vencidas"
+		},
 		userData: {
 			personalDataLabel: "Datos personales",
 			addressDataLabel: "Domicilio Legal",
@@ -108,8 +112,9 @@ export default {
 		enterPhone: {
 			messageHead: "Carga tu número de celular"
 		},
-		verifyPhone: {
-			messageHead: "Ingresa el código de 6 dígitos para verificar tu celular",
+		verify: {
+			phoneMessageHead: "Ingresa el código de 6 dígitos para verificar tu celular",
+			emailMessageHead: "Ingresa el código de 6 dígitos para verificar tu email",
 			resendCode: "¿No recibiste el código?"
 		}
 	},
@@ -132,6 +137,11 @@ export default {
 	share: {
 		title: "Credencial Didi",
 		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi"
+	},
+	services: {
+		changePasswordSuccess: "Contraseña cambiada exitosamente.",
+		changePhoneSuccess: "Número de telefono cambiado exitosamente.",
+		changeEmailSuccess: "Email cambiado exitosamente."
 	},
 	validateIdentity: {
 		header: "Validar Identidad",

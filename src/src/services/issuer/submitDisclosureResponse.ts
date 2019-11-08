@@ -2,8 +2,8 @@ import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
 import { commonServiceRequest } from "../common/commonServiceRequest";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 import { ErrorData, serviceErrors } from "../common/serviceErrors";
-import { ServiceAction, serviceReducer, ServiceStateOf } from "../common/ServiceState";
 
 import { RequestDocument } from "../../model/RequestDocument";
 import { signDisclosureResponse } from "../../uPort/createDisclosureResponse";
@@ -20,7 +20,7 @@ const issuerApiWrapperCodec = t.union([
 	t.type({ status: t.keyof({ fail: null, error: null }), data: t.string })
 ]);
 
-async function submitDisclosureResponse(args: SubmitDisclosureResponseArguments): Promise<Either<ErrorData, {}>> {
+async function doSubmitDisclosureResponse(args: SubmitDisclosureResponseArguments): Promise<Either<ErrorData, {}>> {
 	let accessToken;
 	try {
 		accessToken = await signDisclosureResponse(args.request, args.own, args.verified);
@@ -46,16 +46,10 @@ async function submitDisclosureResponse(args: SubmitDisclosureResponseArguments)
 	}
 }
 
-export type SubmitDisclosureResponseAction = ServiceAction<
-	"SERVICE_DISCLOSURE_RESPONSE",
-	SubmitDisclosureResponseArguments,
-	{},
-	ErrorData
->;
+const submitDisclosureResponseComponent = buildComponentServiceCall(doSubmitDisclosureResponse);
 
-export type SubmitDisclosureResponseState = ServiceStateOf<SubmitDisclosureResponseAction>;
-
-export const submitDisclosureResponseReducer = serviceReducer(
-	config => submitDisclosureResponse,
-	(act): act is SubmitDisclosureResponseAction => act.type === "SERVICE_DISCLOSURE_RESPONSE"
-);
+export function submitDisclosureResponse(serviceKey: string, args: SubmitDisclosureResponseArguments) {
+	return submitDisclosureResponseComponent(serviceKey, args, () => {
+		return serviceCallSuccess(serviceKey);
+	});
+}

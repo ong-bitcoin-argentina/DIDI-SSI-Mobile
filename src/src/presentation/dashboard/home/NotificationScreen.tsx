@@ -7,9 +7,11 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
 import { RequestDocument } from "../../../model/RequestDocument";
+import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest";
 
@@ -17,7 +19,12 @@ export type NotificationScreenProps = {};
 interface NotificationScreenStateProps {
 	requests: RequestDocument[];
 }
-type NotificationScreenInternalProps = NotificationScreenProps & NotificationScreenStateProps;
+interface NotificationScreenDispatchProps {
+	recoverTokens: () => void;
+}
+type NotificationScreenInternalProps = NotificationScreenProps &
+	NotificationScreenStateProps &
+	NotificationScreenDispatchProps;
 
 type NotificationScreenState = {
 	showExpired: boolean;
@@ -40,6 +47,10 @@ class NotificationScreen extends NavigationEnabledComponent<
 		};
 	}
 
+	componentDidMount() {
+		this.props.recoverTokens();
+	}
+
 	render() {
 		return (
 			<Fragment>
@@ -47,7 +58,11 @@ class NotificationScreen extends NavigationEnabledComponent<
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
 						<DidiButton
-							title={this.state.showExpired ? "Ocultar peticiones vencidas" : "Mostrar peticiones vencidas"}
+							title={
+								this.state.showExpired
+									? strings.dashboard.notifications.hideExpired
+									: strings.dashboard.notifications.showExpired
+							}
 							onPress={() => this.setState({ showExpired: !this.state.showExpired })}
 						/>
 						{this.props.requests
@@ -89,9 +104,12 @@ class NotificationScreen extends NavigationEnabledComponent<
 
 const connected = didiConnect(
 	NotificationScreen,
-	(state): NotificationScreenStateProps => {
-		return { requests: state.requests };
-	}
+	(state): NotificationScreenStateProps => ({
+		requests: state.requests
+	}),
+	(dispatch): NotificationScreenDispatchProps => ({
+		recoverTokens: () => dispatch(recoverTokens())
+	})
 );
 
 export { connected as NotificationScreen };

@@ -1,14 +1,11 @@
-import { isRight } from "fp-ts/lib/Either";
 import React from "react";
 import { Text, View, ViewProps } from "react-native";
 
-import TypedArray from "../../../../util/TypedArray";
 import commonStyles from "../../../access/resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
 
+import { recoverTokens } from "../../../../services/trustGraph/recoverTokens";
 import { didiConnect } from "../../../../store/store";
-import parseJWT from "../../../../uPort/parseJWT";
-import { TrustGraphClient } from "../../../../uPort/TrustGraphClient";
 
 export type CredentialRecoveryProps = ViewProps;
 interface CredentialRecoveryStateProps {
@@ -17,25 +14,15 @@ interface CredentialRecoveryStateProps {
 	ethrDidUri: string;
 }
 interface CredentialRecoveryDispatchProps {
-	recoverTokens(tokens: string[]): void;
-	deleteAllTokens(): void;
+	recoverTokens: () => void;
+	deleteAllTokens: () => void;
 }
 type CredentialRecoveryInternalProps = CredentialRecoveryProps &
 	CredentialRecoveryStateProps &
 	CredentialRecoveryDispatchProps;
 
-interface CredentialRecoverState {
-	tokens?: string[];
-}
-
-class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInternalProps, CredentialRecoverState> {
-	constructor(props: CredentialRecoveryInternalProps) {
-		super(props);
-		this.state = {};
-	}
-
+class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInternalProps> {
 	render() {
-		const currentDocs = this.state.tokens || [];
 		return (
 			<View {...this.props}>
 				<Text style={commonStyles.text.normal}>
@@ -43,37 +30,10 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 					{this.props.tokens.length}
 				</Text>
 
-				<Text style={commonStyles.text.normal}>
-					<Text style={commonStyles.text.emphasis}>Credenciales Remotas: </Text>
-					{this.state.tokens === undefined ? "Sin Cargar" : this.state.tokens.length}
-				</Text>
-
 				<DidiButton title="Borrar Credenciales Locales" onPress={() => this.props.deleteAllTokens()} />
-				<DidiButton title="Cargar Credenciales Remotas" onPress={() => this.loadRemoteDocs()} />
-				{currentDocs.length > 0 && (
-					<DidiButton title="Importar Credenciales Remotas" onPress={() => this.addToLocalDocs(currentDocs)} />
-				)}
+				<DidiButton title="Cargar Credenciales Remotas" onPress={() => this.props.recoverTokens()} />
 			</View>
 		);
-	}
-
-	private async loadRemoteDocs() {
-		const tg = await TrustGraphClient.create(this.props.trustGraphUri);
-		const tokens = await tg.getJWTs();
-		this.setState({ tokens });
-	}
-
-	private async addToLocalDocs(received: string[]) {
-		const acceptToken = async (token: string): Promise<string | undefined> => {
-			if (this.props.tokens.includes(token) || isRight(await parseJWT(token, this.props.ethrDidUri))) {
-				return token;
-			} else {
-				return undefined;
-			}
-		};
-
-		const verifiedTokens = TypedArray.flatMap(await Promise.all(received.reverse().map(acceptToken)), x => x);
-		this.props.recoverTokens(verifiedTokens);
 	}
 }
 
@@ -88,7 +48,7 @@ const connected = didiConnect(
 	},
 	(dispatch): CredentialRecoveryDispatchProps => {
 		return {
-			recoverTokens: (docs: string[]) => dispatch({ type: "TOKEN_ENSURE", content: docs }),
+			recoverTokens: () => dispatch(recoverTokens()),
 			deleteAllTokens: () => dispatch({ type: "TOKEN_DELETE_ALL" })
 		};
 	}
