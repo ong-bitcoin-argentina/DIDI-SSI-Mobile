@@ -138,7 +138,8 @@ export default {
 		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi"
 	},
 	services: {
-		changePasswordSuccess: "Contraseña cambiada exitosamente."
+		changePasswordSuccess: "Contraseña cambiada exitosamente.",
+		changePhoneSuccess: "Número de telefono cambiado exitosamente."
 	},
 	validateIdentity: {
 		header: "Validar Identidad",

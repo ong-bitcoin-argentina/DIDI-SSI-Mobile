@@ -1,10 +1,12 @@
 import React from "react";
+import { Alert } from "react-native";
 
 import { VerifyPhoneWrapper } from "../../../common/VerifyPhoneWrapper";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { changePhoneNumber } from "../../../../services/user/changePhoneNumber";
 import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
+import strings from "../../../resources/strings";
 
 import { UserDataProps } from "./UserData";
 
@@ -29,8 +31,13 @@ export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
 				serviceCall={(serviceKey, validationCode) =>
 					changePhoneNumber(serviceKey, this.props.phoneNumber, validationCode)
 				}
-				onServiceSuccess={() => this.navigate("UserData", {})}
+				onServiceSuccess={() => this.onSuccess()}
 			/>
 		);
+	}
+
+	private onSuccess() {
+		Alert.alert(strings.services.changePhoneSuccess);
+		this.navigate("UserData", {});
 	}
 }
