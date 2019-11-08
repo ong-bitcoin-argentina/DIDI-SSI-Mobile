@@ -1,13 +1,16 @@
 import React from "react";
+import { Dispatch } from "redux";
 
-import { isPendingService } from "../../services/ServiceStateStore";
+import { isPendingService, ServiceCallAction } from "../../services/ServiceStateStore";
 import { verifySmsCode } from "../../services/user/verifySmsCode";
 import { didiConnect } from "../../store/store";
+import { StoreAction } from "../../store/StoreAction";
 
 import { ServiceObserver } from "./ServiceObserver";
 import { VerifyPhoneProps, VerifyPhoneScreen } from "./VerifyPhone";
 
 interface VerifyPhoneWrapperProps {
+	serviceCall?: (serviceKey: string, validationCode: string) => ServiceCallAction;
 	onServiceSuccess(): void;
 	contentImageSource: VerifyPhoneProps["contentImageSource"];
 }
@@ -15,7 +18,7 @@ interface VerifyPhoneWrapperStateProps {
 	verifyPhoneCodePending: boolean;
 }
 interface VerifyPhoneWrapperDispatchProps {
-	verifyPhoneCode: (code: string) => void;
+	dispatch: Dispatch<StoreAction>;
 }
 type VerifyPhoneWrapperInternalProps = VerifyPhoneWrapperProps &
 	VerifyPhoneWrapperStateProps &
@@ -37,7 +40,8 @@ class VerifyPhoneWrapper extends React.Component<VerifyPhoneWrapperInternalProps
 	}
 
 	private onPressContinueButton(inputCode: string) {
-		this.props.verifyPhoneCode(inputCode);
+		const serviceCall = this.props.serviceCall || verifySmsCode;
+		this.props.dispatch(serviceCall(serviceKey, inputCode));
 	}
 }
 
@@ -46,9 +50,7 @@ const connected = didiConnect(
 	(state): VerifyPhoneWrapperStateProps => ({
 		verifyPhoneCodePending: isPendingService(state.serviceCalls[serviceKey])
 	}),
-	(dispatch): VerifyPhoneWrapperDispatchProps => ({
-		verifyPhoneCode: (validationCode: string) => dispatch(verifySmsCode(serviceKey, validationCode))
-	})
+	(dispatch): VerifyPhoneWrapperDispatchProps => ({ dispatch })
 );
 
 export { connected as VerifyPhoneWrapper };
