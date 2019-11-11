@@ -1,15 +1,10 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
-import DidiButton from "../../util/DidiButton";
-import DidiTextInput from "../../util/DidiTextInput";
+import { EnterEmailScreen } from "../../common/EnterEmail";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import commonStyles from "../resources/commonStyles";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import Validator from "../helpers/validator";
 
 import { ForgotPasswordEmailSentProps } from "./ForgotPasswordEmailSent";
 
@@ -19,50 +14,28 @@ export interface ForgotPasswordEnterEmailNavigation {
 	ForgotPasswordEmailSent: ForgotPasswordEmailSentProps;
 }
 
-interface ForgotPasswordEnterEmailState {
-	inputEmail: string;
-}
-
 export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 	ForgotPasswordEnterEmailProps,
-	ForgotPasswordEnterEmailState,
+	{},
 	ForgotPasswordEnterEmailNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
-	private canPressContinueButton(): boolean {
-		return this.state ? Validator.isEmail(this.state.inputEmail) : false;
-	}
-
-	sendEmail = () => {
-		// TODO send verification email....
-		this.navigate("ForgotPasswordEmailSent", { email: this.state.inputEmail });
-	};
-
 	render() {
 		return (
-			<DidiScreen>
-				<Text style={[commonStyles.text.emphasis, styles.messageHead]}>
-					{strings.recovery.passwordRecover.messageHead}
-				</Text>
-				<Image source={require("../resources/images/recoverPassword.png")} style={commonStyles.image.image} />
-
-				<DidiTextInput.Email onChangeText={text => this.setState({ inputEmail: text })} />
-
-				<View />
-
-				<DidiButton
-					onPress={this.sendEmail}
-					disabled={!this.canPressContinueButton()}
-					title={strings.accessCommon.recoverButtonText}
-				/>
-			</DidiScreen>
+			<EnterEmailScreen
+				description={strings.recovery.passwordRecover.messageHead}
+				contentImageSource={require("../resources/images/recoverPassword.png")}
+				buttonTitle={strings.accessCommon.recoverButtonText}
+				isPasswordRequired={false}
+				onPressContinueButton={(email, password) => this.sendEmail(email, password)}
+				isContinuePending={false}
+			/>
 		);
 	}
-}
 
-const styles = StyleSheet.create({
-	messageHead: {
-		fontSize: 19
+	private sendEmail(email: string, password: string | null) {
+		// TODO send verification email....
+		this.navigate("ForgotPasswordEmailSent", { email });
 	}
-});
+}
