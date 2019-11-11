@@ -7,8 +7,7 @@ import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswor
 import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEmailSent";
 import { ForgotPasswordEnterEmailScreen } from "./forgotPassword/ForgotPasswordEnterEmail";
 import { ForgotPasswordNewPasswordScreen } from "./forgotPassword/ForgotPasswordNewPassword";
-import { LoginEnterPhoneScreen } from "./login/LoginEnterPhone";
-import { LoginVerifyPhoneScreen } from "./login/LoginVerifyPhone";
+import { LoginScreen } from "./login/LoginScreen";
 import { RecoveryEnterEmailScreen } from "./recovery/RecoveryEnterEmail";
 import { RecoveryEnterPhoneScreen } from "./recovery/RecoveryEnterPhone";
 import { RecoveryExplanationScreen } from "./recovery/RecoveryExplanation";
@@ -27,9 +26,7 @@ interface AccessSwitchTarget {
 }
 
 function login(then: NavTree<AccessSwitchTarget>) {
-	return NavMap.from(LoginEnterPhoneScreen, {
-		LoginVerifyPhone: NavMap.from(LoginVerifyPhoneScreen, then)
-	});
+	return NavMap.from(LoginScreen, then);
 }
 
 function signup(then: NavTree<AccessSwitchTarget>) {
@@ -71,7 +68,7 @@ function recovery(then: NavTree<AccessSwitchTarget>) {
 
 export default function(then: NavTree<AccessSwitchTarget>) {
 	return NavMap.from(StartAccessScreen, {
-		LoginEnterPhone: login(then),
+		Login: login(then),
 		SignupOnboarding: signup(then),
 		RecoveryExplanation: recovery(then),
 		AccessSettings: NavMap.from(AccessSettingsScreen, {})

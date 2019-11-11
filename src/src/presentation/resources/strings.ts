@@ -105,6 +105,10 @@ export default {
 			buttonEnter: "Ingresar a Didi"
 		}
 	},
+	login: {
+		messageHead: "Ingresa tu email y contraseña",
+		buttonText: "Ingresar"
+	},
 	accessCommon: {
 		validateButtonText: "Validar",
 		recoverButtonText: "Registrar",

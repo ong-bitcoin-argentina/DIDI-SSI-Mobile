@@ -21,14 +21,12 @@ interface EnterPhoneWrapperStateProps {
 interface EnterPhoneWrapperDispatchProps {
 	requestSmsCode: (cellPhoneNumber: string, password: string | null) => void;
 }
-type LoginEnterPhoneInternalProps = EnterPhoneWrapperProps &
-	EnterPhoneWrapperStateProps &
-	EnterPhoneWrapperDispatchProps;
+type EnterPhoneInternalProps = EnterPhoneWrapperProps & EnterPhoneWrapperStateProps & EnterPhoneWrapperDispatchProps;
 
 const serviceKey = "EnterPhone";
 
-class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps, { phoneNumber: string }> {
-	constructor(props: LoginEnterPhoneInternalProps) {
+class EnterPhoneWrapper extends React.Component<EnterPhoneInternalProps, { phoneNumber: string }> {
+	constructor(props: EnterPhoneInternalProps) {
 		super(props);
 		this.state = { phoneNumber: "" };
 	}

@@ -11,14 +11,14 @@ import themes from "../resources/themes";
 import { SplashContent } from "../SplashContent";
 
 import { AccessSettingsProps } from "./AccessSettings";
-import { LoginEnterPhoneProps } from "./login/LoginEnterPhone";
+import { LoginScreenProps } from "./login/LoginScreen";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 
 export type StartAccessProps = {};
 
 export interface StartAccessNavigation {
-	LoginEnterPhone: LoginEnterPhoneProps;
+	Login: LoginScreenProps;
 	SignupOnboarding: SignupOnboardingProps;
 	RecoveryExplanation: RecoveryExplanationProps;
 	AccessSettings: AccessSettingsProps;
@@ -32,7 +32,7 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 			<Fragment>
 				<SplashContent>
 					<DidiButton
-						onPress={() => this.navigate("LoginEnterPhone", {})}
+						onPress={() => this.navigate("Login", {})}
 						style={styles.secondaryButton}
 						title={strings.recovery.startAccess.loginButton}
 					/>
