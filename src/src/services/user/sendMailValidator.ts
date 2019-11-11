@@ -1,5 +1,6 @@
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
+import { EthrDID } from "../../uPort/types/EthrDID";
 import { ensureDid } from "../internal/ensureDid";
 import { getState } from "../internal/getState";
 
@@ -7,7 +8,7 @@ import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface SendMailValidatorArguments {
 	baseUrl: string;
-	did: string;
+	did: EthrDID;
 	email: string;
 	password: string | null;
 }
@@ -17,7 +18,7 @@ async function doSendMailValidator(args: SendMailValidatorArguments) {
 		`${args.baseUrl}/sendMailValidator`,
 		{
 			eMail: args.email,
-			did: args.did,
+			did: args.did.did(),
 			...(args.password ? { password: args.password } : {})
 		},
 		emptyDataCodec
@@ -29,8 +30,8 @@ const sendMailValidatorComponent = buildComponentServiceCall(doSendMailValidator
 export function sendMailValidator(serviceKey: string, email: string, password: string | null) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {}, didData => {
-			return sendMailValidatorComponent(serviceKey, { baseUrl, did: didData.did, email, password }, () => {
+		return ensureDid(serviceKey, {}, did => {
+			return sendMailValidatorComponent(serviceKey, { baseUrl, did, email, password }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

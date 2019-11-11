@@ -12,7 +12,7 @@ export interface RequestCardProps extends ViewProps {
 
 export class RequestCard extends Component<RequestCardProps, {}> {
 	render() {
-		const issuer = this.props.request.content.issuer.replace("did:ethr:0x", "").slice(0, 20);
+		const issuer = this.props.request.content.issuer.keyAddress().slice(0, 20);
 		const endDate =
 			this.props.request.content.expireAt && new Date(this.props.request.content.expireAt * 1000).toLocaleString();
 		return (

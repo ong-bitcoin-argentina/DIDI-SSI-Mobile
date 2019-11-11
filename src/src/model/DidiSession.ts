@@ -1,4 +1,6 @@
+import { EthrDID } from "../uPort/types/EthrDID";
+
 export interface DidiSession {
 	isLoggedIn: boolean;
-	did: string | null;
+	did: EthrDID | null;
 }

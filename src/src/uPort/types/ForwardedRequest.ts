@@ -1,11 +1,13 @@
 import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
+import { EthrDIDCodec } from "./EthrDID";
+
 const ForwardedRequestInnerCodec = t.intersection([
 	t.type({
 		type: t.literal("ForwardedRequest"),
-		issuer: t.string,
-		subject: t.string,
+		issuer: EthrDIDCodec,
+		subject: EthrDIDCodec,
 		forwarded: t.string
 	}),
 	t.partial({
@@ -33,20 +35,24 @@ export const ForwardedRequestCodec = new t.Type<ForwardedRequest, ForwardedReque
 	ForwardedRequestInnerCodec.is,
 	(u, c) =>
 		either.chain(ForwardedRequestOuterCodec.validate(u, c), i =>
-			t.success<ForwardedRequest>({
-				type: "ForwardedRequest",
-				issuer: i.iss,
-				subject: i.sub,
-				expireAt: i.exp,
-				issuedAt: i.iat,
-				forwarded: i.disclosureRequest
-			})
+			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
+				either.chain(EthrDIDCodec.validate(i.sub, c), subject =>
+					t.success<ForwardedRequest>({
+						type: "ForwardedRequest",
+						issuer,
+						subject,
+						expireAt: i.exp,
+						issuedAt: i.iat,
+						forwarded: i.disclosureRequest
+					})
+				)
+			)
 		),
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer,
-			sub: a.subject,
+			iss: a.issuer.did(),
+			sub: a.subject.did(),
 			exp: a.expireAt,
 			iat: a.issuedAt,
 			disclosureRequest: a.forwarded

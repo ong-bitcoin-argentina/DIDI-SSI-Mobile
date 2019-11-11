@@ -99,7 +99,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 
 	private errorMessage(error: JWTParseError): { title: string; subtitle?: string } {
 		const displayTimestamp = (ts: number) => new Date(ts * 1000).toLocaleString();
-		const displayError = (e: unknown) => (e instanceof Error ? e.message : JSON.stringify(e));
+		const displayError = (e: unknown) => (e instanceof Error ? e.message : JSON.stringify(e, null, 4));
 
 		switch (error.type) {
 			case "AFTER_EXP":
@@ -118,15 +118,10 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 				console.warn(displayError(error.error));
 				return { title: "Error al Decodificar", subtitle: "Error al extraer credenciales." };
 			case "SHAPE_DECODE_ERROR":
-				return { title: "Error al Interpretar Credencial", subtitle: displayError(error.error) };
+				return { title: "Error al Interpretar Credencial", subtitle: error.errorMessage };
 			case "VERIFICATION_ERROR":
 				console.warn(displayError(error.error));
 				return { title: "Error al Verificar Credencial", subtitle: "Verifique tener acceso a internet." };
-			case "DID_PARSE":
-				return {
-					title: "Error al Interpretar DID",
-					subtitle: `Verifique la configuracion de ${error.field}: "${error.value}"`
-				};
 		}
 	}
 

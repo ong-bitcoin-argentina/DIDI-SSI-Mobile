@@ -1,4 +1,5 @@
 import { DidiSession } from "../../model/DidiSession";
+import { EthrDID } from "../../uPort/types/EthrDID";
 import { StoreAction } from "../StoreAction";
 
 interface SessionLogin {
@@ -9,7 +10,7 @@ interface SessionLogout {
 }
 interface SessionCreateDid {
 	type: "SESSION_CREATE_DID";
-	did: string;
+	did: EthrDID;
 }
 export type SessionAction = SessionLogin | SessionLogout | SessionCreateDid;
 

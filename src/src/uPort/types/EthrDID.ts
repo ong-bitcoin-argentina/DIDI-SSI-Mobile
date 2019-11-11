@@ -47,7 +47,7 @@ export const EthrDIDCodec = new t.Type<EthrDID, string, unknown>(
 			if (isRight(parse)) {
 				return parse;
 			} else {
-				return t.failure(u, c);
+				return t.failure(u, c, parse.left.message);
 			}
 		}),
 	a => a.did()
