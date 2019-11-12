@@ -71,6 +71,6 @@ export default function(then: NavTree<AccessSwitchTarget>) {
 		Login: login(then),
 		SignupOnboarding: signup(then),
 		RecoveryExplanation: recovery(then),
-		AccessSettings: NavMap.from(AccessSettingsScreen, {})
+		AccessSettings: NavMap.from(AccessSettingsScreen, then)
 	});
 }
