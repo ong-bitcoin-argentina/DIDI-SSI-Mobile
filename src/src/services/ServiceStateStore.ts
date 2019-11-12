@@ -1,7 +1,7 @@
 import { Action } from "redux";
 import { CmdType, liftState, Loop, loop, LoopReducer } from "redux-loop";
 
-import { ErrorData } from "./common/serviceErrors";
+import { ErrorData } from "./common/ErrorData";
 
 import { StoreAction } from "../store/StoreAction";
 

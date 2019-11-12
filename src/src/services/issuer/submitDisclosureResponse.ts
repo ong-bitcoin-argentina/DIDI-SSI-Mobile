@@ -3,9 +3,10 @@ import * as t from "io-ts";
 
 import { commonServiceRequest } from "../common/commonServiceRequest";
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
-import { ErrorData, serviceErrors } from "../common/serviceErrors";
+import { ErrorData } from "../common/ErrorData";
 
 import { RequestDocument } from "../../model/RequestDocument";
+import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { signDisclosureResponse } from "../../uPort/createDisclosureResponse";
 import { Claim } from "../../uPort/types/Claim";
 

@@ -3,8 +3,9 @@ import * as t from "io-ts";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
-import { ErrorData, serviceErrors } from "../common/serviceErrors";
+import { ErrorData } from "../common/ErrorData";
 
+import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
 

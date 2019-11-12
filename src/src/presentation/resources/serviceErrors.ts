@@ -1,15 +1,6 @@
-import * as t from "io-ts";
+import { ErrorData } from "../../services/common/ErrorData";
 
-export const errorDataCodec = t.type(
-	{
-		errorCode: t.string,
-		message: t.string
-	},
-	"errorDataCodec"
-);
-export type ErrorData = typeof errorDataCodec._A;
-
-function error(errorCode: string, message: string): { errorCode: string; message: string } {
+function error(errorCode: string, message: string): ErrorData {
 	return { errorCode, message };
 }
 

@@ -1,7 +1,9 @@
 import { Either, either, isRight, left, right, tryCatch } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { ErrorData, serviceErrors } from "../../services/common/serviceErrors";
+import { ErrorData } from "../../services/common/ErrorData";
+
+import { serviceErrors } from "../../presentation/resources/serviceErrors";
 
 export class EthrDID {
 	private address: string;

@@ -3,7 +3,7 @@ import * as t from "io-ts";
 
 import { JSONObject } from "../../util/JSON";
 import { commonServiceRequest } from "../common/commonServiceRequest";
-import { ErrorData, errorDataCodec } from "../common/serviceErrors";
+import { ErrorData, errorDataCodec } from "../common/ErrorData";
 
 export const emptyDataCodec = t.type({});
 

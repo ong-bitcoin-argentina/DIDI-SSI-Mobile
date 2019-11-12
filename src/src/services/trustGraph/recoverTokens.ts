@@ -2,8 +2,8 @@ import { isRight, left, right } from "fp-ts/lib/Either";
 
 import TypedArray from "../../util/TypedArray";
 import { buildComponentServiceCall, serviceCallDrop, simpleAction } from "../common/componentServiceCall";
-import { serviceErrors } from "../common/serviceErrors";
 
+import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import parseJWT from "../../uPort/parseJWT";
 import { TrustGraphClient } from "../../uPort/TrustGraphClient";
 import { getState } from "../internal/getState";
