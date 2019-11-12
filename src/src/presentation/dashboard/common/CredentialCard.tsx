@@ -14,17 +14,19 @@ export interface CredentialCardProps extends DidiCardBodyProps {
 }
 
 export default class CredentialCard extends Component<CredentialCardProps, {}> {
-	private renderTitle(textStyle: TextStyle) {
+	private renderTitle(color: string) {
 		return (
 			<View style={styles.headerData}>
-				<Text style={[styles.category, textStyle]}>{this.props.category}</Text>
-				<Text style={[styles.title, textStyle]}>{this.props.title}</Text>
-				<Text style={[styles.subTitle, textStyle]}>{this.props.subTitle}</Text>
+				<Text style={[styles.category, { color }]}>{this.props.category}</Text>
+				<Text style={[styles.title, { color }]}>{this.props.title}</Text>
+				<Text style={[styles.subTitle, { color }, { color: `${color}${colors.subtitleAlpha}` }]}>
+					{this.props.subTitle}
+				</Text>
 			</View>
 		);
 	}
 
-	private renderKeyValuePairs(textStyle: TextStyle) {
+	private renderKeyValuePairs(color: string) {
 		const columns = this.props.columns || 1;
 		const data = this.props.data || [];
 
@@ -39,8 +41,8 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 				{data.map((item, index) => {
 					return (
 						<View key={index} style={columnStyle}>
-							<Text style={[styles.dataLabel, textStyle]}>{item.label}</Text>
-							<Text style={[styles.dataValue, textStyle, valueStyle]}>{item.value}</Text>
+							<Text style={[styles.dataLabel, { color }]}>{item.label}</Text>
+							<Text style={[styles.dataValue, { color }, valueStyle]}>{item.value}</Text>
 						</View>
 					);
 				})}
@@ -49,11 +51,11 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 	render() {
-		const textStyle = this.props.hollow ? { color: colors.secondary } : { color: "#FFF" };
+		const color = this.props.hollow ? colors.secondary : "#FFFFFF";
 		return (
 			<DidiCardBody {...this.props}>
-				{this.renderTitle(textStyle)}
-				{this.renderKeyValuePairs(textStyle)}
+				{this.renderTitle(color)}
+				{this.renderKeyValuePairs(color)}
 				{this.props.children}
 			</DidiCardBody>
 		);
