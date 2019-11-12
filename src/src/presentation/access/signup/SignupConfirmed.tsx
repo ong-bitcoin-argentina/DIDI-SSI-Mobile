@@ -2,9 +2,9 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import commonStyles from "../resources/commonStyles";
 
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";

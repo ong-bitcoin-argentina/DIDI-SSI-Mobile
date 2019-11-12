@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, ViewProps } from "react-native";
 
-import commonStyles from "../../../access/resources/commonStyles";
+import commonStyles from "../../../resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
 
 import { recoverTokens } from "../../../../services/trustGraph/recoverTokens";

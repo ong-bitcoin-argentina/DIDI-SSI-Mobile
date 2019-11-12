@@ -13,13 +13,13 @@ import {
 	View
 } from "react-native";
 
+import commonStyles from "../../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import commonStyles from "../resources/commonStyles";
 
 import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import onboardingPages, { OnboardingPage } from "../../resources/onboardingPages";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
-import onboardingPages, { OnboardingPage } from "../resources/onboardingPages";
 
 import { SignupEnterPhoneProps } from "./SignupEnterPhone";
 

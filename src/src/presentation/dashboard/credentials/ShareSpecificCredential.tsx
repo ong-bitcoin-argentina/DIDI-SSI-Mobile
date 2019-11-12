@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Dimensions, SafeAreaView, Share, StatusBar, Text, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
-import commonStyles from "../../access/resources/commonStyles";
+import commonStyles from "../../resources/commonStyles";
 import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";

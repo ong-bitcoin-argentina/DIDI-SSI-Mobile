@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Clipboard, Text, ToastAndroid, View, ViewProps } from "react-native";
 import { KeyAddress, RNUportHDSigner } from "react-native-uport-signer";
 
-import commonStyles from "../../../access/resources/commonStyles";
+import commonStyles from "../../../resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
 
 export interface KeyDisplayProps extends ViewProps {

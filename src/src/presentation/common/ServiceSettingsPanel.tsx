@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, Text } from "react-native";
 
 import TypedObject from "../../util/TypedObject";
-import commonStyles from "../access/resources/commonStyles";
+import commonStyles from "../resources/commonStyles";
 import DidiButton from "../util/DidiButton";
 import DidiTextInput from "../util/DidiTextInput";
 

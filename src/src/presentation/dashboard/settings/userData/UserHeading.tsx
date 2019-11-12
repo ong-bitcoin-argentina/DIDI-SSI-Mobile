@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
 
-import commonStyles from "../../../access/resources/commonStyles";
+import commonStyles from "../../../resources/commonStyles";
 
 import colors from "../../../resources/colors";
 

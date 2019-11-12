@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
-import commonStyles from "../../access/resources/commonStyles";
+import commonStyles from "../../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { uPortDocumentToCard } from "../common/documentToCard";
 

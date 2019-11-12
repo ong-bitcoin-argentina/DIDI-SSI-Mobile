@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { SafeAreaView, StatusBar, View, ViewProps } from "react-native";
 
-import commonStyles from "../access/resources/commonStyles";
+import commonStyles from "../resources/commonStyles";
 
 import themes from "../resources/themes";
 

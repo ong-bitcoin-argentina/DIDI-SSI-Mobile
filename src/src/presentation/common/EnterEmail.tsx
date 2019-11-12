@@ -2,8 +2,8 @@ import React from "react";
 import { Image, ImageSourcePropType, Text, View } from "react-native";
 
 import { AddChildren } from "../../util/ReactExtensions";
-import commonStyles from "../access/resources/commonStyles";
 import { DidiScreen } from "../common/DidiScreen";
+import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import DidiTextInput from "../util/DidiTextInput";
 

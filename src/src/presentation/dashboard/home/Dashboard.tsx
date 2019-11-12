@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 
-import commonStyles from "../../access/resources/commonStyles";
+import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";

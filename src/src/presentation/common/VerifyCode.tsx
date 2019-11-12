@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ImageSourcePropType, Text } from "react-native";
 
-import commonStyles from "../access/resources/commonStyles";
+import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import DidiTextInput from "../util/DidiTextInput";
 

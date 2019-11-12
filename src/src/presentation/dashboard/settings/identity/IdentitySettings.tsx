@@ -3,7 +3,7 @@ import { StatusBar, Text, View } from "react-native";
 import { RNUportHDSigner } from "react-native-uport-signer";
 import { SafeAreaView } from "react-navigation";
 
-import commonStyles from "../../../access/resources/commonStyles";
+import commonStyles from "../../../resources/commonStyles";
 import { DidiScreen } from "../../../common/DidiScreen";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
