@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
@@ -10,7 +11,6 @@ import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
 import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
 import OpenPersonDetail from "../../resources/images/openPersonDetail.svg";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
@@ -58,8 +58,8 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) },
-			{ name: "Configuracion de Servicios", action: () => this.navigate("ServiceSettings", {}) },
-			{ name: "Decodificar JWT", action: () => this.navigate("JWTDecoderScreen", {}) }
+			{ name: strings.debug.serviceConfig, action: () => this.navigate("ServiceSettings", {}) },
+			{ name: strings.debug.decodeJWT, action: () => this.navigate("JWTDecoderScreen", {}) }
 		];
 	}
 
@@ -107,7 +107,11 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 					<View style={styles.buttonContainer}>
 						{this.buttons().map((button, index) => this.renderButton(button, index))}
 						<View style={styles.logoutButtonContainer}>
-							<DidiButton style={styles.logoutButton} title="Cerrar Sesion" onPress={() => this.logout()} />
+							<DidiButton
+								style={styles.logoutButton}
+								title={strings.settings.endSession}
+								onPress={() => this.logout()}
+							/>
 						</View>
 					</View>
 				</SafeAreaView>

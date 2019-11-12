@@ -7,6 +7,7 @@ import DidiButton from "../util/DidiButton";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
 import { DashboardScreenProps } from "../dashboard/home/Dashboard";
+import strings from "../resources/strings";
 
 export type AccessSettingsProps = {};
 
@@ -19,7 +20,7 @@ export class AccessSettingsScreen extends NavigationEnabledComponent<
 	{},
 	AccessSettingsNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Debug Menu");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.debug.menu);
 
 	render() {
 		return (

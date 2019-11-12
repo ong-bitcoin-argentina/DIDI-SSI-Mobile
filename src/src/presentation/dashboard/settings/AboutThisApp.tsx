@@ -2,9 +2,10 @@ import React from "react";
 import { Text } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import strings from "../../resources/strings";
 
 export type AboutThisAppScreenProps = {};
 type AboutThisAppScreenState = {};
@@ -20,7 +21,7 @@ export class AboutThisAppScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen>
-				<Text>Pantalla en construccion</Text>
+				<Text>{strings.debug.screenInProgress}</Text>
 			</DidiScreen>
 		);
 	}

@@ -1,6 +1,7 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View, ViewProps } from "react-native";
 
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
@@ -9,7 +10,6 @@ import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 import { Identity, WithValidationState } from "../../../../model/Identity";
 import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
-import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 
@@ -34,19 +34,19 @@ export interface UserDataNavigation {
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions<UserDataNavigation>("Mi perfil", [
 		{
-			actionTitle: "Cambiar Email",
+			actionTitle: strings.dashboard.userData.changeEmail.screenTitle,
 			onPress: navigation => {
 				navigation.navigate("ChangeEmailEnterEmail", {});
 			}
 		},
 		{
-			actionTitle: "Cambiar Teléfono",
+			actionTitle: strings.dashboard.userData.changePhone.screenTitle,
 			onPress: navigation => {
 				navigation.navigate("ChangePhoneEnterPhone", {});
 			}
 		},
 		{
-			actionTitle: "Compartir",
+			actionTitle: strings.dashboard.userData.share.barTitle,
 			onPress: navigation => {
 				navigation.navigate("ShareProfile", {});
 			}

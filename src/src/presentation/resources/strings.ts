@@ -1,4 +1,10 @@
 export default {
+	debug: {
+		menu: "Debug Menu",
+		decodeJWT: "Decodificar JWT",
+		serviceConfig: "Configuracion de Servicios",
+		screenInProgress: "Pantalla en Construccion"
+	},
 	dashboard: {
 		recentActivities: {
 			label: "Actividades recientes",
@@ -40,6 +46,14 @@ export default {
 				jobsMessage: "Trabajos",
 				titlesMessage: "Títulos",
 				othersMessage: "Otros"
+			},
+			changeEmail: {
+				screenTitle: "Cambiar Email",
+				messageHead: "Ingresa tu nuevo email y tu contraseña actual."
+			},
+			changePhone: {
+				screenTitle: "Cambiar Teléfono",
+				messageHead: "Ingresa tu nuevo numero de telefono y tu contraseña actual."
 			}
 		}
 	},
@@ -136,7 +150,8 @@ export default {
 	settings: {
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
-		about: "Acerca de Didi"
+		about: "Acerca de Didi",
+		endSession: "Cerrar Sesion"
 	},
 	share: {
 		title: "Credencial Didi",

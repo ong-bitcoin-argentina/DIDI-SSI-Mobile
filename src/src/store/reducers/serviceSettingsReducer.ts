@@ -8,7 +8,7 @@ export interface ServiceSettingAction {
 
 export const defaultServiceSettings: ServiceSettings = {
 	sharePrefix: "http://192.168.2.144:8080/api/credential_viewer",
-	trustGraphUri: "https://edge.uport.me/graphql",
+	trustGraphUri: "http://192.168.2.144:3001/graphql",
 	ethrDidUri: "https://rinkeby.infura.io/ethr-did",
 	didiUserServer: "http://192.168.2.144:3000/api/1.0/didi"
 };

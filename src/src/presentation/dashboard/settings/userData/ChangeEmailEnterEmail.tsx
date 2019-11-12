@@ -1,13 +1,13 @@
 import React from "react";
 
 import { EnterEmailScreen } from "../../../common/EnterEmail";
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../../common/ServiceObserver";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { isPendingService } from "../../../../services/ServiceStateStore";
 import { sendMailValidator } from "../../../../services/user/sendMailValidator";
 import { didiConnect } from "../../../../store/store";
-import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 
 import { ChangeEmailVerifyScreenProps } from "./ChangeEmailVerifyEmail";
@@ -38,13 +38,13 @@ class ChangeEmailEnterEmailScreen extends NavigationEnabledComponent<
 	ChangeEmailEnterEmailState,
 	ChangeEmailEnterEmailNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Cambiar Email");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changeEmail.screenTitle);
 
 	render() {
 		return (
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.advance()}>
 				<EnterEmailScreen
-					description={strings.recovery.enterEmail.messageHead}
+					description={strings.dashboard.userData.changeEmail.messageHead}
 					contentImageSource={require("../../../resources/images/emailRecover.png")}
 					buttonTitle={strings.accessCommon.recoverButtonText}
 					isPasswordRequired={true}
