@@ -28,7 +28,7 @@ export class ChangeEmailVerifyScreen extends NavigationEnabledComponent<
 		return (
 			<VerifyCodeWrapper
 				description={strings.accessCommon.verify.emailMessageHead}
-				contentImageSource={require("../../../access/resources/images/loginVerify.png")}
+				contentImageSource={require("../../../resources/images/loginVerify.png")}
 				serviceCall={(serviceKey, validationCode) => changeEmail(serviceKey, this.props.email, validationCode)}
 				onServiceSuccess={() => this.onSuccess()}
 			/>

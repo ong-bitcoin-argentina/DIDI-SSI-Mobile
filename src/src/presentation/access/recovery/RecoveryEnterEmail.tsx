@@ -49,7 +49,7 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.advance()}>
 				<EnterEmailScreen
 					description={strings.recovery.enterEmail.messageHead}
-					contentImageSource={require("../resources/images/emailRecover.png")}
+					contentImageSource={require("../../resources/images/emailRecover.png")}
 					buttonTitle={strings.accessCommon.recoverButtonText}
 					isPasswordRequired={true}
 					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password!)}

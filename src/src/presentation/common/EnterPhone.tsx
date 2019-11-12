@@ -71,7 +71,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 	}
 
 	private countryImageSource(): ImageSourcePropType {
-		return require("../access/resources/images/arg.png");
+		return require("../resources/images/arg.png");
 	}
 }
 

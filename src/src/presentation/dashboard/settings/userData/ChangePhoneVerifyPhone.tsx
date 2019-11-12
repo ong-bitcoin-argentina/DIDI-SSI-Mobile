@@ -28,7 +28,7 @@ export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
 		return (
 			<VerifyCodeWrapper
 				description={strings.accessCommon.verify.phoneMessageHead}
-				contentImageSource={require("../../../access/resources/images/loginVerify.png")}
+				contentImageSource={require("../../../resources/images/loginVerify.png")}
 				serviceCall={(serviceKey, validationCode) =>
 					changePhoneNumber(serviceKey, this.props.phoneNumber, validationCode)
 				}

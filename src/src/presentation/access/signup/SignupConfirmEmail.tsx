@@ -50,7 +50,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 				<ServiceObserver serviceKey={serviceKeyRegister} onSuccess={() => this.navigate("SignupConfirmed", {})} />
 				<VerifyCodeScreen
 					description={strings.signup.registrationEmailSent.message}
-					contentImageSource={require("../resources/images/emailSent.png")}
+					contentImageSource={require("../../resources/images/emailSent.png")}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
 					isContinuePending={this.props.registerUserPending || this.props.verifyEmailCodePending}
 				/>

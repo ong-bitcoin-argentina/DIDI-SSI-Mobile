@@ -43,7 +43,7 @@ class LoginScreen extends NavigationEnabledComponent<
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.navigate("Dashboard", {})}>
 				<EnterEmailScreen
 					description={strings.login.messageHead}
-					contentImageSource={require("../resources/images/login.png")}
+					contentImageSource={require("../../resources/images/login.png")}
 					buttonTitle={strings.login.buttonText}
 					isPasswordRequired={true}
 					onPressContinueButton={(email, password) => this.props.login(email, password!)}

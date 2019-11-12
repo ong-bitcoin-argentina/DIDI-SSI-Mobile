@@ -46,7 +46,7 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.advance()}>
 				<EnterEmailScreen
 					description={strings.signup.enterEmail.messageHead}
-					contentImageSource={require("../resources/images/saveClean.png")}
+					contentImageSource={require("../../resources/images/saveClean.png")}
 					buttonTitle={strings.signup.enterEmail.backupGenerate}
 					isPasswordRequired="duplicate"
 					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password!)}

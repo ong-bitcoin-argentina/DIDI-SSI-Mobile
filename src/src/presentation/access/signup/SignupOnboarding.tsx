@@ -96,7 +96,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 				<View pointerEvents="box-none" style={styles.closeArea}>
 					<TouchableOpacity style={styles.closeContainer} onPress={() => this.goBack()}>
 						<Text style={styles.closeButtonText}>{strings.signup.onboarding.close}</Text>
-						<Image style={styles.closeButtonImage} source={require("../resources/images/onboardingExit.png")} />
+						<Image style={styles.closeButtonImage} source={require("../../resources/images/onboardingExit.png")} />
 					</TouchableOpacity>
 				</View>
 				<View pointerEvents="box-none" style={styles.cardArea} />
@@ -135,8 +135,8 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 	}
 
 	private renderDots() {
-		const emptyDot = require("../resources/images/onboardingCircle.png");
-		const selectedDot = require("../resources/images/onboardingCircleActive.png");
+		const emptyDot = require("../../resources/images/onboardingCircle.png");
+		const selectedDot = require("../../resources/images/onboardingCircleActive.png");
 		return (
 			<View style={styles.dotContainer}>
 				{onboardingPages.map((_, index) => {

@@ -24,7 +24,7 @@ export class ChangePhoneEnterScreen extends NavigationEnabledComponent<
 			<EnterPhoneWrapper
 				isPasswordRequired={true}
 				password={null}
-				contentImageSource={require("../../../access/resources/images/loginVerify.png")}
+				contentImageSource={require("../../../resources/images/loginVerify.png")}
 				onServiceSuccess={phoneNumber => this.navigate("ChangePhoneVerify", { phoneNumber })}
 			/>
 		);

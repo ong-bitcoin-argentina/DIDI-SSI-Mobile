@@ -25,7 +25,7 @@ export class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 		return (
 			<EnterEmailScreen
 				description={strings.recovery.passwordRecover.messageHead}
-				contentImageSource={require("../resources/images/recoverPassword.png")}
+				contentImageSource={require("../../resources/images/recoverPassword.png")}
 				buttonTitle={strings.accessCommon.recoverButtonText}
 				isPasswordRequired={false}
 				onPressContinueButton={(email, password) => this.sendEmail(email, password)}

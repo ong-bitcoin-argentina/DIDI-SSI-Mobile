@@ -35,13 +35,13 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 				<DidiTextInput
 					description={strings.signup.phoneVerified.cellNumber}
 					placeholder={this.props.phoneNumber}
-					tagImage={require("../resources/images/phone.png")}
+					tagImage={require("../../resources/images/phone.png")}
 					textInputProps={{
 						editable: false
 					}}
 				/>
 
-				<Image source={require("../resources/images/accountCreate.png")} style={commonStyles.image.image} />
+				<Image source={require("../../resources/images/accountCreate.png")} style={commonStyles.image.image} />
 
 				<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.message}</Text>
 

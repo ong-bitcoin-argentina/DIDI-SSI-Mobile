@@ -29,7 +29,7 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 			<DidiScreen>
 				<View />
 
-				<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
+				<Image source={require("../../resources/images/emailSent.png")} style={commonStyles.image.image} />
 
 				<Text style={[commonStyles.text.normal, styles.message]}>
 					{strings.recovery.passwordRecoverEmailSent.message}

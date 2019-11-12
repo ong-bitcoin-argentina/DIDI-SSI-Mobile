@@ -49,7 +49,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 			<DidiTextInput
 				description={strings.textInput.email.description}
 				placeholder={strings.textInput.email.placeholder}
-				tagImage={require("../access/resources/images/email.png")}
+				tagImage={require("../resources/images/email.png")}
 				textInputProps={{
 					keyboardType: "email-address",
 					onChangeText: props.onChangeText
@@ -63,7 +63,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 			<DidiTextInput
 				description={strings.textInput.verificationCode.description}
 				placeholder={strings.textInput.verificationCode.placeholder}
-				tagImage={require("../access/resources/images/phone.png")}
+				tagImage={require("../resources/images/phone.png")}
 				textInputProps={{
 					keyboardType: "number-pad",
 					onChangeText: props.onChangeText
@@ -77,7 +77,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 			<DidiTextInput
 				description={strings.textInput.cellPhoneNumber.description}
 				placeholder={strings.textInput.cellPhoneNumber.placeholder}
-				tagImage={require("../access/resources/images/phone.png")}
+				tagImage={require("../resources/images/phone.png")}
 				textInputProps={{
 					keyboardType: "phone-pad",
 					onChangeText: props.onChangeText
@@ -94,7 +94,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 			<DidiTextInput
 				description={strings.textInput.password[props.descriptionType]}
 				placeholder=""
-				tagImage={require("../access/resources/images/key.png")}
+				tagImage={require("../resources/images/key.png")}
 				textInputProps={{
 					secureTextEntry: true,
 					onChangeText: props.onChangeText

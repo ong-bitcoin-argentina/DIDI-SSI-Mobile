@@ -38,7 +38,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 			<DidiScreen>
 				<Text style={commonStyles.text.emphasis}>{strings.recovery.passwordChange.messageHead}</Text>
 
-				<Image source={require("../resources/images/recoverPassword.png")} style={commonStyles.image.image} />
+				<Image source={require("../../resources/images/recoverPassword.png")} style={commonStyles.image.image} />
 
 				<DidiTextInput.Password onChangeText={text => this.setState({ key: text })} descriptionType="NEW" />
 

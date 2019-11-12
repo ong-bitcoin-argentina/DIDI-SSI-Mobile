@@ -26,7 +26,7 @@ export class SignupEnterPhoneScreen extends NavigationEnabledComponent<
 			<EnterPhoneWrapper
 				isPasswordRequired={false}
 				password={null}
-				contentImageSource={require("../resources/images/loginVerify.png")}
+				contentImageSource={require("../../resources/images/loginVerify.png")}
 				onServiceSuccess={phoneNumber => this.navigate("SignupVerifyPhone", { phoneNumber })}
 			/>
 		);
