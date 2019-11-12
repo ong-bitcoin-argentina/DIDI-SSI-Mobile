@@ -38,7 +38,7 @@ export class ValidateIdentityLivenessScreen extends ValidateIdentityTakePhotoScr
 			title: strings.validateIdentity.explainLiveness.title,
 			header: strings.validateIdentity.explainLiveness.header,
 			description: <Text style={styles.description}>{strings.validateIdentity.explainLiveness.description}</Text>,
-			image: require("../resources/images/validateIdentityExplainLiveness.png")
+			image: require("../../resources/images/validateIdentityExplainLiveness.png")
 		};
 	}
 }

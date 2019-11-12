@@ -3,7 +3,7 @@ import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View, ViewPr
 import { RNCamera, TakePictureResponse } from "react-native-camera";
 
 import colors from "../../resources/colors";
-import Checkmark from "../resources/images/checkmark.svg";
+import Checkmark from "../../resources/images/cameraCheckmark.svg";
 
 export interface DidiCameraProps {
 	onPictureTaken(response: TakePictureResponse): void;

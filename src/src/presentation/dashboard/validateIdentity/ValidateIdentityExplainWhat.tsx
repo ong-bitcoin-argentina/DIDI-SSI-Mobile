@@ -28,7 +28,7 @@ export class ValidateIdentityExplainWhatScreen extends NavigationEnabledComponen
 				title={strings.validateIdentity.welcome}
 				header={strings.validateIdentity.what.header}
 				description={<Text style={styles.description}>{strings.validateIdentity.what.description}</Text>}
-				image={require("../resources/images/validateIdentityWhat.png")}
+				image={require("../../resources/images/validateIdentityWhat.png")}
 				buttonText={strings.validateIdentity.what.buttonText}
 				buttonAction={() => this.navigate("ValidateIdentityHow", {})}
 			/>

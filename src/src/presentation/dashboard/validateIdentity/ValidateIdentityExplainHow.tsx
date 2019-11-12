@@ -41,7 +41,7 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 						})}
 					</View>
 				}
-				image={require("../resources/images/validateIdentityHow.png")}
+				image={require("../../resources/images/validateIdentityHow.png")}
 				buttonText={strings.validateIdentity.howTo.buttonText}
 				buttonAction={() => this.navigate("ValidateIdentityFront", {})}
 			/>
