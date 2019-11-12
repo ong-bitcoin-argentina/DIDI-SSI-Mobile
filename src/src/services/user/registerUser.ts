@@ -1,9 +1,9 @@
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
 import { EthrDID } from "../../uPort/types/EthrDID";
-import { ensureDid } from "../internal/ensureDid";
 import { getPrivateKeySeed } from "../internal/getPrivateKeySeed";
 import { getState } from "../internal/getState";
+import { withExistingDid } from "../internal/withExistingDid";
 
 import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
@@ -35,7 +35,7 @@ const registerUserComponent = buildComponentServiceCall(doRegisterUser);
 export function registerUser(serviceKey: string, email: string, password: string, phoneNumber: string) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {}, did => {
+		return withExistingDid(serviceKey, {}, did => {
 			return getPrivateKeySeed(serviceKey, { did }, privateKeySeed => {
 				const args: RegisterUserArguments = {
 					baseUrl,

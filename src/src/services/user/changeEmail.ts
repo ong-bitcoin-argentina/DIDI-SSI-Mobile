@@ -1,8 +1,8 @@
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
 import { EthrDID } from "../../uPort/types/EthrDID";
-import { ensureDid } from "../internal/ensureDid";
 import { getState } from "../internal/getState";
+import { withExistingDid } from "../internal/withExistingDid";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
@@ -26,7 +26,7 @@ const changeEmailComponent = buildComponentServiceCall(doChangeEmail);
 export function changeEmail(serviceKey: string, newEmail: string, validationCode: string) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {}, did => {
+		return withExistingDid(serviceKey, {}, did => {
 			return changeEmailComponent(serviceKey, { baseUrl, did, validationCode, newEmail }, () => {
 				return serviceCallSuccess(serviceKey);
 			});

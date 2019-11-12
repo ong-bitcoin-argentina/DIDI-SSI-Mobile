@@ -1,20 +1,13 @@
 import { isRight, left, right } from "fp-ts/lib/Either";
 
 import TypedArray from "../../util/TypedArray";
-import {
-	buildComponentServiceCall,
-	serviceCallDrop,
-	serviceCallSuccess,
-	simpleAction
-} from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallDrop, simpleAction } from "../common/componentServiceCall";
 import { serviceErrors } from "../common/serviceErrors";
 
-import { StoreAction } from "../../store/StoreAction";
 import parseJWT from "../../uPort/parseJWT";
 import { TrustGraphClient } from "../../uPort/TrustGraphClient";
-import { ensureDid } from "../internal/ensureDid";
 import { getState } from "../internal/getState";
-import { ServiceCallAction } from "../ServiceStateStore";
+import { withExistingDid } from "../internal/withExistingDid";
 
 interface RecoverTokensArguments {
 	trustGraphUri: string;
@@ -48,7 +41,7 @@ export function recoverTokens() {
 	return getState(serviceKey, {}, store => {
 		const { trustGraphUri, ethrDidUri } = store.serviceSettings;
 		// TODO: Combine this and part of TrustGraphClient creation into getSigner
-		return ensureDid(serviceKey, {}, didData => {
+		return withExistingDid(serviceKey, {}, didData => {
 			return recoverTokensComponent(serviceKey, { trustGraphUri, ethrDidUri }, tokens => {
 				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: tokens }, () => {
 					return serviceCallDrop(serviceKey);

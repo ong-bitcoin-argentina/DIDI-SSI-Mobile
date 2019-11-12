@@ -5,20 +5,18 @@ import { buildComponentServiceCall } from "../common/componentServiceCall";
 import { ErrorData, serviceErrors } from "../common/serviceErrors";
 
 import { EthrDID } from "../../uPort/types/EthrDID";
-import { ServiceCallAction } from "../ServiceStateStore";
 
-async function doEnsureDid(args: {}): Promise<Either<ErrorData, EthrDID>> {
+async function doWithExistingDid(args: {}): Promise<Either<ErrorData, EthrDID>> {
 	try {
 		const addresses = await RNUportHDSigner.listSeedAddresses();
-		const addressToUse = addresses.length === 0 ? (await RNUportHDSigner.createSeed("simple")).address : addresses[0];
-		return EthrDID.fromKeyAddress(addressToUse);
+		if (addresses.length === 0) {
+			return left(serviceErrors.did.READ_ERROR);
+		} else {
+			return EthrDID.fromKeyAddress(addresses[0]);
+		}
 	} catch (e) {
 		return left({ ...serviceErrors.did.READ_ERROR, message: e instanceof Error ? e.message : JSON.stringify(e) });
 	}
 }
 
-const ensureDidComponent = buildComponentServiceCall(doEnsureDid);
-
-export function ensureDid(serviceKey: string, andThen: ServiceCallAction) {
-	return ensureDidComponent(serviceKey, {}, did => andThen);
-}
+export const withExistingDid = buildComponentServiceCall(doWithExistingDid);

@@ -1,6 +1,7 @@
 import { boolean } from "io-ts";
 import React from "react";
 
+import { ensureDid } from "../../services/internal/ensureDid";
 import { isPendingService } from "../../services/ServiceStateStore";
 import { sendSmsValidator } from "../../services/user/sendSmsValidator";
 import { didiConnect } from "../../store/store";
@@ -11,6 +12,7 @@ import { ServiceObserver } from "./ServiceObserver";
 export interface EnterPhoneWrapperProps {
 	onServiceSuccess(phoneNumber: string): void;
 	contentImageSource: EnterPhoneProps["contentImageSource"];
+	shouldCreateDid: boolean;
 	isPasswordRequired: boolean;
 	password: string | null;
 }
@@ -19,7 +21,7 @@ interface EnterPhoneWrapperStateProps {
 	requestSmsCodePending: boolean;
 }
 interface EnterPhoneWrapperDispatchProps {
-	requestSmsCode: (cellPhoneNumber: string, password: string | null) => void;
+	requestSmsCode: (createDid: boolean, cellPhoneNumber: string, password: string | null) => void;
 }
 type EnterPhoneInternalProps = EnterPhoneWrapperProps & EnterPhoneWrapperStateProps & EnterPhoneWrapperDispatchProps;
 
@@ -45,7 +47,7 @@ class EnterPhoneWrapper extends React.Component<EnterPhoneInternalProps, { phone
 
 	private onPressContinueButton(inputPhoneNumber: string, password: string | null) {
 		this.setState({ phoneNumber: inputPhoneNumber });
-		this.props.requestSmsCode(inputPhoneNumber, password || this.props.password);
+		this.props.requestSmsCode(this.props.shouldCreateDid, inputPhoneNumber, password || this.props.password);
 	}
 }
 
@@ -55,8 +57,13 @@ const connected = didiConnect(
 		requestSmsCodePending: isPendingService(state.serviceCalls[serviceKey])
 	}),
 	(dispatch): EnterPhoneWrapperDispatchProps => ({
-		requestSmsCode: (cellPhoneNumber: string, password: string | null) =>
-			dispatch(sendSmsValidator(serviceKey, cellPhoneNumber, password))
+		requestSmsCode: (createDid: boolean, cellPhoneNumber: string, password: string | null) => {
+			let call = sendSmsValidator(serviceKey, cellPhoneNumber, password);
+			if (createDid) {
+				call = ensureDid(serviceKey, call);
+			}
+			dispatch(call);
+		}
 	})
 );
 

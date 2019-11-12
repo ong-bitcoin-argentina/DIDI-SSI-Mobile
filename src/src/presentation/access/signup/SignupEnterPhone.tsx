@@ -1,9 +1,9 @@
 import React from "react";
 
 import { EnterPhoneWrapper } from "../../common/EnterPhoneWrapper";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { SignupVerifyPhoneProps } from "./SignupVerifyPhone";
@@ -24,6 +24,7 @@ export class SignupEnterPhoneScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<EnterPhoneWrapper
+				shouldCreateDid={true}
 				isPasswordRequired={false}
 				password={null}
 				contentImageSource={require("../../resources/images/loginVerify.png")}

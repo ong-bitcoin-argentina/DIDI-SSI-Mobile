@@ -1,9 +1,8 @@
 import React from "react";
 
 import { EnterPhoneWrapper } from "../../common/EnterPhoneWrapper";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { RecoveryVerifyPhoneProps } from "./RecoveryVerifyPhone";
 
@@ -25,6 +24,7 @@ export class RecoveryEnterPhoneScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<EnterPhoneWrapper
+				shouldCreateDid={false}
 				isPasswordRequired={true}
 				password={this.props.password}
 				contentImageSource={require("../../resources/images/phoneRecover.png")}
