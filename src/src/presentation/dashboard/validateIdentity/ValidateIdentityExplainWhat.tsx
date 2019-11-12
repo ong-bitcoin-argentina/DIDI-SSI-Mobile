@@ -3,7 +3,7 @@ import { StyleSheet, Text } from "react-native";
 
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { ValidateIdentityExplainHowProps } from "./ValidateIdentityExplainHow";

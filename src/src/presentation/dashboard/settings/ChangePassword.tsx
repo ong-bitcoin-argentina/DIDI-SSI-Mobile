@@ -11,7 +11,7 @@ import { isPendingService } from "../../../services/ServiceStateStore";
 import { changePassword } from "../../../services/user/changePassword";
 import { didiConnect } from "../../../store/store";
 import Validator from "../../access/helpers/validator";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 export type ChangePasswordProps = {};

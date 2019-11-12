@@ -5,7 +5,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { verifySmsCode } from "../../../services/user/verifySmsCode";
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 export type RecoveryVerifyPhoneProps = {};

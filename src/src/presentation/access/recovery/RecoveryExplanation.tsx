@@ -6,7 +6,7 @@ import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { RecoveryEnterEmailProps } from "./RecoveryEnterEmail";

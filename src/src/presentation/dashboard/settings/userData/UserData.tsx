@@ -9,7 +9,7 @@ import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 import { Identity, WithValidationState } from "../../../../model/Identity";
 import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 

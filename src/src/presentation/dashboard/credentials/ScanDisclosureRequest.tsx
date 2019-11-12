@@ -18,7 +18,7 @@ import {
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { didiConnect } from "../../../store/store";
 import { getResponseClaims, signDisclosureResponse } from "../../../uPort/createDisclosureResponse";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
 import { ScanCredentialProps } from "./ScanCredential";
 

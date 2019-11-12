@@ -4,7 +4,7 @@ import { DidiScreen } from "../../common/DidiScreen";
 import { ServiceSettingsPanel } from "../../common/ServiceSettingsPanel";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
 export type ServiceSettingsScreenProps = {};
 

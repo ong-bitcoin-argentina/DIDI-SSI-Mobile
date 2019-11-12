@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import colors from "../../resources/colors";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";

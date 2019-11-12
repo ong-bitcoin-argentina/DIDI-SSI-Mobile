@@ -7,7 +7,7 @@ import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import NavMap, { NavigationEnabledComponentConstructor, NavTree } from "../util/NavMap";
 
 import { StartAccessProps } from "../access/StartAccess";
-import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
 

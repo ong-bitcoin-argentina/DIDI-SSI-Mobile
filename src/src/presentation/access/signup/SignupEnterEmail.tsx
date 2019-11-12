@@ -7,7 +7,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { sendMailValidator } from "../../../services/user/sendMailValidator";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { SignupConfirmEmailProps } from "./SignupConfirmEmail";

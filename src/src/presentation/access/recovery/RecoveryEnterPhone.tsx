@@ -3,7 +3,7 @@ import React from "react";
 import { EnterPhoneWrapper } from "../../common/EnterPhoneWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
 import { RecoveryVerifyPhoneProps } from "./RecoveryVerifyPhone";
 

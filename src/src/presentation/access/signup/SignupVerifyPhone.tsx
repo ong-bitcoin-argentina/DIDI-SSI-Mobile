@@ -5,7 +5,7 @@ import { VerifyCodeWrapper } from "../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { verifySmsCode } from "../../../services/user/verifySmsCode";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { SignupPhoneVerifiedProps } from "./SignupPhoneVerified";

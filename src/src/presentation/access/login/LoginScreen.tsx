@@ -8,7 +8,7 @@ import { isPendingService } from "../../../services/ServiceStateStore";
 import { userLogin } from "../../../services/user/userLogin";
 import { didiConnect } from "../../../store/store";
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 export interface LoginScreenProps {}

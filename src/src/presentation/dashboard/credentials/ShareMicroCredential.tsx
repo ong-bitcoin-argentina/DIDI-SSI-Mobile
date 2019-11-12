@@ -7,7 +7,7 @@ import { uPortDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";

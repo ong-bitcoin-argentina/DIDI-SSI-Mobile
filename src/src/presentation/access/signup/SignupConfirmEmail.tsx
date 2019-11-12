@@ -8,7 +8,7 @@ import { isPendingService } from "../../../services/ServiceStateStore";
 import { registerUser } from "../../../services/user/registerUser";
 import { verifyEmailCode } from "../../../services/user/verifyEmailCode";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { SignupConfirmedProps } from "./SignupConfirmed";

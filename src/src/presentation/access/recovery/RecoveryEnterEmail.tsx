@@ -8,7 +8,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { recoverAccount } from "../../../services/user/recoverAccount";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import { ForgotPasswordEnterEmailProps } from "../forgotPassword/ForgotPasswordEnterEmail";
 

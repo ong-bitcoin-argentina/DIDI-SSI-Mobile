@@ -7,7 +7,7 @@ import DidiQRScanner from "../common/DidiQRScanner";
 
 import { didiConnect } from "../../../store/store";
 import parseJWT, { compareParseResults, JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";

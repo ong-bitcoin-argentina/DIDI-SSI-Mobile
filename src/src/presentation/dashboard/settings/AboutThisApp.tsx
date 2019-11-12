@@ -4,7 +4,7 @@ import { Text } from "react-native";
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
 export type AboutThisAppScreenProps = {};
 type AboutThisAppScreenState = {};

@@ -5,7 +5,7 @@ import { Alert, StatusBar } from "react-native";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiQRScanner from "../common/DidiQRScanner";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 
 export type JWTDecoderScanScreenProps = {};

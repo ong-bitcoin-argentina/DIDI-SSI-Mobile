@@ -5,7 +5,7 @@ import DidiButton from "../util/DidiButton";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
 import colors from "../resources/colors";
-import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
 import { SplashContent } from "../SplashContent";

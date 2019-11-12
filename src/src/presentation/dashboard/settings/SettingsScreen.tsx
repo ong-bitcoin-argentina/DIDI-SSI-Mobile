@@ -10,7 +10,7 @@ import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
 import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
 import OpenPersonDetail from "../../resources/images/openPersonDetail.svg";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";

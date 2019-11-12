@@ -5,7 +5,7 @@ import { VerifyCodeWrapper } from "../../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { changeEmail } from "../../../../services/user/changeEmail";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 
 import { UserDataProps } from "./UserData";

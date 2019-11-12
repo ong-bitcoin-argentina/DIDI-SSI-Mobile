@@ -16,7 +16,7 @@ import {
 import commonStyles from "../../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import onboardingPages, { OnboardingPage } from "../../resources/onboardingPages";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";

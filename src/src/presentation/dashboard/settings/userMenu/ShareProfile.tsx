@@ -7,7 +7,7 @@ import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent
 
 import { Identity } from "../../../../model/Identity";
 import { didiConnect } from "../../../../store/store";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 
 export type ShareProfileProps = {};

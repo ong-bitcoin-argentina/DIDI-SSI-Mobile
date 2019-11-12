@@ -8,7 +8,7 @@ import { uPortDocumentToCard } from "../common/documentToCard";
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";

@@ -7,7 +7,7 @@ import commonStyles from "../../../resources/commonStyles";
 import { DidiScreen } from "../../../common/DidiScreen";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import themes from "../../../resources/themes";
 
 import { CredentialRecoveryComponent } from "./CredentialRecoveryComponent";
