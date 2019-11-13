@@ -3,7 +3,6 @@ import NavMap, { NavTree } from "../util/NavMap";
 import { DashboardScreenProps } from "../dashboard/home/Dashboard";
 
 import { AccessSettingsScreen } from "./AccessSettings";
-import { ForgotPasswordConfirmEmailScreen } from "./forgotPassword/ForgotPasswordConfirmEmail";
 import { ForgotPasswordEmailSentScreen } from "./forgotPassword/ForgotPasswordEmailSent";
 import { ForgotPasswordEnterEmailScreen } from "./forgotPassword/ForgotPasswordEnterEmail";
 import { ForgotPasswordNewPasswordScreen } from "./forgotPassword/ForgotPasswordNewPassword";
@@ -48,9 +47,7 @@ function signup(then: NavTree<AccessSwitchTarget>) {
 function forgotPassword(then: NavTree<AccessSwitchTarget>) {
 	return NavMap.from(ForgotPasswordEnterEmailScreen, {
 		ForgotPasswordEmailSent: NavMap.from(ForgotPasswordEmailSentScreen, {
-			ForgotPasswordConfirmEmail: NavMap.from(ForgotPasswordConfirmEmailScreen, {
-				ForgotPasswordNewPassword: NavMap.from(ForgotPasswordNewPasswordScreen, then)
-			})
+			ForgotPasswordNewPassword: NavMap.from(ForgotPasswordNewPasswordScreen, then)
 		})
 	});
 }
