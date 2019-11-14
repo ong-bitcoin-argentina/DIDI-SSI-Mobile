@@ -28,7 +28,9 @@ export class RecoveryEnterPhoneScreen extends NavigationEnabledComponent<
 				isPasswordRequired={true}
 				password={this.props.password}
 				contentImageSource={require("../../resources/images/phoneRecover.png")}
-				onServiceSuccess={() => this.navigate("RecoveryVerifyPhone", {})}
+				onServiceSuccess={phoneNumber =>
+					this.navigate("RecoveryVerifyPhone", { newPhoneNumber: phoneNumber, password: this.props.password })
+				}
 			/>
 		);
 	}

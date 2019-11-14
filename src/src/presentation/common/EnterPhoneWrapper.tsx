@@ -1,4 +1,3 @@
-import { boolean } from "io-ts";
 import React from "react";
 
 import { ensureDid } from "../../services/internal/ensureDid";
@@ -10,7 +9,7 @@ import { EnterPhoneProps, EnterPhoneScreen } from "./EnterPhone";
 import { ServiceObserver } from "./ServiceObserver";
 
 export interface EnterPhoneWrapperProps {
-	onServiceSuccess(phoneNumber: string): void;
+	onServiceSuccess(phoneNumber: string, password: string | null): void;
 	contentImageSource: EnterPhoneProps["contentImageSource"];
 	shouldCreateDid: boolean;
 	isPasswordRequired: boolean;
@@ -25,16 +24,27 @@ interface EnterPhoneWrapperDispatchProps {
 }
 type EnterPhoneInternalProps = EnterPhoneWrapperProps & EnterPhoneWrapperStateProps & EnterPhoneWrapperDispatchProps;
 
+interface EnterPhoneState {
+	phoneNumber: string;
+	password: string | null;
+}
+
 const serviceKey = "EnterPhone";
 
-class EnterPhoneWrapper extends React.Component<EnterPhoneInternalProps, { phoneNumber: string }> {
+class EnterPhoneWrapper extends React.Component<EnterPhoneInternalProps, EnterPhoneState> {
 	constructor(props: EnterPhoneInternalProps) {
 		super(props);
-		this.state = { phoneNumber: "" };
+		this.state = {
+			phoneNumber: "",
+			password: ""
+		};
 	}
 	render() {
 		return (
-			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.props.onServiceSuccess(this.state.phoneNumber)}>
+			<ServiceObserver
+				serviceKey={serviceKey}
+				onSuccess={() => this.props.onServiceSuccess(this.state.phoneNumber, this.state.password)}
+			>
 				<EnterPhoneScreen
 					{...this.props}
 					isPasswordRequired={this.props.isPasswordRequired && this.props.password === null}
@@ -46,8 +56,9 @@ class EnterPhoneWrapper extends React.Component<EnterPhoneInternalProps, { phone
 	}
 
 	private onPressContinueButton(inputPhoneNumber: string, password: string | null) {
-		this.setState({ phoneNumber: inputPhoneNumber });
-		this.props.requestSmsCode(this.props.shouldCreateDid, inputPhoneNumber, password || this.props.password);
+		const effectivePassword = password || this.props.password;
+		this.setState({ phoneNumber: inputPhoneNumber, password: effectivePassword });
+		this.props.requestSmsCode(this.props.shouldCreateDid, inputPhoneNumber, effectivePassword);
 	}
 }
 

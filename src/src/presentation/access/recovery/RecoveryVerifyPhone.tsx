@@ -1,14 +1,17 @@
 import React from "react";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { VerifyCodeWrapper } from "../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import { verifySmsCode } from "../../../services/user/verifySmsCode";
+import { changePhoneNumber } from "../../../services/user/changePhoneNumber";
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-export type RecoveryVerifyPhoneProps = {};
+export interface RecoveryVerifyPhoneProps {
+	newPhoneNumber: string;
+	password: string;
+}
 
 export type RecoveryVerifyPhoneNavigation = {
 	Dashboard: DashboardScreenProps;
@@ -26,7 +29,9 @@ export class RecoveryVerifyPhoneScreen extends NavigationEnabledComponent<
 			<VerifyCodeWrapper
 				description={strings.accessCommon.verify.phoneMessageHead}
 				contentImageSource={require("../../resources/images/phoneRecover.png")}
-				serviceCall={verifySmsCode}
+				serviceCall={(serviceKey, validationCode) =>
+					changePhoneNumber(serviceKey, this.props.password, this.props.newPhoneNumber, validationCode)
+				}
 				onServiceSuccess={() => this.navigate("Dashboard", {})}
 			/>
 		);

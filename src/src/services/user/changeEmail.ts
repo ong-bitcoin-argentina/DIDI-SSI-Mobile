@@ -11,23 +11,29 @@ export interface ChangeEmailArguments {
 	did: EthrDID;
 	validationCode: string;
 	newEmail: string;
+	password: string;
 }
 
 async function doChangeEmail(args: ChangeEmailArguments) {
 	return commonUserRequest(
 		`${args.baseUrl}/changeEmail`,
-		{ eMailValidationCode: args.validationCode, did: args.did.did(), newEMail: args.newEmail },
+		{
+			did: args.did.did(),
+			eMailValidationCode: args.validationCode,
+			newEMail: args.newEmail,
+			password: args.password
+		},
 		singleCertificateCodec
 	);
 }
 
 const changeEmailComponent = buildComponentServiceCall(doChangeEmail);
 
-export function changeEmail(serviceKey: string, newEmail: string, validationCode: string) {
+export function changeEmail(serviceKey: string, password: string, newEmail: string, validationCode: string) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
 		return withExistingDid(serviceKey, {}, did => {
-			return changeEmailComponent(serviceKey, { baseUrl, did, validationCode, newEmail }, () => {
+			return changeEmailComponent(serviceKey, { baseUrl, did, validationCode, newEmail, password }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

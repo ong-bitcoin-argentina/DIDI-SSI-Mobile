@@ -9,25 +9,36 @@ import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 export interface ChangePhoneNumberArguments {
 	baseUrl: string;
 	did: EthrDID;
-	validationCode: string;
+	password: string;
 	newPhoneNumber: string;
+	validationCode: string;
 }
 
 async function doChangePhoneNumber(args: ChangePhoneNumberArguments) {
 	return commonUserRequest(
 		`${args.baseUrl}/changePhoneNumber`,
-		{ phoneValidationCode: args.validationCode, did: args.did.did(), newPhoneNumber: args.newPhoneNumber },
+		{
+			did: args.did.did(),
+			phoneValidationCode: args.validationCode,
+			newPhoneNumber: args.newPhoneNumber,
+			password: args.password
+		},
 		singleCertificateCodec
 	);
 }
 
 const changePhoneNumberComponent = buildComponentServiceCall(doChangePhoneNumber);
 
-export function changePhoneNumber(serviceKey: string, newPhoneNumber: string, validationCode: string) {
+export function changePhoneNumber(
+	serviceKey: string,
+	password: string,
+	newPhoneNumber: string,
+	validationCode: string
+) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
 		return withExistingDid(serviceKey, {}, did => {
-			return changePhoneNumberComponent(serviceKey, { baseUrl, did, validationCode, newPhoneNumber }, () => {
+			return changePhoneNumberComponent(serviceKey, { baseUrl, did, password, validationCode, newPhoneNumber }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

@@ -1,17 +1,18 @@
 import React from "react";
 import { Alert } from "react-native";
 
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import { VerifyCodeWrapper } from "../../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { changePhoneNumber } from "../../../../services/user/changePhoneNumber";
-import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 
 import { UserDataProps } from "./UserData";
 
 export interface ChangePhoneVerifyScreenProps {
-	phoneNumber: string;
+	newPhoneNumber: string;
+	password: string;
 }
 export interface ChangePhoneVerifyScreenNavigation {
 	UserData: UserDataProps;
@@ -30,7 +31,7 @@ export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
 				description={strings.accessCommon.verify.phoneMessageHead}
 				contentImageSource={require("../../../resources/images/loginVerify.png")}
 				serviceCall={(serviceKey, validationCode) =>
-					changePhoneNumber(serviceKey, this.props.phoneNumber, validationCode)
+					changePhoneNumber(serviceKey, this.props.password, this.props.newPhoneNumber, validationCode)
 				}
 				onServiceSuccess={() => this.onSuccess()}
 			/>

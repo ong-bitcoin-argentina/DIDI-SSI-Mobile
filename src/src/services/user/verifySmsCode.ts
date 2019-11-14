@@ -9,24 +9,29 @@ import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 export interface VerifySmsCodeArguments {
 	baseUrl: string;
 	did: EthrDID;
+	phoneNumber: string;
 	validationCode: string;
 }
 
 async function doVerifySmsCode(args: VerifySmsCodeArguments) {
 	return commonUserRequest(
 		`${args.baseUrl}/verifySmsCode`,
-		{ validationCode: args.validationCode, did: args.did.did() },
+		{
+			validationCode: args.validationCode,
+			cellPhoneNumber: args.phoneNumber,
+			did: args.did.did()
+		},
 		singleCertificateCodec
 	);
 }
 
 const verifySmsCodeComponent = buildComponentServiceCall(doVerifySmsCode);
 
-export function verifySmsCode(serviceKey: string, validationCode: string) {
+export function verifySmsCode(serviceKey: string, phoneNumber: string, validationCode: string) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
 		return withExistingDid(serviceKey, {}, did => {
-			return verifySmsCodeComponent(serviceKey, { baseUrl, did, validationCode }, () => {
+			return verifySmsCodeComponent(serviceKey, { baseUrl, did, phoneNumber, validationCode }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

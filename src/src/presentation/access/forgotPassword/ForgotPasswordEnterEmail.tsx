@@ -59,7 +59,7 @@ class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 					buttonTitle={strings.accessCommon.recoverButtonText}
 					isPasswordRequired={false}
 					onPressContinueButton={(email, password) => this.onPressContinueButton(email)}
-					isContinuePending={false}
+					isContinuePending={this.props.sendMailValidatorPending}
 				/>
 			</ServiceObserver>
 		);

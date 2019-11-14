@@ -15,7 +15,11 @@ export interface RecoverPasswordArguments {
 async function doRecoverPassword(args: RecoverPasswordArguments) {
 	return commonUserRequest(
 		`${args.baseUrl}/recoverPassword`,
-		{ eMail: args.email, eMailValidationCode: args.validationCode, newPass: args.newPassword },
+		{
+			eMail: args.email,
+			eMailValidationCode: args.validationCode,
+			newPass: args.newPassword
+		},
 		emptyDataCodec
 	);
 }

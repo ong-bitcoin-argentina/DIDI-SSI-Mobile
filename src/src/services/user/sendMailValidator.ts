@@ -8,9 +8,11 @@ import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface SendMailValidatorArguments {
 	baseUrl: string;
-	did: EthrDID;
 	email: string;
-	password: string | null;
+	idCheck?: {
+		did: EthrDID;
+		password: string;
+	};
 }
 
 async function doSendMailValidator(args: SendMailValidatorArguments) {
@@ -18,8 +20,10 @@ async function doSendMailValidator(args: SendMailValidatorArguments) {
 		`${args.baseUrl}/sendMailValidator`,
 		{
 			eMail: args.email,
-			did: args.did.did(),
-			...(args.password ? { password: args.password } : {})
+			...(args.idCheck && {
+				did: args.idCheck.did.did(),
+				password: args.idCheck.password
+			})
 		},
 		emptyDataCodec
 	);
@@ -30,10 +34,16 @@ const sendMailValidatorComponent = buildComponentServiceCall(doSendMailValidator
 export function sendMailValidator(serviceKey: string, email: string, password: string | null) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return withExistingDid(serviceKey, {}, did => {
-			return sendMailValidatorComponent(serviceKey, { baseUrl, did, email, password }, () => {
+		if (password === null) {
+			return sendMailValidatorComponent(serviceKey, { baseUrl, email }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
-		});
+		} else {
+			return withExistingDid(serviceKey, {}, did => {
+				return sendMailValidatorComponent(serviceKey, { baseUrl, email, idCheck: { did, password } }, () => {
+					return serviceCallSuccess(serviceKey);
+				});
+			});
+		}
 	});
 }

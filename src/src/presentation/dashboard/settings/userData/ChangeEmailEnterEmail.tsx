@@ -24,7 +24,8 @@ type ChangeEmailEnterEmailInternalProps = ChangeEmailEnterEmailProps &
 	ChangeEmailEnterEmailDispatchProps;
 
 interface ChangeEmailEnterEmailState {
-	email: string;
+	newEmail: string;
+	password: string;
 }
 
 export interface ChangeEmailEnterEmailNavigation {
@@ -39,6 +40,14 @@ class ChangeEmailEnterEmailScreen extends NavigationEnabledComponent<
 	ChangeEmailEnterEmailNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changeEmail.screenTitle);
+
+	constructor(props: ChangeEmailEnterEmailInternalProps) {
+		super(props);
+		this.state = {
+			newEmail: "",
+			password: ""
+		};
+	}
 
 	render() {
 		return (
@@ -55,13 +64,13 @@ class ChangeEmailEnterEmailScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private onPressContinueButton(email: string, password: string) {
-		this.setState({ email });
-		this.props.sendMailValidator(email, password);
+	private onPressContinueButton(newEmail: string, password: string) {
+		this.setState({ newEmail, password });
+		this.props.sendMailValidator(newEmail, password);
 	}
 
 	private advance() {
-		this.navigate("ChangeEmailVerifyEmail", { email: this.state.email });
+		this.navigate("ChangeEmailVerifyEmail", { newEmail: this.state.newEmail, password: this.state.password });
 	}
 }
 
