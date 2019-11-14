@@ -22,6 +22,6 @@ export const serviceErrors = {
 		ISSUER_ERR: (text: string) => error("ISSUER_ERR", text)
 	},
 	trustGraph: {
-		FETCH_ERR: error("FETCH_TG_ERR", "Error al enviar peticion al servidor.")
+		FETCH_ERR: error("FETCH_TG_ERR", "Error al recuperar credenciales del servidor.")
 	}
 };
