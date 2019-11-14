@@ -58,6 +58,15 @@ export function serviceCallReducer(
 		return lift({});
 	}
 
+	/*
+	const basePrint = JSON.stringify(action, null, 4);
+	if (action.type === "SERVICE_CALL_START" && action.call.type === "RUN") {
+		console.log(`${action.call.func.name} ${basePrint}`);
+	} else {
+		console.log(basePrint);
+	}
+	*/
+
 	switch (action.type) {
 		case "SERVICE_CALL_START":
 			return loop({ ...state, [action.serviceKey]: { state: "IN_PROGRESS", command: action.call } }, action.call);
