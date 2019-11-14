@@ -1,4 +1,4 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 
 import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
@@ -38,9 +38,15 @@ export function changePhoneNumber(
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
 		return withExistingDid(serviceKey, {}, did => {
-			return changePhoneNumberComponent(serviceKey, { baseUrl, did, password, validationCode, newPhoneNumber }, () => {
-				return serviceCallSuccess(serviceKey);
-			});
+			return changePhoneNumberComponent(
+				serviceKey,
+				{ baseUrl, did, password, validationCode, newPhoneNumber },
+				certData => {
+					return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
+						return serviceCallSuccess(serviceKey);
+					});
+				}
+			);
 		});
 	});
 }

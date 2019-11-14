@@ -1,4 +1,4 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 
 import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
@@ -31,8 +31,10 @@ export function verifySmsCode(serviceKey: string, phoneNumber: string, validatio
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
 		return withExistingDid(serviceKey, {}, did => {
-			return verifySmsCodeComponent(serviceKey, { baseUrl, did, phoneNumber, validationCode }, () => {
-				return serviceCallSuccess(serviceKey);
+			return verifySmsCodeComponent(serviceKey, { baseUrl, did, phoneNumber, validationCode }, certData => {
+				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
+					return serviceCallSuccess(serviceKey);
+				});
 			});
 		});
 	});
