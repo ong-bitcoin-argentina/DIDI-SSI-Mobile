@@ -1,16 +1,14 @@
-import { isLeft, isRight } from "fp-ts/lib/Either";
+import { array } from "fp-ts/lib/Array";
+import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";
-import { Alert, StatusBar, Vibration, View, YellowBox } from "react-native";
+import { Alert, StatusBar, Vibration } from "react-native";
 
-import { ErrorData } from "../../../services/common/ErrorData";
-import { assertUnreachable } from "../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiQRScanner from "../common/DidiQRScanner";
 
 import { didiConnect } from "../../../store/store";
-import { JWTParseError } from "../../../uPort/JWTParseError";
-import parseJWT, { compareParseResults, unverifiedParseJWT } from "../../../uPort/parseJWT";
+import parseJWT, { unverifiedParseJWT } from "../../../uPort/parseJWT";
 import themes from "../../resources/themes";
 
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
@@ -66,17 +64,19 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			return;
 		}
 		const parseResults = matches.map(unverifiedParseJWT);
-		const unverifiedParse = parseResults.sort(compareParseResults)[0];
+		const { left: errors, right: successfulParses } = array.separate(parseResults);
 
-		if (isLeft(unverifiedParse)) {
-			const errorData = unverifiedParse.left.getErrorData();
-			this.showAlert(errorData.title || "Error", errorData.message);
+		if (successfulParses.length === 0) {
+			if (errors.length !== 0) {
+				const errorData = errors[0].getErrorData();
+				this.showAlert(errorData.title || "Error", errorData.message);
+			}
 			return;
 		}
 
 		Vibration.vibrate(400, false);
 
-		const parse = await parseJWT(unverifiedParse.right.jwt, this.props.ethrDidUri);
+		const parse = await parseJWT(successfulParses[0].jwt, this.props.ethrDidUri);
 
 		if (isLeft(parse)) {
 			const errorData = parse.left.getErrorData();

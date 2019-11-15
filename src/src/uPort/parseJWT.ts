@@ -107,13 +107,3 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 		return left(new JWTParseError({ type: "RESOLVER_CREATION_ERROR" }));
 	}
 }
-
-export function compareParseResults(l: JWTParseResult, r: JWTParseResult): number {
-	if (isRight(l)) {
-		return -1;
-	} else if (isRight(r)) {
-		return 1;
-	} else {
-		return JWTParseError.compare(l.left, r.left);
-	}
-}

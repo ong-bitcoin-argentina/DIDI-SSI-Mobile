@@ -33,16 +33,6 @@ export class JWTParseError extends Error {
 		return JWTParseError.getErrorData(this.content);
 	}
 
-	static compare(l: JWTParseError, r: JWTParseError): number {
-		if (r.content.type === "JWT_DECODE_ERROR") {
-			return -1;
-		} else if (l.content.type === "JWT_DECODE_ERROR") {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-
 	private static getErrorData(error: JWTParseErrorContent): ErrorData {
 		const displayError = (e: unknown) => (e instanceof Error ? e.message : JSON.stringify(e, null, 4));
 
