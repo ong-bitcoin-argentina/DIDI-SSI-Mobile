@@ -1,7 +1,10 @@
 import { liftUndefined2 } from "../util/liftUndefined";
 
+import strings from "../presentation/resources/strings";
 import { flattenClaim, FlattenedClaim } from "../uPort/types/Claim";
 import { ClaimMetadata, VerifiedClaim } from "../uPort/types/VerifiedClaim";
+
+import { extractSpecialCredentialData, SpecialCredentialFlag } from "./SpecialCredential";
 
 export interface DerivedCredentialSource {
 	content: VerifiedClaim;
@@ -14,11 +17,15 @@ export interface DerivedCredential<Source> {
 	claims: FlattenedClaim;
 }
 
+interface DerivedCredentialInMerge<Source> extends DerivedCredential<Source> {
+	canMerge: boolean;
+}
+
 export const issuanceDateTolerance = 600;
 
 export function liftToDerivedCredential<Source extends DerivedCredentialSource>(
 	doc: Source
-): DerivedCredential<Source> {
+): DerivedCredentialInMerge<Source> {
 	const flat = flattenClaim(doc.content.claims);
 	const data: ClaimMetadata = {
 		issuer: doc.content.issuer,
@@ -30,12 +37,35 @@ export function liftToDerivedCredential<Source extends DerivedCredentialSource>(
 	if (doc.content.expireAt) {
 		data.expireAt = doc.content.expireAt;
 	}
-	return {
-		data,
-		sources: [doc],
-		rootClaim: flat.root.replace(new RegExp("_.*", "g"), ""),
-		claims: flat.rest
-	};
+
+	const special = extractSpecialCredentialData(doc.content.claims);
+
+	switch (special.type) {
+		case "PhoneNumberData":
+			return {
+				data,
+				sources: [doc],
+				rootClaim: strings.specialCredentials.PhoneNumberData,
+				claims: { [strings.specialCredentials.PhoneNumberData]: special.phoneNumber },
+				canMerge: false
+			};
+		case "EmailData":
+			return {
+				data,
+				sources: [doc],
+				rootClaim: strings.specialCredentials.EmailData,
+				claims: { [strings.specialCredentials.EmailData]: special.email },
+				canMerge: false
+			};
+		case "None":
+			return {
+				data,
+				sources: [doc],
+				rootClaim: flat.root.replace(new RegExp("_.*", "g"), ""),
+				claims: flat.rest,
+				canMerge: true
+			};
+	}
 }
 
 function issuanceDateAllowsMerge(left: number | undefined, right: number | undefined): boolean {
@@ -48,8 +78,10 @@ function issuanceDateAllowsMerge(left: number | undefined, right: number | undef
 	}
 }
 
-function shouldMerge(left: DerivedCredential<unknown>, right: DerivedCredential<unknown>): boolean {
+function shouldMerge(left: DerivedCredentialInMerge<unknown>, right: DerivedCredentialInMerge<unknown>): boolean {
 	return (
+		left.canMerge &&
+		right.canMerge &&
 		left.rootClaim === right.rootClaim &&
 		left.data.issuer === right.data.issuer &&
 		left.data.subject === right.data.subject &&
@@ -57,7 +89,10 @@ function shouldMerge(left: DerivedCredential<unknown>, right: DerivedCredential<
 	);
 }
 
-function doMerge<T>(left: DerivedCredential<T>, right: DerivedCredential<T>): DerivedCredential<T> {
+function doMerge<T>(
+	left: DerivedCredentialInMerge<T>,
+	right: DerivedCredentialInMerge<T>
+): DerivedCredentialInMerge<T> {
 	const data: ClaimMetadata = {
 		issuer: left.data.issuer,
 		subject: left.data.subject
@@ -80,7 +115,8 @@ function doMerge<T>(left: DerivedCredential<T>, right: DerivedCredential<T>): De
 		claims: {
 			...left.claims,
 			...right.claims
-		}
+		},
+		canMerge: true
 	};
 }
 
@@ -90,7 +126,7 @@ export function deriveCredentials<Source extends DerivedCredentialSource>(
 	// TODO: Actually derive credentials
 	return docs
 		.map(liftToDerivedCredential)
-		.reduce((acc: Array<DerivedCredential<Source>>, curr: DerivedCredential<Source>) => {
+		.reduce((acc: Array<DerivedCredentialInMerge<Source>>, curr: DerivedCredentialInMerge<Source>) => {
 			const index = acc.findIndex(doc => shouldMerge(doc, curr));
 			if (index !== -1) {
 				const next = [...acc];
@@ -99,5 +135,11 @@ export function deriveCredentials<Source extends DerivedCredentialSource>(
 			} else {
 				return [...acc, curr];
 			}
-		}, []);
+		}, [])
+		.map(credential => ({
+			data: credential.data,
+			sources: credential.sources,
+			rootClaim: credential.rootClaim,
+			claims: credential.claims
+		}));
 }

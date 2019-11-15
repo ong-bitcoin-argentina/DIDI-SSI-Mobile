@@ -219,5 +219,9 @@ export default {
 			NEW: "Nueva Contraseña",
 			REPEAT: "Repetir Contraseña"
 		}
+	},
+	specialCredentials: {
+		PhoneNumberData: "Número de celular",
+		EmailData: "E-mail"
 	}
 };
