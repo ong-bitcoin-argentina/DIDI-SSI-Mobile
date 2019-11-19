@@ -176,11 +176,9 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 
 export default didiConnect(
 	UserDataScreen,
-	(state): UserDataInternalProps => {
-		return {
-			identity: state.identity
-		};
-	}
+	(state): UserDataInternalProps => ({
+		identity: state.identity
+	})
 );
 
 const styles = StyleSheet.create({
