@@ -10,7 +10,7 @@ export const sampleIdentity: Identity = {
 		value: "Liliana Beatriz Martinez"
 	},
 	cellPhone: {
-		value: "15 3344 6677",
+		value: "01133446677",
 		state: ValidationState.Approved
 	},
 	email: {
@@ -18,7 +18,7 @@ export const sampleIdentity: Identity = {
 		state: ValidationState.Approved
 	},
 	document: {
-		value: "30.000.111",
+		value: "30000111",
 		state: ValidationState.Pending
 	},
 	nationality: {

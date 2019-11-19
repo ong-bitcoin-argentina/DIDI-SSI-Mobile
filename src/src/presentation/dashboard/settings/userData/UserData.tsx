@@ -64,23 +64,23 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	getPersonalData(): Array<{ label: string; value: WithValidationState<string> }> {
 		return [
 			{
-				label: "Nombre Completo",
+				label: strings.dashboard.userData.editProfile.nameMessage,
 				value: this.props.identity.fullName
 			},
 			{
-				label: "Celular",
+				label: strings.dashboard.userData.editProfile.cellMessage,
 				value: this.props.identity.cellPhone
 			},
 			{
-				label: "E-mail",
+				label: strings.dashboard.userData.editProfile.emailMessage,
 				value: this.props.identity.email
 			},
 			{
-				label: "DU / CI / Pasaporte",
+				label: strings.dashboard.userData.editProfile.documentMessage,
 				value: this.props.identity.document
 			},
 			{
-				label: "Nacionalidad",
+				label: strings.dashboard.userData.editProfile.nationalityMessage,
 				value: this.props.identity.nationality
 			}
 		];
@@ -89,27 +89,27 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	getAddressData(): Array<{ label: string; value?: string }> {
 		return [
 			{
-				label: "Nombre de Calle / Manzana",
+				label: strings.dashboard.userData.editProfile.streetMessage,
 				value: this.props.identity.address.street
 			},
 			{
-				label: "Número / Casa",
+				label: strings.dashboard.userData.editProfile.numberMessage,
 				value: this.props.identity.address.number
 			},
 			{
-				label: "Departamento",
+				label: strings.dashboard.userData.editProfile.departmentMessage,
 				value: this.props.identity.address.department
 			},
 			{
-				label: "Piso",
+				label: strings.dashboard.userData.editProfile.floorMessage,
 				value: this.props.identity.address.floor
 			},
 			{
-				label: "Barrio",
+				label: strings.dashboard.userData.editProfile.neighborhoodMessage,
 				value: this.props.identity.address.neighborhood
 			},
 			{
-				label: "Codigo Postal",
+				label: strings.dashboard.userData.editProfile.postCodeMessage,
 				value: this.props.identity.address.postCode
 			}
 		];

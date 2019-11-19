@@ -24,13 +24,21 @@ export default {
 			},
 			editProfile: {
 				barTitle: "Editar Perfil",
+				saveChanges: "Guardar Cambios",
+
 				nameMessage: "Nombre completo",
 				cellMessage: "Celular",
 				emailMessage: "E-mail",
 				documentMessage: "DU / CI / Pasaporte",
 				nationalityMessage: "Nacionalidad",
 				addressMessage: "Domicilio",
-				saveChanges: "Guardar Cambios"
+
+				streetMessage: "Nombre de Calle / Manzana",
+				numberMessage: "Número / Casa",
+				departmentMessage: "Departamento",
+				floorMessage: "Piso",
+				neighborhoodMessage: "Barrio",
+				postCodeMessage: "Codigo Postal"
 			},
 			changePassword: {
 				barTitle: "Cambio de Contraseña",

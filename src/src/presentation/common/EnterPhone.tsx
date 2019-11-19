@@ -61,7 +61,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 	private canPressContinueButton(): boolean {
 		return (
-			Validator.isNumber(this.state.inputPhoneNumber) &&
+			Validator.isPhoneNumber(this.state.inputPhoneNumber) &&
 			(!this.props.isPasswordRequired || Validator.isPassword(this.state.inputPassword))
 		);
 	}
