@@ -14,6 +14,7 @@ import { ChangeEmailVerifyScreen } from "./userData/ChangeEmailVerifyEmail";
 import { ChangePhoneEnterScreen } from "./userData/ChangePhoneEnterPhone";
 import { ChangePhoneVerifyScreen } from "./userData/ChangePhoneVerifyPhone";
 import UserDataScreen from "./userData/UserData";
+import { EditProfileScreen } from "./userMenu/EditProfile";
 import { ShareProfileScreen } from "./userMenu/ShareProfile";
 
 interface SettingsNavigatorNavigation {
@@ -34,7 +35,8 @@ export default function(then: NavTree<SettingsNavigatorNavigation>) {
 				ChangeEmailVerifyEmail: NavMap.from(ChangeEmailVerifyScreen, {
 					UserData: NavMap.placeholder(UserDataScreen)
 				})
-			})
+			}),
+			EditProfile: NavMap.from(EditProfileScreen, {})
 		}),
 		ChangePassword: NavMap.from(ChangePasswordScreen, {}),
 		IdentitySettings: NavMap.from(IdentitySettingsScreen, {}),

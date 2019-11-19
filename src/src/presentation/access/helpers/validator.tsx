@@ -20,6 +20,10 @@ export default class Validator {
 		return Validator.isNumber(code);
 	}
 
+	static isPhoneNumber(code?: string): boolean {
+		return Validator.isNumber(code);
+	}
+
 	static isNumber(code?: string): boolean {
 		if (code) {
 			const match = code.match("^[0-9]*$");

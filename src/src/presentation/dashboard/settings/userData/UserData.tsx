@@ -11,6 +11,7 @@ import { Identity, WithValidationState } from "../../../../model/Identity";
 import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
+import { EditProfileProps, EditProfileScreen } from "../userMenu/EditProfile";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 
 import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
@@ -29,6 +30,7 @@ export interface UserDataNavigation {
 	ShareProfile: ShareProfileProps;
 	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
 	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
+	EditProfile: EditProfileProps;
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
@@ -49,6 +51,12 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 			actionTitle: strings.dashboard.userData.share.barTitle,
 			onPress: navigation => {
 				navigation.navigate("ShareProfile", {});
+			}
+		},
+		{
+			actionTitle: strings.dashboard.userData.editProfile.barTitle,
+			onPress: navigation => {
+				navigation.navigate("EditProfile", {});
 			}
 		}
 	]);
