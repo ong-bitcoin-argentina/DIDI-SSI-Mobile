@@ -1,5 +1,6 @@
 import React from "react";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { VerifyCodeScreen } from "../../common/VerifyCode";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -8,7 +9,6 @@ import { isPendingService } from "../../../services/ServiceStateStore";
 import { registerUser } from "../../../services/user/registerUser";
 import { verifyEmailCode } from "../../../services/user/verifyEmailCode";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { SignupConfirmedProps } from "./SignupConfirmed";
@@ -23,7 +23,7 @@ interface SignupConfirmEmailStateProps {
 	registerUserPending: boolean;
 }
 interface SignupConfirmEmailDispatchProps {
-	verifyEmailCode(validationCode: string): void;
+	verifyEmailCode(email: string, validationCode: string): void;
 	registerUser: (email: string, password: string, phoneNumber: string) => void;
 }
 type SignupConfirmEmailInternalProps = SignupConfirmEmailProps &
@@ -50,7 +50,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 				<ServiceObserver serviceKey={serviceKeyRegister} onSuccess={() => this.navigate("SignupConfirmed", {})} />
 				<VerifyCodeScreen
 					description={strings.signup.registrationEmailSent.message}
-					contentImageSource={require("../resources/images/emailSent.png")}
+					contentImageSource={require("../../resources/images/emailSent.png")}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
 					isContinuePending={this.props.registerUserPending || this.props.verifyEmailCodePending}
 				/>
@@ -59,7 +59,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 	}
 
 	private onPressContinueButton(inputCode: string) {
-		this.props.verifyEmailCode(inputCode);
+		this.props.verifyEmailCode(this.props.email, inputCode);
 	}
 
 	private registerUser() {
@@ -74,7 +74,8 @@ const connected = didiConnect(
 		registerUserPending: isPendingService(state.serviceCalls[serviceKeyRegister])
 	}),
 	(dispatch): SignupConfirmEmailDispatchProps => ({
-		verifyEmailCode: (validationCode: string) => dispatch(verifyEmailCode(serviceKeyVerify, validationCode)),
+		verifyEmailCode: (email: string, validationCode: string) =>
+			dispatch(verifyEmailCode(serviceKeyVerify, email, validationCode)),
 
 		registerUser: (email: string, password: string, phoneNumber: string) =>
 			dispatch(registerUser(serviceKeyRegister, email, password, phoneNumber))

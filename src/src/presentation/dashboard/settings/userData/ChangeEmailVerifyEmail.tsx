@@ -1,17 +1,18 @@
 import React from "react";
 import { Alert } from "react-native";
 
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import { VerifyCodeWrapper } from "../../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { changeEmail } from "../../../../services/user/changeEmail";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 
 import { UserDataProps } from "./UserData";
 
 export interface ChangeEmailVerifyScreenProps {
-	email: string;
+	newEmail: string;
+	password: string;
 }
 export interface ChangeEmailVerifyScreenNavigation {
 	UserData: UserDataProps;
@@ -28,8 +29,10 @@ export class ChangeEmailVerifyScreen extends NavigationEnabledComponent<
 		return (
 			<VerifyCodeWrapper
 				description={strings.accessCommon.verify.emailMessageHead}
-				contentImageSource={require("../../../access/resources/images/loginVerify.png")}
-				serviceCall={(serviceKey, validationCode) => changeEmail(serviceKey, this.props.email, validationCode)}
+				contentImageSource={require("../../../resources/images/loginVerify.png")}
+				serviceCall={(serviceKey, validationCode) =>
+					changeEmail(serviceKey, this.props.password, this.props.newEmail, validationCode)
+				}
 				onServiceSuccess={() => this.onSuccess()}
 			/>
 		);

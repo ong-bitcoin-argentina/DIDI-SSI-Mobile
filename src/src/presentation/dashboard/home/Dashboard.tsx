@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 
-import commonStyles from "../../access/resources/commonStyles";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -10,15 +11,13 @@ import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToC
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
-import { Identity } from "../../../model/Identity";
 import { RecentActivity } from "../../../model/RecentActivity";
 import { SampleDocument } from "../../../model/SampleDocument";
-import { isPendingService } from "../../../services/ServiceStateStore";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
+import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
@@ -31,7 +30,7 @@ import { NotificationScreenProps } from "./NotificationScreen";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
-	person: Identity;
+	person: ValidatedIdentity;
 	credentials: Array<DerivedCredential<CredentialDocument>>;
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
@@ -83,8 +82,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 				data={[
 					{ label: "Validaciones:", value: " " },
 					{ label: "Celu", value: "✓" },
-					{ label: "Mail", value: "ｘ" },
-					{ label: "ID", value: "✓" }
+					{ label: "Mail", value: "✓" },
+					{ label: "ID", value: "ｘ" }
 				]}
 				columns={1}
 			/>
@@ -96,7 +95,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			<CredentialCard
 				icon=""
 				category="Documento Identidad"
-				title="Liliana Martinez"
+				title={this.props.person.visual.name}
 				subTitle="Nombre"
 				color={colors.secondary}
 				hollow={true}
@@ -115,7 +114,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			<CredentialCard
 				icon=""
 				category="Documento Identidad"
-				title="Liliana Martinez"
+				title={this.props.person.visual.name}
 				subTitle="Nombre"
 				color={colors.secondary}
 				data={[

@@ -5,7 +5,7 @@ import { TakePictureResponse } from "react-native-camera/types";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiCamera from "../common/DidiCamera";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";

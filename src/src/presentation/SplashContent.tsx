@@ -3,7 +3,7 @@ import { Image, SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 
 import { AddChildren } from "../util/ReactExtensions";
 
-import Background from "./access/resources/images/startAccessBackground.svg";
+import Background from "./resources/images/startAccessBackground.svg";
 import themes from "./resources/themes";
 
 export class SplashContent extends React.Component<AddChildren<{}>> {

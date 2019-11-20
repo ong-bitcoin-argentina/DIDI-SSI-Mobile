@@ -2,17 +2,17 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { DidiScreen } from "../../../common/DidiScreen";
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
-import { Identity } from "../../../../model/Identity";
+import { ValidatedIdentity } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 
 export type ShareProfileProps = {};
 interface ShareProfileInternalProps {
-	person: Identity;
+	person: ValidatedIdentity;
 }
 
 type ShareProfileState = {

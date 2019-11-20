@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewProps, ViewStyle } from "react-native";
 
-import commonStyles from "../access/resources/commonStyles";
+import commonStyles from "../resources/commonStyles";
 
 interface DropdownMenuProps extends ViewProps {
 	label: string;

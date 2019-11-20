@@ -1,18 +1,13 @@
 import React from "react";
-import { Image, Text } from "react-native";
 
-import commonStyles from "../../../access/resources/commonStyles";
-import { DidiScreen } from "../../../common/DidiScreen";
+import { EnterEmailScreen } from "../../../common/EnterEmail";
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../../common/ServiceObserver";
-import { DidiServiceButton } from "../../../util/DidiServiceButton";
-import DidiTextInput from "../../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { isPendingService } from "../../../../services/ServiceStateStore";
 import { sendMailValidator } from "../../../../services/user/sendMailValidator";
 import { didiConnect } from "../../../../store/store";
-import Validator from "../../../access/helpers/validator";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
 
 import { ChangeEmailVerifyScreenProps } from "./ChangeEmailVerifyEmail";
@@ -28,8 +23,8 @@ type ChangeEmailEnterEmailInternalProps = ChangeEmailEnterEmailProps &
 	ChangeEmailEnterEmailStateProps &
 	ChangeEmailEnterEmailDispatchProps;
 
-interface RecoverEnterEmailState {
-	email: string;
+interface ChangeEmailEnterEmailState {
+	newEmail: string;
 	password: string;
 }
 
@@ -41,44 +36,41 @@ const serviceKey = "ChangeEmailEnterEmail";
 
 class ChangeEmailEnterEmailScreen extends NavigationEnabledComponent<
 	ChangeEmailEnterEmailInternalProps,
-	RecoverEnterEmailState,
+	ChangeEmailEnterEmailState,
 	ChangeEmailEnterEmailNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Cambiar Email");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changeEmail.screenTitle);
 
-	private canPressContinueButton(): boolean {
-		return this.state && this.state.password
-			? this.state.password.length > 0 && Validator.isEmail(this.state.email)
-			: false;
+	constructor(props: ChangeEmailEnterEmailInternalProps) {
+		super(props);
+		this.state = {
+			newEmail: "",
+			password: ""
+		};
 	}
 
 	render() {
 		return (
-			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{strings.recovery.enterEmail.messageHead}</Text>
-
-				<Image source={require("../../../access/resources/images/emailRecover.png")} style={commonStyles.image.image} />
-
-				<DidiTextInput.Email onChangeText={text => this.setState({ email: text })} />
-
-				<DidiTextInput.Password onChangeText={text => this.setState({ password: text })} descriptionType="BASIC" />
-
-				<ServiceObserver
-					serviceKey={serviceKey}
-					onSuccess={() => this.navigate("ChangeEmailVerifyEmail", { email: this.state.email })}
+			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.advance()}>
+				<EnterEmailScreen
+					description={strings.dashboard.userData.changeEmail.messageHead}
+					contentImageSource={require("../../../resources/images/emailRecover.png")}
+					buttonTitle={strings.accessCommon.recoverButtonText}
+					isPasswordRequired={true}
+					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password!)}
+					isContinuePending={this.props.sendMailValidatorPending}
 				/>
-				<DidiServiceButton
-					onPress={() => this.onPressContinue()}
-					disabled={!this.canPressContinueButton()}
-					title={strings.accessCommon.recoverButtonText}
-					isPending={this.props.sendMailValidatorPending}
-				/>
-			</DidiScreen>
+			</ServiceObserver>
 		);
 	}
 
-	private onPressContinue() {
-		this.props.sendMailValidator(this.state.email, this.state.password);
+	private onPressContinueButton(newEmail: string, password: string) {
+		this.setState({ newEmail, password });
+		this.props.sendMailValidator(newEmail, password);
+	}
+
+	private advance() {
+		this.navigate("ChangeEmailVerifyEmail", { newEmail: this.state.newEmail, password: this.state.password });
 	}
 }
 

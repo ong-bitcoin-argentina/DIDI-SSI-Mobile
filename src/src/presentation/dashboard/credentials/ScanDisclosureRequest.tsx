@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, StyleSheet } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -9,16 +10,15 @@ import { RequestCard } from "../common/RequestCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
-import { Identity } from "../../../model/Identity";
 import { RequestDocument } from "../../../model/RequestDocument";
 import {
 	submitDisclosureResponse,
 	SubmitDisclosureResponseArguments
 } from "../../../services/issuer/submitDisclosureResponse";
 import { isPendingService } from "../../../services/ServiceStateStore";
+import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
-import { getResponseClaims, signDisclosureResponse } from "../../../uPort/createDisclosureResponse";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import { getResponseClaims } from "../../../uPort/createDisclosureResponse";
 
 import { ScanCredentialProps } from "./ScanCredential";
 
@@ -27,7 +27,7 @@ export interface ScanDisclosureRequestProps {
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
-	identity: Identity;
+	identity: ValidatedIdentity;
 	credentials: Array<DerivedCredential<CredentialDocument>>;
 	microCredentials: CredentialDocument[];
 

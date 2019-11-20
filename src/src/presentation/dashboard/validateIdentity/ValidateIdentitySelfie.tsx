@@ -39,7 +39,7 @@ export class ValidateIdentitySelfieScreen extends ValidateIdentityTakePhotoScree
 			title: strings.validateIdentity.explainSelfie.title,
 			header: strings.validateIdentity.explainSelfie.header,
 			description: <Text style={styles.description}>{strings.validateIdentity.explainSelfie.description}</Text>,
-			image: require("../resources/images/validateIdentityExplainSelfie.png")
+			image: require("../../resources/images/validateIdentityExplainSelfie.png")
 		};
 	}
 }

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { StyleSheet, Text } from "react-native";
 
-import commonStyles from "../../access/resources/commonStyles";
+import commonStyles from "../../resources/commonStyles";
 import { DidiScreen } from "../../common/DidiScreen";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -10,7 +10,7 @@ import { uPortDocumentToCard } from "../common/documentToCard";
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
 import { ScanCredentialProps } from "./ScanCredential";
 

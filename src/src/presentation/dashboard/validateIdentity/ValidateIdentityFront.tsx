@@ -39,7 +39,7 @@ export class ValidateIdentityFrontScreen extends ValidateIdentityTakePhotoScreen
 			title: strings.validateIdentity.explainFront.title,
 			header: strings.validateIdentity.explainFront.header,
 			description: <Text style={styles.description}>{strings.validateIdentity.explainFront.description}</Text>,
-			image: require("../resources/images/validateIdentityExplainFront.png")
+			image: require("../../resources/images/validateIdentityExplainFront.png")
 		};
 	}
 }

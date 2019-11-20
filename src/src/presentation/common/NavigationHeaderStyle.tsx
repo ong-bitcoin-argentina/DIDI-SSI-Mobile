@@ -1,5 +1,4 @@
 import React from "react";
-import { Text } from "react-native";
 import {
 	HeaderBackButton,
 	NavigationParams,
@@ -10,10 +9,9 @@ import {
 import { HeaderButton, HeaderButtonProps, HeaderButtons, Item } from "react-navigation-header-buttons";
 import { defaultOnOverflowMenuPress } from "react-navigation-header-buttons/src/overflowMenuPressHandlers";
 
+import DidiTheme from "../resources/DidiTheme";
+import VerticalMore from "../resources/images/verticalMore.svg";
 import themes from "../resources/themes";
-
-import DidiTheme from "./DidiTheme";
-import VerticalMore from "./images/verticalMore.svg";
 
 function defaultStyle(theme: DidiTheme): NavigationStackScreenOptions {
 	return {

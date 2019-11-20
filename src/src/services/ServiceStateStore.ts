@@ -1,7 +1,7 @@
 import { Action } from "redux";
 import { CmdType, liftState, Loop, loop, LoopReducer } from "redux-loop";
 
-import { ErrorData } from "./common/serviceErrors";
+import { ErrorData } from "./common/ErrorData";
 
 import { StoreAction } from "../store/StoreAction";
 
@@ -57,6 +57,15 @@ export function serviceCallReducer(
 	if (state === undefined) {
 		return lift({});
 	}
+
+	/*
+	const basePrint = JSON.stringify(action, null, 4);
+	if (action.type === "SERVICE_CALL_START" && action.call.type === "RUN") {
+		console.log(`${action.call.func.name} ${basePrint}`);
+	} else {
+		console.log(basePrint);
+	}
+	*/
 
 	switch (action.type) {
 		case "SERVICE_CALL_START":

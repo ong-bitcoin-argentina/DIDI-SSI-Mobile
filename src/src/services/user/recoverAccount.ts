@@ -3,9 +3,10 @@ import * as t from "io-ts";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
-import { ErrorData, serviceErrors } from "../common/serviceErrors";
+import { ErrorData } from "../common/ErrorData";
 
-import { DidData } from "../internal/ensureDid";
+import { serviceErrors } from "../../presentation/resources/serviceErrors";
+import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
 
 import { commonUserRequest } from "./userServiceCommon";
@@ -20,7 +21,7 @@ const responseCodec = t.type({
 	privateKeySeed: t.string
 });
 
-async function doRecoverAccount(args: RecoverAccountArguments): Promise<Either<ErrorData, DidData>> {
+async function doRecoverAccount(args: RecoverAccountArguments): Promise<Either<ErrorData, EthrDID>> {
 	const recoveryResponse = await commonUserRequest(
 		`${args.baseUrl}/recoverAccount`,
 		{ eMail: args.email, password: args.password },
@@ -36,7 +37,8 @@ async function doRecoverAccount(args: RecoverAccountArguments): Promise<Either<E
 
 		const addresses = await RNUportHDSigner.listSeedAddresses();
 		addresses.filter(addr => addr !== nextAddress.address).forEach(seed => RNUportHDSigner.deleteSeed(seed));
-		return right({ didAddress: nextAddress.address, did: `did:ethr:${nextAddress.address}` });
+
+		return EthrDID.fromKeyAddress(nextAddress.address);
 	} catch (e) {
 		return left(serviceErrors.did.WRITE_ERROR);
 	}

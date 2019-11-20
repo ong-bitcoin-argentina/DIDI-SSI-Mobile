@@ -1,10 +1,12 @@
 import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
+import { EthrDIDCodec } from "./EthrDID";
+
 const SelectiveDisclosureRequestInnerCodec = t.intersection([
 	t.type({
 		type: t.literal("SelectiveDisclosureRequest"),
-		issuer: t.string,
+		issuer: EthrDIDCodec,
 		callback: t.string,
 		ownClaims: t.array(t.string),
 		verifiedClaims: t.array(t.string)
@@ -40,20 +42,22 @@ export const SelectiveDisclosureRequestCodec = new t.Type<
 	SelectiveDisclosureRequestInnerCodec.is,
 	(u, c) =>
 		either.chain(SelectiveDisclosureRequestOuterCodec.validate(u, c), i =>
-			t.success<SelectiveDisclosureRequest>({
-				type: "SelectiveDisclosureRequest",
-				issuer: i.iss,
-				callback: i.callback,
-				ownClaims: i.requested || [],
-				verifiedClaims: i.verified || [],
-				issuedAt: i.iat,
-				expireAt: i.exp
-			})
+			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
+				t.success<SelectiveDisclosureRequest>({
+					type: "SelectiveDisclosureRequest",
+					issuer,
+					callback: i.callback,
+					ownClaims: i.requested || [],
+					verifiedClaims: i.verified || [],
+					issuedAt: i.iat,
+					expireAt: i.exp
+				})
+			)
 		),
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer,
+			iss: a.issuer.did(),
 			callback: a.callback,
 			requested: a.ownClaims,
 			verified: a.verifiedClaims,

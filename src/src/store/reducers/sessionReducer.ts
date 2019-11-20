@@ -7,15 +7,10 @@ interface SessionLogin {
 interface SessionLogout {
 	type: "SESSION_LOGOUT";
 }
-interface SessionCreateDid {
-	type: "SESSION_CREATE_DID";
-	did: string;
-}
-export type SessionAction = SessionLogin | SessionLogout | SessionCreateDid;
+export type SessionAction = SessionLogin | SessionLogout;
 
 export const defaultSession: DidiSession = {
-	isLoggedIn: false,
-	did: null
+	isLoggedIn: false
 };
 
 export function sessionReducer(state: DidiSession | undefined, action: StoreAction): DidiSession {
@@ -29,9 +24,6 @@ export function sessionReducer(state: DidiSession | undefined, action: StoreActi
 
 		case "SESSION_LOGOUT":
 			return { ...state, isLoggedIn: false };
-
-		case "SESSION_CREATE_DID":
-			return { ...state, did: action.did };
 
 		default:
 			return state;

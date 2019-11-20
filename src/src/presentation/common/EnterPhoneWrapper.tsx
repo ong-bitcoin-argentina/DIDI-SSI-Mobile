@@ -1,6 +1,6 @@
-import { boolean } from "io-ts";
 import React from "react";
 
+import { ensureDid } from "../../services/internal/ensureDid";
 import { isPendingService } from "../../services/ServiceStateStore";
 import { sendSmsValidator } from "../../services/user/sendSmsValidator";
 import { didiConnect } from "../../store/store";
@@ -9,8 +9,9 @@ import { EnterPhoneProps, EnterPhoneScreen } from "./EnterPhone";
 import { ServiceObserver } from "./ServiceObserver";
 
 export interface EnterPhoneWrapperProps {
-	onServiceSuccess(phoneNumber: string): void;
+	onServiceSuccess(phoneNumber: string, password: string | null): void;
 	contentImageSource: EnterPhoneProps["contentImageSource"];
+	shouldCreateDid: boolean;
 	isPasswordRequired: boolean;
 	password: string | null;
 }
@@ -19,22 +20,31 @@ interface EnterPhoneWrapperStateProps {
 	requestSmsCodePending: boolean;
 }
 interface EnterPhoneWrapperDispatchProps {
-	requestSmsCode: (cellPhoneNumber: string, password: string | null) => void;
+	requestSmsCode: (createDid: boolean, cellPhoneNumber: string, password: string | null) => void;
 }
-type LoginEnterPhoneInternalProps = EnterPhoneWrapperProps &
-	EnterPhoneWrapperStateProps &
-	EnterPhoneWrapperDispatchProps;
+type EnterPhoneInternalProps = EnterPhoneWrapperProps & EnterPhoneWrapperStateProps & EnterPhoneWrapperDispatchProps;
+
+interface EnterPhoneState {
+	phoneNumber: string;
+	password: string | null;
+}
 
 const serviceKey = "EnterPhone";
 
-class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps, { phoneNumber: string }> {
-	constructor(props: LoginEnterPhoneInternalProps) {
+class EnterPhoneWrapper extends React.Component<EnterPhoneInternalProps, EnterPhoneState> {
+	constructor(props: EnterPhoneInternalProps) {
 		super(props);
-		this.state = { phoneNumber: "" };
+		this.state = {
+			phoneNumber: "",
+			password: ""
+		};
 	}
 	render() {
 		return (
-			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.props.onServiceSuccess(this.state.phoneNumber)}>
+			<ServiceObserver
+				serviceKey={serviceKey}
+				onSuccess={() => this.props.onServiceSuccess(this.state.phoneNumber, this.state.password)}
+			>
 				<EnterPhoneScreen
 					{...this.props}
 					isPasswordRequired={this.props.isPasswordRequired && this.props.password === null}
@@ -46,8 +56,9 @@ class EnterPhoneWrapper extends React.Component<LoginEnterPhoneInternalProps, { 
 	}
 
 	private onPressContinueButton(inputPhoneNumber: string, password: string | null) {
-		this.setState({ phoneNumber: inputPhoneNumber });
-		this.props.requestSmsCode(inputPhoneNumber, password || this.props.password);
+		const effectivePassword = password || this.props.password;
+		this.setState({ phoneNumber: inputPhoneNumber, password: effectivePassword });
+		this.props.requestSmsCode(this.props.shouldCreateDid, inputPhoneNumber, effectivePassword);
 	}
 }
 
@@ -57,8 +68,13 @@ const connected = didiConnect(
 		requestSmsCodePending: isPendingService(state.serviceCalls[serviceKey])
 	}),
 	(dispatch): EnterPhoneWrapperDispatchProps => ({
-		requestSmsCode: (cellPhoneNumber: string, password: string | null) =>
-			dispatch(sendSmsValidator(serviceKey, cellPhoneNumber, password))
+		requestSmsCode: (createDid: boolean, cellPhoneNumber: string, password: string | null) => {
+			let call = sendSmsValidator(serviceKey, cellPhoneNumber, password);
+			if (createDid) {
+				call = ensureDid(serviceKey, call);
+			}
+			dispatch(call);
+		}
 	})
 );
 

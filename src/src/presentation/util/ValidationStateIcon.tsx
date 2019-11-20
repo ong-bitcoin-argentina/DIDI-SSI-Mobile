@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, ViewProps } from "react-native";
 import { SvgProps } from "react-native-svg";
 
-import { ValidationState } from "../../model/Identity";
+import { ValidationState } from "../../store/selector/combinedIdentitySelector";
 import colors from "../resources/colors";
 import Alert from "../resources/images/alert.svg";
 import Checkmark from "../resources/images/checkmark.svg";

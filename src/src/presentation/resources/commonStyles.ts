@@ -1,6 +1,6 @@
 import { StyleSheet, TextStyle } from "react-native";
 
-import colors from "../../resources/colors";
+import colors from "./colors";
 
 const baseTextStyle: TextStyle = {
 	textAlign: "center",

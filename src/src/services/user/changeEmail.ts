@@ -1,33 +1,42 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 
-import { ensureDid } from "../internal/ensureDid";
+import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
+import { withExistingDid } from "../internal/withExistingDid";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
 export interface ChangeEmailArguments {
 	baseUrl: string;
-	did: string;
+	did: EthrDID;
 	validationCode: string;
 	newEmail: string;
+	password: string;
 }
 
 async function doChangeEmail(args: ChangeEmailArguments) {
 	return commonUserRequest(
 		`${args.baseUrl}/changeEmail`,
-		{ eMailValidationCode: args.validationCode, did: args.did, newEMail: args.newEmail },
+		{
+			did: args.did.did(),
+			eMailValidationCode: args.validationCode,
+			newEMail: args.newEmail,
+			password: args.password
+		},
 		singleCertificateCodec
 	);
 }
 
 const changeEmailComponent = buildComponentServiceCall(doChangeEmail);
 
-export function changeEmail(serviceKey: string, newEmail: string, validationCode: string) {
+export function changeEmail(serviceKey: string, password: string, newEmail: string, validationCode: string) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {}, didData => {
-			return changeEmailComponent(serviceKey, { baseUrl, did: didData.did, validationCode, newEmail }, () => {
-				return serviceCallSuccess(serviceKey);
+		return withExistingDid(serviceKey, {}, did => {
+			return changeEmailComponent(serviceKey, { baseUrl, did, validationCode, newEmail, password }, certData => {
+				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
+					return serviceCallSuccess(serviceKey);
+				});
 			});
 		});
 	});

@@ -1,9 +1,8 @@
 import React from "react";
 
 import { EnterPhoneWrapper } from "../../../common/EnterPhoneWrapper";
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 
 import { ChangePhoneVerifyScreenProps } from "./ChangePhoneVerifyPhone";
 
@@ -22,10 +21,13 @@ export class ChangePhoneEnterScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<EnterPhoneWrapper
+				shouldCreateDid={false}
 				isPasswordRequired={true}
 				password={null}
-				contentImageSource={require("../../../access/resources/images/loginVerify.png")}
-				onServiceSuccess={phoneNumber => this.navigate("ChangePhoneVerify", { phoneNumber })}
+				contentImageSource={require("../../../resources/images/loginVerify.png")}
+				onServiceSuccess={(phoneNumber, password) =>
+					this.navigate("ChangePhoneVerify", { newPhoneNumber: phoneNumber, password: password! })
+				}
 			/>
 		);
 	}

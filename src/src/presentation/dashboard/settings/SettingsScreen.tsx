@@ -1,19 +1,20 @@
 import React, { Fragment } from "react";
 import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { Identity } from "../../../model/Identity";
+import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
+import OpenPersonDetail from "../../resources/images/openPersonDetail.svg";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
-import ChevronBlueRight from "../resources/images/chevronBlueRight.svg";
-import OpenPersonDetail from "../resources/images/openPersonDetail.svg";
 
 import { AboutThisAppScreenProps } from "./AboutThisApp";
 import { ChangePasswordProps } from "./ChangePassword";
@@ -24,7 +25,7 @@ import { UserDataProps } from "./userData/UserData";
 
 export type SettingsScreenProps = {};
 interface SettingsScreenStateProps {
-	person: Identity;
+	person: ValidatedIdentity;
 }
 interface SettingsScreenDispatchProps {
 	logout(): void;
@@ -58,8 +59,8 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) },
-			{ name: "Configuracion de Servicios", action: () => this.navigate("ServiceSettings", {}) },
-			{ name: "Decodificar JWT", action: () => this.navigate("JWTDecoderScreen", {}) }
+			{ name: strings.debug.serviceConfig, action: () => this.navigate("ServiceSettings", {}) },
+			{ name: strings.debug.decodeJWT, action: () => this.navigate("JWTDecoderScreen", {}) }
 		];
 	}
 
@@ -68,12 +69,19 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			<TouchableOpacity onPress={() => this.navigate("UserData", {})}>
 				<View style={styles.identityCartouche}>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
-						<Image style={styles.identityImage} source={this.props.person.image} />
+						<Image
+							style={styles.identityImage}
+							source={
+								this.props.person.visual.image !== undefined
+									? this.props.person.visual.image
+									: require("../../resources/images/defaultProfileImage.png")
+							}
+						/>
 						<View style={styles.identityIdContainer}>
-							<Text style={styles.identityName}>{this.props.person.name}</Text>
+							<Text style={styles.identityName}>{this.props.person.visual.name}</Text>
 							<View style={{ marginTop: 3, flexDirection: "row" }}>
 								<Text style={styles.identityIdLabel}>ID: </Text>
-								<Text style={styles.identityId}>{this.props.person.id}</Text>
+								<Text style={styles.identityId}>{this.props.person.visual.id}</Text>
 							</View>
 						</View>
 						<OpenPersonDetail width="24" height="18" style={{ marginHorizontal: 10 }} />
@@ -107,7 +115,11 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 					<View style={styles.buttonContainer}>
 						{this.buttons().map((button, index) => this.renderButton(button, index))}
 						<View style={styles.logoutButtonContainer}>
-							<DidiButton style={styles.logoutButton} title="Cerrar Sesion" onPress={() => this.logout()} />
+							<DidiButton
+								style={styles.logoutButton}
+								title={strings.settings.endSession}
+								onPress={() => this.logout()}
+							/>
 						</View>
 					</View>
 				</SafeAreaView>
@@ -161,8 +173,14 @@ const styles = StyleSheet.create({
 	},
 	identityImage: {
 		marginRight: 10,
+
 		width: 70,
-		height: 70
+		height: 70,
+		borderRadius: 35,
+
+		backgroundColor: colors.darkBackground,
+		borderColor: "#FFF",
+		borderWidth: 2
 	},
 	identityIdContainer: {
 		flex: 1,

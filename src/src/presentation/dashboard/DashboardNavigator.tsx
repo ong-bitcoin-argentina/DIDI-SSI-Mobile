@@ -3,11 +3,13 @@ import { StyleSheet, Text, View, ViewProps } from "react-native";
 import { createStackNavigator, NavigationContainer, NavigationScreenProp, NavigationState } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
+import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
+import { ServiceObserver } from "../common/ServiceObserver";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import NavMap, { NavigationEnabledComponentConstructor, NavTree } from "../util/NavMap";
 
+import { recoverTokensServiceKey } from "../../services/trustGraph/recoverTokens";
 import { StartAccessProps } from "../access/StartAccess";
-import NavigationHeaderStyle from "../resources/NavigationHeaderStyle";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
 
@@ -99,7 +101,11 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 
 		render() {
 			const { navigation } = this.props;
-			return <BottomNavigator navigation={navigation} />;
+			return (
+				<ServiceObserver serviceKey={recoverTokensServiceKey} onSuccess={() => null}>
+					<BottomNavigator navigation={navigation} />
+				</ServiceObserver>
+			);
 		}
 	}
 

@@ -7,11 +7,12 @@ import * as t from "io-ts";
 import JWTDecode from "jwt-decode";
 
 import { assertUnreachable } from "../util/assertUnreachable";
+import TypedArray from "../util/TypedArray";
 
 import { CredentialDocument } from "../model/CredentialDocument";
 import { RequestDocument } from "../model/RequestDocument";
 
-import { EthrDID } from "./types/EthrDID";
+import { JWTParseError } from "./JWTParseError";
 import { ForwardedRequestCodec } from "./types/ForwardedRequest";
 import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
 import { SelectiveDisclosureRequestCodec } from "./types/SelectiveDisclosureRequest";
@@ -27,53 +28,32 @@ const PublicCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec
 const ParseCodec = t.union([PublicCodec, ForwardedRequestCodec]);
 const TransportCodec = t.union([ParseCodec, LegacyVerifiedClaimCodec]);
 
-export type JWTParseError =
-	| {
-			type: "AFTER_EXP" | "BEFORE_IAT";
-			expected: number;
-			current: number;
-	  }
-	| {
-			type: "JWT_DECODE_ERROR" | "SHAPE_DECODE_ERROR" | "VERIFICATION_ERROR";
-			error: any;
-	  }
-	| {
-			type: "DID_PARSE";
-			field: "issuer" | "subject";
-			value: string;
-	  }
-	| {
-			type: "RESOLVER_CREATION_ERROR";
-	  };
-
 export type JWTParseResult = Either<JWTParseError, RequestDocument | CredentialDocument>;
+
+function extractIoError(errors: t.Errors): string {
+	return TypedArray.flatMap(errors, e => e.message).join(", ") + ".";
+}
 
 export function unverifiedParseJWT(jwt: string): JWTParseResult {
 	try {
 		const decoded = JWTDecode(jwt);
 		const parsed = TransportCodec.decode(decoded);
 		if (isLeft(parsed)) {
-			return left({ type: "SHAPE_DECODE_ERROR", error: parsed.left });
+			return left(new JWTParseError({ type: "SHAPE_DECODE_ERROR", errorMessage: extractIoError(parsed.left) }));
 		}
 
 		const unverified = parsed.right;
 		const now = Math.floor(Date.now() / 1000);
 		if (unverified.expireAt !== undefined && unverified.expireAt < now) {
-			return left({ type: "AFTER_EXP", expected: unverified.expireAt, current: now });
+			return left(new JWTParseError({ type: "AFTER_EXP", expected: unverified.expireAt, current: now }));
 		} else if (unverified.issuedAt !== undefined && now < unverified.issuedAt) {
-			return left({ type: "BEFORE_IAT", expected: unverified.issuedAt, current: now });
-		} else if (isLeft(EthrDID.fromDID(unverified.issuer))) {
-			return left({ type: "DID_PARSE", field: "issuer", value: unverified.issuer });
+			return left(new JWTParseError({ type: "BEFORE_IAT", expected: unverified.issuedAt, current: now }));
 		} else {
 			switch (unverified.type) {
 				case "SelectiveDisclosureRequest":
 					return right({ type: "RequestDocument", jwt, content: unverified });
 				case "VerifiedClaim":
-					if (isLeft(EthrDID.fromDID(unverified.subject))) {
-						return left({ type: "DID_PARSE", field: "subject", value: unverified.subject });
-					} else {
-						return right({ type: "CredentialDocument", jwt, content: unverified });
-					}
+					return right({ type: "CredentialDocument", jwt, content: unverified });
 				case "ForwardedRequest":
 					return unverifiedParseJWT(unverified.forwarded);
 				default:
@@ -81,7 +61,7 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 			}
 		}
 	} catch (e) {
-		return left({ type: "JWT_DECODE_ERROR", error: e });
+		return left(new JWTParseError({ type: "JWT_DECODE_ERROR", error: e }));
 	}
 }
 
@@ -106,7 +86,7 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 
 			const parsed = ParseCodec.decode(payload);
 			if (isLeft(parsed)) {
-				return left({ type: "SHAPE_DECODE_ERROR", error: parsed.left });
+				return left(new JWTParseError({ type: "SHAPE_DECODE_ERROR", errorMessage: extractIoError(parsed.left) }));
 			}
 
 			const verified = parsed.right;
@@ -121,23 +101,9 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 					return assertUnreachable(verified);
 			}
 		} catch (e) {
-			return left({ type: "VERIFICATION_ERROR", error: e });
+			return left(new JWTParseError({ type: "VERIFICATION_ERROR", error: e }));
 		}
 	} catch (e) {
-		return left({ type: "RESOLVER_CREATION_ERROR" });
-	}
-}
-
-export function compareParseResults(l: JWTParseResult, r: JWTParseResult): number {
-	if (isRight(l)) {
-		return -1;
-	} else if (isRight(r)) {
-		return 1;
-	} else if (r.left.type === "JWT_DECODE_ERROR") {
-		return -1;
-	} else if (l.left.type === "JWT_DECODE_ERROR") {
-		return 1;
-	} else {
-		return 0;
+		return left(new JWTParseError({ type: "RESOLVER_CREATION_ERROR" }));
 	}
 }

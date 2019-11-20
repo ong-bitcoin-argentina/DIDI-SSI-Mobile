@@ -2,19 +2,21 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import commonStyles from "../resources/commonStyles";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-import { ForgotPasswordConfirmEmailProps } from "./ForgotPasswordConfirmEmail";
+import { ForgotPasswordNewPasswordProps } from "./ForgotPasswordNewPassword";
 
-export type ForgotPasswordEmailSentProps = {};
+export interface ForgotPasswordEmailSentProps {
+	email: string;
+}
 
 export interface ForgotPasswordEmailSentNavigation {
-	ForgotPasswordConfirmEmail: ForgotPasswordConfirmEmailProps;
+	ForgotPasswordNewPassword: ForgotPasswordNewPasswordProps;
 }
 
 export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
@@ -29,7 +31,7 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 			<DidiScreen>
 				<View />
 
-				<Image source={require("../resources/images/emailSent.png")} style={commonStyles.image.image} />
+				<Image source={require("../../resources/images/emailSent.png")} style={commonStyles.image.image} />
 
 				<Text style={[commonStyles.text.normal, styles.message]}>
 					{strings.recovery.passwordRecoverEmailSent.message}
@@ -39,7 +41,7 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 
 				<DidiButton
 					onPress={() => {
-						this.navigate("ForgotPasswordConfirmEmail", {});
+						this.navigate("ForgotPasswordNewPassword", { email: this.props.email });
 					}}
 					title={strings.recovery.passwordRecoverEmailSent.buttonText}
 				/>

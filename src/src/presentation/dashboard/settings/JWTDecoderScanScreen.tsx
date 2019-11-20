@@ -2,10 +2,11 @@ import JwtDecode from "jwt-decode";
 import React, { Fragment } from "react";
 import { Alert, StatusBar } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiQRScanner from "../common/DidiQRScanner";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 export type JWTDecoderScanScreenProps = {};
@@ -19,7 +20,7 @@ export class JWTDecoderScanScreen extends NavigationEnabledComponent<
 	JWTDecoderScanScreenState,
 	JWTDecoderScanScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Acerca de Didi");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.debug.decodeJWT);
 
 	constructor(props: JWTDecoderScanScreenProps) {
 		super(props);

@@ -1,7 +1,7 @@
 import React from "react";
-import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 
-import commonStyles from "../access/resources/commonStyles";
+import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import DidiTextInput from "../util/DidiTextInput";
 
@@ -61,7 +61,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 	private canPressContinueButton(): boolean {
 		return (
-			Validator.isNumber(this.state.inputPhoneNumber) &&
+			Validator.isPhoneNumber(this.state.inputPhoneNumber) &&
 			(!this.props.isPasswordRequired || Validator.isPassword(this.state.inputPassword))
 		);
 	}
@@ -71,7 +71,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 	}
 
 	private countryImageSource(): ImageSourcePropType {
-		return require("../access/resources/images/arg.png");
+		return require("../resources/images/arg.png");
 	}
 }
 

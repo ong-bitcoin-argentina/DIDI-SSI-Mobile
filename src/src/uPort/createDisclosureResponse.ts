@@ -3,28 +3,38 @@ import TypedObject from "../util/TypedObject";
 import { CredentialDocument } from "../model/CredentialDocument";
 import { Identity } from "../model/Identity";
 import { RequestDocument } from "../model/RequestDocument";
+import { ValidatedIdentity } from "../store/selector/combinedIdentitySelector";
 
 import { getCredentials } from "./getCredentials";
 import { Claim, flattenClaim } from "./types/Claim";
 import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
 
-function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity): Claim {
+function selectOwnClaims(request: SelectiveDisclosureRequest, identity: ValidatedIdentity): Claim {
 	const result: Claim = {};
 	for (const value of request.ownClaims) {
 		switch (value) {
 			case "name":
-				result.name = identity.name;
+				if (identity.personalData.fullName) {
+					result.name = identity.personalData.fullName.value;
+				}
+				break;
 			case "email":
-				result.email = identity.email.value;
+				if (identity.personalData.email) {
+					result.email = identity.personalData.email.value;
+				}
 				break;
 			case "image":
 				// TODO: Handle image request
 				break;
 			case "country":
-				result.country = identity.nationality.value;
+				if (identity.personalData.nationality) {
+					result.country = identity.personalData.nationality.value;
+				}
 				break;
 			case "phone":
-				result.phone = identity.cellPhone.value;
+				if (identity.personalData.cellPhone) {
+					result.phone = identity.personalData.cellPhone.value;
+				}
 				break;
 			default:
 				break;
@@ -49,7 +59,7 @@ function selectVerifiedClaims(
 export function getResponseClaims(
 	request: SelectiveDisclosureRequest,
 	documents: CredentialDocument[],
-	identity: Identity
+	identity: ValidatedIdentity
 ): { missing: string[]; own: Claim; verified: string[] } {
 	const verified: { [selector: string]: CredentialDocument } = {};
 	const missing: string[] = [];

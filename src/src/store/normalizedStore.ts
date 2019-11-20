@@ -8,9 +8,11 @@ import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import { liftUndefined } from "../util/liftUndefined";
 
 import { DidiSession } from "../model/DidiSession";
+import { Identity } from "../model/Identity";
 import { ServiceSettings } from "../model/ServiceSettings";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
+import { identityReducer } from "./reducers/identityReducer";
 import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
 import { sessionReducer } from "./reducers/sessionReducer";
 import { tokenReducer } from "./reducers/tokenReducer";
@@ -19,12 +21,14 @@ import { StoreAction } from "./StoreAction";
 export interface PersistedStoreContent {
 	sessionFlags: DidiSession;
 	tokens: string[];
+	userInputIdentity: Identity;
 	serviceSettings: ServiceSettings;
 }
 
 const reducer = combineReducers<PersistedStoreContent, StoreAction>({
 	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
+	userInputIdentity: identityReducer,
 	serviceSettings: serviceSettingsReducer
 });
 
@@ -49,8 +53,14 @@ const storeReducer = (
 	state: NormalizedStoreContent | undefined,
 	action: StoreAction
 ): Loop<NormalizedStoreContent, StoreAction> => {
-	const persisted = persistedReducer(liftUndefined(state, s => s.persisted), action);
-	const [serviceCalls, actions] = serviceCallReducer(liftUndefined(state, s => s.serviceCalls), action);
+	const persisted = persistedReducer(
+		liftUndefined(state, s => s.persisted),
+		action
+	);
+	const [serviceCalls, actions] = serviceCallReducer(
+		liftUndefined(state, s => s.serviceCalls),
+		action
+	);
 	return [{ persisted, serviceCalls }, actions];
 };
 

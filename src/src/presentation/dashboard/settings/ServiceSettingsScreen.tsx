@@ -1,15 +1,16 @@
 import React from "react";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceSettingsPanel } from "../../common/ServiceSettingsPanel";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import strings from "../../resources/strings";
 
 export type ServiceSettingsScreenProps = {};
 
 export class ServiceSettingsScreen extends NavigationEnabledComponent<ServiceSettingsScreenProps, {}, {}> {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Acerca de Didi");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.debug.serviceConfig);
 
 	render() {
 		return (

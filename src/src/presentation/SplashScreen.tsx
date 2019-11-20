@@ -6,7 +6,7 @@ import { didiConnect } from "../store/store";
 
 import { StartAccessProps } from "./access/StartAccess";
 import { DashboardScreenProps } from "./dashboard/home/Dashboard";
-import NavigationHeaderStyle from "./resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "./common/NavigationHeaderStyle";
 import { SplashContent } from "./SplashContent";
 
 export interface SplashScreenNavigation {

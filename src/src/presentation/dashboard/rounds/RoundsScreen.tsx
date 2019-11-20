@@ -2,9 +2,9 @@ import React from "react";
 import { Text } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import { DashboardScreenProps } from "../home/Dashboard";
 
@@ -28,7 +28,7 @@ export class RoundsScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen>
-				<Text>Pantalla en construccion</Text>
+				<Text>{strings.debug.screenInProgress}</Text>
 			</DidiScreen>
 		);
 	}

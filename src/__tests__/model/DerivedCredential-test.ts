@@ -1,12 +1,23 @@
-import { deriveCredentials, DerivedCredentialSource, issuanceDateTolerance } from "../../src/model/DerivedCredential";
+import { Right } from "fp-ts/lib/Either";
+
 import { JSONValue } from "../../src/util/JSON";
+
+import { deriveCredentials, DerivedCredentialSource, issuanceDateTolerance } from "../../src/model/DerivedCredential";
+import { EthrDID } from "../../src/uPort/types/EthrDID";
 import { ClaimMetadata } from "../../src/uPort/types/VerifiedClaim";
 
+function unsafeCreateDID(keyAddress: string): EthrDID {
+	return (EthrDID.fromKeyAddress(keyAddress) as Right<EthrDID>).right;
+}
+
 const metadata: ClaimMetadata = {
-	subject: "sub",
-	issuer: "iss",
+	subject: unsafeCreateDID("0x0123456789012345678901234567890123456789"),
+	issuer: unsafeCreateDID("0xabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd"),
 	issuedAt: 1566412387
 };
+
+const firstDid = unsafeCreateDID("0x0246802468024680246802468024680246802468");
+const secondDid = unsafeCreateDID("0x1357913579135791357913579135791357913579");
 
 type Replacement = Partial<ClaimMetadata>;
 
@@ -93,11 +104,11 @@ describe(deriveCredentials, () => {
 	}
 
 	it("should not merge different subjects", () => {
-		expectUnmergedWithReplacements({ subject: "first" }, { subject: "second" });
+		expectUnmergedWithReplacements({ subject: firstDid }, { subject: secondDid });
 	});
 
 	it("should not merge different issuers", () => {
-		expectUnmergedWithReplacements({ issuer: "first" }, { issuer: "second" });
+		expectUnmergedWithReplacements({ issuer: firstDid }, { issuer: secondDid });
 	});
 
 	it("should not merge issuer date beyond tolerance", () => {

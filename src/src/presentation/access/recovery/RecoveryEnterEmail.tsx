@@ -1,20 +1,16 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
+import { EnterEmailScreen } from "../../common/EnterEmail";
 import { ServiceObserver } from "../../common/ServiceObserver";
-import { DidiServiceButton } from "../../util/DidiServiceButton";
-import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import commonStyles from "../resources/commonStyles";
 
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { recoverAccount } from "../../../services/user/recoverAccount";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import { ForgotPasswordEnterEmailProps } from "../forgotPassword/ForgotPasswordEnterEmail";
-import Validator from "../helpers/validator";
 
 import { RecoveryEnterPhoneProps } from "./RecoveryEnterPhone";
 
@@ -48,43 +44,32 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
-	private canPressContinueButton(): boolean {
-		return this.state && this.state.password
-			? this.state.password.length > 0 && Validator.isEmail(this.state.email)
-			: false;
-	}
-
 	render() {
 		return (
-			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{strings.recovery.enterEmail.messageHead}</Text>
-
-				<Image source={require("../resources/images/emailRecover.png")} style={commonStyles.image.image} />
-
-				<DidiTextInput.Email onChangeText={text => this.setState({ email: text })} />
-
-				<DidiTextInput.Password onChangeText={text => this.setState({ password: text })} descriptionType="BASIC" />
-
-				<TouchableOpacity onPress={() => this.navigate("ForgotPasswordEnterEmail", {})} style={styles.forgotPassword}>
-					<Text>{strings.recovery.enterEmail.forgotPasswordMessage + " >"}</Text>
-				</TouchableOpacity>
-
-				<ServiceObserver
-					serviceKey={serviceKey}
-					onSuccess={() => this.navigate("RecoveryEnterPhone", { password: this.state.password })}
-				/>
-				<DidiServiceButton
-					onPress={() => this.onPressContinue()}
-					disabled={!this.canPressContinueButton()}
-					title={strings.accessCommon.recoverButtonText}
-					isPending={this.props.recoverAccountPending}
-				/>
-			</DidiScreen>
+			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.advance()}>
+				<EnterEmailScreen
+					description={strings.recovery.enterEmail.messageHead}
+					contentImageSource={require("../../resources/images/emailRecover.png")}
+					buttonTitle={strings.accessCommon.recoverButtonText}
+					isPasswordRequired={true}
+					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password!)}
+					isContinuePending={this.props.recoverAccountPending}
+				>
+					<TouchableOpacity onPress={() => this.navigate("ForgotPasswordEnterEmail", {})} style={styles.forgotPassword}>
+						<Text>{strings.recovery.enterEmail.forgotPasswordMessage + " >"}</Text>
+					</TouchableOpacity>
+				</EnterEmailScreen>
+			</ServiceObserver>
 		);
 	}
 
-	private onPressContinue() {
-		this.props.recoverAccount(this.state.email, this.state.password);
+	private onPressContinueButton(email: string, password: string) {
+		this.setState({ password });
+		this.props.recoverAccount(email, password);
+	}
+
+	private advance() {
+		this.navigate("RecoveryEnterPhone", { password: this.state.password });
 	}
 }
 

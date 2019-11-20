@@ -1,13 +1,14 @@
-import { isLeft, isRight } from "fp-ts/lib/Either";
+import { array } from "fp-ts/lib/Array";
+import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";
-import { Alert, StatusBar, Vibration, View, YellowBox } from "react-native";
+import { Alert, StatusBar, Vibration } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiQRScanner from "../common/DidiQRScanner";
 
 import { didiConnect } from "../../../store/store";
-import parseJWT, { compareParseResults, JWTParseError, unverifiedParseJWT } from "../../../uPort/parseJWT";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import parseJWT, { unverifiedParseJWT } from "../../../uPort/parseJWT";
 import themes from "../../resources/themes";
 
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
@@ -63,21 +64,23 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			return;
 		}
 		const parseResults = matches.map(unverifiedParseJWT);
-		const unverifiedParse = parseResults.sort(compareParseResults)[0];
+		const { left: errors, right: successfulParses } = array.separate(parseResults);
 
-		if (isLeft(unverifiedParse)) {
-			const { title, subtitle } = this.errorMessage(unverifiedParse.left);
-			this.showAlert(title, subtitle);
+		if (successfulParses.length === 0) {
+			if (errors.length !== 0) {
+				const errorData = errors[0].getErrorData();
+				this.showAlert(errorData.title || "Error", errorData.message);
+			}
 			return;
 		}
 
 		Vibration.vibrate(400, false);
 
-		const parse = await parseJWT(unverifiedParse.right.jwt, this.props.ethrDidUri);
+		const parse = await parseJWT(successfulParses[0].jwt, this.props.ethrDidUri);
 
 		if (isLeft(parse)) {
-			const { title, subtitle } = this.errorMessage(parse.left);
-			this.showAlert(title, subtitle);
+			const errorData = parse.left.getErrorData();
+			this.showAlert(errorData.title || "Error", errorData.message);
 		} else {
 			switch (parse.right.type) {
 				case "RequestDocument":
@@ -94,39 +97,6 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 					});
 					break;
 			}
-		}
-	}
-
-	private errorMessage(error: JWTParseError): { title: string; subtitle?: string } {
-		const displayTimestamp = (ts: number) => new Date(ts * 1000).toLocaleString();
-		const displayError = (e: unknown) => (e instanceof Error ? e.message : JSON.stringify(e));
-
-		switch (error.type) {
-			case "AFTER_EXP":
-				return {
-					title: "Credencial Vencida",
-					subtitle: `Hora actual: ${displayTimestamp(error.current)}, Vencimiento: ${displayTimestamp(error.expected)}`
-				};
-			case "BEFORE_IAT":
-				return {
-					title: "Error de Horario",
-					subtitle: "Esta credencial indica que fue emitida en el futuro. Verifique la hora de su dispositivo."
-				};
-			case "RESOLVER_CREATION_ERROR":
-				return { title: "Error de Conexión", subtitle: "Verifique tener acceso a internet." };
-			case "JWT_DECODE_ERROR":
-				console.warn(displayError(error.error));
-				return { title: "Error al Decodificar", subtitle: "Error al extraer credenciales." };
-			case "SHAPE_DECODE_ERROR":
-				return { title: "Error al Interpretar Credencial", subtitle: displayError(error.error) };
-			case "VERIFICATION_ERROR":
-				console.warn(displayError(error.error));
-				return { title: "Error al Verificar Credencial", subtitle: "Verifique tener acceso a internet." };
-			case "DID_PARSE":
-				return {
-					title: "Error al Interpretar DID",
-					subtitle: `Verifique la configuracion de ${error.field}: "${error.value}"`
-				};
 		}
 	}
 

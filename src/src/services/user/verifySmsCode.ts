@@ -1,32 +1,40 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 
-import { ensureDid } from "../internal/ensureDid";
+import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
+import { withExistingDid } from "../internal/withExistingDid";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
 export interface VerifySmsCodeArguments {
 	baseUrl: string;
-	did: string;
+	did: EthrDID;
+	phoneNumber: string;
 	validationCode: string;
 }
 
 async function doVerifySmsCode(args: VerifySmsCodeArguments) {
 	return commonUserRequest(
 		`${args.baseUrl}/verifySmsCode`,
-		{ validationCode: args.validationCode, did: args.did },
+		{
+			validationCode: args.validationCode,
+			cellPhoneNumber: args.phoneNumber,
+			did: args.did.did()
+		},
 		singleCertificateCodec
 	);
 }
 
 const verifySmsCodeComponent = buildComponentServiceCall(doVerifySmsCode);
 
-export function verifySmsCode(serviceKey: string, validationCode: string) {
+export function verifySmsCode(serviceKey: string, phoneNumber: string, validationCode: string) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {}, didData => {
-			return verifySmsCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode }, () => {
-				return serviceCallSuccess(serviceKey);
+		return withExistingDid(serviceKey, {}, did => {
+			return verifySmsCodeComponent(serviceKey, { baseUrl, did, phoneNumber, validationCode }, certData => {
+				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
+					return serviceCallSuccess(serviceKey);
+				});
 			});
 		});
 	});

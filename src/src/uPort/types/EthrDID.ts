@@ -1,7 +1,9 @@
 import { Either, either, isRight, left, right, tryCatch } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { ErrorData, serviceErrors } from "../../services/common/serviceErrors";
+import { ErrorData } from "../../services/common/ErrorData";
+
+import { serviceErrors } from "../../presentation/resources/serviceErrors";
 
 export class EthrDID {
 	private address: string;
@@ -47,7 +49,7 @@ export const EthrDIDCodec = new t.Type<EthrDID, string, unknown>(
 			if (isRight(parse)) {
 				return parse;
 			} else {
-				return t.failure(u, c);
+				return t.failure(u, c, parse.left.message);
 			}
 		}),
 	a => a.did()

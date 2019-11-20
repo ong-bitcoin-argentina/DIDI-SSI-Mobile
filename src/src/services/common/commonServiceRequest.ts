@@ -3,7 +3,10 @@ import { pipe } from "fp-ts/lib/pipeable";
 import * as t from "io-ts";
 
 import { JSONObject } from "../../util/JSON";
-import { ErrorData, serviceErrors } from "../common/serviceErrors";
+
+import { serviceErrors } from "../../presentation/resources/serviceErrors";
+
+import { ErrorData } from "./ErrorData";
 
 export async function commonServiceRequest<A>(
 	url: string,

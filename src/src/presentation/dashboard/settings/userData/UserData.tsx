@@ -1,26 +1,27 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View, ViewProps } from "react-native";
 
+import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 
-import { Identity, WithValidationState } from "../../../../model/Identity";
+import { ValidatedIdentity, WithValidationState } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
-import NavigationHeaderStyle from "../../../resources/NavigationHeaderStyle";
 import strings from "../../../resources/strings";
+import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 
 import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
-import UserHeadingComponent from "./UserHeading";
+import { UserHeadingComponent } from "./UserHeading";
 
 export type UserDataProps = ViewProps;
 
 interface UserDataInternalProps extends UserDataProps {
-	identity: Identity;
+	identity: ValidatedIdentity;
 }
 
 type UserDataState = {};
@@ -29,80 +30,88 @@ export interface UserDataNavigation {
 	ShareProfile: ShareProfileProps;
 	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
 	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
+	EditProfile: EditProfileProps;
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions<UserDataNavigation>("Mi perfil", [
 		{
-			actionTitle: "Cambiar Email",
+			actionTitle: strings.dashboard.userData.changeEmail.screenTitle,
 			onPress: navigation => {
 				navigation.navigate("ChangeEmailEnterEmail", {});
 			}
 		},
 		{
-			actionTitle: "Cambiar Teléfono",
+			actionTitle: strings.dashboard.userData.changePhone.screenTitle,
 			onPress: navigation => {
 				navigation.navigate("ChangePhoneEnterPhone", {});
 			}
 		},
 		{
-			actionTitle: "Compartir",
+			actionTitle: strings.dashboard.userData.share.barTitle,
 			onPress: navigation => {
 				navigation.navigate("ShareProfile", {});
+			}
+		},
+		{
+			actionTitle: strings.dashboard.userData.editProfile.barTitle,
+			onPress: navigation => {
+				navigation.navigate("EditProfile", {});
 			}
 		}
 	]);
 
-	getPersonalData(): Array<{ label: string; value: WithValidationState<string> }> {
+	getPersonalData(): Array<{ label: string; value?: WithValidationState<string> }> {
 		return [
 			{
-				label: "Nombre Completo",
-				value: this.props.identity.fullName
+				label: strings.dashboard.userData.editProfile.fullNameMessage,
+				value: this.props.identity.personalData.fullName
 			},
 			{
-				label: "Celular",
-				value: this.props.identity.cellPhone
+				label: strings.dashboard.userData.editProfile.cellMessage,
+				value: this.props.identity.personalData.cellPhone
 			},
 			{
-				label: "E-mail",
-				value: this.props.identity.email
+				label: strings.dashboard.userData.editProfile.emailMessage,
+				value: this.props.identity.personalData.email
 			},
 			{
-				label: "DU / CI / Pasaporte",
-				value: this.props.identity.document
+				label: strings.dashboard.userData.editProfile.documentMessage,
+				value: this.props.identity.personalData.document
 			},
 			{
-				label: "Nacionalidad",
-				value: this.props.identity.nationality
+				label: strings.dashboard.userData.editProfile.nationalityMessage,
+				value: this.props.identity.personalData.nationality
 			}
 		];
 	}
 
 	getAddressData(): Array<{ label: string; value?: string }> {
+		const address = this.props.identity.address;
 		return [
 			{
-				label: "Nombre de Calle / Manzana",
-				value: this.props.identity.address.street
+				label: strings.dashboard.userData.editProfile.streetMessage,
+				value: address && address.street
 			},
 			{
-				label: "Número / Casa",
-				value: this.props.identity.address.number
+				label: strings.dashboard.userData.editProfile.numberMessage,
+				value: address && address.number
 			},
 			{
-				label: "Departamento",
-				value: this.props.identity.address.department
+				label: strings.dashboard.userData.editProfile.departmentMessage,
+				value: address && address.department
 			},
 			{
-				label: "Piso",
-				value: this.props.identity.address.floor
+				label: strings.dashboard.userData.editProfile.floorMessage,
+				value: address && address.floor
 			},
 			{
-				label: "Barrio",
-				value: this.props.identity.address.neighborhood
+				label: strings.dashboard.userData.editProfile.neighborhoodMessage,
+				value: address && address.neighborhood
 			},
 			{
-				label: "Codigo Postal",
-				value: this.props.identity.address.postCode
+				label: strings.dashboard.userData.editProfile.postCodeMessage,
+				value: address && address.postCode
 			}
 		];
 	}
@@ -111,9 +120,9 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		return (
 			<ScrollView>
 				<UserHeadingComponent
-					user={this.props.identity.id}
-					profileImage={this.props.identity.image}
-					backgroundImage={this.props.identity.backgroundImage}
+					user={this.props.identity.visual.id}
+					profileImage={this.props.identity.visual.image}
+					backgroundImage={this.props.identity.visual.backgroundImage}
 					allowEdit={true}
 				/>
 
@@ -134,10 +143,10 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 					placeholder={""}
 					textInputProps={{
 						editable: false,
-						value: data.value.value
+						value: data.value ? data.value.value : "--"
 					}}
 					stateIndicator={
-						data.value.state && <ValidationStateIcon validationState={data.value.state} useWords={true} />
+						data.value && data.value.state && <ValidationStateIcon validationState={data.value.state} useWords={true} />
 					}
 				/>
 			);
@@ -176,11 +185,9 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 
 export default didiConnect(
 	UserDataScreen,
-	(state): UserDataInternalProps => {
-		return {
-			identity: state.identity
-		};
-	}
+	(state): UserDataInternalProps => ({
+		identity: state.identity
+	})
 );
 
 const styles = StyleSheet.create({

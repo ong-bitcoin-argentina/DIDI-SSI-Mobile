@@ -1,4 +1,10 @@
 export default {
+	debug: {
+		menu: "Debug Menu",
+		decodeJWT: "Decodificar JWT",
+		serviceConfig: "Configuracion de Servicios",
+		screenInProgress: "Pantalla en Construccion"
+	},
 	dashboard: {
 		recentActivities: {
 			label: "Actividades recientes",
@@ -18,13 +24,21 @@ export default {
 			},
 			editProfile: {
 				barTitle: "Editar Perfil",
-				nameMessage: "Nombre completo",
+				saveChanges: "Guardar Cambios",
+
+				fullNameMessage: "Nombre completo",
 				cellMessage: "Celular",
 				emailMessage: "E-mail",
 				documentMessage: "DU / CI / Pasaporte",
 				nationalityMessage: "Nacionalidad",
 				addressMessage: "Domicilio",
-				saveChanges: "Guardar Cambios"
+
+				streetMessage: "Nombre de Calle / Manzana",
+				numberMessage: "Número / Casa",
+				departmentMessage: "Departamento",
+				floorMessage: "Piso",
+				neighborhoodMessage: "Barrio",
+				postCodeMessage: "Codigo Postal"
 			},
 			changePassword: {
 				barTitle: "Cambio de Contraseña",
@@ -40,6 +54,14 @@ export default {
 				jobsMessage: "Trabajos",
 				titlesMessage: "Títulos",
 				othersMessage: "Otros"
+			},
+			changeEmail: {
+				screenTitle: "Cambiar Email",
+				messageHead: "Ingresa tu nuevo email y tu contraseña actual."
+			},
+			changePhone: {
+				screenTitle: "Cambiar Teléfono",
+				messageHead: "Ingresa tu nuevo numero de telefono y tu contraseña actual."
 			}
 		}
 	},
@@ -105,6 +127,10 @@ export default {
 			buttonEnter: "Ingresar a Didi"
 		}
 	},
+	login: {
+		messageHead: "Ingresa tu email y contraseña",
+		buttonText: "Ingresar"
+	},
 	accessCommon: {
 		validateButtonText: "Validar",
 		recoverButtonText: "Registrar",
@@ -132,7 +158,8 @@ export default {
 	settings: {
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
-		about: "Acerca de Didi"
+		about: "Acerca de Didi",
+		endSession: "Cerrar Sesion"
 	},
 	share: {
 		title: "Credencial Didi",
@@ -200,5 +227,9 @@ export default {
 			NEW: "Nueva Contraseña",
 			REPEAT: "Repetir Contraseña"
 		}
+	},
+	specialCredentials: {
+		PhoneNumberData: "Número de celular",
+		EmailData: "E-mail"
 	}
 };

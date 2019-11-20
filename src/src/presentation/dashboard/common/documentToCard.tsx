@@ -26,7 +26,7 @@ export function uPortDocumentToCard(document: DerivedCredential<CredentialDocume
 	const data = Object.entries(document.claims).map(([key, value]) => {
 		return { label: key, value };
 	});
-	const issuer = document.data.issuer.replace("did:ethr:0x", "").slice(0, 20);
+	const issuer = document.data.issuer.keyAddress().slice(0, 20);
 	const category = document.data.issuedAt ? new Date(document.data.issuedAt * 1000).toLocaleString() : "Credencial";
 	return (
 		<CredentialCard

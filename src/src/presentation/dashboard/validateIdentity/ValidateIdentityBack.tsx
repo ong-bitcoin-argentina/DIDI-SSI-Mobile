@@ -39,7 +39,7 @@ export class ValidateIdentityBackScreen extends ValidateIdentityTakePhotoScreen<
 			title: strings.validateIdentity.explainBack.title,
 			header: strings.validateIdentity.explainBack.header,
 			description: <Text style={styles.description}>{strings.validateIdentity.explainBack.description}</Text>,
-			image: require("../resources/images/validateIdentityExplainBack.png")
+			image: require("../../resources/images/validateIdentityExplainBack.png")
 		};
 	}
 }

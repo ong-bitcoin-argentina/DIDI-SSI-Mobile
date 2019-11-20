@@ -2,11 +2,11 @@ import React from "react";
 import { Image, Text, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import commonStyles from "../resources/commonStyles";
 
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { RecoveryEnterEmailProps } from "./RecoveryEnterEmail";
@@ -37,7 +37,7 @@ export class RecoveryExplanationScreen extends NavigationEnabledComponent<
 					))}
 				</View>
 
-				<Image source={require("../resources/images/accountRecover.png")} style={commonStyles.image.image} />
+				<Image source={require("../../resources/images/accountRecover.png")} style={commonStyles.image.image} />
 
 				<Text style={commonStyles.text.faded}>{strings.recovery.explanation.rememberEmailMessage}</Text>
 

@@ -4,7 +4,6 @@ import { Dispatch } from "redux";
 
 import { CredentialDocument } from "../model/CredentialDocument";
 import { DerivedCredential } from "../model/DerivedCredential";
-import { Identity } from "../model/Identity";
 import { RecentActivity } from "../model/RecentActivity";
 import { RequestDocument } from "../model/RequestDocument";
 import { SampleDocument } from "../model/SampleDocument";
@@ -12,8 +11,8 @@ import { ServiceCallState } from "../services/ServiceStateStore";
 
 import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
 import { sampleDocuments } from "./samples/sampleDocuments";
-import { sampleIdentity } from "./samples/sampleIdentity";
 import { sampleRecentActivity } from "./samples/sampleRecentActivity";
+import { combinedIdentitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
 import { credentialSelector } from "./selector/credentialSelector";
 import { microCredentialSelector } from "./selector/microCredentialSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
@@ -29,9 +28,10 @@ export interface StoreContent extends PersistedStoreContent {
 
 	serviceCalls: ServiceCallState;
 
-	samples: SampleDocument[];
-	identity: Identity;
+	identity: ValidatedIdentity;
+
 	recentActivity: RecentActivity[];
+	samples: SampleDocument[];
 }
 
 export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
@@ -45,7 +45,8 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 
 		serviceCalls: store.serviceCalls,
 
-		identity: sampleIdentity,
+		identity: combinedIdentitySelector(store),
+
 		recentActivity: sampleRecentActivity,
 		samples: sampleDocuments
 	};
@@ -74,10 +75,7 @@ export function didiConnect<
 
 export function didiConnect(component: any, mapStateToProps: any, mapDispatchToProps?: any) {
 	if (mapDispatchToProps) {
-		return connect(
-			mapState(mapStateToProps),
-			mapDispatchToProps
-		)(component);
+		return connect(mapState(mapStateToProps), mapDispatchToProps)(component);
 	} else {
 		return connect(mapState(mapStateToProps))(component);
 	}

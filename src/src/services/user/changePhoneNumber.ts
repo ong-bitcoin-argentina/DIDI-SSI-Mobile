@@ -1,36 +1,50 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 
-import { ensureDid } from "../internal/ensureDid";
+import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
+import { withExistingDid } from "../internal/withExistingDid";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
 export interface ChangePhoneNumberArguments {
 	baseUrl: string;
-	did: string;
-	validationCode: string;
+	did: EthrDID;
+	password: string;
 	newPhoneNumber: string;
+	validationCode: string;
 }
 
 async function doChangePhoneNumber(args: ChangePhoneNumberArguments) {
 	return commonUserRequest(
 		`${args.baseUrl}/changePhoneNumber`,
-		{ phoneValidationCode: args.validationCode, did: args.did, newPhoneNumber: args.newPhoneNumber },
+		{
+			did: args.did.did(),
+			phoneValidationCode: args.validationCode,
+			newPhoneNumber: args.newPhoneNumber,
+			password: args.password
+		},
 		singleCertificateCodec
 	);
 }
 
 const changePhoneNumberComponent = buildComponentServiceCall(doChangePhoneNumber);
 
-export function changePhoneNumber(serviceKey: string, newPhoneNumber: string, validationCode: string) {
+export function changePhoneNumber(
+	serviceKey: string,
+	password: string,
+	newPhoneNumber: string,
+	validationCode: string
+) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {}, didData => {
+		return withExistingDid(serviceKey, {}, did => {
 			return changePhoneNumberComponent(
 				serviceKey,
-				{ baseUrl, did: didData.did, validationCode, newPhoneNumber },
-				() => {
-					return serviceCallSuccess(serviceKey);
+				{ baseUrl, did, password, validationCode, newPhoneNumber },
+				certData => {
+					return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
+						return serviceCallSuccess(serviceKey);
+					});
 				}
 			);
 		});

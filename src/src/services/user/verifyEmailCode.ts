@@ -1,32 +1,40 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 
-import { ensureDid } from "../internal/ensureDid";
+import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
+import { withExistingDid } from "../internal/withExistingDid";
 
 import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
 
 export interface VerifyEmailCodeArguments {
 	baseUrl: string;
-	did: string;
+	did: EthrDID;
+	email: string;
 	validationCode: string;
 }
 
 async function doVerifyEmailCode(args: VerifyEmailCodeArguments) {
 	return commonUserRequest(
 		`${args.baseUrl}/verifyMailCode`,
-		{ validationCode: args.validationCode, did: args.did },
+		{
+			validationCode: args.validationCode,
+			eMail: args.email,
+			did: args.did.did()
+		},
 		singleCertificateCodec
 	);
 }
 
 const verifyEmailCodeComponent = buildComponentServiceCall(doVerifyEmailCode);
 
-export function verifyEmailCode(serviceKey: string, validationCode: string) {
+export function verifyEmailCode(serviceKey: string, email: string, validationCode: string) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
-		return ensureDid(serviceKey, {}, didData => {
-			return verifyEmailCodeComponent(serviceKey, { baseUrl, did: didData.did, validationCode }, () => {
-				return serviceCallSuccess(serviceKey);
+		return withExistingDid(serviceKey, {}, did => {
+			return verifyEmailCodeComponent(serviceKey, { baseUrl, did, email, validationCode }, certData => {
+				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
+					return serviceCallSuccess(serviceKey);
+				});
 			});
 		});
 	});

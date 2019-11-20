@@ -1,6 +1,6 @@
 import { isLeft, isRight } from "fp-ts/lib/Either";
 
-import { compareParseResults, unverifiedParseJWT } from "../../src/uPort/parseJWT";
+import { unverifiedParseJWT } from "../../src/uPort/parseJWT";
 
 function parseUrl() {
 	return unverifiedParseJWT("www.example.com");
@@ -17,19 +17,5 @@ describe(unverifiedParseJWT, () => {
 	});
 	it("should succeed when parsing jwt", () => {
 		expect(isRight(parseClaim())).toBeTruthy();
-	});
-});
-
-describe(compareParseResults, () => {
-	it("should keep data before error", () => {
-		const claim = parseClaim();
-		const url = parseUrl();
-		expect([claim, url].sort(compareParseResults)).toStrictEqual([claim, url]);
-	});
-
-	it("should move error after data", () => {
-		const claim = parseClaim();
-		const url = parseUrl();
-		expect([url, claim].sort(compareParseResults)).toStrictEqual([claim, url]);
 	});
 });

@@ -1,19 +1,14 @@
 import React from "react";
-import { Image, Text } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
+import { EnterEmailScreen } from "../../common/EnterEmail";
 import { ServiceObserver } from "../../common/ServiceObserver";
-import { DidiServiceButton } from "../../util/DidiServiceButton";
-import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import commonStyles from "../resources/commonStyles";
 
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { sendMailValidator } from "../../../services/user/sendMailValidator";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../resources/NavigationHeaderStyle";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import Validator from "../helpers/validator";
 
 import { SignupConfirmEmailProps } from "./SignupConfirmEmail";
 
@@ -28,14 +23,13 @@ interface SignupEnterEmailDispatchProps {
 }
 type SignupEnterEmailInternalProps = SignupEnterEmailStateProps & SignupEnterEmailDispatchProps & SignupEnterEmailProps;
 
-export interface SignupEnterEmailNavigation {
-	SignupConfirmEmail: SignupConfirmEmailProps;
-}
-
 interface SignupEnterEmailState {
 	email: string;
-	key: string;
-	keyDup: string;
+	password: string;
+}
+
+export interface SignupEnterEmailNavigation {
+	SignupConfirmEmail: SignupConfirmEmailProps;
 }
 
 const serviceKey = "SignupEnterEmail";
@@ -47,55 +41,32 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.signup.barTitle);
 
-	private canPressContinueButton(): boolean {
-		if (!this.state || !Validator.isEmail(this.state.email)) {
-			return false;
-		}
-		return this.state.key ? this.state.key.length > 0 && this.state.keyDup === this.state.key : false;
-	}
-
 	render() {
 		return (
-			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{strings.signup.enterEmail.messageHead}</Text>
-
-				<Image
-					source={
-						this.canPressContinueButton()
-							? require("../resources/images/save.png")
-							: require("../resources/images/saveClean.png")
-					}
-					style={commonStyles.image.image}
+			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.advance()}>
+				<EnterEmailScreen
+					description={strings.signup.enterEmail.messageHead}
+					contentImageSource={require("../../resources/images/saveClean.png")}
+					buttonTitle={strings.signup.enterEmail.backupGenerate}
+					isPasswordRequired="duplicate"
+					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password!)}
+					isContinuePending={this.props.requestEmailCodePending}
 				/>
-
-				<DidiTextInput.Email onChangeText={text => this.setState({ email: text })} />
-
-				<DidiTextInput.Password onChangeText={text => this.setState({ key: text })} descriptionType="BASIC" />
-
-				<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
-
-				<ServiceObserver
-					serviceKey={serviceKey}
-					onSuccess={() =>
-						this.navigate("SignupConfirmEmail", {
-							phoneNumber: this.props.phoneNumber,
-							email: this.state.email,
-							password: this.state.key
-						})
-					}
-				/>
-				<DidiServiceButton
-					title={strings.signup.enterEmail.backupGenerate}
-					disabled={!this.canPressContinueButton()}
-					onPress={() => this.onPressContinueButton()}
-					isPending={this.props.requestEmailCodePending}
-				/>
-			</DidiScreen>
+			</ServiceObserver>
 		);
 	}
 
-	private onPressContinueButton() {
-		this.props.requestEmailCode(this.state.email);
+	private onPressContinueButton(email: string, password: string) {
+		this.props.requestEmailCode(email);
+		this.setState({ email, password });
+	}
+
+	private advance() {
+		this.navigate("SignupConfirmEmail", {
+			phoneNumber: this.props.phoneNumber,
+			email: this.state.email,
+			password: this.state.password
+		});
 	}
 }
 

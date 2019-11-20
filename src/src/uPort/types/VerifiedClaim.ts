@@ -2,12 +2,13 @@ import { either, Right } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
 import { ClaimCodec } from "./Claim";
+import { EthrDIDCodec } from "./EthrDID";
 
 export const VerifiedClaimInnerCodec = t.intersection([
 	t.type({
 		type: t.literal("VerifiedClaim"),
-		issuer: t.string,
-		subject: t.string,
+		issuer: EthrDIDCodec,
+		subject: EthrDIDCodec,
 		claims: ClaimCodec
 	}),
 	t.partial({
@@ -41,20 +42,24 @@ export const VerifiedClaimCodec = new t.Type<VerifiedClaim, VerifiedClaimTranspo
 	VerifiedClaimInnerCodec.is,
 	(u, c) =>
 		either.chain(VerifiedClaimOuterCodec.validate(u, c), i =>
-			t.success<VerifiedClaim>({
-				type: "VerifiedClaim",
-				issuer: i.iss,
-				subject: i.sub,
-				claims: i.vc.credentialSubject,
-				expireAt: i.exp,
-				issuedAt: i.iat
-			})
+			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
+				either.chain(EthrDIDCodec.validate(i.sub, c), subject =>
+					t.success<VerifiedClaim>({
+						type: "VerifiedClaim",
+						issuer,
+						subject,
+						claims: i.vc.credentialSubject,
+						expireAt: i.exp,
+						issuedAt: i.iat
+					})
+				)
+			)
 		),
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer,
-			sub: a.subject,
+			iss: a.issuer.did(),
+			sub: a.subject.did(),
 			exp: a.expireAt,
 			iat: a.issuedAt,
 			vc: {
