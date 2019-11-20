@@ -68,7 +68,14 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			<TouchableOpacity onPress={() => this.navigate("UserData", {})}>
 				<View style={styles.identityCartouche}>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
-						<Image style={styles.identityImage} source={this.props.person.image} />
+						<Image
+							style={styles.identityImage}
+							source={
+								this.props.person.image !== undefined
+									? this.props.person.image
+									: require("../../resources/images/defaultProfileImage.png")
+							}
+						/>
 						<View style={styles.identityIdContainer}>
 							<Text style={styles.identityName}>{this.props.person.name}</Text>
 							<View style={{ marginTop: 3, flexDirection: "row" }}>
@@ -165,8 +172,14 @@ const styles = StyleSheet.create({
 	},
 	identityImage: {
 		marginRight: 10,
+
 		width: 70,
-		height: 70
+		height: 70,
+		borderRadius: 35,
+
+		backgroundColor: colors.darkBackground,
+		borderColor: "#FFF",
+		borderWidth: 2
 	},
 	identityIdContainer: {
 		flex: 1,

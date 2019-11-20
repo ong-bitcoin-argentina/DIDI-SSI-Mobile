@@ -16,7 +16,7 @@ import { ShareProfileProps } from "../userMenu/ShareProfile";
 
 import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
-import UserHeadingComponent from "./UserHeading";
+import { UserHeadingComponent } from "./UserHeading";
 
 export type UserDataProps = ViewProps;
 
@@ -61,7 +61,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		}
 	]);
 
-	getPersonalData(): Array<{ label: string; value: WithValidationState<string> }> {
+	getPersonalData(): Array<{ label: string; value?: WithValidationState<string> }> {
 		return [
 			{
 				label: strings.dashboard.userData.editProfile.nameMessage,
@@ -87,30 +87,31 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	}
 
 	getAddressData(): Array<{ label: string; value?: string }> {
+		const address = this.props.identity.address;
 		return [
 			{
 				label: strings.dashboard.userData.editProfile.streetMessage,
-				value: this.props.identity.address.street
+				value: address && address.street
 			},
 			{
 				label: strings.dashboard.userData.editProfile.numberMessage,
-				value: this.props.identity.address.number
+				value: address && address.number
 			},
 			{
 				label: strings.dashboard.userData.editProfile.departmentMessage,
-				value: this.props.identity.address.department
+				value: address && address.department
 			},
 			{
 				label: strings.dashboard.userData.editProfile.floorMessage,
-				value: this.props.identity.address.floor
+				value: address && address.floor
 			},
 			{
 				label: strings.dashboard.userData.editProfile.neighborhoodMessage,
-				value: this.props.identity.address.neighborhood
+				value: address && address.neighborhood
 			},
 			{
 				label: strings.dashboard.userData.editProfile.postCodeMessage,
-				value: this.props.identity.address.postCode
+				value: address && address.postCode
 			}
 		];
 	}
@@ -142,10 +143,10 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 					placeholder={""}
 					textInputProps={{
 						editable: false,
-						value: data.value.value
+						value: data.value ? data.value.value : "--"
 					}}
 					stateIndicator={
-						data.value.state && <ValidationStateIcon validationState={data.value.state} useWords={true} />
+						data.value && data.value.state && <ValidationStateIcon validationState={data.value.state} useWords={true} />
 					}
 				/>
 			);

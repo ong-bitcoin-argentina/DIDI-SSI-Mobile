@@ -13,18 +13,27 @@ function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity
 	for (const value of request.ownClaims) {
 		switch (value) {
 			case "name":
-				result.name = identity.name;
+				if (identity.name) {
+					result.name = identity.name;
+				}
+				break;
 			case "email":
-				result.email = identity.email.value;
+				if (identity.email) {
+					result.email = identity.email.value;
+				}
 				break;
 			case "image":
 				// TODO: Handle image request
 				break;
 			case "country":
-				result.country = identity.nationality.value;
+				if (identity.nationality) {
+					result.country = identity.nationality.value;
+				}
 				break;
 			case "phone":
-				result.phone = identity.cellPhone.value;
+				if (identity.cellPhone) {
+					result.phone = identity.cellPhone.value;
+				}
 				break;
 			default:
 				break;

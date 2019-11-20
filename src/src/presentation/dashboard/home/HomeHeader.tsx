@@ -2,6 +2,7 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { Identity } from "../../../model/Identity";
+import colors from "../../resources/colors";
 import themes from "../../resources/themes";
 
 export interface HomeHeaderProps {
@@ -15,7 +16,14 @@ export default class HomeHeader extends React.Component<HomeHeaderProps> {
 		return (
 			<View style={styles.root}>
 				<TouchableOpacity style={styles.identityContainer} onPress={this.props.onPersonPress}>
-					<Image style={styles.image} source={this.props.person.image} />
+					<Image
+						style={styles.image}
+						source={
+							this.props.person.image !== undefined
+								? this.props.person.image
+								: require("../../resources/images/defaultProfileImage.png")
+						}
+					/>
 					<View>
 						<Text style={styles.helloText}>Hola</Text>
 						<Text style={styles.nameText}>{this.props.person.id}</Text>
@@ -53,12 +61,15 @@ const styles = StyleSheet.create({
 		color: themes.navigationText
 	},
 	image: {
+		marginRight: 10,
+
 		width: 46,
 		height: 46,
-		marginRight: 10,
+		borderRadius: 23,
+
+		backgroundColor: colors.darkBackground,
 		borderColor: "#FFF",
-		borderWidth: 2,
-		borderRadius: 23
+		borderWidth: 2
 	},
 	helloText: {
 		color: themes.navigationText,

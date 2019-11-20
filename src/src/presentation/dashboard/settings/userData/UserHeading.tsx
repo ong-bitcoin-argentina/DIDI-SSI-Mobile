@@ -6,13 +6,13 @@ import commonStyles from "../../../resources/commonStyles";
 import colors from "../../../resources/colors";
 
 interface UserHeadingProps extends ViewProps {
-	user: string;
-	profileImage: ImageSourcePropType;
-	backgroundImage: ImageSourcePropType;
+	user: string | undefined;
+	profileImage: ImageSourcePropType | undefined;
+	backgroundImage: ImageSourcePropType | undefined;
 	allowEdit?: boolean;
 }
 
-export default class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
+export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
 	openBgImagePicker() {
 		// TODO
 	}
@@ -21,11 +21,25 @@ export default class UserHeadingComponent extends React.Component<UserHeadingPro
 		return (
 			<View>
 				<View style={styles.backgroundImageContainer}>
-					<Image style={styles.backgroundImage} source={this.props.backgroundImage} />
+					<Image
+						style={styles.backgroundImage}
+						source={
+							this.props.backgroundImage !== undefined
+								? this.props.backgroundImage
+								: require("../../../resources/images/defaultBackgroundImage.jpg")
+						}
+					/>
 				</View>
 
 				<View style={styles.identityImageContainer}>
-					<Image style={styles.identityImage} source={this.props.profileImage} />
+					<Image
+						style={styles.identityImage}
+						source={
+							this.props.profileImage !== undefined
+								? this.props.profileImage
+								: require("../../../resources/images/defaultProfileImage.png")
+						}
+					/>
 				</View>
 
 				{this.props.allowEdit && (
@@ -84,7 +98,13 @@ const styles = StyleSheet.create({
 	},
 	identityImage: {
 		margin: 5,
+
 		width: 140,
-		height: 140
+		height: 140,
+		borderRadius: 70,
+
+		backgroundColor: colors.darkBackground,
+		borderColor: "#FFF",
+		borderWidth: 2
 	}
 });
