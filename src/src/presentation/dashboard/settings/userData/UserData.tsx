@@ -7,11 +7,11 @@ import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 
-import { Identity, WithValidationState } from "../../../../model/Identity";
+import { ValidatedIdentity, WithValidationState } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
-import { EditProfileProps, EditProfileScreen } from "../userMenu/EditProfile";
+import { EditProfileProps } from "../userMenu/EditProfile";
 import { ShareProfileProps } from "../userMenu/ShareProfile";
 
 import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
@@ -21,7 +21,7 @@ import { UserHeadingComponent } from "./UserHeading";
 export type UserDataProps = ViewProps;
 
 interface UserDataInternalProps extends UserDataProps {
-	identity: Identity;
+	identity: ValidatedIdentity;
 }
 
 type UserDataState = {};
@@ -64,24 +64,24 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	getPersonalData(): Array<{ label: string; value?: WithValidationState<string> }> {
 		return [
 			{
-				label: strings.dashboard.userData.editProfile.nameMessage,
-				value: this.props.identity.fullName
+				label: strings.dashboard.userData.editProfile.fullNameMessage,
+				value: this.props.identity.personalData.fullName
 			},
 			{
 				label: strings.dashboard.userData.editProfile.cellMessage,
-				value: this.props.identity.cellPhone
+				value: this.props.identity.personalData.cellPhone
 			},
 			{
 				label: strings.dashboard.userData.editProfile.emailMessage,
-				value: this.props.identity.email
+				value: this.props.identity.personalData.email
 			},
 			{
 				label: strings.dashboard.userData.editProfile.documentMessage,
-				value: this.props.identity.document
+				value: this.props.identity.personalData.document
 			},
 			{
 				label: strings.dashboard.userData.editProfile.nationalityMessage,
-				value: this.props.identity.nationality
+				value: this.props.identity.personalData.nationality
 			}
 		];
 	}
@@ -120,9 +120,9 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		return (
 			<ScrollView>
 				<UserHeadingComponent
-					user={this.props.identity.id}
-					profileImage={this.props.identity.image}
-					backgroundImage={this.props.identity.backgroundImage}
+					user={this.props.identity.visual.id}
+					profileImage={this.props.identity.visual.image}
+					backgroundImage={this.props.identity.visual.backgroundImage}
 					allowEdit={true}
 				/>
 

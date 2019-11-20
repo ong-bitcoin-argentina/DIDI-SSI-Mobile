@@ -1,5 +1,7 @@
 import { SampleDocument } from "../../model/SampleDocument";
 
+export const sampleDocuments: SampleDocument[] = [];
+/*
 export const sampleDocuments: SampleDocument[] = [
 	{
 		icon: "",
@@ -52,3 +54,4 @@ export const sampleDocuments: SampleDocument[] = [
 		columns: 2
 	}
 ];
+*/

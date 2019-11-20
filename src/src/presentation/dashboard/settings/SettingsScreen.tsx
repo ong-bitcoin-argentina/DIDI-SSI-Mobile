@@ -6,6 +6,7 @@ import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { Identity } from "../../../model/Identity";
+import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
@@ -24,7 +25,7 @@ import { UserDataProps } from "./userData/UserData";
 
 export type SettingsScreenProps = {};
 interface SettingsScreenStateProps {
-	person: Identity;
+	person: ValidatedIdentity;
 }
 interface SettingsScreenDispatchProps {
 	logout(): void;
@@ -71,16 +72,16 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 						<Image
 							style={styles.identityImage}
 							source={
-								this.props.person.image !== undefined
-									? this.props.person.image
+								this.props.person.visual.image !== undefined
+									? this.props.person.visual.image
 									: require("../../resources/images/defaultProfileImage.png")
 							}
 						/>
 						<View style={styles.identityIdContainer}>
-							<Text style={styles.identityName}>{this.props.person.name}</Text>
+							<Text style={styles.identityName}>{this.props.person.visual.name}</Text>
 							<View style={{ marginTop: 3, flexDirection: "row" }}>
 								<Text style={styles.identityIdLabel}>ID: </Text>
-								<Text style={styles.identityId}>{this.props.person.id}</Text>
+								<Text style={styles.identityId}>{this.props.person.visual.id}</Text>
 							</View>
 						</View>
 						<OpenPersonDetail width="24" height="18" style={{ marginHorizontal: 10 }} />

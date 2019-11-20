@@ -21,14 +21,14 @@ import { StoreAction } from "./StoreAction";
 export interface PersistedStoreContent {
 	sessionFlags: DidiSession;
 	tokens: string[];
-	identity: Identity;
+	userInputIdentity: Identity;
 	serviceSettings: ServiceSettings;
 }
 
 const reducer = combineReducers<PersistedStoreContent, StoreAction>({
 	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
-	identity: identityReducer,
+	userInputIdentity: identityReducer,
 	serviceSettings: serviceSettingsReducer
 });
 

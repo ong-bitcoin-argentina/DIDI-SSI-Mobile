@@ -26,7 +26,7 @@ export default {
 				barTitle: "Editar Perfil",
 				saveChanges: "Guardar Cambios",
 
-				nameMessage: "Nombre completo",
+				fullNameMessage: "Nombre completo",
 				cellMessage: "Celular",
 				emailMessage: "E-mail",
 				documentMessage: "DU / CI / Pasaporte",

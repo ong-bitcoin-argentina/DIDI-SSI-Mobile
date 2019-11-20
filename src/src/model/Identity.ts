@@ -1,17 +1,21 @@
 import { ImageSourcePropType } from "react-native";
 
-export enum ValidationState {
-	Approved = "Approved",
-	Pending = "Pending",
-	Rejected = "Rejected"
+export interface VisualData {
+	id: string;
+	image: ImageSourcePropType;
+	backgroundImage: ImageSourcePropType;
+	name: string;
 }
 
-export interface WithValidationState<T> {
-	value: T;
-	state: ValidationState;
+export interface PersonalData {
+	fullName: string;
+	cellPhone: string;
+	email: string;
+	document: string;
+	nationality: string;
 }
 
-export type LegalAddress = Partial<{
+export interface LegalAddress {
 	street: string;
 	number: string;
 	department: string;
@@ -19,19 +23,10 @@ export type LegalAddress = Partial<{
 	neighborhood: string;
 	postCode: string;
 	liveHere: boolean;
-}>;
+}
 
-export type Identity = Partial<{
-	id: string;
-	image: ImageSourcePropType;
-	backgroundImage: ImageSourcePropType;
-
-	name: string;
-	address: LegalAddress;
-
-	fullName: WithValidationState<string>;
-	cellPhone: WithValidationState<string>;
-	email: WithValidationState<string>;
-	document: WithValidationState<string>;
-	nationality: WithValidationState<string>;
-}>;
+export interface Identity {
+	visual: Partial<VisualData>;
+	personalData: Partial<PersonalData>;
+	address: Partial<LegalAddress>;
+}

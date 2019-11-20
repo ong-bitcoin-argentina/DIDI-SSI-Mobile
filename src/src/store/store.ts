@@ -4,7 +4,6 @@ import { Dispatch } from "redux";
 
 import { CredentialDocument } from "../model/CredentialDocument";
 import { DerivedCredential } from "../model/DerivedCredential";
-import { Identity } from "../model/Identity";
 import { RecentActivity } from "../model/RecentActivity";
 import { RequestDocument } from "../model/RequestDocument";
 import { SampleDocument } from "../model/SampleDocument";
@@ -13,7 +12,7 @@ import { ServiceCallState } from "../services/ServiceStateStore";
 import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
 import { sampleDocuments } from "./samples/sampleDocuments";
 import { sampleRecentActivity } from "./samples/sampleRecentActivity";
-import { combinedIdentitySelector } from "./selector/combinedIdentitySelector";
+import { combinedIdentitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
 import { credentialSelector } from "./selector/credentialSelector";
 import { microCredentialSelector } from "./selector/microCredentialSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
@@ -29,7 +28,7 @@ export interface StoreContent extends PersistedStoreContent {
 
 	serviceCalls: ServiceCallState;
 
-	identity: Identity;
+	identity: ValidatedIdentity;
 
 	recentActivity: RecentActivity[];
 	samples: SampleDocument[];

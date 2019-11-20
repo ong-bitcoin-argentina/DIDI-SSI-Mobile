@@ -1,13 +1,16 @@
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
+import { liftUndefined } from "../../../../util/liftUndefined";
+import TypedObject from "../../../../util/TypedObject";
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
-import { Identity, LegalAddress, ValidationState } from "../../../../model/Identity";
+import { Identity, LegalAddress, PersonalData } from "../../../../model/Identity";
+import { ValidatedIdentity } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
 import Validator from "../../../access/helpers/validator";
 import colors from "../../../resources/colors";
@@ -17,54 +20,59 @@ import { UserHeadingComponent } from "../userData/UserHeading";
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
-	identity: Identity;
+	identity: ValidatedIdentity;
 }
-interface EditProfileDispatchProps {}
+interface EditProfileDispatchProps {
+	saveIdentity: (state: Identity) => void;
+}
 type EditProfileInternalProps = EditProfileProps & EditProfileStateProps & EditProfileDispatchProps;
-
-type EditProfileState = Omit<Identity, "address"> & LegalAddress;
 
 export interface EditProfileNavigation {}
 
-class EditProfileScreen extends NavigationEnabledComponent<
-	EditProfileInternalProps,
-	EditProfileState,
-	EditProfileNavigation
-> {
+class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalProps, Identity, EditProfileNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.editProfile.barTitle);
 
 	constructor(props: EditProfileInternalProps) {
 		super(props);
 		this.state = {
-			...this.props.identity,
-			...this.props.identity.address
+			address: {},
+			visual: {},
+			personalData: {}
 		};
 	}
 
 	private canPressContinueButton(): boolean {
 		return (
-			(!this.state.name || Validator.isName(this.state.name)) &&
-			(!this.state.document || Validator.isDocumentNumber(this.state.document.value)) &&
-			(!this.state.nationality || Validator.isNationality(this.state.nationality.value))
+			(!this.state.personalData.fullName || Validator.isName(this.state.personalData.fullName)) &&
+			(!this.state.personalData.document || Validator.isDocumentNumber(this.state.personalData.document)) &&
+			(!this.state.personalData.nationality || Validator.isNationality(this.state.personalData.nationality))
 		);
+	}
+
+	private setStateMergingPersonalData(merge: Partial<PersonalData>) {
+		this.setState({ ...this.state, personalData: { ...this.state.personalData, ...merge } });
+	}
+
+	private setStateMergingAddressData(merge: Partial<LegalAddress>) {
+		this.setState({ ...this.state, address: { ...this.state.address, ...merge } });
 	}
 
 	renderPersonInputs() {
 		return (
 			<View style={styles.dropdownContents}>
 				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.nameMessage}
+					description={strings.dashboard.userData.editProfile.fullNameMessage}
 					placeholder="--"
 					textInputProps={{
-						defaultValue: this.state.name,
-						onChangeText: text => this.setState({ name: text })
+						defaultValue: liftUndefined(this.props.identity.personalData.fullName, x => x.value),
+						onChangeText: text => this.setStateMergingPersonalData({ fullName: text })
 					}}
 				/>
 				<DidiTextInput
 					description={strings.dashboard.userData.editProfile.cellMessage}
 					placeholder="--"
 					textInputProps={{
-						defaultValue: this.state.email && this.state.email.value,
+						defaultValue: liftUndefined(this.props.identity.personalData.email, x => x.value),
 						editable: false
 					}}
 				/>
@@ -73,7 +81,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					description={strings.dashboard.userData.editProfile.emailMessage}
 					placeholder="--"
 					textInputProps={{
-						defaultValue: this.state.cellPhone && this.state.cellPhone.value,
+						defaultValue: liftUndefined(this.props.identity.personalData.cellPhone, x => x.value),
 						editable: false
 					}}
 				/>
@@ -83,16 +91,16 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					placeholder="--"
 					textInputProps={{
 						keyboardType: "number-pad",
-						defaultValue: this.state.document && this.state.document.value,
-						onChangeText: text => this.setState({ document: { state: ValidationState.Pending, value: text } })
+						defaultValue: liftUndefined(this.props.identity.personalData.document, x => x.value),
+						onChangeText: text => this.setStateMergingPersonalData({ document: text })
 					}}
 				/>
 				<DidiTextInput
 					description={strings.dashboard.userData.editProfile.nationalityMessage}
 					placeholder="--"
 					textInputProps={{
-						defaultValue: this.state.nationality && this.state.nationality.value,
-						onChangeText: text => this.setState({ nationality: { state: ValidationState.Pending, value: text } })
+						defaultValue: liftUndefined(this.props.identity.personalData.nationality, x => x.value),
+						onChangeText: text => this.setStateMergingPersonalData({ nationality: text })
 					}}
 				/>
 			</View>
@@ -106,8 +114,8 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					description={strings.dashboard.userData.editProfile.streetMessage}
 					placeholder="--"
 					textInputProps={{
-						defaultValue: this.state.street,
-						onChangeText: text => this.setState({ street: text })
+						defaultValue: this.props.identity.address.street,
+						onChangeText: text => this.setStateMergingAddressData({ street: text })
 					}}
 				/>
 
@@ -116,8 +124,8 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					placeholder="--"
 					textInputProps={{
 						keyboardType: "number-pad",
-						defaultValue: this.state.number,
-						onChangeText: text => this.setState({ number: text })
+						defaultValue: this.props.identity.address.number,
+						onChangeText: text => this.setStateMergingAddressData({ number: text })
 					}}
 				/>
 
@@ -125,8 +133,8 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					description={strings.dashboard.userData.editProfile.departmentMessage}
 					placeholder="--"
 					textInputProps={{
-						defaultValue: this.state.department,
-						onChangeText: text => this.setState({ department: text })
+						defaultValue: this.props.identity.address.department,
+						onChangeText: text => this.setStateMergingAddressData({ department: text })
 					}}
 				/>
 
@@ -135,8 +143,8 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					placeholder="--"
 					textInputProps={{
 						keyboardType: "number-pad",
-						defaultValue: this.state.floor,
-						onChangeText: text => this.setState({ floor: text })
+						defaultValue: this.props.identity.address.floor,
+						onChangeText: text => this.setStateMergingAddressData({ floor: text })
 					}}
 				/>
 
@@ -144,8 +152,8 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					description={strings.dashboard.userData.editProfile.neighborhoodMessage}
 					placeholder="--"
 					textInputProps={{
-						defaultValue: this.state.neighborhood,
-						onChangeText: text => this.setState({ neighborhood: text })
+						defaultValue: this.props.identity.address.neighborhood,
+						onChangeText: text => this.setStateMergingAddressData({ neighborhood: text })
 					}}
 				/>
 
@@ -154,8 +162,8 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					placeholder="--"
 					textInputProps={{
 						keyboardType: "number-pad",
-						defaultValue: this.state.postCode,
-						onChangeText: text => this.setState({ postCode: text })
+						defaultValue: this.props.identity.address.postCode,
+						onChangeText: text => this.setStateMergingAddressData({ postCode: text })
 					}}
 				/>
 			</View>
@@ -168,9 +176,9 @@ class EditProfileScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<ScrollView>
 					<UserHeadingComponent
-						user={this.state.id}
-						profileImage={this.state.image}
-						backgroundImage={this.state.backgroundImage}
+						user={this.state.visual.id}
+						profileImage={this.state.visual.image}
+						backgroundImage={this.state.visual.backgroundImage}
 					/>
 					<DropdownMenu
 						headerContainerStyle={{ backgroundColor: colors.primary }}
@@ -203,7 +211,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	}
 
 	private editProfile() {
-		// TODO !!!
+		this.props.saveIdentity(this.state);
 		this.goBack();
 	}
 }
@@ -213,7 +221,9 @@ const connected = didiConnect(
 	(state): EditProfileStateProps => ({
 		identity: state.identity
 	}),
-	(dispatch): EditProfileDispatchProps => ({})
+	(dispatch): EditProfileDispatchProps => ({
+		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity })
+	})
 );
 
 export { connected as EditProfileScreen };
