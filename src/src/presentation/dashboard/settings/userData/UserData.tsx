@@ -16,6 +16,7 @@ import { ShareProfileProps } from "../userMenu/ShareProfile";
 
 import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
+import { addressDataStructure, personalDataStructure } from "./ProfileInputDescription";
 import { UserHeadingComponent } from "./UserHeading";
 
 export type UserDataProps = ViewProps;
@@ -61,61 +62,6 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		}
 	]);
 
-	getPersonalData(): Array<{ label: string; value?: WithValidationState<string> }> {
-		return [
-			{
-				label: strings.dashboard.userData.editProfile.fullNameMessage,
-				value: this.props.identity.personalData.fullName
-			},
-			{
-				label: strings.dashboard.userData.editProfile.cellMessage,
-				value: this.props.identity.personalData.cellPhone
-			},
-			{
-				label: strings.dashboard.userData.editProfile.emailMessage,
-				value: this.props.identity.personalData.email
-			},
-			{
-				label: strings.dashboard.userData.editProfile.documentMessage,
-				value: this.props.identity.personalData.document
-			},
-			{
-				label: strings.dashboard.userData.editProfile.nationalityMessage,
-				value: this.props.identity.personalData.nationality
-			}
-		];
-	}
-
-	getAddressData(): Array<{ label: string; value?: string }> {
-		const address = this.props.identity.address;
-		return [
-			{
-				label: strings.dashboard.userData.editProfile.streetMessage,
-				value: address && address.street
-			},
-			{
-				label: strings.dashboard.userData.editProfile.numberMessage,
-				value: address && address.number
-			},
-			{
-				label: strings.dashboard.userData.editProfile.departmentMessage,
-				value: address && address.department
-			},
-			{
-				label: strings.dashboard.userData.editProfile.floorMessage,
-				value: address && address.floor
-			},
-			{
-				label: strings.dashboard.userData.editProfile.neighborhoodMessage,
-				value: address && address.neighborhood
-			},
-			{
-				label: strings.dashboard.userData.editProfile.postCodeMessage,
-				value: address && address.postCode
-			}
-		];
-	}
-
 	render() {
 		return (
 			<ScrollView>
@@ -135,41 +81,43 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	}
 
 	private renderPersonalData() {
-		return this.renderDropdown(strings.dashboard.userData.personalDataLabel, this.getPersonalData(), (data, index) => {
+		return this.renderDropdown(strings.dashboard.userData.personalDataLabel, personalDataStructure.order, key => {
+			const struct = personalDataStructure.structure[key];
+			const data = this.props.identity.personalData[key];
 			return (
 				<DidiTextInput
-					key={index}
-					description={data.label}
+					key={key}
+					description={struct.name}
 					placeholder={""}
 					textInputProps={{
 						editable: false,
-						value: data.value ? data.value.value : "--"
+						value: data ? data.value : "--"
 					}}
-					stateIndicator={
-						data.value && data.value.state && <ValidationStateIcon validationState={data.value.state} useWords={true} />
-					}
+					stateIndicator={data && data.state && <ValidationStateIcon validationState={data.state} useWords={true} />}
 				/>
 			);
 		});
 	}
 
 	private renderAddressData() {
-		return this.renderDropdown(strings.dashboard.userData.addressDataLabel, this.getAddressData(), (item, index) => {
+		return this.renderDropdown(strings.dashboard.userData.addressDataLabel, addressDataStructure.order, key => {
+			const struct = addressDataStructure.structure[key];
+			const data = this.props.identity.address[key];
 			return (
 				<DidiTextInput
-					key={index}
-					description={item.label}
+					key={key}
+					description={struct.name}
 					placeholder={""}
 					textInputProps={{
 						editable: false,
-						value: item.value || "--"
+						value: data || "--"
 					}}
 				/>
 			);
 		});
 	}
 
-	private renderDropdown<T>(label: string, data: T[], renderOne: (item: T, index: number) => JSX.Element) {
+	private renderDropdown<T>(label: string, data: T[], renderOne: (item: T) => JSX.Element) {
 		return (
 			<DropdownMenu
 				headerContainerStyle={{ backgroundColor: colors.primary }}

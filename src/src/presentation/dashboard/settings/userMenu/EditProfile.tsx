@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, TextInputProps, View } from "react-native";
 
 import { liftUndefined } from "../../../../util/liftUndefined";
 import TypedObject from "../../../../util/TypedObject";
@@ -10,12 +10,18 @@ import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { Identity, LegalAddress, PersonalData } from "../../../../model/Identity";
-import { ValidatedIdentity } from "../../../../store/selector/combinedIdentitySelector";
+import { ValidatedIdentity, ValidationState } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
 import Validator from "../../../access/helpers/validator";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
+import {
+	addressDataStructure,
+	identityDataStructure,
+	personalDataStructure,
+	ProfileInputDataStructure
+} from "../userData/ProfileInputDescription";
 import { UserHeadingComponent } from "../userData/UserHeading";
 
 export type EditProfileProps = {};
@@ -49,60 +55,44 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 		);
 	}
 
-	private setStateMergingPersonalData(merge: Partial<PersonalData>) {
-		this.setState({ ...this.state, personalData: { ...this.state.personalData, ...merge } });
+	private setStateMerging<Key extends keyof Identity>(key: Key, merge: Partial<Identity[Key]>) {
+		this.setState({ ...this.state, [key]: { ...this.state[key], ...merge } });
 	}
 
-	private setStateMergingAddressData(merge: Partial<LegalAddress>) {
-		this.setState({ ...this.state, address: { ...this.state.address, ...merge } });
+	private textInputPropsFor(key: keyof PersonalData, keyboardType: TextInputProps["keyboardType"]): TextInputProps {
+		const props: TextInputProps = {
+			keyboardType,
+			onChangeText: text => this.setStateMerging("personalData", { [key]: text })
+		};
+
+		const value = this.props.identity.personalData[key];
+		if (value) {
+			props.editable = value.state !== ValidationState.Approved;
+			props.defaultValue = value.value;
+		}
+
+		if (props.editable !== false) {
+			props.style = { backgroundColor: colors.editableSetting };
+		} else {
+			props.style = { color: colors.textFaded, fontStyle: "italic" };
+		}
+		return props;
 	}
 
 	renderPersonInputs() {
 		return (
 			<View style={styles.dropdownContents}>
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.fullNameMessage}
-					placeholder="--"
-					textInputProps={{
-						defaultValue: liftUndefined(this.props.identity.personalData.fullName, x => x.value),
-						onChangeText: text => this.setStateMergingPersonalData({ fullName: text })
-					}}
-				/>
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.cellMessage}
-					placeholder="--"
-					textInputProps={{
-						defaultValue: liftUndefined(this.props.identity.personalData.email, x => x.value),
-						editable: false
-					}}
-				/>
-
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.emailMessage}
-					placeholder="--"
-					textInputProps={{
-						defaultValue: liftUndefined(this.props.identity.personalData.cellPhone, x => x.value),
-						editable: false
-					}}
-				/>
-
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.documentMessage}
-					placeholder="--"
-					textInputProps={{
-						keyboardType: "number-pad",
-						defaultValue: liftUndefined(this.props.identity.personalData.document, x => x.value),
-						onChangeText: text => this.setStateMergingPersonalData({ document: text })
-					}}
-				/>
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.nationalityMessage}
-					placeholder="--"
-					textInputProps={{
-						defaultValue: liftUndefined(this.props.identity.personalData.nationality, x => x.value),
-						onChangeText: text => this.setStateMergingPersonalData({ nationality: text })
-					}}
-				/>
+				{personalDataStructure.order.map(key => {
+					const struct = personalDataStructure.structure[key];
+					return (
+						<DidiTextInput
+							key={key}
+							description={struct.name}
+							placeholder=""
+							textInputProps={this.textInputPropsFor(key, struct.keyboardType)}
+						/>
+					);
+				})}
 			</View>
 		);
 	}
@@ -110,62 +100,22 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 	renderAddressInputs() {
 		return (
 			<View style={styles.dropdownContents}>
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.streetMessage}
-					placeholder="--"
-					textInputProps={{
-						defaultValue: this.props.identity.address.street,
-						onChangeText: text => this.setStateMergingAddressData({ street: text })
-					}}
-				/>
-
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.numberMessage}
-					placeholder="--"
-					textInputProps={{
-						keyboardType: "number-pad",
-						defaultValue: this.props.identity.address.number,
-						onChangeText: text => this.setStateMergingAddressData({ number: text })
-					}}
-				/>
-
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.departmentMessage}
-					placeholder="--"
-					textInputProps={{
-						defaultValue: this.props.identity.address.department,
-						onChangeText: text => this.setStateMergingAddressData({ department: text })
-					}}
-				/>
-
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.floorMessage}
-					placeholder="--"
-					textInputProps={{
-						keyboardType: "number-pad",
-						defaultValue: this.props.identity.address.floor,
-						onChangeText: text => this.setStateMergingAddressData({ floor: text })
-					}}
-				/>
-
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.neighborhoodMessage}
-					placeholder="--"
-					textInputProps={{
-						defaultValue: this.props.identity.address.neighborhood,
-						onChangeText: text => this.setStateMergingAddressData({ neighborhood: text })
-					}}
-				/>
-
-				<DidiTextInput
-					description={strings.dashboard.userData.editProfile.postCodeMessage}
-					placeholder="--"
-					textInputProps={{
-						keyboardType: "number-pad",
-						defaultValue: this.props.identity.address.postCode,
-						onChangeText: text => this.setStateMergingAddressData({ postCode: text })
-					}}
-				/>
+				{addressDataStructure.order.map(key => {
+					const struct = addressDataStructure.structure[key];
+					return (
+						<DidiTextInput
+							key={key}
+							description={struct.name}
+							placeholder=""
+							textInputProps={{
+								keyboardType: struct.keyboardType,
+								defaultValue: this.props.identity.address[key],
+								onChangeText: text => this.setStateMerging("address", { [key]: text }),
+								style: { backgroundColor: colors.editableSetting }
+							}}
+						/>
+					);
+				})}
 			</View>
 		);
 	}
@@ -180,11 +130,12 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 						profileImage={this.state.visual.image}
 						backgroundImage={this.state.visual.backgroundImage}
 					/>
+
 					<DropdownMenu
 						headerContainerStyle={{ backgroundColor: colors.primary }}
 						headerTextStyle={{ color: colors.primaryText }}
 						style={styles.personalDataDropdown}
-						label={strings.dashboard.userData.personalDataLabel}
+						label={personalDataStructure.name}
 					>
 						{this.renderPersonInputs()}
 					</DropdownMenu>
@@ -193,7 +144,7 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 						headerContainerStyle={{ backgroundColor: colors.primary }}
 						headerTextStyle={{ color: colors.primaryText }}
 						style={styles.personalDataDropdown}
-						label={strings.dashboard.userData.addressDataLabel}
+						label={addressDataStructure.name}
 					>
 						{this.renderAddressInputs()}
 					</DropdownMenu>

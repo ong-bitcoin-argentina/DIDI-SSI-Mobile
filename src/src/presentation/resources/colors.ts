@@ -18,6 +18,8 @@ const colors = {
 	secondary: "#24cdd2",
 	secondaryText: "#FFFFFF",
 
+	editableSetting: "#fbf2be",
+
 	subtitleAlpha: "A0"
 };
 
