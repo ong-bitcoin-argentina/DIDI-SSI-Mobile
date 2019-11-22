@@ -13,10 +13,11 @@ import {
 	View
 } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import onboardingPages, { OnboardingPage } from "../../resources/onboardingPages";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -126,8 +127,8 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 						<View style={styles.imageContainer}>
 							<CardBackground width="100%" height="100%" style={styles.image} />
 						</View>
-						<Text style={commonStyles.text.emphasis}>{page.title}</Text>
-						<Text style={commonStyles.text.normal}>{page.body}</Text>
+						<DidiText.Explanation.Emphasis>{page.title}</DidiText.Explanation.Emphasis>
+						<DidiText.Explanation.Normal>{page.body}</DidiText.Explanation.Normal>
 					</View>
 				</View>
 			</TouchableWithoutFeedback>

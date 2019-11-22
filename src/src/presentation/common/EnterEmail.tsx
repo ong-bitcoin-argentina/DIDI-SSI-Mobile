@@ -1,10 +1,11 @@
 import React from "react";
-import { Image, ImageSourcePropType, Text, View } from "react-native";
+import { Image, ImageSourcePropType, View } from "react-native";
 
 import { AddChildren } from "../../util/ReactExtensions";
 import { DidiScreen } from "../common/DidiScreen";
 import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
+import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
 import Validator from "../access/helpers/validator";
@@ -47,7 +48,7 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 	render() {
 		return (
 			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{this.props.description}</Text>
+				<DidiText.Explanation.Emphasis>{this.props.description}</DidiText.Explanation.Emphasis>
 
 				<Image source={this.props.contentImageSource} style={commonStyles.image.image} />
 

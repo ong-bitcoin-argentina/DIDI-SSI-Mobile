@@ -1,10 +1,11 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import strings from "../../resources/strings";
@@ -33,9 +34,9 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 
 				<Image source={require("../../resources/images/emailSent.png")} style={commonStyles.image.image} />
 
-				<Text style={[commonStyles.text.normal, styles.message]}>
+				<DidiText.Explanation.Normal style={styles.message}>
 					{strings.recovery.passwordRecoverEmailSent.message}
-				</Text>
+				</DidiText.Explanation.Normal>
 
 				<View />
 

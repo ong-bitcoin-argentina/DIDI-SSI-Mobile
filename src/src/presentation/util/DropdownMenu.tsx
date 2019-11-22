@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewProps, ViewStyle } from "react-native";
 
-import commonStyles from "../resources/commonStyles";
+import { DidiText } from "./DidiText";
 
 interface DropdownMenuProps extends ViewProps {
 	label: string;
@@ -44,9 +44,9 @@ export default class DropdownMenu extends React.Component<DropdownMenuProps, Dro
 					}}
 				>
 					<View style={[styles.labelContainer, this.props.headerContainerStyle]}>
-						<Text style={[commonStyles.text.emphasis, styles.label, this.props.headerTextStyle]}>
+						<DidiText.Explanation.Emphasis style={[styles.label, this.props.headerTextStyle]}>
 							{this.props.label}
-						</Text>
+						</DidiText.Explanation.Emphasis>
 						{visible && <Text style={styles.icon}>▼</Text>}
 						{!visible && <Text style={styles.icon}>◀</Text>}
 					</View>

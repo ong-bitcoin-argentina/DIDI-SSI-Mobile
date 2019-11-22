@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
 
-import commonStyles from "../../../resources/commonStyles";
+import { DidiText } from "../../../util/DidiText";
 
 import colors from "../../../resources/colors";
 
@@ -53,7 +53,7 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 					</TouchableOpacity>
 				)}
 
-				<Text style={[commonStyles.text.emphasis, styles.userLabel]}>{this.props.user}</Text>
+				<DidiText.Explanation.Emphasis style={styles.userLabel}>{this.props.user}</DidiText.Explanation.Emphasis>
 			</View>
 		);
 	}

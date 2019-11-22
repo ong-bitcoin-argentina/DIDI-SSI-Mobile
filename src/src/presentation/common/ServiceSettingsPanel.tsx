@@ -2,8 +2,8 @@ import React from "react";
 import { ScrollView, Text } from "react-native";
 
 import TypedObject from "../../util/TypedObject";
-import commonStyles from "../resources/commonStyles";
 import DidiButton from "../util/DidiButton";
+import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
 import { ServiceSettings } from "../../model/ServiceSettings";
@@ -37,9 +37,9 @@ class ServiceSettingsPanel extends React.Component<ServiceSettingsInternalProps,
 	render() {
 		return (
 			<ScrollView style={{}} contentContainerStyle={{ padding: 30, justifyContent: "flex-start" }}>
-				<Text style={[commonStyles.text.emphasis, { marginBottom: 20 }]}>
+				<DidiText.Explanation.Emphasis style={{ marginBottom: 20 }}>
 					{strings.debug.serviceConfig.instructions}
-				</Text>
+				</DidiText.Explanation.Emphasis>
 				{TypedObject.keys(this.props.serviceSettings).map(key => {
 					const description = `${displayNames[key]}\nDefault: ${defaultServiceSettings[key]}\nActual: ${this.props.serviceSettings[key]}`;
 					return (

@@ -3,8 +3,8 @@ import { StyleSheet, Text } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { uPortDocumentToCard } from "../common/documentToCard";
 
@@ -50,13 +50,13 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	}
 
 	private renderExisting() {
-		return <Text style={commonStyles.text.normal}>{strings.credentialReceivedInScan.alreadyScanned}</Text>;
+		return <DidiText.Explanation.Normal>{strings.credentialReceivedInScan.alreadyScanned}</DidiText.Explanation.Normal>;
 	}
 
 	private renderNew() {
 		return (
 			<Fragment>
-				<Text style={commonStyles.text.normal}>{strings.credentialReceivedInScan.addCredential}</Text>
+				<DidiText.Explanation.Normal>{strings.credentialReceivedInScan.addCredential}</DidiText.Explanation.Normal>
 				<DidiButton
 					style={styles.button}
 					title={strings.credentialReceivedInScan.doAdd}

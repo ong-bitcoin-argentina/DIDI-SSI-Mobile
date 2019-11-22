@@ -1,12 +1,13 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { RecoveryEnterEmailProps } from "./RecoveryEnterEmail";
@@ -27,19 +28,19 @@ export class RecoveryExplanationScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen>
-				<Text style={commonStyles.text.normal}>{strings.recovery.explanation.messageMotivesTitle}</Text>
+				<DidiText.Explanation.Normal>{strings.recovery.explanation.messageMotivesTitle}</DidiText.Explanation.Normal>
 
 				<View>
 					{strings.recovery.explanation.messageMotives.map((motive, index) => (
-						<Text key={index} style={[commonStyles.text.emphasis, { textAlign: "left" }]}>
+						<DidiText.Explanation.Emphasis key={index} style={{ textAlign: "left" }}>
 							{"- " + motive}
-						</Text>
+						</DidiText.Explanation.Emphasis>
 					))}
 				</View>
 
 				<Image source={require("../../resources/images/accountRecover.png")} style={commonStyles.image.image} />
 
-				<Text style={commonStyles.text.faded}>{strings.recovery.explanation.rememberEmailMessage}</Text>
+				<DidiText.Explanation.Faded>{strings.recovery.explanation.rememberEmailMessage}</DidiText.Explanation.Faded>
 
 				<DidiButton
 					onPress={() => this.navigate("RecoveryEnterEmail", {})}

@@ -4,6 +4,7 @@ import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import CredentialCard from "../common/CredentialCard";
@@ -136,9 +137,9 @@ class DashboardScreen extends NavigationEnabledComponent<
 				})}
 				<View>
 					<TouchableOpacity onPress={() => {}}>
-						<Text style={[commonStyles.text.emphasis, styles.loadMoreText]}>
+						<DidiText.Explanation.Emphasis style={styles.loadMoreText}>
 							{strings.dashboard.recentActivities.loadMore + " +"}
-						</Text>
+						</DidiText.Explanation.Emphasis>
 					</TouchableOpacity>
 				</View>
 			</View>

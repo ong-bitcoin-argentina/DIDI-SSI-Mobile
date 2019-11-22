@@ -1,8 +1,9 @@
 import React from "react";
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
 
 import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
+import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
 import Validator from "../access/helpers/validator";
@@ -31,11 +32,11 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 	render() {
 		return (
 			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{strings.accessCommon.enterPhone.messageHead}</Text>
+				<DidiText.Explanation.Emphasis>{strings.accessCommon.enterPhone.messageHead}</DidiText.Explanation.Emphasis>
 
 				<View style={styles.countryContainer}>
 					<Image style={styles.countryImage} source={this.countryImageSource()} />
-					<Text style={commonStyles.text.normal}>{strings.accessCommon.place}</Text>
+					<DidiText.Explanation.Normal>{strings.accessCommon.place}</DidiText.Explanation.Normal>
 				</View>
 
 				<DidiTextInput.PhoneNumber onChangeText={text => this.setState({ inputPhoneNumber: text })} />

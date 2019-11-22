@@ -1,11 +1,12 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import commonStyles from "../../resources/commonStyles";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
+import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
@@ -64,7 +65,7 @@ class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{strings.recovery.passwordChange.messageHead}</Text>
+				<DidiText.Explanation.Emphasis>{strings.recovery.passwordChange.messageHead}</DidiText.Explanation.Emphasis>
 
 				<Image source={require("../../resources/images/recoverPassword.png")} style={commonStyles.image.image} />
 

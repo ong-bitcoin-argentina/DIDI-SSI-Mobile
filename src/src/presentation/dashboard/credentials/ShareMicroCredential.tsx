@@ -1,13 +1,14 @@
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { uPortDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import themes from "../../resources/themes";
 
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
@@ -42,11 +43,13 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 						renderItem={item => this.renderCard(item.item)}
 						ListEmptyComponent={
 							<View style={commonStyles.view.body}>
-								<Text style={commonStyles.text.normal}>Primero obten credenciales</Text>
+								<DidiText.Explanation.Normal>Primero obten credenciales</DidiText.Explanation.Normal>
 							</View>
 						}
 						ListHeaderComponent={
-							<Text style={commonStyles.text.emphasis}>¿Qué parte de la credencial deseas compartir?</Text>
+							<DidiText.Explanation.Emphasis>
+								¿Qué parte de la credencial deseas compartir?
+							</DidiText.Explanation.Emphasis>
 						}
 					/>
 				</SafeAreaView>

@@ -1,13 +1,14 @@
 import React from "react";
-import { Alert, Image, Text } from "react-native";
+import { Image } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { SignupEnterEmailProps } from "./SignupEnterEmail";
@@ -30,7 +31,7 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.messageHead}</Text>
+				<DidiText.Explanation.Emphasis>{strings.signup.phoneVerified.messageHead}</DidiText.Explanation.Emphasis>
 
 				<DidiTextInput
 					description={strings.signup.phoneVerified.cellNumber}
@@ -43,7 +44,7 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 
 				<Image source={require("../../resources/images/accountCreate.png")} style={commonStyles.image.image} />
 
-				<Text style={commonStyles.text.emphasis}>{strings.signup.phoneVerified.message}</Text>
+				<DidiText.Explanation.Emphasis>{strings.signup.phoneVerified.message}</DidiText.Explanation.Emphasis>
 
 				<DidiButton
 					onPress={() => {
