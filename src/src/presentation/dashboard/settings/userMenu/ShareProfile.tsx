@@ -46,7 +46,7 @@ class ShareProfileScreen extends NavigationEnabledComponent<
 		return (
 			<DidiScreen>
 				<View style={styles.inputs}>
-					<Text>TODO!!</Text>
+					<Text>{strings.debug.screenInProgress}</Text>
 				</View>
 
 				<View style={styles.button}>

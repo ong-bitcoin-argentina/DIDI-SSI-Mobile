@@ -95,7 +95,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			<CredentialCard
 				icon=""
 				category="Documento Identidad"
-				title={this.props.person.visual.name}
+				title={this.props.person.visual.name || ""}
 				subTitle="Nombre"
 				color={colors.secondary}
 				hollow={true}
@@ -114,7 +114,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			<CredentialCard
 				icon=""
 				category="Documento Identidad"
-				title={this.props.person.visual.name}
+				title={this.props.person.visual.name || ""}
 				subTitle="Nombre"
 				color={colors.secondary}
 				data={[

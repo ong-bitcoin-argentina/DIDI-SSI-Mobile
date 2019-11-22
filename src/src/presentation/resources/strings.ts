@@ -2,17 +2,16 @@ export default {
 	debug: {
 		menu: "Debug Menu",
 		decodeJWT: "Decodificar JWT",
-		serviceConfig: "Configuracion de Servicios",
+		serviceConfig: {
+			barTitle: "Configuracion de Servicios",
+			instructions: "Dejar un input vacio y guardar lo retorna a su valor por defecto"
+		},
 		screenInProgress: "Pantalla en Construccion"
 	},
 	dashboard: {
 		recentActivities: {
 			label: "Actividades recientes",
 			loadMore: "Cargar más"
-		},
-		notifications: {
-			showExpired: "Mostrar peticiones vencidas",
-			hideExpired: "Ocultar peticiones vencidas"
 		},
 		userData: {
 			personalDataLabel: "Datos personales",
@@ -231,5 +230,26 @@ export default {
 	specialCredentials: {
 		PhoneNumberData: "Número de celular",
 		EmailData: "E-mail"
+	},
+	camera: {
+		notAuthorized: "Camara no autorizada",
+		scanQRInstruction: "Escanea un codigo QR"
+	},
+	notifications: {
+		showExpired: "Mostrar peticiones vencidas",
+		hideExpired: "Ocultar peticiones vencidas",
+		sendResponse: "Enviar",
+		requestExpired: "Fecha límite superada."
+	},
+	credentialRequestCard: {
+		from: "De",
+		requests: "Solicita",
+		before: "Antes de"
+	},
+	credentialReceivedInScan: {
+		addCredential: "¿Agregar esta credencial?",
+		doAdd: "Si",
+		goBack: "No",
+		alreadyScanned: "Ya dispones de esta credencial"
 	}
 };

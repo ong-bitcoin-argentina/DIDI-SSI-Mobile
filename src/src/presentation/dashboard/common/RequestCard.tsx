@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ViewProps } from "react-native";
 
 import { RequestDocument } from "../../../model/RequestDocument";
 import colors from "../../resources/colors";
+import strings from "../../resources/strings";
 
 import DidiCardBody from "./DidiCardBody";
 
@@ -19,16 +20,16 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 			<DidiCardBody icon="" color={colors.secondary} hollow={true} {...this.props}>
 				<View>
 					<Text style={styles.normal}>
-						{"De: "}
+						{strings.credentialRequestCard.from + ": "}
 						<Text style={styles.em}>{issuer}</Text>
 					</Text>
-					<Text style={styles.normal}>Solicita: </Text>
+					<Text style={styles.normal}>{strings.credentialRequestCard.requests + ": "}</Text>
 					{this.props.request.content.verifiedClaims.map((rq, index) => {
 						return <Text style={styles.em} key={index}>{`    - ${rq}`}</Text>;
 					})}
 					{endDate && (
 						<Text style={styles.normal}>
-							{"Antes de: "}
+							{strings.credentialRequestCard.before + ": "}
 							<Text style={styles.em}>{endDate}</Text>
 						</Text>
 					)}

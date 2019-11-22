@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -10,7 +11,6 @@ import { RequestDocument } from "../../../model/RequestDocument";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest";
@@ -58,11 +58,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
 						<DidiButton
-							title={
-								this.state.showExpired
-									? strings.dashboard.notifications.hideExpired
-									: strings.dashboard.notifications.showExpired
-							}
+							title={this.state.showExpired ? strings.notifications.hideExpired : strings.notifications.showExpired}
 							onPress={() => this.setState({ showExpired: !this.state.showExpired })}
 						/>
 						{this.props.requests
@@ -82,12 +78,12 @@ class NotificationScreen extends NavigationEnabledComponent<
 				<View style={{ marginTop: 10 }}>
 					{isActive ? (
 						<DidiButton
-							title="Enviar"
+							title={strings.notifications.sendResponse}
 							style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
 							onPress={() => this.onSendResponse(request)}
 						/>
 					) : (
-						<Text>Fecha límite superada.</Text>
+						<Text>{strings.notifications.requestExpired}</Text>
 					)}
 				</View>
 			</RequestCard>

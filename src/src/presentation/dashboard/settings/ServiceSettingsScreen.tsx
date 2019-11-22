@@ -10,7 +10,7 @@ import strings from "../../resources/strings";
 export type ServiceSettingsScreenProps = {};
 
 export class ServiceSettingsScreen extends NavigationEnabledComponent<ServiceSettingsScreenProps, {}, {}> {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.debug.serviceConfig);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.debug.serviceConfig.barTitle);
 
 	render() {
 		return (

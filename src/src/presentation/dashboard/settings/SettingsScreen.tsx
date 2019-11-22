@@ -59,7 +59,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) },
-			{ name: strings.debug.serviceConfig, action: () => this.navigate("ServiceSettings", {}) },
+			{ name: strings.debug.serviceConfig.barTitle, action: () => this.navigate("ServiceSettings", {}) },
 			{ name: strings.debug.decodeJWT, action: () => this.navigate("JWTDecoderScreen", {}) }
 		];
 	}

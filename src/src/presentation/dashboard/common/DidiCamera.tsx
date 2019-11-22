@@ -4,6 +4,7 @@ import { RNCamera, TakePictureResponse } from "react-native-camera";
 
 import colors from "../../resources/colors";
 import Checkmark from "../../resources/images/cameraCheckmark.svg";
+import strings from "../../resources/strings";
 
 export interface DidiCameraProps {
 	onPictureTaken(response: TakePictureResponse): void;
@@ -46,7 +47,7 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 						buttonPositive: "Ok",
 						buttonNegative: "Cancelar"
 					}}
-					notAuthorizedView={<Text style={styles.notAuthorized}>Camara no autorizada</Text>}
+					notAuthorizedView={<Text style={styles.notAuthorized}>{strings.camera.notAuthorized}</Text>}
 					onCameraReady={() => this.setState({ cameraAvailable: true })}
 				/>
 				<View style={[StyleSheet.absoluteFill, styles.cameraButtonContainer]}>{this.renderPictureButton()}</View>

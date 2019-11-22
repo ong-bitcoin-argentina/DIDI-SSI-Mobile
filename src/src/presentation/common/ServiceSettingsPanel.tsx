@@ -9,6 +9,7 @@ import DidiTextInput from "../util/DidiTextInput";
 import { ServiceSettings } from "../../model/ServiceSettings";
 import { defaultServiceSettings } from "../../store/reducers/serviceSettingsReducer";
 import { didiConnect } from "../../store/store";
+import strings from "../resources/strings";
 
 export interface ServiceSettingsPanelProps {
 	onServiceSettingsSaved(): void;
@@ -37,7 +38,7 @@ class ServiceSettingsPanel extends React.Component<ServiceSettingsInternalProps,
 		return (
 			<ScrollView style={{}} contentContainerStyle={{ padding: 30, justifyContent: "flex-start" }}>
 				<Text style={[commonStyles.text.emphasis, { marginBottom: 20 }]}>
-					Dejar un input vacio y guardar lo retorna a su valor por defecto
+					{strings.debug.serviceConfig.instructions}
 				</Text>
 				{TypedObject.keys(this.props.serviceSettings).map(key => {
 					const description = `${displayNames[key]}\nDefault: ${defaultServiceSettings[key]}\nActual: ${this.props.serviceSettings[key]}`;
