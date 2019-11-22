@@ -9,6 +9,7 @@ import { uPortDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
@@ -43,13 +44,13 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 						renderItem={item => this.renderCard(item.item)}
 						ListEmptyComponent={
 							<View style={commonStyles.view.body}>
-								<DidiText.Explanation.Normal>Primero obten credenciales</DidiText.Explanation.Normal>
+								<DidiText.Explanation.Normal>
+									{strings.credentialShare.noCredentialsAvailable}
+								</DidiText.Explanation.Normal>
 							</View>
 						}
 						ListHeaderComponent={
-							<DidiText.Explanation.Emphasis>
-								¿Qué parte de la credencial deseas compartir?
-							</DidiText.Explanation.Emphasis>
+							<DidiText.Explanation.Emphasis>{strings.credentialShare.whichMicro}</DidiText.Explanation.Emphasis>
 						}
 					/>
 				</SafeAreaView>

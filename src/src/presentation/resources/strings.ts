@@ -251,5 +251,10 @@ export default {
 		doAdd: "Si",
 		goBack: "No",
 		alreadyScanned: "Ya dispones de esta credencial"
+	},
+	credentialShare: {
+		noCredentialsAvailable: "Primero obten credenciales",
+		whichFull: "¿Qué credencial deseas compartir?",
+		whichMicro: "¿Qué parte de la credencial deseas compartir?"
 	}
 };
