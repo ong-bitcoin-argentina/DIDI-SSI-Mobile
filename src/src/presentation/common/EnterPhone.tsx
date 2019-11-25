@@ -12,6 +12,7 @@ import strings from "../resources/strings";
 import { DidiScreen } from "./DidiScreen";
 
 export interface EnterPhoneProps {
+	explanation: string;
 	contentImageSource: ImageSourcePropType;
 	isPasswordRequired: boolean;
 	onPressContinueButton(inputPhoneNumber: string, password: string | null): void;
@@ -32,7 +33,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 	render() {
 		return (
 			<DidiScreen>
-				<DidiText.Explanation.Emphasis>{strings.accessCommon.enterPhone.messageHead}</DidiText.Explanation.Emphasis>
+				<DidiText.Explanation.Emphasis>{this.props.explanation}</DidiText.Explanation.Emphasis>
 
 				<View style={styles.countryContainer}>
 					<Image style={styles.countryImage} source={this.countryImageSource()} />

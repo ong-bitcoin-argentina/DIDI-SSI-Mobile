@@ -24,6 +24,7 @@ export class SignupEnterPhoneScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<EnterPhoneWrapper
+				explanation={strings.accessCommon.enterPhone.messageHead}
 				shouldCreateDid={true}
 				isPasswordRequired={false}
 				password={null}

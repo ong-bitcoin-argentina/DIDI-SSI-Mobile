@@ -4,6 +4,8 @@ import { EnterPhoneWrapper } from "../../../common/EnterPhoneWrapper";
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
+import strings from "../../../resources/strings";
+
 import { ChangePhoneVerifyScreenProps } from "./ChangePhoneVerifyPhone";
 
 export type ChangePhoneEnterScreenProps = {};
@@ -16,11 +18,12 @@ export class ChangePhoneEnterScreen extends NavigationEnabledComponent<
 	{},
 	ChangePhoneEnterScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Cambiar Teléfono");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changePhone.screenTitle);
 
 	render() {
 		return (
 			<EnterPhoneWrapper
+				explanation={strings.dashboard.userData.changePhone.messageHead}
 				shouldCreateDid={false}
 				isPasswordRequired={true}
 				password={null}

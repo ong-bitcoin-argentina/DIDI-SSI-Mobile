@@ -10,6 +10,7 @@ import { ServiceObserver } from "./ServiceObserver";
 
 export interface EnterPhoneWrapperProps {
 	onServiceSuccess(phoneNumber: string, password: string | null): void;
+	explanation: EnterPhoneProps["explanation"];
 	contentImageSource: EnterPhoneProps["contentImageSource"];
 	shouldCreateDid: boolean;
 	isPasswordRequired: boolean;
