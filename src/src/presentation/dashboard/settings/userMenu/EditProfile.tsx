@@ -1,27 +1,20 @@
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View } from "react-native";
 
-import { liftUndefined } from "../../../../util/liftUndefined";
-import TypedObject from "../../../../util/TypedObject";
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
-import { Identity, LegalAddress, PersonalData } from "../../../../model/Identity";
+import { Identity, PersonalData } from "../../../../model/Identity";
 import { ValidatedIdentity, ValidationState } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
 import Validator from "../../../access/helpers/validator";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
-import {
-	addressDataStructure,
-	identityDataStructure,
-	personalDataStructure,
-	ProfileInputDataStructure
-} from "../userData/ProfileInputDescription";
+import { addressDataStructure, personalDataStructure } from "../userData/ProfileInputDescription";
 import { UserHeadingComponent } from "../userData/UserHeading";
 
 export type EditProfileProps = {};
