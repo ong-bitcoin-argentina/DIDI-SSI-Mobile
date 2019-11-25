@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View, ViewProps } from "react-native";
+import { View, ViewProps } from "react-native";
 import { FloatingAction, IActionProps } from "react-native-floating-action";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 
+import { DidiText } from "../util/DidiText";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
 import colors from "../resources/colors";
@@ -54,14 +55,6 @@ export default class DashboardJumpMenu extends NavigationEnabledComponent<
 	}
 }
 
-const styles = StyleSheet.create({
-	icon: {
-		fontFamily: "MaterialIcons-Regular",
-		fontSize: 21,
-		color: colors.primaryText
-	}
-});
-
 const actionCommon: Omit<IActionProps, "name"> = {
 	textBackground: "transparent",
 	textColor: "#FFF",
@@ -69,40 +62,44 @@ const actionCommon: Omit<IActionProps, "name"> = {
 	textElevation: 0
 };
 
+function iconFrom(text: string) {
+	return <DidiText.Icon fontSize={21}>{text}</DidiText.Icon>;
+}
+
 const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
+		icon: iconFrom(""),
 		text: "Escanear Credenciales",
 		name: "ScanCredential"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
+		icon: iconFrom(""),
 		text: "Compartir",
 		name: "ShareCredential"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
+		icon: iconFrom(""),
 		text: "Armar Ronda",
 		name: "DashboardRounds"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
+		icon: iconFrom(""),
 		text: "Ver Documentos",
 		name: "DashboardDocuments"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
+		icon: iconFrom(""),
 		text: "Ver ID",
 		name: "UserData"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
+		icon: iconFrom(""),
 		text: "Editar Perfil",
 		name: "EditProfile"
 	}

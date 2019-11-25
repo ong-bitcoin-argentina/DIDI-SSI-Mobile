@@ -1,6 +1,8 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { DidiText } from "../../util/DidiText";
+
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import colors from "../../resources/colors";
 import themes from "../../resources/themes";
@@ -30,7 +32,7 @@ export default class HomeHeader extends React.Component<HomeHeaderProps> {
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
-					<Text style={styles.bell}></Text>
+					<DidiText.Icon fontSize={24}></DidiText.Icon>
 				</TouchableOpacity>
 			</View>
 		);
@@ -54,11 +56,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		paddingVertical: 25,
 		paddingHorizontal: 20
-	},
-	bell: {
-		fontFamily: "MaterialIcons-Regular",
-		fontSize: 24,
-		color: themes.navigationText
 	},
 	image: {
 		marginRight: 10,

@@ -49,7 +49,7 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 							this.openBgImagePicker();
 						}}
 					>
-						<Text style={styles.cameraIcon}></Text>
+						<DidiText.Icon fontSize={20}></DidiText.Icon>
 					</TouchableOpacity>
 				)}
 
@@ -85,11 +85,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		backgroundColor: colors.primary,
 		borderRadius: 20
-	},
-	cameraIcon: {
-		fontSize: 20,
-		fontFamily: "MaterialIcons-Regular",
-		color: colors.primaryText
 	},
 	userLabel: {
 		marginTop: 40,

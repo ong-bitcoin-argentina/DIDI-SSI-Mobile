@@ -1,5 +1,7 @@
-import React, { Component, Fragment } from "react";
-import { Image, ImageSourcePropType, StyleProp, StyleSheet, Text, TextStyle, View, ViewProps } from "react-native";
+import React, { Component } from "react";
+import { StyleProp, StyleSheet, Text, TextStyle, View, ViewProps } from "react-native";
+
+import { DidiText } from "../../util/DidiText";
 
 import { RecentActivity } from "../../../model/RecentActivity";
 import colors from "../../resources/colors";
@@ -31,7 +33,7 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderIcon() {
 		return (
 			<View style={styles.iconContainer}>
-				<Text style={styles.icon}>{this.props.activity.icon}</Text>
+				<DidiText.Icon fontSize={20}>{this.props.activity.icon}</DidiText.Icon>
 			</View>
 		);
 	}
@@ -70,13 +72,6 @@ const styles = StyleSheet.create({
 		marginRight: 12,
 		borderRadius: 16,
 		backgroundColor: colors.secondary
-	},
-	icon: {
-		fontSize: 20,
-		textAlign: "center",
-		textAlignVertical: "center",
-		color: colors.secondaryText,
-		fontFamily: "MaterialIcons-Regular"
 	},
 	titleData: {
 		textAlign: "left",

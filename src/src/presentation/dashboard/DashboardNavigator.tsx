@@ -5,6 +5,7 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../common/ServiceObserver";
+import { DidiText } from "../util/DidiText";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import NavMap, { NavigationEnabledComponentConstructor, NavTree } from "../util/NavMap";
 
@@ -59,7 +60,9 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				title,
 				tabBarIcon: ({ focused, tintColor }: { focused: boolean; tintColor: string }) => (
 					<View style={{ width: 24, height: 24 }}>
-						<Text style={{ color: tintColor, fontSize: 24, fontFamily: "MaterialIcons-Regular" }}>{image}</Text>
+						<DidiText.Icon color={tintColor} fontSize={24}>
+							{image}
+						</DidiText.Icon>
 					</View>
 				)
 			}

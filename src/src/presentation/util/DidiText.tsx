@@ -16,6 +16,14 @@ export const DidiText = {
 		Faded: (props: AddChildren<TextProps>) => {
 			return <Text {...props} style={[styles.faded, props.style]} />;
 		}
+	},
+	Icon: (props: { fontSize: number; color?: string } & AddChildren<TextProps>) => {
+		return (
+			<Text
+				{...props}
+				style={[styles.icon, { color: props.color || "#FFFFFF", fontSize: props.fontSize }, props.style]}
+			/>
+		);
 	}
 };
 
@@ -34,5 +42,9 @@ const styles = StyleSheet.create({
 	faded: {
 		...baseTextStyle,
 		color: colors.textFaded
+	},
+	icon: {
+		textAlign: "center",
+		fontFamily: "MaterialIcons-Regular"
 	}
 });
