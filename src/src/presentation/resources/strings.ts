@@ -9,59 +9,60 @@ export default {
 		screenInProgress: "Pantalla en Construccion"
 	},
 	dashboard: {
+		helloMessage: "Hola",
 		recentActivities: {
 			label: "Actividades recientes",
 			loadMore: "Cargar más"
+		}
+	},
+	userData: {
+		personalDataLabel: "Datos personales",
+		addressDataLabel: "Domicilio Legal",
+		states: {
+			approved: "Aprobado",
+			pending: "Pendiente",
+			rejected: "Rechazado"
 		},
-		userData: {
-			personalDataLabel: "Datos personales",
-			addressDataLabel: "Domicilio Legal",
-			states: {
-				approved: "Aprobado",
-				pending: "Pendiente",
-				rejected: "Rechazado"
-			},
-			editProfile: {
-				barTitle: "Editar Perfil",
-				saveChanges: "Guardar Cambios",
+		editProfile: {
+			barTitle: "Editar Perfil",
+			saveChanges: "Guardar Cambios",
 
-				fullNameMessage: "Nombre completo",
-				cellMessage: "Celular",
-				emailMessage: "E-mail",
-				documentMessage: "DU / CI / Pasaporte",
-				nationalityMessage: "Nacionalidad",
-				addressMessage: "Domicilio",
+			fullNameMessage: "Nombre completo",
+			cellMessage: "Celular",
+			emailMessage: "E-mail",
+			documentMessage: "DU / CI / Pasaporte",
+			nationalityMessage: "Nacionalidad",
+			addressMessage: "Domicilio",
 
-				streetMessage: "Nombre de Calle / Manzana",
-				numberMessage: "Número / Casa",
-				departmentMessage: "Departamento",
-				floorMessage: "Piso",
-				neighborhoodMessage: "Barrio",
-				postCodeMessage: "Codigo Postal"
-			},
-			changePassword: {
-				barTitle: "Cambio de Contraseña",
-				changePassword: "Cambiar Contraseña"
-			},
-			share: {
-				barTitle: "Compartir",
-				share: "Compartir",
+			streetMessage: "Nombre de Calle / Manzana",
+			numberMessage: "Número / Casa",
+			departmentMessage: "Departamento",
+			floorMessage: "Piso",
+			neighborhoodMessage: "Barrio",
+			postCodeMessage: "Codigo Postal"
+		},
+		changePassword: {
+			barTitle: "Cambio de Contraseña",
+			changePassword: "Cambiar Contraseña"
+		},
+		share: {
+			barTitle: "Compartir",
+			share: "Compartir",
 
-				personalData: "DatosPersonales",
-				familyMessage: "Familia",
-				coursesMessage: "Cursos",
-				jobsMessage: "Trabajos",
-				titlesMessage: "Títulos",
-				othersMessage: "Otros"
-			},
-			changeEmail: {
-				screenTitle: "Cambiar Email",
-				messageHead: "Ingresa tu nuevo email y tu contraseña actual."
-			},
-			changePhone: {
-				screenTitle: "Cambiar Teléfono",
-				messageHead: "Ingresa tu nuevo numero de telefono y tu contraseña actual."
-			}
+			personalData: "DatosPersonales",
+			familyMessage: "Familia",
+			coursesMessage: "Cursos",
+			jobsMessage: "Trabajos",
+			titlesMessage: "Títulos",
+			othersMessage: "Otros"
+		},
+		changeEmail: {
+			screenTitle: "Cambiar Email",
+			messageHead: "Ingresa tu nuevo email y tu contraseña actual."
+		},
+		changePhone: {
+			screenTitle: "Cambiar Teléfono",
+			messageHead: "Ingresa tu nuevo numero de telefono y tu contraseña actual."
 		}
 	},
 	recovery: {

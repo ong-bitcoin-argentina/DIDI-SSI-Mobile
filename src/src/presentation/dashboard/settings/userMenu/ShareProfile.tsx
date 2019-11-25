@@ -30,7 +30,7 @@ class ShareProfileScreen extends NavigationEnabledComponent<
 	ShareProfileState,
 	ShareProfileNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.share.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.share.barTitle);
 
 	private canPressContinueButton(): boolean {
 		// TODO
@@ -55,7 +55,7 @@ class ShareProfileScreen extends NavigationEnabledComponent<
 							this.share();
 						}}
 						disabled={!this.canPressContinueButton()}
-						title={strings.dashboard.userData.share.share}
+						title={strings.userData.share.share}
 					/>
 				</View>
 			</DidiScreen>

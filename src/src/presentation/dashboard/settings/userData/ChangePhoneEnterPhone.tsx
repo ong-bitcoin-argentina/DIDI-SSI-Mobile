@@ -18,12 +18,12 @@ export class ChangePhoneEnterScreen extends NavigationEnabledComponent<
 	{},
 	ChangePhoneEnterScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changePhone.screenTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.changePhone.screenTitle);
 
 	render() {
 		return (
 			<EnterPhoneWrapper
-				explanation={strings.dashboard.userData.changePhone.messageHead}
+				explanation={strings.userData.changePhone.messageHead}
 				shouldCreateDid={false}
 				isPasswordRequired={true}
 				password={null}

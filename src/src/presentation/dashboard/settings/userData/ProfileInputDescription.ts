@@ -13,51 +13,51 @@ export interface ProfileInputDataStructure<T> {
 }
 
 export const personalDataStructure: ProfileInputDataStructure<PersonalData> = {
-	name: strings.dashboard.userData.personalDataLabel,
+	name: strings.userData.personalDataLabel,
 	order: ["fullName", "cellPhone", "email", "document", "nationality"],
 	structure: {
 		cellPhone: {
-			name: strings.dashboard.userData.editProfile.cellMessage,
+			name: strings.userData.editProfile.cellMessage,
 			keyboardType: "phone-pad"
 		},
 		document: {
-			name: strings.dashboard.userData.editProfile.documentMessage,
+			name: strings.userData.editProfile.documentMessage,
 			keyboardType: "number-pad"
 		},
 		email: {
-			name: strings.dashboard.userData.editProfile.emailMessage,
+			name: strings.userData.editProfile.emailMessage,
 			keyboardType: "email-address"
 		},
 		fullName: {
-			name: strings.dashboard.userData.editProfile.fullNameMessage
+			name: strings.userData.editProfile.fullNameMessage
 		},
 		nationality: {
-			name: strings.dashboard.userData.editProfile.nationalityMessage
+			name: strings.userData.editProfile.nationalityMessage
 		}
 	}
 };
 
 export const addressDataStructure: ProfileInputDataStructure<LegalAddress> = {
-	name: strings.dashboard.userData.addressDataLabel,
+	name: strings.userData.addressDataLabel,
 	order: ["street", "number", "department", "floor", "neighborhood", "postCode"],
 	structure: {
 		department: {
-			name: strings.dashboard.userData.editProfile.departmentMessage
+			name: strings.userData.editProfile.departmentMessage
 		},
 		floor: {
-			name: strings.dashboard.userData.editProfile.floorMessage
+			name: strings.userData.editProfile.floorMessage
 		},
 		neighborhood: {
-			name: strings.dashboard.userData.editProfile.neighborhoodMessage
+			name: strings.userData.editProfile.neighborhoodMessage
 		},
 		number: {
-			name: strings.dashboard.userData.editProfile.numberMessage
+			name: strings.userData.editProfile.numberMessage
 		},
 		postCode: {
-			name: strings.dashboard.userData.editProfile.postCodeMessage
+			name: strings.userData.editProfile.postCodeMessage
 		},
 		street: {
-			name: strings.dashboard.userData.editProfile.streetMessage
+			name: strings.userData.editProfile.streetMessage
 		}
 	}
 };

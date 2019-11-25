@@ -29,7 +29,7 @@ type EditProfileInternalProps = EditProfileProps & EditProfileStateProps & EditP
 export interface EditProfileNavigation {}
 
 class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalProps, Identity, EditProfileNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.editProfile.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.editProfile.barTitle);
 
 	constructor(props: EditProfileInternalProps) {
 		super(props);
@@ -147,7 +147,7 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 							this.editProfile();
 						}}
 						disabled={!this.canPressContinueButton()}
-						title={strings.dashboard.userData.editProfile.saveChanges}
+						title={strings.userData.editProfile.saveChanges}
 					/>
 				</ScrollView>
 			</Fragment>

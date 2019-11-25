@@ -5,6 +5,7 @@ import { DidiText } from "../../util/DidiText";
 
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import colors from "../../resources/colors";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 export interface HomeHeaderProps {
@@ -27,7 +28,7 @@ export default class HomeHeader extends React.Component<HomeHeaderProps> {
 						}
 					/>
 					<View>
-						<Text style={styles.helloText}>Hola</Text>
+						<Text style={styles.helloText}>{strings.dashboard.helloMessage}</Text>
 						<Text style={styles.nameText}>{this.props.person.visual.id}</Text>
 					</View>
 				</TouchableOpacity>

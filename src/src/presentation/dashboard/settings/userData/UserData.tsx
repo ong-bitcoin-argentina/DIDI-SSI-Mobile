@@ -37,25 +37,25 @@ export interface UserDataNavigation {
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions<UserDataNavigation>("Mi perfil", [
 		{
-			actionTitle: strings.dashboard.userData.changeEmail.screenTitle,
+			actionTitle: strings.userData.changeEmail.screenTitle,
 			onPress: navigation => {
 				navigation.navigate("ChangeEmailEnterEmail", {});
 			}
 		},
 		{
-			actionTitle: strings.dashboard.userData.changePhone.screenTitle,
+			actionTitle: strings.userData.changePhone.screenTitle,
 			onPress: navigation => {
 				navigation.navigate("ChangePhoneEnterPhone", {});
 			}
 		},
 		{
-			actionTitle: strings.dashboard.userData.share.barTitle,
+			actionTitle: strings.userData.share.barTitle,
 			onPress: navigation => {
 				navigation.navigate("ShareProfile", {});
 			}
 		},
 		{
-			actionTitle: strings.dashboard.userData.editProfile.barTitle,
+			actionTitle: strings.userData.editProfile.barTitle,
 			onPress: navigation => {
 				navigation.navigate("EditProfile", {});
 			}
@@ -81,7 +81,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	}
 
 	private renderPersonalData() {
-		return this.renderDropdown(strings.dashboard.userData.personalDataLabel, personalDataStructure.order, key => {
+		return this.renderDropdown(strings.userData.personalDataLabel, personalDataStructure.order, key => {
 			const struct = personalDataStructure.structure[key];
 			const data = this.props.identity.personalData[key];
 			return (
@@ -100,7 +100,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	}
 
 	private renderAddressData() {
-		return this.renderDropdown(strings.dashboard.userData.addressDataLabel, addressDataStructure.order, key => {
+		return this.renderDropdown(strings.userData.addressDataLabel, addressDataStructure.order, key => {
 			const struct = addressDataStructure.structure[key];
 			const data = this.props.identity.address[key];
 			return (

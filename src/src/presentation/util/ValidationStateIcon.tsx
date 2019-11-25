@@ -26,19 +26,19 @@ export class ValidationStateIcon extends React.PureComponent<ValidationStateIcon
 			case ValidationState.Approved:
 				return {
 					icon: Checkmark,
-					text: strings.dashboard.userData.states.approved,
+					text: strings.userData.states.approved,
 					backgroundColor: colors.lightBackground
 				};
 			case ValidationState.Pending:
 				return {
 					icon: Alert,
-					text: strings.dashboard.userData.states.pending,
+					text: strings.userData.states.pending,
 					backgroundColor: colors.lightBackground
 				};
 			case ValidationState.Rejected:
 				return {
 					icon: Cross,
-					text: strings.dashboard.userData.states.rejected,
+					text: strings.userData.states.rejected,
 					backgroundColor: colors.error
 				};
 		}

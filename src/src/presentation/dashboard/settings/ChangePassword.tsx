@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, StyleSheet, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import DidiTextInput from "../../util/DidiTextInput";
@@ -11,7 +12,6 @@ import { isPendingService } from "../../../services/ServiceStateStore";
 import { changePassword } from "../../../services/user/changePassword";
 import { didiConnect } from "../../../store/store";
 import Validator from "../../access/helpers/validator";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 export type ChangePasswordProps = {};
@@ -32,7 +32,7 @@ type ChangePasswordState = {
 const serviceKey = "ChangePassword";
 
 class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInternalProps, ChangePasswordState, {}> {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changePassword.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.changePassword.barTitle);
 
 	constructor(props: ChangePasswordInternalProps) {
 		super(props);
@@ -61,7 +61,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 				<View style={styles.button}>
 					<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.onSuccess()} />
 					<DidiServiceButton
-						title={strings.dashboard.userData.changePassword.changePassword}
+						title={strings.userData.changePassword.changePassword}
 						disabled={!this.canPressContinueButton()}
 						onPress={() => this.props.changePassword(this.state.oldKey, this.state.key)}
 						isPending={this.props.changePasswordPending}

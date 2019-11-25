@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleProp, StyleSheet, Text, TextStyle, View, ViewProps } from "react-native";
+import { StyleSheet, Text, View, ViewProps } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 
@@ -8,15 +8,14 @@ import colors from "../../resources/colors";
 
 interface DidiActivityProps extends ViewProps {
 	activity: RecentActivity;
-	textStyles?: StyleProp<TextStyle>;
 }
 
 export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderTitle() {
 		return (
 			<View style={styles.titleData}>
-				<Text style={[styles.title, this.props.textStyles]}>{this.props.activity.title}</Text>
-				<Text style={[styles.description, this.props.textStyles]}>{this.props.activity.description}</Text>
+				<Text style={styles.title}>{this.props.activity.title}</Text>
+				<Text style={styles.description}>{this.props.activity.description}</Text>
 			</View>
 		);
 	}
@@ -24,8 +23,8 @@ export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	private renderState() {
 		return (
 			<View style={styles.stateData}>
-				<Text style={[styles.state, this.props.textStyles]}>{this.props.activity.state}</Text>
-				<Text style={[styles.date, this.props.textStyles]}>{this.props.activity.date}</Text>
+				<Text style={styles.state}>{this.props.activity.state}</Text>
+				<Text style={styles.date}>{this.props.activity.date}</Text>
 			</View>
 		);
 	}
