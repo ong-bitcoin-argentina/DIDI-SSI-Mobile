@@ -5,6 +5,8 @@ import DidiTheme from "../resources/DidiTheme";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
 
+import { defaultFontFamily, DidiText } from "./DidiText";
+
 export interface DidiTextInputProps {
 	theme?: DidiTheme;
 	viewProps?: ViewProps;
@@ -33,7 +35,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				<View style={style.lineContainer}>
 					<View style={style.stateContainer}>
 						<View style={style.inputContainer}>
-							<Text style={style.description}>{this.props.description}</Text>
+							<DidiText.Input.Description>{this.props.description}</DidiText.Input.Description>
 							<TextInput {...textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
 						</View>
 						{this.props.stateIndicator}
@@ -128,11 +130,8 @@ function styles(theme: DidiTheme) {
 			color: theme.foreground,
 			paddingTop: 6,
 			paddingBottom: 0,
-			fontSize: 16
-		},
-		description: {
-			color: theme.foregroundFaded,
-			fontSize: 12
+			fontSize: 16,
+			fontFamily: `${defaultFontFamily}-Regular`
 		},
 		tagImage: {
 			width: 25,

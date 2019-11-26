@@ -1,5 +1,3 @@
-import React from "react";
-import { StyleSheet, Text } from "react-native";
 import { TakePictureResponse } from "react-native-camera/types";
 
 import strings from "../../resources/strings";
@@ -35,17 +33,10 @@ export class ValidateIdentityLivenessScreen extends ValidateIdentityTakePhotoScr
 
 	protected explanationProps(): Omit<ValidateIdentityExplanationProps, "buttonAction"> {
 		return {
-			title: strings.validateIdentity.explainLiveness.title,
+			title: strings.validateIdentity.explainLiveness.step,
 			header: strings.validateIdentity.explainLiveness.header,
-			description: <Text style={styles.description}>{strings.validateIdentity.explainLiveness.description}</Text>,
+			description: strings.validateIdentity.explainLiveness.description,
 			image: require("../../resources/images/validateIdentityExplainLiveness.png")
 		};
 	}
 }
-
-const styles = StyleSheet.create({
-	description: {
-		fontSize: 16,
-		textAlign: "center"
-	}
-});

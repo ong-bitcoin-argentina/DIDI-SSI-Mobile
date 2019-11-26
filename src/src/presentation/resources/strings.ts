@@ -181,6 +181,8 @@ export default {
 	validateIdentity: {
 		header: "Validar Identidad",
 		welcome: "Bienvenida Lili M.",
+		step: "Paso",
+		stepTotal: "/4",
 		what: {
 			header: "¿Que es validación de identidad?",
 			description:
@@ -194,23 +196,23 @@ export default {
 			buttonText: "Comencemos"
 		},
 		explainFront: {
-			title: "Paso 1/4",
+			step: 1,
 			header: "Digitalizando el DNI",
 			description:
 				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara."
 		},
 		explainBack: {
-			title: "Paso 2/4",
+			step: 2,
 			header: "Digitalizando el DNI",
 			description: "Ahora da vuelta el DNI y sácale una foto del dorso."
 		},
 		explainSelfie: {
-			title: "Paso 3/4",
+			step: 3,
 			header: "Foto Selfie",
 			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie."
 		},
 		explainLiveness: {
-			title: "Paso 4/4",
+			step: 4,
 			header: "Prueba de Vida",
 			description:
 				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!"

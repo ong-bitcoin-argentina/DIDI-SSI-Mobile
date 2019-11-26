@@ -2,10 +2,10 @@ import React from "react";
 import { BackHandler, NativeEventSubscription } from "react-native";
 import { TakePictureResponse } from "react-native-camera/types";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import DidiCamera from "../common/DidiCamera";
 
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
