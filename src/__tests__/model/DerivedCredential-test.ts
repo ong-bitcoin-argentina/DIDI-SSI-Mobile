@@ -1,8 +1,7 @@
 import { Right } from "fp-ts/lib/Either";
 
-import { JSONValue } from "../../src/util/JSON";
-
 import { deriveCredentials, DerivedCredentialSource, issuanceDateTolerance } from "../../src/model/DerivedCredential";
+import { Claim } from "../../src/uPort/types/Claim";
 import { EthrDID } from "../../src/uPort/types/EthrDID";
 import { ClaimMetadata } from "../../src/uPort/types/VerifiedClaim";
 
@@ -21,7 +20,7 @@ const secondDid = unsafeCreateDID("0x1357913579135791357913579135791357913579");
 
 type Replacement = Partial<ClaimMetadata>;
 
-function wrapClaim(claims: Record<string, JSONValue>, replacement: Replacement = {}): DerivedCredentialSource {
+function wrapClaim(claims: Claim, replacement: Replacement = {}): DerivedCredentialSource {
 	return {
 		content: {
 			type: "VerifiedClaim",
@@ -46,11 +45,11 @@ const identityClaims = {
 const combinedClaims = { ...courseClaims, ...identityClaims, ...timeClaims };
 const unrelatedClaims = courseClaims;
 
-const time = wrapClaim({ test_course: timeClaims });
-const course = wrapClaim({ test_course: courseClaims });
-const identity = wrapClaim({ test_identity: identityClaims });
-const combined = wrapClaim({ test: combinedClaims });
-const unrelated = wrapClaim({ unrelated: unrelatedClaims });
+const time = wrapClaim(new Claim("test_course", timeClaims));
+const course = wrapClaim(new Claim("test_course", courseClaims));
+const identity = wrapClaim(new Claim("test_identity", identityClaims));
+const combined = wrapClaim(new Claim("test", combinedClaims));
+const unrelated = wrapClaim(new Claim("unrelated", unrelatedClaims));
 
 describe(deriveCredentials, () => {
 	function doExpect(sources: DerivedCredentialSource[], expected: ReturnType<typeof deriveCredentials>) {
@@ -81,8 +80,8 @@ describe(deriveCredentials, () => {
 		const first = 1566412387;
 		const second = first - issuanceDateTolerance + 1;
 
-		const firstSource = wrapClaim({ test: timeClaims }, { issuedAt: first });
-		const secondSource = wrapClaim({ test: timeClaims }, { issuedAt: second });
+		const firstSource = wrapClaim(new Claim("test", timeClaims), { issuedAt: first });
+		const secondSource = wrapClaim(new Claim("test", timeClaims), { issuedAt: second });
 
 		doExpect(
 			[firstSource, secondSource],
@@ -91,8 +90,8 @@ describe(deriveCredentials, () => {
 	});
 
 	function expectUnmergedWithReplacements(first: Replacement, second: Replacement) {
-		const firstSource = wrapClaim({ test: timeClaims }, first);
-		const secondSource = wrapClaim({ test: timeClaims }, second);
+		const firstSource = wrapClaim(new Claim("test", timeClaims), first);
+		const secondSource = wrapClaim(new Claim("test", timeClaims), second);
 
 		doExpect(
 			[firstSource, secondSource],

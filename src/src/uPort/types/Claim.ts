@@ -1,33 +1,20 @@
 import * as t from "io-ts";
 
-import { JSONValue, JSONValueCodec } from "../../util/JSON";
+export const ClaimDataCodec = t.record(t.string, t.string);
 
-export const ClaimCodec = t.record(t.string, JSONValueCodec);
+export type ClaimData = typeof ClaimDataCodec._A;
 
-export type Claim = typeof ClaimCodec._A;
+export class Claim {
+	title: string;
+	data: ClaimData;
+	preview?: {
+		type: number;
+		fields: string[];
+	};
 
-export type FlattenedClaim = Record<string, string>;
-
-export function flattenClaim(rootClaim: Claim): { root: string; rest: FlattenedClaim } {
-	const entries = Object.entries(rootClaim);
-	if (entries.length === 0) {
-		return { root: "", rest: {} };
+	constructor(title: string, data: ClaimData, preview?: { type: number; fields: string[] }) {
+		this.title = title;
+		this.data = data;
+		this.preview = preview;
 	}
-	const [root, claims] = entries[0];
-	const result: FlattenedClaim = {};
-
-	function doFlatten(claim: JSONValue, path?: string) {
-		if (claim instanceof Array) {
-			claim.forEach(subclaim => doFlatten(subclaim, path));
-		} else if (claim && typeof claim === "object") {
-			Object.entries(claim).forEach(([key, value]) => {
-				doFlatten(value, path ? `${path}.${key}` : key);
-			});
-		} else if (claim) {
-			result[path || ""] = claim.toString();
-		}
-	}
-
-	doFlatten(claims);
-	return { root, rest: result };
 }

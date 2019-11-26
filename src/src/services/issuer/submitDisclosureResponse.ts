@@ -1,6 +1,7 @@
 import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
+import { JSONObject } from "../../util/JSON";
 import { commonServiceRequest } from "../common/commonServiceRequest";
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 import { ErrorData } from "../common/ErrorData";
@@ -8,11 +9,10 @@ import { ErrorData } from "../common/ErrorData";
 import { RequestDocument } from "../../model/RequestDocument";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { signDisclosureResponse } from "../../uPort/createDisclosureResponse";
-import { Claim } from "../../uPort/types/Claim";
 
 export interface SubmitDisclosureResponseArguments {
 	request: RequestDocument;
-	own: Claim;
+	own: JSONObject;
 	verified: string[];
 }
 

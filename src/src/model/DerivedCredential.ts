@@ -1,7 +1,7 @@
 import { liftUndefined2 } from "../util/liftUndefined";
 
 import strings from "../presentation/resources/strings";
-import { flattenClaim, FlattenedClaim } from "../uPort/types/Claim";
+import { ClaimData } from "../uPort/types/Claim";
 import { ClaimMetadata, VerifiedClaim } from "../uPort/types/VerifiedClaim";
 
 import { extractSpecialCredentialData, SpecialCredentialFlag } from "./SpecialCredential";
@@ -14,7 +14,7 @@ export interface DerivedCredential<Source> {
 	data: ClaimMetadata;
 	sources: Source[];
 	rootClaim: string;
-	claims: FlattenedClaim;
+	claims: ClaimData;
 }
 
 interface DerivedCredentialInMerge<Source> extends DerivedCredential<Source> {
@@ -26,7 +26,6 @@ export const issuanceDateTolerance = 600;
 export function liftToDerivedCredential<Source extends DerivedCredentialSource>(
 	doc: Source
 ): DerivedCredentialInMerge<Source> {
-	const flat = flattenClaim(doc.content.claims);
 	const data: ClaimMetadata = {
 		issuer: doc.content.issuer,
 		subject: doc.content.subject
@@ -61,8 +60,8 @@ export function liftToDerivedCredential<Source extends DerivedCredentialSource>(
 			return {
 				data,
 				sources: [doc],
-				rootClaim: flat.root.replace(new RegExp("_.*", "g"), ""),
-				claims: flat.rest,
+				rootClaim: doc.content.claims.title,
+				claims: doc.content.claims.data,
 				canMerge: true
 			};
 	}
