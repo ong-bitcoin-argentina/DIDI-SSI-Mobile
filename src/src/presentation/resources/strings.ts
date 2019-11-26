@@ -15,6 +15,14 @@ export default {
 			loadMore: "Cargar más"
 		}
 	},
+	dashboardJump: {
+		scanCredential: "Escanear Credenciales",
+		shareCredential: "Compartir",
+		createRound: "Armar Ronda",
+		documents: "Ver Documentos",
+		identity: "Ver ID",
+		editProfile: "Editar Perfil"
+	},
 	userData: {
 		personalDataLabel: "Datos personales",
 		addressDataLabel: "Domicilio Legal",

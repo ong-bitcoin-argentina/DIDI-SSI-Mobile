@@ -7,6 +7,7 @@ import { DidiText } from "../util/DidiText";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
 import colors from "../resources/colors";
+import strings from "../resources/strings";
 
 import { ScanCredentialProps } from "./credentials/ScanCredential";
 import { ShareCredentialProps } from "./credentials/ShareCredential";
@@ -70,37 +71,37 @@ const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 	{
 		...actionCommon,
 		icon: iconFrom(""),
-		text: "Escanear Credenciales",
+		text: strings.dashboardJump.scanCredential,
 		name: "ScanCredential"
 	},
 	{
 		...actionCommon,
 		icon: iconFrom(""),
-		text: "Compartir",
+		text: strings.dashboardJump.shareCredential,
 		name: "ShareCredential"
 	},
 	{
 		...actionCommon,
 		icon: iconFrom(""),
-		text: "Armar Ronda",
+		text: strings.dashboardJump.createRound,
 		name: "DashboardRounds"
 	},
 	{
 		...actionCommon,
 		icon: iconFrom(""),
-		text: "Ver Documentos",
+		text: strings.dashboardJump.documents,
 		name: "DashboardDocuments"
 	},
 	{
 		...actionCommon,
 		icon: iconFrom(""),
-		text: "Ver ID",
+		text: strings.dashboardJump.identity,
 		name: "UserData"
 	},
 	{
 		...actionCommon,
 		icon: iconFrom(""),
-		text: "Editar Perfil",
+		text: strings.dashboardJump.editProfile,
 		name: "EditProfile"
 	}
 ];
