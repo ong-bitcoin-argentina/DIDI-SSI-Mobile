@@ -1,6 +1,7 @@
 import { RecentActivity } from "../../model/RecentActivity";
 
 export const sampleRecentActivity: RecentActivity[] = [
+	/*
 	{
 		icon: "",
 		title: "Documentos",
@@ -22,4 +23,5 @@ export const sampleRecentActivity: RecentActivity[] = [
 		state: "Terminado",
 		date: "12/09/2018"
 	}
+	*/
 ];
