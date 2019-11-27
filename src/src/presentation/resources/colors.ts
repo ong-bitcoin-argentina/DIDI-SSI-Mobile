@@ -1,25 +1,27 @@
 export type Color = string;
 
 const colors = {
-	background: "#F3F3F3",
+	background: "#F5F5F5",
 	lightBackground: "#FFFFFF",
 	darkBackground: "#EEEEEE",
-	backgroundSeparator: "#C8C8C8",
+	backgroundSeparator: "#C3C3C3",
+
 	text: "#4A4A4A",
 	textFaded: "#9B9B9B",
 
-	error: "#f5bbd1",
+	error: "#F5BAD1",
 
-	primary: "#2f77dc",
-	primaryLight: "#acc6eb",
+	primary: "#417FD7",
+	primaryShadow: "#2F77DC",
 	primaryDark: "#205196",
 	primaryText: "#FFFFFF",
 
-	secondary: "#24cdd2",
+	secondary: "#24CDD2",
 	secondaryText: "#FFFFFF",
 
-	editableSetting: "#fbf2be",
+	editableSetting: "#F6EAAE",
 
+	navigationInactiveAlpha: "89",
 	subtitleAlpha: "A0"
 };
 

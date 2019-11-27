@@ -31,8 +31,7 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 							{this.props.header}
 						</DidiText.ValidateIdentity.Subtitle>
 						{this.renderDescription()}
-						<Image style={commonStyles.image.image} source={this.props.image} />
-						{this.renderButton()}
+						{this.renderImageAndButton()}
 					</View>
 				</SafeAreaView>
 			</Fragment>
@@ -63,11 +62,21 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 		}
 	}
 
-	private renderButton() {
+	private renderImageAndButton() {
 		if (this.props.buttonText) {
-			return <DidiButton title={this.props.buttonText} onPress={this.props.buttonAction} />;
+			return (
+				<View>
+					<Image style={[commonStyles.image.image, { marginBottom: -20 }]} source={this.props.image} />
+					<DidiButton title={this.props.buttonText} onPress={this.props.buttonAction} />
+				</View>
+			);
 		} else {
-			return DidiCamera.cameraButton(this.props.buttonAction);
+			return (
+				<Fragment>
+					<Image style={commonStyles.image.image} source={this.props.image} />
+					{DidiCamera.cameraButton(this.props.buttonAction)}
+				</Fragment>
+			);
 		}
 	}
 }

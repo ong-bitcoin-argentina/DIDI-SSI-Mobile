@@ -10,14 +10,14 @@ const primaryTheme: DidiTheme = {
 	darkNavigation: colors.primaryDark,
 	navigationText: colors.primaryText,
 
-	button: colors.primary,
+	button: colors.primaryShadow,
 	buttonText: colors.primaryText,
 
 	buttonDisabled: colors.darkBackground,
 	buttonDisabledText: colors.textFaded,
 
 	navigationIconActive: colors.background,
-	navigationIconInactive: colors.primaryLight
+	navigationIconInactive: colors.primary + colors.navigationInactiveAlpha
 };
 
 export default {

@@ -36,7 +36,7 @@ const color = {
 		color: colors.textFaded
 	},
 	primary: {
-		color: colors.primary
+		color: colors.primaryShadow
 	}
 };
 
@@ -218,6 +218,12 @@ const styles = {
 			...base,
 			fontFamily: fonts.robotoRegular,
 			fontSize: 10
+		},
+		userDataHeader: {
+			...base,
+			...color.primary,
+			fontFamily: fonts.medium,
+			fontSize: 20
 		}
 	})
 };
@@ -264,6 +270,9 @@ export const DidiText = {
 		IdLabel: textWith(styles.settings.idLabel),
 		IdContent: textWith(styles.settings.idContent),
 		Button: textWith(styles.settings.button)
+	},
+	UserData: {
+		HeaderName: textWith(styles.component.userDataHeader)
 	},
 	Icon: (props: { fontSize: number; color?: string } & AddChildren<TextProps>) => {
 		return (

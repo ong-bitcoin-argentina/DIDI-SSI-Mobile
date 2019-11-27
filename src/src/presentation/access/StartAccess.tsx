@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 		color: themes.foreground
 	},
 	primaryButton: {
-		backgroundColor: colors.primary
+		backgroundColor: colors.primaryShadow
 	},
 	secondaryButton: {
 		backgroundColor: colors.secondary

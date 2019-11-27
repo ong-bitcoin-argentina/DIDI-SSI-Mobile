@@ -53,7 +53,7 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 					</TouchableOpacity>
 				)}
 
-				<DidiText.Explanation.Emphasis style={styles.userLabel}>{this.props.user}</DidiText.Explanation.Emphasis>
+				<DidiText.UserData.HeaderName style={styles.userLabel}>{this.props.user}</DidiText.UserData.HeaderName>
 			</View>
 		);
 	}
@@ -87,9 +87,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20
 	},
 	userLabel: {
-		marginTop: 40,
-		marginRight: 10,
-		color: colors.primary
+		marginTop: 40
 	},
 	identityImage: {
 		margin: 5,
