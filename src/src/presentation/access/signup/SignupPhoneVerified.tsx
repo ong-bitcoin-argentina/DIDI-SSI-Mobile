@@ -11,14 +11,14 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import strings from "../../resources/strings";
 
-import { SignupEnterEmailProps } from "./SignupEnterEmail";
+import { SignupEnterNameProps } from "./SignupEnterName";
 
 export interface SignupPhoneVerifiedProps {
 	phoneNumber: string;
 }
 
 export interface SignupPhoneVerifiedNavigation {
-	SignupEnterEmail: SignupEnterEmailProps;
+	SignupEnterName: SignupEnterNameProps;
 }
 
 export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
@@ -48,7 +48,7 @@ export class SignupPhoneVerifiedScreen extends NavigationEnabledComponent<
 
 				<DidiButton
 					onPress={() => {
-						this.navigate("SignupEnterEmail", { phoneNumber: this.props.phoneNumber });
+						this.navigate("SignupEnterName", { phoneNumber: this.props.phoneNumber });
 					}}
 					title={strings.signup.phoneVerified.next}
 				/>

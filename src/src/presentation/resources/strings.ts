@@ -140,6 +140,10 @@ export default {
 			message: "Continúa con la configuración del Back up de identidad digital",
 			next: "Siguiente"
 		},
+		enterName: {
+			messageHead: "Ingresá tu nombre completo",
+			next: "Siguiente"
+		},
 		enterEmail: {
 			messageHead:
 				"Ingrese su email y una contraseña para que pueda recuperar su Identidad Digital en caso de perder el teléfono.",
@@ -241,6 +245,10 @@ export default {
 		}
 	},
 	textInput: {
+		fullName: {
+			description: "Nombre Completo",
+			placeholder: ""
+		},
 		email: {
 			description: "E-mail",
 			placeholder: ""
