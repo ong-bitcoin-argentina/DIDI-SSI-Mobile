@@ -206,7 +206,7 @@ export default {
 	},
 	validateIdentity: {
 		header: "Validar Identidad",
-		welcome: "Bienvenida Lili M.",
+		welcome: "Te damos la bienvenida",
 		step: "Paso",
 		stepTotal: "/4",
 		what: {
