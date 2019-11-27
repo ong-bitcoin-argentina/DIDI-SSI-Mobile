@@ -49,7 +49,11 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 						buttonPositive: "Ok",
 						buttonNegative: "Cancelar"
 					}}
-					notAuthorizedView={<Text style={styles.notAuthorized}>{strings.camera.notAuthorized}</Text>}
+					notAuthorizedView={
+						<DidiText.CameraExplanation style={styles.notAuthorized}>
+							{strings.camera.notAuthorized}
+						</DidiText.CameraExplanation>
+					}
 					onCameraReady={() => this.setState({ cameraAvailable: true })}
 				/>
 				<View style={[StyleSheet.absoluteFill, styles.cameraButtonContainer]}>{this.renderPictureButton()}</View>

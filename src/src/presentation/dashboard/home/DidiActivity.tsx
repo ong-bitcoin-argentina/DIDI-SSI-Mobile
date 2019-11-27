@@ -11,39 +11,26 @@ interface DidiActivityProps extends ViewProps {
 }
 
 export default class DidiActivity extends Component<DidiActivityProps, {}> {
-	private renderTitle() {
-		return (
-			<View style={styles.titleData}>
-				<Text style={styles.title}>{this.props.activity.title}</Text>
-				<Text style={styles.description}>{this.props.activity.description}</Text>
-			</View>
-		);
-	}
-
-	private renderState() {
-		return (
-			<View style={styles.stateData}>
-				<Text style={styles.state}>{this.props.activity.state}</Text>
-				<Text style={styles.date}>{this.props.activity.date}</Text>
-			</View>
-		);
-	}
-
-	private renderIcon() {
-		return (
-			<View style={styles.iconContainer}>
-				<DidiText.Icon fontSize={20}>{this.props.activity.icon}</DidiText.Icon>
-			</View>
-		);
-	}
-
 	render() {
 		return (
 			<View {...this.props} style={[styles.activity, this.props.style]}>
 				<View style={styles.body}>
-					{this.renderIcon()}
-					<View style={styles.column}>{this.renderTitle()}</View>
-					<View style={styles.column}>{this.renderState()}</View>
+					<View style={styles.iconContainer}>
+						<DidiText.Icon fontSize={20}>{this.props.activity.icon}</DidiText.Icon>
+					</View>
+
+					<View style={styles.rowContainer}>
+						<View style={styles.row}>
+							<DidiText.Activity.Title style={styles.rowStart}>{this.props.activity.title}</DidiText.Activity.Title>
+							<DidiText.Activity.State>{this.props.activity.state}</DidiText.Activity.State>
+						</View>
+						<View style={styles.row}>
+							<DidiText.Activity.Description style={styles.rowStart}>
+								{this.props.activity.description}
+							</DidiText.Activity.Description>
+							<DidiText.Activity.Date>{this.props.activity.date}</DidiText.Activity.Date>
+						</View>
+					</View>
 				</View>
 			</View>
 		);
@@ -72,38 +59,16 @@ const styles = StyleSheet.create({
 		borderRadius: 16,
 		backgroundColor: colors.secondary
 	},
-	titleData: {
-		textAlign: "left",
-		justifyContent: "center",
+	rowContainer: {
+		flex: 1,
+		alignContent: "stretch"
+	},
+	row: {
+		flexDirection: "row",
+		flex: 1,
+		alignContent: "space-around"
+	},
+	rowStart: {
 		flex: 1
-	},
-	stateData: {
-		textAlign: "right",
-		alignSelf: "flex-end",
-		justifyContent: "flex-end"
-	},
-	column: {
-		flexDirection: "column",
-		flex: 1
-	},
-	title: {
-		fontWeight: "bold",
-		fontSize: 14
-	},
-	description: {
-		fontWeight: "normal",
-		fontSize: 12,
-		color: colors.textFaded
-	},
-	state: {
-		fontWeight: "bold",
-		fontSize: 14,
-		textAlign: "right"
-	},
-	date: {
-		fontWeight: "normal",
-		fontSize: 12,
-		color: colors.textFaded,
-		textAlign: "right"
 	}
 });

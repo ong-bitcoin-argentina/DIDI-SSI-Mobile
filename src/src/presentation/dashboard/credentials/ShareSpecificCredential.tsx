@@ -37,7 +37,7 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 				<DidiText.Explanation.Normal>{strings.share.explanation}</DidiText.Explanation.Normal>
 				<QRCode size={0.9 * Dimensions.get("window").width} value={this.props.document.jwt} />
 				<DidiButton
-					title="Compartir Enlace"
+					title={strings.share.shareLink}
 					onPress={() => {
 						const jwt = this.props.document.jwt;
 						Share.share({

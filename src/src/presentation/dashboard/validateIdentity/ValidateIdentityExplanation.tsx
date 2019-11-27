@@ -44,13 +44,13 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 			return <DidiText.ValidateIdentity.Title>{this.props.title}</DidiText.ValidateIdentity.Title>;
 		} else {
 			return (
-				<DidiText.ValidateIdentity.Title>
-					{strings.validateIdentity.step + " "}
+				<Text style={{ alignSelf: "center" }}>
+					<DidiText.ValidateIdentity.Title>{strings.validateIdentity.step + " "}</DidiText.ValidateIdentity.Title>
 					<DidiText.ValidateIdentity.StepNumber>{this.props.title}</DidiText.ValidateIdentity.StepNumber>
 					<DidiText.ValidateIdentity.TotalNumber>
 						{strings.validateIdentity.stepTotal}
 					</DidiText.ValidateIdentity.TotalNumber>
-				</DidiText.ValidateIdentity.Title>
+				</Text>
 			);
 		}
 	}

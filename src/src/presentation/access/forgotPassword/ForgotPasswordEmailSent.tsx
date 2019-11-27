@@ -34,9 +34,7 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 
 				<Image source={require("../../resources/images/emailSent.png")} style={commonStyles.image.image} />
 
-				<DidiText.Explanation.Normal style={styles.message}>
-					{strings.recovery.passwordRecoverEmailSent.message}
-				</DidiText.Explanation.Normal>
+				<DidiText.Explanation.Normal>{strings.recovery.passwordRecoverEmailSent.message}</DidiText.Explanation.Normal>
 
 				<View />
 
@@ -50,10 +48,3 @@ export class ForgotPasswordEmailSentScreen extends NavigationEnabledComponent<
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	message: {
-		fontSize: 20,
-		textAlign: "center"
-	}
-});

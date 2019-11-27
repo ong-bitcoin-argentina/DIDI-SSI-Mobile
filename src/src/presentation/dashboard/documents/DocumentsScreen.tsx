@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -65,11 +65,5 @@ const styles = StyleSheet.create({
 	scrollContent: {
 		paddingHorizontal: 20,
 		paddingVertical: 8
-	},
-	text: {
-		fontSize: 14
-	},
-	textStyleWhite: {
-		color: "#FFF"
 	}
 });

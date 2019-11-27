@@ -96,7 +96,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 			<View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
 				<View pointerEvents="box-none" style={styles.closeArea}>
 					<TouchableOpacity style={styles.closeContainer} onPress={() => this.goBack()}>
-						<Text style={styles.closeButtonText}>{strings.signup.onboarding.close}</Text>
+						<DidiText.SignupCloseButton>{strings.signup.onboarding.close}</DidiText.SignupCloseButton>
 						<Image style={styles.closeButtonImage} source={require("../../resources/images/onboardingExit.png")} />
 					</TouchableOpacity>
 				</View>
@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
 	},
 	cardContainer: {
 		padding: 20,
+		alignSelf: "stretch",
 		alignItems: "stretch",
 		justifyContent: "space-evenly",
 		flex: 1
@@ -208,10 +209,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "flex-end",
 		flex: 1
-	},
-	closeButtonText: {
-		color: "#FFF",
-		fontSize: 20
 	},
 	closeButtonImage: {
 		marginLeft: 10,

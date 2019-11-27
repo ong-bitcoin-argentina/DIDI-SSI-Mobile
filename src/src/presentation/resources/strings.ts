@@ -10,6 +10,25 @@ export default {
 	},
 	dashboard: {
 		helloMessage: "Hola",
+		evolution: {
+			category: "Proceso",
+			title: "Mi Evolución",
+			validationIntro: "Validaciones:",
+			validations: {
+				cellPhone: "Celu",
+				email: "Mail",
+				document: "ID"
+			},
+			validationState: {
+				yes: "✓",
+				no: "ｘ"
+			}
+		},
+		identity: {
+			category: "Documento Identidad",
+			subTitle: "Nombre",
+			validateButtonTitle: "Validar Id"
+		},
 		recentActivities: {
 			label: "Actividades recientes",
 			loadMore: "Cargar más"
@@ -24,6 +43,7 @@ export default {
 		editProfile: "Editar Perfil"
 	},
 	userData: {
+		barTitle: "Mi perfil",
 		personalDataLabel: "Datos personales",
 		addressDataLabel: "Domicilio Legal",
 		states: {
@@ -91,8 +111,7 @@ export default {
 			startButtonText: "Iniciar"
 		},
 		passwordRecover: {
-			messageHead: "Recuperar Contraseña",
-			forgotPasswordMessage: "No recuerdo la contraseña"
+			messageHead: "Recuperar Contraseña"
 		},
 		passwordRecoverEmailSent: {
 			message: "Se te ha enviado un email para comenzar el proceso de recuperación de su contraseña",
@@ -152,10 +171,11 @@ export default {
 			resendCode: "¿No recibiste el código?"
 		}
 	},
-	documentFilters: {
-		all: "Todos",
-		livingPlace: "Vivienda",
-		identity: "Identidad"
+	documents: {
+		barTitle: "Mis Documentos",
+		filterAll: "Todos",
+		filterLivingPlace: "Vivienda",
+		filterIdentity: "Identidad"
 	},
 	tabNames: {
 		home: "Inicio",
@@ -164,6 +184,7 @@ export default {
 		settings: "Configuración"
 	},
 	settings: {
+		idLabel: "ID:",
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
 		about: "Acerca de Didi",
@@ -171,7 +192,8 @@ export default {
 	},
 	share: {
 		title: "Credencial Didi",
-		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi"
+		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi",
+		shareLink: "Compartir Enlace"
 	},
 	services: {
 		changePasswordSuccess: "Contraseña cambiada exitosamente.",

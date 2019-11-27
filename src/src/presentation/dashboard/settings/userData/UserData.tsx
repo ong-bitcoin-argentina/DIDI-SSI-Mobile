@@ -35,32 +35,35 @@ export interface UserDataNavigation {
 }
 
 class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, UserDataState, UserDataNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions<UserDataNavigation>("Mi perfil", [
-		{
-			actionTitle: strings.userData.changeEmail.screenTitle,
-			onPress: navigation => {
-				navigation.navigate("ChangeEmailEnterEmail", {});
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions<UserDataNavigation>(
+		strings.userData.barTitle,
+		[
+			{
+				actionTitle: strings.userData.changeEmail.screenTitle,
+				onPress: navigation => {
+					navigation.navigate("ChangeEmailEnterEmail", {});
+				}
+			},
+			{
+				actionTitle: strings.userData.changePhone.screenTitle,
+				onPress: navigation => {
+					navigation.navigate("ChangePhoneEnterPhone", {});
+				}
+			},
+			{
+				actionTitle: strings.userData.share.barTitle,
+				onPress: navigation => {
+					navigation.navigate("ShareProfile", {});
+				}
+			},
+			{
+				actionTitle: strings.userData.editProfile.barTitle,
+				onPress: navigation => {
+					navigation.navigate("EditProfile", {});
+				}
 			}
-		},
-		{
-			actionTitle: strings.userData.changePhone.screenTitle,
-			onPress: navigation => {
-				navigation.navigate("ChangePhoneEnterPhone", {});
-			}
-		},
-		{
-			actionTitle: strings.userData.share.barTitle,
-			onPress: navigation => {
-				navigation.navigate("ShareProfile", {});
-			}
-		},
-		{
-			actionTitle: strings.userData.editProfile.barTitle,
-			onPress: navigation => {
-				navigation.navigate("EditProfile", {});
-			}
-		}
-	]);
+		]
+	);
 
 	render() {
 		return (

@@ -28,8 +28,8 @@ export default class HomeHeader extends React.Component<HomeHeaderProps> {
 						}
 					/>
 					<View>
-						<Text style={styles.helloText}>{strings.dashboard.helloMessage}</Text>
-						<Text style={styles.nameText}>{this.props.person.visual.id}</Text>
+						<DidiText.DashboardHeader.Hello>{strings.dashboard.helloMessage}</DidiText.DashboardHeader.Hello>
+						<DidiText.DashboardHeader.Name>{this.props.person.visual.id}</DidiText.DashboardHeader.Name>
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
@@ -68,15 +68,5 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.darkBackground,
 		borderColor: "#FFF",
 		borderWidth: 2
-	},
-	helloText: {
-		color: themes.navigationText,
-		fontWeight: "normal",
-		fontSize: 13
-	},
-	nameText: {
-		color: themes.navigationText,
-		fontWeight: "bold",
-		fontSize: 13
 	}
 });

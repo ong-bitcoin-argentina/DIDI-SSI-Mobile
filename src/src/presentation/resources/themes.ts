@@ -13,8 +13,8 @@ const primaryTheme: DidiTheme = {
 	button: colors.primary,
 	buttonText: colors.primaryText,
 
-	buttonDisabled: colors.textFaded,
-	buttonDisabledText: colors.text,
+	buttonDisabled: colors.darkBackground,
+	buttonDisabledText: colors.textFaded,
 
 	navigationIconActive: colors.background,
 	navigationIconInactive: colors.primaryLight

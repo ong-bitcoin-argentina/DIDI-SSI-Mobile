@@ -9,6 +9,8 @@ import Checkmark from "../resources/images/checkmark.svg";
 import Cross from "../resources/images/cross.svg";
 import strings from "../resources/strings";
 
+import { DidiText } from "./DidiText";
+
 interface ValidationStateIconProps extends ViewProps {
 	validationState: ValidationState;
 	useWords: boolean;
@@ -53,7 +55,7 @@ export class ValidationStateIcon extends React.PureComponent<ValidationStateIcon
 		return (
 			<View style={[styles.stateContainer, { backgroundColor }]}>
 				<Icon height={15} width={15} />
-				<Text style={styles.stateText}>{text}</Text>
+				<DidiText.ValidationState style={styles.stateText}>{text}</DidiText.ValidationState>
 			</View>
 		);
 	}
@@ -69,7 +71,6 @@ const styles = StyleSheet.create({
 		paddingLeft: 5
 	},
 	stateText: {
-		fontSize: 10,
 		marginLeft: 5,
 		alignSelf: "flex-end",
 		textAlignVertical: "center"

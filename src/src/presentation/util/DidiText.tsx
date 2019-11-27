@@ -5,7 +5,25 @@ import { AddChildren } from "../../util/ReactExtensions";
 
 import colors from "../resources/colors";
 
-export const defaultFontFamily = "RobotoCondensed";
+const defaultFontFamily = "RobotoCondensed";
+const fonts = {
+	regular: `${defaultFontFamily}-Regular`,
+	medium: `${defaultFontFamily}-Medium`,
+	bold: `${defaultFontFamily}-Bold`,
+
+	robotoRegular: "Roboto-Regular"
+};
+
+export const fontsToUse = {
+	navigationHeader: fonts.medium,
+	didiTextInput: fonts.regular,
+	navBarOverflow: fonts.medium
+};
+
+const italicStyle: { fontFamily: string; fontStyle: "italic" } = {
+	fontFamily: fonts.regular,
+	fontStyle: "italic"
+};
 
 const color = {
 	dark: {
@@ -22,23 +40,11 @@ const color = {
 	}
 };
 
-const weight = {
-	regular: {
-		fontFamily: `${defaultFontFamily}-Regular`
-	},
-	medium: {
-		fontFamily: `${defaultFontFamily}-Medium`
-	},
-	bold: {
-		fontFamily: `${defaultFontFamily}-Bold`
-	}
-};
-
 const base: TextStyle = {
 	textAlign: "center",
 	fontSize: 18,
-	...color.dark,
-	...weight.regular
+	fontFamily: fonts.regular,
+	...color.dark
 };
 
 const styles = {
@@ -48,7 +54,7 @@ const styles = {
 		},
 		emphasis: {
 			...base,
-			...weight.bold
+			fontFamily: fonts.bold
 		},
 		faded: {
 			...base,
@@ -62,29 +68,29 @@ const styles = {
 		},
 		title: {
 			...base,
-			...weight.bold,
+			fontFamily: fonts.bold,
 			fontSize: 22
 		},
 		subtitle: {
 			...base,
-			...weight.medium,
+			fontFamily: fonts.medium,
 			fontSize: 18
 		},
 		stepNumber: {
 			...base,
-			...weight.bold,
 			...color.primary,
+			fontFamily: fonts.bold,
 			fontSize: 22
 		},
 		totalNumber: {
 			...base,
-			...weight.bold,
+			fontFamily: fonts.bold,
 			fontSize: 16
 		},
 		enumerate: {
 			...base,
 			...color.primary,
-			...weight.bold,
+			fontFamily: fonts.bold,
 			fontSize: 16
 		}
 	}),
@@ -96,7 +102,7 @@ const styles = {
 		},
 		title: {
 			...base,
-			...weight.bold,
+			fontFamily: fonts.bold,
 			fontSize: 16,
 			textAlign: undefined
 		},
@@ -112,9 +118,58 @@ const styles = {
 		},
 		value: {
 			...base,
-			...weight.medium,
+			fontFamily: fonts.medium,
 			fontSize: 13,
 			textAlign: "right"
+		}
+	}),
+	activity: StyleSheet.create({
+		title: {
+			...base,
+			fontFamily: fonts.bold,
+			fontSize: 14,
+			textAlign: undefined
+		},
+		faded: {
+			...base,
+			...color.faded,
+			fontSize: 12,
+			textAlign: undefined
+		}
+	}),
+	dashboardHeader: StyleSheet.create({
+		hello: {
+			...color.light,
+			fontFamily: fonts.regular,
+			fontSize: 13
+		},
+		name: {
+			...color.light,
+			fontFamily: fonts.bold,
+			fontSize: 13
+		}
+	}),
+	settings: StyleSheet.create({
+		name: {
+			...base,
+			textAlign: undefined
+		},
+		idLabel: {
+			...base,
+			...color.primary,
+			fontFamily: fonts.bold,
+			textAlign: undefined,
+			fontSize: 12
+		},
+		idContent: {
+			...base,
+			textAlign: undefined,
+			fontSize: 12
+		},
+		button: {
+			...base,
+			textAlign: undefined,
+			fontSize: 14
 		}
 	}),
 	component: StyleSheet.create({
@@ -122,18 +177,30 @@ const styles = {
 			...base,
 			fontFamily: "MaterialIcons-Regular"
 		},
+		forgotPasswordButton: {
+			...base,
+			...italicStyle,
+			fontSize: 15
+		},
+		signupCloseButton: {
+			...base,
+			...color.light,
+			fontSize: 20
+		},
 		buttonDisabled: {
 			...base,
-			...color.faded,
-			fontStyle: "italic"
+			...italicStyle,
+			...color.faded
 		},
 		buttonEnabled: {
 			...base,
-			...color.light
+			...color.light,
+			fontFamily: fonts.medium
 		},
 		inputDescription: {
 			...base,
 			...color.faded,
+			fontFamily: fonts.robotoRegular,
 			textAlign: undefined,
 			fontSize: 12
 		},
@@ -141,6 +208,16 @@ const styles = {
 			...base,
 			textAlign: undefined,
 			fontSize: 16
+		},
+		cameraExplanation: {
+			...base,
+			...color.light,
+			fontSize: 20
+		},
+		validationState: {
+			...base,
+			fontFamily: fonts.robotoRegular,
+			fontSize: 10
 		}
 	})
 };
@@ -172,6 +249,22 @@ export const DidiText = {
 		Key: textWith(styles.card.key),
 		Value: textWith(styles.card.value)
 	},
+	Activity: {
+		Title: textWith(styles.activity.title),
+		State: textWith(styles.activity.title),
+		Description: textWith(styles.activity.faded),
+		Date: textWith(styles.activity.faded)
+	},
+	DashboardHeader: {
+		Hello: textWith(styles.dashboardHeader.hello),
+		Name: textWith(styles.dashboardHeader.name)
+	},
+	Settings: {
+		Name: textWith(styles.settings.name),
+		IdLabel: textWith(styles.settings.idLabel),
+		IdContent: textWith(styles.settings.idContent),
+		Button: textWith(styles.settings.button)
+	},
 	Icon: (props: { fontSize: number; color?: string } & AddChildren<TextProps>) => {
 		return (
 			<Text
@@ -188,7 +281,9 @@ export const DidiText = {
 			/>
 		);
 	},
-	Input: {
-		Description: textWith(styles.component.inputDescription)
-	}
+	ForgotPasswordButton: textWith(styles.component.forgotPasswordButton),
+	SignupCloseButton: textWith(styles.component.signupCloseButton),
+	InputDescription: textWith(styles.component.inputDescription),
+	CameraExplanation: textWith(styles.component.cameraExplanation),
+	ValidationState: textWith(styles.component.validationState)
 };

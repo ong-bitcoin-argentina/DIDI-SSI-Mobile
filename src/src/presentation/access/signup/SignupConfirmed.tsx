@@ -29,9 +29,7 @@ export class SignupConfirmedScreen extends NavigationEnabledComponent<
 			<DidiScreen>
 				<View />
 
-				<DidiText.Explanation.Normal style={styles.message}>
-					{strings.signup.registrationValidated.message}
-				</DidiText.Explanation.Normal>
+				<DidiText.Explanation.Normal>{strings.signup.registrationValidated.message}</DidiText.Explanation.Normal>
 
 				<Image source={require("../../resources/images/emailConfirmed.png")} style={commonStyles.image.image} />
 
@@ -47,10 +45,3 @@ export class SignupConfirmedScreen extends NavigationEnabledComponent<
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	message: {
-		fontSize: 20,
-		textAlign: "center"
-	}
-});
