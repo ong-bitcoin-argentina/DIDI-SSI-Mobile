@@ -103,10 +103,10 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-end"
 	},
 	cameraButton: {
-		width: 66,
-		height: 66,
+		width: 80,
+		height: 80,
 		backgroundColor: colors.primary,
-		borderRadius: 33,
+		borderRadius: 40,
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center"
