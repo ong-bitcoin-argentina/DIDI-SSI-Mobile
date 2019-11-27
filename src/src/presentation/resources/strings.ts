@@ -177,6 +177,7 @@ export default {
 	},
 	documents: {
 		barTitle: "Mis Documentos",
+		detailBarTitle: "Documento",
 		filterAll: "Todos",
 		filterLivingPlace: "Vivienda",
 		filterIdentity: "Identidad"

@@ -1,4 +1,5 @@
 import { createMaterialTopTabNavigator, createStackNavigator } from "react-navigation";
+import { withMappedNavigationParams } from "react-navigation-props-mapper";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
@@ -6,6 +7,7 @@ import { DocumentFilterType } from "../../../model/SampleDocument";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
+import { DocumentDetailScreen } from "./DocumentDetail";
 import DocumentsScreen, { DocumentsScreenNavigation } from "./DocumentsScreen";
 
 function screen(title: string, filter: (type: DocumentFilterType) => boolean) {
@@ -37,7 +39,8 @@ export default createStackNavigator(
 					{}
 				)
 			}
-		)
+		),
+		DocumentDetail: withMappedNavigationParams()(DocumentDetailScreen)
 	},
 	{
 		initialRouteName: "DocumentsScreen"

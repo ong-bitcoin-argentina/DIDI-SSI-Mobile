@@ -3,6 +3,7 @@ import { StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 
+import { ClaimDataPairs } from "../../../uPort/types/Claim";
 import colors from "../../resources/colors";
 
 import DidiCardBody, { DidiCardBodyProps } from "./DidiCardBody";
@@ -11,7 +12,7 @@ export interface CredentialCardProps extends DidiCardBodyProps {
 	category: string;
 	title: string;
 	subTitle: string;
-	data?: Array<{ label: string; value: string }>;
+	data?: ClaimDataPairs;
 	columns?: 1 | 2 | 3;
 }
 

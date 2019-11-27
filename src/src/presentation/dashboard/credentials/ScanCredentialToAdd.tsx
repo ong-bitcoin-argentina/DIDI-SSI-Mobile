@@ -6,7 +6,7 @@ import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { uPortDocumentToCard } from "../common/documentToCard";
+import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
@@ -43,7 +43,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={styles.body}>
-				{uPortDocumentToCard(liftToDerivedCredential(this.props.credential), 0)}
+				{<DocumentCredentialCard preview={false} document={liftToDerivedCredential(this.props.credential)} />}
 				{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
 			</DidiScreen>
 		);

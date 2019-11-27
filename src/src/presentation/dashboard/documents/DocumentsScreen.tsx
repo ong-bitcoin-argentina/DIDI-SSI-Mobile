@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet } from "react-native";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToCard";
+import { DocumentCredentialCard, sampleDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
@@ -12,9 +12,7 @@ import { didiConnect } from "../../../store/store";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
 
-export type DocumentsScreenNavigation = {
-	DashboardHome: DashboardScreenProps;
-};
+import { DocumentDetailProps } from "./DocumentDetail";
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenInternalProps extends DocumentsScreenProps {
@@ -23,25 +21,32 @@ interface DocumentsScreenInternalProps extends DocumentsScreenProps {
 	filter: (type: DocumentFilterType) => boolean;
 }
 
-type DocumentsScreenState = {};
+export type DocumentsScreenNavigation = {
+	DashboardHome: DashboardScreenProps;
+	DocumentDetail: DocumentDetailProps;
+};
 
-class DocumentsScreen extends NavigationEnabledComponent<
-	DocumentsScreenInternalProps,
-	DocumentsScreenState,
-	DocumentsScreenNavigation
-> {
+class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternalProps, {}, DocumentsScreenNavigation> {
 	render() {
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
-						{this.props.filter("other") && this.props.credentials.map(uPortDocumentToCard)}
+						{this.props.filter("other") && this.renderAllDocuments()}
 						{this.props.samples.filter(sample => this.props.filter(sample.filterType)).map(sampleDocumentToCard)}
 					</ScrollView>
 				</SafeAreaView>
 			</Fragment>
 		);
+	}
+
+	private renderAllDocuments() {
+		return this.props.credentials.map((document, index) => (
+			<TouchableOpacity key={index} onPress={() => this.navigate("DocumentDetail", { document })}>
+				<DocumentCredentialCard preview={true} document={document} />
+			</TouchableOpacity>
+		));
 	}
 }
 

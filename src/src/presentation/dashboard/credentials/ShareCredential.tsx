@@ -5,7 +5,7 @@ import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { uPortDocumentToCard } from "../common/documentToCard";
+import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
@@ -64,7 +64,9 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 
 	private renderCard(document: DerivedCredential<CredentialDocument>) {
 		return (
-			<TouchableOpacity onPress={() => this.doShare(document)}>{uPortDocumentToCard(document, 0)}</TouchableOpacity>
+			<TouchableOpacity onPress={() => this.doShare(document)}>
+				<DocumentCredentialCard preview={false} document={document} />
+			</TouchableOpacity>
 		);
 	}
 

@@ -5,7 +5,7 @@ import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { uPortDocumentToCard } from "../common/documentToCard";
+import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
@@ -61,7 +61,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	private renderCard(document: CredentialDocument) {
 		return (
 			<TouchableOpacity onPress={() => this.navigate("ShareSpecificCredential", { document })}>
-				{uPortDocumentToCard(liftToDerivedCredential(document), 0)}
+				<DocumentCredentialCard preview={false} document={liftToDerivedCredential(document)} />
 			</TouchableOpacity>
 		);
 	}

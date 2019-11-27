@@ -62,18 +62,18 @@ describe(deriveCredentials, () => {
 
 	it("should merge part and whole, keeping part as a source", () => {
 		const sources = [combined, identity];
-		doExpect(sources, [{ data: metadata, rootClaim: "test", claims: combinedClaims, sources }]);
+		doExpect(sources, [{ data: metadata, claim: new Claim("test", combinedClaims), sources }]);
 	});
 
 	it("should merge some parts into less than the whole", () => {
 		const sources = [time, course];
 		const partialClaim = { ...timeClaims, ...courseClaims };
-		doExpect(sources, [{ data: metadata, rootClaim: "test", claims: partialClaim, sources }]);
+		doExpect(sources, [{ data: metadata, claim: new Claim("test", partialClaim), sources }]);
 	});
 
 	it("should merge all parts into whole", () => {
 		const sources = [identity, course, time];
-		doExpect(sources, [{ data: metadata, rootClaim: "test", claims: combinedClaims, sources }]);
+		doExpect(sources, [{ data: metadata, claim: new Claim("test", combinedClaims), sources }]);
 	});
 
 	it("should merge issuer date within tolerance", () => {
@@ -85,7 +85,7 @@ describe(deriveCredentials, () => {
 
 		doExpect(
 			[firstSource, secondSource],
-			[{ data: metadata, rootClaim: "test", claims: timeClaims, sources: [firstSource, secondSource] }]
+			[{ data: metadata, claim: new Claim("test", timeClaims), sources: [firstSource, secondSource] }]
 		);
 	});
 
@@ -96,8 +96,8 @@ describe(deriveCredentials, () => {
 		doExpect(
 			[firstSource, secondSource],
 			[
-				{ data: { ...metadata, ...first }, rootClaim: "test", claims: timeClaims, sources: [firstSource] },
-				{ data: { ...metadata, ...second }, rootClaim: "test", claims: timeClaims, sources: [secondSource] }
+				{ data: { ...metadata, ...first }, claim: new Claim("test", timeClaims), sources: [firstSource] },
+				{ data: { ...metadata, ...second }, claim: new Claim("test", timeClaims), sources: [secondSource] }
 			]
 		);
 	}
@@ -120,8 +120,8 @@ describe(deriveCredentials, () => {
 		doExpect(
 			[combined, unrelated],
 			[
-				{ data: metadata, rootClaim: "test", claims: combinedClaims, sources: [combined] },
-				{ data: metadata, rootClaim: "unrelated", claims: unrelatedClaims, sources: [unrelated] }
+				{ data: metadata, claim: new Claim("test", combinedClaims), sources: [combined] },
+				{ data: metadata, claim: new Claim("unrelated", unrelatedClaims), sources: [unrelated] }
 			]
 		);
 	});

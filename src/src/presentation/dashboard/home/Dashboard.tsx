@@ -8,7 +8,7 @@ import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import CredentialCard from "../common/CredentialCard";
-import { sampleDocumentToCard, uPortDocumentToCard } from "../common/documentToCard";
+import { DocumentCredentialCard, sampleDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
@@ -21,6 +21,7 @@ import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
+import { DocumentDetailProps } from "../documents/DocumentDetail";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
@@ -47,6 +48,7 @@ export interface DashboardScreenNavigation {
 	ValidateID: ValidateIdentityExplainWhatProps;
 	UserData: UserDataProps;
 	NotificationScreen: NotificationScreenProps;
+	DashDocumentDetail: DocumentDetailProps;
 }
 
 class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternalProps, {}, DashboardScreenNavigation> {
@@ -75,6 +77,14 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 				columns={1}
 			/>
 		);
+	}
+
+	private renderAllDocuments() {
+		return this.props.credentials.map((document, index) => (
+			<TouchableOpacity key={index} onPress={() => this.navigate("DashDocumentDetail", { document })}>
+				<DocumentCredentialCard preview={true} document={document} />
+			</TouchableOpacity>
+		));
 	}
 
 	private incompleteIdentityCard(): JSX.Element {
@@ -126,7 +136,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 						/>
 						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
 							{this.evolutionCard()}
-							{this.props.credentials.map(uPortDocumentToCard)}
+							{this.renderAllDocuments()}
 							{this.props.samples.map(sampleDocumentToCard)}
 							{this.incompleteIdentityCard()}
 						</View>

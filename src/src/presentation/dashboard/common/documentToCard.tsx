@@ -22,22 +22,26 @@ export function sampleDocumentToCard(document: SampleDocument, index: number) {
 	);
 }
 
-export function uPortDocumentToCard(document: DerivedCredential<CredentialDocument>, index: number) {
-	const data = Object.entries(document.claims).map(([key, value]) => {
-		return { label: key, value };
-	});
-	const issuer = document.data.issuer.keyAddress().slice(0, 20);
-	const category = document.data.issuedAt ? new Date(document.data.issuedAt * 1000).toLocaleString() : "Credencial";
-	return (
-		<CredentialCard
-			key={index}
-			icon=""
-			category={category}
-			title={document.rootClaim}
-			subTitle={"Emisor: " + issuer + "..."}
-			data={data}
-			columns={1}
-			color={colors.secondary}
-		/>
-	);
+interface DocumentCredentialCardProps {
+	preview: boolean;
+	document: DerivedCredential<CredentialDocument>;
+}
+
+export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
+	render() {
+		const doc = this.props.document;
+		const issuer = doc.data.issuer.keyAddress().slice(0, 20);
+		const category = doc.data.issuedAt ? new Date(doc.data.issuedAt * 1000).toLocaleString() : "Credencial";
+		return (
+			<CredentialCard
+				icon=""
+				category={category}
+				title={doc.claim.title}
+				subTitle={"Emisor: " + issuer + "..."}
+				data={this.props.preview ? doc.claim.previewPairs() : doc.claim.allPairs()}
+				columns={this.props.preview ? doc.claim.numberOfColumns() : 1}
+				color={colors.secondary}
+			/>
+		);
+	}
 }

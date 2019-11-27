@@ -1,7 +1,7 @@
 import { liftUndefined2 } from "../util/liftUndefined";
 
 import strings from "../presentation/resources/strings";
-import { ClaimData } from "../uPort/types/Claim";
+import { Claim, ClaimData } from "../uPort/types/Claim";
 import { ClaimMetadata, VerifiedClaim } from "../uPort/types/VerifiedClaim";
 
 import { extractSpecialCredentialData, SpecialCredentialFlag } from "./SpecialCredential";
@@ -13,8 +13,7 @@ export interface DerivedCredentialSource {
 export interface DerivedCredential<Source> {
 	data: ClaimMetadata;
 	sources: Source[];
-	rootClaim: string;
-	claims: ClaimData;
+	claim: Claim;
 }
 
 interface DerivedCredentialInMerge<Source> extends DerivedCredential<Source> {
@@ -44,24 +43,25 @@ export function liftToDerivedCredential<Source extends DerivedCredentialSource>(
 			return {
 				data,
 				sources: [doc],
-				rootClaim: strings.specialCredentials.PhoneNumberData,
-				claims: { [strings.specialCredentials.PhoneNumberData]: special.phoneNumber },
+				claim: new Claim(strings.specialCredentials.PhoneNumberData, {
+					[strings.specialCredentials.PhoneNumberData]: special.phoneNumber
+				}),
 				canMerge: false
 			};
 		case "EmailData":
 			return {
 				data,
 				sources: [doc],
-				rootClaim: strings.specialCredentials.EmailData,
-				claims: { [strings.specialCredentials.EmailData]: special.email },
+				claim: new Claim(strings.specialCredentials.EmailData, {
+					[strings.specialCredentials.EmailData]: special.email
+				}),
 				canMerge: false
 			};
 		case "None":
 			return {
 				data,
 				sources: [doc],
-				rootClaim: doc.content.claims.title,
-				claims: doc.content.claims.data,
+				claim: doc.content.claims,
 				canMerge: true
 			};
 	}
@@ -81,7 +81,7 @@ function shouldMerge(left: DerivedCredentialInMerge<unknown>, right: DerivedCred
 	return (
 		left.canMerge &&
 		right.canMerge &&
-		left.rootClaim === right.rootClaim &&
+		left.claim.title === right.claim.title &&
 		left.data.issuer === right.data.issuer &&
 		left.data.subject === right.data.subject &&
 		issuanceDateAllowsMerge(left.data.issuedAt, right.data.issuedAt)
@@ -109,12 +109,11 @@ function doMerge<T>(
 
 	return {
 		sources: [...left.sources, ...right.sources],
-		rootClaim: left.rootClaim,
+		claim: new Claim(left.claim.title, {
+			...left.claim.data,
+			...right.claim.data
+		}),
 		data,
-		claims: {
-			...left.claims,
-			...right.claims
-		},
 		canMerge: true
 	};
 }
@@ -138,7 +137,6 @@ export function deriveCredentials<Source extends DerivedCredentialSource>(
 		.map(credential => ({
 			data: credential.data,
 			sources: credential.sources,
-			rootClaim: credential.rootClaim,
-			claims: credential.claims
+			claim: credential.claim
 		}));
 }

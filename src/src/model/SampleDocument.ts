@@ -1,3 +1,5 @@
+import { ClaimDataPairs } from "../uPort/types/Claim";
+
 export type DocumentFilterType = "livingPlace" | "identity" | "other";
 
 export interface SampleDocument {
@@ -7,5 +9,5 @@ export interface SampleDocument {
 	subtitle: string;
 	filterType: DocumentFilterType;
 	columns: 1 | 2 | 3;
-	data: Array<{ label: string; value: string }>;
+	data: ClaimDataPairs;
 }

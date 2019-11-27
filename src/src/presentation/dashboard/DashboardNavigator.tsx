@@ -20,6 +20,7 @@ import ShareCredentialScreen from "./credentials/ShareCredential";
 import { ShareMicroCredentialScreen } from "./credentials/ShareMicroCredential";
 import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
 import DashboardJumpMenu from "./DashboardJumpMenu";
+import { DocumentDetailScreen } from "./documents/DocumentDetail";
 import DocumentsNavigator from "./documents/DocumentsNavigator";
 import DashboardScreen, { DashboardScreenNavigation, DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
@@ -123,6 +124,7 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		}),
 		NotificationScreen: NavMap.from(NotificationScreen, {
 			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen)
-		})
+		}),
+		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {})
 	}).stackNavigator("DashboardRoot");
 }
