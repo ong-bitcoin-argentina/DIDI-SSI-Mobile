@@ -10,7 +10,7 @@ import {
 } from "./ValidateIdentityTakePhoto";
 
 export interface ValidateIdentityLivenessNavigation {
-	DashboardRoot: {};
+	ValidateIdentitySuccess: {};
 }
 export type ValidateIdentityLivenessProps = ValidateIdentityTakePhotoProps;
 type ValidateIdentityLivenessState = ValidateIdentityTakePhotoState;
@@ -28,7 +28,7 @@ export class ValidateIdentityLivenessScreen extends ValidateIdentityTakePhotoScr
 	}
 
 	protected didTakePhoto(data: TakePictureResponse): void {
-		this.navigate("DashboardRoot", {});
+		this.navigate("ValidateIdentitySuccess", {});
 	}
 
 	protected explanationProps(): Omit<ValidateIdentityExplanationProps, "buttonAction"> {

@@ -92,6 +92,16 @@ const styles = {
 			...color.primary,
 			fontFamily: fonts.bold,
 			fontSize: 16
+		},
+		congrats: {
+			...base,
+			...color.primary,
+			fontSize: 18
+		},
+		reminder: {
+			...base,
+			...color.faded,
+			fontSize: 12
 		}
 	}),
 	card: StyleSheet.create({
@@ -246,7 +256,9 @@ export const DidiText = {
 		Subtitle: textWith(styles.validateIdentity.subtitle),
 		StepNumber: textWith(styles.validateIdentity.stepNumber),
 		TotalNumber: textWith(styles.validateIdentity.totalNumber),
-		Enumerate: textWith(styles.validateIdentity.enumerate)
+		Enumerate: textWith(styles.validateIdentity.enumerate),
+		Congrats: textWith(styles.validateIdentity.congrats),
+		Reminder: textWith(styles.validateIdentity.reminder)
 	},
 	Card: {
 		Category: textWith(styles.card.category),

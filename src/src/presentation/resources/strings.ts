@@ -243,6 +243,12 @@ export default {
 			header: "Prueba de Vida",
 			description:
 				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!"
+		},
+		success: {
+			header: "Validación de Identidad",
+			congrats: "¡Felicitaciones! Su identidad ha sido validada.",
+			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
+			buttonText: "OK"
 		}
 	},
 	textInput: {
