@@ -7,11 +7,11 @@ import { ErrorData } from "../common/ErrorData";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { EthrDID } from "../../uPort/types/EthrDID";
 
-async function doWithExistingDid(args: {}): Promise<Either<ErrorData, EthrDID>> {
+async function doWithExistingDid(args: { errorMessage?: ErrorData }): Promise<Either<ErrorData, EthrDID>> {
 	try {
 		const addresses = await RNUportHDSigner.listSeedAddresses();
 		if (addresses.length === 0) {
-			return left(serviceErrors.did.READ_ERROR);
+			return left(args.errorMessage || serviceErrors.did.READ_ERROR);
 		} else {
 			return EthrDID.fromKeyAddress(addresses[0]);
 		}

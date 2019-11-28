@@ -2,67 +2,95 @@ export default {
 	debug: {
 		menu: "Debug Menu",
 		decodeJWT: "Decodificar JWT",
-		serviceConfig: "Configuracion de Servicios",
+		serviceConfig: {
+			barTitle: "Configuracion de Servicios",
+			instructions: "Dejar un input vacio y guardar lo retorna a su valor por defecto"
+		},
 		screenInProgress: "Pantalla en Construccion"
 	},
 	dashboard: {
+		helloMessage: "Hola",
+		evolution: {
+			category: "Proceso",
+			title: "Mi Evolución",
+			validationIntro: "Validaciones:",
+			validations: {
+				cellPhone: "Celu",
+				email: "Mail",
+				document: "ID"
+			},
+			validationState: {
+				yes: "✓",
+				no: "ｘ"
+			}
+		},
+		identity: {
+			category: "Documento Identidad",
+			subTitle: "Nombre",
+			validateButtonTitle: "Validar Id"
+		},
 		recentActivities: {
 			label: "Actividades recientes",
 			loadMore: "Cargar más"
+		}
+	},
+	dashboardJump: {
+		scanCredential: "Escanear Credenciales",
+		shareCredential: "Compartir",
+		createRound: "Armar Ronda",
+		documents: "Ver Documentos",
+		identity: "Ver ID",
+		editProfile: "Editar Perfil"
+	},
+	userData: {
+		barTitle: "Mi perfil",
+		personalDataLabel: "Datos personales",
+		addressDataLabel: "Domicilio Legal",
+		states: {
+			approved: "Aprobado",
+			pending: "Pendiente",
+			rejected: "Rechazado"
 		},
-		notifications: {
-			showExpired: "Mostrar peticiones vencidas",
-			hideExpired: "Ocultar peticiones vencidas"
+		editProfile: {
+			barTitle: "Editar Perfil",
+			saveChanges: "Guardar Cambios",
+
+			fullNameMessage: "Nombre completo",
+			cellMessage: "Celular",
+			emailMessage: "E-mail",
+			documentMessage: "DU / CI / Pasaporte",
+			nationalityMessage: "Nacionalidad",
+			addressMessage: "Domicilio",
+
+			streetMessage: "Nombre de Calle / Manzana",
+			numberMessage: "Número / Casa",
+			departmentMessage: "Departamento",
+			floorMessage: "Piso",
+			neighborhoodMessage: "Barrio",
+			postCodeMessage: "Codigo Postal"
 		},
-		userData: {
-			personalDataLabel: "Datos personales",
-			addressDataLabel: "Domicilio Legal",
-			states: {
-				approved: "Aprobado",
-				pending: "Pendiente",
-				rejected: "Rechazado"
-			},
-			editProfile: {
-				barTitle: "Editar Perfil",
-				saveChanges: "Guardar Cambios",
+		changePassword: {
+			barTitle: "Cambio de Contraseña",
+			changePassword: "Cambiar Contraseña"
+		},
+		share: {
+			barTitle: "Compartir",
+			share: "Compartir",
 
-				fullNameMessage: "Nombre completo",
-				cellMessage: "Celular",
-				emailMessage: "E-mail",
-				documentMessage: "DU / CI / Pasaporte",
-				nationalityMessage: "Nacionalidad",
-				addressMessage: "Domicilio",
-
-				streetMessage: "Nombre de Calle / Manzana",
-				numberMessage: "Número / Casa",
-				departmentMessage: "Departamento",
-				floorMessage: "Piso",
-				neighborhoodMessage: "Barrio",
-				postCodeMessage: "Codigo Postal"
-			},
-			changePassword: {
-				barTitle: "Cambio de Contraseña",
-				changePassword: "Cambiar Contraseña"
-			},
-			share: {
-				barTitle: "Compartir",
-				share: "Compartir",
-
-				personalData: "DatosPersonales",
-				familyMessage: "Familia",
-				coursesMessage: "Cursos",
-				jobsMessage: "Trabajos",
-				titlesMessage: "Títulos",
-				othersMessage: "Otros"
-			},
-			changeEmail: {
-				screenTitle: "Cambiar Email",
-				messageHead: "Ingresa tu nuevo email y tu contraseña actual."
-			},
-			changePhone: {
-				screenTitle: "Cambiar Teléfono",
-				messageHead: "Ingresa tu nuevo numero de telefono y tu contraseña actual."
-			}
+			personalData: "DatosPersonales",
+			familyMessage: "Familia",
+			coursesMessage: "Cursos",
+			jobsMessage: "Trabajos",
+			titlesMessage: "Títulos",
+			othersMessage: "Otros"
+		},
+		changeEmail: {
+			screenTitle: "Cambiar Email",
+			messageHead: "Ingresa tu nuevo email y tu contraseña actual."
+		},
+		changePhone: {
+			screenTitle: "Cambiar Teléfono",
+			messageHead: "Ingresa tu nuevo numero de telefono y tu contraseña actual."
 		}
 	},
 	recovery: {
@@ -83,8 +111,7 @@ export default {
 			startButtonText: "Iniciar"
 		},
 		passwordRecover: {
-			messageHead: "Recuperar Contraseña",
-			forgotPasswordMessage: "No recuerdo la contraseña"
+			messageHead: "Recuperar Contraseña"
 		},
 		passwordRecoverEmailSent: {
 			message: "Se te ha enviado un email para comenzar el proceso de recuperación de su contraseña",
@@ -111,6 +138,10 @@ export default {
 			messageHead: "Su número de teléfono fue validado con éxito",
 			cellNumber: "Número de celular",
 			message: "Continúa con la configuración del Back up de identidad digital",
+			next: "Siguiente"
+		},
+		enterName: {
+			messageHead: "Ingresá tu nombre completo",
 			next: "Siguiente"
 		},
 		enterEmail: {
@@ -144,10 +175,12 @@ export default {
 			resendCode: "¿No recibiste el código?"
 		}
 	},
-	documentFilters: {
-		all: "Todos",
-		livingPlace: "Vivienda",
-		identity: "Identidad"
+	documents: {
+		barTitle: "Mis Documentos",
+		detailBarTitle: "Documento",
+		filterAll: "Todos",
+		filterLivingPlace: "Vivienda",
+		filterIdentity: "Identidad"
 	},
 	tabNames: {
 		home: "Inicio",
@@ -156,6 +189,7 @@ export default {
 		settings: "Configuración"
 	},
 	settings: {
+		idLabel: "ID:",
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
 		about: "Acerca de Didi",
@@ -163,7 +197,8 @@ export default {
 	},
 	share: {
 		title: "Credencial Didi",
-		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi"
+		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi",
+		shareLink: "Compartir Enlace"
 	},
 	services: {
 		changePasswordSuccess: "Contraseña cambiada exitosamente.",
@@ -172,7 +207,9 @@ export default {
 	},
 	validateIdentity: {
 		header: "Validar Identidad",
-		welcome: "Bienvenida Lili M.",
+		welcome: "Te damos la bienvenida",
+		step: "Paso",
+		stepTotal: "/4",
 		what: {
 			header: "¿Que es validación de identidad?",
 			description:
@@ -186,29 +223,39 @@ export default {
 			buttonText: "Comencemos"
 		},
 		explainFront: {
-			title: "Paso 1/4",
+			step: 1,
 			header: "Digitalizando el DNI",
 			description:
 				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara."
 		},
 		explainBack: {
-			title: "Paso 2/4",
+			step: 2,
 			header: "Digitalizando el DNI",
 			description: "Ahora da vuelta el DNI y sácale una foto del dorso."
 		},
 		explainSelfie: {
-			title: "Paso 3/4",
+			step: 3,
 			header: "Foto Selfie",
 			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie."
 		},
 		explainLiveness: {
-			title: "Paso 4/4",
+			step: 4,
 			header: "Prueba de Vida",
 			description:
 				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!"
+		},
+		success: {
+			header: "Validación de Identidad",
+			congrats: "¡Felicitaciones! Su identidad ha sido validada.",
+			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
+			buttonText: "OK"
 		}
 	},
 	textInput: {
+		fullName: {
+			description: "Nombre Completo",
+			placeholder: ""
+		},
 		email: {
 			description: "E-mail",
 			placeholder: ""
@@ -231,5 +278,31 @@ export default {
 	specialCredentials: {
 		PhoneNumberData: "Número de celular",
 		EmailData: "E-mail"
+	},
+	camera: {
+		notAuthorized: "Camara no autorizada",
+		scanQRInstruction: "Escanea un codigo QR"
+	},
+	notifications: {
+		showExpired: "Mostrar peticiones vencidas",
+		hideExpired: "Ocultar peticiones vencidas",
+		sendResponse: "Enviar",
+		requestExpired: "Fecha límite superada."
+	},
+	credentialRequestCard: {
+		from: "De",
+		requests: "Solicita",
+		before: "Antes de"
+	},
+	credentialReceivedInScan: {
+		addCredential: "¿Agregar esta credencial?",
+		doAdd: "Si",
+		goBack: "No",
+		alreadyScanned: "Ya dispones de esta credencial"
+	},
+	credentialShare: {
+		noCredentialsAvailable: "Primero obten credenciales",
+		whichFull: "¿Qué credencial deseas compartir?",
+		whichMicro: "¿Qué parte de la credencial deseas compartir?"
 	}
 };

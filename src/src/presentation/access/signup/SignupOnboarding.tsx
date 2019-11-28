@@ -13,10 +13,11 @@ import {
 	View
 } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import onboardingPages, { OnboardingPage } from "../../resources/onboardingPages";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -95,7 +96,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 			<View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
 				<View pointerEvents="box-none" style={styles.closeArea}>
 					<TouchableOpacity style={styles.closeContainer} onPress={() => this.goBack()}>
-						<Text style={styles.closeButtonText}>{strings.signup.onboarding.close}</Text>
+						<DidiText.SignupCloseButton>{strings.signup.onboarding.close}</DidiText.SignupCloseButton>
 						<Image style={styles.closeButtonImage} source={require("../../resources/images/onboardingExit.png")} />
 					</TouchableOpacity>
 				</View>
@@ -126,8 +127,8 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 						<View style={styles.imageContainer}>
 							<CardBackground width="100%" height="100%" style={styles.image} />
 						</View>
-						<Text style={commonStyles.text.emphasis}>{page.title}</Text>
-						<Text style={commonStyles.text.normal}>{page.body}</Text>
+						<DidiText.Explanation.Emphasis>{page.title}</DidiText.Explanation.Emphasis>
+						<DidiText.Explanation.Normal>{page.body}</DidiText.Explanation.Normal>
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
@@ -198,6 +199,7 @@ const styles = StyleSheet.create({
 	},
 	cardContainer: {
 		padding: 20,
+		alignSelf: "stretch",
 		alignItems: "stretch",
 		justifyContent: "space-evenly",
 		flex: 1
@@ -207,10 +209,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "flex-end",
 		flex: 1
-	},
-	closeButtonText: {
-		color: "#FFF",
-		fontSize: 20
 	},
 	closeButtonImage: {
 		marginLeft: 10,

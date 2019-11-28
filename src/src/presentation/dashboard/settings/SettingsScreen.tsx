@@ -3,6 +3,7 @@ import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, Vie
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { Identity } from "../../../model/Identity";
@@ -59,7 +60,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) },
-			{ name: strings.debug.serviceConfig, action: () => this.navigate("ServiceSettings", {}) },
+			{ name: strings.debug.serviceConfig.barTitle, action: () => this.navigate("ServiceSettings", {}) },
 			{ name: strings.debug.decodeJWT, action: () => this.navigate("JWTDecoderScreen", {}) }
 		];
 	}
@@ -78,10 +79,10 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 							}
 						/>
 						<View style={styles.identityIdContainer}>
-							<Text style={styles.identityName}>{this.props.person.visual.name}</Text>
+							<DidiText.Settings.Name>{this.props.person.visual.name}</DidiText.Settings.Name>
 							<View style={{ marginTop: 3, flexDirection: "row" }}>
-								<Text style={styles.identityIdLabel}>ID: </Text>
-								<Text style={styles.identityId}>{this.props.person.visual.id}</Text>
+								<DidiText.Settings.IdLabel>{strings.settings.idLabel + " "}</DidiText.Settings.IdLabel>
+								<DidiText.Settings.IdContent>{this.props.person.visual.id}</DidiText.Settings.IdContent>
 							</View>
 						</View>
 						<OpenPersonDetail width="24" height="18" style={{ marginHorizontal: 10 }} />
@@ -96,7 +97,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			<View key={index}>
 				<TouchableOpacity onPress={button.action} style={{ marginTop: 10, flexDirection: "row" }}>
 					<View style={styles.buttonSpacer} />
-					<Text style={styles.buttonText}>{button.name}</Text>
+					<DidiText.Settings.Button style={styles.buttonText}>{button.name}</DidiText.Settings.Button>
 					<View style={styles.buttonChevron}>
 						<ChevronBlueRight />
 					</View>
@@ -168,9 +169,6 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		backgroundColor: colors.lightBackground
 	},
-	identityName: {
-		fontSize: 18
-	},
 	identityImage: {
 		marginRight: 10,
 
@@ -185,14 +183,6 @@ const styles = StyleSheet.create({
 	identityIdContainer: {
 		flex: 1,
 		flexDirection: "column"
-	},
-	identityIdLabel: {
-		fontSize: 12,
-		color: colors.primary,
-		fontWeight: "bold"
-	},
-	identityId: {
-		fontSize: 12
 	},
 	buttonContainer: {
 		flex: 1,

@@ -1,9 +1,8 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
-
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+
 import strings from "../../resources/strings";
 
 import { ValidateIdentityExplainHowProps } from "./ValidateIdentityExplainHow";
@@ -27,7 +26,7 @@ export class ValidateIdentityExplainWhatScreen extends NavigationEnabledComponen
 			<ValidateIdentityExplanation
 				title={strings.validateIdentity.welcome}
 				header={strings.validateIdentity.what.header}
-				description={<Text style={styles.description}>{strings.validateIdentity.what.description}</Text>}
+				description={strings.validateIdentity.what.description}
 				image={require("../../resources/images/validateIdentityWhat.png")}
 				buttonText={strings.validateIdentity.what.buttonText}
 				buttonAction={() => this.navigate("ValidateIdentityHow", {})}
@@ -35,13 +34,3 @@ export class ValidateIdentityExplainWhatScreen extends NavigationEnabledComponen
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	description: {
-		fontSize: 16,
-		textAlign: "center"
-	},
-	bold: {
-		fontWeight: "bold"
-	}
-});

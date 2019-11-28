@@ -1,15 +1,16 @@
-import { either, Right } from "fp-ts/lib/Either";
+import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { ClaimCodec } from "./Claim";
 import { EthrDIDCodec } from "./EthrDID";
+import { LegacyClaimCodec } from "./LegacyClaim";
+import { StructuredClaimCodec } from "./StructuredClaim";
 
 export const VerifiedClaimInnerCodec = t.intersection([
 	t.type({
 		type: t.literal("VerifiedClaim"),
 		issuer: EthrDIDCodec,
 		subject: EthrDIDCodec,
-		claims: ClaimCodec
+		claims: StructuredClaimCodec
 	}),
 	t.partial({
 		issuedAt: t.number,
@@ -27,7 +28,7 @@ const VerifiedClaimOuterCodec = t.intersection([
 		vc: t.type({
 			"@context": t.array(t.string),
 			type: t.array(t.string),
-			credentialSubject: ClaimCodec
+			credentialSubject: t.union([StructuredClaimCodec, LegacyClaimCodec])
 		})
 	}),
 	t.partial({

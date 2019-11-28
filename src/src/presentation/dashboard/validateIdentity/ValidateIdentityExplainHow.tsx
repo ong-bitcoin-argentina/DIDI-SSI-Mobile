@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import colors from "../../resources/colors";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
@@ -14,11 +14,10 @@ export interface ValidateIdentityExplainHowNavigation {
 	ValidateIdentityFront: ValidateIdentityFrontProps;
 }
 export type ValidateIdentityExplainHowProps = {};
-type ValidateIdentityExplainHowState = {};
 
 export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent<
 	ValidateIdentityExplainHowProps,
-	ValidateIdentityExplainHowState,
+	{},
 	ValidateIdentityExplainHowNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
@@ -30,12 +29,16 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 				header={strings.validateIdentity.howTo.header}
 				description={
 					<View>
-						<Text style={styles.descriptionHeader}>{strings.validateIdentity.howTo.intro}</Text>
+						<DidiText.ValidateIdentity.Normal style={styles.descriptionHeader}>
+							{strings.validateIdentity.howTo.intro}
+						</DidiText.ValidateIdentity.Normal>
 						{strings.validateIdentity.howTo.steps.map((step, index) => {
 							return (
 								<View style={styles.listItemContainer} key={index}>
-									<Text style={styles.listNumber}>{index + 1}.</Text>
-									<Text style={styles.description}>{step}</Text>
+									<DidiText.ValidateIdentity.Enumerate style={styles.listNumber}>
+										{index + 1}.
+									</DidiText.ValidateIdentity.Enumerate>
+									<DidiText.ValidateIdentity.Normal>{step}</DidiText.ValidateIdentity.Normal>
 								</View>
 							);
 						})}
@@ -51,7 +54,6 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 
 const styles = StyleSheet.create({
 	descriptionHeader: {
-		fontSize: 16,
 		marginBottom: 6
 	},
 	listItemContainer: {
@@ -60,12 +62,6 @@ const styles = StyleSheet.create({
 		marginVertical: 5
 	},
 	listNumber: {
-		fontSize: 16,
-		fontWeight: "bold",
-		color: colors.primary,
 		width: 20
-	},
-	description: {
-		fontSize: 16
 	}
 });

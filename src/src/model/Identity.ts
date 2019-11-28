@@ -22,7 +22,6 @@ export interface LegalAddress {
 	floor: string;
 	neighborhood: string;
 	postCode: string;
-	liveHere: boolean;
 }
 
 export interface Identity {

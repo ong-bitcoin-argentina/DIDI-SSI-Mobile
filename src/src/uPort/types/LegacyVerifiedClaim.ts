@@ -1,15 +1,15 @@
 import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { ClaimCodec } from "./Claim";
 import { EthrDIDCodec } from "./EthrDID";
+import { LegacyClaimCodec } from "./LegacyClaim";
 import { VerifiedClaim, VerifiedClaimInnerCodec } from "./VerifiedClaim";
 
 const LegacyVerifiedClaimOuterCodec = t.intersection([
 	t.type({
 		iss: t.string,
 		sub: t.string,
-		claim: ClaimCodec
+		claim: LegacyClaimCodec
 	}),
 	t.partial({
 		iat: t.number,

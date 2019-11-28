@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, View, ViewProps } from "react-native";
 
+import { DidiText } from "../../util/DidiText";
+
 export interface DidiCardBodyProps extends ViewProps {
 	icon: string;
 	image?: ImageSourcePropType;
@@ -13,12 +15,13 @@ export default class DidiCardBody extends Component<DidiCardBodyProps> {
 		const bodyStyle = this.props.hollow
 			? { borderColor: this.props.color, backgroundColor: "#FFF", borderWidth: 2 }
 			: { backgroundColor: this.props.color };
-		const iconStyle = this.props.hollow ? { color: this.props.color } : { color: "#FFF" };
 		return (
 			<View {...this.props} style={[styles.bodyDefaults, bodyStyle, this.props.style]}>
 				<View style={styles.headerContainer}>
 					<View style={styles.headerIconContainer}>
-						<Text style={[styles.icon, iconStyle]}>{this.props.icon}</Text>
+						<DidiText.Icon fontSize={30} color={this.props.hollow ? this.props.color : undefined}>
+							{this.props.icon}
+						</DidiText.Icon>
 					</View>
 					<View style={styles.textContainer}>{this.props.children}</View>
 				</View>
@@ -55,14 +58,8 @@ const styles = StyleSheet.create({
 	},
 
 	headerIconContainer: {
-		justifyContent: "flex-start"
-	},
-	icon: {
-		height: 30,
-		width: 30,
-		marginRight: 25,
-		fontFamily: "MaterialIcons-Regular",
-		fontSize: 30
+		justifyContent: "flex-start",
+		marginRight: 25
 	},
 
 	imageContainer: {

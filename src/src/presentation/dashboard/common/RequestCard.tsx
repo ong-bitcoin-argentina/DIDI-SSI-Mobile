@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ViewProps } from "react-native";
+import { Text, View, ViewProps } from "react-native";
+
+import { DidiText } from "../../util/DidiText";
 
 import { RequestDocument } from "../../../model/RequestDocument";
 import colors from "../../resources/colors";
+import strings from "../../resources/strings";
 
 import DidiCardBody from "./DidiCardBody";
 
@@ -18,18 +21,18 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 		return (
 			<DidiCardBody icon="" color={colors.secondary} hollow={true} {...this.props}>
 				<View>
-					<Text style={styles.normal}>
-						{"De: "}
-						<Text style={styles.em}>{issuer}</Text>
+					<Text>
+						<DidiText.Card.Key>{strings.credentialRequestCard.from + ": "}</DidiText.Card.Key>
+						<DidiText.Card.Value>{issuer}</DidiText.Card.Value>
 					</Text>
-					<Text style={styles.normal}>Solicita: </Text>
+					<DidiText.Card.Key>{strings.credentialRequestCard.requests + ": "}</DidiText.Card.Key>
 					{this.props.request.content.verifiedClaims.map((rq, index) => {
-						return <Text style={styles.em} key={index}>{`    - ${rq}`}</Text>;
+						return <DidiText.Card.Value key={index}>{`    - ${rq}`}</DidiText.Card.Value>;
 					})}
 					{endDate && (
-						<Text style={styles.normal}>
-							{"Antes de: "}
-							<Text style={styles.em}>{endDate}</Text>
+						<Text>
+							<DidiText.Card.Key>{strings.credentialRequestCard.before + ": "}</DidiText.Card.Key>
+							<DidiText.Card.Value>{endDate}</DidiText.Card.Value>
 						</Text>
 					)}
 				</View>
@@ -38,13 +41,3 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	normal: {
-		color: colors.secondary
-	},
-	em: {
-		color: colors.secondary,
-		fontWeight: "bold"
-	}
-});

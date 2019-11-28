@@ -1,11 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View, ViewProps } from "react-native";
+import { View, ViewProps } from "react-native";
 import { FloatingAction, IActionProps } from "react-native-floating-action";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 
+import { DidiText } from "../util/DidiText";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
 import colors from "../resources/colors";
+import strings from "../resources/strings";
 
 import { ScanCredentialProps } from "./credentials/ScanCredential";
 import { ShareCredentialProps } from "./credentials/ShareCredential";
@@ -54,14 +56,6 @@ export default class DashboardJumpMenu extends NavigationEnabledComponent<
 	}
 }
 
-const styles = StyleSheet.create({
-	icon: {
-		fontFamily: "MaterialIcons-Regular",
-		fontSize: 21,
-		color: colors.primaryText
-	}
-});
-
 const actionCommon: Omit<IActionProps, "name"> = {
 	textBackground: "transparent",
 	textColor: "#FFF",
@@ -69,41 +63,45 @@ const actionCommon: Omit<IActionProps, "name"> = {
 	textElevation: 0
 };
 
+function iconFrom(text: string) {
+	return <DidiText.Icon fontSize={21}>{text}</DidiText.Icon>;
+}
+
 const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
-		text: "Escanear Credenciales",
+		icon: iconFrom(""),
+		text: strings.dashboardJump.scanCredential,
 		name: "ScanCredential"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
-		text: "Compartir",
+		icon: iconFrom(""),
+		text: strings.dashboardJump.shareCredential,
 		name: "ShareCredential"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
-		text: "Armar Ronda",
+		icon: iconFrom(""),
+		text: strings.dashboardJump.createRound,
 		name: "DashboardRounds"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
-		text: "Ver Documentos",
+		icon: iconFrom(""),
+		text: strings.dashboardJump.documents,
 		name: "DashboardDocuments"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
-		text: "Ver ID",
+		icon: iconFrom(""),
+		text: strings.dashboardJump.identity,
 		name: "UserData"
 	},
 	{
 		...actionCommon,
-		icon: <Text style={styles.icon}></Text>,
-		text: "Editar Perfil",
+		icon: iconFrom(""),
+		text: strings.dashboardJump.editProfile,
 		name: "EditProfile"
 	}
 ];

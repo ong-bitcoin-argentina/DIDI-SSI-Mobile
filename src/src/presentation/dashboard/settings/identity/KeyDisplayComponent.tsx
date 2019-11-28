@@ -2,8 +2,8 @@ import React from "react";
 import { Alert, Clipboard, Text, ToastAndroid, View, ViewProps } from "react-native";
 import { KeyAddress, RNUportHDSigner } from "react-native-uport-signer";
 
-import commonStyles from "../../../resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
+import { DidiText } from "../../../util/DidiText";
 
 export interface KeyDisplayProps extends ViewProps {
 	seed: KeyAddress;
@@ -25,8 +25,8 @@ export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDis
 		const seed = this.props.seed;
 		return (
 			<View {...this.props}>
-				<Text style={commonStyles.text.emphasis}>Identidad activa (DID):</Text>
-				<Text style={commonStyles.text.normal}>{seed}</Text>
+				<DidiText.Explanation.Emphasis>Identidad activa (DID):</DidiText.Explanation.Emphasis>
+				<DidiText.Explanation.Normal>{seed}</DidiText.Explanation.Normal>
 				<DidiButton title="Copiar DID" onPress={() => this.copyDID(seed)} />
 				<DidiButton title="Mostrar Frase de Respaldo" onPress={() => this.showPhrase(seed)} />
 				<DidiButton title="Copiar Frase de Respaldo" onPress={() => this.copyPhrase(seed)} />

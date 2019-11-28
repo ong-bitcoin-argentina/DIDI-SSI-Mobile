@@ -5,6 +5,7 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../common/ServiceObserver";
+import { DidiText } from "../util/DidiText";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import NavMap, { NavigationEnabledComponentConstructor, NavTree } from "../util/NavMap";
 
@@ -19,6 +20,7 @@ import ShareCredentialScreen from "./credentials/ShareCredential";
 import { ShareMicroCredentialScreen } from "./credentials/ShareMicroCredential";
 import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
 import DashboardJumpMenu from "./DashboardJumpMenu";
+import { DocumentDetailScreen } from "./documents/DocumentDetail";
 import DocumentsNavigator from "./documents/DocumentsNavigator";
 import DashboardScreen, { DashboardScreenNavigation, DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
@@ -59,7 +61,9 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				title,
 				tabBarIcon: ({ focused, tintColor }: { focused: boolean; tintColor: string }) => (
 					<View style={{ width: 24, height: 24 }}>
-						<Text style={{ color: tintColor, fontSize: 24, fontFamily: "MaterialIcons-Regular" }}>{image}</Text>
+						<DidiText.Icon color={tintColor} fontSize={24}>
+							{image}
+						</DidiText.Icon>
 					</View>
 				)
 			}
@@ -120,6 +124,7 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		}),
 		NotificationScreen: NavMap.from(NotificationScreen, {
 			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen)
-		})
+		}),
+		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {})
 	}).stackNavigator("DashboardRoot");
 }

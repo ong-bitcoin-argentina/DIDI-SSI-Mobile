@@ -1,14 +1,16 @@
 import React, { Fragment } from "react";
-import { FlatList, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, TouchableOpacity, View } from "react-native";
 
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { uPortDocumentToCard } from "../common/documentToCard";
+import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DerivedCredential } from "../../../model/DerivedCredential";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
@@ -46,10 +48,14 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 						renderItem={item => this.renderCard(item.item)}
 						ListEmptyComponent={
 							<View style={commonStyles.view.body}>
-								<Text style={commonStyles.text.normal}>Primero obten credenciales</Text>
+								<DidiText.Explanation.Normal>
+									{strings.credentialShare.noCredentialsAvailable}
+								</DidiText.Explanation.Normal>
 							</View>
 						}
-						ListHeaderComponent={<Text style={commonStyles.text.emphasis}>¿Qué credencial deseas compartir?</Text>}
+						ListHeaderComponent={
+							<DidiText.Explanation.Emphasis>{strings.credentialShare.whichFull}</DidiText.Explanation.Emphasis>
+						}
 					/>
 				</SafeAreaView>
 			</Fragment>
@@ -58,7 +64,9 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 
 	private renderCard(document: DerivedCredential<CredentialDocument>) {
 		return (
-			<TouchableOpacity onPress={() => this.doShare(document)}>{uPortDocumentToCard(document, 0)}</TouchableOpacity>
+			<TouchableOpacity onPress={() => this.doShare(document)}>
+				<DocumentCredentialCard preview={false} document={document} />
+			</TouchableOpacity>
 		);
 	}
 

@@ -1,17 +1,16 @@
-import React, { Fragment } from "react";
-import { Dimensions, SafeAreaView, Share, StatusBar, Text, View } from "react-native";
+import React from "react";
+import { Dimensions, Share } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
-import commonStyles from "../../resources/commonStyles";
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import themes from "../../resources/themes";
 
 export interface ShareSpecificCredentialProps {
 	document: CredentialDocument;
@@ -35,10 +34,10 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={{ width: "90%" }}>
-				<Text style={commonStyles.text.normal}>{strings.share.explanation}</Text>
+				<DidiText.Explanation.Normal>{strings.share.explanation}</DidiText.Explanation.Normal>
 				<QRCode size={0.9 * Dimensions.get("window").width} value={this.props.document.jwt} />
 				<DidiButton
-					title="Compartir Enlace"
+					title={strings.share.shareLink}
 					onPress={() => {
 						const jwt = this.props.document.jwt;
 						Share.share({

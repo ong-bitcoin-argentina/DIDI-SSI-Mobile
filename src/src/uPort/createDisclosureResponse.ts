@@ -1,3 +1,4 @@
+import { JSONObject } from "../util/JSON";
 import TypedObject from "../util/TypedObject";
 
 import { CredentialDocument } from "../model/CredentialDocument";
@@ -6,11 +7,11 @@ import { RequestDocument } from "../model/RequestDocument";
 import { ValidatedIdentity } from "../store/selector/combinedIdentitySelector";
 
 import { getCredentials } from "./getCredentials";
-import { Claim, flattenClaim } from "./types/Claim";
+import { ClaimData } from "./types/Claim";
 import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
 
-function selectOwnClaims(request: SelectiveDisclosureRequest, identity: ValidatedIdentity): Claim {
-	const result: Claim = {};
+function selectOwnClaims(request: SelectiveDisclosureRequest, identity: ValidatedIdentity): JSONObject {
+	const result: ClaimData = {};
 	for (const value of request.ownClaims) {
 		switch (value) {
 			case "name":
@@ -48,10 +49,7 @@ function selectVerifiedClaims(
 	documents: CredentialDocument[]
 ): Array<{ selector: string; value?: CredentialDocument }> {
 	return request.verifiedClaims.map(selector => {
-		const selected = documents.find(document => {
-			const { root } = flattenClaim(document.content.claims);
-			return root === selector;
-		});
+		const selected = documents.find(document => document.content.claims.title === selector);
 		return { selector, value: selected };
 	});
 }
@@ -60,7 +58,7 @@ export function getResponseClaims(
 	request: SelectiveDisclosureRequest,
 	documents: CredentialDocument[],
 	identity: ValidatedIdentity
-): { missing: string[]; own: Claim; verified: string[] } {
+): { missing: string[]; own: JSONObject; verified: string[] } {
 	const verified: { [selector: string]: CredentialDocument } = {};
 	const missing: string[] = [];
 
@@ -78,7 +76,7 @@ export function getResponseClaims(
 		own: {
 			...own,
 			...TypedObject.mapValues(verified, v => {
-				return v.content.claims;
+				return v.content.claims.data;
 			})
 		},
 		verified: TypedObject.values(verified).map(d => d.jwt)
@@ -93,7 +91,7 @@ export interface DisclosureResponseArguments {
 
 export async function signDisclosureResponse(
 	request: RequestDocument,
-	own: Claim,
+	own: JSONObject,
 	verified: string[]
 ): Promise<string> {
 	const credentials = await getCredentials();

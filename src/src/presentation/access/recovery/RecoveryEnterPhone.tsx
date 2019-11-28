@@ -4,6 +4,8 @@ import { EnterPhoneWrapper } from "../../common/EnterPhoneWrapper";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import strings from "../../resources/strings";
+
 import { RecoveryVerifyPhoneProps } from "./RecoveryVerifyPhone";
 
 export interface RecoveryEnterPhoneProps {
@@ -24,6 +26,7 @@ export class RecoveryEnterPhoneScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<EnterPhoneWrapper
+				explanation={strings.accessCommon.enterPhone.messageHead}
 				shouldCreateDid={false}
 				isPasswordRequired={true}
 				password={this.props.password}

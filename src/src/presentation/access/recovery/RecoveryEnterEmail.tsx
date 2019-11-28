@@ -2,13 +2,14 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import { EnterEmailScreen } from "../../common/EnterEmail";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { recoverAccount } from "../../../services/user/recoverAccount";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 import { ForgotPasswordEnterEmailProps } from "../forgotPassword/ForgotPasswordEnterEmail";
 
@@ -56,7 +57,9 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 					isContinuePending={this.props.recoverAccountPending}
 				>
 					<TouchableOpacity onPress={() => this.navigate("ForgotPasswordEnterEmail", {})} style={styles.forgotPassword}>
-						<Text>{strings.recovery.enterEmail.forgotPasswordMessage + " >"}</Text>
+						<DidiText.ForgotPasswordButton>
+							{strings.recovery.enterEmail.forgotPasswordMessage + " >"}
+						</DidiText.ForgotPasswordButton>
 					</TouchableOpacity>
 				</EnterEmailScreen>
 			</ServiceObserver>

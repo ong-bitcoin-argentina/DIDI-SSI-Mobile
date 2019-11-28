@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 
+import { DidiText } from "../../util/DidiText";
+
+import { ClaimDataPairs } from "../../../uPort/types/Claim";
 import colors from "../../resources/colors";
 
 import DidiCardBody, { DidiCardBodyProps } from "./DidiCardBody";
@@ -9,7 +12,7 @@ export interface CredentialCardProps extends DidiCardBodyProps {
 	category: string;
 	title: string;
 	subTitle: string;
-	data?: Array<{ label: string; value: string }>;
+	data?: ClaimDataPairs;
 	columns?: 1 | 2 | 3;
 }
 
@@ -17,11 +20,11 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	private renderTitle(color: string) {
 		return (
 			<View style={styles.headerData}>
-				<Text style={[styles.category, { color }]}>{this.props.category}</Text>
-				<Text style={[styles.title, { color }]}>{this.props.title}</Text>
-				<Text style={[styles.subTitle, { color }, { color: `${color}${colors.subtitleAlpha}` }]}>
+				<DidiText.Card.Category style={{ color }}>{this.props.category}</DidiText.Card.Category>
+				<DidiText.Card.Title style={{ color }}>{this.props.title}</DidiText.Card.Title>
+				<DidiText.Card.Subtitle style={{ color: `${color}${colors.subtitleAlpha}` }}>
 					{this.props.subTitle}
-				</Text>
+				</DidiText.Card.Subtitle>
 			</View>
 		);
 	}
@@ -41,8 +44,8 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 				{data.map((item, index) => {
 					return (
 						<View key={index} style={columnStyle}>
-							<Text style={[styles.dataLabel, { color }]}>{item.label}</Text>
-							<Text style={[styles.dataValue, { color }, valueStyle]}>{item.value}</Text>
+							<DidiText.Card.Key style={[styles.dataLabel, { color }]}>{item.label}</DidiText.Card.Key>
+							<DidiText.Card.Value style={[styles.dataValue, { color }, valueStyle]}>{item.value}</DidiText.Card.Value>
 						</View>
 					);
 				})}
@@ -68,29 +71,14 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		marginBottom: 10
 	},
-	category: {
-		fontWeight: "500",
-		fontSize: 12
-	},
-	title: {
-		fontWeight: "bold",
-		fontSize: 16
-	},
-	subTitle: {
-		fontSize: 12
-	},
-
 	keyValueContainer: {
 		flexDirection: "row",
 		flexWrap: "wrap"
 	},
 	dataLabel: {
-		fontSize: 13,
 		paddingRight: 5
 	},
 	dataValue: {
-		fontWeight: "bold",
-		fontSize: 13,
 		flexGrow: 1,
 		flexShrink: 1
 	}

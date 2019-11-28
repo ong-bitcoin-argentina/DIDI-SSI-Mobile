@@ -2,8 +2,11 @@ import React, { Fragment } from "react";
 import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
 import { RNCamera, TakePictureResponse } from "react-native-camera";
 
+import { DidiText } from "../../util/DidiText";
+
 import colors from "../../resources/colors";
 import Checkmark from "../../resources/images/cameraCheckmark.svg";
+import strings from "../../resources/strings";
 
 export interface DidiCameraProps {
 	onPictureTaken(response: TakePictureResponse): void;
@@ -26,7 +29,7 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 	static cameraButton(onPress?: (event: GestureResponderEvent) => void) {
 		return (
 			<TouchableOpacity style={styles.cameraButton} onPress={onPress}>
-				<Text style={styles.cameraIcon}></Text>
+				<DidiText.Icon fontSize={33}></DidiText.Icon>
 			</TouchableOpacity>
 		);
 	}
@@ -46,7 +49,11 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 						buttonPositive: "Ok",
 						buttonNegative: "Cancelar"
 					}}
-					notAuthorizedView={<Text style={styles.notAuthorized}>Camara no autorizada</Text>}
+					notAuthorizedView={
+						<DidiText.CameraExplanation style={styles.notAuthorized}>
+							{strings.camera.notAuthorized}
+						</DidiText.CameraExplanation>
+					}
 					onCameraReady={() => this.setState({ cameraAvailable: true })}
 				/>
 				<View style={[StyleSheet.absoluteFill, styles.cameraButtonContainer]}>{this.renderPictureButton()}</View>
@@ -96,18 +103,12 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-end"
 	},
 	cameraButton: {
-		width: 66,
-		height: 66,
+		width: 80,
+		height: 80,
 		backgroundColor: colors.primary,
-		borderRadius: 33,
+		borderRadius: 40,
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center"
-	},
-	cameraIcon: {
-		fontSize: 33,
-		fontFamily: "MaterialIcons-Regular",
-		color: colors.primaryText,
-		textAlign: "center"
 	}
 });

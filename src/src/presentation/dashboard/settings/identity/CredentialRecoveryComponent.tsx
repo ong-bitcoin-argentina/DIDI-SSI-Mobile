@@ -3,6 +3,7 @@ import { Text, View, ViewProps } from "react-native";
 
 import commonStyles from "../../../resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
+import { DidiText } from "../../../util/DidiText";
 
 import { recoverTokens } from "../../../../services/trustGraph/recoverTokens";
 import { didiConnect } from "../../../../store/store";
@@ -25,10 +26,10 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 	render() {
 		return (
 			<View {...this.props}>
-				<Text style={commonStyles.text.normal}>
-					<Text style={commonStyles.text.emphasis}>Credenciales Locales: </Text>
+				<DidiText.Explanation.Normal>
+					<DidiText.Explanation.Emphasis>Credenciales Locales: </DidiText.Explanation.Emphasis>
 					{this.props.tokens.length}
-				</Text>
+				</DidiText.Explanation.Normal>
 
 				<DidiButton title="Borrar Credenciales Locales" onPress={() => this.props.deleteAllTokens()} />
 				<DidiButton title="Cargar Credenciales Remotas" onPress={() => this.props.recoverTokens()} />

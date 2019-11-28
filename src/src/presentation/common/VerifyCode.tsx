@@ -1,8 +1,9 @@
 import React from "react";
-import { Image, ImageSourcePropType, Text } from "react-native";
+import { Image, ImageSourcePropType } from "react-native";
 
 import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
+import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
 import Validator from "../access/helpers/validator";
@@ -30,13 +31,13 @@ export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, Verif
 	render() {
 		return (
 			<DidiScreen>
-				<Text style={commonStyles.text.emphasis}>{this.props.description}</Text>
+				<DidiText.Explanation.Emphasis>{this.props.description}</DidiText.Explanation.Emphasis>
 
 				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
 
 				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
 
-				<Text style={commonStyles.text.normal}>{strings.accessCommon.verify.resendCode}</Text>
+				<DidiText.Explanation.Normal>{strings.accessCommon.verify.resendCode}</DidiText.Explanation.Normal>
 
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}

@@ -1,16 +1,17 @@
 import React, { Fragment } from "react";
 import { StyleSheet, Text } from "react-native";
 
-import commonStyles from "../../resources/commonStyles";
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { uPortDocumentToCard } from "../common/documentToCard";
+import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { liftToDerivedCredential } from "../../../model/DerivedCredential";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import strings from "../../resources/strings";
 
 import { ScanCredentialProps } from "./ScanCredential";
 
@@ -42,22 +43,30 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={styles.body}>
-				{uPortDocumentToCard(liftToDerivedCredential(this.props.credential), 0)}
+				{<DocumentCredentialCard preview={false} document={liftToDerivedCredential(this.props.credential)} />}
 				{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
 			</DidiScreen>
 		);
 	}
 
 	private renderExisting() {
-		return <Text style={commonStyles.text.normal}>Ya dispones de esta credencial</Text>;
+		return <DidiText.Explanation.Normal>{strings.credentialReceivedInScan.alreadyScanned}</DidiText.Explanation.Normal>;
 	}
 
 	private renderNew() {
 		return (
 			<Fragment>
-				<Text style={commonStyles.text.normal}>¿Agregar esta credencial?</Text>
-				<DidiButton style={styles.button} title="Si" onPress={() => this.acceptCredential()} />
-				<DidiButton style={styles.button} title="No" onPress={() => this.replace("ScanCredential", {})} />
+				<DidiText.Explanation.Normal>{strings.credentialReceivedInScan.addCredential}</DidiText.Explanation.Normal>
+				<DidiButton
+					style={styles.button}
+					title={strings.credentialReceivedInScan.doAdd}
+					onPress={() => this.acceptCredential()}
+				/>
+				<DidiButton
+					style={styles.button}
+					title={strings.credentialReceivedInScan.goBack}
+					onPress={() => this.replace("ScanCredential", {})}
+				/>
 			</Fragment>
 		);
 	}

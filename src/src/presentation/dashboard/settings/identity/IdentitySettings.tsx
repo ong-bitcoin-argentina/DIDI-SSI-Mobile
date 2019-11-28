@@ -1,14 +1,10 @@
 import React, { Fragment } from "react";
-import { StatusBar, Text, View } from "react-native";
 import { RNUportHDSigner } from "react-native-uport-signer";
-import { SafeAreaView } from "react-navigation";
 
-import commonStyles from "../../../resources/commonStyles";
 import { DidiScreen } from "../../../common/DidiScreen";
-import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
-
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
-import themes from "../../../resources/themes";
+import { DidiText } from "../../../util/DidiText";
+import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { CredentialRecoveryComponent } from "./CredentialRecoveryComponent";
 import { KeyDisplayComponent } from "./KeyDisplayComponent";
@@ -39,7 +35,7 @@ export default class IdentitySettingsScreen extends NavigationEnabledComponent<
 
 	private renderContent() {
 		if (this.state.seeds === undefined) {
-			return <Text style={commonStyles.text.emphasis}>Cargando</Text>;
+			return <DidiText.Explanation.Emphasis>Cargando</DidiText.Explanation.Emphasis>;
 		} else if (this.state.seeds.length === 0) {
 			return <KeyRecoveryComponent onSeedCreated={() => this.reloadSeeds()} />;
 		} else {

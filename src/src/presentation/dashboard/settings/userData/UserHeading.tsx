@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
 
-import commonStyles from "../../../resources/commonStyles";
+import { DidiText } from "../../../util/DidiText";
 
 import colors from "../../../resources/colors";
 
@@ -49,11 +49,11 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 							this.openBgImagePicker();
 						}}
 					>
-						<Text style={styles.cameraIcon}></Text>
+						<DidiText.Icon fontSize={20}></DidiText.Icon>
 					</TouchableOpacity>
 				)}
 
-				<Text style={[commonStyles.text.emphasis, styles.userLabel]}>{this.props.user}</Text>
+				<DidiText.UserData.HeaderName style={styles.userLabel}>{this.props.user}</DidiText.UserData.HeaderName>
 			</View>
 		);
 	}
@@ -86,15 +86,8 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.primary,
 		borderRadius: 20
 	},
-	cameraIcon: {
-		fontSize: 20,
-		fontFamily: "MaterialIcons-Regular",
-		color: colors.primaryText
-	},
 	userLabel: {
-		marginTop: 40,
-		marginRight: 10,
-		color: colors.primary
+		marginTop: 40
 	},
 	identityImage: {
 		margin: 5,

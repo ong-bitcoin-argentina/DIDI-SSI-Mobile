@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
 import { StyleSheet } from "react-native";
 
+import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import DidiButton from "../util/DidiButton";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
 import colors from "../resources/colors";
-import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
 import { SplashContent } from "../SplashContent";
@@ -63,11 +63,10 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent"
 	},
 	transparentButtonText: {
-		color: themes.foreground,
-		fontWeight: "bold"
+		color: themes.foreground
 	},
 	primaryButton: {
-		backgroundColor: colors.primary
+		backgroundColor: colors.primaryShadow
 	},
 	secondaryButton: {
 		backgroundColor: colors.secondary

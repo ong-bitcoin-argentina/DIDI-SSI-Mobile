@@ -1,8 +1,11 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { DidiText } from "../../util/DidiText";
+
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import colors from "../../resources/colors";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 export interface HomeHeaderProps {
@@ -25,12 +28,12 @@ export default class HomeHeader extends React.Component<HomeHeaderProps> {
 						}
 					/>
 					<View>
-						<Text style={styles.helloText}>Hola</Text>
-						<Text style={styles.nameText}>{this.props.person.visual.id}</Text>
+						<DidiText.DashboardHeader.Hello>{strings.dashboard.helloMessage}</DidiText.DashboardHeader.Hello>
+						<DidiText.DashboardHeader.Name>{this.props.person.visual.id}</DidiText.DashboardHeader.Name>
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
-					<Text style={styles.bell}></Text>
+					<DidiText.Icon fontSize={24}></DidiText.Icon>
 				</TouchableOpacity>
 			</View>
 		);
@@ -55,11 +58,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 25,
 		paddingHorizontal: 20
 	},
-	bell: {
-		fontFamily: "MaterialIcons-Regular",
-		fontSize: 24,
-		color: themes.navigationText
-	},
 	image: {
 		marginRight: 10,
 
@@ -70,15 +68,5 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.darkBackground,
 		borderColor: "#FFF",
 		borderWidth: 2
-	},
-	helloText: {
-		color: themes.navigationText,
-		fontWeight: "normal",
-		fontSize: 13
-	},
-	nameText: {
-		color: themes.navigationText,
-		fontWeight: "bold",
-		fontSize: 13
 	}
 });

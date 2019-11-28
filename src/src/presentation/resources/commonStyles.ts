@@ -2,24 +2,7 @@ import { StyleSheet, TextStyle } from "react-native";
 
 import colors from "./colors";
 
-const baseTextStyle: TextStyle = {
-	textAlign: "center",
-	fontSize: 18,
-	color: colors.text
-};
-
 export default {
-	text: StyleSheet.create({
-		normal: baseTextStyle,
-		emphasis: {
-			...baseTextStyle,
-			fontWeight: "bold"
-		},
-		faded: {
-			...baseTextStyle,
-			color: colors.textFaded
-		}
-	}),
 	image: StyleSheet.create({
 		image: {
 			width: 185,

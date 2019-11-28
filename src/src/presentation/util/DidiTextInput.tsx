@@ -5,6 +5,8 @@ import DidiTheme from "../resources/DidiTheme";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
 
+import { DidiText, styleToUse } from "./DidiText";
+
 export interface DidiTextInputProps {
 	theme?: DidiTheme;
 	viewProps?: ViewProps;
@@ -33,7 +35,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				<View style={style.lineContainer}>
 					<View style={style.stateContainer}>
 						<View style={style.inputContainer}>
-							<Text style={style.description}>{this.props.description}</Text>
+							<DidiText.InputDescription>{this.props.description}</DidiText.InputDescription>
 							<TextInput {...textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
 						</View>
 						{this.props.stateIndicator}
@@ -43,6 +45,18 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 			</View>
 		);
 	}
+
+	static FullName = (props: { onChangeText(text: string): void }) => {
+		return (
+			<DidiTextInput
+				description={strings.textInput.fullName.description}
+				placeholder={strings.textInput.fullName.placeholder}
+				textInputProps={{
+					onChangeText: props.onChangeText
+				}}
+			/>
+		);
+	};
 
 	static Email = (props: { onChangeText: (text: string) => void }) => {
 		return (
@@ -128,11 +142,7 @@ function styles(theme: DidiTheme) {
 			color: theme.foreground,
 			paddingTop: 6,
 			paddingBottom: 0,
-			fontSize: 16
-		},
-		description: {
-			color: theme.foregroundFaded,
-			fontSize: 12
+			...styleToUse.didiTextInput
 		},
 		tagImage: {
 			width: 25,

@@ -1,13 +1,14 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 export interface SignupConfirmedNavigation {
@@ -28,7 +29,7 @@ export class SignupConfirmedScreen extends NavigationEnabledComponent<
 			<DidiScreen>
 				<View />
 
-				<Text style={[commonStyles.text.normal, styles.message]}>{strings.signup.registrationValidated.message}</Text>
+				<DidiText.Explanation.Normal>{strings.signup.registrationValidated.message}</DidiText.Explanation.Normal>
 
 				<Image source={require("../../resources/images/emailConfirmed.png")} style={commonStyles.image.image} />
 
@@ -44,10 +45,3 @@ export class SignupConfirmedScreen extends NavigationEnabledComponent<
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	message: {
-		fontSize: 20,
-		textAlign: "center"
-	}
-});

@@ -1,33 +1,59 @@
 import * as t from "io-ts";
 
-import { JSONValue, JSONValueCodec } from "../../util/JSON";
+import TypedArray from "../../util/TypedArray";
 
-export const ClaimCodec = t.record(t.string, JSONValueCodec);
+export const ClaimDataCodec = t.record(t.string, t.string);
 
-export type Claim = typeof ClaimCodec._A;
+export type ClaimData = typeof ClaimDataCodec._A;
 
-export type FlattenedClaim = Record<string, string>;
+export type ClaimDataPairs = Array<{ label: string; value: string }>;
 
-export function flattenClaim(rootClaim: Claim): { root: string; rest: FlattenedClaim } {
-	const entries = Object.entries(rootClaim);
-	if (entries.length === 0) {
-		return { root: "", rest: {} };
+export class Claim {
+	title: string;
+	data: ClaimData;
+	preview?: {
+		type: number;
+		fields: string[];
+	};
+
+	constructor(title: string, data: ClaimData, preview?: { type: number; fields: string[] }) {
+		this.title = title;
+		this.data = data;
+		this.preview = preview;
 	}
-	const [root, claims] = entries[0];
-	const result: FlattenedClaim = {};
 
-	function doFlatten(claim: JSONValue, path?: string) {
-		if (claim instanceof Array) {
-			claim.forEach(subclaim => doFlatten(subclaim, path));
-		} else if (claim && typeof claim === "object") {
-			Object.entries(claim).forEach(([key, value]) => {
-				doFlatten(value, path ? `${path}.${key}` : key);
-			});
-		} else if (claim) {
-			result[path || ""] = claim.toString();
+	previewPairs(): ClaimDataPairs {
+		if (!this.preview) {
+			return this.allPairs();
+		}
+		return TypedArray.flatMap(this.preview.fields, label => {
+			const value = this.data[label];
+			if (value) {
+				return { label, value };
+			} else {
+				return undefined;
+			}
+		});
+	}
+
+	allPairs(): ClaimDataPairs {
+		return Object.entries(this.data).map(([label, value]) => ({
+			label,
+			value
+		}));
+	}
+
+	numberOfColumns(): 1 | 2 | 3 {
+		if (!this.preview) {
+			return 1;
+		}
+		switch (this.preview.type) {
+			case 1:
+			case 2:
+			case 3:
+				return this.preview.type;
+			default:
+				return 1;
 		}
 	}
-
-	doFlatten(claims);
-	return { root, rest: result };
 }

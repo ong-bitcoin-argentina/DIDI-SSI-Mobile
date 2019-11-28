@@ -14,6 +14,7 @@ import { RecoveryVerifyPhoneScreen } from "./recovery/RecoveryVerifyPhone";
 import { SignupConfirmedScreen } from "./signup/SignupConfirmed";
 import { SignupConfirmEmailScreen } from "./signup/SignupConfirmEmail";
 import { SignupEnterEmailScreen } from "./signup/SignupEnterEmail";
+import { SignupEnterNameScreen } from "./signup/SignupEnterName";
 import { SignupEnterPhoneScreen } from "./signup/SignupEnterPhone";
 import { SignupOnboardingScreen } from "./signup/SignupOnboarding";
 import { SignupPhoneVerifiedScreen } from "./signup/SignupPhoneVerified";
@@ -33,9 +34,11 @@ function signup(then: NavTree<AccessSwitchTarget>) {
 		SignupEnterPhone: NavMap.from(SignupEnterPhoneScreen, {
 			SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
 				SignupPhoneVerified: NavMap.from(SignupPhoneVerifiedScreen, {
-					SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
-						SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen, {
-							SignupConfirmed: NavMap.from(SignupConfirmedScreen, then)
+					SignupEnterName: NavMap.from(SignupEnterNameScreen, {
+						SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
+							SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen, {
+								SignupConfirmed: NavMap.from(SignupConfirmedScreen, then)
+							})
 						})
 					})
 				})

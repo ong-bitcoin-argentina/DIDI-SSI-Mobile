@@ -4,6 +4,8 @@ import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, TouchableOpac
 import DidiTheme from "../resources/DidiTheme";
 import themes from "../resources/themes";
 
+import { DidiText } from "./DidiText";
+
 export interface DidiButtonProps extends TouchableOpacityProps {
 	title: string;
 	titleStyle?: StyleProp<TextStyle>;
@@ -16,16 +18,15 @@ export default class DidiButton extends React.Component<DidiButtonProps> {
 		const currentButtonColor = {
 			backgroundColor: this.props.disabled ? theme.buttonDisabled : theme.button
 		};
-		const currentTitleStyle: TextStyle = {
-			fontStyle: this.props.disabled ? "italic" : "normal"
-		};
 		return (
 			<TouchableOpacity
 				accessibilityRole="button"
 				{...this.props}
 				style={[styles.button, currentButtonColor, this.props.style]}
 			>
-				<Text style={[styles.text, currentTitleStyle, this.props.titleStyle]}>{this.props.title}</Text>
+				<DidiText.Button disabled={this.props.disabled || false} style={this.props.titleStyle}>
+					{this.props.title}
+				</DidiText.Button>
 			</TouchableOpacity>
 		);
 	}
@@ -42,10 +43,6 @@ const styles = StyleSheet.create({
 		borderRadius: 5
 	},
 	text: {
-		fontWeight: "500",
-		fontSize: 16,
-		textAlign: "center",
-		color: "#FFF",
 		marginHorizontal: 10
 	}
 });

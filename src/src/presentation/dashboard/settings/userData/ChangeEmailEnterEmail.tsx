@@ -39,7 +39,7 @@ class ChangeEmailEnterEmailScreen extends NavigationEnabledComponent<
 	ChangeEmailEnterEmailState,
 	ChangeEmailEnterEmailNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.dashboard.userData.changeEmail.screenTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.changeEmail.screenTitle);
 
 	constructor(props: ChangeEmailEnterEmailInternalProps) {
 		super(props);
@@ -53,7 +53,7 @@ class ChangeEmailEnterEmailScreen extends NavigationEnabledComponent<
 		return (
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.advance()}>
 				<EnterEmailScreen
-					description={strings.dashboard.userData.changeEmail.messageHead}
+					description={strings.userData.changeEmail.messageHead}
 					contentImageSource={require("../../../resources/images/emailRecover.png")}
 					buttonTitle={strings.accessCommon.recoverButtonText}
 					isPasswordRequired={true}
