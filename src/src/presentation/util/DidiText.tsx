@@ -5,7 +5,7 @@ import { AddChildren } from "../../util/ReactExtensions";
 
 import colors from "../resources/colors";
 
-const defaultFontFamily = "RobotoCondensed";
+const defaultFontFamily = "Roboto";
 const fonts = {
 	regular: `${defaultFontFamily}-Regular`,
 	medium: `${defaultFontFamily}-Medium`,

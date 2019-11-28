@@ -1,6 +1,9 @@
 import React from "react";
 import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewProps, ViewStyle } from "react-native";
 
+import ChevronGrayDown from "../resources/images/chevronGrayDown.svg";
+import ChevronGrayLeft from "../resources/images/chevronGrayLeft.svg";
+
 import { DidiText } from "./DidiText";
 
 interface DropdownMenuProps extends ViewProps {
@@ -47,8 +50,7 @@ export default class DropdownMenu extends React.Component<DropdownMenuProps, Dro
 						<DidiText.Explanation.Emphasis style={[styles.label, this.props.headerTextStyle]}>
 							{this.props.label}
 						</DidiText.Explanation.Emphasis>
-						{visible && <Text style={styles.icon}>▼</Text>}
-						{!visible && <Text style={styles.icon}>◀</Text>}
+						<View style={styles.chevron}>{visible ? <ChevronGrayDown /> : <ChevronGrayLeft />}</View>
 					</View>
 				</TouchableOpacity>
 				{visible && this.props.children}
@@ -75,5 +77,9 @@ const styles = StyleSheet.create({
 	icon: {
 		justifyContent: "flex-end",
 		marginRight: 10
+	},
+	chevron: {
+		width: 30,
+		justifyContent: "center"
 	}
 });
