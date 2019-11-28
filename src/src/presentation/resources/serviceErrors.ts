@@ -10,6 +10,12 @@ export const serviceErrors = {
 		JSON_ERR: error("JSON_ERR", "Error al interpretar formato de respuesta."),
 		PARSE_ERR: error("PARSE_ERR", "Error al interpretar formato de respuesta.")
 	},
+	login: {
+		NO_DID: error(
+			"LOGIN_NO_USER_DID",
+			"No hay usuarios almacenados en este teléfono, es necesario recuperar la cuenta para loguearse."
+		)
+	},
 	did: {
 		READ_ERROR: error("SIGNER_READ_ERR", "Error al obtener DID almacenado."),
 		WRITE_ERROR: error("SIGNER_WRITE_ERR", "Error al almacenar nuevo DID."),
