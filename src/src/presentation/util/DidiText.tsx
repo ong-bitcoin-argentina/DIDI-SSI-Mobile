@@ -5,24 +5,37 @@ import { AddChildren } from "../../util/ReactExtensions";
 
 import colors from "../resources/colors";
 
-const defaultFontFamily = "Roboto";
-const fonts = {
-	regular: `${defaultFontFamily}-Regular`,
-	medium: `${defaultFontFamily}-Medium`,
-	bold: `${defaultFontFamily}-Bold`,
+type DidiFontStyle = Record<"bold" | "italic" | "regular" | "medium" | "info", TextStyle>;
 
-	robotoRegular: "Roboto-Regular"
+const robotoFontStyle: DidiFontStyle = {
+	regular: { fontFamily: "Roboto-Regular" },
+	medium: { fontFamily: "Roboto-Medium" },
+	bold: { fontFamily: "Roboto-Bold" },
+	italic: { fontFamily: "Roboto-Italic" },
+	info: { fontFamily: "Roboto-Regular" }
 };
-
-export const fontsToUse = {
-	navigationHeader: fonts.medium,
-	didiTextInput: fonts.regular,
-	navBarOverflow: fonts.medium
+const robotoCondensedFontStyle: DidiFontStyle = {
+	regular: { fontFamily: "RobotoCondensed-Regular" },
+	medium: { fontFamily: "RobotoCondensed-Medium" },
+	bold: { fontFamily: "RobotoCondensed-Bold" },
+	italic: { fontFamily: "RobotoCondensed-RegularItalic" },
+	info: { fontFamily: "Roboto-Regular" }
 };
+const dancingScriptFontStyle: DidiFontStyle = {
+	regular: { fontFamily: "DancingScript-Regular" },
+	medium: { fontFamily: "DancingScript-Medium" },
+	bold: { fontFamily: "DancingScript-Bold" },
+	italic: { fontFamily: "DancingScript-Regular" },
+	info: { fontFamily: "Roboto-Regular" }
+};
+const fontStyle: DidiFontStyle = robotoFontStyle;
 
-const italicStyle: { fontFamily: string; fontStyle: "italic" } = {
-	fontFamily: fonts.regular,
-	fontStyle: "italic"
+export const styleToUse = {
+	navigationHeader: fontStyle.medium,
+	didiTextInput: {
+		...fontStyle.regular,
+		fontSize: 16
+	}
 };
 
 const color = {
@@ -43,7 +56,7 @@ const color = {
 const base: TextStyle = {
 	textAlign: "center",
 	fontSize: 18,
-	fontFamily: fonts.regular,
+	...fontStyle.regular,
 	...color.dark
 };
 
@@ -54,7 +67,7 @@ const styles = {
 		},
 		emphasis: {
 			...base,
-			fontFamily: fonts.bold
+			...fontStyle.bold
 		},
 		faded: {
 			...base,
@@ -68,29 +81,29 @@ const styles = {
 		},
 		title: {
 			...base,
-			fontFamily: fonts.bold,
+			...fontStyle.bold,
 			fontSize: 22
 		},
 		subtitle: {
 			...base,
-			fontFamily: fonts.medium,
+			...fontStyle.medium,
 			fontSize: 18
 		},
 		stepNumber: {
 			...base,
 			...color.primary,
-			fontFamily: fonts.bold,
+			...fontStyle.bold,
 			fontSize: 22
 		},
 		totalNumber: {
 			...base,
-			fontFamily: fonts.bold,
+			...fontStyle.bold,
 			fontSize: 16
 		},
 		enumerate: {
 			...base,
 			...color.primary,
-			fontFamily: fonts.bold,
+			...fontStyle.bold,
 			fontSize: 16
 		},
 		congrats: {
@@ -112,7 +125,7 @@ const styles = {
 		},
 		title: {
 			...base,
-			fontFamily: fonts.bold,
+			...fontStyle.bold,
 			fontSize: 16,
 			textAlign: undefined
 		},
@@ -128,7 +141,7 @@ const styles = {
 		},
 		value: {
 			...base,
-			fontFamily: fonts.medium,
+			...fontStyle.medium,
 			fontSize: 13,
 			textAlign: "right"
 		}
@@ -136,7 +149,7 @@ const styles = {
 	activity: StyleSheet.create({
 		title: {
 			...base,
-			fontFamily: fonts.bold,
+			...fontStyle.bold,
 			fontSize: 14,
 			textAlign: undefined
 		},
@@ -150,12 +163,12 @@ const styles = {
 	dashboardHeader: StyleSheet.create({
 		hello: {
 			...color.light,
-			fontFamily: fonts.regular,
+			...fontStyle.regular,
 			fontSize: 13
 		},
 		name: {
 			...color.light,
-			fontFamily: fonts.bold,
+			...fontStyle.bold,
 			fontSize: 13
 		}
 	}),
@@ -167,7 +180,7 @@ const styles = {
 		idLabel: {
 			...base,
 			...color.primary,
-			fontFamily: fonts.bold,
+			...fontStyle.bold,
 			textAlign: undefined,
 			fontSize: 12
 		},
@@ -189,7 +202,7 @@ const styles = {
 		},
 		forgotPasswordButton: {
 			...base,
-			...italicStyle,
+			...fontStyle.italic,
 			fontSize: 15
 		},
 		signupCloseButton: {
@@ -199,18 +212,18 @@ const styles = {
 		},
 		buttonDisabled: {
 			...base,
-			...italicStyle,
+			...fontStyle.italic,
 			...color.faded
 		},
 		buttonEnabled: {
 			...base,
 			...color.light,
-			fontFamily: fonts.medium
+			...fontStyle.medium
 		},
 		inputDescription: {
 			...base,
 			...color.faded,
-			fontFamily: fonts.robotoRegular,
+			...fontStyle.info,
 			textAlign: undefined,
 			fontSize: 12
 		},
@@ -226,13 +239,13 @@ const styles = {
 		},
 		validationState: {
 			...base,
-			fontFamily: fonts.robotoRegular,
+			...fontStyle.info,
 			fontSize: 10
 		},
 		userDataHeader: {
 			...base,
 			...color.primary,
-			fontFamily: fonts.medium,
+			...fontStyle.medium,
 			fontSize: 20
 		}
 	})

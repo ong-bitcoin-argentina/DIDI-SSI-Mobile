@@ -9,7 +9,7 @@ import {
 import { HeaderButton, HeaderButtonProps, HeaderButtons, Item } from "react-navigation-header-buttons";
 import { defaultOnOverflowMenuPress } from "react-navigation-header-buttons/src/overflowMenuPressHandlers";
 
-import { fontsToUse } from "../util/DidiText";
+import { styleToUse } from "../util/DidiText";
 
 import DidiTheme from "../resources/DidiTheme";
 import VerticalMore from "../resources/images/verticalMore.svg";
@@ -21,9 +21,7 @@ function defaultStyle(theme: DidiTheme): NavigationStackScreenOptions {
 			backgroundColor: theme.navigation
 		},
 		headerTintColor: theme.navigationText,
-		headerTitleStyle: {
-			fontFamily: fontsToUse.navigationHeader
-		}
+		headerTitleStyle: styleToUse.navigationHeader
 	};
 }
 

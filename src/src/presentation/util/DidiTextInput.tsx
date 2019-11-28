@@ -5,7 +5,7 @@ import DidiTheme from "../resources/DidiTheme";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
 
-import { DidiText, fontsToUse } from "./DidiText";
+import { DidiText, styleToUse } from "./DidiText";
 
 export interface DidiTextInputProps {
 	theme?: DidiTheme;
@@ -142,8 +142,7 @@ function styles(theme: DidiTheme) {
 			color: theme.foreground,
 			paddingTop: 6,
 			paddingBottom: 0,
-			fontSize: 16,
-			fontFamily: fontsToUse.didiTextInput
+			...styleToUse.didiTextInput
 		},
 		tagImage: {
 			width: 25,

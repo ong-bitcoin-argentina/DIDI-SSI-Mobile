@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import DidiButton from "../util/DidiButton";
-import { fontsToUse } from "../util/DidiText";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
 import colors from "../resources/colors";
