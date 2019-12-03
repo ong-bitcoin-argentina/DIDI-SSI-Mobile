@@ -1,5 +1,6 @@
-import { createStackNavigator, NavigationContainer, StackNavigatorConfig } from "react-navigation";
+import { NavigationContainer } from "react-navigation";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
+import { createStackNavigator } from "react-navigation-stack";
 import { ConnectedComponent } from "react-redux";
 
 import NavigationEnabledComponent from "./NavigationEnabledComponent";
@@ -59,12 +60,11 @@ export default class NavMap<Props> {
 		this.rest = rest;
 	}
 
-	public stackNavigator(rootName: string, stackConfig?: StackNavigatorConfig): NavigationContainer {
+	public stackNavigator(rootName: string): NavigationContainer {
 		const spec = this.rest;
 		spec[rootName] = this.current;
 		return createStackNavigator(spec, {
-			initialRouteName: rootName,
-			...stackConfig
+			initialRouteName: rootName
 		});
 	}
 }

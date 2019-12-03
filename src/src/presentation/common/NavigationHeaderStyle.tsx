@@ -1,13 +1,8 @@
 import React from "react";
-import {
-	HeaderBackButton,
-	NavigationParams,
-	NavigationScreenProp,
-	NavigationStackScreenOptions,
-	NavigationState
-} from "react-navigation";
+import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import { HeaderButton, HeaderButtonProps, HeaderButtons, Item } from "react-navigation-header-buttons";
 import { defaultOnOverflowMenuPress } from "react-navigation-header-buttons/src/overflowMenuPressHandlers";
+import { HeaderBackButton, NavigationStackOptions } from "react-navigation-stack";
 
 import { styleToUse } from "../util/DidiText";
 
@@ -15,7 +10,7 @@ import DidiTheme from "../resources/DidiTheme";
 import VerticalMore from "../resources/images/verticalMore.svg";
 import themes from "../resources/themes";
 
-function defaultStyle(theme: DidiTheme): NavigationStackScreenOptions {
+function defaultStyle(theme: DidiTheme): NavigationStackOptions {
 	return {
 		headerStyle: {
 			backgroundColor: theme.navigation
@@ -25,7 +20,7 @@ function defaultStyle(theme: DidiTheme): NavigationStackScreenOptions {
 	};
 }
 
-const goneStyle: NavigationStackScreenOptions = {
+const goneStyle: NavigationStackOptions = {
 	header: null
 };
 
@@ -33,17 +28,17 @@ type NavigationFunction = (args: {
 	props: any;
 	navigation: any;
 	screenProps: any;
-	navigationOptions: NavigationStackScreenOptions;
-}) => NavigationStackScreenOptions;
+	navigationOptions: NavigationStackOptions;
+}) => NavigationStackOptions;
 
-export type NavigationOptions = NavigationFunction | NavigationStackScreenOptions;
+export type NavigationOptions = NavigationFunction | NavigationStackOptions;
 
 const MaterialHeaderButton = (props: HeaderButtonProps) => (
 	<HeaderButton {...props} iconSize={23} color={themes.navigationIconActive} />
 );
 
 const styles = {
-	withTitle(title: string): NavigationStackScreenOptions {
+	withTitle(title: string): NavigationStackOptions {
 		return { ...defaultStyle(themes.primaryTheme), title };
 	},
 

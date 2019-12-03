@@ -17,7 +17,6 @@ import { credentialSelector } from "./selector/credentialSelector";
 import { microCredentialSelector } from "./selector/microCredentialSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { requestSelector } from "./selector/requestSelector";
-import { StoreContent } from "./store";
 import { StoreAction } from "./StoreAction";
 
 export interface StoreContent extends PersistedStoreContent {

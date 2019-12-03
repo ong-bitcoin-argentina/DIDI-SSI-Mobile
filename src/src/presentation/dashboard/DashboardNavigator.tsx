@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View, ViewProps } from "react-native";
-import { createStackNavigator, NavigationContainer, NavigationScreenProp, NavigationState } from "react-navigation";
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { NavigationContainer, NavigationScreenProp, NavigationState } from "react-navigation";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../common/ServiceObserver";
 import { DidiText } from "../util/DidiText";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
-import NavMap, { NavigationEnabledComponentConstructor, NavTree } from "../util/NavMap";
+import NavMap, { NavTree } from "../util/NavMap";
 
 import { recoverTokensServiceKey } from "../../services/trustGraph/recoverTokens";
 import { StartAccessProps } from "../access/StartAccess";
@@ -60,10 +60,13 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 			navigationOptions: {
 				title,
 				tabBarIcon: ({ focused, tintColor }: { focused: boolean; tintColor: string }) => (
-					<View style={{ width: 24, height: 24 }}>
-						<DidiText.Icon color={tintColor} fontSize={24}>
-							{image}
-						</DidiText.Icon>
+					<View style={{ alignItems: "center" }}>
+						<View style={{ width: 24, height: 24 }}>
+							<DidiText.Icon color={tintColor} fontSize={24}>
+								{image}
+							</DidiText.Icon>
+						</View>
+						{focused && <DidiText.TabNavigationTitle>{title}</DidiText.TabNavigationTitle>}
 					</View>
 				)
 			}
@@ -73,7 +76,7 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, then);
 	const dashboardPlaceholder: NavMap<DashboardScreenProps> = NavMap.placeholder(DashboardScreen);
 
-	const BottomNavigator = createMaterialBottomTabNavigator(
+	const BottomNavigator = createBottomTabNavigator(
 		{
 			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, ""),
 			DashboardRounds: screen(
@@ -93,9 +96,14 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		},
 		{
 			initialRouteName: "DashboardHome",
-			activeTintColor: themes.navigationIconActive,
-			inactiveTintColor: themes.navigationIconInactive,
-			barStyle: { backgroundColor: themes.navigation }
+			tabBarOptions: {
+				activeBackgroundColor: themes.navigation,
+				inactiveBackgroundColor: themes.navigation,
+				activeTintColor: themes.navigationIconActive,
+				inactiveTintColor: themes.navigationIconInactive,
+				keyboardHidesTabBar: false,
+				showLabel: false
+			}
 		}
 	);
 

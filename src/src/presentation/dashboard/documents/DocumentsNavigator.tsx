@@ -1,9 +1,11 @@
-import { createMaterialTopTabNavigator, createStackNavigator } from "react-navigation";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
+import { createStackNavigator } from "react-navigation-stack";
+import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
 import { DocumentFilterType } from "../../../model/SampleDocument";
+import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
@@ -29,8 +31,11 @@ export default createStackNavigator(
 			},
 			{
 				tabBarOptions: {
+					indicatorStyle: {
+						backgroundColor: colors.secondary
+					},
 					style: {
-						backgroundColor: themes.navigation
+						backgroundColor: colors.primary
 					}
 				},
 				navigationOptions: NavigationHeaderStyle.withTitleAndFakeBackButton<DocumentsScreenNavigation, "DashboardHome">(

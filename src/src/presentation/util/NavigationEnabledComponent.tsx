@@ -1,8 +1,8 @@
 import React from "react";
-import { NavigationScreenProp, NavigationState } from "react-navigation";
+import { NavigationStackProp } from "react-navigation-stack";
 
 type NavigationProps<Props> = Props & {
-	navigation?: NavigationScreenProp<NavigationState>;
+	navigation?: NavigationStackProp;
 };
 
 export default abstract class NavigationEnabledComponent<Props, State, Nav> extends React.Component<Props, State> {

@@ -12,7 +12,7 @@ import { persistor, store } from "./store/normalizedStore";
 import { didiConnect, StoreContent } from "./store/store";
 
 YellowBox.ignoreWarnings([
-	"Warning: componentWillReceiveProps is deprecated and will be removed in the next major version.", // External error in SafeArea
+	"Warning: componentWillReceiveProps has been renamed, and is not recommended for use.", // External error in SafeArea
 	"Warning: ViewPagerAndroid has been extracted from react-native core and will be removed in a future release." // External error in MaterialTopTabNavigator (Android only)
 ]);
 

@@ -247,6 +247,12 @@ const styles = {
 			...color.primary,
 			...fontStyle.medium,
 			fontSize: 20
+		},
+		tabNavigationTitle: {
+			...base,
+			...color.light,
+			...fontStyle.medium,
+			fontSize: 12
 		}
 	})
 };
@@ -319,5 +325,6 @@ export const DidiText = {
 	SignupCloseButton: textWith(styles.component.signupCloseButton),
 	InputDescription: textWith(styles.component.inputDescription),
 	CameraExplanation: textWith(styles.component.cameraExplanation),
-	ValidationState: textWith(styles.component.validationState)
+	ValidationState: textWith(styles.component.validationState),
+	TabNavigationTitle: textWith(styles.component.tabNavigationTitle)
 };
