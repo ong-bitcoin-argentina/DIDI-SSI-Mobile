@@ -2,50 +2,34 @@ import React from "react";
 import { BackHandler, NativeEventSubscription } from "react-native";
 import { TakePictureResponse } from "react-native-camera/types";
 
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DidiCamera } from "../common/DidiCamera";
+import { DidiCamera, DidiCameraProps } from "../common/DidiCamera";
 
-import strings from "../../resources/strings";
-
-import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
-
-export type ValidateIdentityTakePhotoProps = {};
+export type ValidateIdentityTakePhotoProps = DidiCameraProps & {
+	explanation: (startCamera: () => void) => JSX.Element;
+};
 
 export interface ValidateIdentityTakePhotoState {
 	isScanning: boolean;
 }
 
-export abstract class ValidateIdentityTakePhotoScreen<
-	Props extends ValidateIdentityTakePhotoProps,
-	State extends ValidateIdentityTakePhotoState,
-	Nav
-> extends NavigationEnabledComponent<Props, State, Nav> {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
-
-	protected abstract didTakePhoto(data: TakePictureResponse): void;
-
-	protected abstract explanationProps(): Omit<ValidateIdentityExplanationProps, "buttonAction">;
-
+export abstract class ValidateIdentityTakePhoto extends React.Component<
+	ValidateIdentityTakePhotoProps,
+	ValidateIdentityTakePhotoState
+> {
 	private backHandler?: NativeEventSubscription;
+
+	constructor(props: ValidateIdentityTakePhotoProps) {
+		super(props);
+		this.state = {
+			isScanning: false
+		};
+	}
 
 	render() {
 		if (this.state.isScanning) {
-			return (
-				<DidiCamera
-					onPictureTaken={data => {
-						this.didTakePhoto(data);
-						this.setState({ isScanning: false });
-					}}
-				/>
-			);
+			return <DidiCamera {...this.props} onPictureTaken={data => this.onPictureTaken(data)} />;
 		} else {
-			return (
-				<ValidateIdentityExplanation
-					{...this.explanationProps()}
-					buttonAction={() => this.setState({ isScanning: true })}
-				/>
-			);
+			return this.props.explanation(() => this.setState({ isScanning: true }));
 		}
 	}
 
@@ -63,6 +47,13 @@ export abstract class ValidateIdentityTakePhotoScreen<
 	componentWillUnmount() {
 		if (this.backHandler) {
 			this.backHandler.remove();
+		}
+	}
+
+	private onPictureTaken(data: TakePictureResponse) {
+		this.setState({ isScanning: false });
+		if (this.props.onPictureTaken) {
+			this.props.onPictureTaken(data);
 		}
 	}
 }

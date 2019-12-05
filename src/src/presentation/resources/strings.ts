@@ -244,6 +244,12 @@ export default {
 			description:
 				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!"
 		},
+		submit: {
+			header: "Validación de Identidad",
+			congrats: "Se enviaran los siguientes datos a ReNaPer:",
+			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
+			buttonText: "OK"
+		},
 		success: {
 			header: "Validación de Identidad",
 			congrats: "¡Felicitaciones! Su identidad ha sido validada.",

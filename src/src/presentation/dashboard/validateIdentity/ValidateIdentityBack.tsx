@@ -1,43 +1,48 @@
+import React from "react";
 import { TakePictureResponse } from "react-native-camera/types";
+
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import strings from "../../resources/strings";
 
-import { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
+import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import { ValidateIdentitySelfieProps } from "./ValidateIdentitySelfie";
-import {
-	ValidateIdentityTakePhotoProps,
-	ValidateIdentityTakePhotoScreen,
-	ValidateIdentityTakePhotoState
-} from "./ValidateIdentityTakePhoto";
+import { ValidateIdentityTakePhoto } from "./ValidateIdentityTakePhoto";
 
 export interface ValidateIdentityBackNavigation {
 	ValidateIdentitySelfie: ValidateIdentitySelfieProps;
 }
-export type ValidateIdentityBackProps = ValidateIdentityTakePhotoProps;
-type ValidateIdentityBackState = ValidateIdentityTakePhotoState;
+export interface ValidateIdentityBackProps {
+	front: TakePictureResponse;
+}
 
-export class ValidateIdentityBackScreen extends ValidateIdentityTakePhotoScreen<
+export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 	ValidateIdentityBackProps,
-	ValidateIdentityBackState,
+	{},
 	ValidateIdentityBackNavigation
 > {
-	constructor(props: ValidateIdentityBackProps) {
-		super(props);
-		this.state = {
-			isScanning: false
-		};
-	}
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
 
-	protected didTakePhoto(data: TakePictureResponse): void {
-		this.navigate("ValidateIdentitySelfie", {});
-	}
-
-	protected explanationProps(): Omit<ValidateIdentityExplanationProps, "buttonAction"> {
-		return {
-			title: strings.validateIdentity.explainBack.step,
-			header: strings.validateIdentity.explainBack.header,
-			description: strings.validateIdentity.explainBack.description,
-			image: require("../../resources/images/validateIdentityExplainBack.png")
-		};
+	render() {
+		return (
+			<ValidateIdentityTakePhoto
+				onPictureTaken={data =>
+					this.navigate("ValidateIdentitySelfie", {
+						front: this.props.front,
+						back: data
+					})
+				}
+				explanation={startCamera => (
+					<ValidateIdentityExplanation
+						title={strings.validateIdentity.explainBack.step}
+						header={strings.validateIdentity.explainBack.header}
+						description={strings.validateIdentity.explainBack.description}
+						image={require("../../resources/images/validateIdentityExplainBack.png")}
+						buttonAction={startCamera}
+					/>
+				)}
+			/>
+		);
 	}
 }

@@ -117,7 +117,8 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		if (this.camera) {
 			const data = await this.camera.takePictureAsync({
 				quality: 0.5,
-				base64: true
+				base64: true,
+				pauseAfterCapture: true
 			});
 			this.setState({ pictureResponse: data });
 		}
