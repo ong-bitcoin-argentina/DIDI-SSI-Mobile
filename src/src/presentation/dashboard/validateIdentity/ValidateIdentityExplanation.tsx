@@ -4,7 +4,7 @@ import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, Text, 
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
-import DidiCamera from "../common/DidiCamera";
+import { DidiCamera } from "../common/DidiCamera";
 
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";

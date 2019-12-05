@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
-import { RNCamera, TakePictureResponse } from "react-native-camera";
+import { RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
 
 import { DidiText } from "../../util/DidiText";
 
@@ -8,15 +8,28 @@ import colors from "../../resources/colors";
 import Checkmark from "../../resources/images/cameraCheckmark.svg";
 import strings from "../../resources/strings";
 
-export interface DidiCameraProps {
+type BarcodeEvent = Parameters<NonNullable<RNCameraProps["onBarCodeRead"]>>[0];
+export type BarcodeType = BarcodeEvent["type"];
+
+interface CommonProps {
+	cameraLocation?: keyof typeof RNCamera.Constants.Type;
+	cameraFlash?: keyof typeof RNCamera.Constants.FlashMode;
+}
+interface PictureProps {
 	onPictureTaken(response: TakePictureResponse): void;
 }
+interface BarcodeProps {
+	onBarcodeScanned(content: string, type: BarcodeType): void;
+}
+export type DidiCameraProps = CommonProps &
+	((PictureProps & Partial<BarcodeProps>) | (Partial<PictureProps> & BarcodeProps));
+
 interface DidiCameraState {
 	cameraAvailable: boolean;
 	pictureResponse?: TakePictureResponse;
 }
 
-export default class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState> {
+export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState> {
 	constructor(props: DidiCameraProps) {
 		super(props);
 		this.state = {
@@ -41,14 +54,15 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 					style={styles.body}
 					ref={ref => (this.camera = ref)}
 					captureAudio={false}
-					type={RNCamera.Constants.Type.back}
-					flashMode={RNCamera.Constants.FlashMode.auto}
+					type={RNCamera.Constants.Type[this.props.cameraLocation || "back"]}
+					flashMode={RNCamera.Constants.FlashMode[this.props.cameraFlash || "auto"]}
 					androidCameraPermissionOptions={{
 						title: "Permiso para acceder a la camara",
 						message: "Didi necesita poder capturar imagenes de documentos",
 						buttonPositive: "Ok",
 						buttonNegative: "Cancelar"
 					}}
+					onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
 					notAuthorizedView={
 						<DidiText.CameraExplanation style={styles.notAuthorized}>
 							{strings.camera.notAuthorized}
@@ -66,16 +80,37 @@ export default class DidiCamera extends React.Component<DidiCameraProps, DidiCam
 			return null;
 		}
 
-		const picture = this.state.pictureResponse;
-		if (picture) {
-			return (
-				<TouchableOpacity style={styles.cameraButton} onPress={() => this.props.onPictureTaken(picture)}>
-					<Checkmark width="100%" height="100%" />
-				</TouchableOpacity>
-			);
+		if (this.props.onPictureTaken) {
+			const picture = this.state.pictureResponse;
+			const callback = this.props.onPictureTaken;
+			if (picture) {
+				return (
+					<TouchableOpacity style={styles.cameraButton} onPress={() => callback(picture)}>
+						<Checkmark width="100%" height="100%" />
+					</TouchableOpacity>
+				);
+			} else {
+				return DidiCamera.cameraButton(() => this.takePicture());
+			}
 		} else {
-			return DidiCamera.cameraButton(() => this.takePicture());
+			return (
+				<DidiText.CameraExplanation style={styles.cameraInstruction}>
+					{strings.camera.scanQRInstruction}
+				</DidiText.CameraExplanation>
+			);
 		}
+	}
+
+	private onBarCodeRead(content: BarcodeEvent) {
+		if (!this.props.onBarcodeScanned) {
+			return;
+		}
+
+		const typeMap: { [name: string]: BarcodeType } = {
+			QR_CODE: "qr",
+			PDF_417: "pdf417"
+		};
+		this.props.onBarcodeScanned(content.data, typeMap[content.type] || content.type);
 	}
 
 	private async takePicture() {
@@ -112,5 +147,10 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center"
+	},
+	cameraInstruction: {
+		width: "100%",
+		height: 66,
+		textAlignVertical: "center"
 	}
 });
