@@ -7,28 +7,14 @@ import colors from "../resources/colors";
 
 type DidiFontStyle = Record<"bold" | "italic" | "regular" | "medium" | "info", TextStyle>;
 
-const robotoFontStyle: DidiFontStyle = {
-	regular: { fontFamily: "Roboto-Regular" },
-	medium: { fontFamily: "Roboto-Medium" },
-	bold: { fontFamily: "Roboto-Bold" },
-	italic: { fontFamily: "Roboto-Italic" },
+const openSansFontStyle: DidiFontStyle = {
+	regular: { fontFamily: "OpenSans-Regular" },
+	medium: { fontFamily: "OpenSans-SemiBold" },
+	bold: { fontFamily: "OpenSans-Bold" },
+	italic: { fontFamily: "OpenSans-Italic" },
 	info: { fontFamily: "Roboto-Regular" }
 };
-const robotoCondensedFontStyle: DidiFontStyle = {
-	regular: { fontFamily: "RobotoCondensed-Regular" },
-	medium: { fontFamily: "RobotoCondensed-Medium" },
-	bold: { fontFamily: "RobotoCondensed-Bold" },
-	italic: { fontFamily: "RobotoCondensed-RegularItalic" },
-	info: { fontFamily: "Roboto-Regular" }
-};
-const dancingScriptFontStyle: DidiFontStyle = {
-	regular: { fontFamily: "DancingScript-Regular" },
-	medium: { fontFamily: "DancingScript-Medium" },
-	bold: { fontFamily: "DancingScript-Bold" },
-	italic: { fontFamily: "DancingScript-Regular" },
-	info: { fontFamily: "Roboto-Regular" }
-};
-const fontStyle: DidiFontStyle = robotoFontStyle;
+const fontStyle: DidiFontStyle = openSansFontStyle;
 
 export const styleToUse = {
 	navigationHeader: fontStyle.medium,
@@ -105,6 +91,11 @@ const styles = {
 			...color.primary,
 			...fontStyle.bold,
 			fontSize: 16
+		},
+		enumerationItem: {
+			...base,
+			fontSize: 16,
+			textAlign: undefined
 		},
 		congrats: {
 			...base,
@@ -276,6 +267,7 @@ export const DidiText = {
 		StepNumber: textWith(styles.validateIdentity.stepNumber),
 		TotalNumber: textWith(styles.validateIdentity.totalNumber),
 		Enumerate: textWith(styles.validateIdentity.enumerate),
+		EnumerationItem: textWith(styles.validateIdentity.enumerationItem),
 		Congrats: textWith(styles.validateIdentity.congrats),
 		Reminder: textWith(styles.validateIdentity.reminder)
 	},

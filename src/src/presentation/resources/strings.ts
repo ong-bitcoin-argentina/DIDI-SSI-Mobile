@@ -218,7 +218,7 @@ export default {
 		},
 		howTo: {
 			header: "¿Como lo hago?",
-			intro: "Sigue estos pasos",
+			intro: "Sigue estos pasos:",
 			steps: ["Busca un lugar iluminado y con fondo claro", "Tene tu DNI a mano", "Acceso a internet o datos moviles"],
 			buttonText: "Comencemos"
 		},

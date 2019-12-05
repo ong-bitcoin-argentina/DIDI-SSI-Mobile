@@ -98,7 +98,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 				hollow={true}
 			>
 				<DidiButton
-					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
+					style={{ width: 130, height: 36, backgroundColor: colors.secondary }}
 					title={strings.dashboard.identity.validateButtonTitle}
 					onPress={() => this.navigate("ValidateID", {})}
 				/>
