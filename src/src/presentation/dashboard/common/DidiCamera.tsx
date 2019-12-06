@@ -7,6 +7,7 @@ import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 import Checkmark from "../../resources/images/cameraCheckmark.svg";
 import strings from "../../resources/strings";
+import themes from "../../resources/themes";
 
 type BarcodeEvent = Parameters<NonNullable<RNCameraProps["onBarCodeRead"]>>[0];
 export type BarcodeType = BarcodeEvent["type"];
@@ -16,6 +17,7 @@ interface CommonProps {
 	cameraFlash?: keyof typeof RNCamera.Constants.FlashMode;
 }
 interface PictureProps {
+	cameraButtonDisabled?: boolean;
 	onPictureTaken(response: TakePictureResponse): void;
 }
 interface BarcodeProps {
@@ -39,10 +41,16 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 
 	private camera: RNCamera | null = null;
 
-	static cameraButton(onPress?: (event: GestureResponderEvent) => void) {
+	static cameraButton(onPress: (event: GestureResponderEvent) => void, disabled: boolean = false) {
 		return (
-			<TouchableOpacity style={styles.cameraButton} onPress={onPress}>
-				<DidiText.Icon fontSize={33}></DidiText.Icon>
+			<TouchableOpacity
+				disabled={disabled}
+				style={[styles.cameraButton, disabled ? styles.cameraButtonDisabled : undefined]}
+				onPress={onPress}
+			>
+				<DidiText.Icon fontSize={33} color={disabled ? themes.buttonDisabledText : undefined}>
+					
+				</DidiText.Icon>
 			</TouchableOpacity>
 		);
 	}
@@ -90,7 +98,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 					</TouchableOpacity>
 				);
 			} else {
-				return DidiCamera.cameraButton(() => this.takePicture());
+				return DidiCamera.cameraButton(() => this.takePicture(), this.props.cameraButtonDisabled);
 			}
 		} else {
 			return (
@@ -148,6 +156,9 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center"
+	},
+	cameraButtonDisabled: {
+		backgroundColor: themes.buttonDisabled
 	},
 	cameraInstruction: {
 		width: "100%",
