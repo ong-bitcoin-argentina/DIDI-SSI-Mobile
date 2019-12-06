@@ -1,8 +1,11 @@
 import React from "react";
+import { TakePictureResponse } from "react-native-camera/types";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { BarcodeType } from "../common/DidiCamera";
 
+import { DocumentBarcodeData, fromPDF417 } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 import { ValidateIdentityBackProps } from "./ValidateIdentityBack";
@@ -14,21 +17,33 @@ export interface ValidateIdentityFrontNavigation {
 }
 export interface ValidateIdentityFrontProps {}
 
+interface ValidateIdentityFrontState {
+	documentData?: DocumentBarcodeData;
+}
+
 export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 	ValidateIdentityFrontProps,
-	{},
+	ValidateIdentityFrontState,
 	ValidateIdentityFrontNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
 
+	constructor(props: ValidateIdentityFrontProps) {
+		super(props);
+		this.state = {};
+	}
+
 	render() {
 		return (
 			<ValidateIdentityTakePhoto
+				cameraButtonDisabled={this.state.documentData === undefined}
 				onPictureTaken={data =>
 					this.navigate("ValidateIdentityBack", {
+						documentData: this.state.documentData!,
 						front: data
 					})
 				}
+				onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
 				explanation={startCamera => (
 					<ValidateIdentityExplanation
 						title={strings.validateIdentity.explainFront.step}
@@ -40,5 +55,15 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 				)}
 			/>
 		);
+	}
+
+	private onBarcodeScanned(data: string, type: BarcodeType) {
+		if (type !== "pdf417") {
+			return;
+		}
+		const documentData = fromPDF417(data);
+		if (documentData) {
+			this.setState({ documentData });
+		}
 	}
 }

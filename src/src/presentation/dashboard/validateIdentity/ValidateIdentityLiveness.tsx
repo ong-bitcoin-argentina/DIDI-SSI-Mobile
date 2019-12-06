@@ -4,15 +4,18 @@ import { TakePictureResponse } from "react-native-camera/types";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
+import { ValidateIdentitySubmitProps } from "./ValidateIdentitySubmit";
 import { ValidateIdentityTakePhoto } from "./ValidateIdentityTakePhoto";
 
 export interface ValidateIdentityLivenessNavigation {
 	ValidateIdentitySubmit: ValidateIdentitySubmitProps;
 }
 export interface ValidateIdentityLivenessProps {
+	documentData: DocumentBarcodeData;
 	front: TakePictureResponse;
 	back: TakePictureResponse;
 	selfie: TakePictureResponse;

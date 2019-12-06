@@ -4,6 +4,7 @@ import { TakePictureResponse } from "react-native-camera/types";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
@@ -14,6 +15,7 @@ export interface ValidateIdentitySelfieNavigation {
 	ValidateIdentityLiveness: ValidateIdentityLivenessProps;
 }
 export interface ValidateIdentitySelfieProps {
+	documentData: DocumentBarcodeData;
 	front: TakePictureResponse;
 	back: TakePictureResponse;
 }
@@ -31,8 +33,7 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 				cameraLocation="front"
 				onPictureTaken={data =>
 					this.navigate("ValidateIdentityLiveness", {
-						front: this.props.front,
-						back: this.props.back,
+						...this.props,
 						selfie: data
 					})
 				}

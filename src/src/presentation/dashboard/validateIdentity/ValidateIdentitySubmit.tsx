@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { TakePictureResponse } from "react-native-camera/types";
 
 import { DidiScreen } from "../../common/DidiScreen";
@@ -9,12 +9,14 @@ import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 export interface ValidateIdentitySubmitNavigation {
 	DashboardRoot: {};
 }
 export interface ValidateIdentitySubmitProps {
+	documentData: DocumentBarcodeData;
 	front: TakePictureResponse;
 	back: TakePictureResponse;
 	selfie: TakePictureResponse;
@@ -34,11 +36,19 @@ export class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<
 				<DidiText.ValidateIdentity.Congrats>
 					{strings.validateIdentity.submit.congrats}
 				</DidiText.ValidateIdentity.Congrats>
+
+				<View>
+					<Text>DNI: {this.props.documentData.dni}</Text>
+					<Text>Genero: {this.props.documentData.gender}</Text>
+					<Text>Numero de Tramite: {this.props.documentData.tramitId}</Text>
+				</View>
+
 				<View style={{ justifyContent: "space-around", flexDirection: "row" }}>
 					<Image style={commonStyles.image.image} width={100} height={100} source={{ uri: this.props.front.uri }} />
 					<Image style={commonStyles.image.image} width={100} height={100} source={{ uri: this.props.back.uri }} />
 				</View>
 				<Image style={commonStyles.image.image} width={100} height={100} source={{ uri: this.props.selfie.uri }} />
+
 				<DidiText.ValidateIdentity.Reminder>
 					{strings.validateIdentity.submit.reminder}
 				</DidiText.ValidateIdentity.Reminder>
