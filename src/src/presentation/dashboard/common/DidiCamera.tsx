@@ -28,6 +28,7 @@ export type DidiCameraProps = CommonProps &
 
 interface DidiCameraState {
 	cameraAvailable: boolean;
+	ratio: { width: number; height: number };
 	pictureResponse?: TakePictureResponse;
 }
 
@@ -35,7 +36,8 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	constructor(props: DidiCameraProps) {
 		super(props);
 		this.state = {
-			cameraAvailable: false
+			cameraAvailable: false,
+			ratio: { width: 4, height: 3 }
 		};
 	}
 
@@ -58,29 +60,46 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	render() {
 		return (
 			<Fragment>
-				<RNCamera
-					style={styles.body}
-					ref={ref => (this.camera = ref)}
-					captureAudio={false}
-					type={RNCamera.Constants.Type[this.props.cameraLocation || "back"]}
-					flashMode={RNCamera.Constants.FlashMode[this.props.cameraFlash || "auto"]}
-					androidCameraPermissionOptions={{
-						title: "Permiso para acceder a la camara",
-						message: "Didi necesita poder capturar imagenes de documentos",
-						buttonPositive: "Ok",
-						buttonNegative: "Cancelar"
-					}}
-					onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
-					notAuthorizedView={
-						<DidiText.CameraExplanation style={styles.notAuthorized}>
-							{strings.camera.notAuthorized}
-						</DidiText.CameraExplanation>
-					}
-					onCameraReady={() => this.setState({ cameraAvailable: true })}
-				/>
-				<View style={[StyleSheet.absoluteFill, styles.cameraButtonContainer]}>{this.renderPictureButton()}</View>
+				<View style={styles.cameraContainer}>{this.renderCamera()}</View>
+				<View style={styles.cameraButtonContainer}>{this.renderPictureButton()}</View>
 			</Fragment>
 		);
+	}
+
+	private renderCamera() {
+		return (
+			<RNCamera
+				ratio={`${this.state.ratio.width}:${this.state.ratio.height}`}
+				style={[styles.preview, { aspectRatio: this.state.ratio.height / this.state.ratio.width }]}
+				ref={ref => (this.camera = ref)}
+				captureAudio={false}
+				type={RNCamera.Constants.Type[this.props.cameraLocation || "back"]}
+				flashMode={RNCamera.Constants.FlashMode[this.props.cameraFlash || "auto"]}
+				androidCameraPermissionOptions={{
+					title: "Permiso para acceder a la camara",
+					message: "Didi necesita poder capturar imagenes de documentos",
+					buttonPositive: "Ok",
+					buttonNegative: "Cancelar"
+				}}
+				onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
+				notAuthorizedView={
+					<DidiText.CameraExplanation style={styles.notAuthorized}>
+						{strings.camera.notAuthorized}
+					</DidiText.CameraExplanation>
+				}
+				onCameraReady={() => this.onCameraReady()}
+			/>
+		);
+	}
+
+	private async onCameraReady() {
+		const aspectRatios = await this.camera!.getSupportedRatiosAsync();
+		const aspectRatio =
+			aspectRatios.length === 0
+				? "4:3" // Default, should always exist
+				: aspectRatios[aspectRatios.length - 1];
+		const [width, height] = aspectRatio.split(":").map(Number);
+		this.setState({ cameraAvailable: true, ratio: { width, height } });
 	}
 
 	private renderPictureButton() {
@@ -134,16 +153,21 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 }
 
 const styles = StyleSheet.create({
-	body: {
-		alignSelf: "stretch",
-		justifyContent: "space-evenly",
-		flex: 1
+	cameraContainer: {
+		flex: 1,
+		flexDirection: "row",
+		backgroundColor: "black"
+	},
+	preview: {
+		maxWidth: "100%",
+		maxHeight: "100%"
 	},
 	notAuthorized: {
 		textAlignVertical: "center",
 		flex: 1
 	},
 	cameraButtonContainer: {
+		...StyleSheet.absoluteFillObject,
 		margin: 30,
 		alignItems: "center",
 		justifyContent: "flex-end"
