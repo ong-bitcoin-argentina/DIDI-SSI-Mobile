@@ -28,6 +28,9 @@ interface BarcodeProps {
 export type DidiCameraProps = CommonProps &
 	((PictureProps & Partial<BarcodeProps>) | (Partial<PictureProps> & BarcodeProps));
 
+// Keep last aspect ratio globally, since it won't change between instances
+let defaultAspectRatio: { width: number; height: number } = { width: 4, height: 3 };
+
 interface DidiCameraState {
 	cameraAvailable: boolean;
 	ratio: { width: number; height: number };
@@ -39,7 +42,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		super(props);
 		this.state = {
 			cameraAvailable: false,
-			ratio: { width: 4, height: 3 }
+			ratio: defaultAspectRatio
 		};
 	}
 
@@ -105,6 +108,8 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 				? "4:3" // Default, should always exist
 				: aspectRatios[aspectRatios.length - 1];
 		const [width, height] = aspectRatio.split(":").map(Number);
+
+		defaultAspectRatio = { width, height };
 		this.setState({ cameraAvailable: true, ratio: { width, height } });
 	}
 
