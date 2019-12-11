@@ -61,7 +61,7 @@ export function validateDni(
 		const baseUrl = store.serviceSettings.didiUserServer;
 		return withExistingDid(serviceKey, {}, did => {
 			const args: ValidateDniArguments = {
-				baseUrl: "http://192.168.2.117:12345",
+				baseUrl,
 				did,
 
 				dni: barcodeData.dni,

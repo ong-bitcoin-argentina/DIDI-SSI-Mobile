@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
+import { GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
 import { RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
 
 import { DidiText } from "../../util/DidiText";
@@ -13,15 +13,17 @@ type BarcodeEvent = Parameters<NonNullable<RNCameraProps["onBarCodeRead"]>>[0];
 export type BarcodeType = BarcodeEvent["type"];
 
 interface CommonProps {
+	onCameraLayout?: (rect: LayoutRectangle) => void;
 	cameraLocation?: keyof typeof RNCamera.Constants.Type;
 	cameraFlash?: keyof typeof RNCamera.Constants.FlashMode;
 }
 interface PictureProps {
 	cameraButtonDisabled?: boolean;
-	onPictureTaken(response: TakePictureResponse): void;
+	cameraLandscape?: boolean;
+	onPictureTaken: (response: TakePictureResponse) => void;
 }
 interface BarcodeProps {
-	onBarcodeScanned(content: string, type: BarcodeType): void;
+	onBarcodeScanned: (content: string, type: BarcodeType) => void;
 }
 export type DidiCameraProps = CommonProps &
 	((PictureProps & Partial<BarcodeProps>) | (Partial<PictureProps> & BarcodeProps));
@@ -67,8 +69,10 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	}
 
 	private renderCamera() {
+		const onCameraLayout = this.props.onCameraLayout;
 		return (
 			<RNCamera
+				onLayout={onCameraLayout && (event => onCameraLayout(event.nativeEvent.layout))}
 				ratio={`${this.state.ratio.width}:${this.state.ratio.height}`}
 				style={[styles.preview, { aspectRatio: this.state.ratio.height / this.state.ratio.width }]}
 				ref={ref => (this.camera = ref)}
@@ -88,7 +92,9 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 					</DidiText.CameraExplanation>
 				}
 				onCameraReady={() => this.onCameraReady()}
-			/>
+			>
+				{this.state.cameraAvailable && this.props.children}
+			</RNCamera>
 		);
 	}
 
@@ -144,7 +150,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		if (this.camera) {
 			const data = await this.camera.takePictureAsync({
 				quality: 0.5,
-				base64: true,
+				base64: false,
 				pauseAfterCapture: true
 			});
 			this.setState({ pictureResponse: data });
@@ -156,7 +162,8 @@ const styles = StyleSheet.create({
 	cameraContainer: {
 		flex: 1,
 		flexDirection: "row",
-		backgroundColor: "black"
+		backgroundColor: "black",
+		justifyContent: "center"
 	},
 	preview: {
 		maxWidth: "100%",

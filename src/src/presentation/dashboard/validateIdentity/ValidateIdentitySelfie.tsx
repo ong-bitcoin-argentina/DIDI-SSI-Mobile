@@ -16,8 +16,8 @@ export interface ValidateIdentitySelfieNavigation {
 }
 export interface ValidateIdentitySelfieProps {
 	documentData: DocumentBarcodeData;
-	front: TakePictureResponse;
-	back: TakePictureResponse;
+	front: { uri: string };
+	back: { uri: string };
 }
 
 export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
@@ -30,6 +30,10 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<ValidateIdentityTakePhoto
+				photoWidth={600}
+				photoHeight={720}
+				targetWidth={600}
+				targetHeight={720}
 				cameraLocation="front"
 				onPictureTaken={data =>
 					this.navigate("ValidateIdentityLiveness", {

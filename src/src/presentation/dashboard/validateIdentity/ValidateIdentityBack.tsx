@@ -16,7 +16,7 @@ export interface ValidateIdentityBackNavigation {
 }
 export interface ValidateIdentityBackProps {
 	documentData: DocumentBarcodeData;
-	front: TakePictureResponse;
+	front: { uri: string };
 }
 
 export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
@@ -29,6 +29,11 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<ValidateIdentityTakePhoto
+				photoWidth={1800}
+				photoHeight={1200}
+				targetWidth={1500}
+				targetHeight={1000}
+				cameraLandscape={true}
 				onPictureTaken={data =>
 					this.navigate("ValidateIdentitySelfie", {
 						...this.props,

@@ -36,6 +36,11 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<ValidateIdentityTakePhoto
+				photoWidth={1800}
+				photoHeight={1200}
+				targetWidth={1500}
+				targetHeight={1000}
+				cameraLandscape={true}
 				cameraButtonDisabled={this.state.documentData === undefined}
 				onPictureTaken={data =>
 					this.navigate("ValidateIdentityBack", {

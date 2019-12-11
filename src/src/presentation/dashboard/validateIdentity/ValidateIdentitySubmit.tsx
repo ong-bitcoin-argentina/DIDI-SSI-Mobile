@@ -19,9 +19,9 @@ import strings from "../../resources/strings";
 
 export interface ValidateIdentitySubmitProps {
 	documentData: DocumentBarcodeData;
-	front: TakePictureResponse;
-	back: TakePictureResponse;
-	selfie: TakePictureResponse;
+	front: { uri: string };
+	back: { uri: string };
+	selfie: { uri: string };
 }
 interface ValidateIdentitySubmitStateProps {
 	validateIdentityPending: boolean;
@@ -29,9 +29,9 @@ interface ValidateIdentitySubmitStateProps {
 interface ValidateIdentitySubmitDispatchProps {
 	validateIdentity: (
 		barcodeData: DocumentBarcodeData,
-		front: TakePictureResponse,
-		back: TakePictureResponse,
-		selfie: TakePictureResponse
+		front: { uri: string },
+		back: { uri: string },
+		selfie: { uri: string }
 	) => void;
 }
 type ValidateIdentitySubmitInnerProps = ValidateIdentitySubmitProps &
@@ -99,9 +99,9 @@ const connected = didiConnect(
 	(dispatch): ValidateIdentitySubmitDispatchProps => ({
 		validateIdentity: async (
 			barcodeData: DocumentBarcodeData,
-			front: TakePictureResponse,
-			back: TakePictureResponse,
-			selfie: TakePictureResponse
+			front: { uri: string },
+			back: { uri: string },
+			selfie: { uri: string }
 		) => {
 			const frontImage = await readFile(front.uri, "base64");
 			const backImage = await readFile(back.uri, "base64");

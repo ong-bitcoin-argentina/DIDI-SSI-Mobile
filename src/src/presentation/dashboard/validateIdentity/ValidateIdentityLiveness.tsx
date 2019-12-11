@@ -16,9 +16,9 @@ export interface ValidateIdentityLivenessNavigation {
 }
 export interface ValidateIdentityLivenessProps {
 	documentData: DocumentBarcodeData;
-	front: TakePictureResponse;
-	back: TakePictureResponse;
-	selfie: TakePictureResponse;
+	front: { uri: string };
+	back: { uri: string };
+	selfie: { uri: string };
 }
 
 export class ValidateIdentityLivenessScreen extends NavigationEnabledComponent<
@@ -31,6 +31,10 @@ export class ValidateIdentityLivenessScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<ValidateIdentityTakePhoto
+				photoWidth={600}
+				photoHeight={720}
+				targetWidth={600}
+				targetHeight={720}
 				cameraLocation="front"
 				onPictureTaken={data => this.navigate("ValidateIdentitySubmit", this.props)}
 				explanation={startCamera => (
