@@ -7,11 +7,10 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 import strings from "../../resources/strings";
 
 export interface DocumentDetailProps {
-	document: DerivedCredential<CredentialDocument>;
+	document: CredentialDocument;
 }
 
 export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDetailProps, {}, {}> {

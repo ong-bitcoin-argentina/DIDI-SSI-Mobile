@@ -6,7 +6,7 @@ import TypedObject from "../../util/TypedObject";
 import { LegalAddress, PersonalData, VisualData } from "../../model/Identity";
 import { extractSpecialCredentialData } from "../../model/SpecialCredential";
 
-import { microCredentialSelector } from "./microCredentialSelector";
+import { credentialSelector } from "./credentialSelector";
 
 export enum ValidationState {
 	Approved = "Approved",
@@ -37,7 +37,7 @@ function idFromEmail(email: string | undefined): string | undefined {
 }
 
 export const combinedIdentitySelector = createSelector(
-	microCredentialSelector,
+	credentialSelector,
 	st => st.persisted.userInputIdentity,
 	(mc, userInputId) => {
 		const identity: ValidatedIdentity = {

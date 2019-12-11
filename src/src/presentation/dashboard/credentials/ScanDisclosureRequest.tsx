@@ -9,7 +9,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 import { RequestDocument } from "../../../model/RequestDocument";
 import {
 	submitDisclosureResponse,
@@ -28,8 +27,7 @@ export interface ScanDisclosureRequestProps {
 }
 interface ScanDisclosureRequestStateProps {
 	identity: ValidatedIdentity;
-	credentials: Array<DerivedCredential<CredentialDocument>>;
-	microCredentials: CredentialDocument[];
+	credentials: CredentialDocument[];
 
 	sendDisclosureResponsePending: boolean;
 }
@@ -75,7 +73,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	private answerRequest() {
 		const { missing, own, verified } = getResponseClaims(
 			this.props.request.content,
-			this.props.microCredentials,
+			this.props.credentials,
 			this.props.identity
 		);
 		this.props.sendResponse({ request: this.props.request, own, verified });
@@ -93,7 +91,6 @@ export default didiConnect(
 		return {
 			identity: state.identity,
 			credentials: state.credentials,
-			microCredentials: state.microCredentials,
 			sendDisclosureResponsePending: isPendingService(state.serviceCalls[serviceKey])
 		};
 	},

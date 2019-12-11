@@ -6,7 +6,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard, sampleDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 import { DocumentFilterType, SampleDocument } from "../../../model/SampleDocument";
 import { didiConnect } from "../../../store/store";
 import themes from "../../resources/themes";
@@ -16,7 +15,7 @@ import { DocumentDetailProps } from "./DocumentDetail";
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenInternalProps extends DocumentsScreenProps {
-	credentials: Array<DerivedCredential<CredentialDocument>>;
+	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	filter: (type: DocumentFilterType) => boolean;
 }

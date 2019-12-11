@@ -9,7 +9,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { liftToDerivedCredential } from "../../../model/DerivedCredential";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 
@@ -43,7 +42,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={styles.body}>
-				{<DocumentCredentialCard preview={false} document={liftToDerivedCredential(this.props.credential)} />}
+				{<DocumentCredentialCard preview={false} document={this.props.credential} />}
 				{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
 			</DidiScreen>
 		);

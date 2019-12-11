@@ -8,7 +8,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -18,7 +17,7 @@ import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
-	credentials: Array<DerivedCredential<CredentialDocument>>;
+	credentials: CredentialDocument[];
 }
 
 type ShareCredentialState = {};
@@ -62,7 +61,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private renderCard(document: DerivedCredential<CredentialDocument>) {
+	private renderCard(document: CredentialDocument) {
 		return (
 			<TouchableOpacity onPress={() => this.doShare(document)}>
 				<DocumentCredentialCard preview={false} document={document} />
@@ -70,20 +69,8 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private doShare(document: DerivedCredential<CredentialDocument>) {
-		if (document.sources.length === 1) {
-			this.navigate("ShareSpecificCredential", { document: document.sources[0] });
-		} else {
-			this.navigate("ShareMicroCredential", {
-				credentials: document.sources.sort((l, r) => {
-					const ax = Object.values(l.content.claims);
-					const bx = Object.values(r.content.claims);
-					const a = Object.keys(ax[0] as object).length;
-					const b = Object.keys(bx[0] as object).length;
-					return b - a;
-				})
-			});
-		}
+	private doShare(document: CredentialDocument) {
+		this.navigate("ShareSpecificCredential", { document });
 	}
 }
 

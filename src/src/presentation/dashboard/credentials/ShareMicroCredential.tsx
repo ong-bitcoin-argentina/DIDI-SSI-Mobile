@@ -8,7 +8,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { liftToDerivedCredential } from "../../../model/DerivedCredential";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
@@ -61,7 +60,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	private renderCard(document: CredentialDocument) {
 		return (
 			<TouchableOpacity onPress={() => this.navigate("ShareSpecificCredential", { document })}>
-				<DocumentCredentialCard preview={false} document={liftToDerivedCredential(document)} />
+				<DocumentCredentialCard preview={false} document={document} />
 			</TouchableOpacity>
 		);
 	}
