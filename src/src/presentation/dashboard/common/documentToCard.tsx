@@ -1,5 +1,8 @@
 import React from "react";
 
+import TypedArray from "../../../util/TypedArray";
+
+import { ClaimDataPairs } from "../../../model/Claim";
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { SampleDocument } from "../../../model/SampleDocument";
 import colors from "../../resources/colors";
@@ -26,6 +29,18 @@ interface DocumentCredentialCardProps {
 	document: CredentialDocument;
 }
 
+function extractAllDataPairs(doc: CredentialDocument): ClaimDataPairs {
+	return [...doc.nested.map(extractAllDataPairs).reduce((l, r) => [...l, ...r], []), ...doc.content.claims.dataPairs()];
+}
+
+function extractDataPairs(doc: CredentialDocument, preview?: { type: number; fields: string[] }): ClaimDataPairs {
+	const dataPairs = extractAllDataPairs(doc);
+	if (!preview) {
+		return dataPairs;
+	}
+	return TypedArray.flatMap(preview.fields, label => dataPairs.find(pair => pair.label === label));
+}
+
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
 	render() {
 		const doc = this.props.document;
@@ -37,7 +52,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				category={category}
 				title={doc.content.claims.title}
 				subTitle={"Emisor: " + issuer + "..."}
-				data={this.props.preview ? doc.content.claims.previewPairs() : doc.content.claims.allPairs()}
+				data={extractDataPairs(doc, this.props.preview ? doc.content.claims.preview : undefined)}
 				columns={this.props.preview ? doc.content.claims.numberOfColumns() : 1}
 				color={colors.secondary}
 			/>

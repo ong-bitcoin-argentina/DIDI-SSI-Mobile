@@ -51,6 +51,11 @@ export const serviceErrors = {
 			title: "Error al Decodificar",
 			message: "Error al extraer credenciales."
 		},
+		NONCREDENTIAL_WRAP_ERROR: {
+			errorCode: "NONCREDENTIAL_WRAP_ERROR",
+			title: "Error al Verificar Credencial",
+			message: "Esta credencial contiene una sub-credencial en formato desconocido."
+		},
 		VERIFICATION_ERROR: {
 			errorCode: "TOKEN_VERIFICATION_ERROR",
 			title: "Error al Verificar Credencial",

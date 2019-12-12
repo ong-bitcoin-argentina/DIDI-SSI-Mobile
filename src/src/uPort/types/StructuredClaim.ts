@@ -7,17 +7,14 @@ import { Claim, ClaimDataCodec } from "../../model/Claim";
 
 export const StructuredClaimOuterCodec = t.record(
 	t.string,
-	t.intersection([
-		t.type({
-			data: ClaimDataCodec
-		}),
-		t.partial({
-			preview: t.type({
-				type: t.number,
-				fields: t.array(t.string)
-			})
+	t.partial({
+		data: ClaimDataCodec,
+		wrapped: t.record(t.string, t.string),
+		preview: t.type({
+			type: t.number,
+			fields: t.array(t.string)
 		})
-	])
+	})
 );
 type StructuredClaimTransport = typeof StructuredClaimOuterCodec._A;
 
@@ -32,7 +29,7 @@ export const StructuredClaimCodec = new t.Type<Claim, StructuredClaimTransport, 
 			}
 			const key = keys[0];
 			const value = i[key];
-			return t.success<Claim>(new Claim(key, value.data, value.preview));
+			return t.success<Claim>(new Claim(key, value.data, value.wrapped, value.preview));
 		}),
 	a => {
 		return {

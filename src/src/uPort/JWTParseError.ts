@@ -17,6 +17,9 @@ type JWTParseErrorContent =
 			errorMessage: string;
 	  }
 	| {
+			type: "NONCREDENTIAL_WRAP_ERROR";
+	  }
+	| {
 			type: "RESOLVER_CREATION_ERROR";
 	  };
 
@@ -48,6 +51,8 @@ export class JWTParseError extends Error {
 				return serviceErrors.jwtParse.JWT_DECODE_ERROR;
 			case "SHAPE_DECODE_ERROR":
 				return serviceErrors.jwtParse.SHAPE_DECODE_ERROR(error.errorMessage);
+			case "NONCREDENTIAL_WRAP_ERROR":
+				return serviceErrors.jwtParse.NONCREDENTIAL_WRAP_ERROR;
 			case "VERIFICATION_ERROR":
 				console.warn(displayError(error.error));
 				return serviceErrors.jwtParse.VERIFICATION_ERROR;

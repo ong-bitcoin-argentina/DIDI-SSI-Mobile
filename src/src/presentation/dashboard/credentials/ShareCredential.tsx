@@ -70,7 +70,11 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	private doShare(document: CredentialDocument) {
-		this.navigate("ShareSpecificCredential", { document });
+		if (document.nested.length === 0) {
+			this.navigate("ShareSpecificCredential", { document });
+		} else {
+			this.navigate("ShareMicroCredential", { credentials: document.nested });
+		}
 	}
 }
 

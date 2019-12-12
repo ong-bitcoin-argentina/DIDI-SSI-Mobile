@@ -4,4 +4,5 @@ export interface CredentialDocument {
 	type: "CredentialDocument";
 	jwt: string;
 	content: VerifiedClaim;
+	nested: CredentialDocument[];
 }

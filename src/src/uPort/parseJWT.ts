@@ -2,11 +2,11 @@ import { verifyJWT } from "did-jwt";
 import { verifyCredential } from "did-jwt-vc";
 import { Resolver } from "did-resolver";
 import { getResolver } from "ethr-did-resolver";
-import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
+import { array, separate } from "fp-ts/lib/Array";
+import { Either, either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 import JWTDecode from "jwt-decode";
 
-import { assertUnreachable } from "../util/assertUnreachable";
 import TypedArray from "../util/TypedArray";
 
 import { CredentialDocument } from "../model/CredentialDocument";
@@ -16,7 +16,7 @@ import { JWTParseError } from "./JWTParseError";
 import { ForwardedRequestCodec } from "./types/ForwardedRequest";
 import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
 import { SelectiveDisclosureRequestCodec } from "./types/SelectiveDisclosureRequest";
-import { VerifiedClaimCodec } from "./types/VerifiedClaim";
+import { VerifiedClaim, VerifiedClaimCodec } from "./types/VerifiedClaim";
 
 // This is required by verifyJWT
 if (typeof Buffer === "undefined") {
@@ -52,12 +52,15 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 			switch (unverified.type) {
 				case "SelectiveDisclosureRequest":
 					return right({ type: "RequestDocument", jwt, content: unverified });
-				case "VerifiedClaim":
-					return right({ type: "CredentialDocument", jwt, content: unverified });
 				case "ForwardedRequest":
 					return unverifiedParseJWT(unverified.forwarded);
-				default:
-					return assertUnreachable(unverified);
+				case "VerifiedClaim":
+					const nested = parseNestedInUnverified(unverified);
+					if (isLeft(nested)) {
+						return nested;
+					} else {
+						return right({ type: "CredentialDocument", jwt, content: unverified, nested: nested.right });
+					}
 			}
 		}
 	} catch (e) {
@@ -93,17 +96,55 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 			switch (verified.type) {
 				case "SelectiveDisclosureRequest":
 					return right({ type: "RequestDocument", jwt, content: verified });
-				case "VerifiedClaim":
-					return right({ type: "CredentialDocument", jwt, content: verified });
 				case "ForwardedRequest":
 					return parseJWT(verified.forwarded, ethrUri);
-				default:
-					return assertUnreachable(verified);
+				case "VerifiedClaim":
+					const nested = await parseNestedInVerified(verified, ethrUri);
+					if (isLeft(nested)) {
+						return left(nested.left);
+					} else {
+						return right({ type: "CredentialDocument", jwt, content: verified, nested: nested.right });
+					}
 			}
 		} catch (e) {
 			return left(new JWTParseError({ type: "VERIFICATION_ERROR", error: e }));
 		}
 	} catch (e) {
 		return left(new JWTParseError({ type: "RESOLVER_CREATION_ERROR" }));
+	}
+}
+
+function extractCredentials(
+	items: Array<RequestDocument | CredentialDocument>
+): Either<JWTParseError, CredentialDocument[]> {
+	if (items.every(x => x.type === "CredentialDocument")) {
+		return right(items as CredentialDocument[]);
+	} else {
+		return left(new JWTParseError({ type: "NONCREDENTIAL_WRAP_ERROR" }));
+	}
+}
+
+function parseNestedInUnverified(vc: VerifiedClaim): Either<JWTParseError, CredentialDocument[]> {
+	const nested = Object.values(vc.claims.wrapped);
+	const parsed = nested.map(unverifiedParseJWT);
+	const mix = array.sequence(either)(parsed);
+	if (isLeft(mix)) {
+		return mix;
+	} else {
+		return extractCredentials(mix.right);
+	}
+}
+
+async function parseNestedInVerified(
+	vc: VerifiedClaim,
+	ethrUri: string
+): Promise<Either<JWTParseError, CredentialDocument[]>> {
+	const nested = Object.values(vc.claims.wrapped);
+	const parsed = await Promise.all(nested.map(micro => parseJWT(micro, ethrUri)));
+	const mix = array.sequence(either)(parsed);
+	if (isLeft(mix)) {
+		return mix;
+	} else {
+		return extractCredentials(mix.right);
 	}
 }

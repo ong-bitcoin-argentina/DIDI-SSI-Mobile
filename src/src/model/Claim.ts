@@ -8,35 +8,32 @@ export type ClaimData = typeof ClaimDataCodec._A;
 
 export type ClaimDataPairs = Array<{ label: string; value: string }>;
 
+export function previewForClaimData(
+	claim: ClaimDataPairs,
+	preview: { type: number; fields: string[] }
+): ClaimDataPairs {
+	return TypedArray.flatMap(preview.fields, label => claim.find(pair => pair.label === label));
+}
+
 export class Claim {
 	title: string;
 	data: ClaimData;
-	preview?: {
-		type: number;
-		fields: string[];
-	};
+	wrapped: { [name: string]: string };
+	preview?: { type: number; fields: string[] };
 
-	constructor(title: string, data: ClaimData, preview?: { type: number; fields: string[] }) {
+	constructor(
+		title: string,
+		data?: ClaimData,
+		wrapped?: { [name: string]: string },
+		preview?: { type: number; fields: string[] }
+	) {
 		this.title = title;
-		this.data = data;
+		this.data = data ?? {};
+		this.wrapped = wrapped ?? {};
 		this.preview = preview;
 	}
 
-	previewPairs(): ClaimDataPairs {
-		if (!this.preview) {
-			return this.allPairs();
-		}
-		return TypedArray.flatMap(this.preview.fields, label => {
-			const value = this.data[label];
-			if (value) {
-				return { label, value };
-			} else {
-				return undefined;
-			}
-		});
-	}
-
-	allPairs(): ClaimDataPairs {
+	dataPairs(): ClaimDataPairs {
 		return Object.entries(this.data).map(([label, value]) => ({
 			label,
 			value
