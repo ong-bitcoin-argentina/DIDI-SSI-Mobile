@@ -23,8 +23,8 @@ export type ClaimMetadata = Omit<VerifiedClaim, "type" | "claims">;
 
 const VerifiedClaimOuterCodec = t.intersection([
 	t.type({
-		iss: t.string,
-		sub: t.string,
+		iss: EthrDIDCodec,
+		sub: EthrDIDCodec,
 		vc: t.type({
 			"@context": t.array(t.string),
 			type: t.array(t.string),
@@ -43,24 +43,20 @@ export const VerifiedClaimCodec = new t.Type<VerifiedClaim, VerifiedClaimTranspo
 	VerifiedClaimInnerCodec.is,
 	(u, c) =>
 		either.chain(VerifiedClaimOuterCodec.validate(u, c), i =>
-			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
-				either.chain(EthrDIDCodec.validate(i.sub, c), subject =>
-					t.success<VerifiedClaim>({
-						type: "VerifiedClaim",
-						issuer,
-						subject,
-						claims: i.vc.credentialSubject,
-						expireAt: i.exp,
-						issuedAt: i.iat
-					})
-				)
-			)
+			t.success<VerifiedClaim>({
+				type: "VerifiedClaim",
+				issuer: i.iss,
+				subject: i.sub,
+				claims: i.vc.credentialSubject,
+				expireAt: i.exp,
+				issuedAt: i.iat
+			})
 		),
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer.did(),
-			sub: a.subject.did(),
+			iss: a.issuer,
+			sub: a.subject,
 			exp: a.expireAt,
 			iat: a.issuedAt,
 			vc: {

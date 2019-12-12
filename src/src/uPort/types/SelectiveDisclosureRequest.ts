@@ -21,7 +21,7 @@ export type SelectiveDisclosureRequest = typeof SelectiveDisclosureRequestInnerC
 const SelectiveDisclosureRequestOuterCodec = t.intersection([
 	t.type({
 		type: t.literal("shareReq"),
-		iss: t.string,
+		iss: EthrDIDCodec,
 		callback: t.string
 	}),
 	t.partial({
@@ -42,22 +42,20 @@ export const SelectiveDisclosureRequestCodec = new t.Type<
 	SelectiveDisclosureRequestInnerCodec.is,
 	(u, c) =>
 		either.chain(SelectiveDisclosureRequestOuterCodec.validate(u, c), i =>
-			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
-				t.success<SelectiveDisclosureRequest>({
-					type: "SelectiveDisclosureRequest",
-					issuer,
-					callback: i.callback,
-					ownClaims: i.requested || [],
-					verifiedClaims: i.verified || [],
-					issuedAt: i.iat,
-					expireAt: i.exp
-				})
-			)
+			t.success<SelectiveDisclosureRequest>({
+				type: "SelectiveDisclosureRequest",
+				issuer: i.iss,
+				callback: i.callback,
+				ownClaims: i.requested || [],
+				verifiedClaims: i.verified || [],
+				issuedAt: i.iat,
+				expireAt: i.exp
+			})
 		),
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer.did(),
+			iss: a.issuer,
 			callback: a.callback,
 			requested: a.ownClaims,
 			verified: a.verifiedClaims,

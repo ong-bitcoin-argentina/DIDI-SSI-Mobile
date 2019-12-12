@@ -7,8 +7,8 @@ import { VerifiedClaim, VerifiedClaimInnerCodec } from "./VerifiedClaim";
 
 const LegacyVerifiedClaimOuterCodec = t.intersection([
 	t.type({
-		iss: t.string,
-		sub: t.string,
+		iss: EthrDIDCodec,
+		sub: EthrDIDCodec,
 		claim: LegacyClaimCodec
 	}),
 	t.partial({
@@ -23,24 +23,20 @@ export const LegacyVerifiedClaimCodec = new t.Type<VerifiedClaim, LegacyVerified
 	VerifiedClaimInnerCodec.is,
 	(u, c) =>
 		either.chain(LegacyVerifiedClaimOuterCodec.validate(u, c), i =>
-			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
-				either.chain(EthrDIDCodec.validate(i.sub, c), subject =>
-					t.success<VerifiedClaim>({
-						type: "VerifiedClaim",
-						issuer,
-						subject,
-						claims: i.claim,
-						expireAt: i.exp,
-						issuedAt: i.iat
-					})
-				)
-			)
+			t.success<VerifiedClaim>({
+				type: "VerifiedClaim",
+				issuer: i.iss,
+				subject: i.sub,
+				claims: i.claim,
+				expireAt: i.exp,
+				issuedAt: i.iat
+			})
 		),
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer.did(),
-			sub: a.subject.did(),
+			iss: a.issuer,
+			sub: a.subject,
 			exp: a.expireAt,
 			iat: a.issuedAt,
 			claim: a.claims
