@@ -40,6 +40,7 @@ async function doValidateDni(args: ValidateDniArguments): Promise<Either<ErrorDa
 			name: args.firstName,
 			lastName: args.lastName,
 			birthDate: args.birthDate,
+			order: args.order,
 			selfieImage: args.selfie,
 			frontImage: args.front,
 			backImage: args.back

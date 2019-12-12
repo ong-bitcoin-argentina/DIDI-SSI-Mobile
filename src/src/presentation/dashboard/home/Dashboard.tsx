@@ -11,7 +11,6 @@ import CredentialCard from "../common/CredentialCard";
 import { DocumentCredentialCard, sampleDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 import { RecentActivity } from "../../../model/RecentActivity";
 import { SampleDocument } from "../../../model/SampleDocument";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
@@ -33,7 +32,7 @@ import { NotificationScreenProps } from "./NotificationScreen";
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	person: ValidatedIdentity;
-	credentials: Array<DerivedCredential<CredentialDocument>>;
+	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }

@@ -1,10 +1,11 @@
 import { createSelector } from "reselect";
 
-import { deriveCredentials } from "../../model/DerivedCredential";
+import TypedArray from "../../util/TypedArray";
 
-import { microCredentialSelector } from "./microCredentialSelector";
+import { CredentialDocument } from "../../model/CredentialDocument";
 
-export const credentialSelector = createSelector(
-	microCredentialSelector,
-	mc => deriveCredentials(mc)
+import { parsedTokenSelector } from "./parsedTokenSelector";
+
+export const credentialSelector = createSelector(parsedTokenSelector, tokens =>
+	TypedArray.flatMap(tokens, (tk): CredentialDocument | null => (tk.type === "CredentialDocument" ? tk : null))
 );
