@@ -32,7 +32,7 @@ const responseCodec = t.array(t.string);
 
 async function doValidateDni(args: ValidateDniArguments): Promise<Either<ErrorData, string[]>> {
 	return await commonUserRequest(
-		`${args.baseUrl}/validateDni`,
+		`${args.baseUrl}/renaper/validateDni`,
 		{
 			did: args.did.did(),
 			dni: args.dni,
