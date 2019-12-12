@@ -3,7 +3,7 @@ import * as t from "io-ts";
 
 import { JSONObject, JSONValue, JSONValueCodec } from "../../util/JSON";
 
-import { Claim, ClaimData } from "./Claim";
+import { Claim, ClaimData } from "../../model/Claim";
 
 export function flattenClaim(rootClaim: JSONObject): { root: string; rest: ClaimData } {
 	const entries = Object.entries(rootClaim);

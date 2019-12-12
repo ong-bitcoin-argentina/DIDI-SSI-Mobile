@@ -3,7 +3,7 @@ import * as t from "io-ts";
 
 import TypedObject from "../../util/TypedObject";
 
-import { Claim, ClaimDataCodec } from "./Claim";
+import { Claim, ClaimDataCodec } from "../../model/Claim";
 
 export const StructuredClaimOuterCodec = t.record(
 	t.string,

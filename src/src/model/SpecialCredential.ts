@@ -1,7 +1,7 @@
 import { isRight } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { Claim } from "../uPort/types/Claim";
+import { Claim } from "./Claim";
 
 export type SpecialCredentialFlag =
 	| { type: "PhoneNumberData"; phoneNumber: string }

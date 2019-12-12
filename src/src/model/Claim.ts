@@ -1,6 +1,6 @@
 import * as t from "io-ts";
 
-import TypedArray from "../../util/TypedArray";
+import TypedArray from "../util/TypedArray";
 
 export const ClaimDataCodec = t.record(t.string, t.string);
 

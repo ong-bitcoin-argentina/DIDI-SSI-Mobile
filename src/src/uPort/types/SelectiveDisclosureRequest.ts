@@ -1,7 +1,7 @@
 import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { EthrDIDCodec } from "./EthrDID";
+import { EthrDIDCodec } from "../../model/EthrDID";
 
 const SelectiveDisclosureRequestInnerCodec = t.intersection([
 	t.type({

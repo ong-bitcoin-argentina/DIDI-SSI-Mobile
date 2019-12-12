@@ -1,6 +1,6 @@
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
-import { EthrDID } from "../../uPort/types/EthrDID";
+import { EthrDID } from "../../model/EthrDID";
 import { getPrivateKeySeed } from "../internal/getPrivateKeySeed";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";

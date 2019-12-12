@@ -1,6 +1,6 @@
 import { isLeft, isRight } from "fp-ts/lib/Either";
 
-import { EthrDID } from "../../src/uPort/types/EthrDID";
+import { EthrDID } from "../../src/model/EthrDID";
 
 describe(EthrDID, () => {
 	it("should accept well formed keyAddress", () => {

@@ -5,7 +5,7 @@ import { buildComponentServiceCall, serviceCallSuccess } from "../common/compone
 import { ErrorData } from "../common/ErrorData";
 
 import { DocumentBarcodeData } from "../../model/DocumentBarcodeData";
-import { EthrDID } from "../../uPort/types/EthrDID";
+import { EthrDID } from "../../model/EthrDID";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 

@@ -1,4 +1,4 @@
-import { ClaimDataPairs } from "../uPort/types/Claim";
+import { ClaimDataPairs } from "./Claim";
 
 export type DocumentFilterType = "livingPlace" | "identity" | "other";
 

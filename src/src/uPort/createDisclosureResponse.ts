@@ -1,13 +1,13 @@
 import { JSONObject } from "../util/JSON";
 import TypedObject from "../util/TypedObject";
 
+import { ClaimData } from "../model/Claim";
 import { CredentialDocument } from "../model/CredentialDocument";
 import { Identity } from "../model/Identity";
 import { RequestDocument } from "../model/RequestDocument";
 import { ValidatedIdentity } from "../store/selector/combinedIdentitySelector";
 
 import { getCredentials } from "./getCredentials";
-import { ClaimData } from "./types/Claim";
 import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
 
 function selectOwnClaims(request: SelectiveDisclosureRequest, identity: ValidatedIdentity): JSONObject {
