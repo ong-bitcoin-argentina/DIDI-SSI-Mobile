@@ -52,23 +52,23 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 		this.setState({ ...this.state, [key]: { ...this.state[key], ...merge } });
 	}
 
-	private textInputPropsFor(key: keyof PersonalData, keyboardType: TextInputProps["keyboardType"]): TextInputProps {
+	private textInputPropsFor(
+		keyboardType: TextInputProps["keyboardType"],
+		state?: ValidationState,
+		value?: string
+	): TextInputProps {
 		const props: TextInputProps = {
-			keyboardType,
-			onChangeText: text => this.setStateMerging("personalData", { [key]: text })
+			keyboardType
 		};
 
-		const value = this.props.identity.personalData[key];
-		if (value) {
-			props.editable = value.state !== ValidationState.Approved;
-			props.defaultValue = value.value;
-		}
-
+		props.editable = state !== ValidationState.Approved;
 		if (props.editable !== false) {
 			props.style = { backgroundColor: colors.editableSetting };
 		} else {
 			props.style = { color: colors.textFaded, fontStyle: "italic" };
 		}
+		props.defaultValue = value ? value : props.editable ? "" : "--";
+
 		return props;
 	}
 
@@ -77,12 +77,16 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 			<View style={styles.dropdownContents}>
 				{personalDataStructure.order.map(key => {
 					const struct = personalDataStructure.structure[key];
+					const id = this.props.identity.personalData[key];
 					return (
 						<DidiTextInput
 							key={key}
 							description={struct.name}
 							placeholder=""
-							textInputProps={this.textInputPropsFor(key, struct.keyboardType)}
+							textInputProps={{
+								onChangeText: text => this.setStateMerging("personalData", { [key]: text }),
+								...this.textInputPropsFor(struct.keyboardType, id?.state, id?.value)
+							}}
 						/>
 					);
 				})}
@@ -91,20 +95,20 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 	}
 
 	renderAddressInputs() {
+		const state = this.props.identity.address.state;
 		return (
 			<View style={styles.dropdownContents}>
 				{addressDataStructure.order.map(key => {
 					const struct = addressDataStructure.structure[key];
+					const value = this.props.identity.address.value[key];
 					return (
 						<DidiTextInput
 							key={key}
 							description={struct.name}
 							placeholder=""
 							textInputProps={{
-								keyboardType: struct.keyboardType,
-								defaultValue: this.props.identity.address[key],
 								onChangeText: text => this.setStateMerging("address", { [key]: text }),
-								style: { backgroundColor: colors.editableSetting }
+								...this.textInputPropsFor(struct.keyboardType, state, value)
 							}}
 						/>
 					);

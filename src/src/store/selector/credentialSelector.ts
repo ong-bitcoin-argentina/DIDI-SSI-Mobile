@@ -1,8 +1,11 @@
+import { Right } from "fp-ts/lib/Either";
 import { createSelector } from "reselect";
 
 import TypedArray from "../../util/TypedArray";
 
+import { Claim } from "../../model/Claim";
 import { CredentialDocument } from "../../model/CredentialDocument";
+import { EthrDID } from "../../model/EthrDID";
 
 import { parsedTokenSelector } from "./parsedTokenSelector";
 
@@ -12,5 +15,6 @@ const allCredentialSelector = createSelector(parsedTokenSelector, tokens =>
 
 export const credentialSelector = createSelector(allCredentialSelector, credentials => {
 	const nested = credentials.map(c => c.nested).reduce((acc, next) => acc.concat(next), []);
-	return credentials.filter(credential => !nested.find(nest => nest.jwt === credential.jwt));
+	const res = credentials.filter(credential => !nested.find(nest => nest.jwt === credential.jwt));
+	return res;
 });

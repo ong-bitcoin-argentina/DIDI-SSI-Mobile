@@ -7,12 +7,15 @@ export interface VisualData {
 	name: string;
 }
 
-export interface PersonalData {
+export interface PersonalIdentityData {
 	fullName: string;
-	cellPhone: string;
-	email: string;
 	document: string;
 	nationality: string;
+}
+
+export interface PersonalData extends PersonalIdentityData {
+	cellPhone: string;
+	email: string;
 }
 
 export interface LegalAddress {

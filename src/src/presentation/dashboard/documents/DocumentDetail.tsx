@@ -17,9 +17,12 @@ export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDet
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.documents.detailBarTitle);
 
 	render() {
+		const docList = this.props.document.nested.length === 0 ? [this.props.document] : this.props.document.nested;
 		return (
 			<DidiScreen style={styles.body}>
-				<DocumentCredentialCard preview={false} document={this.props.document} />
+				{docList.map((doc, index) => {
+					return <DocumentCredentialCard preview={false} document={doc} key={index} />;
+				})}
 			</DidiScreen>
 		);
 	}

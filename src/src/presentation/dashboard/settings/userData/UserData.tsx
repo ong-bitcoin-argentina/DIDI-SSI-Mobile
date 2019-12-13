@@ -7,7 +7,11 @@ import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 
-import { ValidatedIdentity, WithValidationState } from "../../../../store/selector/combinedIdentitySelector";
+import {
+	ValidatedIdentity,
+	ValidationState,
+	WithValidationState
+} from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
@@ -84,51 +88,73 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	}
 
 	private renderPersonalData() {
-		return this.renderDropdown(strings.userData.personalDataLabel, personalDataStructure.order, key => {
-			const struct = personalDataStructure.structure[key];
-			const data = this.props.identity.personalData[key];
-			return (
-				<DidiTextInput
-					key={key}
-					description={struct.name}
-					placeholder={""}
-					textInputProps={{
-						editable: false,
-						value: data ? data.value : "--"
-					}}
-					stateIndicator={data && data.state && <ValidationStateIcon validationState={data.state} useWords={true} />}
-				/>
-			);
+		return this.renderDropdown({
+			label: strings.userData.personalDataLabel,
+			data: personalDataStructure.order,
+			renderOne: key => {
+				const struct = personalDataStructure.structure[key];
+				const data = this.props.identity.personalData[key];
+				return (
+					<DidiTextInput
+						key={key}
+						description={struct.name}
+						placeholder={""}
+						textInputProps={{
+							editable: false,
+							value: data ? data.value : "--"
+						}}
+						stateIndicator={data && data.state && <ValidationStateIcon validationState={data.state} useWords={true} />}
+					/>
+				);
+			}
 		});
 	}
 
 	private renderAddressData() {
-		return this.renderDropdown(strings.userData.addressDataLabel, addressDataStructure.order, key => {
-			const struct = addressDataStructure.structure[key];
-			const data = this.props.identity.address[key];
-			return (
-				<DidiTextInput
-					key={key}
-					description={struct.name}
-					placeholder={""}
-					textInputProps={{
-						editable: false,
-						value: data || "--"
-					}}
-				/>
-			);
+		return this.renderDropdown({
+			label: strings.userData.addressDataLabel,
+			data: addressDataStructure.order,
+			renderOne: key => {
+				const struct = addressDataStructure.structure[key];
+				const data = this.props.identity.address.value[key];
+				return (
+					<DidiTextInput
+						key={key}
+						description={struct.name}
+						placeholder={""}
+						textInputProps={{
+							editable: false,
+							value: data || "--"
+						}}
+					/>
+				);
+			},
+			headerInsert:
+				Object.keys(this.props.identity.address.value).length > 0 ? (
+					<View style={styles.addressValidationInsert}>
+						<ValidationStateIcon validationState={this.props.identity.address.state} useWords={true} />
+					</View>
+				) : (
+					undefined
+				)
 		});
 	}
 
-	private renderDropdown<T>(label: string, data: T[], renderOne: (item: T) => JSX.Element) {
+	private renderDropdown<T>(args: {
+		label: string;
+		headerInsert?: JSX.Element;
+		data: T[];
+		renderOne: (item: T) => JSX.Element;
+	}) {
 		return (
 			<DropdownMenu
+				headerInsertComponent={args.headerInsert}
 				headerContainerStyle={{ backgroundColor: colors.primary }}
 				headerTextStyle={{ color: colors.primaryText }}
 				style={styles.personalDataDropdown}
-				label={label}
+				label={args.label}
 			>
-				<View style={styles.dropdownContents}>{data.map(renderOne)}</View>
+				<View style={styles.dropdownContents}>{args.data.map(args.renderOne)}</View>
 			</DropdownMenu>
 		);
 	}
@@ -151,5 +177,9 @@ const styles = StyleSheet.create({
 	dropdownContents: {
 		padding: 16,
 		backgroundColor: colors.darkBackground
+	},
+	addressValidationInsert: {
+		alignItems: "flex-end",
+		marginHorizontal: 20
 	}
 });
