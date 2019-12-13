@@ -35,21 +35,23 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 				targetWidth={600}
 				targetHeight={720}
 				cameraLocation="front"
-				onPictureTaken={data =>
-					this.navigate("ValidateIdentityLiveness", {
-						...this.props,
-						selfie: data
-					})
+				header={{
+					title: strings.validateIdentity.explainSelfie.step,
+					header: strings.validateIdentity.explainSelfie.header
+				}}
+				description={strings.validateIdentity.explainSelfie.description}
+				confirmation={strings.validateIdentity.explainSelfie.confirmation}
+				image={require("../../resources/images/validateIdentityExplainSelfie.png")}
+				onPictureTaken={(data, reset) =>
+					this.navigate(
+						"ValidateIdentityLiveness",
+						{
+							...this.props,
+							selfie: data
+						},
+						reset
+					)
 				}
-				explanation={startCamera => (
-					<ValidateIdentityExplanation
-						title={strings.validateIdentity.explainSelfie.step}
-						header={strings.validateIdentity.explainSelfie.header}
-						description={strings.validateIdentity.explainSelfie.description}
-						image={require("../../resources/images/validateIdentityExplainSelfie.png")}
-						buttonAction={startCamera}
-					/>
-				)}
 			/>
 		);
 	}

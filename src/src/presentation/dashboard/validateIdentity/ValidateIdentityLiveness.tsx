@@ -36,16 +36,14 @@ export class ValidateIdentityLivenessScreen extends NavigationEnabledComponent<
 				targetWidth={600}
 				targetHeight={720}
 				cameraLocation="front"
-				onPictureTaken={data => this.navigate("ValidateIdentitySubmit", this.props)}
-				explanation={startCamera => (
-					<ValidateIdentityExplanation
-						title={strings.validateIdentity.explainLiveness.step}
-						header={strings.validateIdentity.explainLiveness.header}
-						description={strings.validateIdentity.explainLiveness.description}
-						image={require("../../resources/images/validateIdentityExplainLiveness.png")}
-						buttonAction={startCamera}
-					/>
-				)}
+				header={{
+					title: strings.validateIdentity.explainLiveness.step,
+					header: strings.validateIdentity.explainLiveness.header
+				}}
+				description={strings.validateIdentity.explainLiveness.description}
+				confirmation={strings.validateIdentity.explainLiveness.confirmation}
+				image={require("../../resources/images/validateIdentityExplainLiveness.png")}
+				onPictureTaken={(data, reset) => this.navigate("ValidateIdentitySubmit", this.props, reset)}
 			/>
 		);
 	}

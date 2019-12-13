@@ -41,23 +41,24 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 				targetWidth={1500}
 				targetHeight={1000}
 				cameraLandscape={true}
-				cameraButtonDisabled={this.state.documentData === undefined}
-				onPictureTaken={data =>
-					this.navigate("ValidateIdentityBack", {
-						documentData: this.state.documentData!,
-						front: data
-					})
+				header={{
+					title: strings.validateIdentity.explainFront.step,
+					header: strings.validateIdentity.explainFront.header
+				}}
+				description={strings.validateIdentity.explainFront.description}
+				confirmation={strings.validateIdentity.explainFront.confirmation}
+				image={require("../../resources/images/validateIdentityExplainFront.png")}
+				onPictureTaken={(data, reset) =>
+					this.navigate(
+						"ValidateIdentityBack",
+						{
+							documentData: this.state.documentData!,
+							front: data
+						},
+						reset
+					)
 				}
 				onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
-				explanation={startCamera => (
-					<ValidateIdentityExplanation
-						title={strings.validateIdentity.explainFront.step}
-						header={strings.validateIdentity.explainFront.header}
-						description={strings.validateIdentity.explainFront.description}
-						image={require("../../resources/images/validateIdentityExplainFront.png")}
-						buttonAction={startCamera}
-					/>
-				)}
 			/>
 		);
 	}

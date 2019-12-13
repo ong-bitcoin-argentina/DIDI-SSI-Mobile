@@ -1,25 +1,41 @@
 import ImageEditor, { ImageCropData } from "@react-native-community/image-editor";
 import React, { Fragment } from "react";
-import { Alert, BackHandler, LayoutRectangle, NativeEventSubscription, StyleProp, View, ViewStyle } from "react-native";
+import {
+	BackHandler,
+	Image,
+	LayoutRectangle,
+	NativeEventSubscription,
+	StyleProp,
+	TouchableOpacity,
+	View,
+	ViewStyle
+} from "react-native";
 import { TakePictureResponse } from "react-native-camera/types";
 
-import { DidiCamera, DidiCameraProps } from "../common/DidiCamera";
+import commonStyles from "../../resources/commonStyles";
+import { DidiText } from "../../util/DidiText";
+import { cameraButtonStyle, DidiCamera, DidiCameraProps } from "../common/DidiCamera";
 
 import colors from "../../resources/colors";
+import Checkmark from "../../resources/images/cameraCheckmark.svg";
 
-export type ValidateIdentityTakePhotoProps = Omit<DidiCameraProps, "onPictureTaken"> & {
+import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
+import { ValidateIdentityExplanationHeader } from "./ValidateIdentityExplanationHeader";
+
+export type ValidateIdentityTakePhotoProps = {
 	photoWidth: number;
 	photoHeight: number;
 	targetWidth: number;
 	targetHeight: number;
-	onPictureTaken: (response: { uri: string }) => void;
-	explanation: (startCamera: () => void) => JSX.Element;
-};
+	onPictureTaken: (response: { uri: string }, reset: () => void) => void;
+	confirmation: string;
+} & Pick<DidiCameraProps, "cameraLandscape" | "onBarcodeScanned" | "cameraLocation" | "cameraButtonDisabled"> &
+	Pick<ValidateIdentityExplanationProps, "header" | "description" | "image">;
 
-export interface ValidateIdentityTakePhotoState {
-	isScanning: boolean;
-	layout?: LayoutRectangle;
-}
+export type ValidateIdentityTakePhotoState =
+	| { state: "explanation" }
+	| { state: "camera"; layout?: LayoutRectangle }
+	| { state: "confirmation"; uri: string };
 
 function transpose(layout: LayoutRectangle): LayoutRectangle {
 	return {
@@ -74,17 +90,21 @@ export abstract class ValidateIdentityTakePhoto extends React.Component<
 	constructor(props: ValidateIdentityTakePhotoProps) {
 		super(props);
 		this.state = {
-			isScanning: false
+			state: "explanation"
 		};
 	}
 
 	componentDidMount() {
-		this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-			if (this.state.isScanning) {
-				this.setState({ isScanning: false });
-				return true;
-			} else {
-				return false;
+		this.backHandler = BackHandler.addEventListener("hardwareBackPress", (): boolean => {
+			switch (this.state.state) {
+				case "explanation":
+					return false;
+				case "camera":
+					this.setState({ state: "explanation" });
+					return true;
+				case "confirmation":
+					this.setState({ state: "camera" });
+					return true;
 			}
 		});
 	}
@@ -95,31 +115,55 @@ export abstract class ValidateIdentityTakePhoto extends React.Component<
 		}
 	}
 
-	render() {
-		if (this.state.isScanning) {
-			return (
-				<View style={{ flex: 1 }}>
-					<DidiCamera
-						{...this.props}
-						onCameraLayout={rect => {
-							if (this.props.onCameraLayout) {
-								this.props.onCameraLayout(rect);
-							}
-							this.setState({ layout: rect });
-						}}
-						onPictureTaken={data => this.onPictureTaken(data)}
-					>
-						{this.state.layout && (
-							<Fragment>
-								<View style={this.photoStyle(this.state.layout)} />
-								<View style={this.targetStyle(this.state.layout)} />
-							</Fragment>
-						)}
-					</DidiCamera>
-				</View>
-			);
-		} else {
-			return this.props.explanation(() => this.setState({ isScanning: true }));
+	render(): JSX.Element {
+		switch (this.state.state) {
+			case "explanation":
+				return (
+					<ValidateIdentityExplanation
+						header={this.props.header}
+						description={this.props.description}
+						image={this.props.image}
+						buttonAction={() => this.setState({ state: "camera" })}
+					/>
+				);
+			case "camera":
+				return (
+					<View style={{ flex: 1 }}>
+						<DidiCamera
+							{...this.props}
+							onCameraLayout={rect => this.setState({ state: "camera", layout: rect })}
+							onPictureTaken={data => this.onPictureTaken(data)}
+						>
+							{this.state.layout && (
+								<Fragment>
+									<View style={this.photoStyle(this.state.layout)} />
+									<View style={this.targetStyle(this.state.layout)} />
+								</Fragment>
+							)}
+						</DidiCamera>
+					</View>
+				);
+			case "confirmation":
+				const uri = this.state.uri;
+				return (
+					<View style={commonStyles.view.area}>
+						<View style={commonStyles.view.body}>
+							<ValidateIdentityExplanationHeader {...this.props.header} />
+							<DidiText.ValidateIdentity.Normal>{this.props.confirmation}</DidiText.ValidateIdentity.Normal>
+							<Image
+								style={{
+									resizeMode: "contain",
+									aspectRatio: this.props.photoWidth / this.props.photoHeight,
+									maxWidth: "100%"
+								}}
+								source={{ uri: this.state.uri }}
+							/>
+							<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uri)}>
+								<Checkmark width="100%" height="100%" />
+							</TouchableOpacity>
+						</View>
+					</View>
+				);
 		}
 	}
 
@@ -166,11 +210,6 @@ export abstract class ValidateIdentityTakePhoto extends React.Component<
 	}
 
 	private async onPictureTaken(data: TakePictureResponse) {
-		this.setState({ isScanning: false });
-		if (!this.props.onPictureTaken) {
-			return;
-		}
-
 		const photoRect = transpose(this.photoRect());
 		const dataRect = {
 			x: 0,
@@ -188,6 +227,12 @@ export abstract class ValidateIdentityTakePhoto extends React.Component<
 			displaySize: photoRect
 		};
 		const croppedUri = await ImageEditor.cropImage(data.uri, crop);
-		this.props.onPictureTaken({ uri: croppedUri });
+		this.setState({ state: "confirmation", uri: croppedUri });
+	}
+
+	private onPictureAccepted(uri: string) {
+		this.props.onPictureTaken({ uri }, () => {
+			this.setState({ state: "explanation" });
+		});
 	}
 }

@@ -3,8 +3,9 @@ import { TakePictureResponse } from "react-native-camera/types";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { BarcodeType } from "../common/DidiCamera";
 
-import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
+import { DocumentBarcodeData, fromPDF417 } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
@@ -15,16 +16,25 @@ export interface ValidateIdentityBackNavigation {
 	ValidateIdentitySelfie: ValidateIdentitySelfieProps;
 }
 export interface ValidateIdentityBackProps {
-	documentData: DocumentBarcodeData;
+	documentData?: DocumentBarcodeData;
 	front: { uri: string };
+}
+
+interface ValidateIdentityBackState {
+	documentData?: DocumentBarcodeData;
 }
 
 export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 	ValidateIdentityBackProps,
-	{},
+	ValidateIdentityBackState,
 	ValidateIdentityBackNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
+
+	constructor(props: ValidateIdentityBackProps) {
+		super(props);
+		this.state = {};
+	}
 
 	render() {
 		return (
@@ -34,22 +44,37 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 				targetWidth={1500}
 				targetHeight={1000}
 				cameraLandscape={true}
-				onPictureTaken={data =>
-					this.navigate("ValidateIdentitySelfie", {
-						...this.props,
-						back: data
-					})
+				cameraButtonDisabled={(this.props.documentData ?? this.state.documentData) === undefined}
+				header={{
+					title: strings.validateIdentity.explainBack.step,
+					header: strings.validateIdentity.explainBack.header
+				}}
+				description={strings.validateIdentity.explainBack.description}
+				confirmation={strings.validateIdentity.explainBack.confirmation}
+				image={require("../../resources/images/validateIdentityExplainBack.png")}
+				onPictureTaken={(data, reset) =>
+					this.navigate(
+						"ValidateIdentitySelfie",
+						{
+							front: this.props.front,
+							documentData: (this.props.documentData ?? this.state.documentData)!,
+							back: data
+						},
+						reset
+					)
 				}
-				explanation={startCamera => (
-					<ValidateIdentityExplanation
-						title={strings.validateIdentity.explainBack.step}
-						header={strings.validateIdentity.explainBack.header}
-						description={strings.validateIdentity.explainBack.description}
-						image={require("../../resources/images/validateIdentityExplainBack.png")}
-						buttonAction={startCamera}
-					/>
-				)}
+				onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
 			/>
 		);
+	}
+
+	private onBarcodeScanned(data: string, type: BarcodeType) {
+		if (type !== "pdf417") {
+			return;
+		}
+		const documentData = fromPDF417(data);
+		if (documentData) {
+			this.setState({ documentData });
+		}
 	}
 }

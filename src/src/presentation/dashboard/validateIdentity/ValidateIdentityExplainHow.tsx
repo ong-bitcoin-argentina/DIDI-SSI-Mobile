@@ -25,8 +25,10 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 	render() {
 		return (
 			<ValidateIdentityExplanation
-				title={strings.validateIdentity.welcome}
-				header={strings.validateIdentity.howTo.header}
+				header={{
+					title: strings.validateIdentity.welcome,
+					header: strings.validateIdentity.howTo.header
+				}}
 				description={
 					<View>
 						<DidiText.ValidateIdentity.Normal style={styles.descriptionHeader}>

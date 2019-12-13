@@ -5,7 +5,6 @@ import { RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camer
 import { DidiText } from "../../util/DidiText";
 
 import colors from "../../resources/colors";
-import Checkmark from "../../resources/images/cameraCheckmark.svg";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
@@ -34,7 +33,6 @@ let defaultAspectRatio: { width: number; height: number } = { width: 4, height: 
 interface DidiCameraState {
 	cameraAvailable: boolean;
 	ratio: { width: number; height: number };
-	pictureResponse?: TakePictureResponse;
 }
 
 export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState> {
@@ -119,17 +117,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		}
 
 		if (this.props.onPictureTaken) {
-			const picture = this.state.pictureResponse;
-			const callback = this.props.onPictureTaken;
-			if (picture) {
-				return (
-					<TouchableOpacity style={styles.cameraButton} onPress={() => callback(picture)}>
-						<Checkmark width="100%" height="100%" />
-					</TouchableOpacity>
-				);
-			} else {
-				return DidiCamera.cameraButton(() => this.takePicture(), this.props.cameraButtonDisabled);
-			}
+			return DidiCamera.cameraButton(() => this.takePicture(), this.props.cameraButtonDisabled);
 		} else {
 			return (
 				<DidiText.CameraExplanation style={styles.cameraInstruction}>
@@ -156,9 +144,10 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 			const data = await this.camera.takePictureAsync({
 				quality: 0.5,
 				base64: false,
-				pauseAfterCapture: true
+				pauseAfterCapture: true,
+				orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait"
 			});
-			this.setState({ pictureResponse: data });
+			this.props.onPictureTaken?.(data);
 		}
 	}
 }
@@ -202,3 +191,5 @@ const styles = StyleSheet.create({
 		textAlignVertical: "center"
 	}
 });
+
+export const cameraButtonStyle = styles.cameraButton;

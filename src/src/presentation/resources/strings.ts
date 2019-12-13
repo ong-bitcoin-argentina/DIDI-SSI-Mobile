@@ -226,27 +226,31 @@ export default {
 			step: 1,
 			header: "Digitalizando el DNI",
 			description:
-				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara."
+				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
+			confirmation: "Asegurá que el texto este al derecho y sea claramente legible."
 		},
 		explainBack: {
 			step: 2,
 			header: "Digitalizando el DNI",
-			description: "Ahora da vuelta el DNI y sácale una foto del dorso."
+			description: "Ahora da vuelta el DNI y sácale una foto del dorso.",
+			confirmation: "Asegurá que el texto este al derecho y sea claramente legible."
 		},
 		explainSelfie: {
 			step: 3,
 			header: "Foto Selfie",
-			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie."
+			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie.",
+			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta."
 		},
 		explainLiveness: {
 			step: 4,
 			header: "Prueba de Vida",
 			description:
-				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!"
+				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!",
+			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta."
 		},
 		submit: {
 			header: "Validación de Identidad",
-			congrats: "Se enviaran los siguientes datos a ReNaPer:",
+			congrats: "Se enviaran los siguientes datos a validar por ReNaPer:",
 			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
 			buttonText: "OK"
 		},
