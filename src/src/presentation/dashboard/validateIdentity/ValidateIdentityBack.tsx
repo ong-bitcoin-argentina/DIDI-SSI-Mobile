@@ -1,14 +1,12 @@
 import React from "react";
-import { TakePictureResponse } from "react-native-camera/types";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { BarcodeType } from "../common/DidiCamera";
 
-import { DocumentBarcodeData, fromPDF417 } from "../../../model/DocumentBarcodeData";
+import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
-import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import { ValidateIdentitySelfieProps } from "./ValidateIdentitySelfie";
 import { ValidateIdentityTakePhoto } from "./ValidateIdentityTakePhoto";
 
@@ -72,7 +70,7 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 		if (type !== "pdf417") {
 			return;
 		}
-		const documentData = fromPDF417(data);
+		const documentData = DocumentBarcodeData.fromPDF417(data);
 		if (documentData) {
 			this.setState({ documentData });
 		}

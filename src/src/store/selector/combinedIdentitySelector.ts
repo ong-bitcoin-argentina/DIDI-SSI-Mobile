@@ -1,7 +1,6 @@
 import { createSelector } from "reselect";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
-import TypedArray from "../../util/TypedArray";
 import TypedObject from "../../util/TypedObject";
 
 import { LegalAddress, PersonalData, VisualData } from "../../model/Identity";

@@ -1,15 +1,13 @@
 import React from "react";
-import { TakePictureResponse } from "react-native-camera/types";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { BarcodeType } from "../common/DidiCamera";
 
-import { DocumentBarcodeData, fromPDF417 } from "../../../model/DocumentBarcodeData";
+import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 import { ValidateIdentityBackProps } from "./ValidateIdentityBack";
-import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import { ValidateIdentityTakePhoto } from "./ValidateIdentityTakePhoto";
 
 export interface ValidateIdentityFrontNavigation {
@@ -67,7 +65,7 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 		if (type !== "pdf417") {
 			return;
 		}
-		const documentData = fromPDF417(data);
+		const documentData = DocumentBarcodeData.fromPDF417(data);
 		if (documentData) {
 			this.setState({ documentData });
 		}
