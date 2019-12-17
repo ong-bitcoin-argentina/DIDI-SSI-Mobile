@@ -14,7 +14,6 @@ import { RequestDocument } from "../model/RequestDocument";
 
 import { JWTParseError } from "./JWTParseError";
 import { ForwardedRequestCodec } from "./types/ForwardedRequest";
-import { LegacyVerifiedClaimCodec } from "./types/LegacyVerifiedClaim";
 import { SelectiveDisclosureRequestCodec } from "./types/SelectiveDisclosureRequest";
 import { VerifiedClaim, VerifiedClaimCodec } from "./types/VerifiedClaim";
 
@@ -26,7 +25,6 @@ if (typeof Buffer === "undefined") {
 
 const PublicCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec]);
 const ParseCodec = t.union([PublicCodec, ForwardedRequestCodec]);
-const TransportCodec = t.union([ParseCodec, LegacyVerifiedClaimCodec]);
 
 export type JWTParseResult = Either<JWTParseError, RequestDocument | CredentialDocument>;
 
@@ -37,7 +35,7 @@ function extractIoError(errors: t.Errors): string {
 export function unverifiedParseJWT(jwt: string): JWTParseResult {
 	try {
 		const decoded = JWTDecode(jwt);
-		const parsed = TransportCodec.decode(decoded);
+		const parsed = ParseCodec.decode(decoded);
 		if (isLeft(parsed)) {
 			return left(new JWTParseError({ type: "SHAPE_DECODE_ERROR", errorMessage: extractIoError(parsed.left) }));
 		}

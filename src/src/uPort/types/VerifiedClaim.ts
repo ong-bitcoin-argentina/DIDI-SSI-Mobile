@@ -3,7 +3,6 @@ import * as t from "io-ts";
 
 import { EthrDIDCodec } from "../../model/EthrDID";
 
-import { LegacyClaimCodec } from "./LegacyClaim";
 import { StructuredClaimCodec } from "./StructuredClaim";
 
 export const VerifiedClaimInnerCodec = t.intersection([
@@ -20,8 +19,6 @@ export const VerifiedClaimInnerCodec = t.intersection([
 ]);
 export type VerifiedClaim = typeof VerifiedClaimInnerCodec._A;
 
-export type ClaimMetadata = Omit<VerifiedClaim, "type" | "claims">;
-
 const VerifiedClaimOuterCodec = t.intersection([
 	t.type({
 		iss: EthrDIDCodec,
@@ -29,7 +26,7 @@ const VerifiedClaimOuterCodec = t.intersection([
 		vc: t.type({
 			"@context": t.array(t.string),
 			type: t.array(t.string),
-			credentialSubject: t.union([StructuredClaimCodec, LegacyClaimCodec])
+			credentialSubject: StructuredClaimCodec
 		})
 	}),
 	t.partial({
