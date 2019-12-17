@@ -12,14 +12,23 @@ import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore
 import { sampleDocuments } from "./samples/sampleDocuments";
 import { sampleRecentActivity } from "./samples/sampleRecentActivity";
 import { combinedIdentitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
-import { credentialSelector } from "./selector/credentialSelector";
+import {
+	mixedCredentialSelector,
+	regularCredentialSelector,
+	SpecialCredentialData,
+	specialCredentialSelector
+} from "./selector/credentialSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { requestSelector } from "./selector/requestSelector";
 import { StoreAction } from "./StoreAction";
 
 export interface StoreContent extends PersistedStoreContent {
 	parsedTokens: Array<CredentialDocument | RequestDocument>;
-	credentials: CredentialDocument[];
+	credentials: {
+		toplevel: Array<SpecialCredentialData | CredentialDocument>;
+		regular: CredentialDocument[];
+		special: SpecialCredentialData[];
+	};
 	requests: RequestDocument[];
 
 	serviceCalls: ServiceCallState;
@@ -35,7 +44,11 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 		...store.persisted,
 
 		parsedTokens: parsedTokenSelector(store),
-		credentials: credentialSelector(store),
+		credentials: {
+			toplevel: mixedCredentialSelector(store),
+			regular: regularCredentialSelector(store),
+			special: specialCredentialSelector(store)
+		},
 		requests: requestSelector(store),
 
 		serviceCalls: store.serviceCalls,

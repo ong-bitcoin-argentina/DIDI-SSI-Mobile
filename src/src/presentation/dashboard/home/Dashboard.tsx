@@ -13,8 +13,10 @@ import { DocumentCredentialCard, sampleDocumentToCard } from "../common/document
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { RecentActivity } from "../../../model/RecentActivity";
 import { SampleDocument } from "../../../model/SampleDocument";
+import { SpecialCredentialFlag } from "../../../model/SpecialCredential";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
+import { SpecialCredentialData } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
@@ -32,7 +34,8 @@ import { NotificationScreenProps } from "./NotificationScreen";
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	person: ValidatedIdentity;
-	credentials: CredentialDocument[];
+	regularCredentials: CredentialDocument[];
+	specialCredentials: SpecialCredentialData[];
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }
@@ -59,6 +62,11 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 
 	private evolutionCard(): JSX.Element {
 		const str = strings.dashboard.evolution;
+		const specialValue = (val: SpecialCredentialFlag["type"]): string => {
+			return this.props.specialCredentials.find(sp => sp.specialFlag.type === val)
+				? str.validationState.yes
+				: str.validationState.no;
+		};
 		return (
 			<CredentialCard
 				icon=""
@@ -69,21 +77,33 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 				color={colors.primary}
 				data={[
 					{ label: str.validationIntro, value: "" },
-					{ label: str.validations.cellPhone, value: str.validationState.yes },
-					{ label: str.validations.email, value: str.validationState.yes },
-					{ label: str.validations.document, value: str.validationState.no }
+					{ label: str.validations.cellPhone, value: specialValue("PhoneNumberData") },
+					{ label: str.validations.email, value: specialValue("EmailData") },
+					{ label: str.validations.document, value: specialValue("PersonalData") }
 				]}
 				columns={1}
 			/>
 		);
 	}
 
-	private renderAllDocuments() {
-		return this.props.credentials.map((document, index) => (
-			<TouchableOpacity key={index} onPress={() => this.navigate("DashDocumentDetail", { document })}>
+	private renderRegularDocuments() {
+		return this.props.regularCredentials.map((document, index) => (
+			<TouchableOpacity key={`RG_${index}`} onPress={() => this.navigate("DashDocumentDetail", { document })}>
 				<DocumentCredentialCard preview={true} document={document} />
 			</TouchableOpacity>
 		));
+	}
+
+	private renderSpecialDocuments() {
+		if (this.props.specialCredentials.find(sp => sp.specialFlag.type === "PersonalData")) {
+			return this.props.specialCredentials.map((document, index) => (
+				<TouchableOpacity key={`SP_${index}`} onPress={() => this.navigate("DashDocumentDetail", { document })}>
+					<DocumentCredentialCard preview={true} document={document} />
+				</TouchableOpacity>
+			));
+		} else {
+			return this.incompleteIdentityCard();
+		}
 	}
 
 	private incompleteIdentityCard(): JSX.Element {
@@ -135,9 +155,9 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 						/>
 						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
 							{this.evolutionCard()}
-							{this.renderAllDocuments()}
+							{this.renderRegularDocuments()}
 							{this.props.samples.map(sampleDocumentToCard)}
-							{this.incompleteIdentityCard()}
+							{this.renderSpecialDocuments()}
 						</View>
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
@@ -154,7 +174,8 @@ export default didiConnect(
 	(state): DashboardScreenStateProps => ({
 		person: state.identity,
 		recentActivity: state.recentActivity,
-		credentials: state.credentials,
+		regularCredentials: state.credentials.regular,
+		specialCredentials: state.credentials.special,
 		samples: state.samples
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({

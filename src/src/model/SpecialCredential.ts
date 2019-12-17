@@ -8,8 +8,7 @@ export type SpecialCredentialFlag =
 	| { type: "PhoneNumberData"; phoneNumber: string }
 	| { type: "EmailData"; email: string }
 	| { type: "PersonalData"; data: PersonalIdentityData }
-	| { type: "LegalAddress"; address: Partial<LegalAddress> }
-	| { type: "None" };
+	| { type: "LegalAddress"; address: Partial<LegalAddress> };
 
 const stringOrNumberCodec = t.union([t.string, t.number]).pipe(
 	new t.Type<string, string | number, string | number>(
@@ -47,53 +46,55 @@ const legalAddressCredentialCodec = t.partial({
 	country: t.string
 });
 
-export function extractSpecialCredentialData(claim: Claim): SpecialCredentialFlag {
-	switch (claim.title) {
-		case "Phone":
-			const phone = phoneCredentialCodec.decode(claim.data);
-			if (isRight(phone)) {
-				return { type: "PhoneNumberData", phoneNumber: phone.right.phoneNumber };
-			}
-			break;
+export const SpecialCredentialFlag = {
+	extract: (claim: Claim): SpecialCredentialFlag | undefined => {
+		switch (claim.title) {
+			case "Phone":
+				const phone = phoneCredentialCodec.decode(claim.data);
+				if (isRight(phone)) {
+					return { type: "PhoneNumberData", phoneNumber: phone.right.phoneNumber };
+				}
+				break;
 
-		case "Email":
-			const email = emailCredentialCodec.decode(claim.data);
-			if (isRight(email)) {
-				return { type: "EmailData", email: email.right.email };
-			}
-			break;
+			case "Email":
+				const email = emailCredentialCodec.decode(claim.data);
+				if (isRight(email)) {
+					return { type: "EmailData", email: email.right.email };
+				}
+				break;
 
-		case "Datos Personales":
-			const personalData = personalDataCredentialCodec.decode(claim.data);
-			if (isRight(personalData)) {
-				return {
-					type: "PersonalData",
-					data: {
-						document: personalData.right.dni,
-						fullName: `${personalData.right.names} ${personalData.right.lastNames}`,
-						nationality: personalData.right.nationality
-					}
-				};
-			}
-			break;
+			case "Datos Personales":
+				const personalData = personalDataCredentialCodec.decode(claim.data);
+				if (isRight(personalData)) {
+					return {
+						type: "PersonalData",
+						data: {
+							document: personalData.right.dni,
+							fullName: `${personalData.right.names} ${personalData.right.lastNames}`,
+							nationality: personalData.right.nationality
+						}
+					};
+				}
+				break;
 
-		case "Domicilio Legal":
-			const legalAddress = legalAddressCredentialCodec.decode(claim.data);
-			if (isRight(legalAddress)) {
-				return {
-					type: "LegalAddress",
-					address: {
-						department: legalAddress.right.department,
-						floor: legalAddress.right.floor,
-						number: legalAddress.right.numberStreet,
-						postCode: legalAddress.right.zipCode,
-						street: legalAddress.right.streetAddress,
-						neighborhood: legalAddress.right.city
-					}
-				};
-			}
-			break;
+			case "Domicilio Legal":
+				const legalAddress = legalAddressCredentialCodec.decode(claim.data);
+				if (isRight(legalAddress)) {
+					return {
+						type: "LegalAddress",
+						address: {
+							department: legalAddress.right.department,
+							floor: legalAddress.right.floor,
+							number: legalAddress.right.numberStreet,
+							postCode: legalAddress.right.zipCode,
+							street: legalAddress.right.streetAddress,
+							neighborhood: legalAddress.right.city
+						}
+					};
+				}
+				break;
+		}
+
+		return undefined;
 	}
-
-	return { type: "None" };
-}
+};

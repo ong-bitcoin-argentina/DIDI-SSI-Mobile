@@ -7,6 +7,7 @@ import { DocumentCredentialCard, sampleDocumentToCard } from "../common/document
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DocumentFilterType, SampleDocument } from "../../../model/SampleDocument";
+import { SpecialCredentialData } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
@@ -15,7 +16,7 @@ import { DocumentDetailProps } from "./DocumentDetail";
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenInternalProps extends DocumentsScreenProps {
-	credentials: CredentialDocument[];
+	credentials: Array<CredentialDocument | SpecialCredentialData>;
 	samples: SampleDocument[];
 	filter: (type: DocumentFilterType) => boolean;
 }
@@ -41,11 +42,15 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 	}
 
 	private renderAllDocuments() {
-		return this.props.credentials.map((document, index) => (
-			<TouchableOpacity key={index} onPress={() => this.navigate("DocumentDetail", { document })}>
-				<DocumentCredentialCard preview={true} document={document} />
-			</TouchableOpacity>
-		));
+		return this.props.credentials.map(
+			(document, index): JSX.Element => {
+				return (
+					<TouchableOpacity key={index} onPress={() => this.navigate("DocumentDetail", { document })}>
+						<DocumentCredentialCard preview={true} document={document} />
+					</TouchableOpacity>
+				);
+			}
+		);
 	}
 }
 
@@ -56,7 +61,7 @@ export default function(filter: (type: DocumentFilterType) => boolean) {
 			return {
 				filter,
 				samples: state.samples,
-				credentials: state.credentials
+				credentials: state.credentials.toplevel
 			};
 		}
 	);

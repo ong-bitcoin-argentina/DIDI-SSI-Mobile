@@ -2,6 +2,7 @@ import React from "react";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { SampleDocument } from "../../../model/SampleDocument";
+import { SpecialCredentialData } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 
 import CredentialCard from "./CredentialCard";
@@ -23,7 +24,7 @@ export function sampleDocumentToCard(document: SampleDocument, index: number) {
 
 interface DocumentCredentialCardProps {
 	preview: boolean;
-	document: CredentialDocument;
+	document: CredentialDocument | SpecialCredentialData;
 }
 
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
@@ -40,6 +41,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				data={CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.content.claims.preview : undefined)}
 				columns={this.props.preview ? doc.content.claims.numberOfColumns() : 1}
 				color={colors.secondary}
+				hollow={this.props.document.specialFlag !== undefined}
 			/>
 		);
 	}

@@ -4,9 +4,8 @@ import { assertUnreachable } from "../../util/assertUnreachable";
 import TypedObject from "../../util/TypedObject";
 
 import { LegalAddress, PersonalData, VisualData } from "../../model/Identity";
-import { extractSpecialCredentialData } from "../../model/SpecialCredential";
 
-import { credentialSelector } from "./credentialSelector";
+import { specialCredentialSelector } from "./credentialSelector";
 
 export enum ValidationState {
 	Approved = "Approved",
@@ -37,9 +36,9 @@ function idFromEmail(email: string | undefined): string | undefined {
 }
 
 export const combinedIdentitySelector = createSelector(
-	credentialSelector,
+	specialCredentialSelector,
 	st => st.persisted.userInputIdentity,
-	(mc, userInputId) => {
+	(specials, userInputId) => {
 		const identity: ValidatedIdentity = {
 			address: {
 				state: ValidationState.Pending,
@@ -51,11 +50,9 @@ export const combinedIdentitySelector = createSelector(
 				value: v
 			}))
 		};
-		mc.reverse().forEach(c => {
-			const special = extractSpecialCredentialData(c.content.claims);
+		specials.forEach(data => {
+			const special = data.specialFlag;
 			switch (special.type) {
-				case "None":
-					return;
 				case "EmailData":
 					identity.personalData.email = {
 						state: ValidationState.Approved,

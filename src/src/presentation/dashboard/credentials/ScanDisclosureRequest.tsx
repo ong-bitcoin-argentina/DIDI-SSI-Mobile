@@ -90,7 +90,7 @@ export default didiConnect(
 	(state): ScanDisclosureRequestStateProps => {
 		return {
 			identity: state.identity,
-			credentials: state.credentials,
+			credentials: state.credentials.regular,
 			sendDisclosureResponsePending: isPendingService(state.serviceCalls[serviceKey])
 		};
 	},
