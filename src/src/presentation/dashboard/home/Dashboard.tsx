@@ -13,7 +13,6 @@ import { DocumentCredentialCard, sampleDocumentToCard } from "../common/document
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { RecentActivity } from "../../../model/RecentActivity";
 import { SampleDocument } from "../../../model/SampleDocument";
-import { SpecialCredentialFlag } from "../../../model/SpecialCredential";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { SpecialCredentialData } from "../../../store/selector/credentialSelector";
@@ -28,6 +27,7 @@ import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
 
 import DidiActivity from "./DidiActivity";
+import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
 import { NotificationScreenProps } from "./NotificationScreen";
 
@@ -58,32 +58,6 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 
 	componentDidMount() {
 		this.props.login();
-	}
-
-	private evolutionCard(): JSX.Element {
-		const str = strings.dashboard.evolution;
-		const specialValue = (val: SpecialCredentialFlag["type"]): string => {
-			return this.props.specialCredentials.find(sp => sp.specialFlag.type === val)
-				? str.validationState.yes
-				: str.validationState.no;
-		};
-		return (
-			<CredentialCard
-				icon=""
-				image={require("../../resources/images/precentageSample.png")}
-				category={str.category}
-				title={str.title}
-				subTitle="16.06.2019"
-				color={colors.primary}
-				data={[
-					{ label: str.validationIntro, value: "" },
-					{ label: str.validations.cellPhone, value: specialValue("PhoneNumberData") },
-					{ label: str.validations.email, value: specialValue("EmailData") },
-					{ label: str.validations.document, value: specialValue("PersonalData") }
-				]}
-				columns={1}
-			/>
-		);
 	}
 
 	private renderRegularDocuments() {
@@ -154,7 +128,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 							onBellPress={() => this.navigate("NotificationScreen", {})}
 						/>
 						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
-							{this.evolutionCard()}
+							<EvolutionCard specialCredentials={this.props.specialCredentials} />
 							{this.renderRegularDocuments()}
 							{this.props.samples.map(sampleDocumentToCard)}
 							{this.renderSpecialDocuments()}

@@ -1,6 +1,6 @@
 import * as t from "io-ts";
 
-import { SingleKeyedRecordCodec } from "../../util/singleKeyedRecord";
+import { SingleKeyedRecordCodec } from "../../util/SingleKeyedRecord";
 
 import { Claim, ClaimDataCodec } from "../../model/Claim";
 
