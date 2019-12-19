@@ -17,6 +17,7 @@ export interface SendMailValidatorArguments {
 
 async function doSendMailValidator(args: SendMailValidatorArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/sendMailValidator`,
 		{
 			eMail: args.email,

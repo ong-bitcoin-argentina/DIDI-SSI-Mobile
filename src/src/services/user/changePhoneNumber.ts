@@ -16,6 +16,7 @@ export interface ChangePhoneNumberArguments {
 
 async function doChangePhoneNumber(args: ChangePhoneNumberArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/changePhoneNumber`,
 		{
 			did: args.did.did(),

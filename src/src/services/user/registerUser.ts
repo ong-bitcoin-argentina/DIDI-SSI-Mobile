@@ -18,6 +18,7 @@ export interface RegisterUserArguments {
 
 async function doRegisterUser(args: RegisterUserArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/registerUser`,
 		{
 			eMail: args.email,

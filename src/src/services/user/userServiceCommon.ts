@@ -2,7 +2,7 @@ import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
 import { JSONObject } from "../../util/JSON";
-import { commonServiceRequest } from "../common/commonServiceRequest";
+import { commonServiceRequest, HTTPMethod } from "../common/commonServiceRequest";
 import { ErrorData, errorDataCodec } from "../common/ErrorData";
 
 export const emptyDataCodec = t.type({});
@@ -30,11 +30,12 @@ function userApiWrapperCodec<M extends t.Mixed>(data: M) {
 }
 
 export async function commonUserRequest<A>(
+	method: HTTPMethod,
 	url: string,
 	parameters: JSONObject,
 	dataDecoder: t.Type<A, unknown, unknown>
 ): Promise<Either<ErrorData, A>> {
-	const responseContent = await commonServiceRequest(url, parameters, userApiWrapperCodec(dataDecoder));
+	const responseContent = await commonServiceRequest(method, url, parameters, userApiWrapperCodec(dataDecoder));
 	if (isLeft(responseContent)) {
 		return responseContent;
 	}

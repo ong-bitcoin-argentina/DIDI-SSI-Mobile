@@ -23,6 +23,7 @@ const responseCodec = t.type({
 
 async function doRecoverAccount(args: RecoverAccountArguments): Promise<Either<ErrorData, EthrDID>> {
 	const recoveryResponse = await commonUserRequest(
+		"POST",
 		`${args.baseUrl}/recoverAccount`,
 		{ eMail: args.email, password: args.password },
 		responseCodec

@@ -16,6 +16,7 @@ export interface ChangeEmailArguments {
 
 async function doChangeEmail(args: ChangeEmailArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/changeEmail`,
 		{
 			did: args.did.did(),

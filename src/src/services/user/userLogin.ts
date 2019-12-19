@@ -16,6 +16,7 @@ export interface UserLoginArguments {
 
 async function doUserLogin(args: UserLoginArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/userLogin`,
 		{ eMail: args.email, password: args.password, did: args.did.did() },
 		emptyDataCodec

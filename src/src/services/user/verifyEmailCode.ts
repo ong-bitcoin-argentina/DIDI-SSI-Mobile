@@ -15,6 +15,7 @@ export interface VerifyEmailCodeArguments {
 
 async function doVerifyEmailCode(args: VerifyEmailCodeArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/verifyMailCode`,
 		{
 			validationCode: args.validationCode,

@@ -15,6 +15,7 @@ export interface ChangePasswordArguments {
 
 async function doChangePassword(args: ChangePasswordArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/changePassword`,
 		{ oldPass: args.oldPassword, newPass: args.newPassword, did: args.did.did() },
 		emptyDataCodec

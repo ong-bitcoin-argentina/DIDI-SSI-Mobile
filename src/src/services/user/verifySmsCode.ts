@@ -15,6 +15,7 @@ export interface VerifySmsCodeArguments {
 
 async function doVerifySmsCode(args: VerifySmsCodeArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/verifySmsCode`,
 		{
 			validationCode: args.validationCode,

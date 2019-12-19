@@ -17,6 +17,7 @@ export interface SendSmsValidatorArguments {
 
 async function doSendSmsValidator(args: SendSmsValidatorArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/sendSmsValidator`,
 		{
 			cellPhoneNumber: args.cellPhoneNumber,
