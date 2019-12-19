@@ -31,7 +31,7 @@ const SelectiveDisclosureRequestOuterCodec = t.intersection([
 		exp: t.number
 	})
 ]);
-type SelectiveDisclosureRequestTransport = typeof SelectiveDisclosureRequestOuterCodec._A;
+type SelectiveDisclosureRequestTransport = typeof SelectiveDisclosureRequestOuterCodec._O;
 
 export const SelectiveDisclosureRequestCodec = new t.Type<
 	SelectiveDisclosureRequest,
@@ -55,7 +55,7 @@ export const SelectiveDisclosureRequestCodec = new t.Type<
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer,
+			iss: a.issuer.did(),
 			callback: a.callback,
 			requested: a.ownClaims,
 			verified: a.verifiedClaims,

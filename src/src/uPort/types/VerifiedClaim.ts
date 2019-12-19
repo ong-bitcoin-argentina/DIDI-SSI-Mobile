@@ -34,7 +34,7 @@ const VerifiedClaimOuterCodec = t.intersection([
 		exp: t.number
 	})
 ]);
-type VerifiedClaimTransport = typeof VerifiedClaimOuterCodec._A;
+type VerifiedClaimTransport = typeof VerifiedClaimOuterCodec._O;
 
 export const VerifiedClaimCodec = new t.Type<VerifiedClaim, VerifiedClaimTransport, unknown>(
 	"VerifiedClaimCodec",
@@ -53,14 +53,14 @@ export const VerifiedClaimCodec = new t.Type<VerifiedClaim, VerifiedClaimTranspo
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer,
-			sub: a.subject,
+			iss: a.issuer.did(),
+			sub: a.subject.did(),
 			exp: a.expireAt,
 			iat: a.issuedAt,
 			vc: {
 				"@context": ["https://www.w3.org/2018/credentials/v1"],
 				type: ["VerifiableCredential"],
-				credentialSubject: a.claims
+				credentialSubject: StructuredClaimCodec.encode(a.claims)
 			}
 		};
 	}

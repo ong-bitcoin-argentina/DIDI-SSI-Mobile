@@ -1,12 +1,10 @@
-import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import TypedObject from "../../util/TypedObject";
+import { SingleKeyedRecordCodec } from "../../util/singleKeyedRecord";
 
 import { Claim, ClaimDataCodec } from "../../model/Claim";
 
-export const StructuredClaimOuterCodec = t.record(
-	t.string,
+export const StructuredClaimOuterCodec = SingleKeyedRecordCodec(
 	t.partial({
 		data: ClaimDataCodec,
 		wrapped: t.record(t.string, t.string),
@@ -16,27 +14,20 @@ export const StructuredClaimOuterCodec = t.record(
 		})
 	})
 );
-type StructuredClaimTransport = typeof StructuredClaimOuterCodec._A;
 
-export const StructuredClaimCodec = new t.Type<Claim, StructuredClaimTransport, unknown>(
-	"StructuredClaimCodec",
-	(x): x is Claim => x instanceof Claim,
-	(u, c) =>
-		either.chain(StructuredClaimOuterCodec.validate(u, c), i => {
-			const keys = TypedObject.keys(i);
-			if (keys.length !== 1) {
-				return t.failure(i, c);
-			}
-			const key = keys[0];
-			const value = i[key];
-			return t.success<Claim>(new Claim(key, value.data, value.wrapped, value.preview));
-		}),
-	a => {
-		return {
-			[a.title]: {
-				data: a.data,
-				preview: a.preview
-			}
-		};
-	}
+export const StructuredClaimCodec = StructuredClaimOuterCodec.pipe(
+	new t.Type<Claim, typeof StructuredClaimOuterCodec._A, typeof StructuredClaimOuterCodec._A>(
+		"StructuredClaimCodec",
+		(x): x is Claim => x instanceof Claim,
+		(i, c) => t.success<Claim>(new Claim(i.key, i.value.data, i.value.wrapped, i.value.preview)),
+		a => {
+			return {
+				key: a.title,
+				value: {
+					data: a.data,
+					preview: a.preview
+				}
+			};
+		}
+	)
 );

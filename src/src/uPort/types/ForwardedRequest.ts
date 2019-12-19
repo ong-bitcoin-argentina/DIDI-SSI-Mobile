@@ -28,7 +28,7 @@ const ForwardedRequestOuterCodec = t.intersection([
 		exp: t.number
 	})
 ]);
-type ForwardedRequestTransport = typeof ForwardedRequestOuterCodec._A;
+type ForwardedRequestTransport = typeof ForwardedRequestOuterCodec._O;
 
 export const ForwardedRequestCodec = new t.Type<ForwardedRequest, ForwardedRequestTransport, unknown>(
 	"ForwardedRequestCodec",
@@ -47,8 +47,8 @@ export const ForwardedRequestCodec = new t.Type<ForwardedRequest, ForwardedReque
 	a => {
 		return {
 			type: "shareReq",
-			iss: a.issuer,
-			sub: a.subject,
+			iss: a.issuer.did(),
+			sub: a.subject.did(),
 			exp: a.expireAt,
 			iat: a.issuedAt,
 			disclosureRequest: a.forwarded
