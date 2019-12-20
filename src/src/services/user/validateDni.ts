@@ -1,7 +1,7 @@
 import { Either } from "fp-ts/lib/Either";
-import * as t from "io-ts";
+import { readFile } from "react-native-fs";
 
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 import { ErrorData } from "../common/ErrorData";
 
 import { DocumentBarcodeData } from "../../model/DocumentBarcodeData";
@@ -9,6 +9,7 @@ import { EthrDID } from "../../model/EthrDID";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 
+import { handleDniValidationResponse, ValidateDniResponseCodec } from "./checkValidateDni";
 import { commonUserRequest } from "./userServiceCommon";
 
 export interface ValidateDniArguments {
@@ -23,15 +24,17 @@ export interface ValidateDniArguments {
 	birthDate: string;
 	order: string;
 
-	front: string;
-	back: string;
-	selfie: string;
+	pictures: { front: { uri: string }; back: { uri: string }; selfie: { uri: string } };
 }
 
-const responseCodec = t.array(t.string);
+async function doValidateDni(
+	args: ValidateDniArguments
+): Promise<Either<ErrorData, typeof ValidateDniResponseCodec._A>> {
+	const frontImage = await readFile(args.pictures.front.uri, "base64");
+	const backImage = await readFile(args.pictures.back.uri, "base64");
+	const selfieImage = await readFile(args.pictures.selfie.uri, "base64");
 
-async function doValidateDni(args: ValidateDniArguments): Promise<Either<ErrorData, string[]>> {
-	return await commonUserRequest(
+	const response = await commonUserRequest(
 		"POST",
 		`${args.baseUrl}/renaper/validateDni`,
 		{
@@ -42,12 +45,13 @@ async function doValidateDni(args: ValidateDniArguments): Promise<Either<ErrorDa
 			lastName: args.lastName,
 			birthDate: args.birthDate,
 			order: args.order,
-			selfieImage: args.selfie,
-			frontImage: args.front,
-			backImage: args.back
+			selfieImage,
+			frontImage,
+			backImage
 		},
-		responseCodec
+		ValidateDniResponseCodec
 	);
+	return response;
 }
 
 const validateDniComponent = buildComponentServiceCall(doValidateDni);
@@ -55,9 +59,7 @@ const validateDniComponent = buildComponentServiceCall(doValidateDni);
 export function validateDni(
 	serviceKey: string,
 	barcodeData: DocumentBarcodeData,
-	front: string,
-	back: string,
-	selfie: string
+	pictures: { front: { uri: string }; back: { uri: string }; selfie: { uri: string } }
 ) {
 	return getState(serviceKey, {}, store => {
 		const baseUrl = store.serviceSettings.didiUserServer;
@@ -73,12 +75,14 @@ export function validateDni(
 				birthDate: barcodeData.birthDate,
 				order: barcodeData.tramitId,
 
-				front,
-				back,
-				selfie
+				pictures
 			};
-			return validateDniComponent(serviceKey, args, () => {
-				return serviceCallSuccess(serviceKey);
+			return validateDniComponent(serviceKey, args, response => {
+				return simpleAction(serviceKey, { type: "VALIDATE_DNI_START", operationId: response.operationId }, () => {
+					return handleDniValidationResponse(serviceKey, response, () => {
+						return serviceCallSuccess(serviceKey);
+					});
+				});
 			});
 		});
 	});

@@ -29,7 +29,9 @@ const StoreStatePanel = didiConnect(
 			});
 			return (
 				<ScrollView style={{ minHeight: 200, maxHeight: 200 }}>
-					<Text>{JSON.stringify(toShow, null, 4)}</Text>
+					<Text style={{ fontSize: 8 }}>
+						{JSON.stringify({ show: toShow, other: this.props.validateDni }, null, 4)}
+					</Text>
 				</ScrollView>
 			);
 		}

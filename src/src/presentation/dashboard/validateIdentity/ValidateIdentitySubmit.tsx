@@ -1,8 +1,7 @@
 import React from "react";
 import { Image, Text, View } from "react-native";
-import { TakePictureResponse } from "react-native-camera/types";
-import { readFile } from "react-native-fs";
 
+import { delayed } from "../../../services/common/delayed";
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
@@ -13,6 +12,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import { isPendingService } from "../../../services/ServiceStateStore";
+import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { validateDni } from "../../../services/user/validateDni";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
@@ -103,10 +103,8 @@ const connected = didiConnect(
 			back: { uri: string },
 			selfie: { uri: string }
 		) => {
-			const frontImage = await readFile(front.uri, "base64");
-			const backImage = await readFile(back.uri, "base64");
-			const selfieImage = await readFile(selfie.uri, "base64");
-			dispatch(validateDni(serviceKey, barcodeData, frontImage, backImage, selfieImage));
+			dispatch(validateDni(serviceKey, barcodeData, { front, back, selfie }));
+			dispatch(delayed("_checkValidateDni", { seconds: 30 }, checkValidateDni));
 		}
 	})
 );

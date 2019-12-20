@@ -10,15 +10,15 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import strings from "../../resources/strings";
 
-export interface ValidateIdentitySuccessNavigation {
+export interface ValidateIdentityFailureNavigation {
 	DashboardRoot: {};
 }
-export interface ValidateIdentitySuccessProps {}
+export interface ValidateIdentityFailureProps {}
 
-export class ValidateIdentitySuccessScreen extends NavigationEnabledComponent<
-	ValidateIdentitySuccessProps,
+export class ValidateIdentityFailureScreen extends NavigationEnabledComponent<
+	ValidateIdentityFailureProps,
 	{},
-	ValidateIdentitySuccessNavigation
+	ValidateIdentityFailureNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
 
@@ -26,18 +26,18 @@ export class ValidateIdentitySuccessScreen extends NavigationEnabledComponent<
 		//
 		return (
 			<DidiScreen>
-				<DidiText.ValidateIdentity.Title>{strings.validateIdentity.success.header}</DidiText.ValidateIdentity.Title>
+				<DidiText.ValidateIdentity.Title>{strings.validateIdentity.failure.header}</DidiText.ValidateIdentity.Title>
 				<View>
 					<DidiText.ValidateIdentity.Congrats>
-						{strings.validateIdentity.success.congrats}
+						{strings.validateIdentity.failure.congrats}
 					</DidiText.ValidateIdentity.Congrats>
 					<DidiText.ValidateIdentity.Reminder>
-						{strings.validateIdentity.success.reminder}
+						{strings.validateIdentity.failure.reminder}
 					</DidiText.ValidateIdentity.Reminder>
 				</View>
 				<Image style={commonStyles.image.image} source={require("../../resources/images/validateIdentityHow.png")} />
 				<DidiButton
-					title={strings.validateIdentity.success.buttonText}
+					title={strings.validateIdentity.failure.buttonText}
 					onPress={() => this.navigate("DashboardRoot", {})}
 				/>
 			</DidiScreen>

@@ -57,7 +57,7 @@ export function buildComponentServiceCall<Args, Result>(
 				(err: unknown) => ({
 					type: "SERVICE_CALL_FAILURE",
 					serviceKey,
-					error: serviceErrors.did.READ_ERROR
+					error: serviceErrors.common.UNKNOWN_ERR
 				})
 			)
 		};

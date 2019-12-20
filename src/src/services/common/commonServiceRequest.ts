@@ -23,7 +23,7 @@ export async function commonServiceRequest<A>(
 			headers: {
 				"Content-Type": "application/json; charset=utf-8"
 			},
-			body: JSON.stringify(parameters)
+			...(method !== "GET" && { body: JSON.stringify(parameters) })
 		});
 	} catch (e) {
 		return left(serviceErrors.common.FETCH_ERR);

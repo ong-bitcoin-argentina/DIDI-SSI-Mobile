@@ -6,6 +6,7 @@ function error(errorCode: string, message: string): ErrorData {
 
 export const serviceErrors = {
 	common: {
+		UNKNOWN_ERR: error("UNKNOWN_ERR", "Error desconocido."),
 		FETCH_ERR: error("FETCH_ERR", "Error al enviar peticion al servidor."),
 		JSON_ERR: error("JSON_ERR", "Error al interpretar formato de respuesta."),
 		PARSE_ERR: error("PARSE_ERR", "Error al interpretar formato de respuesta.")

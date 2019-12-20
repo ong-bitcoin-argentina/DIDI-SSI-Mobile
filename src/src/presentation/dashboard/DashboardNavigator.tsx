@@ -26,7 +26,9 @@ import DashboardScreen, { DashboardScreenNavigation, DashboardScreenProps } from
 import { NotificationScreen } from "./home/NotificationScreen";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
+import { ValidateIdentityFailureScreen } from "./validateIdentity/ValidateIdentityFailure";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
+import { ValidateIdentitySuccessScreen } from "./validateIdentity/ValidateIdentitySuccess";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -123,6 +125,8 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 
 	return NavMap.from(BottomNavigatorComponent, {
 		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen)),
+		ValidateIDSuccess: NavMap.from(ValidateIdentitySuccessScreen, {}),
+		ValidateIDFailure: NavMap.from(ValidateIdentityFailureScreen, {}),
 		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen)),
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
 			ShareMicroCredential: NavMap.from(ShareMicroCredentialScreen, {

@@ -16,6 +16,7 @@ import { identityReducer } from "./reducers/identityReducer";
 import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
 import { sessionReducer } from "./reducers/sessionReducer";
 import { tokenReducer } from "./reducers/tokenReducer";
+import { validateDniReducer, ValidateDniState } from "./reducers/validateDniProgressReducer";
 import { StoreAction } from "./StoreAction";
 
 export interface PersistedStoreContent {
@@ -23,13 +24,15 @@ export interface PersistedStoreContent {
 	tokens: string[];
 	userInputIdentity: Identity;
 	serviceSettings: ServiceSettings;
+	validateDni: ValidateDniState;
 }
 
 const reducer = combineReducers<PersistedStoreContent, StoreAction>({
 	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
 	userInputIdentity: identityReducer,
-	serviceSettings: serviceSettingsReducer
+	serviceSettings: serviceSettingsReducer,
+	validateDni: validateDniReducer
 });
 
 const stateReconciler: StateReconciler<PersistedStoreContent> = autoMergeLevel2;

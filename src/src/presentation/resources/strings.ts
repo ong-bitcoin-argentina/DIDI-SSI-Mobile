@@ -26,8 +26,13 @@ export default {
 		},
 		identity: {
 			category: "Documento Identidad",
-			subTitle: "Nombre",
-			validateButtonTitle: "Validar Id"
+			subTitle: "Nombre"
+		},
+		validateIdentity: {
+			startButtonTitle: "Validar Id",
+			successButtonTitle: "Éxito",
+			failureButtonTitle: "Reintentar",
+			validating: "Validación en progreso..."
 		},
 		recentActivities: {
 			label: "Actividades recientes",
@@ -258,6 +263,12 @@ export default {
 		success: {
 			header: "Validación de Identidad",
 			congrats: "¡Felicitaciones! Su identidad ha sido validada.",
+			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
+			buttonText: "OK"
+		},
+		failure: {
+			header: "Validación de Identidad",
+			congrats: "Su identidad no ha sido validada. Por favor, vuelva a intentar.",
 			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
 			buttonText: "OK"
 		}
