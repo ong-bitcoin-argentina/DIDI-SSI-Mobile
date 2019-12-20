@@ -8,7 +8,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { SpecialCredentialData } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -18,7 +17,7 @@ import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
-	credentials: Array<CredentialDocument | SpecialCredentialData>;
+	credentials: CredentialDocument[];
 }
 
 type ShareCredentialState = {};
@@ -62,7 +61,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private renderCard(document: CredentialDocument | SpecialCredentialData): JSX.Element {
+	private renderCard(document: CredentialDocument): JSX.Element {
 		return (
 			<TouchableOpacity onPress={() => this.doShare(document)}>
 				<DocumentCredentialCard preview={false} document={document} />
@@ -81,9 +80,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 
 export default didiConnect(
 	ShareCredentialScreen,
-	(state): ShareCredentialInternalProps => {
-		return {
-			credentials: state.credentials.toplevel
-		};
-	}
+	(state): ShareCredentialInternalProps => ({
+		credentials: state.credentials
+	})
 );

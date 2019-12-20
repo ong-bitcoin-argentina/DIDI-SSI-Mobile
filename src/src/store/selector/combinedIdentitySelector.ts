@@ -5,7 +5,7 @@ import TypedObject from "../../util/TypedObject";
 
 import { LegalAddress, PersonalData, VisualData } from "../../model/Identity";
 
-import { specialCredentialSelector } from "./credentialSelector";
+import { toplevelCredentialSelector } from "./credentialSelector";
 
 export enum ValidationState {
 	Approved = "Approved",
@@ -36,9 +36,9 @@ function idFromEmail(email: string | undefined): string | undefined {
 }
 
 export const combinedIdentitySelector = createSelector(
-	specialCredentialSelector,
+	toplevelCredentialSelector,
 	st => st.persisted.userInputIdentity,
-	(specials, userInputId) => {
+	(credentials, userInputId) => {
 		const identity: ValidatedIdentity = {
 			address: {
 				state: ValidationState.Pending,
@@ -50,8 +50,11 @@ export const combinedIdentitySelector = createSelector(
 				value: v
 			}))
 		};
-		specials.forEach(data => {
-			const special = data.specialFlag;
+		credentials.forEach(credential => {
+			const special = credential.specialFlag;
+			if (special === undefined) {
+				return;
+			}
 			switch (special.type) {
 				case "EmailData":
 					identity.personalData.email = {

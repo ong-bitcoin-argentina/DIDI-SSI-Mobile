@@ -2,20 +2,20 @@ import React from "react";
 
 import CredentialCard from "../common/CredentialCard";
 
+import { CredentialDocument } from "../../../model/CredentialDocument";
 import { SpecialCredentialFlag } from "../../../model/SpecialCredential";
-import { SpecialCredentialData } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
 export interface EvolutionCardProps {
-	specialCredentials: SpecialCredentialData[];
+	credentials: CredentialDocument[];
 }
 
 export class EvolutionCard extends React.Component<EvolutionCardProps> {
 	render() {
 		const str = strings.dashboard.evolution;
 		const specialValue = (val: SpecialCredentialFlag["type"]): string => {
-			return this.props.specialCredentials.find(sp => sp.specialFlag.type === val)
+			return this.props.credentials.find(sp => sp.specialFlag?.type === val)
 				? str.validationState.yes
 				: str.validationState.no;
 		};

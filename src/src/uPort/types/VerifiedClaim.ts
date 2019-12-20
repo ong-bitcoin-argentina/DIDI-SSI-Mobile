@@ -1,22 +1,10 @@
 import * as t from "io-ts";
 
+import { SingleKeyedRecordCodec } from "../../util/SingleKeyedRecord";
+
+import { ClaimDataCodec } from "../../model/Claim";
+import { CredentialDocument } from "../../model/CredentialDocument";
 import { EthrDIDCodec } from "../../model/EthrDID";
-
-import { StructuredClaimCodec } from "./StructuredClaim";
-
-export const VerifiedClaimInnerCodec = t.intersection([
-	t.type({
-		type: t.literal("VerifiedClaim"),
-		issuer: EthrDIDCodec,
-		subject: EthrDIDCodec,
-		claims: StructuredClaimCodec
-	}),
-	t.partial({
-		issuedAt: t.number,
-		expireAt: t.number
-	})
-]);
-export type VerifiedClaim = typeof VerifiedClaimInnerCodec._A;
 
 const VerifiedClaimOuterCodec = t.intersection([
 	t.type({
@@ -25,7 +13,16 @@ const VerifiedClaimOuterCodec = t.intersection([
 		vc: t.type({
 			"@context": t.array(t.string),
 			type: t.array(t.string),
-			credentialSubject: StructuredClaimCodec
+			credentialSubject: SingleKeyedRecordCodec(
+				t.partial({
+					data: ClaimDataCodec,
+					wrapped: t.record(t.string, t.string),
+					preview: t.type({
+						type: t.number,
+						fields: t.array(t.string)
+					})
+				})
+			)
 		})
 	}),
 	t.partial({
@@ -35,18 +32,26 @@ const VerifiedClaimOuterCodec = t.intersection([
 ]);
 type VerifiedClaimTransport = typeof VerifiedClaimOuterCodec._A;
 
+export type VerifiedClaim = Omit<CredentialDocument, "type" | "jwt" | "nested" | "specialFlag"> & {
+	type: "VerifiedClaim";
+	wrapped: Record<string, string>;
+};
+
 export const VerifiedClaimCodec = VerifiedClaimOuterCodec.pipe(
 	new t.Type<VerifiedClaim, VerifiedClaimTransport, VerifiedClaimTransport>(
 		"VerifiedClaimCodec",
-		VerifiedClaimInnerCodec.is,
+		(u): u is VerifiedClaim => true,
 		(i, c) =>
 			t.success<VerifiedClaim>({
 				type: "VerifiedClaim",
 				issuer: i.iss,
 				subject: i.sub,
-				claims: i.vc.credentialSubject,
 				expireAt: i.exp,
-				issuedAt: i.iat
+				issuedAt: i.iat,
+				title: i.vc.credentialSubject.key,
+				preview: i.vc.credentialSubject.value.preview,
+				data: i.vc.credentialSubject.value.data ?? {},
+				wrapped: i.vc.credentialSubject.value.wrapped ?? {}
 			}),
 		a => {
 			return {
@@ -58,7 +63,14 @@ export const VerifiedClaimCodec = VerifiedClaimOuterCodec.pipe(
 				vc: {
 					"@context": ["https://www.w3.org/2018/credentials/v1"],
 					type: ["VerifiableCredential"],
-					credentialSubject: a.claims
+					credentialSubject: {
+						key: a.title,
+						value: {
+							data: a.data,
+							preview: a.preview,
+							wrapped: a.wrapped
+						}
+					}
 				}
 			};
 		}

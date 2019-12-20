@@ -7,7 +7,6 @@ import { DocumentCredentialCard, sampleDocumentToCard } from "../common/document
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DocumentFilterType, SampleDocument } from "../../../model/SampleDocument";
-import { SpecialCredentialData } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
@@ -16,7 +15,7 @@ import { DocumentDetailProps } from "./DocumentDetail";
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenInternalProps extends DocumentsScreenProps {
-	credentials: Array<CredentialDocument | SpecialCredentialData>;
+	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	filter: (type: DocumentFilterType) => boolean;
 }
@@ -57,13 +56,11 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 export default function(filter: (type: DocumentFilterType) => boolean) {
 	return didiConnect(
 		DocumentsScreen,
-		(state): DocumentsScreenInternalProps => {
-			return {
-				filter,
-				samples: state.samples,
-				credentials: state.credentials.toplevel
-			};
-		}
+		(state): DocumentsScreenInternalProps => ({
+			filter,
+			samples: state.samples,
+			credentials: state.credentials
+		})
 	);
 }
 

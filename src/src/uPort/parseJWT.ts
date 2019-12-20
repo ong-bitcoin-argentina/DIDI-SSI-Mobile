@@ -11,6 +11,7 @@ import TypedArray from "../util/TypedArray";
 
 import { CredentialDocument } from "../model/CredentialDocument";
 import { RequestDocument } from "../model/RequestDocument";
+import { SpecialCredentialFlag } from "../model/SpecialCredential";
 
 import { JWTParseError } from "./JWTParseError";
 import { ForwardedRequestCodec } from "./types/ForwardedRequest";
@@ -54,10 +55,11 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 					return unverifiedParseJWT(unverified.forwarded);
 				case "VerifiedClaim":
 					const nested = parseNestedInUnverified(unverified);
+					const specialFlag = SpecialCredentialFlag.extract(unverified);
 					if (isLeft(nested)) {
 						return nested;
 					} else {
-						return right({ ...unverified, type: "CredentialDocument", jwt, nested: nested.right });
+						return right({ ...unverified, type: "CredentialDocument", jwt, nested: nested.right, specialFlag });
 					}
 			}
 		}
@@ -123,7 +125,7 @@ function extractCredentials(
 }
 
 function parseNestedInUnverified(vc: VerifiedClaim): Either<JWTParseError, CredentialDocument[]> {
-	const nested = Object.values(vc.claims.wrapped);
+	const nested = Object.values(vc.wrapped);
 	const parsed = nested.map(unverifiedParseJWT);
 	const mix = array.sequence(either)(parsed);
 	if (isLeft(mix)) {
@@ -137,7 +139,7 @@ async function parseNestedInVerified(
 	vc: VerifiedClaim,
 	ethrUri: string
 ): Promise<Either<JWTParseError, CredentialDocument[]>> {
-	const nested = Object.values(vc.claims.wrapped);
+	const nested = Object.values(vc.wrapped);
 	const parsed = await Promise.all(nested.map(micro => parseJWT(micro, ethrUri)));
 	const mix = array.sequence(either)(parsed);
 	if (isLeft(mix)) {

@@ -15,7 +15,6 @@ import { RecentActivity } from "../../../model/RecentActivity";
 import { SampleDocument } from "../../../model/SampleDocument";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
-import { SpecialCredentialData } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
@@ -34,8 +33,7 @@ import { NotificationScreenProps } from "./NotificationScreen";
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	person: ValidatedIdentity;
-	regularCredentials: CredentialDocument[];
-	specialCredentials: SpecialCredentialData[];
+	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }
@@ -61,7 +59,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 	}
 
 	private renderRegularDocuments() {
-		return this.props.regularCredentials.map((document, index) => (
+		return this.props.credentials.map((document, index) => (
 			<TouchableOpacity key={`RG_${index}`} onPress={() => this.navigate("DashDocumentDetail", { document })}>
 				<DocumentCredentialCard preview={true} document={document} />
 			</TouchableOpacity>
@@ -69,13 +67,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 	}
 
 	private renderSpecialDocuments() {
-		if (this.props.specialCredentials.find(sp => sp.specialFlag.type === "PersonalData")) {
-			return this.props.specialCredentials.map((document, index) => (
-				<TouchableOpacity key={`SP_${index}`} onPress={() => this.navigate("DashDocumentDetail", { document })}>
-					<DocumentCredentialCard preview={true} document={document} />
-				</TouchableOpacity>
-			));
-		} else {
+		if (!this.props.credentials.find(c => c.specialFlag?.type === "PersonalData")) {
 			return this.incompleteIdentityCard();
 		}
 	}
@@ -128,7 +120,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 							onBellPress={() => this.navigate("NotificationScreen", {})}
 						/>
 						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
-							<EvolutionCard specialCredentials={this.props.specialCredentials} />
+							<EvolutionCard credentials={this.props.credentials} />
 							{this.renderRegularDocuments()}
 							{this.props.samples.map(sampleDocumentToCard)}
 							{this.renderSpecialDocuments()}
@@ -148,8 +140,7 @@ export default didiConnect(
 	(state): DashboardScreenStateProps => ({
 		person: state.identity,
 		recentActivity: state.recentActivity,
-		regularCredentials: state.credentials.regular,
-		specialCredentials: state.credentials.special,
+		credentials: state.credentials,
 		samples: state.samples
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({

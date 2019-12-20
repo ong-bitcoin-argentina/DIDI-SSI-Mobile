@@ -1,7 +1,8 @@
 import { isRight } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { Claim } from "./Claim";
+import { VerifiedClaim } from "../uPort/types/VerifiedClaim";
+
 import { LegalAddress, PersonalIdentityData } from "./Identity";
 
 export type SpecialCredentialFlag =
@@ -47,7 +48,7 @@ const legalAddressCredentialCodec = t.partial({
 });
 
 export const SpecialCredentialFlag = {
-	extract: (claim: Claim): SpecialCredentialFlag | undefined => {
+	extract: (claim: VerifiedClaim): SpecialCredentialFlag | undefined => {
 		switch (claim.title) {
 			case "Phone":
 				const phone = phoneCredentialCodec.decode(claim.data);
