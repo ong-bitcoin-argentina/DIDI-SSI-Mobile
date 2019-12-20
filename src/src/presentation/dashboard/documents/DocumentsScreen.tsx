@@ -32,7 +32,7 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
-						{this.props.filter("other") && this.renderAllDocuments()}
+						{this.renderDocuments()}
 						{this.props.samples.filter(sample => this.props.filter(sample.filterType)).map(sampleDocumentToCard)}
 					</ScrollView>
 				</SafeAreaView>
@@ -40,16 +40,18 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 		);
 	}
 
-	private renderAllDocuments() {
-		return this.props.credentials.map(
-			(document, index): JSX.Element => {
-				return (
-					<TouchableOpacity key={index} onPress={() => this.navigate("DocumentDetail", { document })}>
-						<DocumentCredentialCard preview={true} document={document} />
-					</TouchableOpacity>
-				);
-			}
-		);
+	private renderDocuments() {
+		return this.props.credentials
+			.filter(doc => this.props.filter(doc.category))
+			.map(
+				(document, index): JSX.Element => {
+					return (
+						<TouchableOpacity key={index} onPress={() => this.navigate("DocumentDetail", { document })}>
+							<DocumentCredentialCard preview={true} document={document} />
+						</TouchableOpacity>
+					);
+				}
+			);
 	}
 }
 

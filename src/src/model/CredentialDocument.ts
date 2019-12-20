@@ -3,6 +3,7 @@ import TypedArray from "../util/TypedArray";
 import { ClaimData, ClaimDataPairs } from "./Claim";
 import { DidiDocument } from "./DidiDocument";
 import { EthrDID } from "./EthrDID";
+import { DocumentFilterType } from "./SampleDocument";
 import { SpecialCredentialFlag } from "./SpecialCredential";
 
 export interface CredentialDocument extends DidiDocument {
@@ -12,6 +13,7 @@ export interface CredentialDocument extends DidiDocument {
 	title: string;
 	data: ClaimData;
 	preview?: { type: number; fields: string[] };
+	category: DocumentFilterType;
 
 	nested: CredentialDocument[];
 	specialFlag?: SpecialCredentialFlag;
