@@ -82,7 +82,7 @@ function selectVerifiedClaims(
 	documents: CredentialDocument[]
 ): Array<{ selector: string; value?: CredentialDocument }> {
 	return request.verifiedClaims.map(selector => {
-		const selected = documents.find(document => document.content.claims.title === selector);
+		const selected = documents.find(document => document.claims.title === selector);
 		return { selector, value: selected };
 	});
 }
@@ -109,7 +109,7 @@ export function getResponseClaims(
 		own: {
 			...own,
 			...TypedObject.mapValues(verified, v => {
-				return v.content.claims.data;
+				return v.claims.data;
 			})
 		},
 		verified: TypedObject.values(verified).map(d => d.jwt)

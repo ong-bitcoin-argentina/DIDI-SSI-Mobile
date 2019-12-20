@@ -1,4 +1,3 @@
-import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
 import { EthrDIDCodec } from "../../model/EthrDID";
@@ -28,13 +27,13 @@ const ForwardedRequestOuterCodec = t.intersection([
 		exp: t.number
 	})
 ]);
-type ForwardedRequestTransport = typeof ForwardedRequestOuterCodec._O;
+type ForwardedRequestTransport = typeof ForwardedRequestOuterCodec._A;
 
-export const ForwardedRequestCodec = new t.Type<ForwardedRequest, ForwardedRequestTransport, unknown>(
-	"ForwardedRequestCodec",
-	ForwardedRequestInnerCodec.is,
-	(u, c) =>
-		either.chain(ForwardedRequestOuterCodec.validate(u, c), i =>
+export const ForwardedRequestCodec = ForwardedRequestOuterCodec.pipe(
+	new t.Type<ForwardedRequest, ForwardedRequestTransport, ForwardedRequestTransport>(
+		"ForwardedRequestCodec",
+		ForwardedRequestInnerCodec.is,
+		(i, c) =>
 			t.success<ForwardedRequest>({
 				type: "ForwardedRequest",
 				issuer: i.iss,
@@ -42,16 +41,16 @@ export const ForwardedRequestCodec = new t.Type<ForwardedRequest, ForwardedReque
 				expireAt: i.exp,
 				issuedAt: i.iat,
 				forwarded: i.disclosureRequest
-			})
-		),
-	a => {
-		return {
-			type: "shareReq",
-			iss: a.issuer.did(),
-			sub: a.subject.did(),
-			exp: a.expireAt,
-			iat: a.issuedAt,
-			disclosureRequest: a.forwarded
-		};
-	}
+			}),
+		a => {
+			return {
+				type: "shareReq",
+				iss: a.issuer,
+				sub: a.subject,
+				exp: a.expireAt,
+				iat: a.issuedAt,
+				disclosureRequest: a.forwarded
+			};
+		}
+	)
 );

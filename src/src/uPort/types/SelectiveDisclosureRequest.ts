@@ -1,4 +1,3 @@
-import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
 import { EthrDIDCodec } from "../../model/EthrDID";
@@ -31,17 +30,13 @@ const SelectiveDisclosureRequestOuterCodec = t.intersection([
 		exp: t.number
 	})
 ]);
-type SelectiveDisclosureRequestTransport = typeof SelectiveDisclosureRequestOuterCodec._O;
+type SelectiveDisclosureRequestTransport = typeof SelectiveDisclosureRequestOuterCodec._A;
 
-export const SelectiveDisclosureRequestCodec = new t.Type<
-	SelectiveDisclosureRequest,
-	SelectiveDisclosureRequestTransport,
-	unknown
->(
-	"SelectiveDisclosureRequestCodec",
-	SelectiveDisclosureRequestInnerCodec.is,
-	(u, c) =>
-		either.chain(SelectiveDisclosureRequestOuterCodec.validate(u, c), i =>
+export const SelectiveDisclosureRequestCodec = SelectiveDisclosureRequestOuterCodec.pipe(
+	new t.Type<SelectiveDisclosureRequest, SelectiveDisclosureRequestTransport, SelectiveDisclosureRequestTransport>(
+		"SelectiveDisclosureRequestCodec",
+		SelectiveDisclosureRequestInnerCodec.is,
+		(i, c) =>
 			t.success<SelectiveDisclosureRequest>({
 				type: "SelectiveDisclosureRequest",
 				issuer: i.iss,
@@ -50,17 +45,17 @@ export const SelectiveDisclosureRequestCodec = new t.Type<
 				verifiedClaims: i.verified || [],
 				issuedAt: i.iat,
 				expireAt: i.exp
-			})
-		),
-	a => {
-		return {
-			type: "shareReq",
-			iss: a.issuer.did(),
-			callback: a.callback,
-			requested: a.ownClaims,
-			verified: a.verifiedClaims,
-			iat: a.issuedAt,
-			exp: a.expireAt
-		};
-	}
+			}),
+		a => {
+			return {
+				type: "shareReq",
+				iss: a.issuer,
+				callback: a.callback,
+				requested: a.ownClaims,
+				verified: a.verifiedClaims,
+				iat: a.issuedAt,
+				exp: a.expireAt
+			};
+		}
+	)
 );

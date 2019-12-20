@@ -1,4 +1,3 @@
-import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
 import { EthrDIDCodec } from "../../model/EthrDID";
@@ -34,13 +33,13 @@ const VerifiedClaimOuterCodec = t.intersection([
 		exp: t.number
 	})
 ]);
-type VerifiedClaimTransport = typeof VerifiedClaimOuterCodec._O;
+type VerifiedClaimTransport = typeof VerifiedClaimOuterCodec._A;
 
-export const VerifiedClaimCodec = new t.Type<VerifiedClaim, VerifiedClaimTransport, unknown>(
-	"VerifiedClaimCodec",
-	VerifiedClaimInnerCodec.is,
-	(u, c) =>
-		either.chain(VerifiedClaimOuterCodec.validate(u, c), i =>
+export const VerifiedClaimCodec = VerifiedClaimOuterCodec.pipe(
+	new t.Type<VerifiedClaim, VerifiedClaimTransport, VerifiedClaimTransport>(
+		"VerifiedClaimCodec",
+		VerifiedClaimInnerCodec.is,
+		(i, c) =>
 			t.success<VerifiedClaim>({
 				type: "VerifiedClaim",
 				issuer: i.iss,
@@ -48,20 +47,20 @@ export const VerifiedClaimCodec = new t.Type<VerifiedClaim, VerifiedClaimTranspo
 				claims: i.vc.credentialSubject,
 				expireAt: i.exp,
 				issuedAt: i.iat
-			})
-		),
-	a => {
-		return {
-			type: "shareReq",
-			iss: a.issuer.did(),
-			sub: a.subject.did(),
-			exp: a.expireAt,
-			iat: a.issuedAt,
-			vc: {
-				"@context": ["https://www.w3.org/2018/credentials/v1"],
-				type: ["VerifiableCredential"],
-				credentialSubject: StructuredClaimCodec.encode(a.claims)
-			}
-		};
-	}
+			}),
+		a => {
+			return {
+				type: "shareReq",
+				iss: a.issuer,
+				sub: a.subject,
+				exp: a.expireAt,
+				iat: a.issuedAt,
+				vc: {
+					"@context": ["https://www.w3.org/2018/credentials/v1"],
+					type: ["VerifiableCredential"],
+					credentialSubject: a.claims
+				}
+			};
+		}
+	)
 );

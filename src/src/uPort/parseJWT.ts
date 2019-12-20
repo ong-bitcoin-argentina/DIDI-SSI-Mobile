@@ -49,7 +49,7 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 		} else {
 			switch (unverified.type) {
 				case "SelectiveDisclosureRequest":
-					return right({ type: "RequestDocument", jwt, content: unverified });
+					return right({ ...unverified, type: "RequestDocument", jwt });
 				case "ForwardedRequest":
 					return unverifiedParseJWT(unverified.forwarded);
 				case "VerifiedClaim":
@@ -57,7 +57,7 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 					if (isLeft(nested)) {
 						return nested;
 					} else {
-						return right({ type: "CredentialDocument", jwt, content: unverified, nested: nested.right });
+						return right({ ...unverified, type: "CredentialDocument", jwt, nested: nested.right });
 					}
 			}
 		}
@@ -81,7 +81,7 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 		});
 
 		try {
-			const { payload } = await (unverifiedContent.right.content.type === "VerifiedClaim"
+			const { payload } = await (unverifiedContent.right.type === "CredentialDocument"
 				? verifyCredential(jwt, resolver)
 				: verifyJWT(jwt, { resolver }));
 
@@ -93,7 +93,7 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 			const verified = parsed.right;
 			switch (verified.type) {
 				case "SelectiveDisclosureRequest":
-					return right({ type: "RequestDocument", jwt, content: verified });
+					return right({ ...verified, type: "RequestDocument", jwt });
 				case "ForwardedRequest":
 					return parseJWT(verified.forwarded, ethrUri);
 				case "VerifiedClaim":
@@ -101,7 +101,7 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 					if (isLeft(nested)) {
 						return left(nested.left);
 					} else {
-						return right({ type: "CredentialDocument", jwt, content: verified, nested: nested.right });
+						return right({ ...verified, type: "CredentialDocument", jwt, nested: nested.right });
 					}
 			}
 		} catch (e) {

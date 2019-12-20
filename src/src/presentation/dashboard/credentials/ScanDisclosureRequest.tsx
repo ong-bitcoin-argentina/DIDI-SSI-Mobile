@@ -72,7 +72,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 	private answerRequest() {
 		const { missing, own, verified } = getResponseClaims(
-			this.props.request.content,
+			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
 			this.props.credentials,
 			this.props.identity
 		);

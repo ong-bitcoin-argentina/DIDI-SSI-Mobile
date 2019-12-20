@@ -72,7 +72,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 
 	private renderRequest(request: RequestDocument) {
 		const now = Math.floor(Date.now() / 1000);
-		const isActive = request.content.expireAt ? now < request.content.expireAt : true;
+		const isActive = request.expireAt ? now < request.expireAt : true;
 		return (
 			<RequestCard key={request.jwt} request={request}>
 				<View style={{ marginTop: 10 }}>

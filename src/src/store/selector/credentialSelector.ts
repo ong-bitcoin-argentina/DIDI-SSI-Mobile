@@ -37,7 +37,7 @@ const categorizedCredentialSelector = createSelector(
 			special: []
 		};
 		credentials.forEach(credential => {
-			const specialFlag = SpecialCredentialFlag.extract(credential.content.claims);
+			const specialFlag = SpecialCredentialFlag.extract(credential.claims);
 			if (specialFlag === undefined) {
 				res.regular.push(credential);
 			} else {

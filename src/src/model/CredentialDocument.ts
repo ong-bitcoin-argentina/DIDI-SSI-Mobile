@@ -1,13 +1,14 @@
 import TypedArray from "../util/TypedArray";
 
-import { VerifiedClaim } from "../uPort/types/VerifiedClaim";
+import { Claim, ClaimDataPairs } from "./Claim";
+import { DidiDocument } from "./DidiDocument";
+import { EthrDID } from "./EthrDID";
 
-import { ClaimDataPairs } from "./Claim";
-
-export interface CredentialDocument {
+export interface CredentialDocument extends DidiDocument {
 	type: "CredentialDocument";
-	jwt: string;
-	content: VerifiedClaim;
+
+	claims: Claim;
+	subject: EthrDID;
 	nested: CredentialDocument[];
 }
 
@@ -15,7 +16,7 @@ export const CredentialDocument = {
 	extractAllDataPairs: (doc: CredentialDocument): ClaimDataPairs => {
 		return [
 			...doc.nested.map(CredentialDocument.extractAllDataPairs).reduce((l, r) => [...l, ...r], []),
-			...doc.content.claims.dataPairs()
+			...doc.claims.dataPairs()
 		];
 	},
 

@@ -13,6 +13,10 @@ const TypedObject = {
 			result[key] = fn(o[key]);
 		});
 		return result;
+	},
+
+	everyValue<V, Q extends V>(o: { [key: string]: V }, fn: (value: V) => value is Q): o is { [key: string]: Q } {
+		return Object.values(o).every(fn);
 	}
 };
 export default TypedObject;

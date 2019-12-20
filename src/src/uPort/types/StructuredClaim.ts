@@ -15,8 +15,10 @@ export const StructuredClaimOuterCodec = SingleKeyedRecordCodec(
 	})
 );
 
+type StructuredClaimTransport = typeof StructuredClaimOuterCodec._A;
+
 export const StructuredClaimCodec = StructuredClaimOuterCodec.pipe(
-	new t.Type<Claim, typeof StructuredClaimOuterCodec._A, typeof StructuredClaimOuterCodec._A>(
+	new t.Type<Claim, StructuredClaimTransport, StructuredClaimTransport>(
 		"StructuredClaimCodec",
 		(x): x is Claim => x instanceof Claim,
 		(i, c) => t.success<Claim>(new Claim(i.key, i.value.data, i.value.wrapped, i.value.preview)),

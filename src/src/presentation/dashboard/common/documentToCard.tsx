@@ -30,16 +30,16 @@ interface DocumentCredentialCardProps {
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
 	render() {
 		const doc = this.props.document;
-		const issuer = doc.content.issuer.keyAddress().slice(0, 20);
-		const category = doc.content.issuedAt ? new Date(doc.content.issuedAt * 1000).toLocaleString() : "Credencial";
+		const issuer = doc.issuer.keyAddress().slice(0, 20);
+		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
 		return (
 			<CredentialCard
 				icon=""
 				category={category}
-				title={doc.content.claims.title}
+				title={doc.claims.title}
 				subTitle={"Emisor: " + issuer + "..."}
-				data={CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.content.claims.preview : undefined)}
-				columns={this.props.preview ? doc.content.claims.numberOfColumns() : 1}
+				data={CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.claims.preview : undefined)}
+				columns={this.props.preview ? doc.claims.numberOfColumns() : 1}
 				color={colors.secondary}
 				hollow={this.props.document.specialFlag !== undefined}
 			/>
