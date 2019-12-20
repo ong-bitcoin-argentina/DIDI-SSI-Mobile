@@ -86,8 +86,10 @@ export const combinedIdentitySelector = createSelector(
 					assertUnreachable(special);
 			}
 		});
-		if ((identity.personalData.firstNames || identity.personalData.firstNames) && !identity.visual.name) {
-			identity.visual.name = [identity.personalData.firstNames, identity.personalData.firstNames].join(" ");
+		if (identity.personalData.firstNames && identity.personalData.lastNames) {
+			identity.visual.name = [identity.personalData.firstNames.value, identity.personalData.lastNames.value].join(" ");
+		} else if (identity.personalData.email) {
+			identity.visual.name = idFromEmail(identity.personalData.email.value);
 		}
 		if (identity.personalData.email && !identity.visual.id) {
 			identity.visual.id = idFromEmail(identity.personalData.email.value);
