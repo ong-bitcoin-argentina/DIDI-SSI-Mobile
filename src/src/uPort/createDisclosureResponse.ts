@@ -19,8 +19,8 @@ function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Validate
 	}
 
 	for (const requested of request.ownClaims) {
-		const key = requested.toLowerCase();
-		switch (key) {
+		const key = requested;
+		switch (key.toLowerCase()) {
 			case "nombre":
 			case "firstNames":
 				insert(key, identity.personalData.firstNames?.value);
