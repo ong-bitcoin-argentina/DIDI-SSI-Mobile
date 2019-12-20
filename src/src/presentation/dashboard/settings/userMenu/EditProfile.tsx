@@ -42,7 +42,8 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 
 	private canPressContinueButton(): boolean {
 		return (
-			(!this.state.personalData.fullName || Validator.isName(this.state.personalData.fullName)) &&
+			(!this.state.personalData.firstNames || Validator.isName(this.state.personalData.firstNames)) &&
+			(!this.state.personalData.lastNames || Validator.isName(this.state.personalData.lastNames)) &&
 			(!this.state.personalData.document || Validator.isDocumentNumber(this.state.personalData.document)) &&
 			(!this.state.personalData.nationality || Validator.isNationality(this.state.personalData.nationality))
 		);

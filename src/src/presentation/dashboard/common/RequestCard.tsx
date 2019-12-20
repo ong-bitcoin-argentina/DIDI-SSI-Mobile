@@ -27,7 +27,10 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 					</Text>
 					<DidiText.Card.Key>{strings.credentialRequestCard.requests + ": "}</DidiText.Card.Key>
 					{this.props.request.content.verifiedClaims.map((rq, index) => {
-						return <DidiText.Card.Value key={index}>{`    - ${rq}`}</DidiText.Card.Value>;
+						return <DidiText.Card.Key key={index}>{`    - ${rq}`}</DidiText.Card.Key>;
+					})}
+					{this.props.request.content.ownClaims.map((rq, index) => {
+						return <DidiText.Card.Key key={index}>{`    - ${rq}`}</DidiText.Card.Key>;
 					})}
 					{endDate && (
 						<Text>

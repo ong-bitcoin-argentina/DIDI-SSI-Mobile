@@ -55,7 +55,8 @@ export default {
 			barTitle: "Editar Perfil",
 			saveChanges: "Guardar Cambios",
 
-			fullNameMessage: "Nombre completo",
+			firstNameMessage: "Nombre(s)",
+			lastNameMessage: "Apellido(s)",
 			cellMessage: "Celular",
 			emailMessage: "E-mail",
 			documentMessage: "DU / CI / Pasaporte",
@@ -262,8 +263,12 @@ export default {
 		}
 	},
 	textInput: {
-		fullName: {
-			description: "Nombre Completo",
+		firstName: {
+			description: "Nombre",
+			placeholder: ""
+		},
+		lastName: {
+			description: "Apellido",
 			placeholder: ""
 		},
 		email: {

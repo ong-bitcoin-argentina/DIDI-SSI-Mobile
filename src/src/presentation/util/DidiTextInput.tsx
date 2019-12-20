@@ -46,11 +46,23 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	}
 
-	static FullName = (props: { onChangeText(text: string): void }) => {
+	static FirstName = (props: { onChangeText(text: string): void }) => {
 		return (
 			<DidiTextInput
-				description={strings.textInput.fullName.description}
-				placeholder={strings.textInput.fullName.placeholder}
+				description={strings.textInput.firstName.description}
+				placeholder={strings.textInput.firstName.placeholder}
+				textInputProps={{
+					onChangeText: props.onChangeText
+				}}
+			/>
+		);
+	};
+
+	static LastName = (props: { onChangeText(text: string): void }) => {
+		return (
+			<DidiTextInput
+				description={strings.textInput.lastName.description}
+				placeholder={strings.textInput.lastName.placeholder}
 				textInputProps={{
 					onChangeText: props.onChangeText
 				}}

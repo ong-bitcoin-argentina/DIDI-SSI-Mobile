@@ -8,7 +8,8 @@ export interface VisualData {
 }
 
 export interface PersonalIdentityData {
-	fullName: string;
+	firstNames: string;
+	lastNames: string;
 	document: string;
 	nationality: string;
 }

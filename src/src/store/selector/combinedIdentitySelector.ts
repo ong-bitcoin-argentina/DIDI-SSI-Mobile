@@ -83,8 +83,8 @@ export const combinedIdentitySelector = createSelector(
 					assertUnreachable(special);
 			}
 		});
-		if (identity.personalData.fullName && !identity.visual.name) {
-			identity.visual.name = identity.personalData.fullName.value;
+		if ((identity.personalData.firstNames || identity.personalData.firstNames) && !identity.visual.name) {
+			identity.visual.name = [identity.personalData.firstNames, identity.personalData.firstNames].join(" ");
 		}
 		if (identity.personalData.email && !identity.visual.id) {
 			identity.visual.id = idFromEmail(identity.personalData.email.value);

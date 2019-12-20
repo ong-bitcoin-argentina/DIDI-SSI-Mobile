@@ -70,7 +70,8 @@ export const SpecialCredentialFlag = {
 						type: "PersonalData",
 						data: {
 							document: personalData.right.dni,
-							fullName: `${personalData.right.names} ${personalData.right.lastNames}`,
+							firstNames: personalData.right.names,
+							lastNames: personalData.right.lastNames,
 							nationality: personalData.right.nationality
 						}
 					};
