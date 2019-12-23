@@ -25,6 +25,10 @@ export function serviceCallDrop(serviceKey: string): ServiceCallAction {
 	return { type: "SERVICE_CALL_DROP", serviceKey };
 }
 
+export function parallelAction(serviceKey: string, actions: ServiceCallAction[]): ServiceCallAction {
+	return { type: "SERVICE_CALL_START", serviceKey, call: Cmd.list(actions.map(Cmd.action)) };
+}
+
 export function simpleAction(
 	serviceKey: string,
 	action: StoreAction,

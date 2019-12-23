@@ -4,7 +4,6 @@ import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import CredentialCard from "../common/CredentialCard";
 
-import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { ValidateDniState } from "../../../store/reducers/validateDniProgressReducer";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
@@ -18,7 +17,7 @@ export interface IncompleteIdentityCardProps {
 
 interface IncompleteIdentityCardStateProps {
 	personName: string;
-	isIdentityComplete: boolean;
+	isIdentityCredentialPresent: boolean;
 	validateDniState: ValidateDniState;
 }
 
@@ -57,18 +56,22 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 	}
 
 	render() {
-		return (
-			<CredentialCard
-				icon=""
-				category={strings.dashboard.identity.category}
-				title={this.props.personName}
-				subTitle={strings.dashboard.identity.subTitle}
-				color={colors.secondary}
-				hollow={true}
-			>
-				{this.props.isIdentityComplete ? null : this.renderContent()}
-			</CredentialCard>
-		);
+		if (this.props.isIdentityCredentialPresent && this.props.validateDniState === undefined) {
+			return null;
+		} else {
+			return (
+				<CredentialCard
+					icon=""
+					category={strings.dashboard.identity.category}
+					title={this.props.personName}
+					subTitle={strings.dashboard.identity.subTitle}
+					color={colors.secondary}
+					hollow={true}
+				>
+					{this.renderContent()}
+				</CredentialCard>
+			);
+		}
 	}
 }
 
@@ -76,7 +79,8 @@ const connected = didiConnect(
 	IncompleteIdentityCard,
 	(state): IncompleteIdentityCardStateProps => ({
 		personName: state.identity.visual.name ?? state.identity.visual.id ?? "",
-		isIdentityComplete: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
+		isIdentityCredentialPresent:
+			state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
 		validateDniState: state.validateDni
 	})
 );

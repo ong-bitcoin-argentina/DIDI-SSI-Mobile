@@ -3,6 +3,7 @@ import * as t from "io-ts";
 
 import {
 	buildComponentServiceCall,
+	parallelAction,
 	serviceCallDrop,
 	serviceCallSuccess,
 	simpleAction
@@ -14,6 +15,7 @@ import { EthrDID } from "../../model/EthrDID";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 import { ServiceCallAction } from "../ServiceStateStore";
+import { recoverTokens } from "../trustGraph/recoverTokens";
 
 import { commonUserRequest } from "./userServiceCommon";
 
@@ -72,7 +74,7 @@ export function handleDniValidationResponse(
 			return simpleAction(serviceKey, { type: "VALIDATE_DNI_COUNT_DOWN" }, whenInProgress);
 		case "Successful":
 			return simpleAction(serviceKey, { type: "VALIDATE_DNI_RESOLVE", state: { state: "Success" } }, () => {
-				return serviceCallSuccess(serviceKey);
+				return parallelAction(serviceKey, [recoverTokens(), serviceCallSuccess(serviceKey)]);
 			});
 		case "Falied":
 			return simpleAction(
