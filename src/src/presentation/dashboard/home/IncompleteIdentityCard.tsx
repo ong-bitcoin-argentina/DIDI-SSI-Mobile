@@ -56,7 +56,7 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 	}
 
 	render() {
-		if (this.props.isIdentityCredentialPresent && this.props.validateDniState === undefined) {
+		if (this.props.isIdentityCredentialPresent && this.props.validateDniState === null) {
 			return null;
 		} else {
 			return (
