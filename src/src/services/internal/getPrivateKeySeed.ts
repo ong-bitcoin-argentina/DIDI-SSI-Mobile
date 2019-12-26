@@ -4,8 +4,8 @@ import { RNUportHDSigner } from "react-native-uport-signer";
 import { buildComponentServiceCall } from "../common/componentServiceCall";
 import { ErrorData } from "../common/ErrorData";
 
+import { EthrDID } from "../../model/EthrDID";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
-import { EthrDID } from "../../uPort/types/EthrDID";
 
 async function doGetPrivateKeySeed(args: { did: EthrDID }): Promise<Either<ErrorData, string>> {
 	try {

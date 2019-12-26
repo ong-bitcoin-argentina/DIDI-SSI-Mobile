@@ -1,34 +1,29 @@
-import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { EthrDIDCodec } from "./EthrDID";
-import { LegacyClaimCodec } from "./LegacyClaim";
-import { StructuredClaimCodec } from "./StructuredClaim";
+import { SingleKeyedRecordCodec } from "../../util/SingleKeyedRecord";
 
-export const VerifiedClaimInnerCodec = t.intersection([
-	t.type({
-		type: t.literal("VerifiedClaim"),
-		issuer: EthrDIDCodec,
-		subject: EthrDIDCodec,
-		claims: StructuredClaimCodec
-	}),
-	t.partial({
-		issuedAt: t.number,
-		expireAt: t.number
-	})
-]);
-export type VerifiedClaim = typeof VerifiedClaimInnerCodec._A;
-
-export type ClaimMetadata = Omit<VerifiedClaim, "type" | "claims">;
+import { ClaimDataCodec } from "../../model/Claim";
+import { CredentialDocument } from "../../model/CredentialDocument";
+import { EthrDIDCodec } from "../../model/EthrDID";
 
 const VerifiedClaimOuterCodec = t.intersection([
 	t.type({
-		iss: t.string,
-		sub: t.string,
+		iss: EthrDIDCodec,
+		sub: EthrDIDCodec,
 		vc: t.type({
 			"@context": t.array(t.string),
 			type: t.array(t.string),
-			credentialSubject: t.union([StructuredClaimCodec, LegacyClaimCodec])
+			credentialSubject: SingleKeyedRecordCodec(
+				t.partial({
+					data: ClaimDataCodec,
+					wrapped: t.record(t.string, t.string),
+					category: t.string,
+					preview: t.type({
+						type: t.number,
+						fields: t.array(t.string)
+					})
+				})
+			)
 		})
 	}),
 	t.partial({
@@ -38,36 +33,49 @@ const VerifiedClaimOuterCodec = t.intersection([
 ]);
 type VerifiedClaimTransport = typeof VerifiedClaimOuterCodec._A;
 
-export const VerifiedClaimCodec = new t.Type<VerifiedClaim, VerifiedClaimTransport, unknown>(
-	"VerifiedClaimCodec",
-	VerifiedClaimInnerCodec.is,
-	(u, c) =>
-		either.chain(VerifiedClaimOuterCodec.validate(u, c), i =>
-			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
-				either.chain(EthrDIDCodec.validate(i.sub, c), subject =>
-					t.success<VerifiedClaim>({
-						type: "VerifiedClaim",
-						issuer,
-						subject,
-						claims: i.vc.credentialSubject,
-						expireAt: i.exp,
-						issuedAt: i.iat
-					})
-				)
-			)
-		),
-	a => {
-		return {
-			type: "shareReq",
-			iss: a.issuer.did(),
-			sub: a.subject.did(),
-			exp: a.expireAt,
-			iat: a.issuedAt,
-			vc: {
-				"@context": ["https://www.w3.org/2018/credentials/v1"],
-				type: ["VerifiableCredential"],
-				credentialSubject: a.claims
-			}
-		};
-	}
+export type VerifiedClaim = Omit<CredentialDocument, "type" | "jwt" | "nested" | "specialFlag"> & {
+	type: "VerifiedClaim";
+	wrapped: Record<string, string>;
+};
+
+export const VerifiedClaimCodec = VerifiedClaimOuterCodec.pipe(
+	new t.Type<VerifiedClaim, VerifiedClaimTransport, VerifiedClaimTransport>(
+		"VerifiedClaimCodec",
+		(u): u is VerifiedClaim => true,
+		(i, c) =>
+			t.success<VerifiedClaim>({
+				type: "VerifiedClaim",
+				issuer: i.iss,
+				subject: i.sub,
+				expireAt: i.exp,
+				issuedAt: i.iat,
+				title: i.vc.credentialSubject.key,
+				preview: i.vc.credentialSubject.value.preview,
+				category: i.vc.credentialSubject.value.category === "identity" ? "identity" : "other",
+				data: i.vc.credentialSubject.value.data ?? {},
+				wrapped: i.vc.credentialSubject.value.wrapped ?? {}
+			}),
+		a => {
+			return {
+				type: "shareReq",
+				iss: a.issuer,
+				sub: a.subject,
+				exp: a.expireAt,
+				iat: a.issuedAt,
+				vc: {
+					"@context": ["https://www.w3.org/2018/credentials/v1"],
+					type: ["VerifiableCredential"],
+					credentialSubject: {
+						key: a.title,
+						value: {
+							data: a.data,
+							preview: a.preview,
+							wrapped: a.wrapped,
+							...(a.category === "identity" ? { category: "identity" } : {})
+						}
+					}
+				}
+			};
+		}
+	)
 );

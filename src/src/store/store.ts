@@ -3,7 +3,6 @@ import { connect, ConnectedComponent, GetProps, Matching } from "react-redux";
 import { Dispatch } from "redux";
 
 import { CredentialDocument } from "../model/CredentialDocument";
-import { DerivedCredential } from "../model/DerivedCredential";
 import { RecentActivity } from "../model/RecentActivity";
 import { RequestDocument } from "../model/RequestDocument";
 import { SampleDocument } from "../model/SampleDocument";
@@ -13,17 +12,14 @@ import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore
 import { sampleDocuments } from "./samples/sampleDocuments";
 import { sampleRecentActivity } from "./samples/sampleRecentActivity";
 import { combinedIdentitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
-import { credentialSelector } from "./selector/credentialSelector";
-import { microCredentialSelector } from "./selector/microCredentialSelector";
+import { toplevelCredentialSelector } from "./selector/credentialSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { requestSelector } from "./selector/requestSelector";
-import { StoreContent } from "./store";
 import { StoreAction } from "./StoreAction";
 
 export interface StoreContent extends PersistedStoreContent {
 	parsedTokens: Array<CredentialDocument | RequestDocument>;
-	microCredentials: CredentialDocument[];
-	credentials: Array<DerivedCredential<CredentialDocument>>;
+	credentials: CredentialDocument[];
 	requests: RequestDocument[];
 
 	serviceCalls: ServiceCallState;
@@ -39,8 +35,7 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 		...store.persisted,
 
 		parsedTokens: parsedTokenSelector(store),
-		credentials: credentialSelector(store),
-		microCredentials: microCredentialSelector(store),
+		credentials: toplevelCredentialSelector(store),
 		requests: requestSelector(store),
 
 		serviceCalls: store.serviceCalls,

@@ -1,6 +1,6 @@
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
-import { EthrDID } from "../../uPort/types/EthrDID";
+import { EthrDID } from "../../model/EthrDID";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 
@@ -15,6 +15,7 @@ export interface ChangePasswordArguments {
 
 async function doChangePassword(args: ChangePasswordArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/changePassword`,
 		{ oldPass: args.oldPassword, newPass: args.newPassword, did: args.did.did() },
 		emptyDataCodec

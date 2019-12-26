@@ -8,7 +8,10 @@ import { serviceErrors } from "../../presentation/resources/serviceErrors";
 
 import { ErrorData } from "./ErrorData";
 
+export type HTTPMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
 export async function commonServiceRequest<A>(
+	method: HTTPMethod,
 	url: string,
 	parameters: JSONObject,
 	dataDecoder: t.Type<A, unknown, unknown>
@@ -16,11 +19,11 @@ export async function commonServiceRequest<A>(
 	let response: Response;
 	try {
 		response = await fetch(url, {
-			method: "POST",
+			method,
 			headers: {
 				"Content-Type": "application/json; charset=utf-8"
 			},
-			body: JSON.stringify(parameters)
+			...(method !== "GET" && { body: JSON.stringify(parameters) })
 		});
 	} catch (e) {
 		return left(serviceErrors.common.FETCH_ERR);

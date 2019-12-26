@@ -11,6 +11,7 @@ interface DropdownMenuProps extends ViewProps {
 	headerContainerStyle?: StyleProp<ViewStyle>;
 	headerTextStyle?: StyleProp<TextStyle>;
 	headerColor?: string;
+	headerInsertComponent?: JSX.Element;
 	textColor?: string;
 }
 
@@ -50,6 +51,7 @@ export default class DropdownMenu extends React.Component<DropdownMenuProps, Dro
 						<DidiText.Explanation.Emphasis style={[styles.label, this.props.headerTextStyle]}>
 							{this.props.label}
 						</DidiText.Explanation.Emphasis>
+						<View style={styles.headerInsertContainer}>{this.props.headerInsertComponent}</View>
 						<View style={styles.chevron}>{visible ? <ChevronGrayDown /> : <ChevronGrayLeft />}</View>
 					</View>
 				</TouchableOpacity>
@@ -63,13 +65,16 @@ const styles = StyleSheet.create({
 	dropdown: {
 		flex: 1
 	},
+	headerInsertContainer: {
+		flex: 1,
+		justifyContent: "center"
+	},
 	labelContainer: {
 		paddingTop: 10,
 		paddingBottom: 10,
 		flexDirection: "row"
 	},
 	label: {
-		flex: 1,
 		justifyContent: "flex-start",
 		textAlign: "left",
 		marginLeft: 10

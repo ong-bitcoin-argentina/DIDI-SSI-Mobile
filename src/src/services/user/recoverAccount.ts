@@ -5,8 +5,8 @@ import { RNUportHDSigner } from "react-native-uport-signer";
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 import { ErrorData } from "../common/ErrorData";
 
+import { EthrDID } from "../../model/EthrDID";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
-import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
 
 import { commonUserRequest } from "./userServiceCommon";
@@ -23,6 +23,7 @@ const responseCodec = t.type({
 
 async function doRecoverAccount(args: RecoverAccountArguments): Promise<Either<ErrorData, EthrDID>> {
 	const recoveryResponse = await commonUserRequest(
+		"POST",
 		`${args.baseUrl}/recoverAccount`,
 		{ eMail: args.email, password: args.password },
 		responseCodec

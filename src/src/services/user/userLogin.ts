@@ -1,7 +1,7 @@
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
+import { EthrDID } from "../../model/EthrDID";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
-import { EthrDID } from "../../uPort/types/EthrDID";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 
@@ -16,6 +16,7 @@ export interface UserLoginArguments {
 
 async function doUserLogin(args: UserLoginArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/userLogin`,
 		{ eMail: args.email, password: args.password, did: args.did.did() },
 		emptyDataCodec

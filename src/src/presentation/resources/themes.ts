@@ -17,7 +17,7 @@ const primaryTheme: DidiTheme = {
 	buttonDisabledText: colors.textFaded,
 
 	navigationIconActive: colors.background,
-	navigationIconInactive: colors.primary + colors.navigationInactiveAlpha
+	navigationIconInactive: colors.primaryLight
 };
 
 export default {

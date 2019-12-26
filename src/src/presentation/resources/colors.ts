@@ -12,6 +12,7 @@ const colors = {
 	error: "#F5BAD1",
 
 	primary: "#417FD7",
+	primaryLight: "#ACC6EB",
 	primaryShadow: "#2F77DC",
 	primaryDark: "#205196",
 	primaryText: "#FFFFFF",
@@ -21,7 +22,6 @@ const colors = {
 
 	editableSetting: "#F6EAAE",
 
-	navigationInactiveAlpha: "89",
 	subtitleAlpha: "A0"
 };
 

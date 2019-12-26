@@ -12,7 +12,7 @@ import { persistor, store } from "./store/normalizedStore";
 import { didiConnect, StoreContent } from "./store/store";
 
 YellowBox.ignoreWarnings([
-	"Warning: componentWillReceiveProps is deprecated and will be removed in the next major version.", // External error in SafeArea
+	"Warning: componentWillReceiveProps has been renamed, and is not recommended for use.", // External error in SafeArea
 	"Warning: ViewPagerAndroid has been extracted from react-native core and will be removed in a future release." // External error in MaterialTopTabNavigator (Android only)
 ]);
 
@@ -29,7 +29,9 @@ const StoreStatePanel = didiConnect(
 			});
 			return (
 				<ScrollView style={{ minHeight: 200, maxHeight: 200 }}>
-					<Text>{JSON.stringify(toShow, null, 4)}</Text>
+					<Text style={{ fontSize: 8 }}>
+						{JSON.stringify({ show: toShow, other: this.props.validateDni }, null, 4)}
+					</Text>
 				</ScrollView>
 			);
 		}

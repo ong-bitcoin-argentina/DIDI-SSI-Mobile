@@ -5,7 +5,7 @@ import { Alert, StatusBar, Vibration } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import DidiQRScanner from "../common/DidiQRScanner";
+import { DidiCamera } from "../common/DidiCamera";
 
 import { didiConnect } from "../../../store/store";
 import parseJWT, { unverifiedParseJWT } from "../../../uPort/parseJWT";
@@ -46,7 +46,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<DidiQRScanner onQRScanned={content => this.onScanQR(content)} />
+				<DidiCamera onBarcodeScanned={(content, type) => type === "qr" && this.onScanQR(content)} />
 			</Fragment>
 		);
 	}

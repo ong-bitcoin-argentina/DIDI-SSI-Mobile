@@ -6,6 +6,7 @@ function error(errorCode: string, message: string): ErrorData {
 
 export const serviceErrors = {
 	common: {
+		UNKNOWN_ERR: error("UNKNOWN_ERR", "Error desconocido."),
 		FETCH_ERR: error("FETCH_ERR", "Error al enviar peticion al servidor."),
 		JSON_ERR: error("JSON_ERR", "Error al interpretar formato de respuesta."),
 		PARSE_ERR: error("PARSE_ERR", "Error al interpretar formato de respuesta.")
@@ -50,6 +51,11 @@ export const serviceErrors = {
 			errorCode: "TOKEN_JWT_DECODE_ERROR",
 			title: "Error al Decodificar",
 			message: "Error al extraer credenciales."
+		},
+		NONCREDENTIAL_WRAP_ERROR: {
+			errorCode: "NONCREDENTIAL_WRAP_ERROR",
+			title: "Error al Verificar Credencial",
+			message: "Esta credencial contiene una sub-credencial en formato desconocido."
 		},
 		VERIFICATION_ERROR: {
 			errorCode: "TOKEN_VERIFICATION_ERROR",

@@ -26,8 +26,13 @@ export default {
 		},
 		identity: {
 			category: "Documento Identidad",
-			subTitle: "Nombre",
-			validateButtonTitle: "Validar Id"
+			subTitle: "Nombre"
+		},
+		validateIdentity: {
+			startButtonTitle: "Validar Id",
+			successButtonTitle: "Éxito",
+			failureButtonTitle: "Reintentar",
+			validating: "Validación en progreso..."
 		},
 		recentActivities: {
 			label: "Actividades recientes",
@@ -55,7 +60,8 @@ export default {
 			barTitle: "Editar Perfil",
 			saveChanges: "Guardar Cambios",
 
-			fullNameMessage: "Nombre completo",
+			firstNameMessage: "Nombre(s)",
+			lastNameMessage: "Apellido(s)",
 			cellMessage: "Celular",
 			emailMessage: "E-mail",
 			documentMessage: "DU / CI / Pasaporte",
@@ -218,7 +224,7 @@ export default {
 		},
 		howTo: {
 			header: "¿Como lo hago?",
-			intro: "Sigue estos pasos",
+			intro: "Sigue estos pasos:",
 			steps: ["Busca un lugar iluminado y con fondo claro", "Tene tu DNI a mano", "Acceso a internet o datos moviles"],
 			buttonText: "Comencemos"
 		},
@@ -226,34 +232,54 @@ export default {
 			step: 1,
 			header: "Digitalizando el DNI",
 			description:
-				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara."
+				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
+			confirmation: "Asegurá que el texto este al derecho y sea claramente legible."
 		},
 		explainBack: {
 			step: 2,
 			header: "Digitalizando el DNI",
-			description: "Ahora da vuelta el DNI y sácale una foto del dorso."
+			description: "Ahora da vuelta el DNI y sácale una foto del dorso.",
+			confirmation: "Asegurá que el texto este al derecho y sea claramente legible."
 		},
 		explainSelfie: {
 			step: 3,
 			header: "Foto Selfie",
-			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie."
+			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie.",
+			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta."
 		},
 		explainLiveness: {
 			step: 4,
 			header: "Prueba de Vida",
 			description:
-				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!"
+				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!",
+			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta."
+		},
+		submit: {
+			header: "Validación de Identidad",
+			congrats: "Se enviaran los siguientes datos a validar por ReNaPer:",
+			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
+			buttonText: "OK"
 		},
 		success: {
 			header: "Validación de Identidad",
 			congrats: "¡Felicitaciones! Su identidad ha sido validada.",
 			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
 			buttonText: "OK"
+		},
+		failure: {
+			header: "Validación de Identidad",
+			congrats: "Su identidad no ha sido validada. Por favor, vuelva a intentar.",
+			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
+			buttonText: "OK"
 		}
 	},
 	textInput: {
-		fullName: {
-			description: "Nombre Completo",
+		firstName: {
+			description: "Nombre",
+			placeholder: ""
+		},
+		lastName: {
+			description: "Apellido",
 			placeholder: ""
 		},
 		email: {

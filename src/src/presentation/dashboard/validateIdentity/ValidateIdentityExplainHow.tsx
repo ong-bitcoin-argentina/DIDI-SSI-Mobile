@@ -25,8 +25,10 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 	render() {
 		return (
 			<ValidateIdentityExplanation
-				title={strings.validateIdentity.welcome}
-				header={strings.validateIdentity.howTo.header}
+				header={{
+					title: strings.validateIdentity.welcome,
+					header: strings.validateIdentity.howTo.header
+				}}
 				description={
 					<View>
 						<DidiText.ValidateIdentity.Normal style={styles.descriptionHeader}>
@@ -38,7 +40,7 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 									<DidiText.ValidateIdentity.Enumerate style={styles.listNumber}>
 										{index + 1}.
 									</DidiText.ValidateIdentity.Enumerate>
-									<DidiText.ValidateIdentity.Normal>{step}</DidiText.ValidateIdentity.Normal>
+									<DidiText.ValidateIdentity.EnumerationItem>{step}</DidiText.ValidateIdentity.EnumerationItem>
 								</View>
 							);
 						})}
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
 		marginVertical: 5
 	},
 	listNumber: {
-		width: 20
+		width: 20,
+		marginRight: 10
 	}
 });

@@ -4,8 +4,8 @@ import { RNUportHDSigner } from "react-native-uport-signer";
 import { buildComponentServiceCall } from "../common/componentServiceCall";
 import { ErrorData } from "../common/ErrorData";
 
+import { EthrDID } from "../../model/EthrDID";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
-import { EthrDID } from "../../uPort/types/EthrDID";
 import { ServiceCallAction } from "../ServiceStateStore";
 
 async function doEnsureDid(args: {}): Promise<Either<ErrorData, EthrDID>> {

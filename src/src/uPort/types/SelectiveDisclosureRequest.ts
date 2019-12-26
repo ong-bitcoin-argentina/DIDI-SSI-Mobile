@@ -1,7 +1,6 @@
-import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { EthrDIDCodec } from "./EthrDID";
+import { EthrDIDCodec } from "../../model/EthrDID";
 
 const SelectiveDisclosureRequestInnerCodec = t.intersection([
 	t.type({
@@ -21,7 +20,7 @@ export type SelectiveDisclosureRequest = typeof SelectiveDisclosureRequestInnerC
 const SelectiveDisclosureRequestOuterCodec = t.intersection([
 	t.type({
 		type: t.literal("shareReq"),
-		iss: t.string,
+		iss: EthrDIDCodec,
 		callback: t.string
 	}),
 	t.partial({
@@ -33,36 +32,30 @@ const SelectiveDisclosureRequestOuterCodec = t.intersection([
 ]);
 type SelectiveDisclosureRequestTransport = typeof SelectiveDisclosureRequestOuterCodec._A;
 
-export const SelectiveDisclosureRequestCodec = new t.Type<
-	SelectiveDisclosureRequest,
-	SelectiveDisclosureRequestTransport,
-	unknown
->(
-	"SelectiveDisclosureRequestCodec",
-	SelectiveDisclosureRequestInnerCodec.is,
-	(u, c) =>
-		either.chain(SelectiveDisclosureRequestOuterCodec.validate(u, c), i =>
-			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
-				t.success<SelectiveDisclosureRequest>({
-					type: "SelectiveDisclosureRequest",
-					issuer,
-					callback: i.callback,
-					ownClaims: i.requested || [],
-					verifiedClaims: i.verified || [],
-					issuedAt: i.iat,
-					expireAt: i.exp
-				})
-			)
-		),
-	a => {
-		return {
-			type: "shareReq",
-			iss: a.issuer.did(),
-			callback: a.callback,
-			requested: a.ownClaims,
-			verified: a.verifiedClaims,
-			iat: a.issuedAt,
-			exp: a.expireAt
-		};
-	}
+export const SelectiveDisclosureRequestCodec = SelectiveDisclosureRequestOuterCodec.pipe(
+	new t.Type<SelectiveDisclosureRequest, SelectiveDisclosureRequestTransport, SelectiveDisclosureRequestTransport>(
+		"SelectiveDisclosureRequestCodec",
+		SelectiveDisclosureRequestInnerCodec.is,
+		(i, c) =>
+			t.success<SelectiveDisclosureRequest>({
+				type: "SelectiveDisclosureRequest",
+				issuer: i.iss,
+				callback: i.callback,
+				ownClaims: i.requested || [],
+				verifiedClaims: i.verified || [],
+				issuedAt: i.iat,
+				expireAt: i.exp
+			}),
+		a => {
+			return {
+				type: "shareReq",
+				iss: a.issuer,
+				callback: a.callback,
+				requested: a.ownClaims,
+				verified: a.verifiedClaims,
+				iat: a.issuedAt,
+				exp: a.expireAt
+			};
+		}
+	)
 );

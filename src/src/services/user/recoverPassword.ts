@@ -14,6 +14,7 @@ export interface RecoverPasswordArguments {
 
 async function doRecoverPassword(args: RecoverPasswordArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/recoverPassword`,
 		{
 			eMail: args.email,

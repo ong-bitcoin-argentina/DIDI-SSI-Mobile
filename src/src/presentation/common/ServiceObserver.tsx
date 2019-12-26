@@ -9,6 +9,7 @@ import { didiConnect } from "../../store/store";
 interface ServiceObserverProps {
 	serviceKey: string;
 	onSuccess: () => void;
+	keepCallChainOnExit?: boolean;
 }
 interface ServiceObserverStateProps {
 	callState: ServiceCallState;
@@ -39,6 +40,12 @@ class ServiceObserver extends React.Component<AddChildren<ServiceObserverInterna
 				return;
 			case "IN_PROGRESS":
 				return;
+		}
+	}
+
+	componentWillUnmount() {
+		if (!this.props.keepCallChainOnExit) {
+			this.props.dropCallChain(this.props.serviceKey);
 		}
 	}
 

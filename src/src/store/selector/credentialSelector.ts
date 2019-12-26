@@ -1,10 +1,17 @@
 import { createSelector } from "reselect";
 
-import { deriveCredentials } from "../../model/DerivedCredential";
+import TypedArray from "../../util/TypedArray";
 
-import { microCredentialSelector } from "./microCredentialSelector";
+import { CredentialDocument } from "../../model/CredentialDocument";
 
-export const credentialSelector = createSelector(
-	microCredentialSelector,
-	mc => deriveCredentials(mc)
+import { parsedTokenSelector } from "./parsedTokenSelector";
+
+const allCredentialSelector = createSelector(parsedTokenSelector, tokens =>
+	TypedArray.flatMap(tokens, (tk): CredentialDocument | null => (tk.type === "CredentialDocument" ? tk : null))
 );
+
+export const toplevelCredentialSelector = createSelector(allCredentialSelector, credentials => {
+	const nested = credentials.map(c => c.nested).reduce((acc, next) => acc.concat(next), []);
+	const res = credentials.filter(credential => !nested.find(nest => nest.jwt === credential.jwt));
+	return res;
+});

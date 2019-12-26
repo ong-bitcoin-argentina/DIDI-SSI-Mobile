@@ -1,6 +1,6 @@
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 
-import { EthrDID } from "../../uPort/types/EthrDID";
+import { EthrDID } from "../../model/EthrDID";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 
@@ -17,6 +17,7 @@ export interface SendMailValidatorArguments {
 
 async function doSendMailValidator(args: SendMailValidatorArguments) {
 	return commonUserRequest(
+		"POST",
 		`${args.baseUrl}/sendMailValidator`,
 		{
 			eMail: args.email,

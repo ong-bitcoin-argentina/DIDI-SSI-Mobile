@@ -13,6 +13,7 @@
 		"member-ordering": false,
 		"max-classes-per-file": false,
 		"no-console": false,
-		"no-empty-interface": false
+		"no-empty-interface": false,
+		"comment-format": false
 	}
 }

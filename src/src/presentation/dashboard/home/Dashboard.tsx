@@ -3,18 +3,16 @@ import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
-import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import CredentialCard from "../common/CredentialCard";
 import { DocumentCredentialCard, sampleDocumentToCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 import { RecentActivity } from "../../../model/RecentActivity";
 import { SampleDocument } from "../../../model/SampleDocument";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
+import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
@@ -25,20 +23,25 @@ import { DocumentDetailProps } from "../documents/DocumentDetail";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
+import { ValidateIdentityFailureProps } from "../validateIdentity/ValidateIdentityFailure";
+import { ValidateIdentitySuccessProps } from "../validateIdentity/ValidateIdentitySuccess";
 
 import DidiActivity from "./DidiActivity";
+import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
+import { IncompleteIdentityCard } from "./IncompleteIdentityCard";
 import { NotificationScreenProps } from "./NotificationScreen";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	person: ValidatedIdentity;
-	credentials: Array<DerivedCredential<CredentialDocument>>;
+	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
+	resetDniValidation: () => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -46,6 +49,8 @@ export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
 	DashboardDocuments: DocumentsScreenProps;
 	ValidateID: ValidateIdentityExplainWhatProps;
+	ValidateIDSuccess: ValidateIdentitySuccessProps;
+	ValidateIDFailure: ValidateIdentityFailureProps;
 	UserData: UserDataProps;
 	NotificationScreen: NotificationScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
@@ -58,52 +63,12 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 		this.props.login();
 	}
 
-	private evolutionCard(): JSX.Element {
-		const str = strings.dashboard.evolution;
-		return (
-			<CredentialCard
-				icon=""
-				image={require("../../resources/images/precentageSample.png")}
-				category={str.category}
-				title={str.title}
-				subTitle="16.06.2019"
-				color={colors.primary}
-				data={[
-					{ label: str.validationIntro, value: "" },
-					{ label: str.validations.cellPhone, value: str.validationState.yes },
-					{ label: str.validations.email, value: str.validationState.yes },
-					{ label: str.validations.document, value: str.validationState.no }
-				]}
-				columns={1}
-			/>
-		);
-	}
-
-	private renderAllDocuments() {
+	private renderRegularDocuments() {
 		return this.props.credentials.map((document, index) => (
-			<TouchableOpacity key={index} onPress={() => this.navigate("DashDocumentDetail", { document })}>
+			<TouchableOpacity key={`RG_${index}`} onPress={() => this.navigate("DashDocumentDetail", { document })}>
 				<DocumentCredentialCard preview={true} document={document} />
 			</TouchableOpacity>
 		));
-	}
-
-	private incompleteIdentityCard(): JSX.Element {
-		return (
-			<CredentialCard
-				icon=""
-				category={strings.dashboard.identity.category}
-				title={this.props.person.visual.name || ""}
-				subTitle={strings.dashboard.identity.subTitle}
-				color={colors.secondary}
-				hollow={true}
-			>
-				<DidiButton
-					style={{ width: 100, height: 30, backgroundColor: colors.secondary }}
-					title={strings.dashboard.identity.validateButtonTitle}
-					onPress={() => this.navigate("ValidateID", {})}
-				/>
-			</CredentialCard>
-		);
 	}
 
 	private renderRecentActivities() {
@@ -135,10 +100,21 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 							onBellPress={() => this.navigate("NotificationScreen", {})}
 						/>
 						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
-							{this.evolutionCard()}
-							{this.renderAllDocuments()}
+							<EvolutionCard credentials={this.props.credentials} />
+							{this.renderRegularDocuments()}
 							{this.props.samples.map(sampleDocumentToCard)}
-							{this.incompleteIdentityCard()}
+							<IncompleteIdentityCard
+								personName={this.props.person.visual.name || this.props.person.visual.id || ""}
+								onStartValidateId={() => this.navigate("ValidateID", {})}
+								onValidateIdSuccess={() => {
+									this.props.resetDniValidation();
+									this.navigate("ValidateIDSuccess", {});
+								}}
+								onValidateIdFailure={() => {
+									this.props.resetDniValidation();
+									this.navigate("ValidateIDFailure", {});
+								}}
+							/>
 						</View>
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
@@ -162,7 +138,9 @@ export default didiConnect(
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
 			dispatch(recoverTokens());
-		}
+			dispatch(checkValidateDni());
+		},
+		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" })
 	})
 );
 

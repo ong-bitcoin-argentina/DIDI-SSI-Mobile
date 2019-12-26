@@ -30,7 +30,8 @@ async function doSubmitDisclosureResponse(args: SubmitDisclosureResponseArgument
 	}
 
 	const result = await commonServiceRequest(
-		args.request.content.callback,
+		"POST",
+		args.request.callback,
 		{ access_token: accessToken },
 		issuerApiWrapperCodec
 	);

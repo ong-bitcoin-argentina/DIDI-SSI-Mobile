@@ -7,20 +7,22 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 import strings from "../../resources/strings";
 
 export interface DocumentDetailProps {
-	document: DerivedCredential<CredentialDocument>;
+	document: CredentialDocument;
 }
 
 export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDetailProps, {}, {}> {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.documents.detailBarTitle);
 
 	render() {
+		const docList = this.props.document.nested.length === 0 ? [this.props.document] : this.props.document.nested;
 		return (
 			<DidiScreen style={styles.body}>
-				<DocumentCredentialCard preview={false} document={this.props.document} />
+				{docList.map((doc, index) => {
+					return <DocumentCredentialCard preview={false} document={doc} key={index} />;
+				})}
 			</DidiScreen>
 		);
 	}

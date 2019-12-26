@@ -1,7 +1,6 @@
 import React from "react";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { DerivedCredential } from "../../../model/DerivedCredential";
 import { SampleDocument } from "../../../model/SampleDocument";
 import colors from "../../resources/colors";
 
@@ -24,23 +23,24 @@ export function sampleDocumentToCard(document: SampleDocument, index: number) {
 
 interface DocumentCredentialCardProps {
 	preview: boolean;
-	document: DerivedCredential<CredentialDocument>;
+	document: CredentialDocument;
 }
 
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
 	render() {
 		const doc = this.props.document;
-		const issuer = doc.data.issuer.keyAddress().slice(0, 20);
-		const category = doc.data.issuedAt ? new Date(doc.data.issuedAt * 1000).toLocaleString() : "Credencial";
+		const issuer = doc.issuer.keyAddress().slice(0, 20);
+		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
 		return (
 			<CredentialCard
 				icon=""
 				category={category}
-				title={doc.claim.title}
+				title={doc.title}
 				subTitle={"Emisor: " + issuer + "..."}
-				data={this.props.preview ? doc.claim.previewPairs() : doc.claim.allPairs()}
-				columns={this.props.preview ? doc.claim.numberOfColumns() : 1}
+				data={CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.preview : undefined)}
+				columns={this.props.preview ? CredentialDocument.numberOfColumns(doc) : 1}
 				color={colors.secondary}
+				hollow={this.props.document.specialFlag !== undefined}
 			/>
 		);
 	}

@@ -8,6 +8,10 @@ const TypedArray = {
 			}
 		}
 		return result;
+	},
+
+	every<T, U extends T>(array: T[], pred: (val: T) => val is U): array is U[] {
+		return array.every(pred);
 	}
 };
 export default TypedArray;

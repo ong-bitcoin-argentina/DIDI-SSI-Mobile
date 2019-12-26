@@ -4,15 +4,18 @@ import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, Text, 
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
-import DidiCamera from "../common/DidiCamera";
+import { DidiCamera } from "../common/DidiCamera";
 
 import colors from "../../resources/colors";
-import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
+import {
+	ValidateIdentityExplanationHeader,
+	ValidateIdentityExplanationHeaderProps
+} from "./ValidateIdentityExplanationHeader";
+
 export interface ValidateIdentityExplanationProps {
-	title: string | number;
-	header: string;
+	header: ValidateIdentityExplanationHeaderProps;
 	description: string | ReactElement;
 	image: ImageSourcePropType;
 	buttonText?: string;
@@ -26,10 +29,7 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
 					<View style={styles.body}>
-						{this.renderTitle()}
-						<DidiText.ValidateIdentity.Subtitle style={styles.header}>
-							{this.props.header}
-						</DidiText.ValidateIdentity.Subtitle>
+						<ValidateIdentityExplanationHeader {...this.props.header} />
 						{this.renderDescription()}
 						<Image style={commonStyles.image.image} source={this.props.image} />
 						{this.renderImageAndButton()}
@@ -37,22 +37,6 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 				</SafeAreaView>
 			</Fragment>
 		);
-	}
-
-	private renderTitle() {
-		if (typeof this.props.title === "string") {
-			return <DidiText.ValidateIdentity.Title>{this.props.title}</DidiText.ValidateIdentity.Title>;
-		} else {
-			return (
-				<Text style={{ alignSelf: "center" }}>
-					<DidiText.ValidateIdentity.Title>{strings.validateIdentity.step + " "}</DidiText.ValidateIdentity.Title>
-					<DidiText.ValidateIdentity.StepNumber>{this.props.title}</DidiText.ValidateIdentity.StepNumber>
-					<DidiText.ValidateIdentity.TotalNumber>
-						{strings.validateIdentity.stepTotal}
-					</DidiText.ValidateIdentity.TotalNumber>
-				</Text>
-			);
-		}
 	}
 
 	private renderDescription() {

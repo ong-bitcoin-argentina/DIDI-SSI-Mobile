@@ -14,7 +14,7 @@ export interface ProfileInputDataStructure<T> {
 
 export const personalDataStructure: ProfileInputDataStructure<PersonalData> = {
 	name: strings.userData.personalDataLabel,
-	order: ["fullName", "cellPhone", "email", "document", "nationality"],
+	order: ["firstNames", "lastNames", "cellPhone", "email", "document", "nationality"],
 	structure: {
 		cellPhone: {
 			name: strings.userData.editProfile.cellMessage,
@@ -28,8 +28,11 @@ export const personalDataStructure: ProfileInputDataStructure<PersonalData> = {
 			name: strings.userData.editProfile.emailMessage,
 			keyboardType: "email-address"
 		},
-		fullName: {
-			name: strings.userData.editProfile.fullNameMessage
+		firstNames: {
+			name: strings.userData.editProfile.firstNameMessage
+		},
+		lastNames: {
+			name: strings.userData.editProfile.lastNameMessage
 		},
 		nationality: {
 			name: strings.userData.editProfile.nationalityMessage

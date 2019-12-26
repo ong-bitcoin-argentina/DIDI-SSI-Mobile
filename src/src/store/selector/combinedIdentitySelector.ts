@@ -4,9 +4,8 @@ import { assertUnreachable } from "../../util/assertUnreachable";
 import TypedObject from "../../util/TypedObject";
 
 import { LegalAddress, PersonalData, VisualData } from "../../model/Identity";
-import { extractSpecialCredentialData } from "../../model/SpecialCredential";
 
-import { microCredentialSelector } from "./microCredentialSelector";
+import { toplevelCredentialSelector } from "./credentialSelector";
 
 export enum ValidationState {
 	Approved = "Approved",
@@ -22,7 +21,7 @@ export interface WithValidationState<T> {
 export interface ValidatedIdentity {
 	visual: Partial<VisualData>;
 	personalData: Partial<{ [K in keyof PersonalData]: WithValidationState<PersonalData[K]> }>;
-	address: Partial<LegalAddress>;
+	address: WithValidationState<Partial<LegalAddress>>;
 }
 
 function idFromEmail(email: string | undefined): string | undefined {
@@ -37,22 +36,26 @@ function idFromEmail(email: string | undefined): string | undefined {
 }
 
 export const combinedIdentitySelector = createSelector(
-	microCredentialSelector,
+	toplevelCredentialSelector,
 	st => st.persisted.userInputIdentity,
-	(mc, userInputId) => {
+	(credentials, userInputId) => {
 		const identity: ValidatedIdentity = {
-			address: userInputId.address,
+			address: {
+				state: ValidationState.Pending,
+				value: userInputId.address
+			},
 			visual: userInputId.visual,
 			personalData: TypedObject.mapValues(userInputId.personalData, v => ({
 				state: ValidationState.Pending,
 				value: v
 			}))
 		};
-		mc.reverse().forEach(c => {
-			const special = extractSpecialCredentialData(c.content.claims);
+		credentials.forEach(credential => {
+			const special = credential.specialFlag;
+			if (special === undefined) {
+				return;
+			}
 			switch (special.type) {
-				case "None":
-					return;
 				case "EmailData":
 					identity.personalData.email = {
 						state: ValidationState.Approved,
@@ -65,12 +68,28 @@ export const combinedIdentitySelector = createSelector(
 						value: special.phoneNumber
 					};
 					return;
+				case "PersonalData":
+					TypedObject.keys(special.data).forEach(key => {
+						identity.personalData[key] = {
+							state: ValidationState.Approved,
+							value: special.data[key]
+						};
+					});
+					return;
+				case "LegalAddress":
+					identity.address = {
+						state: ValidationState.Approved,
+						value: special.address
+					};
+					return;
 				default:
 					assertUnreachable(special);
 			}
 		});
-		if (identity.personalData.fullName && !identity.visual.name) {
-			identity.visual.name = identity.personalData.fullName.value;
+		if (identity.personalData.firstNames && identity.personalData.lastNames) {
+			identity.visual.name = [identity.personalData.firstNames.value, identity.personalData.lastNames.value].join(" ");
+		} else if (identity.personalData.email) {
+			identity.visual.name = idFromEmail(identity.personalData.email.value);
 		}
 		if (identity.personalData.email && !identity.visual.id) {
 			identity.visual.id = idFromEmail(identity.personalData.email.value);

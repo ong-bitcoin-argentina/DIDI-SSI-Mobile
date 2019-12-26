@@ -1,18 +1,20 @@
-import { SelectiveDisclosureRequest } from "../uPort/types/SelectiveDisclosureRequest";
+import { DidiDocument } from "./DidiDocument";
 
-export interface RequestDocument {
+export interface RequestDocument extends DidiDocument {
 	type: "RequestDocument";
-	jwt: string;
-	content: SelectiveDisclosureRequest;
+
+	callback: string;
+	ownClaims: string[];
+	verifiedClaims: string[];
 }
 
 export const RequestDocument = {
 	isValidAt: (document: RequestDocument, date: Date): boolean => {
 		const timestamp = date.getTime() / 1000;
-		if (document.content.expireAt && document.content.expireAt < timestamp) {
+		if (document.expireAt && document.expireAt < timestamp) {
 			return false;
 		}
-		if (document.content.issuedAt && timestamp < document.content.issuedAt) {
+		if (document.issuedAt && timestamp < document.issuedAt) {
 			return false;
 		}
 		return true;

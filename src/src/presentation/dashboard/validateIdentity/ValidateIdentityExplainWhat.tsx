@@ -24,8 +24,10 @@ export class ValidateIdentityExplainWhatScreen extends NavigationEnabledComponen
 	render() {
 		return (
 			<ValidateIdentityExplanation
-				title={strings.validateIdentity.welcome}
-				header={strings.validateIdentity.what.header}
+				header={{
+					title: strings.validateIdentity.welcome,
+					header: strings.validateIdentity.what.header
+				}}
 				description={strings.validateIdentity.what.description}
 				image={require("../../resources/images/validateIdentityWhat.png")}
 				buttonText={strings.validateIdentity.what.buttonText}

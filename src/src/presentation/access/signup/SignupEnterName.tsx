@@ -19,12 +19,13 @@ export interface SignupEnterNameProps {
 	phoneNumber: string;
 }
 interface SignupEnterNameDispatchProps {
-	saveName: (name: string) => void;
+	saveName: (firstNames: string, lastNames: string) => void;
 }
 type SignupEnterNameInternalProps = SignupEnterNameProps & SignupEnterNameDispatchProps;
 
 interface SignupEnterNameState {
-	name: string;
+	firstName: string;
+	lastName: string;
 }
 
 export interface SignupEnterNameNavigation {
@@ -41,12 +42,13 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 	constructor(props: SignupEnterNameInternalProps) {
 		super(props);
 		this.state = {
-			name: ""
+			firstName: "",
+			lastName: ""
 		};
 	}
 
 	private canPressContinueButton(): boolean {
-		return Validator.isName(this.state.name);
+		return Validator.isName(this.state.firstName) && Validator.isName(this.state.lastName);
 	}
 
 	render() {
@@ -54,7 +56,9 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 			<DidiScreen>
 				<DidiText.Explanation.Emphasis>{strings.signup.enterName.messageHead}</DidiText.Explanation.Emphasis>
 
-				<DidiTextInput.FullName onChangeText={text => this.setState({ name: text })} />
+				<DidiTextInput.FirstName onChangeText={text => this.setState({ firstName: text })} />
+
+				<DidiTextInput.LastName onChangeText={text => this.setState({ lastName: text })} />
 
 				<Image style={commonStyles.image.image} source={require("../../resources/images/login.png")} />
 
@@ -63,7 +67,7 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 				<DidiButton
 					disabled={!this.canPressContinueButton()}
 					onPress={() => {
-						this.props.saveName(this.state.name);
+						this.props.saveName(this.state.firstName, this.state.lastName);
 						this.navigate("SignupEnterEmail", { phoneNumber: this.props.phoneNumber });
 					}}
 					title={strings.signup.enterName.next}
@@ -77,11 +81,11 @@ const connected = didiConnect(
 	SignupEnterNameScreen,
 	() => ({}),
 	(dispatch): SignupEnterNameDispatchProps => ({
-		saveName: (fullName: string) =>
+		saveName: (firstNames: string, lastNames: string) =>
 			dispatch({
 				type: "IDENTITY_PATCH",
 				value: {
-					personalData: { fullName },
+					personalData: { firstNames, lastNames },
 					visual: {},
 					address: {}
 				}

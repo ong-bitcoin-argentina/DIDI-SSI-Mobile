@@ -1,7 +1,6 @@
-import { either } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
-import { EthrDIDCodec } from "./EthrDID";
+import { EthrDIDCodec } from "../../model/EthrDID";
 
 const ForwardedRequestInnerCodec = t.intersection([
 	t.type({
@@ -19,8 +18,8 @@ export type ForwardedRequest = typeof ForwardedRequestInnerCodec._A;
 
 const ForwardedRequestOuterCodec = t.intersection([
 	t.type({
-		iss: t.string,
-		sub: t.string,
+		iss: EthrDIDCodec,
+		sub: EthrDIDCodec,
 		disclosureRequest: t.string
 	}),
 	t.partial({
@@ -30,32 +29,28 @@ const ForwardedRequestOuterCodec = t.intersection([
 ]);
 type ForwardedRequestTransport = typeof ForwardedRequestOuterCodec._A;
 
-export const ForwardedRequestCodec = new t.Type<ForwardedRequest, ForwardedRequestTransport, unknown>(
-	"ForwardedRequestCodec",
-	ForwardedRequestInnerCodec.is,
-	(u, c) =>
-		either.chain(ForwardedRequestOuterCodec.validate(u, c), i =>
-			either.chain(EthrDIDCodec.validate(i.iss, c), issuer =>
-				either.chain(EthrDIDCodec.validate(i.sub, c), subject =>
-					t.success<ForwardedRequest>({
-						type: "ForwardedRequest",
-						issuer,
-						subject,
-						expireAt: i.exp,
-						issuedAt: i.iat,
-						forwarded: i.disclosureRequest
-					})
-				)
-			)
-		),
-	a => {
-		return {
-			type: "shareReq",
-			iss: a.issuer.did(),
-			sub: a.subject.did(),
-			exp: a.expireAt,
-			iat: a.issuedAt,
-			disclosureRequest: a.forwarded
-		};
-	}
+export const ForwardedRequestCodec = ForwardedRequestOuterCodec.pipe(
+	new t.Type<ForwardedRequest, ForwardedRequestTransport, ForwardedRequestTransport>(
+		"ForwardedRequestCodec",
+		ForwardedRequestInnerCodec.is,
+		(i, c) =>
+			t.success<ForwardedRequest>({
+				type: "ForwardedRequest",
+				issuer: i.iss,
+				subject: i.sub,
+				expireAt: i.exp,
+				issuedAt: i.iat,
+				forwarded: i.disclosureRequest
+			}),
+		a => {
+			return {
+				type: "shareReq",
+				iss: a.issuer,
+				sub: a.subject,
+				exp: a.expireAt,
+				iat: a.issuedAt,
+				disclosureRequest: a.forwarded
+			};
+		}
+	)
 );
