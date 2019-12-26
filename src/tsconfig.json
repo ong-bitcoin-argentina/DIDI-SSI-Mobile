@@ -8,6 +8,8 @@
 		"lib": ["es6"],
 		"moduleResolution": "node",
 		"noEmit": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
 		"strict": true,
 		"target": "esnext",
 		"skipLibCheck": true,
