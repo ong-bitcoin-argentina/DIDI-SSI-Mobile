@@ -12,7 +12,7 @@ import strings from "../../resources/strings";
 export interface IncompleteIdentityCardProps {
 	onStartValidateId: () => void;
 	onValidateIdSuccess: () => void;
-	onValidateIdFailure: () => void;
+	onValidateIdFailure: (message?: string) => void;
 }
 
 interface IncompleteIdentityCardStateProps {
@@ -39,11 +39,14 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 	}
 
 	private renderContent(): JSX.Element {
-		switch (this.props.validateDniState?.state) {
+		const state = this.props.validateDniState;
+		switch (state?.state) {
 			case undefined:
 				return this.renderButton(strings.dashboard.validateIdentity.startButtonTitle, this.props.onStartValidateId);
 			case "Failure":
-				return this.renderButton(strings.dashboard.validateIdentity.failureButtonTitle, this.props.onValidateIdFailure);
+				return this.renderButton(strings.dashboard.validateIdentity.failureButtonTitle, () => {
+					this.props.onValidateIdFailure(state.message);
+				});
 			case "In Progress":
 				return (
 					<DidiText.Card.Title style={{ color: colors.secondary }}>

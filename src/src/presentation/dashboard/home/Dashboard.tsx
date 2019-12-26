@@ -110,9 +110,9 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 									this.props.resetDniValidation();
 									this.navigate("ValidateIDSuccess", {});
 								}}
-								onValidateIdFailure={() => {
+								onValidateIdFailure={(message?: string) => {
 									this.props.resetDniValidation();
-									this.navigate("ValidateIDFailure", {});
+									this.navigate("ValidateIDFailure", { message });
 								}}
 							/>
 						</View>
