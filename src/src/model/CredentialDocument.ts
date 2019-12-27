@@ -23,10 +23,16 @@ export const CredentialDocument = {
 	extractAllDataPairs: (doc: CredentialDocument): ClaimDataPairs => {
 		return [
 			...doc.nested.map(CredentialDocument.extractAllDataPairs).reduce((l, r) => [...l, ...r], []),
-			...Object.entries(doc.data).map(([label, value]) => ({
-				label,
-				value
-			}))
+			...TypedArray.flatMap(Object.entries(doc.data), ([label, value]) => {
+				switch (typeof value) {
+					case "string":
+						return { label, value };
+					case "number":
+						return { label, value: value.toString() };
+					default:
+						return undefined;
+				}
+			})
 		];
 	},
 
