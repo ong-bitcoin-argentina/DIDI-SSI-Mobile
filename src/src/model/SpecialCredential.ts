@@ -38,8 +38,8 @@ const personalDataCredentialCodec = t.type({
 const legalAddressCredentialCodec = t.partial({
 	streetAddress: t.string,
 	numberStreet: stringOrNumberCodec,
-	floor: stringOrNumberCodec,
-	department: t.string,
+	floor: t.union([t.null, stringOrNumberCodec]),
+	department: t.union([t.null, t.string]),
 	zipCode: stringOrNumberCodec,
 	city: t.string,
 	municipality: t.string,
@@ -85,8 +85,8 @@ export const SpecialCredentialFlag = {
 					return {
 						type: "LegalAddress",
 						address: {
-							department: legalAddress.right.department,
-							floor: legalAddress.right.floor,
+							...(legalAddress.right.department ? { department: legalAddress.right.department } : {}),
+							...(legalAddress.right.floor ? { floor: legalAddress.right.floor } : {}),
 							number: legalAddress.right.numberStreet,
 							postCode: legalAddress.right.zipCode,
 							street: legalAddress.right.streetAddress,
