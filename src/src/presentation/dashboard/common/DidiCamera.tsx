@@ -145,7 +145,9 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 				quality: 0.5,
 				base64: false,
 				pauseAfterCapture: true,
-				orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait"
+				orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait",
+				mirrorImage: false,
+				fixOrientation: true
 			});
 			this.props.onPictureTaken?.(data);
 		}
