@@ -20,6 +20,8 @@ export interface CredentialDocument extends DidiDocument {
 }
 
 export const CredentialDocument = {
+	...DidiDocument,
+
 	extractAllDataPairs: (doc: CredentialDocument): ClaimDataPairs => {
 		return [
 			...doc.nested.map(CredentialDocument.extractAllDataPairs).reduce((l, r) => [...l, ...r], []),
