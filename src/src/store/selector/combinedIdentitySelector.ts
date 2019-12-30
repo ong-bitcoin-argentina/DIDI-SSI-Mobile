@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
+import { Nullable } from "../../util/Nullable";
 import TypedObject from "../../util/TypedObject";
 
 import { LegalAddress, PersonalData, VisualData } from "../../model/Identity";
@@ -21,7 +22,7 @@ export interface WithValidationState<T> {
 export interface ValidatedIdentity {
 	visual: Partial<VisualData>;
 	personalData: Partial<{ [K in keyof PersonalData]: WithValidationState<PersonalData[K]> }>;
-	address: WithValidationState<Partial<LegalAddress>>;
+	address: WithValidationState<Partial<Nullable<LegalAddress>>>;
 }
 
 function idFromEmail(email: string | undefined): string | undefined {

@@ -1,6 +1,8 @@
 import { isRight } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
+import { Nullable } from "../util/Nullable";
+
 import { VerifiedClaim } from "../uPort/types/VerifiedClaim";
 
 import { LegalAddress, PersonalIdentityData } from "./Identity";
@@ -9,13 +11,22 @@ export type SpecialCredentialFlag =
 	| { type: "PhoneNumberData"; phoneNumber: string }
 	| { type: "EmailData"; email: string }
 	| { type: "PersonalData"; data: PersonalIdentityData }
-	| { type: "LegalAddress"; address: Partial<LegalAddress> };
+	| { type: "LegalAddress"; address: Nullable<LegalAddress> };
 
 const stringOrNumberCodec = t.union([t.string, t.number]).pipe(
 	new t.Type<string, string | number, string | number>(
 		"stringOrNumberCodec",
 		t.string.is,
 		(u, c) => t.success(u.toString()),
+		a => a
+	)
+);
+
+const optionalStringOrNumberCodec = t.union([stringOrNumberCodec, t.null, t.undefined]).pipe(
+	new t.Type<string | null, string | null | undefined, string | null | undefined>(
+		"optionalStringOrNumberCodec",
+		t.string.is,
+		(u, c) => t.success(typeof u === "string" ? u : null),
 		a => a
 	)
 );
@@ -36,16 +47,18 @@ const personalDataCredentialCodec = t.type({
 });
 
 const legalAddressCredentialCodec = t.partial({
-	streetAddress: t.string,
-	numberStreet: stringOrNumberCodec,
-	floor: t.union([t.null, stringOrNumberCodec]),
-	department: t.union([t.null, t.string]),
-	zipCode: stringOrNumberCodec,
-	city: t.string,
-	municipality: t.string,
-	province: t.string,
-	country: t.string
+	streetAddress: optionalStringOrNumberCodec,
+	numberStreet: optionalStringOrNumberCodec,
+	floor: optionalStringOrNumberCodec,
+	department: optionalStringOrNumberCodec,
+	zipCode: optionalStringOrNumberCodec,
+	city: optionalStringOrNumberCodec,
+	municipality: optionalStringOrNumberCodec,
+	province: optionalStringOrNumberCodec,
+	country: optionalStringOrNumberCodec
 });
+
+type ax = typeof legalAddressCredentialCodec._A;
 
 export const SpecialCredentialFlag = {
 	extract: (claim: VerifiedClaim): SpecialCredentialFlag | undefined => {
@@ -85,12 +98,12 @@ export const SpecialCredentialFlag = {
 					return {
 						type: "LegalAddress",
 						address: {
-							...(legalAddress.right.department ? { department: legalAddress.right.department } : {}),
-							...(legalAddress.right.floor ? { floor: legalAddress.right.floor } : {}),
-							number: legalAddress.right.numberStreet,
-							postCode: legalAddress.right.zipCode,
-							street: legalAddress.right.streetAddress,
-							neighborhood: legalAddress.right.city
+							department: legalAddress.right.department ?? null,
+							floor: legalAddress.right.floor ?? null,
+							number: legalAddress.right.numberStreet ?? null,
+							postCode: legalAddress.right.zipCode ?? null,
+							street: legalAddress.right.streetAddress ?? null,
+							neighborhood: legalAddress.right.city ?? null
 						}
 					};
 				}

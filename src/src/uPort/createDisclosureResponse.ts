@@ -12,7 +12,7 @@ import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
 
 function selectOwnClaims(request: SelectiveDisclosureRequest, identity: ValidatedIdentity): JSONObject {
 	const result: ClaimData = {};
-	function insert(key: string, value?: string) {
+	function insert(key: string, value: string | null | undefined) {
 		if (value) {
 			result[key] = value;
 		}

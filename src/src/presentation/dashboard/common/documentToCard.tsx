@@ -3,6 +3,7 @@ import React from "react";
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { SampleDocument } from "../../../model/SampleDocument";
 import colors from "../../resources/colors";
+import strings from "../../resources/strings";
 
 import CredentialCard from "./CredentialCard";
 
@@ -36,7 +37,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				icon=""
 				category={category}
 				title={doc.title}
-				subTitle={"Emisor: " + issuer + "..."}
+				subTitle={strings.credentialCard.emitter + issuer + "..."}
 				data={CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.preview : undefined)}
 				columns={this.props.preview ? CredentialDocument.numberOfColumns(doc) : 1}
 				color={colors.secondary}

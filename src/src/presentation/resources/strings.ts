@@ -301,6 +301,10 @@ export default {
 			REPEAT: "Repetir Contraseña"
 		}
 	},
+	credentialCard: {
+		emitter: "Emisor: ",
+		valueNotAvailable: "N/A"
+	},
 	specialCredentials: {
 		PhoneNumberData: "Número de celular",
 		EmailData: "E-mail"

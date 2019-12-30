@@ -56,19 +56,20 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 	private textInputPropsFor(
 		keyboardType: TextInputProps["keyboardType"],
 		state?: ValidationState,
-		value?: string
+		value?: string | null
 	): TextInputProps {
 		const props: TextInputProps = {
 			keyboardType
 		};
 
 		props.editable = state !== ValidationState.Approved;
-		if (props.editable !== false) {
+		if (props.editable ?? true) {
 			props.style = { backgroundColor: colors.editableSetting };
+			props.defaultValue = value ? value : "";
 		} else {
 			props.style = { color: colors.textFaded, fontStyle: "italic" };
+			props.defaultValue = value === null ? strings.credentialCard.valueNotAvailable : value ?? "--";
 		}
-		props.defaultValue = value ? value : props.editable ? "" : "--";
 
 		return props;
 	}
