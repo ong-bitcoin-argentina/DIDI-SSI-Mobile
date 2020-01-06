@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { Image, ImageSourcePropType, StyleSheet, Text, View, ViewProps } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 
 export interface DidiCardBodyProps extends ViewProps {
 	icon: string;
-	image?: ImageSourcePropType;
 	color: string;
 	hollow?: boolean;
+	decoration?: JSX.Element;
 }
 
 export default class DidiCardBody extends Component<DidiCardBodyProps> {
@@ -25,11 +25,7 @@ export default class DidiCardBody extends Component<DidiCardBodyProps> {
 					</View>
 					<View style={styles.textContainer}>{this.props.children}</View>
 				</View>
-				{this.props.image && (
-					<View style={styles.imageContainer}>
-						<Image style={styles.image} source={this.props.image} />
-					</View>
-				)}
+				{this.props.decoration && <View style={styles.imageContainer}>{this.props.decoration}</View>}
 			</View>
 		);
 	}
@@ -66,9 +62,5 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		top: 10,
 		right: 10
-	},
-	image: {
-		height: 64,
-		width: 64
 	}
 });

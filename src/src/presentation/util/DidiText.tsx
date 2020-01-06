@@ -135,6 +135,12 @@ const styles = {
 			...fontStyle.medium,
 			fontSize: 13,
 			textAlign: "right"
+		},
+		percentage: {
+			...base,
+			...fontStyle.medium,
+			fontSize: 14,
+			textAlign: "center"
 		}
 	}),
 	activity: StyleSheet.create({
@@ -276,7 +282,8 @@ export const DidiText = {
 		Title: textWith(styles.card.title),
 		Subtitle: textWith(styles.card.subtitle),
 		Key: textWith(styles.card.key),
-		Value: textWith(styles.card.value)
+		Value: textWith(styles.card.value),
+		Percentage: textWith(styles.card.percentage)
 	},
 	Activity: {
 		Title: textWith(styles.activity.title),

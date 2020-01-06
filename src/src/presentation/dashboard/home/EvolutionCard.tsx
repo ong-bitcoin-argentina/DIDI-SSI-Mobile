@@ -1,5 +1,7 @@
 import React from "react";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
 
+import { DidiText } from "../../util/DidiText";
 import CredentialCard from "../common/CredentialCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
@@ -19,20 +21,36 @@ export class EvolutionCard extends React.Component<EvolutionCardProps> {
 				? str.validationState.yes
 				: str.validationState.no;
 		};
+		const data = [
+			{ label: str.validations.cellPhone, value: specialValue("PhoneNumberData") },
+			{ label: str.validations.email, value: specialValue("EmailData") },
+			{ label: str.validations.document, value: specialValue("PersonalData") }
+		];
+		const progress = (100 / data.length) * data.filter(v => v.value === str.validationState.yes).length;
 		return (
 			<CredentialCard
 				icon=""
-				image={require("../../resources/images/precentageSample.png")}
+				decoration={
+					<AnimatedCircularProgress
+						size={64}
+						width={8}
+						rotation={0}
+						fill={progress}
+						tintColor={colors.primaryText}
+						backgroundColor={colors.primaryLight}
+					>
+						{fill => (
+							<DidiText.Card.Percentage style={{ color: colors.primaryText }}>
+								{Math.round(fill)}%
+							</DidiText.Card.Percentage>
+						)}
+					</AnimatedCircularProgress>
+				}
 				category={str.category}
 				title={str.title}
 				subTitle="16.06.2019"
 				color={colors.primary}
-				data={[
-					{ label: str.validationIntro, value: "" },
-					{ label: str.validations.cellPhone, value: specialValue("PhoneNumberData") },
-					{ label: str.validations.email, value: specialValue("EmailData") },
-					{ label: str.validations.document, value: specialValue("PersonalData") }
-				]}
+				data={[{ label: str.validationIntro, value: "" }, ...data]}
 				columns={1}
 			/>
 		);
