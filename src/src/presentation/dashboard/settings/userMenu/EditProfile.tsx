@@ -7,10 +7,10 @@ import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
-import { Identity, PersonalData } from "../../../../model/Identity";
+import { Identity } from "../../../../model/Identity";
+import { Validations } from "../../../../model/Validations";
 import { ValidatedIdentity, ValidationState } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
-import Validator from "../../../access/helpers/validator";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
@@ -42,10 +42,10 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 
 	private canPressContinueButton(): boolean {
 		return (
-			(!this.state.personalData.firstNames || Validator.isName(this.state.personalData.firstNames)) &&
-			(!this.state.personalData.lastNames || Validator.isName(this.state.personalData.lastNames)) &&
-			(!this.state.personalData.document || Validator.isDocumentNumber(this.state.personalData.document)) &&
-			(!this.state.personalData.nationality || Validator.isNationality(this.state.personalData.nationality))
+			(!this.state.personalData.firstNames || Validations.isName(this.state.personalData.firstNames)) &&
+			(!this.state.personalData.lastNames || Validations.isName(this.state.personalData.lastNames)) &&
+			(!this.state.personalData.document || Validations.isDocumentNumber(this.state.personalData.document)) &&
+			(!this.state.personalData.nationality || Validations.isNationality(this.state.personalData.nationality))
 		);
 	}
 

@@ -6,7 +6,7 @@ import { DidiServiceButton } from "../util/DidiServiceButton";
 import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
-import Validator from "../access/helpers/validator";
+import { Validations } from "../../model/Validations";
 import strings from "../resources/strings";
 
 import { DidiScreen } from "./DidiScreen";
@@ -50,6 +50,6 @@ export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, Verif
 	}
 
 	private canPressContinueButton(): boolean {
-		return Validator.isValidationCode(this.state.inputCode);
+		return Validations.isValidationCode(this.state.inputCode);
 	}
 }

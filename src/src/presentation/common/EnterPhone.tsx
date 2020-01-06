@@ -6,7 +6,7 @@ import { DidiServiceButton } from "../util/DidiServiceButton";
 import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
-import Validator from "../access/helpers/validator";
+import { Validations } from "../../model/Validations";
 import strings from "../resources/strings";
 
 import { DidiScreen } from "./DidiScreen";
@@ -63,8 +63,8 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 	private canPressContinueButton(): boolean {
 		return (
-			Validator.isPhoneNumber(this.state.inputPhoneNumber) &&
-			(!this.props.isPasswordRequired || Validator.isPassword(this.state.inputPassword))
+			Validations.isPhoneNumber(this.state.inputPhoneNumber) &&
+			(!this.props.isPasswordRequired || Validations.isPassword(this.state.inputPassword))
 		);
 	}
 

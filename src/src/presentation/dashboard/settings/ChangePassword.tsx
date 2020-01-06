@@ -8,10 +8,10 @@ import { DidiServiceButton } from "../../util/DidiServiceButton";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { Validations } from "../../../model/Validations";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { changePassword } from "../../../services/user/changePassword";
 import { didiConnect } from "../../../store/store";
-import Validator from "../../access/helpers/validator";
 import strings from "../../resources/strings";
 
 export type ChangePasswordProps = {};
@@ -44,7 +44,11 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 	}
 
 	private canPressContinueButton(): boolean {
-		return this.state.key.length > 0 && Validator.isPassword(this.state.key) && this.state.key === this.state.keyDup;
+		return (
+			Validations.isPassword(this.state.oldKey) &&
+			Validations.isPassword(this.state.key) &&
+			this.state.key === this.state.keyDup
+		);
 	}
 
 	render() {

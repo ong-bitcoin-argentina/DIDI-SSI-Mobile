@@ -9,9 +9,9 @@ import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { Validations } from "../../../model/Validations";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
-import Validator from "../helpers/validator";
 
 import { SignupEnterEmailProps } from "./SignupEnterEmail";
 
@@ -48,7 +48,7 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 	}
 
 	private canPressContinueButton(): boolean {
-		return Validator.isName(this.state.firstName) && Validator.isName(this.state.lastName);
+		return Validations.isName(this.state.firstName) && Validations.isName(this.state.lastName);
 	}
 
 	render() {
