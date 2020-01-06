@@ -306,8 +306,33 @@ export default {
 		valueNotAvailable: "N/A"
 	},
 	specialCredentials: {
-		PhoneNumberData: "Número de celular",
-		EmailData: "E-mail"
+		PhoneNumberData: {
+			title: "Número de celular",
+			phoneNumber: "Número de celular"
+		},
+		EmailData: {
+			title: "E-mail",
+			email: "E-mail"
+		},
+		PersonalData: {
+			title: "Datos Personales",
+			dni: "DNI",
+			names: "Nombre(s)",
+			lastNames: "Apellido(s)",
+			nationality: "Nacionalidad"
+		},
+		LegalAddress: {
+			title: "Domicilio Legal",
+			streetAddress: "Calle",
+			numberStreet: "Número",
+			zipCode: "Código Postal",
+			city: "Ciudad/Barrio",
+			province: "Provincia",
+			country: "País",
+			floor: "Piso",
+			department: "Departamento",
+			municipality: "Municipalidad"
+		}
 	},
 	camera: {
 		notAuthorized: "Camara no autorizada",
