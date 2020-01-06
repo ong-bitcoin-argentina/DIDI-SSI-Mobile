@@ -51,7 +51,7 @@ export const combinedIdentitySelector = createSelector(
 				value: v
 			}))
 		};
-		credentials.forEach(credential => {
+		credentials.reverse().forEach(credential => {
 			const special = credential.specialFlag;
 			if (special === undefined) {
 				return;
