@@ -77,6 +77,15 @@ export default {
 		},
 		changePassword: {
 			barTitle: "Cambio de Contraseña",
+			explanation: "Ingresa tu contraseña actual y tu nueva contraseña",
+			requirementHeader: "Tu nueva contraseña debe tener:",
+			requirements: {
+				count: "- 8 o mas caracteres",
+				lower: "- 1 o mas minusculas",
+				upper: "- 1 o mas mayusculas",
+				number: "- 1 o mas numeros",
+				special: "- 1 o mas caracteres especiales"
+			},
 			changePassword: "Cambiar Contraseña"
 		},
 		share: {
