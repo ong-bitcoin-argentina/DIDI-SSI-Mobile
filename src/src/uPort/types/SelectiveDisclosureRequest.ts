@@ -2,39 +2,54 @@ import * as t from "io-ts";
 
 import { EthrDIDCodec } from "../../model/EthrDID";
 
-const SelectiveDisclosureRequestInnerCodec = t.intersection([
-	t.type({
-		type: t.literal("SelectiveDisclosureRequest"),
-		issuer: EthrDIDCodec,
-		callback: t.string,
-		ownClaims: t.array(t.string),
-		verifiedClaims: t.array(t.string)
-	}),
-	t.partial({
-		issuedAt: t.number,
-		expireAt: t.number
-	})
-]);
+const SelectiveDisclosureRequestInnerCodec = t.intersection(
+	[
+		t.type(
+			{
+				type: t.literal("SelectiveDisclosureRequest"),
+				issuer: EthrDIDCodec,
+				callback: t.string,
+				ownClaims: t.array(t.string),
+				verifiedClaims: t.array(t.string)
+			},
+			""
+		),
+		t.partial(
+			{
+				issuedAt: t.number,
+				expireAt: t.number
+			},
+			""
+		)
+	],
+	""
+);
 export type SelectiveDisclosureRequest = typeof SelectiveDisclosureRequestInnerCodec._A;
 
 const SelectiveDisclosureRequestOuterCodec = t.intersection([
-	t.type({
-		type: t.literal("shareReq"),
-		iss: EthrDIDCodec,
-		callback: t.string
-	}),
-	t.partial({
-		requested: t.array(t.string),
-		verified: t.array(t.string),
-		iat: t.number,
-		exp: t.number
-	})
+	t.type(
+		{
+			type: t.literal("shareReq"),
+			iss: EthrDIDCodec,
+			callback: t.string
+		},
+		"SelectiveDisclosureRequest"
+	),
+	t.partial(
+		{
+			requested: t.array(t.string),
+			verified: t.array(t.string),
+			iat: t.number,
+			exp: t.number
+		},
+		"SelectiveDisclosureRequest"
+	)
 ]);
 type SelectiveDisclosureRequestTransport = typeof SelectiveDisclosureRequestOuterCodec._A;
 
 export const SelectiveDisclosureRequestCodec = SelectiveDisclosureRequestOuterCodec.pipe(
 	new t.Type<SelectiveDisclosureRequest, SelectiveDisclosureRequestTransport, SelectiveDisclosureRequestTransport>(
-		"SelectiveDisclosureRequestCodec",
+		"SelectiveDisclosureRequest_In",
 		SelectiveDisclosureRequestInnerCodec.is,
 		(i, c) =>
 			t.success<SelectiveDisclosureRequest>({
@@ -57,5 +72,6 @@ export const SelectiveDisclosureRequestCodec = SelectiveDisclosureRequestOuterCo
 				exp: a.expireAt
 			};
 		}
-	)
+	),
+	"___"
 );

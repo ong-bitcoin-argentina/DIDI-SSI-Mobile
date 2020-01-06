@@ -17,21 +17,27 @@ const ForwardedRequestInnerCodec = t.intersection([
 export type ForwardedRequest = typeof ForwardedRequestInnerCodec._A;
 
 const ForwardedRequestOuterCodec = t.intersection([
-	t.type({
-		iss: EthrDIDCodec,
-		sub: EthrDIDCodec,
-		disclosureRequest: t.string
-	}),
-	t.partial({
-		iat: t.number,
-		exp: t.number
-	})
+	t.type(
+		{
+			iss: EthrDIDCodec,
+			sub: EthrDIDCodec,
+			disclosureRequest: t.string
+		},
+		"ForwardedRequest"
+	),
+	t.partial(
+		{
+			iat: t.number,
+			exp: t.number
+		},
+		"ForwardedRequest"
+	)
 ]);
 type ForwardedRequestTransport = typeof ForwardedRequestOuterCodec._A;
 
 export const ForwardedRequestCodec = ForwardedRequestOuterCodec.pipe(
 	new t.Type<ForwardedRequest, ForwardedRequestTransport, ForwardedRequestTransport>(
-		"ForwardedRequestCodec",
+		"ForwardedRequest_In",
 		ForwardedRequestInnerCodec.is,
 		(i, c) =>
 			t.success<ForwardedRequest>({
@@ -52,5 +58,6 @@ export const ForwardedRequestCodec = ForwardedRequestOuterCodec.pipe(
 				disclosureRequest: a.forwarded
 			};
 		}
-	)
+	),
+	"___"
 );

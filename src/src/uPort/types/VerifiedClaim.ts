@@ -7,29 +7,41 @@ import { CredentialDocument } from "../../model/CredentialDocument";
 import { EthrDIDCodec } from "../../model/EthrDID";
 
 const VerifiedClaimOuterCodec = t.intersection([
-	t.type({
-		iss: EthrDIDCodec,
-		sub: EthrDIDCodec,
-		vc: t.type({
-			"@context": t.array(t.string),
-			type: t.array(t.string),
-			credentialSubject: SingleKeyedRecordCodec(
-				t.partial({
-					data: ClaimDataCodec,
-					wrapped: t.record(t.string, t.string),
-					category: t.string,
-					preview: t.type({
-						type: t.number,
-						fields: t.array(t.string)
-					})
-				})
+	t.type(
+		{
+			iss: EthrDIDCodec,
+			sub: EthrDIDCodec,
+			vc: t.type(
+				{
+					"@context": t.array(t.string),
+					type: t.array(t.string),
+					credentialSubject: SingleKeyedRecordCodec(
+						t.partial(
+							{
+								data: ClaimDataCodec,
+								wrapped: t.record(t.string, t.string),
+								category: t.string,
+								preview: t.type({
+									type: t.number,
+									fields: t.array(t.string)
+								})
+							},
+							""
+						)
+					)
+				},
+				""
 			)
-		})
-	}),
-	t.partial({
-		iat: t.number,
-		exp: t.number
-	})
+		},
+		"VerifiedClaim"
+	),
+	t.partial(
+		{
+			iat: t.number,
+			exp: t.number
+		},
+		"VerifiedClaim"
+	)
 ]);
 type VerifiedClaimTransport = typeof VerifiedClaimOuterCodec._A;
 
@@ -40,7 +52,7 @@ export type VerifiedClaim = Omit<CredentialDocument, "type" | "jwt" | "nested" |
 
 export const VerifiedClaimCodec = VerifiedClaimOuterCodec.pipe(
 	new t.Type<VerifiedClaim, VerifiedClaimTransport, VerifiedClaimTransport>(
-		"VerifiedClaimCodec",
+		"VerifiedClaim_In",
 		(u): u is VerifiedClaim => true,
 		(i, c) =>
 			t.success<VerifiedClaim>({
@@ -77,5 +89,6 @@ export const VerifiedClaimCodec = VerifiedClaimOuterCodec.pipe(
 				}
 			};
 		}
-	)
+	),
+	"___"
 );
