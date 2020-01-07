@@ -317,7 +317,8 @@ export default {
 	},
 	credentialCard: {
 		emitter: "Emisor: ",
-		valueNotAvailable: "N/A"
+		valueNotAvailable: "N/A",
+		replaced: "Credencial no vigente por existir reemplazo"
 	},
 	specialCredentials: {
 		PhoneNumberData: {
@@ -372,6 +373,10 @@ export default {
 	credentialShare: {
 		noCredentialsAvailable: "Primero obten credenciales",
 		whichFull: "¿Qué credencial deseas compartir?",
-		whichMicro: "¿Qué parte de la credencial deseas compartir?"
+		whichMicro: "¿Qué parte de la credencial deseas compartir?",
+		notCurrent: {
+			title: "Credencial no vigente",
+			message: "Solo es posible compartir credenciales vigentes."
+		}
 	}
 };

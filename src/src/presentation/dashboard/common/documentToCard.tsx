@@ -1,7 +1,10 @@
 import React from "react";
 
+import { DidiText } from "../../util/DidiText";
+
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { SampleDocument } from "../../../model/SampleDocument";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
@@ -25,6 +28,7 @@ export function sampleDocumentToCard(document: SampleDocument, index: number) {
 interface DocumentCredentialCardProps {
 	preview: boolean;
 	document: CredentialDocument;
+	context: SpecialCredentialMap;
 }
 
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
@@ -35,6 +39,9 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
 		let title = doc.title;
 		let data = CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.preview : undefined);
+		let color = colors.secondary;
+		let hollow = this.props.document.specialFlag !== undefined;
+		let replacedByAnother = false;
 
 		const specialType = doc.specialFlag?.type;
 		if (specialType) {
@@ -44,6 +51,12 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				label: dictionary[label] ?? label,
 				value
 			}));
+
+			if (this.props.context[specialType]?.jwt !== this.props.document.jwt) {
+				color = colors.error;
+				hollow = false;
+				replacedByAnother = true;
+			}
 		}
 
 		return (
@@ -54,9 +67,16 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				subTitle={strings.credentialCard.emitter + issuer + "..."}
 				data={data}
 				columns={this.props.preview ? CredentialDocument.numberOfColumns(doc) : 1}
-				color={colors.secondary}
-				hollow={this.props.document.specialFlag !== undefined}
-			/>
+				color={color}
+				hollow={hollow}
+			>
+				{this.props.children}
+				{replacedByAnother && (
+					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
+						{strings.credentialCard.replaced}
+					</DidiText.Card.Warning>
+				)}
+			</CredentialCard>
 		);
 	}
 }

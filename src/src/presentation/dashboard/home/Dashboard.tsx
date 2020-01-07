@@ -14,6 +14,7 @@ import { SampleDocument } from "../../../model/SampleDocument";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
@@ -38,6 +39,7 @@ interface DashboardScreenStateProps {
 	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
@@ -65,8 +67,16 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 
 	private renderRegularDocuments() {
 		return this.props.credentials.map((document, index) => (
-			<TouchableOpacity key={`RG_${index}`} onPress={() => this.navigate("DashDocumentDetail", { document })}>
-				<DocumentCredentialCard preview={true} document={document} />
+			<TouchableOpacity
+				key={`RG_${index}`}
+				onPress={() =>
+					this.navigate("DashDocumentDetail", {
+						document,
+						activeSpecialCredentials: this.props.activeSpecialCredentials
+					})
+				}
+			>
+				<DocumentCredentialCard preview={true} document={document} context={this.props.activeSpecialCredentials} />
 			</TouchableOpacity>
 		));
 	}
@@ -132,7 +142,8 @@ export default didiConnect(
 		person: state.identity,
 		recentActivity: state.recentActivity,
 		credentials: state.credentials,
-		samples: state.samples
+		samples: state.samples,
+		activeSpecialCredentials: state.activeSpecialCredentials
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {

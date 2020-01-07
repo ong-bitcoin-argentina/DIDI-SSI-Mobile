@@ -60,7 +60,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	private renderCard(document: CredentialDocument) {
 		return (
 			<TouchableOpacity onPress={() => this.navigate("ShareSpecificCredential", { document })}>
-				<DocumentCredentialCard preview={false} document={document} />
+				<DocumentCredentialCard preview={false} document={document} context={{}} />
 			</TouchableOpacity>
 		);
 	}
