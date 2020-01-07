@@ -52,14 +52,16 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 
 		return (
 			<DidiScrollScreen>
-				<DidiText.Explanation.Emphasis>{strings.userData.changePassword.explanation}</DidiText.Explanation.Emphasis>
+				<DidiText.ChangePassword.Emphasis>
+					{strings.userData.changePassword.explanation}
+				</DidiText.ChangePassword.Emphasis>
 
 				<DidiTextInput.Password onChangeText={text => this.setState({ oldKey: text })} descriptionType="OLD" />
 
 				<View>
-					<DidiText.Explanation.Normal style={styles.explanation}>
+					<DidiText.ChangePassword.Explanation>
 						{strings.userData.changePassword.requirementHeader}
-					</DidiText.Explanation.Normal>
+					</DidiText.ChangePassword.Explanation>
 					{TypedObject.keys(strings.userData.changePassword.requirements).map(key => {
 						const accepted = passwordErrors.find(e => e.toString() === key) === undefined;
 
@@ -69,10 +71,10 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 						const text = strings.userData.changePassword.requirements[key];
 						const color = accepted ? colors.success : undefined;
 						return (
-							<DidiText.ValidateIdentity.EnumerationItem style={{ color }} key={key}>
+							<DidiText.ChangePassword.EnumerationItem style={{ color }} key={key}>
 								{indicator}
 								{text}
-							</DidiText.ValidateIdentity.EnumerationItem>
+							</DidiText.ChangePassword.EnumerationItem>
 						);
 					})}
 				</View>
@@ -83,9 +85,9 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 					<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
 				</View>
 
-				<DidiText.Explanation.Normal style={styles.error}>
+				<DidiText.ChangePassword.Error>
 					{!passwordsMatch && this.state.keyDup.length > 0 ? strings.userData.changePassword.mismatch : ""}
-				</DidiText.Explanation.Normal>
+				</DidiText.ChangePassword.Error>
 
 				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.onSuccess()} />
 				<DidiServiceButton
@@ -115,12 +117,3 @@ const connected = didiConnect(
 );
 
 export { connected as ChangePasswordScreen };
-
-const styles = StyleSheet.create({
-	explanation: {
-		textAlign: undefined
-	},
-	error: {
-		color: colors.error
-	}
-});

@@ -36,6 +36,9 @@ const color = {
 	},
 	primary: {
 		color: colors.primaryShadow
+	},
+	error: {
+		color: colors.error
 	}
 };
 
@@ -106,6 +109,28 @@ const styles = {
 			...base,
 			...color.faded,
 			fontSize: 12
+		}
+	}),
+	changePassword: StyleSheet.create({
+		explanation: {
+			...base,
+			textAlign: undefined,
+			fontSize: 16
+		},
+		error: {
+			...base,
+			...fontStyle.bold,
+			...color.error,
+			fontSize: 16
+		},
+		emphasis: {
+			...base,
+			...fontStyle.bold
+		},
+		enumerationItem: {
+			...base,
+			textAlign: undefined,
+			fontSize: 14
 		}
 	}),
 	card: StyleSheet.create({
@@ -276,6 +301,12 @@ export const DidiText = {
 		EnumerationItem: textWith(styles.validateIdentity.enumerationItem),
 		Congrats: textWith(styles.validateIdentity.congrats),
 		Reminder: textWith(styles.validateIdentity.reminder)
+	},
+	ChangePassword: {
+		Explanation: textWith(styles.changePassword.explanation),
+		Error: textWith(styles.changePassword.error),
+		Emphasis: textWith(styles.changePassword.emphasis),
+		EnumerationItem: textWith(styles.changePassword.enumerationItem)
 	},
 	Card: {
 		Category: textWith(styles.card.category),
