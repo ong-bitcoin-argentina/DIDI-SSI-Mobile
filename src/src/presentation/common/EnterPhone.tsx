@@ -1,12 +1,13 @@
-import React from "react";
-import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
+import React, { Fragment } from "react";
+import { Alert, Image, ImageSourcePropType, StyleSheet, View } from "react-native";
 
 import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
-import Validator from "../access/helpers/validator";
+import { Validations } from "../../model/Validations";
+import { countries } from "../resources/countries";
 import strings from "../resources/strings";
 
 import { DidiScreen } from "./DidiScreen";
@@ -20,6 +21,7 @@ export interface EnterPhoneProps {
 }
 
 export interface EnterPhoneState {
+	inputCountryCode?: string;
 	inputPhoneNumber?: string;
 	inputPassword?: string;
 }
@@ -31,13 +33,33 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 	}
 
 	render() {
+		const country = this.state.inputCountryCode
+			? countries.find(c => c.prefix === this.state.inputCountryCode)
+			: countries[0];
 		return (
 			<DidiScreen>
 				<DidiText.Explanation.Emphasis>{this.props.explanation}</DidiText.Explanation.Emphasis>
 
 				<View style={styles.countryContainer}>
-					<Image style={styles.countryImage} source={this.countryImageSource()} />
-					<DidiText.Explanation.Normal>{strings.accessCommon.place}</DidiText.Explanation.Normal>
+					<View style={{ flex: 1 }}>
+						{country && (
+							<View style={{ flexDirection: "row", justifyContent: "center" }}>
+								{country.image && <Image style={styles.countryImage} source={country.image} />}
+								<DidiText.Explanation.Normal>{country.name}</DidiText.Explanation.Normal>
+							</View>
+						)}
+					</View>
+
+					<View style={{ flex: 1, alignItems: "center" }}>
+						<DidiTextInput
+							viewProps={{ style: { width: 100 } }}
+							description="Código de País"
+							placeholder="54"
+							textInputProps={{
+								onChangeText: inputCountryCode => this.setState({ inputCountryCode })
+							}}
+						/>
+					</View>
 				</View>
 
 				<DidiTextInput.PhoneNumber onChangeText={text => this.setState({ inputPhoneNumber: text })} />
@@ -63,25 +85,24 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 	private canPressContinueButton(): boolean {
 		return (
-			Validator.isPhoneNumber(this.state.inputPhoneNumber) &&
-			(!this.props.isPasswordRequired || Validator.isPassword(this.state.inputPassword))
+			Validations.isPhoneNumber(this.state.inputPhoneNumber) &&
+			(!this.props.isPasswordRequired || Validations.isPassword(this.state.inputPassword))
 		);
 	}
 
 	private onPressContinueButton() {
-		this.props.onPressContinueButton(this.state.inputPhoneNumber!, this.state.inputPassword || null);
-	}
-
-	private countryImageSource(): ImageSourcePropType {
-		return require("../resources/images/arg.png");
+		const countryPrefix = this.state.inputCountryCode ?? countries[0].prefix;
+		const phoneNumber = `+${countryPrefix}${this.state.inputPhoneNumber!}`;
+		this.props.onPressContinueButton(phoneNumber, this.state.inputPassword || null);
 	}
 }
 
 const styles = StyleSheet.create({
 	countryContainer: {
-		alignSelf: "center",
+		alignSelf: "stretch",
 		flexDirection: "row",
-		alignItems: "center"
+		alignItems: "center",
+		justifyContent: "space-around"
 	},
 	countryImage: {
 		width: 30,

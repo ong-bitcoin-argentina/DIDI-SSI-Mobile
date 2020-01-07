@@ -2,8 +2,8 @@ import { verifyJWT } from "did-jwt";
 import { verifyCredential } from "did-jwt-vc";
 import { Resolver } from "did-resolver";
 import { getResolver } from "ethr-did-resolver";
-import { array, separate } from "fp-ts/lib/Array";
-import { Either, either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
+import { array } from "fp-ts/lib/Array";
+import { Either, either, isLeft, left, right } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 import JWTDecode from "jwt-decode";
 
@@ -24,13 +24,27 @@ if (typeof Buffer === "undefined") {
 	global.Buffer = require("buffer").Buffer;
 }
 
-const PublicCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec]);
-const ParseCodec = t.union([PublicCodec, ForwardedRequestCodec]);
+const PublicCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec], "___");
+const ParseCodec = t.union([PublicCodec, ForwardedRequestCodec], "___");
 
 export type JWTParseResult = Either<JWTParseError, RequestDocument | CredentialDocument>;
 
 function extractIoError(errors: t.Errors): string {
-	return TypedArray.flatMap(errors, e => e.message).join(", ") + ".";
+	function getContextPath(context: t.Context): string {
+		return TypedArray.flatMap(
+			context.map(c => (c.type.name === "___" ? undefined : c)),
+			val => val
+		)
+			.map((c, index) => (index === 0 ? c.type.name : `${c.key}:${c.type.name}`))
+			.join("/");
+	}
+	return errors
+		.map((e): string => {
+			return e.message
+				? e.message
+				: "Invalid value " + JSON.stringify(e.value) + " supplied to " + getContextPath(e.context);
+		})
+		.join("\n\n");
 }
 
 export function unverifiedParseJWT(jwt: string): JWTParseResult {

@@ -7,6 +7,7 @@ import { DocumentCredentialCard, sampleDocumentToCard } from "../common/document
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { DocumentFilterType, SampleDocument } from "../../../model/SampleDocument";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
@@ -18,6 +19,7 @@ interface DocumentsScreenInternalProps extends DocumentsScreenProps {
 	credentials: CredentialDocument[];
 	samples: SampleDocument[];
 	filter: (type: DocumentFilterType) => boolean;
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 
 export type DocumentsScreenNavigation = {
@@ -46,8 +48,20 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 			.map(
 				(document, index): JSX.Element => {
 					return (
-						<TouchableOpacity key={index} onPress={() => this.navigate("DocumentDetail", { document })}>
-							<DocumentCredentialCard preview={true} document={document} />
+						<TouchableOpacity
+							key={index}
+							onPress={() =>
+								this.navigate("DocumentDetail", {
+									document,
+									activeSpecialCredentials: this.props.activeSpecialCredentials
+								})
+							}
+						>
+							<DocumentCredentialCard
+								preview={true}
+								document={document}
+								context={this.props.activeSpecialCredentials}
+							/>
 						</TouchableOpacity>
 					);
 				}
@@ -61,7 +75,8 @@ export default function(filter: (type: DocumentFilterType) => boolean) {
 		(state): DocumentsScreenInternalProps => ({
 			filter,
 			samples: state.samples,
-			credentials: state.credentials
+			credentials: state.credentials,
+			activeSpecialCredentials: state.activeSpecialCredentials
 		})
 	);
 }

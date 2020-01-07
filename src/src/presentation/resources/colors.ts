@@ -9,7 +9,10 @@ const colors = {
 	text: "#4A4A4A",
 	textFaded: "#9B9B9B",
 
-	error: "#F5BAD1",
+	error: "#E03C7A",
+	lightError: "#F5BAD1",
+
+	success: "#6ECC62",
 
 	primary: "#417FD7",
 	primaryLight: "#ACC6EB",

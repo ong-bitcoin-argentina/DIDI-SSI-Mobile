@@ -7,10 +7,12 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import strings from "../../resources/strings";
 
 export interface DocumentDetailProps {
 	document: CredentialDocument;
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 
 export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDetailProps, {}, {}> {
@@ -21,7 +23,14 @@ export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDet
 		return (
 			<DidiScreen style={styles.body}>
 				{docList.map((doc, index) => {
-					return <DocumentCredentialCard preview={false} document={doc} key={index} />;
+					return (
+						<DocumentCredentialCard
+							preview={false}
+							document={doc}
+							key={index}
+							context={this.props.activeSpecialCredentials}
+						/>
+					);
 				})}
 			</DidiScreen>
 		);

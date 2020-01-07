@@ -124,7 +124,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 						placeholder={""}
 						textInputProps={{
 							editable: false,
-							value: data || "--"
+							value: data === null ? strings.credentialCard.valueNotAvailable : data ?? "--"
 						}}
 					/>
 				);

@@ -5,6 +5,7 @@ import { DidiText } from "../../util/DidiText";
 
 import { ClaimDataPairs } from "../../../model/Claim";
 import colors from "../../resources/colors";
+import strings from "../../resources/strings";
 
 import DidiCardBody, { DidiCardBodyProps } from "./DidiCardBody";
 
@@ -45,7 +46,9 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 					return (
 						<View key={index} style={columnStyle}>
 							<DidiText.Card.Key style={[styles.dataLabel, { color }]}>{item.label}</DidiText.Card.Key>
-							<DidiText.Card.Value style={[styles.dataValue, { color }, valueStyle]}>{item.value}</DidiText.Card.Value>
+							<DidiText.Card.Value style={[styles.dataValue, { color }, valueStyle]}>
+								{item.value ?? strings.credentialCard.valueNotAvailable}
+							</DidiText.Card.Value>
 						</View>
 					);
 				})}

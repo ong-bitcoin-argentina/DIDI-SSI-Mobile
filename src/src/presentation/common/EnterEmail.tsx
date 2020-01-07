@@ -8,7 +8,7 @@ import { DidiServiceButton } from "../util/DidiServiceButton";
 import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
-import Validator from "../access/helpers/validator";
+import { Validations } from "../../model/Validations";
 
 export interface EnterEmailProps {
 	description: string;
@@ -33,10 +33,10 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 	}
 
 	private canPressContinueButton(): boolean {
-		if (!Validator.isEmail(this.state.email)) {
+		if (!Validations.isEmail(this.state.email)) {
 			return false;
 		}
-		if (this.props.isPasswordRequired && !Validator.isPassword(this.state.password)) {
+		if (this.props.isPasswordRequired && !Validations.isPassword(this.state.password)) {
 			return false;
 		}
 		if (this.props.isPasswordRequired === "duplicate" && this.state.password !== this.state.passwordCopy) {

@@ -27,7 +27,7 @@ async function doRecoverTokens(args: RecoverTokensArguments) {
 			}
 		};
 
-		const verifiedTokens = TypedArray.flatMap(await Promise.all(tokens.reverse().map(acceptToken)), x => x);
+		const verifiedTokens = TypedArray.flatMap(await Promise.all(tokens.map(acceptToken)), x => x);
 		return right(verifiedTokens);
 	} catch (e) {
 		return left(serviceErrors.trustGraph.FETCH_ERR);

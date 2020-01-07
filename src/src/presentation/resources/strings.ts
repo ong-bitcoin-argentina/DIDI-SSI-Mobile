@@ -77,6 +77,20 @@ export default {
 		},
 		changePassword: {
 			barTitle: "Cambio de Contraseña",
+			explanation: "Ingresa tu contraseña actual y tu nueva contraseña",
+			requirementHeader: "Tu nueva contraseña debe tener:",
+			indicator: {
+				missing: "- ",
+				ok: "✓ "
+			},
+			requirements: {
+				PASSWORD_TOO_SHORT: "8 o mas caracteres",
+				PASSWORD_MISSING_UPPERCASE: "1 o mas mayusculas",
+				PASSWORD_MISSING_LOWERCASE: "1 o mas minusculas",
+				PASSWORD_MISSING_NUMBER: "1 o mas numeros",
+				PASSWORD_MISSING_SPECIAL: "1 o mas caracteres especiales"
+			},
+			mismatch: "Las contraseñas no coinciden",
 			changePassword: "Cambiar Contraseña"
 		},
 		share: {
@@ -171,7 +185,7 @@ export default {
 	accessCommon: {
 		validateButtonText: "Validar",
 		recoverButtonText: "Registrar",
-		place: "Argentina +54",
+		defaultPlace: "Otros",
 		enterPhone: {
 			messageHead: "Carga tu número de celular"
 		},
@@ -292,7 +306,7 @@ export default {
 		},
 		cellPhoneNumber: {
 			description: "Número de celular",
-			placeholder: "011 + número sin el 15"
+			placeholder: "código area + número sin el 15"
 		},
 		password: {
 			BASIC: "Contraseña",
@@ -301,9 +315,39 @@ export default {
 			REPEAT: "Repetir Contraseña"
 		}
 	},
+	credentialCard: {
+		emitter: "Emisor: ",
+		valueNotAvailable: "N/A",
+		replaced: "Credencial no vigente por existir reemplazo"
+	},
 	specialCredentials: {
-		PhoneNumberData: "Número de celular",
-		EmailData: "E-mail"
+		PhoneNumberData: {
+			title: "Número de celular",
+			phoneNumber: "Número de celular"
+		},
+		EmailData: {
+			title: "E-mail",
+			email: "E-mail"
+		},
+		PersonalData: {
+			title: "Datos Personales",
+			dni: "DNI",
+			names: "Nombre(s)",
+			lastNames: "Apellido(s)",
+			nationality: "Nacionalidad"
+		},
+		LegalAddress: {
+			title: "Domicilio Legal",
+			streetAddress: "Calle",
+			numberStreet: "Número",
+			zipCode: "Código Postal",
+			city: "Ciudad/Barrio",
+			province: "Provincia",
+			country: "País",
+			floor: "Piso",
+			department: "Departamento",
+			municipality: "Municipalidad"
+		}
 	},
 	camera: {
 		notAuthorized: "Camara no autorizada",
@@ -329,6 +373,10 @@ export default {
 	credentialShare: {
 		noCredentialsAvailable: "Primero obten credenciales",
 		whichFull: "¿Qué credencial deseas compartir?",
-		whichMicro: "¿Qué parte de la credencial deseas compartir?"
+		whichMicro: "¿Qué parte de la credencial deseas compartir?",
+		notCurrent: {
+			title: "Credencial no vigente",
+			message: "Solo es posible compartir credenciales vigentes."
+		}
 	}
 };

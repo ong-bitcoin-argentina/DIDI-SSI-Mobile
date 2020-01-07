@@ -36,6 +36,9 @@ const color = {
 	},
 	primary: {
 		color: colors.primaryShadow
+	},
+	error: {
+		color: colors.error
 	}
 };
 
@@ -108,6 +111,28 @@ const styles = {
 			fontSize: 12
 		}
 	}),
+	changePassword: StyleSheet.create({
+		explanation: {
+			...base,
+			textAlign: undefined,
+			fontSize: 16
+		},
+		error: {
+			...base,
+			...fontStyle.bold,
+			...color.error,
+			fontSize: 16
+		},
+		emphasis: {
+			...base,
+			...fontStyle.bold
+		},
+		enumerationItem: {
+			...base,
+			textAlign: undefined,
+			fontSize: 14
+		}
+	}),
 	card: StyleSheet.create({
 		category: {
 			...base,
@@ -135,6 +160,18 @@ const styles = {
 			...fontStyle.medium,
 			fontSize: 13,
 			textAlign: "right"
+		},
+		percentage: {
+			...base,
+			...fontStyle.medium,
+			fontSize: 14,
+			textAlign: "center"
+		},
+		warning: {
+			...base,
+			...fontStyle.bold,
+			fontSize: 16,
+			textAlign: undefined
 		}
 	}),
 	activity: StyleSheet.create({
@@ -271,12 +308,20 @@ export const DidiText = {
 		Congrats: textWith(styles.validateIdentity.congrats),
 		Reminder: textWith(styles.validateIdentity.reminder)
 	},
+	ChangePassword: {
+		Explanation: textWith(styles.changePassword.explanation),
+		Error: textWith(styles.changePassword.error),
+		Emphasis: textWith(styles.changePassword.emphasis),
+		EnumerationItem: textWith(styles.changePassword.enumerationItem)
+	},
 	Card: {
 		Category: textWith(styles.card.category),
 		Title: textWith(styles.card.title),
 		Subtitle: textWith(styles.card.subtitle),
 		Key: textWith(styles.card.key),
-		Value: textWith(styles.card.value)
+		Value: textWith(styles.card.value),
+		Percentage: textWith(styles.card.percentage),
+		Warning: textWith(styles.card.warning)
 	},
 	Activity: {
 		Title: textWith(styles.activity.title),

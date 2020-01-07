@@ -210,7 +210,7 @@ export abstract class ValidateIdentityTakePhoto extends React.Component<
 	}
 
 	private async onPictureTaken(data: TakePictureResponse) {
-		const photoRect = transpose(this.photoRect());
+		const photoRect = this.transposeIfNeeded(this.photoRect());
 		const dataRect = {
 			x: 0,
 			y: 0,

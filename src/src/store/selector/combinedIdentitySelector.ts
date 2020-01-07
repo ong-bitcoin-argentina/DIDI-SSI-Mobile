@@ -1,11 +1,12 @@
 import { createSelector } from "reselect";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
+import { Nullable } from "../../util/Nullable";
 import TypedObject from "../../util/TypedObject";
 
 import { LegalAddress, PersonalData, VisualData } from "../../model/Identity";
 
-import { toplevelCredentialSelector } from "./credentialSelector";
+import { activeSpecialCredentialsSelector } from "./credentialSelector";
 
 export enum ValidationState {
 	Approved = "Approved",
@@ -21,7 +22,7 @@ export interface WithValidationState<T> {
 export interface ValidatedIdentity {
 	visual: Partial<VisualData>;
 	personalData: Partial<{ [K in keyof PersonalData]: WithValidationState<PersonalData[K]> }>;
-	address: WithValidationState<Partial<LegalAddress>>;
+	address: WithValidationState<Partial<Nullable<LegalAddress>>>;
 }
 
 function idFromEmail(email: string | undefined): string | undefined {
@@ -36,7 +37,7 @@ function idFromEmail(email: string | undefined): string | undefined {
 }
 
 export const combinedIdentitySelector = createSelector(
-	toplevelCredentialSelector,
+	activeSpecialCredentialsSelector,
 	st => st.persisted.userInputIdentity,
 	(credentials, userInputId) => {
 		const identity: ValidatedIdentity = {
@@ -50,9 +51,10 @@ export const combinedIdentitySelector = createSelector(
 				value: v
 			}))
 		};
-		credentials.forEach(credential => {
-			const special = credential.specialFlag;
-			if (special === undefined) {
+
+		TypedObject.keys(credentials).forEach(type => {
+			const special = credentials[type]?.specialFlag;
+			if (special?.type === undefined) {
 				return;
 			}
 			switch (special.type) {
@@ -86,6 +88,7 @@ export const combinedIdentitySelector = createSelector(
 					assertUnreachable(special);
 			}
 		});
+
 		if (identity.personalData.firstNames && identity.personalData.lastNames) {
 			identity.visual.name = [identity.personalData.firstNames.value, identity.personalData.lastNames.value].join(" ");
 		} else if (identity.personalData.email) {

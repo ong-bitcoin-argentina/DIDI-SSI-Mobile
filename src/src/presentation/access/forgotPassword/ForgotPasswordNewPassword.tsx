@@ -10,12 +10,12 @@ import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { Validations } from "../../../model/Validations";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { recoverPassword } from "../../../services/user/recoverPassword";
 import { didiConnect } from "../../../store/store";
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import strings from "../../resources/strings";
-import Validator from "../helpers/validator";
 
 export interface ForgotPasswordNewPasswordProps {
 	email: string;
@@ -59,7 +59,7 @@ class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 	}
 
 	private canPressContinueButton(): boolean {
-		return Validator.isPassword(this.state.password) && this.state.passwordCopy === this.state.password;
+		return Validations.isPassword(this.state.password) && this.state.passwordCopy === this.state.password;
 	}
 
 	render() {

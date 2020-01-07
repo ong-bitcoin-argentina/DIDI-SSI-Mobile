@@ -1,6 +1,4 @@
-import { ErrorData } from "../services/common/ErrorData";
-
-import { serviceErrors } from "../presentation/resources/serviceErrors";
+import { jwtParseErrors } from "../presentation/resources/serviceErrors";
 
 type JWTParseErrorContent =
 	| {
@@ -23,6 +21,12 @@ type JWTParseErrorContent =
 			type: "RESOLVER_CREATION_ERROR";
 	  };
 
+interface JWTErrorData {
+	title: string;
+	message: string;
+	errorCode: string;
+}
+
 export class JWTParseError extends Error {
 	private content: JWTParseErrorContent;
 
@@ -32,30 +36,30 @@ export class JWTParseError extends Error {
 		this.content = content;
 	}
 
-	getErrorData(): ErrorData {
+	getErrorData(): JWTErrorData {
 		return JWTParseError.getErrorData(this.content);
 	}
 
-	private static getErrorData(error: JWTParseErrorContent): ErrorData {
+	private static getErrorData(error: JWTParseErrorContent): JWTErrorData {
 		const displayError = (e: unknown) => (e instanceof Error ? e.message : JSON.stringify(e, null, 4));
 
 		switch (error.type) {
 			case "AFTER_EXP":
-				return serviceErrors.jwtParse.AFTER_EXP(error.current, error.expected);
+				return jwtParseErrors.AFTER_EXP(error.current, error.expected);
 			case "BEFORE_IAT":
-				return serviceErrors.jwtParse.BEFORE_IAT;
+				return jwtParseErrors.BEFORE_IAT;
 			case "RESOLVER_CREATION_ERROR":
-				return serviceErrors.jwtParse.RESOLVER_CREATION_ERROR;
+				return jwtParseErrors.RESOLVER_CREATION_ERROR;
 			case "JWT_DECODE_ERROR":
 				console.warn(displayError(error.error));
-				return serviceErrors.jwtParse.JWT_DECODE_ERROR;
+				return jwtParseErrors.JWT_DECODE_ERROR;
 			case "SHAPE_DECODE_ERROR":
-				return serviceErrors.jwtParse.SHAPE_DECODE_ERROR(error.errorMessage);
+				return jwtParseErrors.SHAPE_DECODE_ERROR(error.errorMessage);
 			case "NONCREDENTIAL_WRAP_ERROR":
-				return serviceErrors.jwtParse.NONCREDENTIAL_WRAP_ERROR;
+				return jwtParseErrors.NONCREDENTIAL_WRAP_ERROR;
 			case "VERIFICATION_ERROR":
 				console.warn(displayError(error.error));
-				return serviceErrors.jwtParse.VERIFICATION_ERROR;
+				return jwtParseErrors.VERIFICATION_ERROR;
 		}
 	}
 }

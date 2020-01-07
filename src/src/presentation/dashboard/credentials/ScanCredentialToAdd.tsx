@@ -9,6 +9,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 
@@ -19,6 +20,7 @@ export interface ScanCredentialToAddProps {
 }
 interface ScanCredentialToAddStateProps {
 	existingTokens: string[];
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 interface ScanCredentialToAddDispatchProps {
 	addCredential(credential: CredentialDocument): void;
@@ -42,7 +44,13 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={styles.body}>
-				{<DocumentCredentialCard preview={false} document={this.props.credential} />}
+				{
+					<DocumentCredentialCard
+						preview={false}
+						document={this.props.credential}
+						context={this.props.activeSpecialCredentials}
+					/>
+				}
 				{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
 			</DidiScreen>
 		);
@@ -80,7 +88,8 @@ const connected = didiConnect(
 	ScanCredentialToAddScreen,
 	(state): ScanCredentialToAddStateProps => {
 		return {
-			existingTokens: state.tokens
+			existingTokens: state.tokens,
+			activeSpecialCredentials: state.activeSpecialCredentials
 		};
 	},
 	(dispatch): ScanCredentialToAddDispatchProps => {
