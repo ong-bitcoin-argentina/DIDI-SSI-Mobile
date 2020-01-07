@@ -84,7 +84,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 				</View>
 
 				<DidiText.Explanation.Normal style={styles.error}>
-					{!passwordsMatch && this.state.keyDup.length > 0 ? "Las contraseñas no coinciden" : ""}
+					{!passwordsMatch && this.state.keyDup.length > 0 ? strings.userData.changePassword.mismatch : ""}
 				</DidiText.Explanation.Normal>
 
 				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.onSuccess()} />

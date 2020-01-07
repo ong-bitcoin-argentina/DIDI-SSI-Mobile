@@ -185,7 +185,7 @@ export default {
 	accessCommon: {
 		validateButtonText: "Validar",
 		recoverButtonText: "Registrar",
-		place: "Argentina +54",
+		defaultPlace: "Otros",
 		enterPhone: {
 			messageHead: "Carga tu número de celular"
 		},
@@ -306,7 +306,7 @@ export default {
 		},
 		cellPhoneNumber: {
 			description: "Número de celular",
-			placeholder: "011 + número sin el 15"
+			placeholder: "código area + número sin el 15"
 		},
 		password: {
 			BASIC: "Contraseña",
