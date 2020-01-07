@@ -1,4 +1,4 @@
-import { StyleSheet, TextStyle } from "react-native";
+import { StyleSheet } from "react-native";
 
 import colors from "./colors";
 
@@ -21,6 +21,12 @@ export default {
 			alignItems: "stretch",
 			justifyContent: "space-evenly",
 			flex: 1
+		},
+		scroll: {
+			flexGrow: 1,
+			justifyContent: "space-between",
+			paddingHorizontal: "10%",
+			paddingVertical: 30
 		}
 	})
 };

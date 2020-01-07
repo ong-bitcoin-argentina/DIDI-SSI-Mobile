@@ -41,7 +41,7 @@ export class ValidationStateIcon extends React.PureComponent<ValidationStateIcon
 				return {
 					icon: Cross,
 					text: strings.userData.states.rejected,
-					backgroundColor: colors.error
+					backgroundColor: colors.lightError
 				};
 		}
 	}

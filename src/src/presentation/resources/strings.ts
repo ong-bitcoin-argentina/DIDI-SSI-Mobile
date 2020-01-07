@@ -79,13 +79,18 @@ export default {
 			barTitle: "Cambio de Contraseña",
 			explanation: "Ingresa tu contraseña actual y tu nueva contraseña",
 			requirementHeader: "Tu nueva contraseña debe tener:",
-			requirements: {
-				count: "- 8 o mas caracteres",
-				lower: "- 1 o mas minusculas",
-				upper: "- 1 o mas mayusculas",
-				number: "- 1 o mas numeros",
-				special: "- 1 o mas caracteres especiales"
+			indicator: {
+				missing: "- ",
+				ok: "✓ "
 			},
+			requirements: {
+				PASSWORD_TOO_SHORT: "8 o mas caracteres",
+				PASSWORD_MISSING_UPPERCASE: "1 o mas mayusculas",
+				PASSWORD_MISSING_LOWERCASE: "1 o mas minusculas",
+				PASSWORD_MISSING_NUMBER: "1 o mas numeros",
+				PASSWORD_MISSING_SPECIAL: "1 o mas caracteres especiales"
+			},
+			mismatch: "Las contraseñas no coinciden",
 			changePassword: "Cambiar Contraseña"
 		},
 		share: {
