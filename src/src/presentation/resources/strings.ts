@@ -229,7 +229,7 @@ export default {
 		header: "Validar Identidad",
 		welcome: "Te damos la bienvenida",
 		step: "Paso",
-		stepTotal: "/4",
+		stepTotal: "/3",
 		what: {
 			header: "¿Que es validación de identidad?",
 			description:
@@ -258,14 +258,8 @@ export default {
 		explainSelfie: {
 			step: 3,
 			header: "Foto Selfie",
-			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie.",
-			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta."
-		},
-		explainLiveness: {
-			step: 4,
-			header: "Prueba de Vida",
 			description:
-				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!",
+				"Busca una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando escuches un pitido mira tu hombro izquierdo.",
 			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta."
 		},
 		submit: {

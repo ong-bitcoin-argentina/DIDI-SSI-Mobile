@@ -1,5 +1,4 @@
 import React from "react";
-import { TakePictureResponse } from "react-native-camera/types";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -7,12 +6,11 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
-import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
-import { ValidateIdentityLivenessProps } from "./ValidateIdentityLiveness";
+import { ValidateIdentitySubmitProps } from "./ValidateIdentitySubmit";
 import { ValidateIdentityTakePhoto } from "./ValidateIdentityTakePhoto";
 
 export interface ValidateIdentitySelfieNavigation {
-	ValidateIdentityLiveness: ValidateIdentityLivenessProps;
+	ValidateIdentitySubmit: ValidateIdentitySubmitProps;
 }
 export interface ValidateIdentitySelfieProps {
 	documentData: DocumentBarcodeData;
@@ -44,7 +42,7 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 				image={require("../../resources/images/validateIdentityExplainSelfie.png")}
 				onPictureTaken={(data, reset) =>
 					this.navigate(
-						"ValidateIdentityLiveness",
+						"ValidateIdentitySubmit",
 						{
 							...this.props,
 							selfie: data

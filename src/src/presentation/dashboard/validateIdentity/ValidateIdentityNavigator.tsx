@@ -6,7 +6,6 @@ import { ValidateIdentityBackScreen } from "./ValidateIdentityBack";
 import { ValidateIdentityExplainHowScreen } from "./ValidateIdentityExplainHow";
 import { ValidateIdentityExplainWhatScreen } from "./ValidateIdentityExplainWhat";
 import { ValidateIdentityFrontScreen } from "./ValidateIdentityFront";
-import { ValidateIdentityLivenessScreen } from "./ValidateIdentityLiveness";
 import { ValidateIdentitySelfieScreen } from "./ValidateIdentitySelfie";
 import { ValidateIdentitySubmitScreen } from "./ValidateIdentitySubmit";
 
@@ -16,10 +15,8 @@ export default function(then: NavMap<DashboardScreenProps>) {
 			ValidateIdentityFront: NavMap.from(ValidateIdentityFrontScreen, {
 				ValidateIdentityBack: NavMap.from(ValidateIdentityBackScreen, {
 					ValidateIdentitySelfie: NavMap.from(ValidateIdentitySelfieScreen, {
-						ValidateIdentityLiveness: NavMap.from(ValidateIdentityLivenessScreen, {
-							ValidateIdentitySubmit: NavMap.from(ValidateIdentitySubmitScreen, {
-								DashboardRoot: then
-							})
+						ValidateIdentitySubmit: NavMap.from(ValidateIdentitySubmitScreen, {
+							DashboardRoot: then
 						})
 					})
 				})
