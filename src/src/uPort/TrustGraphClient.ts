@@ -33,16 +33,15 @@ export class TrustGraphClient {
 		return new TrustGraphClient(trustGraphUri, await getCredentials());
 	}
 
-	async getJWTs(): Promise<string[]> {
-		const query = gql`
-			query findEdges($toDID: String) {
-				findEdges(toDID: $toDID) {
-					jwt
-				}
-			}
-		`;
+	async getJWTs(): Promise<Array<{ jwt: string; hash: string }>> {
 		const response = await this.client.query({
-			query,
+			query: gql`
+				query findEdges($toDID: String) {
+					findEdges(toDID: $toDID) {
+						jwt
+					}
+				}
+			`,
 			variables: {
 				toDID: this.credentials.did
 			}
@@ -50,7 +49,28 @@ export class TrustGraphClient {
 		if (response.errors) {
 			throw response.errors;
 		} else {
-			return response.data.findEdges.map((edge: { jwt: string }) => edge.jwt);
+			return response.data.findEdges;
+		}
+	}
+
+	async insertJWT(jwt: string): Promise<{ jwt: string; hash: string }> {
+		const response = await this.client.mutate({
+			mutation: gql`
+				mutation addEdge($edgeJWT: String!, $did: String!) {
+					addEdge(edgeJWT: $edgeJWT, did: $did) {
+						jwt
+					}
+				}
+			`,
+			variables: {
+				did: this.credentials.did,
+				edgeJWT: jwt
+			}
+		});
+		if (response.errors) {
+			throw response.errors;
+		} else {
+			return response.data.addEdge;
 		}
 	}
 }

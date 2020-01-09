@@ -17,7 +17,7 @@ interface RecoverTokensArguments {
 async function doRecoverTokens(args: RecoverTokensArguments) {
 	try {
 		const tg = await TrustGraphClient.create(args.trustGraphUri);
-		const tokens = await tg.getJWTs();
+		const tokens = (await tg.getJWTs()).map(data => data.jwt);
 
 		const acceptToken = async (token: string): Promise<string | undefined> => {
 			if (isRight(await parseJWT(token, args.ethrDidUri))) {
