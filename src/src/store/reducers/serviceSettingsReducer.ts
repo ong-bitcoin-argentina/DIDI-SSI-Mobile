@@ -13,7 +13,7 @@ export const defaultServiceSettings: ServiceSettings = {
 	// trustGraphUri: "https://edge.uport.me/graphql",
 	trustGraphUri: "http://192.168.2.123:3001/graphql",
 
-	ethrDidUri: "https://rinkeby.infura.io/ethr-did",
+	ethrDidUri: "https://mainnet.infura.io/ethr-did",
 
 	// didiUserServer: "http://didi.nec.com.ar:8089/api/1.0/didi"
 	didiUserServer: "http://192.168.2.123:3000/api/1.0/didi"

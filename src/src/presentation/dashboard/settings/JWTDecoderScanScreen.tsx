@@ -31,7 +31,10 @@ export class JWTDecoderScanScreen extends NavigationEnabledComponent<
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<DidiCamera onBarcodeScanned={(content, type) => this.onScan(content, type)} />
+				<DidiCamera
+					onBarcodeScanned={(content, type) => this.onScan(content, type)}
+					explanation={strings.camera.scanQRInstruction}
+				/>
 			</Fragment>
 		);
 	}

@@ -1,5 +1,5 @@
 import React, { Fragment, ReactElement } from "react";
-import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, Text, View, ViewProps } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
@@ -20,6 +20,7 @@ export interface ValidateIdentityExplanationProps {
 	image: ImageSourcePropType;
 	buttonText?: string;
 	buttonAction: () => void;
+	viewProps?: ViewProps;
 }
 
 export default class ValidateIdentityExplanation extends React.Component<ValidateIdentityExplanationProps> {
@@ -28,7 +29,7 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<View style={styles.body}>
+					<View {...this.props.viewProps} style={[styles.body, this.props.viewProps?.style]}>
 						<ValidateIdentityExplanationHeader {...this.props.header} />
 						{this.renderDescription()}
 						<Image style={commonStyles.image.image} source={this.props.image} />
