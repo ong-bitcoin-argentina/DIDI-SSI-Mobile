@@ -114,7 +114,6 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 							{this.renderRegularDocuments()}
 							{this.props.samples.map(sampleDocumentToCard)}
 							<IncompleteIdentityCard
-								personName={this.props.person.visual.name || this.props.person.visual.id || ""}
 								onStartValidateId={() => this.navigate("ValidateID", {})}
 								onValidateIdSuccess={() => {
 									this.props.resetDniValidation();
