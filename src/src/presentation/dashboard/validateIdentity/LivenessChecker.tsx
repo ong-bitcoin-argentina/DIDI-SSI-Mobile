@@ -53,7 +53,7 @@ function normalizeFaceBounds(bounds: Face["bounds"]) {
 		maxY: bounds.origin.y + bounds.size.height
 	};
 }
-export function normalizeLayoutBounds(bounds: LayoutRectangle) {
+function normalizeLayoutBounds(bounds: LayoutRectangle) {
 	return {
 		minX: bounds.x,
 		maxX: bounds.x + bounds.width,
@@ -120,19 +120,6 @@ export class LivenessChecker {
 			firstAdded: this.data.firstAdded,
 			lastAdded: now
 		});
-	}
-
-	displayJSON() {
-		if (this.data === undefined) {
-			return {};
-		}
-		return {
-			faceId: this.data.faceId ?? "undefined",
-			firstAdded: this.data.firstAdded,
-			lastAdded: this.data.lastAdded,
-			faceCount: this.data.history.length,
-			traits: TypedObject.mapValues(traits, t => this.data?.history.ever(t))
-		};
 	}
 
 	canTakePhoto(cameraBounds: LayoutRectangle): boolean {

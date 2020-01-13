@@ -1,16 +1,15 @@
 import React from "react";
-import { Dimensions, LayoutRectangle, ScrollView, StyleSheet, View } from "react-native";
+import { LayoutRectangle, View } from "react-native";
 import { Face, TakePictureResponse } from "react-native-camera";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DidiCamera } from "../common/DidiCamera";
 
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
-import { LivenessChecker, normalizeLayoutBounds } from "./LivenessChecker";
+import { LivenessChecker } from "./LivenessChecker";
 import { LivenessGesture } from "./LivenessGesture";
 import { ValidateIdentitySubmitProps } from "./ValidateIdentitySubmit";
 import { ValidateIdentityTakePhoto } from "./ValidateIdentityTakePhoto";
@@ -126,24 +125,6 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 				>
 					{this.props.reticle}
 				</DidiCamera>
-
-				<ScrollView style={[StyleSheet.absoluteFill, { backgroundColor: "#0008", bottom: 150 }]}>
-					<DidiText.Card.Key style={{ color: "white" }}>
-						{JSON.stringify(
-							{
-								state: {
-									...this.state,
-									livenessChecker: undefined
-								},
-								dims: Dimensions.get("window"),
-								reticleBounds: this.props.reticleBounds && normalizeLayoutBounds(this.props.reticleBounds),
-								...this.state.livenessChecker?.displayJSON()
-							},
-							null,
-							4
-						)}
-					</DidiText.Card.Key>
-				</ScrollView>
 			</View>
 		);
 	}
