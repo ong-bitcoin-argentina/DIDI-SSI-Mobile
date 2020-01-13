@@ -1,5 +1,5 @@
-import { Component, ComponentType, NamedExoticComponent } from "react";
-import { connect, ConnectedComponent, GetProps, Matching } from "react-redux";
+import { ComponentType } from "react";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import { NavigationEnabledComponentConstructor } from "../presentation/util/NavMap";
@@ -7,11 +7,9 @@ import { NavigationEnabledComponentConstructor } from "../presentation/util/NavM
 import { CredentialDocument } from "../model/CredentialDocument";
 import { RecentActivity } from "../model/RecentActivity";
 import { RequestDocument } from "../model/RequestDocument";
-import { SampleDocument } from "../model/SampleDocument";
 import { ServiceCallState } from "../services/ServiceStateStore";
 
 import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
-import { sampleDocuments } from "./samples/sampleDocuments";
 import { sampleRecentActivity } from "./samples/sampleRecentActivity";
 import { combinedIdentitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
 import {
@@ -34,7 +32,6 @@ export interface StoreContent extends PersistedStoreContent {
 	identity: ValidatedIdentity;
 
 	recentActivity: RecentActivity[];
-	samples: SampleDocument[];
 }
 
 export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
@@ -50,8 +47,7 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 
 		identity: combinedIdentitySelector(store),
 
-		recentActivity: sampleRecentActivity,
-		samples: sampleDocuments
+		recentActivity: sampleRecentActivity
 	};
 }
 

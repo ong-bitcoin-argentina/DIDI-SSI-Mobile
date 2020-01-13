@@ -4,10 +4,9 @@ import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
-import { DocumentFilterType } from "../../../model/SampleDocument";
+import { DocumentFilterType } from "../../../model/CredentialDocument";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
-import themes from "../../resources/themes";
 
 import { DocumentDetailScreen } from "./DocumentDetail";
 import DocumentsScreen, { DocumentsScreenNavigation } from "./DocumentsScreen";
