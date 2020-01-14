@@ -58,8 +58,8 @@ const legalAddressCredentialCodec = t.partial({
 });
 
 export const SpecialCredentialFlag = {
-	extract: (claim: ClaimData): SpecialCredentialFlag | undefined => {
-		switch (claim.title) {
+	extract: (title: string, claim: ClaimData): SpecialCredentialFlag | undefined => {
+		switch (title) {
 			case "Phone":
 				const phone = phoneCredentialCodec.decode(claim);
 				if (isRight(phone)) {
