@@ -30,6 +30,7 @@ export type ValidateIdentityTakePhotoProps = {
 	confirmation: string;
 
 	camera: (
+		onLayout: (layout: LayoutRectangle) => void,
 		reticle: JSX.Element | undefined,
 		onPictureTaken: (data: TakePictureResponse) => Promise<void>,
 		reticleBounds?: LayoutRectangle
@@ -130,13 +131,11 @@ export abstract class ValidateIdentityTakePhoto extends React.Component<
 						description={this.props.description}
 						image={this.props.image}
 						buttonAction={() => this.setState({ state: "camera" })}
-						viewProps={{
-							onLayout: event => this.setState({ layout: event.nativeEvent.layout })
-						}}
 					/>
 				);
 			case "camera":
 				return this.props.camera(
+					layout => this.setState({ layout }),
 					this.state.layout && (
 						<Fragment>
 							<View style={this.photoStyle(this.state.layout)} />

@@ -46,8 +46,9 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 				description={strings.validateIdentity.explainFront.description}
 				confirmation={strings.validateIdentity.explainFront.confirmation}
 				image={require("../../resources/images/validateIdentityExplainFront.png")}
-				camera={(reticle, onPictureTaken) => (
+				camera={(onLayout, reticle, onPictureTaken) => (
 					<DidiCamera
+						onCameraLayout={onLayout}
 						cameraLandscape={true}
 						onPictureTaken={onPictureTaken}
 						onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}

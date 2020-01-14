@@ -49,8 +49,9 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 				description={strings.validateIdentity.explainBack.description}
 				confirmation={strings.validateIdentity.explainBack.confirmation}
 				image={require("../../resources/images/validateIdentityExplainBack.png")}
-				camera={(reticle, onPictureTaken) => (
+				camera={(onLayout, reticle, onPictureTaken) => (
 					<DidiCamera
+						onCameraLayout={onLayout}
 						cameraLandscape={true}
 						cameraButtonDisabled={(this.props.documentData ?? this.state.documentData) === undefined}
 						onPictureTaken={onPictureTaken}

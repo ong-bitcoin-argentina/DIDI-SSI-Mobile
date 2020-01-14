@@ -60,8 +60,9 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 				description={strings.validateIdentity.explainSelfie.description(this.state.gesture)}
 				confirmation={strings.validateIdentity.explainSelfie.confirmation}
 				image={require("../../resources/images/validateIdentityExplainSelfie.png")}
-				camera={(reticle, onPictureTaken, reticleBounds) => (
+				camera={(onLayout, reticle, onPictureTaken, reticleBounds) => (
 					<SelfieCamera
+						onCameraLayout={onLayout}
 						gesture={this.state.gesture}
 						reticle={reticle}
 						onPictureTaken={onPictureTaken}
@@ -84,6 +85,7 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 }
 
 interface SelfieCameraProps {
+	onCameraLayout: (layout: LayoutRectangle) => void;
 	gesture: LivenessGesture;
 	reticle: JSX.Element | undefined;
 	onPictureTaken: (data: TakePictureResponse) => Promise<void>;
@@ -116,6 +118,7 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 					ref={ref => (this.camera = ref)}
 					cameraLocation="front"
 					cameraLandscape={false}
+					onCameraLayout={this.props.onCameraLayout}
 					onFacesDetected={faces => this.addFacesToState(faces)}
 					explanation={
 						this.state.state === "liveness"
