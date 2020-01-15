@@ -1,15 +1,15 @@
 import { ComponentType } from "react";
-import { connect, ConnectedComponent, GetProps, Matching } from "react-redux";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
+
+import { NavigationEnabledComponentConstructor } from "../presentation/util/NavMap";
 
 import { CredentialDocument } from "../model/CredentialDocument";
 import { RecentActivity } from "../model/RecentActivity";
 import { RequestDocument } from "../model/RequestDocument";
-import { SampleDocument } from "../model/SampleDocument";
 import { ServiceCallState } from "../services/ServiceStateStore";
 
 import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
-import { sampleDocuments } from "./samples/sampleDocuments";
 import { sampleRecentActivity } from "./samples/sampleRecentActivity";
 import { combinedIdentitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
 import {
@@ -32,7 +32,6 @@ export interface StoreContent extends PersistedStoreContent {
 	identity: ValidatedIdentity;
 
 	recentActivity: RecentActivity[];
-	samples: SampleDocument[];
 }
 
 export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
@@ -48,8 +47,7 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 
 		identity: combinedIdentitySelector(store),
 
-		recentActivity: sampleRecentActivity,
-		samples: sampleDocuments
+		recentActivity: sampleRecentActivity
 	};
 }
 
@@ -59,20 +57,25 @@ function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StatePro
 	};
 }
 
-export function didiConnect<StateProps, Component extends ComponentType<Matching<StateProps, GetProps<Component>>>>(
-	component: Component,
-	mapStateToProps: (state: StoreContent) => StateProps
-): ConnectedComponent<Component, Omit<GetProps<Component>, keyof StateProps>>;
+type DidiConnectedComponent<C, StateProps, DispatchProps> = C extends NavigationEnabledComponentConstructor<
+	infer FullProps_1,
+	infer Navigation
+>
+	? NavigationEnabledComponentConstructor<Omit<FullProps_1, keyof StateProps | keyof DispatchProps>, Navigation>
+	: C extends ComponentType<infer FullProps_2>
+	? ComponentType<Omit<FullProps_2, keyof StateProps | keyof DispatchProps>>
+	: never;
 
-export function didiConnect<
-	StateProps,
-	DispatchProps,
-	Component extends ComponentType<Matching<StateProps & DispatchProps, GetProps<Component>>>
->(
-	component: Component,
+export function didiConnect<StateProps, C>(
+	component: C,
+	mapStateToProps: (state: StoreContent) => StateProps
+): DidiConnectedComponent<C, StateProps, {}>;
+
+export function didiConnect<StateProps, DispatchProps, C>(
+	component: C,
 	mapStateToProps: (state: StoreContent) => StateProps,
 	mapDispatchToProps: (dispatch: Dispatch<StoreAction>) => DispatchProps
-): ConnectedComponent<Component, Omit<GetProps<Component>, keyof StateProps | keyof DispatchProps>>;
+): DidiConnectedComponent<C, StateProps, DispatchProps>;
 
 export function didiConnect(component: any, mapStateToProps: any, mapDispatchToProps?: any) {
 	if (mapDispatchToProps) {

@@ -2,7 +2,7 @@ import React from "react";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { BarcodeType } from "../common/DidiCamera";
+import { BarcodeType, DidiCamera } from "../common/DidiCamera";
 
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
@@ -42,7 +42,6 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 				targetWidth={1500}
 				targetHeight={1000}
 				cameraLandscape={true}
-				cameraButtonDisabled={(this.props.documentData ?? this.state.documentData) === undefined}
 				header={{
 					title: strings.validateIdentity.explainBack.step,
 					header: strings.validateIdentity.explainBack.header
@@ -50,7 +49,18 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 				description={strings.validateIdentity.explainBack.description}
 				confirmation={strings.validateIdentity.explainBack.confirmation}
 				image={require("../../resources/images/validateIdentityExplainBack.png")}
-				onPictureTaken={(data, reset) =>
+				camera={(onLayout, reticle, onPictureTaken) => (
+					<DidiCamera
+						onCameraLayout={onLayout}
+						cameraLandscape={true}
+						cameraButtonDisabled={(this.props.documentData ?? this.state.documentData) === undefined}
+						onPictureTaken={onPictureTaken}
+						onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
+					>
+						{reticle}
+					</DidiCamera>
+				)}
+				onPictureAccepted={(data, reset) =>
 					this.navigate(
 						"ValidateIdentitySelfie",
 						{
@@ -61,7 +71,6 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 						reset
 					)
 				}
-				onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
 			/>
 		);
 	}

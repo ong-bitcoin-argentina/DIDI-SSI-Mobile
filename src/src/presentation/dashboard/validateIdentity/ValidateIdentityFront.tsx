@@ -2,7 +2,7 @@ import React from "react";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { BarcodeType } from "../common/DidiCamera";
+import { BarcodeType, DidiCamera } from "../common/DidiCamera";
 
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
@@ -46,7 +46,17 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 				description={strings.validateIdentity.explainFront.description}
 				confirmation={strings.validateIdentity.explainFront.confirmation}
 				image={require("../../resources/images/validateIdentityExplainFront.png")}
-				onPictureTaken={(data, reset) =>
+				camera={(onLayout, reticle, onPictureTaken) => (
+					<DidiCamera
+						onCameraLayout={onLayout}
+						cameraLandscape={true}
+						onPictureTaken={onPictureTaken}
+						onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
+					>
+						{reticle}
+					</DidiCamera>
+				)}
+				onPictureAccepted={(data, reset) =>
 					this.navigate(
 						"ValidateIdentityBack",
 						{
@@ -56,7 +66,6 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 						reset
 					)
 				}
-				onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
 			/>
 		);
 	}

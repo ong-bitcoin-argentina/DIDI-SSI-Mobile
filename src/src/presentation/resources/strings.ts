@@ -1,3 +1,5 @@
+import { LivenessGesture } from "../dashboard/validateIdentity/LivenessGesture";
+
 export default {
 	debug: {
 		menu: "Debug Menu",
@@ -229,7 +231,7 @@ export default {
 		header: "Validar Identidad",
 		welcome: "Te damos la bienvenida",
 		step: "Paso",
-		stepTotal: "/4",
+		stepTotal: "/3",
 		what: {
 			header: "¿Que es validación de identidad?",
 			description:
@@ -257,16 +259,39 @@ export default {
 		},
 		explainSelfie: {
 			step: 3,
-			header: "Foto Selfie",
-			description: "Busca una pared clara, con buena luz y parate delante. Ponte lindo y sacate una selfie.",
-			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta."
-		},
-		explainLiveness: {
-			step: 4,
-			header: "Prueba de Vida",
-			description:
-				"Es muy simple! Mira tu hombro izquierdo y cuando escuches un pitido voltea la vista al frente y listo!!",
-			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta."
+			header: "Foto Selfie y Prueba de Vida",
+			description: (gesture: LivenessGesture) => {
+				const common =
+					"Busca una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando lo diga, ";
+				switch (gesture) {
+					case LivenessGesture.SMILE:
+						return common + "sonrie.";
+					case LivenessGesture.TURN_LEFT:
+						return common + "mira a tu hombro izquierdo.";
+					case LivenessGesture.TURN_RIGHT:
+						return common + "mira a tu hombro derecho.";
+					case LivenessGesture.WINK_LEFT:
+						return common + "guiña tu ojo izquierdo.";
+					case LivenessGesture.WINK_RIGHT:
+						return common + "guiña tu ojo derecho.";
+				}
+			},
+			gestureExplanation: (gesture: LivenessGesture) => {
+				switch (gesture) {
+					case LivenessGesture.SMILE:
+						return "Sonreí";
+					case LivenessGesture.TURN_LEFT:
+						return "Mirá a tu hombro izquierdo";
+					case LivenessGesture.TURN_RIGHT:
+						return "Mirá a tu hombro derecho";
+					case LivenessGesture.WINK_LEFT:
+						return "Guiñá tu ojo izquierdo";
+					case LivenessGesture.WINK_RIGHT:
+						return "Guiñá tu ojo derecho";
+				}
+			},
+			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta.",
+			cameraExplanation: "Enfoca tu cara"
 		},
 		submit: {
 			header: "Validación de Identidad",

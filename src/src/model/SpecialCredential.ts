@@ -3,8 +3,7 @@ import * as t from "io-ts";
 
 import { Nullable } from "../util/Nullable";
 
-import { VerifiedClaim } from "../uPort/types/VerifiedClaim";
-
+import { ClaimData } from "./Claim";
 import { LegalAddress, PersonalIdentityData } from "./Identity";
 
 export type SpecialCredentialFlag =
@@ -58,27 +57,25 @@ const legalAddressCredentialCodec = t.partial({
 	country: optionalStringOrNumberCodec
 });
 
-type ax = typeof legalAddressCredentialCodec._A;
-
 export const SpecialCredentialFlag = {
-	extract: (claim: VerifiedClaim): SpecialCredentialFlag | undefined => {
-		switch (claim.title) {
+	extract: (title: string, claim: ClaimData): SpecialCredentialFlag | undefined => {
+		switch (title) {
 			case "Phone":
-				const phone = phoneCredentialCodec.decode(claim.data);
+				const phone = phoneCredentialCodec.decode(claim);
 				if (isRight(phone)) {
 					return { type: "PhoneNumberData", phoneNumber: phone.right.phoneNumber };
 				}
 				break;
 
 			case "Email":
-				const email = emailCredentialCodec.decode(claim.data);
+				const email = emailCredentialCodec.decode(claim);
 				if (isRight(email)) {
 					return { type: "EmailData", email: email.right.email };
 				}
 				break;
 
 			case "Datos Personales":
-				const personalData = personalDataCredentialCodec.decode(claim.data);
+				const personalData = personalDataCredentialCodec.decode(claim);
 				if (isRight(personalData)) {
 					return {
 						type: "PersonalData",
@@ -93,7 +90,7 @@ export const SpecialCredentialFlag = {
 				break;
 
 			case "Domicilio Legal":
-				const legalAddress = legalAddressCredentialCodec.decode(claim.data);
+				const legalAddress = legalAddressCredentialCodec.decode(claim);
 				if (isRight(legalAddress)) {
 					return {
 						type: "LegalAddress",

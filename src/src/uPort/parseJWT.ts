@@ -69,7 +69,7 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 					return unverifiedParseJWT(unverified.forwarded);
 				case "VerifiedClaim":
 					const nested = parseNestedInUnverified(unverified);
-					const specialFlag = SpecialCredentialFlag.extract(unverified);
+					const specialFlag = SpecialCredentialFlag.extract(unverified.title, unverified.data);
 					if (isLeft(nested)) {
 						return nested;
 					} else {

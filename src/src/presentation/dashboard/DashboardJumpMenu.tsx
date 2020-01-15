@@ -28,7 +28,7 @@ interface DashboardJumpMenuState {
 export interface DashboardJumpNavigation {
 	ScanCredential: ScanCredentialProps;
 	ShareCredential: ShareCredentialProps;
-	DashboardRounds: RoundsScreenProps;
+	//DashboardRounds: RoundsScreenProps;
 	DashboardDocuments: DocumentsScreenProps;
 	UserData: UserDataProps;
 	EditProfile: EditProfileProps;
@@ -80,12 +80,14 @@ const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 		text: strings.dashboardJump.shareCredential,
 		name: "ShareCredential"
 	},
+	/*
 	{
 		...actionCommon,
 		icon: iconFrom(""),
 		text: strings.dashboardJump.createRound,
 		name: "DashboardRounds"
 	},
+	*/
 	{
 		...actionCommon,
 		icon: iconFrom(""),

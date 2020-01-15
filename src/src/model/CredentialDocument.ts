@@ -3,8 +3,9 @@ import TypedArray from "../util/TypedArray";
 import { ClaimData, ClaimDataPairs } from "./Claim";
 import { DidiDocument } from "./DidiDocument";
 import { EthrDID } from "./EthrDID";
-import { DocumentFilterType } from "./SampleDocument";
 import { SpecialCredentialFlag } from "./SpecialCredential";
+
+export type DocumentFilterType = "livingPlace" | "identity" | "other";
 
 export interface CredentialDocument extends DidiDocument {
 	type: "CredentialDocument";

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
-import { RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
+import { Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
 
 import { DidiText } from "../../util/DidiText";
 
@@ -14,18 +14,27 @@ export type BarcodeType = BarcodeEvent["type"];
 interface CommonProps {
 	onCameraLayout?: (rect: LayoutRectangle) => void;
 	cameraLocation?: keyof typeof RNCamera.Constants.Type;
-	cameraFlash?: keyof typeof RNCamera.Constants.FlashMode;
 }
 interface PictureProps {
 	cameraButtonDisabled?: boolean;
 	cameraLandscape?: boolean;
+	cameraFlash?: keyof typeof RNCamera.Constants.FlashMode;
 	onPictureTaken: (response: TakePictureResponse) => void;
 }
 interface BarcodeProps {
+	explanation: string;
 	onBarcodeScanned: (content: string, type: BarcodeType) => void;
 }
+interface FaceProps {
+	explanation: string;
+	onFacesDetected: (response: Face[]) => void;
+}
 export type DidiCameraProps = CommonProps &
-	((PictureProps & Partial<BarcodeProps>) | (Partial<PictureProps> & BarcodeProps));
+	(
+		| (PictureProps & Partial<BarcodeProps & FaceProps>)
+		| (BarcodeProps & Partial<PictureProps & FaceProps>)
+		| (FaceProps & Partial<PictureProps & BarcodeProps>)
+	);
 
 // Keep last aspect ratio globally, since it won't change between instances
 let defaultAspectRatio: { width: number; height: number } = { width: 4, height: 3 };
@@ -71,6 +80,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 
 	private renderCamera() {
 		const onCameraLayout = this.props.onCameraLayout;
+		const onFacesDetected = this.props.onFacesDetected;
 		return (
 			<RNCamera
 				onLayout={onCameraLayout && (event => onCameraLayout(event.nativeEvent.layout))}
@@ -86,6 +96,14 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 					buttonPositive: "Ok",
 					buttonNegative: "Cancelar"
 				}}
+				{...(onFacesDetected
+					? {
+							faceDetectionClassifications: RNCamera.Constants.FaceDetection.Classifications.all,
+							faceDetectionMode: RNCamera.Constants.FaceDetection.Mode.fast,
+							faceDetectionLandmarks: RNCamera.Constants.FaceDetection.Landmarks.all,
+							onFacesDetected: res => onFacesDetected(res.faces)
+					  }
+					: undefined)}
 				onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
 				notAuthorizedView={
 					<DidiText.CameraExplanation style={styles.notAuthorized}>
@@ -121,7 +139,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		} else {
 			return (
 				<DidiText.CameraExplanation style={styles.cameraInstruction}>
-					{strings.camera.scanQRInstruction}
+					{this.props.explanation}
 				</DidiText.CameraExplanation>
 			);
 		}
@@ -139,18 +157,21 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		this.props.onBarcodeScanned(content.data, typeMap[content.type] || content.type);
 	}
 
-	private async takePicture() {
-		if (this.camera) {
-			const data = await this.camera.takePictureAsync({
-				quality: 0.5,
-				base64: false,
-				pauseAfterCapture: true,
-				orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait",
-				mirrorImage: false,
-				fixOrientation: true
-			});
-			this.props.onPictureTaken?.(data);
+	async takePicture(args?: { pauseAfterCapture?: boolean }) {
+		if (this.camera === null) {
+			throw new Error("Camera not available");
 		}
+
+		const data = await this.camera.takePictureAsync({
+			quality: 0.5,
+			base64: false,
+			pauseAfterCapture: args?.pauseAfterCapture ?? true,
+			orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait",
+			mirrorImage: false,
+			fixOrientation: true
+		});
+		this.props.onPictureTaken?.(data);
+		return data;
 	}
 }
 

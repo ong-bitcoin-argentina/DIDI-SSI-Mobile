@@ -81,11 +81,13 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 	const BottomNavigator = createBottomTabNavigator(
 		{
 			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, ""),
+			/*
 			DashboardRounds: screen(
 				NavMap.from(RoundsScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
 				""
 			),
+			*/
 			DashboardDocuments: screen(DocumentsNavigator, strings.tabNames.documents, ""),
 			DashboardSettings: screen(
 				SettingsNavigator({

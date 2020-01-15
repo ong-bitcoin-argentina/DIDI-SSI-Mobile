@@ -9,6 +9,7 @@ import { DidiCamera } from "../common/DidiCamera";
 
 import { didiConnect } from "../../../store/store";
 import parseJWT, { unverifiedParseJWT } from "../../../uPort/parseJWT";
+import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
@@ -46,7 +47,10 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<DidiCamera onBarcodeScanned={(content, type) => type === "qr" && this.onScanQR(content)} />
+				<DidiCamera
+					onBarcodeScanned={(content, type) => type === "qr" && this.onScanQR(content)}
+					explanation={strings.camera.scanQRInstruction}
+				/>
 			</Fragment>
 		);
 	}

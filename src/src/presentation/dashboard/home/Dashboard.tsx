@@ -6,11 +6,10 @@ import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard, sampleDocumentToCard } from "../common/documentToCard";
+import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
 import { RecentActivity } from "../../../model/RecentActivity";
-import { SampleDocument } from "../../../model/SampleDocument";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
@@ -37,7 +36,6 @@ export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	person: ValidatedIdentity;
 	credentials: CredentialDocument[];
-	samples: SampleDocument[];
 	recentActivity: RecentActivity[];
 	activeSpecialCredentials: SpecialCredentialMap;
 }
@@ -112,9 +110,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
 							<EvolutionCard credentials={this.props.credentials} />
 							{this.renderRegularDocuments()}
-							{this.props.samples.map(sampleDocumentToCard)}
 							<IncompleteIdentityCard
-								personName={this.props.person.visual.name || this.props.person.visual.id || ""}
 								onStartValidateId={() => this.navigate("ValidateID", {})}
 								onValidateIdSuccess={() => {
 									this.props.resetDniValidation();
@@ -142,7 +138,6 @@ export default didiConnect(
 		person: state.identity,
 		recentActivity: state.recentActivity,
 		credentials: state.credentials,
-		samples: state.samples,
 		activeSpecialCredentials: state.activeSpecialCredentials
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({

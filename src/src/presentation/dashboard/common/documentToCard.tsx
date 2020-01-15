@@ -3,27 +3,11 @@ import React from "react";
 import { DidiText } from "../../util/DidiText";
 
 import { CredentialDocument } from "../../../model/CredentialDocument";
-import { SampleDocument } from "../../../model/SampleDocument";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
 import CredentialCard from "./CredentialCard";
-
-export function sampleDocumentToCard(document: SampleDocument, index: number) {
-	return (
-		<CredentialCard
-			key={"didi" + index}
-			icon={document.icon}
-			category={document.category}
-			title={document.title}
-			subTitle={document.subtitle}
-			data={document.data}
-			columns={document.columns}
-			color={colors.secondary}
-		/>
-	);
-}
 
 interface DocumentCredentialCardProps {
 	preview: boolean;
