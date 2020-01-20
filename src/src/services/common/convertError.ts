@@ -1,11 +1,12 @@
-import { ErrorData, SubmitDisclosureResponseError } from "didi-sdk";
+import { ErrorData } from "didi-sdk";
 import { Either, isRight, left } from "fp-ts/lib/Either";
 
+import { CommonServiceRequestError } from "didi-sdk/src/util/commonServiceRequest";
 import { assertUnreachable } from "../../util/assertUnreachable";
 
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 
-export function convertError<A>(from: Either<SubmitDisclosureResponseError, A>): Either<ErrorData, A> {
+export function convertError<A>(from: Either<CommonServiceRequestError, A>): Either<ErrorData, A> {
 	if (isRight(from)) {
 		return from;
 	}
@@ -18,8 +19,6 @@ export function convertError<A>(from: Either<SubmitDisclosureResponseError, A>):
 			return left(serviceErrors.common.DECODE_ERR(from.left.error));
 		case "SERVER_ERROR":
 			return left(from.left.error);
-		case "SIGNING_ERROR":
-			return left(serviceErrors.disclosure.SIGNING_ERR);
 		default:
 			assertUnreachable(from.left);
 	}

@@ -70,7 +70,14 @@ const styles = {
 						}
 					>
 						{actions.map(({ actionTitle, onPress }, index) => {
-							return <Item key={index} title={actionTitle} onPress={() => onPress(navigation)} show="never" />;
+							return (
+								<Item
+									key={index}
+									title={actionTitle}
+									onPress={() => onPress(navigation)}
+									show={actions.length === 1 ? "always" : "never"}
+								/>
+							);
 						})}
 					</HeaderButtons>
 				)

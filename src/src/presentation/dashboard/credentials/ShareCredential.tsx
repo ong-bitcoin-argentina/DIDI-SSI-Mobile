@@ -34,7 +34,9 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 	ShareCredentialState,
 	ShareCredentialNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions("", [
+		{ actionTitle: "Compartir", onPress: () => ({}) }
+	]);
 
 	render() {
 		return (

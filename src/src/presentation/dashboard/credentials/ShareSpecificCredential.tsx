@@ -27,7 +27,7 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 	{},
 	ShareSpecificCredentialNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.share.title);
 
 	render() {
 		return (

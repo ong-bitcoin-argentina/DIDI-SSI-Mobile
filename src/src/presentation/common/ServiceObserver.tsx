@@ -1,10 +1,11 @@
 import React from "react";
-import { Alert } from "react-native";
 
 import { AddChildren } from "../../util/ReactExtensions";
 
-import { ServiceCallState, SingleServiceCallState } from "../../services/ServiceStateStore";
+import { ServiceCallState } from "../../services/ServiceStateStore";
 import { didiConnect } from "../../store/store";
+
+import { ErrorDataAlert } from "./ErrorDataAlert";
 
 interface ServiceObserverProps {
 	serviceKey: string;
@@ -31,12 +32,7 @@ class ServiceObserver extends React.Component<AddChildren<ServiceObserverInterna
 				this.props.dropCallChain(this.props.serviceKey);
 				return;
 			case "FAILED":
-				Alert.alert(
-					"Error",
-					`${rq.error.message}\n\n(Error ${rq.error.errorCode})`,
-					[{ text: "OK", onPress: () => this.props.dropCallChain(this.props.serviceKey) }],
-					{ onDismiss: () => this.props.dropCallChain(this.props.serviceKey) }
-				);
+				ErrorDataAlert.alert(rq.error, () => this.props.dropCallChain(this.props.serviceKey));
 				return;
 			case "IN_PROGRESS":
 				return;
