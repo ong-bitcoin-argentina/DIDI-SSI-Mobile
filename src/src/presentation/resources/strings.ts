@@ -21,9 +21,9 @@ export default {
 			title: "Mi Evolución",
 			validationIntro: "Validaciones:",
 			validations: {
-				cellPhone: "Celu",
-				email: "Mail",
-				document: "ID"
+				cellPhone: "Número de Celular",
+				email: "Correo Electrónico",
+				document: "DNI"
 			},
 			validationState: {
 				yes: "✓",
