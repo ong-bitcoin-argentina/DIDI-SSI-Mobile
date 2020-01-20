@@ -352,11 +352,11 @@ export default {
 	specialCredentials: {
 		PhoneNumberData: {
 			title: "Número de celular",
-			phoneNumber: "Número de celular"
+			phoneNumber: ""
 		},
 		EmailData: {
 			title: "E-mail",
-			email: "E-mail"
+			email: ""
 		},
 		PersonalData: {
 			title: "Datos Personales",
