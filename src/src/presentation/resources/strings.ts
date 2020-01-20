@@ -222,9 +222,14 @@ export default {
 		endSession: "Cerrar Sesion"
 	},
 	share: {
-		title: "Credencial Didi",
-		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi",
+		title: "Compartir",
+		explanation: "Escanea el siguiente codigo QR con otra aplicación Didi",
+		shareTitle: "Credencial Didi",
 		shareLink: "Compartir Enlace"
+	},
+	disclose: {
+		title: "Compartir",
+		explanation: "Escanea el siguiente codigo QR con la aplicación Didi que te envió la solicitud"
 	},
 	services: {
 		changePasswordSuccess: "Contraseña cambiada exitosamente.",
@@ -400,8 +405,9 @@ export default {
 		alreadyScanned: "Ya dispones de esta credencial"
 	},
 	credentialShare: {
+		shareAction: "Compartir",
 		noCredentialsAvailable: "Primero obten credenciales",
-		whichFull: "¿Qué credencial deseas compartir?",
+		whichFull: "¿Qué credenciales deseas compartir?",
 		whichMicro: "¿Qué parte de la credencial deseas compartir?",
 		notCurrent: {
 			title: "Credencial no vigente",

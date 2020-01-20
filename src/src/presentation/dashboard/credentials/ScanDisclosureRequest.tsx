@@ -1,19 +1,26 @@
-import { CredentialDocument, DisclosureResponseContent, getResponseClaims, Identity, RequestDocument } from "didi-sdk";
+import { CredentialDocument, Identity, RequestDocument, SelectiveDisclosureResponse } from "didi-sdk";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import { ErrorDataAlert } from "../../common/ErrorDataAlert";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
-import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
+import {
+	submitDisclosureResponse,
+	SubmitDisclosureResponseContent
+} from "../../../services/issuer/submitDisclosureResponse";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { didiConnect } from "../../../store/store";
+import { getCredentials } from "../../../uPort/getCredentials";
+import { serviceErrors } from "../../resources/serviceErrors";
 
 import { ScanCredentialProps } from "./ScanCredential";
+import { ShowDisclosureResponseProps } from "./ShowDisclosureResponse";
 
 export interface ScanDisclosureRequestProps {
 	request: RequestDocument;
@@ -26,7 +33,7 @@ interface ScanDisclosureRequestStateProps {
 	sendDisclosureResponsePending: boolean;
 }
 interface ScanDisclosureRequestDispatchProps {
-	sendResponse: (args: DisclosureResponseContent) => void;
+	sendResponse: (args: SubmitDisclosureResponseContent) => void;
 	storeRequest: (request: RequestDocument) => void;
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
@@ -35,6 +42,7 @@ type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
 
 export interface ScanDisclosureRequestNavigation {
 	ScanCredential: ScanCredentialProps;
+	ShowDisclosureResponse: ShowDisclosureResponseProps;
 }
 
 const serviceKey = "ScanDisclosureRequest";
@@ -64,18 +72,35 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private answerRequest() {
-		const { missingRequired, ownClaims, verifiedClaims } = getResponseClaims(
+	private async answerRequest() {
+		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
 			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
 			this.props.credentials,
 			this.props.identity
 		);
-		if (missingRequired.length === 0) {
-			this.props.sendResponse({
+
+		if (missingRequired.length > 0) {
+			Alert.alert("Faltan Credenciales", `No dispones de datos requeridos:\n - ${missingRequired.join("\n - ")}`);
+			return;
+		}
+
+		try {
+			const credentials = await getCredentials();
+			const responseToken = await SelectiveDisclosureResponse.signJWT(credentials, {
 				request: this.props.request,
 				ownClaims,
 				verifiedClaims: verifiedClaims.map(doc => doc.jwt)
 			});
+
+			if (this.props.request.callback) {
+				this.props.sendResponse({ callback: this.props.request.callback, token: responseToken });
+			} else {
+				this.navigate("ShowDisclosureResponse", {
+					token: responseToken
+				});
+			}
+		} catch (signerError) {
+			ErrorDataAlert.alert(serviceErrors.disclosure.SIGNING_ERR);
 		}
 	}
 
@@ -96,7 +121,7 @@ export default didiConnect(
 	},
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
-			sendResponse: (args: DisclosureResponseContent) => dispatch(submitDisclosureResponse(serviceKey, args)),
+			sendResponse: (args: SubmitDisclosureResponseContent) => dispatch(submitDisclosureResponse(serviceKey, args)),
 			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] })
 		};
 	}
