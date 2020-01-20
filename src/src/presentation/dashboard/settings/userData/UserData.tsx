@@ -7,11 +7,7 @@ import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { ValidationStateIcon } from "../../../util/ValidationStateIcon";
 
-import {
-	ValidatedIdentity,
-	ValidationState,
-	WithValidationState
-} from "../../../../store/selector/combinedIdentitySelector";
+import { ValidatedIdentity } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
@@ -163,7 +159,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 export default didiConnect(
 	UserDataScreen,
 	(state): UserDataInternalProps => ({
-		identity: state.identity
+		identity: state.validatedIdentity
 	})
 );
 

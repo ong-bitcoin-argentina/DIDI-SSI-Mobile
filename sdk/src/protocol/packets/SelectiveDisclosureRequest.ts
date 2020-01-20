@@ -1,13 +1,13 @@
 import * as t from "io-ts";
 
-import { EthrDIDCodec } from "../../model/EthrDID";
+import { EthrDID } from "../../model/EthrDID";
 
 const SelectiveDisclosureRequestInnerCodec = t.intersection(
 	[
 		t.type(
 			{
 				type: t.literal("SelectiveDisclosureRequest"),
-				issuer: EthrDIDCodec,
+				issuer: EthrDID.codec,
 				callback: t.string,
 				ownClaims: t.array(t.string),
 				verifiedClaims: t.array(t.string)
@@ -30,7 +30,7 @@ const SelectiveDisclosureRequestOuterCodec = t.intersection([
 	t.type(
 		{
 			type: t.literal("shareReq"),
-			iss: EthrDIDCodec,
+			iss: EthrDID.codec,
 			callback: t.string
 		},
 		"SelectiveDisclosureRequest"

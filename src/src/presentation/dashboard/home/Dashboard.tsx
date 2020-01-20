@@ -1,3 +1,4 @@
+import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 
@@ -8,7 +9,6 @@ import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
 import { RecentActivity } from "../../../model/RecentActivity";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
@@ -135,7 +135,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 export default didiConnect(
 	DashboardScreen,
 	(state): DashboardScreenStateProps => ({
-		person: state.identity,
+		person: state.validatedIdentity,
 		recentActivity: state.recentActivity,
 		credentials: state.credentials,
 		activeSpecialCredentials: state.activeSpecialCredentials

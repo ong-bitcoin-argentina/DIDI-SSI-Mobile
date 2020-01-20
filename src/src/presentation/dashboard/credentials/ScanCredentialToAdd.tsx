@@ -1,3 +1,4 @@
+import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
 import { StyleSheet, Text } from "react-native";
 
@@ -8,7 +9,6 @@ import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";

@@ -1,3 +1,4 @@
+import { CredentialDocument, DisclosureResponseContent, getResponseClaims, Identity, RequestDocument } from "didi-sdk";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 
@@ -8,16 +9,9 @@ import { DidiServiceButton } from "../../util/DidiServiceButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
-import { RequestDocument } from "../../../model/RequestDocument";
-import {
-	submitDisclosureResponse,
-	SubmitDisclosureResponseArguments
-} from "../../../services/issuer/submitDisclosureResponse";
+import { submitDisclosureResponse } from "../../../services/issuer/submitDisclosureResponse";
 import { isPendingService } from "../../../services/ServiceStateStore";
-import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
-import { getResponseClaims } from "../../../uPort/createDisclosureResponse";
 
 import { ScanCredentialProps } from "./ScanCredential";
 
@@ -26,13 +20,13 @@ export interface ScanDisclosureRequestProps {
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
-	identity: ValidatedIdentity;
+	identity: Identity;
 	credentials: CredentialDocument[];
 
 	sendDisclosureResponsePending: boolean;
 }
 interface ScanDisclosureRequestDispatchProps {
-	sendResponse: (args: SubmitDisclosureResponseArguments) => void;
+	sendResponse: (args: DisclosureResponseContent) => void;
 	storeRequest: (request: RequestDocument) => void;
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
@@ -71,12 +65,12 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	}
 
 	private answerRequest() {
-		const { missing, own, verified } = getResponseClaims(
+		const { missing, ownClaims, verifiedClaims } = getResponseClaims(
 			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
 			this.props.credentials,
 			this.props.identity
 		);
-		this.props.sendResponse({ request: this.props.request, own, verified });
+		this.props.sendResponse({ request: this.props.request, ownClaims, verifiedClaims });
 	}
 
 	private onSuccess() {
@@ -96,7 +90,7 @@ export default didiConnect(
 	},
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
-			sendResponse: (args: SubmitDisclosureResponseArguments) => dispatch(submitDisclosureResponse(serviceKey, args)),
+			sendResponse: (args: DisclosureResponseContent) => dispatch(submitDisclosureResponse(serviceKey, args)),
 			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] })
 		};
 	}

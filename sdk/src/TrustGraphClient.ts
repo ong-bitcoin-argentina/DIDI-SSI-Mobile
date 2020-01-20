@@ -5,32 +5,31 @@ import { HttpLink } from "apollo-link-http";
 import gql from "graphql-tag";
 import Credentials from "uport-credentials/lib/Credentials";
 
-import { getCredentials } from "./getCredentials";
+export interface TrustGraphClientConfiguration {
+	trustGraphUri: string;
+	credentials: Credentials;
+}
 
 export class TrustGraphClient {
 	private credentials: Credentials;
 	private client: ApolloClient<unknown>;
 
-	private constructor(trustGraphUri: string, credentials: Credentials) {
-		this.credentials = credentials;
+	constructor(config: TrustGraphClientConfiguration) {
+		this.credentials = config.credentials;
 
 		const authLink = setContext(async (_, { headers }) => {
-			const token = await credentials.signJWT({}, 100);
+			const token = await config.credentials.signJWT({}, 100);
 			return {
 				headers: { ...headers, authorization: `Bearer ${token}` }
 			};
 		});
 		const httpLink = new HttpLink({
-			uri: trustGraphUri
+			uri: config.trustGraphUri
 		});
 		this.client = new ApolloClient({
 			link: authLink.concat(httpLink),
 			cache: new InMemoryCache()
 		});
-	}
-
-	static async create(trustGraphUri: string): Promise<TrustGraphClient> {
-		return new TrustGraphClient(trustGraphUri, await getCredentials());
 	}
 
 	async getJWTs(): Promise<Array<{ jwt: string; hash: string }>> {
@@ -39,6 +38,7 @@ export class TrustGraphClient {
 				query findEdges($toDID: String) {
 					findEdges(toDID: $toDID) {
 						jwt
+						hash
 					}
 				}
 			`,
@@ -59,6 +59,7 @@ export class TrustGraphClient {
 				mutation addEdge($edgeJWT: String!, $did: String!) {
 					addEdge(edgeJWT: $edgeJWT, did: $did) {
 						jwt
+						hash
 					}
 				}
 			`,

@@ -1,10 +1,9 @@
+import { ErrorData, EthrDID } from "didi-sdk";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
 import { buildComponentServiceCall } from "../common/componentServiceCall";
-import { ErrorData } from "../common/ErrorData";
 
-import { EthrDID } from "../../model/EthrDID";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 
 async function doGetPrivateKeySeed(args: { did: EthrDID }): Promise<Either<ErrorData, string>> {

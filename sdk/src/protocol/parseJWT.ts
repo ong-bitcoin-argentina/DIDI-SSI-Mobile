@@ -13,10 +13,9 @@ import { CredentialDocument } from "../model/CredentialDocument";
 import { RequestDocument } from "../model/RequestDocument";
 import { SpecialCredentialFlag } from "../model/SpecialCredential";
 
-import { JWTParseError } from "./JWTParseError";
-import { ForwardedRequestCodec } from "./types/ForwardedRequest";
-import { SelectiveDisclosureRequestCodec } from "./types/SelectiveDisclosureRequest";
-import { VerifiedClaim, VerifiedClaimCodec } from "./types/VerifiedClaim";
+import { ForwardedRequestCodec } from "./packets/ForwardedRequest";
+import { SelectiveDisclosureRequestCodec } from "./packets/SelectiveDisclosureRequest";
+import { VerifiedClaim, VerifiedClaimCodec } from "./packets/VerifiedClaim";
 
 // This is required by verifyJWT
 if (typeof Buffer === "undefined") {
@@ -26,6 +25,27 @@ if (typeof Buffer === "undefined") {
 
 const PublicCodec = t.union([SelectiveDisclosureRequestCodec, VerifiedClaimCodec], "___");
 const ParseCodec = t.union([PublicCodec, ForwardedRequestCodec], "___");
+
+export type JWTParseError =
+	| {
+			type: "AFTER_EXP" | "BEFORE_IAT";
+			expected: number;
+			current: number;
+	  }
+	| {
+			type: "JWT_DECODE_ERROR" | "VERIFICATION_ERROR";
+			error: any;
+	  }
+	| {
+			type: "SHAPE_DECODE_ERROR";
+			errorMessage: string;
+	  }
+	| {
+			type: "NONCREDENTIAL_WRAP_ERROR";
+	  }
+	| {
+			type: "RESOLVER_CREATION_ERROR";
+	  };
 
 export type JWTParseResult = Either<JWTParseError, RequestDocument | CredentialDocument>;
 
@@ -52,15 +72,15 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 		const decoded = JWTDecode(jwt);
 		const parsed = ParseCodec.decode(decoded);
 		if (isLeft(parsed)) {
-			return left(new JWTParseError({ type: "SHAPE_DECODE_ERROR", errorMessage: extractIoError(parsed.left) }));
+			return left({ type: "SHAPE_DECODE_ERROR", errorMessage: extractIoError(parsed.left) });
 		}
 
 		const unverified = parsed.right;
 		const now = Math.floor(Date.now() / 1000);
 		if (unverified.expireAt !== undefined && unverified.expireAt < now) {
-			return left(new JWTParseError({ type: "AFTER_EXP", expected: unverified.expireAt, current: now }));
+			return left({ type: "AFTER_EXP", expected: unverified.expireAt, current: now });
 		} else if (unverified.issuedAt !== undefined && now < unverified.issuedAt) {
-			return left(new JWTParseError({ type: "BEFORE_IAT", expected: unverified.issuedAt, current: now }));
+			return left({ type: "BEFORE_IAT", expected: unverified.issuedAt, current: now });
 		} else {
 			switch (unverified.type) {
 				case "SelectiveDisclosureRequest":
@@ -78,11 +98,11 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 			}
 		}
 	} catch (e) {
-		return left(new JWTParseError({ type: "JWT_DECODE_ERROR", error: e }));
+		return left({ type: "JWT_DECODE_ERROR", error: e });
 	}
 }
 
-export default async function parseJWT(jwt: string, ethrUri: string): Promise<JWTParseResult> {
+export async function parseJWT(jwt: string, ethrUri: string): Promise<JWTParseResult> {
 	const unverifiedContent = unverifiedParseJWT(jwt);
 	if (isLeft(unverifiedContent)) {
 		return unverifiedContent;
@@ -103,7 +123,7 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 
 			const parsed = ParseCodec.decode(payload);
 			if (isLeft(parsed)) {
-				return left(new JWTParseError({ type: "SHAPE_DECODE_ERROR", errorMessage: extractIoError(parsed.left) }));
+				return left({ type: "SHAPE_DECODE_ERROR", errorMessage: extractIoError(parsed.left) });
 			}
 
 			const verified = parsed.right;
@@ -121,10 +141,10 @@ export default async function parseJWT(jwt: string, ethrUri: string): Promise<JW
 					}
 			}
 		} catch (e) {
-			return left(new JWTParseError({ type: "VERIFICATION_ERROR", error: e }));
+			return left({ type: "VERIFICATION_ERROR", error: e });
 		}
 	} catch (e) {
-		return left(new JWTParseError({ type: "RESOLVER_CREATION_ERROR" }));
+		return left({ type: "RESOLVER_CREATION_ERROR" });
 	}
 }
 
@@ -134,7 +154,7 @@ function extractCredentials(
 	if (items.every(x => x.type === "CredentialDocument")) {
 		return right(items as CredentialDocument[]);
 	} else {
-		return left(new JWTParseError({ type: "NONCREDENTIAL_WRAP_ERROR" }));
+		return left({ type: "NONCREDENTIAL_WRAP_ERROR" });
 	}
 }
 

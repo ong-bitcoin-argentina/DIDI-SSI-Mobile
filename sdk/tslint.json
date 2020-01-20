@@ -1,0 +1,22 @@
+{
+	"extends": ["tslint:recommended", "tslint-eslint-rules", "tslint-config-prettier"],
+	"jsRules": {},
+	"rules": {
+		"interface-name": false,
+		"jsx-no-lambda": false,
+		"object-literal-sort-keys": false,
+		"callable-types": false,
+		"member-access": false,
+		"quotemark": false,
+		"ordered-imports": false,
+		"interface-over-type-literal": false,
+		"member-ordering": false,
+		"max-classes-per-file": false,
+		"no-console": false,
+		"no-empty-interface": false,
+		"comment-format": false
+	},
+	"linterOptions": {
+		"exclude": ["**/*.json"]
+	}
+}

@@ -1,11 +1,11 @@
+import { parseJWT, TrustGraphClient } from "didi-sdk";
 import { isRight, left, right } from "fp-ts/lib/Either";
 
 import TypedArray from "../../util/TypedArray";
 import { buildComponentServiceCall, serviceCallDrop, simpleAction } from "../common/componentServiceCall";
 
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
-import parseJWT from "../../uPort/parseJWT";
-import { TrustGraphClient } from "../../uPort/TrustGraphClient";
+import { getCredentials } from "../../uPort/getCredentials";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 
@@ -16,7 +16,8 @@ interface RecoverTokensArguments {
 
 async function doRecoverTokens(args: RecoverTokensArguments) {
 	try {
-		const tg = await TrustGraphClient.create(args.trustGraphUri);
+		const credentials = await getCredentials();
+		const tg = new TrustGraphClient({ trustGraphUri: args.trustGraphUri, credentials });
 		const tokens = (await tg.getJWTs()).map(data => data.jwt);
 
 		const acceptToken = async (token: string): Promise<string | undefined> => {

@@ -1,9 +1,9 @@
+import { ClaimDataPairs } from "didi-sdk";
 import React, { Component } from "react";
 import { StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 
-import { ClaimDataPairs } from "../../../model/Claim";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 

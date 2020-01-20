@@ -1,17 +1,16 @@
+import { CredentialDocument, Identity, RequestDocument } from "didi-sdk";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import { NavigationEnabledComponentConstructor } from "../presentation/util/NavMap";
 
-import { CredentialDocument } from "../model/CredentialDocument";
 import { RecentActivity } from "../model/RecentActivity";
-import { RequestDocument } from "../model/RequestDocument";
 import { ServiceCallState } from "../services/ServiceStateStore";
 
 import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
 import { sampleRecentActivity } from "./samples/sampleRecentActivity";
-import { combinedIdentitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
+import { combinedIdentitySelector, identitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
 import {
 	activeSpecialCredentialsSelector,
 	SpecialCredentialMap,
@@ -29,7 +28,8 @@ export interface StoreContent extends PersistedStoreContent {
 
 	serviceCalls: ServiceCallState;
 
-	identity: ValidatedIdentity;
+	identity: Identity;
+	validatedIdentity: ValidatedIdentity;
 
 	recentActivity: RecentActivity[];
 }
@@ -45,7 +45,8 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 
 		serviceCalls: store.serviceCalls,
 
-		identity: combinedIdentitySelector(store),
+		identity: identitySelector(store),
+		validatedIdentity: combinedIdentitySelector(store),
 
 		recentActivity: sampleRecentActivity
 	};

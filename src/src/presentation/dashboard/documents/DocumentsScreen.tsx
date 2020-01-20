@@ -1,3 +1,4 @@
+import { CredentialDocument, DocumentFilterType } from "didi-sdk";
 import React, { Fragment } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -5,7 +6,6 @@ import commonStyles from "../../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { CredentialDocument, DocumentFilterType } from "../../../model/CredentialDocument";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import themes from "../../resources/themes";

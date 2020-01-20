@@ -1,10 +1,9 @@
+import { Identity, LegalAddress, PersonalData, VisualData } from "didi-sdk";
 import { createSelector } from "reselect";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
 import { Nullable } from "../../util/Nullable";
 import TypedObject from "../../util/TypedObject";
-
-import { LegalAddress, PersonalData, VisualData } from "../../model/Identity";
 
 import { activeSpecialCredentialsSelector } from "./credentialSelector";
 
@@ -99,4 +98,13 @@ export const combinedIdentitySelector = createSelector(
 		}
 		return identity;
 	}
+);
+
+export const identitySelector = createSelector(
+	combinedIdentitySelector,
+	(validatedIdentity): Identity => ({
+		address: TypedObject.mapValues(validatedIdentity.address.value, value => (value === null ? undefined : value)),
+		personalData: TypedObject.mapValues(validatedIdentity.personalData, value => value?.value),
+		visual: validatedIdentity.visual
+	})
 );

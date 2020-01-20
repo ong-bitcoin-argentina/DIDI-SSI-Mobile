@@ -35,6 +35,7 @@ export const CredentialDocument = {
 		if (!preview) {
 			return dataPairs;
 		}
+
 		return TypedArray.flatMap(preview.fields, label => dataPairs.find(pair => pair.label === label));
 	},
 

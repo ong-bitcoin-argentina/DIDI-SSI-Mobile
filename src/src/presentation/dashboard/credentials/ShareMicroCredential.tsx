@@ -1,3 +1,4 @@
+import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
@@ -7,7 +8,6 @@ import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
@@ -17,15 +17,13 @@ export interface ShareMicroCredentialProps {
 	credentials: CredentialDocument[];
 }
 
-type ShareMicroCredentialState = {};
-
 export interface ShareMicroCredentialNavigation {
 	ShareSpecificCredential: ShareSpecificCredentialProps;
 }
 
 export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	ShareMicroCredentialProps,
-	ShareMicroCredentialState,
+	{},
 	ShareMicroCredentialNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");

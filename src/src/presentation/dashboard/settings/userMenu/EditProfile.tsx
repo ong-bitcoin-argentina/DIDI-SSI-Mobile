@@ -1,3 +1,4 @@
+import { Identity } from "didi-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View } from "react-native";
 
@@ -7,7 +8,6 @@ import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
-import { Identity } from "../../../../model/Identity";
 import { Validations } from "../../../../model/Validations";
 import { ValidatedIdentity, ValidationState } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
@@ -169,7 +169,7 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 const connected = didiConnect(
 	EditProfileScreen,
 	(state): EditProfileStateProps => ({
-		identity: state.identity
+		identity: state.validatedIdentity
 	}),
 	(dispatch): EditProfileDispatchProps => ({
 		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity })

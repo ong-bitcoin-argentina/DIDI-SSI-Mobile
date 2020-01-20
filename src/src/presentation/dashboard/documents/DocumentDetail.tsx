@@ -1,3 +1,4 @@
+import { CredentialDocument } from "didi-sdk";
 import React from "react";
 import { StyleSheet } from "react-native";
 
@@ -6,7 +7,6 @@ import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import strings from "../../resources/strings";
 

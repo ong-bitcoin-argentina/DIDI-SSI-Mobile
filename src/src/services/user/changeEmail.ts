@@ -1,40 +1,27 @@
-import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
+import { DidiServerApiClient, EthrDID } from "didi-sdk";
 
-import { EthrDID } from "../../model/EthrDID";
-import { getState } from "../internal/getState";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
-
 export interface ChangeEmailArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	did: EthrDID;
 	validationCode: string;
 	newEmail: string;
 	password: string;
 }
 
-async function doChangeEmail(args: ChangeEmailArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/changeEmail`,
-		{
-			did: args.did.did(),
-			eMailValidationCode: args.validationCode,
-			newEMail: args.newEmail,
-			password: args.password
-		},
-		singleCertificateCodec
-	);
-}
-
-const changeEmailComponent = buildComponentServiceCall(doChangeEmail);
+const changeEmailComponent = buildComponentServiceCall(async (args: ChangeEmailArguments) =>
+	convertError(await args.api.changeEmail(args.did, args.validationCode, args.newEmail, args.password))
+);
 
 export function changeEmail(serviceKey: string, password: string, newEmail: string, validationCode: string) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
+	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, {}, did => {
-			return changeEmailComponent(serviceKey, { baseUrl, did, validationCode, newEmail, password }, certData => {
+			return changeEmailComponent(serviceKey, { api, did, validationCode, newEmail, password }, certData => {
 				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
 					return serviceCallSuccess(serviceKey);
 				});

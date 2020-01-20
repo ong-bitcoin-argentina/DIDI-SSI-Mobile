@@ -1,9 +1,9 @@
+import { unverifiedParseJWT } from "didi-sdk";
 import { isRight } from "fp-ts/lib/Either";
 import { createSelector } from "reselect";
 
 import TypedArray from "../../util/TypedArray";
 
-import { unverifiedParseJWT } from "../../uPort/parseJWT";
 import { NormalizedStoreContent } from "../normalizedStore";
 
 export const parsedTokenSelector = createSelector(

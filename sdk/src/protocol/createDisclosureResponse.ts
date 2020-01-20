@@ -4,13 +4,10 @@ import TypedObject from "../util/TypedObject";
 import { ClaimData } from "../model/Claim";
 import { CredentialDocument } from "../model/CredentialDocument";
 import { Identity } from "../model/Identity";
-import { RequestDocument } from "../model/RequestDocument";
-import { ValidatedIdentity } from "../store/selector/combinedIdentitySelector";
 
-import { getCredentials } from "./getCredentials";
-import { SelectiveDisclosureRequest } from "./types/SelectiveDisclosureRequest";
+import { SelectiveDisclosureRequest } from "./packets/SelectiveDisclosureRequest";
 
-function selectOwnClaims(request: SelectiveDisclosureRequest, identity: ValidatedIdentity): JSONObject {
+function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity): JSONObject {
 	const result: ClaimData = {};
 	function insert(key: string, value: string | null | undefined) {
 		if (value) {
@@ -23,52 +20,52 @@ function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Validate
 		switch (key.toLowerCase()) {
 			case "nombre":
 			case "firstNames":
-				insert(key, identity.personalData.firstNames?.value);
+				insert(key, identity.personalData.firstNames);
 				break;
 			case "apellido":
 			case "lastNames":
-				insert(key, identity.personalData.lastNames?.value);
+				insert(key, identity.personalData.lastNames);
 				break;
 			case "document":
-				insert(key, identity.personalData.document?.value);
+				insert(key, identity.personalData.document);
 				break;
 			case "name":
 			case "full name":
 				if (identity.personalData.firstNames && identity.personalData.lastNames) {
-					insert(key, `${identity.personalData.firstNames.value} ${identity.personalData.lastNames.value}`);
+					insert(key, `${identity.personalData.firstNames} ${identity.personalData.lastNames}`);
 				}
 				break;
 			case "email":
-				insert(key, identity.personalData.email?.value);
+				insert(key, identity.personalData.email);
 				break;
 			case "image":
 				// TODO: Handle image request
 				break;
 			case "country":
 			case "nationality":
-				insert(key, identity.personalData.nationality?.value);
+				insert(key, identity.personalData.nationality);
 				break;
 			case "cellPhone":
 			case "phone":
-				insert(key, identity.personalData.cellPhone?.value);
+				insert(key, identity.personalData.cellPhone);
 				break;
 			case "street":
-				insert(key, identity.address.value.street);
+				insert(key, identity.address.street);
 				break;
 			case "addressNumber":
-				insert(key, identity.address.value.number);
+				insert(key, identity.address.number);
 				break;
 			case "department":
-				insert(key, identity.address.value.department);
+				insert(key, identity.address.department);
 				break;
 			case "floor":
-				insert(key, identity.address.value.floor);
+				insert(key, identity.address.floor);
 				break;
 			case "neighborhood":
-				insert(key, identity.address.value.neighborhood);
+				insert(key, identity.address.neighborhood);
 				break;
 			case "postCode":
-				insert(key, identity.address.value.postCode);
+				insert(key, identity.address.postCode);
 				break;
 			default:
 				break;
@@ -90,8 +87,8 @@ function selectVerifiedClaims(
 export function getResponseClaims(
 	request: SelectiveDisclosureRequest,
 	documents: CredentialDocument[],
-	identity: ValidatedIdentity
-): { missing: string[]; own: JSONObject; verified: string[] } {
+	identity: Identity
+): { missing: string[]; ownClaims: JSONObject; verifiedClaims: string[] } {
 	const verified: { [selector: string]: CredentialDocument } = {};
 	const missing: string[] = [];
 
@@ -106,30 +103,10 @@ export function getResponseClaims(
 	const own = selectOwnClaims(request, identity);
 	return {
 		missing,
-		own: {
+		ownClaims: {
 			...own,
 			...TypedObject.mapValues(verified, v => v.data)
 		},
-		verified: TypedObject.values(verified).map(d => d.jwt)
+		verifiedClaims: TypedObject.values(verified).map(d => d.jwt)
 	};
-}
-
-export interface DisclosureResponseArguments {
-	request: RequestDocument;
-	identity: Identity;
-	microCredentials: CredentialDocument[];
-}
-
-export async function signDisclosureResponse(
-	request: RequestDocument,
-	own: JSONObject,
-	verified: string[]
-): Promise<string> {
-	const credentials = await getCredentials();
-	const accessToken = await credentials.createDisclosureResponse({
-		req: request.jwt,
-		own,
-		verified
-	});
-	return accessToken;
 }

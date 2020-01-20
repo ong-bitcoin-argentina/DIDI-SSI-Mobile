@@ -1,4 +1,5 @@
-import { LegalAddress, PersonalData } from "../../../../model/Identity";
+import { LegalAddress, PersonalData } from "didi-sdk";
+
 import strings from "../../../resources/strings";
 
 interface InputFieldDescription {

@@ -1,8 +1,8 @@
+import { CredentialDocument } from "didi-sdk";
 import React from "react";
 
 import { DidiText } from "../../util/DidiText";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";

@@ -1,0 +1,51 @@
+{
+	"name": "didi-sdk",
+	"version": "0.0.1",
+	"description": "",
+	"main": "index.ts",
+	"types": "src/index.d.ts",
+	"files": [
+		"src"
+	],
+	"keywords": [],
+	"scripts": {
+		"test": "jest",
+		"build": "tsc --build tsconfig.json"
+	},
+	"dependencies": {
+		"apollo-boost": "^0.4.7",
+		"apollo-cache-inmemory": "^1.6.5",
+		"apollo-client": "^2.6.8",
+		"apollo-link-context": "^1.0.19",
+		"apollo-link-http": "^1.5.16",
+		"did-jwt": "^3.0.0",
+		"did-jwt-vc": "^0.1.2",
+		"did-resolver": "^1.1.0",
+		"ethr-did-resolver": "^1.0.3",
+		"fp-ts": "^2.0.0",
+		"graphql": "^14.5.8",
+		"graphql-tag": "^2.10.1",
+		"io-ts": "^2.0.0",
+		"jwt-decode": "^2.2.0",
+		"react": ">= 16.5.0",
+		"react-native": ">= 0.60.5",
+		"uport-credentials": "^1.2.3"
+	},
+	"devDependencies": {
+		"@types/jest": "^24.0.24",
+		"@types/jwt-decode": "^2.2.1",
+		"@types/node": "^10.0.3",
+		"@types/react": "^16.8.22",
+		"@types/react-native": "^0.60.0",
+		"jest": "^24.9.0",
+		"ts-jest": "^24.2.0",
+		"tslint": "^5.20.1",
+		"tslint-config-prettier": "^1.18.0",
+		"tslint-eslint-rules": "^5.4.0",
+		"typescript": "~3.7.0"
+	},
+	"jest": {
+		"preset": "ts-jest",
+		"rootDir": "."
+	}
+}

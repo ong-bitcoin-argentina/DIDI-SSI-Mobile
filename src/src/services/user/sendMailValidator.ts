@@ -1,13 +1,13 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { DidiServerApiClient, EthrDID } from "didi-sdk";
 
-import { EthrDID } from "../../model/EthrDID";
-import { getState } from "../internal/getState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
-
 export interface SendMailValidatorArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	email: string;
 	idCheck?: {
 		did: EthrDID;
@@ -15,33 +15,19 @@ export interface SendMailValidatorArguments {
 	};
 }
 
-async function doSendMailValidator(args: SendMailValidatorArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/sendMailValidator`,
-		{
-			eMail: args.email,
-			...(args.idCheck && {
-				did: args.idCheck.did.did(),
-				password: args.idCheck.password
-			})
-		},
-		emptyDataCodec
-	);
-}
-
-const sendMailValidatorComponent = buildComponentServiceCall(doSendMailValidator);
+const sendMailValidatorComponent = buildComponentServiceCall(async (args: SendMailValidatorArguments) =>
+	convertError(await args.api.sendMailValidator(args.email, args.idCheck))
+);
 
 export function sendMailValidator(serviceKey: string, email: string, password: string | null) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
+	return withDidiServerClient(serviceKey, {}, api => {
 		if (password === null) {
-			return sendMailValidatorComponent(serviceKey, { baseUrl, email }, () => {
+			return sendMailValidatorComponent(serviceKey, { api, email }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		} else {
 			return withExistingDid(serviceKey, {}, did => {
-				return sendMailValidatorComponent(serviceKey, { baseUrl, email, idCheck: { did, password } }, () => {
+				return sendMailValidatorComponent(serviceKey, { api, email, idCheck: { did, password } }, () => {
 					return serviceCallSuccess(serviceKey);
 				});
 			});

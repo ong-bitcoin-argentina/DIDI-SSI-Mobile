@@ -2,15 +2,15 @@ import * as t from "io-ts";
 
 import { SingleKeyedRecordCodec } from "../../util/SingleKeyedRecord";
 
-import { ClaimDataCodec } from "../../model/Claim";
+import { ClaimData } from "../../model/Claim";
 import { CredentialDocument } from "../../model/CredentialDocument";
-import { EthrDIDCodec } from "../../model/EthrDID";
+import { EthrDID } from "../../model/EthrDID";
 
 const VerifiedClaimOuterCodec = t.intersection([
 	t.type(
 		{
-			iss: EthrDIDCodec,
-			sub: EthrDIDCodec,
+			iss: EthrDID.codec,
+			sub: EthrDID.codec,
 			vc: t.type(
 				{
 					"@context": t.array(t.string),
@@ -18,7 +18,7 @@ const VerifiedClaimOuterCodec = t.intersection([
 					credentialSubject: SingleKeyedRecordCodec(
 						t.partial(
 							{
-								data: ClaimDataCodec,
+								data: ClaimData.codec,
 								wrapped: t.record(t.string, t.string),
 								category: t.string,
 								preview: t.type({

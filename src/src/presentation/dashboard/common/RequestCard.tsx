@@ -1,9 +1,9 @@
+import { RequestDocument } from "didi-sdk";
 import React, { Component } from "react";
 import { Text, View, ViewProps } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 
-import { RequestDocument } from "../../../model/RequestDocument";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 

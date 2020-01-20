@@ -1,3 +1,7 @@
+import { JWTParseError } from "didi-sdk";
+
+import { assertUnreachable } from "../../util/assertUnreachable";
+
 import { LivenessGesture } from "../dashboard/validateIdentity/LivenessGesture";
 
 export default {
@@ -402,6 +406,55 @@ export default {
 		notCurrent: {
 			title: "Credencial no vigente",
 			message: "Solo es posible compartir credenciales vigentes."
+		}
+	},
+	jwtParseError: (error: JWTParseError) => {
+		switch (error.type) {
+			case "AFTER_EXP":
+				const displayTimestamp = (ts: number) => new Date(ts * 1000).toLocaleString();
+				return {
+					errorCode: `TOKEN_AFTER_EXP`,
+					title: "Credencial Vencida",
+					message: `Hora actual: ${displayTimestamp(error.current)}, Vencimiento: ${displayTimestamp(error.expected)}`
+				};
+			case "BEFORE_IAT":
+				return {
+					errorCode: `TOKEN_BEFORE_IAT`,
+					title: "Error de Horario",
+					message: "Esta credencial indica que fue emitida en el futuro. Verifique la hora de su dispositivo."
+				};
+			case "JWT_DECODE_ERROR":
+				return {
+					errorCode: "TOKEN_JWT_DECODE_ERROR",
+					title: "Error al Decodificar",
+					message: "Error al extraer credenciales."
+				};
+			case "NONCREDENTIAL_WRAP_ERROR":
+				return {
+					errorCode: "NONCREDENTIAL_WRAP_ERROR",
+					title: "Error al Verificar Credencial",
+					message: "Esta credencial contiene una sub-credencial en formato desconocido."
+				};
+			case "RESOLVER_CREATION_ERROR":
+				return {
+					errorCode: "TOKEN_RESOLVER_CREATION_ERROR",
+					title: "Error de Conexión",
+					message: "Verifique tener acceso a internet."
+				};
+			case "SHAPE_DECODE_ERROR":
+				return {
+					errorCode: "TOKEN_SHAPE_DECODE_ERROR",
+					title: "Error al Interpretar Credencial",
+					message: error.errorMessage
+				};
+			case "VERIFICATION_ERROR":
+				return {
+					errorCode: "TOKEN_VERIFICATION_ERROR",
+					title: "Error al Verificar Credencial",
+					message: "Verifique tener acceso a internet."
+				};
+			default:
+				assertUnreachable(error);
 		}
 	}
 };

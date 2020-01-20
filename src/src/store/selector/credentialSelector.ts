@@ -1,9 +1,7 @@
+import { CredentialDocument, SpecialCredentialFlag } from "didi-sdk";
 import { createSelector } from "reselect";
 
 import TypedArray from "../../util/TypedArray";
-
-import { CredentialDocument } from "../../model/CredentialDocument";
-import { SpecialCredentialFlag } from "../../model/SpecialCredential";
 
 import { parsedTokenSelector } from "./parsedTokenSelector";
 

@@ -1,6 +1,6 @@
 import { isLeft, isRight } from "fp-ts/lib/Either";
 
-import { unverifiedParseJWT } from "../../src/uPort/parseJWT";
+import { unverifiedParseJWT } from "../../src/protocol/parseJWT";
 
 function parseUrl() {
 	return unverifiedParseJWT("www.example.com");

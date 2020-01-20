@@ -1,3 +1,4 @@
+import { parseJWT, unverifiedParseJWT } from "didi-sdk";
 import { array } from "fp-ts/lib/Array";
 import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";
@@ -8,7 +9,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DidiCamera } from "../common/DidiCamera";
 
 import { didiConnect } from "../../../store/store";
-import parseJWT, { unverifiedParseJWT } from "../../../uPort/parseJWT";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
@@ -72,7 +72,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 
 		if (successfulParses.length === 0) {
 			if (errors.length !== 0) {
-				const errorData = errors[0].getErrorData();
+				const errorData = strings.jwtParseError(errors[0]);
 				this.showAlert(errorData.title || "Error", errorData.message);
 			}
 			return;
@@ -83,7 +83,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 		const parse = await parseJWT(successfulParses[0].jwt, this.props.ethrDidUri);
 
 		if (isLeft(parse)) {
-			const errorData = parse.left.getErrorData();
+			const errorData = strings.jwtParseError(parse.left);
 			this.showAlert(errorData.title || "Error", errorData.message);
 		} else {
 			switch (parse.right.type) {

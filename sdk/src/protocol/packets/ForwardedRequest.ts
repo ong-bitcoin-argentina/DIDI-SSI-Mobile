@@ -1,12 +1,12 @@
 import * as t from "io-ts";
 
-import { EthrDIDCodec } from "../../model/EthrDID";
+import { EthrDID } from "../../model/EthrDID";
 
 const ForwardedRequestInnerCodec = t.intersection([
 	t.type({
 		type: t.literal("ForwardedRequest"),
-		issuer: EthrDIDCodec,
-		subject: EthrDIDCodec,
+		issuer: EthrDID.codec,
+		subject: EthrDID.codec,
 		forwarded: t.string
 	}),
 	t.partial({
@@ -19,8 +19,8 @@ export type ForwardedRequest = typeof ForwardedRequestInnerCodec._A;
 const ForwardedRequestOuterCodec = t.intersection([
 	t.type(
 		{
-			iss: EthrDIDCodec,
-			sub: EthrDIDCodec,
+			iss: EthrDID.codec,
+			sub: EthrDID.codec,
 			disclosureRequest: t.string
 		},
 		"ForwardedRequest"

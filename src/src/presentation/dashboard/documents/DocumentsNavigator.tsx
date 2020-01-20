@@ -1,10 +1,10 @@
+import { DocumentFilterType } from "didi-sdk";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 
-import { DocumentFilterType } from "../../../model/CredentialDocument";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 

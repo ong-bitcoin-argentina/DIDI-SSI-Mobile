@@ -1,38 +1,26 @@
-import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
+import { DidiServerApiClient, EthrDID } from "didi-sdk";
 
-import { EthrDID } from "../../model/EthrDID";
-import { getState } from "../internal/getState";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
-
 export interface VerifySmsCodeArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	did: EthrDID;
 	phoneNumber: string;
 	validationCode: string;
 }
 
-async function doVerifySmsCode(args: VerifySmsCodeArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/verifySmsCode`,
-		{
-			validationCode: args.validationCode,
-			cellPhoneNumber: args.phoneNumber,
-			did: args.did.did()
-		},
-		singleCertificateCodec
-	);
-}
-
-const verifySmsCodeComponent = buildComponentServiceCall(doVerifySmsCode);
+const verifySmsCodeComponent = buildComponentServiceCall(async (args: VerifySmsCodeArguments) =>
+	convertError(await args.api.verifySmsCode(args.did, args.validationCode, args.phoneNumber))
+);
 
 export function verifySmsCode(serviceKey: string, phoneNumber: string, validationCode: string) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
+	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, {}, did => {
-			return verifySmsCodeComponent(serviceKey, { baseUrl, did, phoneNumber, validationCode }, certData => {
+			return verifySmsCodeComponent(serviceKey, { api, did, phoneNumber, validationCode }, certData => {
 				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
 					return serviceCallSuccess(serviceKey);
 				});

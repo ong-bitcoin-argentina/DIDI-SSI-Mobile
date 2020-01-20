@@ -1,3 +1,4 @@
+import { CredentialDocument } from "didi-sdk";
 import React from "react";
 import { Dimensions, Share } from "react-native";
 import QRCode from "react-native-qrcode-svg";
@@ -8,7 +9,6 @@ import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 
@@ -20,13 +20,11 @@ interface ShareSpecificCredentialStateProps {
 }
 type ShareSpecificCredentialInternalProps = ShareSpecificCredentialProps & ShareSpecificCredentialStateProps;
 
-type ShareSpecificCredentialState = {};
-
 export type ShareSpecificCredentialNavigation = {};
 
 class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 	ShareSpecificCredentialInternalProps,
-	ShareSpecificCredentialState,
+	{},
 	ShareSpecificCredentialNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");
