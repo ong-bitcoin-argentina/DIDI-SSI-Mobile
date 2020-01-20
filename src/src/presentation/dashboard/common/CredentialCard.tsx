@@ -65,7 +65,7 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 	render() {
-		const color = this.props.hollow ? colors.secondary : "#FFFFFF";
+		const color = this.props.hollow ? this.props.color : "#FFFFFF";
 		return (
 			<DidiCardBody {...this.props}>
 				{this.renderTitle(color)}

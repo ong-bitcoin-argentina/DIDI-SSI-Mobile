@@ -108,8 +108,6 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 							onBellPress={() => this.navigate("NotificationScreen", {})}
 						/>
 						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
-							<EvolutionCard credentials={this.props.credentials} />
-							{this.renderRegularDocuments()}
 							<IncompleteIdentityCard
 								onStartValidateId={() => this.navigate("ValidateID", {})}
 								onValidateIdSuccess={() => {
@@ -121,6 +119,8 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 									this.navigate("ValidateIDFailure", { message });
 								}}
 							/>
+							<EvolutionCard credentials={this.props.credentials} />
+							{this.renderRegularDocuments()}
 						</View>
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}

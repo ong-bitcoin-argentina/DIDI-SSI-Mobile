@@ -30,11 +30,7 @@ type IncompleteIdentityCardInternalProps = IncompleteIdentityCardProps &
 class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInternalProps> {
 	private renderButton(title: string, onPress: () => void) {
 		return (
-			<DidiButton
-				style={{ width: 130, height: 36, backgroundColor: colors.secondary }}
-				title={title}
-				onPress={onPress}
-			/>
+			<DidiButton style={{ width: 130, height: 36, backgroundColor: colors.error }} title={title} onPress={onPress} />
 		);
 	}
 
@@ -49,7 +45,7 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 				});
 			case "In Progress":
 				return (
-					<DidiText.Card.Title style={{ color: colors.secondary }}>
+					<DidiText.Card.Title style={{ color: colors.error }}>
 						{strings.dashboard.validateIdentity.validating}
 					</DidiText.Card.Title>
 				);
@@ -68,7 +64,7 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 					category={strings.dashboard.identity.category}
 					title={this.props.personName}
 					subTitle={strings.dashboard.identity.subTitle}
-					color={colors.secondary}
+					color={colors.error}
 					hollow={true}
 				>
 					{this.renderContent()}
