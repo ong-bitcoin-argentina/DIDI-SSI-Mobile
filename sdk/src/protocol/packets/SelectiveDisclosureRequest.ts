@@ -1,6 +1,20 @@
 import * as t from "io-ts";
 
+import TypedObject from "../../util/TypedObject";
+
 import { EthrDID } from "../../model/EthrDID";
+
+const VerifiableSpecCodec = t.partial({
+	essential: t.boolean,
+	iss: t.array(t.intersection([t.type({ did: EthrDID.codec }, ""), t.partial({ url: t.string }, "")], "")),
+	reason: t.string
+});
+export type VerifiableSpecIssuerSelector = typeof VerifiableSpecCodec._A["iss"];
+
+const UserInfoSpecCodec = t.partial({
+	essential: t.boolean,
+	reason: t.string
+});
 
 const SelectiveDisclosureRequestInnerCodec = t.intersection(
 	[
@@ -9,8 +23,8 @@ const SelectiveDisclosureRequestInnerCodec = t.intersection(
 				type: t.literal("SelectiveDisclosureRequest"),
 				issuer: EthrDID.codec,
 				callback: t.string,
-				ownClaims: t.array(t.string),
-				verifiedClaims: t.array(t.string)
+				verifiedClaims: t.record(t.string, VerifiableSpecCodec),
+				ownClaims: t.record(t.string, UserInfoSpecCodec)
 			},
 			""
 		),
@@ -37,6 +51,10 @@ const SelectiveDisclosureRequestOuterCodec = t.intersection([
 	),
 	t.partial(
 		{
+			claims: t.partial({
+				verifiable: t.record(t.string, t.union([t.null, VerifiableSpecCodec])),
+				user_info: t.record(t.string, t.union([t.null, UserInfoSpecCodec]))
+			}),
 			requested: t.array(t.string),
 			verified: t.array(t.string),
 			iat: t.number,
@@ -56,8 +74,14 @@ export const SelectiveDisclosureRequestCodec = SelectiveDisclosureRequestOuterCo
 				type: "SelectiveDisclosureRequest",
 				issuer: i.iss,
 				callback: i.callback,
-				ownClaims: i.requested || [],
-				verifiedClaims: i.verified || [],
+				ownClaims: {
+					...TypedObject.fromEntries((i.requested ?? []).map(req => [req, {}])),
+					...TypedObject.mapValues(i.claims?.user_info ?? {}, value => (value === null ? {} : value))
+				},
+				verifiedClaims: {
+					...TypedObject.fromEntries((i.verified ?? []).map(req => [req, {}])),
+					...TypedObject.mapValues(i.claims?.verifiable ?? {}, value => (value === null ? {} : value))
+				},
 				issuedAt: i.iat,
 				expireAt: i.exp
 			}),
@@ -66,8 +90,10 @@ export const SelectiveDisclosureRequestCodec = SelectiveDisclosureRequestOuterCo
 				type: "shareReq",
 				iss: a.issuer,
 				callback: a.callback,
-				requested: a.ownClaims,
-				verified: a.verifiedClaims,
+				claims: {
+					verifiable: a.verifiedClaims,
+					user_info: a.ownClaims
+				},
 				iat: a.issuedAt,
 				exp: a.expireAt
 			};

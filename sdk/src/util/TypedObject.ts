@@ -17,6 +17,14 @@ const TypedObject = {
 
 	everyValue<V, Q extends V>(o: { [key: string]: V }, fn: (value: V) => value is Q): o is { [key: string]: Q } {
 		return Object.values(o).every(fn);
+	},
+
+	fromEntries<T>(entries: Array<[string, T]>): Record<string, T> {
+		const result: Record<string, T> = {};
+		entries.forEach(([key, value]) => {
+			result[key] = value;
+		});
+		return result;
 	}
 };
 export default TypedObject;

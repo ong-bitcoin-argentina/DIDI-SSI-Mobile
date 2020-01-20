@@ -77,6 +77,7 @@ export function unverifiedParseJWT(jwt: string): JWTParseResult {
 
 		const unverified = parsed.right;
 		const now = Math.floor(Date.now() / 1000);
+
 		if (unverified.expireAt !== undefined && unverified.expireAt < now) {
 			return left({ type: "AFTER_EXP", expected: unverified.expireAt, current: now });
 		} else if (unverified.issuedAt !== undefined && now < unverified.issuedAt) {

@@ -5,18 +5,22 @@ import { ClaimData } from "../model/Claim";
 import { CredentialDocument } from "../model/CredentialDocument";
 import { Identity } from "../model/Identity";
 
-import { SelectiveDisclosureRequest } from "./packets/SelectiveDisclosureRequest";
+import { SelectiveDisclosureRequest, VerifiableSpecIssuerSelector } from "./packets/SelectiveDisclosureRequest";
 
-function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity): JSONObject {
-	const result: ClaimData = {};
+function selectOwnClaims(
+	request: SelectiveDisclosureRequest,
+	identity: Identity
+): { ownClaims: ClaimData; missingRequired: string[] } {
+	const ownClaims: ClaimData = {};
+	const missingRequired: string[] = [];
+
 	function insert(key: string, value: string | null | undefined) {
 		if (value) {
-			result[key] = value;
+			ownClaims[key] = value;
 		}
 	}
 
-	for (const requested of request.ownClaims) {
-		const key = requested;
+	Object.entries(request.ownClaims).forEach(([key, data]) => {
 		switch (key.toLowerCase()) {
 			case "nombre":
 			case "firstNames":
@@ -37,9 +41,6 @@ function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity
 				break;
 			case "email":
 				insert(key, identity.personalData.email);
-				break;
-			case "image":
-				// TODO: Handle image request
 				break;
 			case "country":
 			case "nationality":
@@ -70,43 +71,53 @@ function selectOwnClaims(request: SelectiveDisclosureRequest, identity: Identity
 			default:
 				break;
 		}
+		if (ownClaims[key] === undefined && data.essential) {
+			missingRequired.push(key);
+		}
+	});
+	return { ownClaims, missingRequired };
+}
+
+function matchesIssuerSelector(document: CredentialDocument, selector: VerifiableSpecIssuerSelector): boolean {
+	if (selector === undefined) {
+		return true;
 	}
-	return result;
+
+	return selector.find(sel => sel.did.did() === document.issuer.did()) !== undefined;
 }
 
 function selectVerifiedClaims(
 	request: SelectiveDisclosureRequest,
 	documents: CredentialDocument[]
-): Array<{ selector: string; value?: CredentialDocument }> {
-	return request.verifiedClaims.map(selector => {
-		const selected = documents.find(document => document.title === selector);
-		return { selector, value: selected };
+): { verifiedClaims: CredentialDocument[]; missingRequired: string[] } {
+	const verifiedClaims: CredentialDocument[] = [];
+	const missingRequired: string[] = [];
+
+	Object.entries(request.verifiedClaims).forEach(([title, selector]) => {
+		const selected = documents.find(
+			document => title === document.title && matchesIssuerSelector(document, selector.iss)
+		);
+		if (selected) {
+			verifiedClaims.push(selected);
+		} else if (selector.essential) {
+			missingRequired.push(title);
+		}
 	});
+
+	return { verifiedClaims, missingRequired };
 }
 
 export function getResponseClaims(
 	request: SelectiveDisclosureRequest,
 	documents: CredentialDocument[],
 	identity: Identity
-): { missing: string[]; ownClaims: JSONObject; verifiedClaims: string[] } {
-	const verified: { [selector: string]: CredentialDocument } = {};
-	const missing: string[] = [];
-
-	selectVerifiedClaims(request, documents).forEach(vc => {
-		if (vc.value) {
-			verified[vc.selector] = vc.value;
-		} else {
-			missing.push(vc.selector);
-		}
-	});
-
+): { missingRequired: string[]; ownClaims: JSONObject; verifiedClaims: CredentialDocument[] } {
+	const verified = selectVerifiedClaims(request, documents);
 	const own = selectOwnClaims(request, identity);
+
 	return {
-		missing,
-		ownClaims: {
-			...own,
-			...TypedObject.mapValues(verified, v => v.data)
-		},
-		verifiedClaims: TypedObject.values(verified).map(d => d.jwt)
+		missingRequired: [...own.missingRequired, ...verified.missingRequired],
+		ownClaims: own.ownClaims,
+		verifiedClaims: verified.verifiedClaims
 	};
 }

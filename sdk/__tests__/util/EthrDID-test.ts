@@ -1,4 +1,4 @@
-import { EthrDID } from "../../src/util/EthrDID";
+import { EthrDID } from "../../src/model/EthrDID";
 
 describe(EthrDID, () => {
 	it("should accept well formed keyAddress", () => {

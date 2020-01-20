@@ -65,12 +65,18 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	}
 
 	private answerRequest() {
-		const { missing, ownClaims, verifiedClaims } = getResponseClaims(
+		const { missingRequired, ownClaims, verifiedClaims } = getResponseClaims(
 			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
 			this.props.credentials,
 			this.props.identity
 		);
-		this.props.sendResponse({ request: this.props.request, ownClaims, verifiedClaims });
+		if (missingRequired.length === 0) {
+			this.props.sendResponse({
+				request: this.props.request,
+				ownClaims,
+				verifiedClaims: verifiedClaims.map(doc => doc.jwt)
+			});
+		}
 	}
 
 	private onSuccess() {

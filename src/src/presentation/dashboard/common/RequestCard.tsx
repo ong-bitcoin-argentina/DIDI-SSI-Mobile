@@ -25,11 +25,11 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 						<DidiText.Card.Value>{issuer}</DidiText.Card.Value>
 					</Text>
 					<DidiText.Card.Key>{strings.credentialRequestCard.requests + ": "}</DidiText.Card.Key>
-					{this.props.request.verifiedClaims.map((rq, index) => {
-						return <DidiText.Card.Key key={index}>{`    - ${rq}`}</DidiText.Card.Key>;
+					{Object.entries(this.props.request.verifiedClaims).map(([title, rq], index) => {
+						return <DidiText.Card.Key key={index}>{`    - ${title}`}</DidiText.Card.Key>;
 					})}
-					{this.props.request.ownClaims.map((rq, index) => {
-						return <DidiText.Card.Key key={index}>{`    - ${rq}`}</DidiText.Card.Key>;
+					{Object.entries(this.props.request.ownClaims).map(([title, rq], index) => {
+						return <DidiText.Card.Key key={index}>{`    - ${title}`}</DidiText.Card.Key>;
 					})}
 					{endDate && (
 						<Text>
