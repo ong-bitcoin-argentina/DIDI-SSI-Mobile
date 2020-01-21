@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { StyleSheet } from "react-native";
 
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
-import CredentialCard from "../common/CredentialCard";
+import DidiCardBody from "../common/DidiCardBody";
 
 import { ValidateDniState } from "../../../store/reducers/validateDniProgressReducer";
 import { didiConnect } from "../../../store/store";
@@ -12,7 +13,7 @@ import strings from "../../resources/strings";
 export interface IncompleteIdentityCardProps {
 	onStartValidateId: () => void;
 	onValidateIdSuccess: () => void;
-	onValidateIdFailure: (message?: string) => void;
+	onValidateIdFailure: () => void;
 }
 
 interface IncompleteIdentityCardStateProps {
@@ -29,28 +30,38 @@ type IncompleteIdentityCardInternalProps = IncompleteIdentityCardProps &
 
 class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInternalProps> {
 	private renderButton(title: string, onPress: () => void) {
+		return <DidiButton style={styles.button} title={title} onPress={onPress} />;
+	}
+
+	private renderMessages(): JSX.Element {
+		const state = this.props.validateDniState;
+		const texts = strings.dashboard.validateIdentity[state?.state ?? "Start"];
 		return (
-			<DidiButton style={{ width: 130, height: 36, backgroundColor: colors.error }} title={title} onPress={onPress} />
+			<Fragment>
+				<DidiText.Card.Title style={styles.titleColor}>{texts.title}</DidiText.Card.Title>
+				{texts.subtitle === null ? (
+					undefined
+				) : (
+					<DidiText.Card.Subtitle style={styles.subtitleColor}>{texts.subtitle}</DidiText.Card.Subtitle>
+				)}
+			</Fragment>
 		);
 	}
 
-	private renderContent(): JSX.Element {
+	private renderAction(): JSX.Element | undefined {
 		const state = this.props.validateDniState;
 		switch (state?.state) {
 			case undefined:
-				return this.renderButton(strings.dashboard.validateIdentity.startButtonTitle, this.props.onStartValidateId);
+				return this.renderButton(strings.dashboard.validateIdentity.Start.button, this.props.onStartValidateId);
 			case "Failure":
-				return this.renderButton(strings.dashboard.validateIdentity.failureButtonTitle, () => {
-					this.props.onValidateIdFailure(state.message);
+				return this.renderButton(strings.dashboard.validateIdentity.Failure.button, () => {
+					this.props.onValidateIdFailure();
+					this.props.onStartValidateId();
 				});
 			case "In Progress":
-				return (
-					<DidiText.Card.Title style={{ color: colors.error }}>
-						{strings.dashboard.validateIdentity.validating}
-					</DidiText.Card.Title>
-				);
+				return undefined;
 			case "Success":
-				return this.renderButton(strings.dashboard.validateIdentity.successButtonTitle, this.props.onValidateIdSuccess);
+				return this.renderButton(strings.dashboard.validateIdentity.Success.button, this.props.onValidateIdSuccess);
 		}
 	}
 
@@ -59,16 +70,10 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 			return null;
 		} else {
 			return (
-				<CredentialCard
-					icon=""
-					category={strings.dashboard.identity.category}
-					title={this.props.personName}
-					subTitle={strings.dashboard.identity.subTitle}
-					color={colors.error}
-					hollow={true}
-				>
-					{this.renderContent()}
-				</CredentialCard>
+				<DidiCardBody icon="" color={colors.error} hollow={true} style={{ minHeight: undefined }}>
+					{this.renderMessages()}
+					{this.renderAction()}
+				</DidiCardBody>
 			);
 		}
 	}
@@ -85,3 +90,19 @@ const connected = didiConnect(
 );
 
 export { connected as IncompleteIdentityCard };
+
+const styles = StyleSheet.create({
+	button: {
+		width: 130,
+		height: 36,
+		backgroundColor: colors.error,
+		marginTop: 16
+	},
+	titleColor: {
+		color: colors.error
+	},
+	subtitleColor: {
+		color: colors.error,
+		marginTop: 8
+	}
+});

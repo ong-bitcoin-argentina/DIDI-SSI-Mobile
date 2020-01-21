@@ -30,15 +30,27 @@ export default {
 				no: "ｘ"
 			}
 		},
-		identity: {
-			category: "Documento Identidad",
-			subTitle: "Nombre"
-		},
 		validateIdentity: {
-			startButtonTitle: "Validar Id",
-			successButtonTitle: "Éxito",
-			failureButtonTitle: "Reintentar",
-			validating: "Validación en progreso..."
+			Start: {
+				title: "Valida tu DNI para completar tu Perfil DIDI.",
+				subtitle: null,
+				button: "Validar DNI"
+			},
+			Success: {
+				title: "¡Felicitaciones! Su DNI ha sido validado.",
+				subtitle: "Recuerde que sus datos son privados.",
+				button: "OK"
+			},
+			Failure: {
+				title: "Lo lamentamos. Su identidad no ha sido validada.",
+				subtitle: "Intente nuevamente.",
+				button: "Reintentar"
+			},
+			"In Progress": {
+				title: "Validacion en progreso...",
+				subtitle: "",
+				button: null
+			}
 		},
 		recentActivities: {
 			label: "Actividades recientes",

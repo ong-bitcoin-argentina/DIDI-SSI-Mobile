@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, ViewProps } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 import { NavigationContainer, NavigationScreenProp, NavigationState } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
@@ -22,13 +22,10 @@ import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCreden
 import DashboardJumpMenu from "./DashboardJumpMenu";
 import { DocumentDetailScreen } from "./documents/DocumentDetail";
 import DocumentsNavigator from "./documents/DocumentsNavigator";
-import DashboardScreen, { DashboardScreenNavigation, DashboardScreenProps } from "./home/Dashboard";
+import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
-import { RoundsScreen } from "./rounds/RoundsScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
-import { ValidateIdentityFailureScreen } from "./validateIdentity/ValidateIdentityFailure";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
-import { ValidateIdentitySuccessScreen } from "./validateIdentity/ValidateIdentitySuccess";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -127,8 +124,6 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 
 	return NavMap.from(BottomNavigatorComponent, {
 		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen)),
-		ValidateIDSuccess: NavMap.from(ValidateIdentitySuccessScreen, {}),
-		ValidateIDFailure: NavMap.from(ValidateIdentityFailureScreen, {}),
 		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen)),
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
 			ShareMicroCredential: NavMap.from(ShareMicroCredentialScreen, {
