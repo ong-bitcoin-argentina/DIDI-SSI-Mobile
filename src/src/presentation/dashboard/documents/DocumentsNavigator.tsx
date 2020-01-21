@@ -1,4 +1,4 @@
-import { CredentialDocument, EthrDID } from "didi-sdk";
+import { CredentialDocument, DocumentFilterType, EthrDID } from "didi-sdk";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
@@ -20,15 +20,19 @@ function screen(title: string, filter: (type: CredentialDocument, did: EthrDID) 
 	};
 }
 
+const categoryFilter = (category: DocumentFilterType) => (doc: CredentialDocument, did: EthrDID) => {
+	return doc.category === category && doc.subject.did() === did.did();
+};
+
 export default createStackNavigator(
 	{
 		DocumentsScreen: createMaterialTopTabNavigator(
 			{
 				DocumentsAll: screen(strings.documents.filterAll, () => true),
-				DocumentsEducation: screen(strings.documents.filterEducation, doc => doc.category === "education"),
-				DocumentsLivingPlace: screen(strings.documents.filterLivingPlace, doc => doc.category === "livingPlace"),
-				DocumentsFinance: screen(strings.documents.filterFinance, doc => doc.category === "finance"),
-				DocumentsIdentity: screen(strings.documents.filterIdentity, doc => doc.category === "identity"),
+				DocumentsEducation: screen(strings.documents.filterEducation, categoryFilter("education")),
+				DocumentsLivingPlace: screen(strings.documents.filterLivingPlace, categoryFilter("livingPlace")),
+				DocumentsFinance: screen(strings.documents.filterFinance, categoryFilter("finance")),
+				DocumentsIdentity: screen(strings.documents.filterIdentity, categoryFilter("identity")),
 				DocumentsShared: screen(strings.documents.filterShared, (doc, did) => doc.subject.did() !== did.did())
 			},
 			{
