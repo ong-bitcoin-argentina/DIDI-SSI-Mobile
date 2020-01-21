@@ -1,5 +1,6 @@
 import { ServiceCallAction } from "../services/ServiceStateStore";
 
+import { DidAction } from "./reducers/didReducer";
 import { IdentityAction } from "./reducers/identityReducer";
 import { ServiceSettingAction } from "./reducers/serviceSettingsReducer";
 import { SessionAction } from "./reducers/sessionReducer";
@@ -12,4 +13,5 @@ export type StoreAction =
 	| SessionAction
 	| ServiceCallAction
 	| IdentityAction
-	| ValidateDniAction;
+	| ValidateDniAction
+	| DidAction;

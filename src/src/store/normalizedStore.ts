@@ -12,6 +12,7 @@ import { DidiSession } from "../model/DidiSession";
 import { ServiceSettings } from "../model/ServiceSettings";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
+import { ActiveDid, didReducer } from "./reducers/didReducer";
 import { identityReducer } from "./reducers/identityReducer";
 import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
 import { sessionReducer } from "./reducers/sessionReducer";
@@ -20,6 +21,7 @@ import { validateDniReducer, ValidateDniState } from "./reducers/validateDniProg
 import { StoreAction } from "./StoreAction";
 
 export interface PersistedStoreContent {
+	did: ActiveDid;
 	sessionFlags: DidiSession;
 	tokens: string[];
 	userInputIdentity: Identity;
@@ -28,6 +30,7 @@ export interface PersistedStoreContent {
 }
 
 const reducer = combineReducers<PersistedStoreContent, StoreAction>({
+	did: didReducer,
 	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
 	userInputIdentity: identityReducer,

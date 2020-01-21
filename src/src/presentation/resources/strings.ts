@@ -216,9 +216,13 @@ export default {
 	documents: {
 		barTitle: "Mis Documentos",
 		detailBarTitle: "Documento",
+		emptyFilter: "No dispones de documentos en esta categoria",
 		filterAll: "Todos",
+		filterEducation: "Educación",
 		filterLivingPlace: "Vivienda",
-		filterIdentity: "Identidad"
+		filterFinance: "Finanza",
+		filterIdentity: "Identidad",
+		filterShared: "Compartidos"
 	},
 	tabNames: {
 		home: "Inicio",
