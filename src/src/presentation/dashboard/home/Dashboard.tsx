@@ -10,6 +10,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { RecentActivity } from "../../../model/RecentActivity";
+import { reloadDid } from "../../../services/internal/reloadDid";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
@@ -23,8 +24,6 @@ import { DocumentDetailProps } from "../documents/DocumentDetail";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
-import { ValidateIdentityFailureProps } from "../validateIdentity/ValidateIdentityFailure";
-import { ValidateIdentitySuccessProps } from "../validateIdentity/ValidateIdentitySuccess";
 
 import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
@@ -49,8 +48,6 @@ export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
 	DashboardDocuments: DocumentsScreenProps;
 	ValidateID: ValidateIdentityExplainWhatProps;
-	ValidateIDSuccess: ValidateIdentitySuccessProps;
-	ValidateIDFailure: ValidateIdentityFailureProps;
 	UserData: UserDataProps;
 	NotificationScreen: NotificationScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
@@ -141,6 +138,7 @@ export default didiConnect(
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
+			dispatch(reloadDid());
 			dispatch(recoverTokens());
 			dispatch(checkValidateDni());
 		},

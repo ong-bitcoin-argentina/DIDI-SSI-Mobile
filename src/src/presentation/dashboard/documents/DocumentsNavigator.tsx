@@ -1,4 +1,4 @@
-import { DocumentFilterType } from "didi-sdk";
+import { CredentialDocument, EthrDID } from "didi-sdk";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
@@ -11,7 +11,7 @@ import strings from "../../resources/strings";
 import { DocumentDetailScreen } from "./DocumentDetail";
 import DocumentsScreen, { DocumentsScreenNavigation } from "./DocumentsScreen";
 
-function screen(title: string, filter: (type: DocumentFilterType) => boolean) {
+function screen(title: string, filter: (type: CredentialDocument, did: EthrDID) => boolean) {
 	return {
 		screen: DocumentsScreen(filter),
 		navigationOptions: {
@@ -24,9 +24,12 @@ export default createStackNavigator(
 	{
 		DocumentsScreen: createMaterialTopTabNavigator(
 			{
-				DocumentsAll: screen(strings.documents.filterAll, type => true),
-				DocumentsLivingPlace: screen(strings.documents.filterLivingPlace, type => type === "livingPlace"),
-				DocumentsIdentity: screen(strings.documents.filterIdentity, type => type === "identity")
+				DocumentsAll: screen(strings.documents.filterAll, () => true),
+				DocumentsEducation: screen(strings.documents.filterEducation, doc => doc.category === "education"),
+				DocumentsLivingPlace: screen(strings.documents.filterLivingPlace, doc => doc.category === "livingPlace"),
+				DocumentsFinance: screen(strings.documents.filterFinance, doc => doc.category === "finance"),
+				DocumentsIdentity: screen(strings.documents.filterIdentity, doc => doc.category === "identity"),
+				DocumentsShared: screen(strings.documents.filterShared, (doc, did) => doc.subject.did() !== did.did())
 			},
 			{
 				tabBarOptions: {
@@ -35,7 +38,9 @@ export default createStackNavigator(
 					},
 					style: {
 						backgroundColor: colors.primary
-					}
+					},
+					scrollEnabled: true,
+					tabStyle: { width: "auto" }
 				},
 				navigationOptions: NavigationHeaderStyle.withTitleAndFakeBackButton<DocumentsScreenNavigation, "DashboardHome">(
 					strings.documents.barTitle,
