@@ -112,11 +112,9 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 								onStartValidateId={() => this.navigate("ValidateID", {})}
 								onValidateIdSuccess={() => {
 									this.props.resetDniValidation();
-									this.navigate("ValidateIDSuccess", {});
 								}}
-								onValidateIdFailure={(message?: string) => {
+								onValidateIdFailure={() => {
 									this.props.resetDniValidation();
-									this.navigate("ValidateIDFailure", { message });
 								}}
 							/>
 							<EvolutionCard credentials={this.props.credentials} />
