@@ -64,7 +64,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 		const tokenPart = "[-_=a-zA-Z0-9]+";
 		const matches = content.match(new RegExp(`${tokenPart}\\.${tokenPart}\\.${tokenPart}`, "g")) || [];
 		if (matches.length === 0) {
-			this.showAlert("No hay credenciales", "El codigo QR escaneado no contiene credenciales");
+			this.showAlert(strings.camera.noCredentials.title, strings.camera.noCredentials.message);
 			return;
 		}
 		const parseResults = matches.map(unverifiedParseJWT);
