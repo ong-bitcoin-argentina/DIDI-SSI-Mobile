@@ -13,6 +13,7 @@ import { RecentActivity } from "../../../model/RecentActivity";
 import { reloadDid } from "../../../services/internal/reloadDid";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
@@ -33,6 +34,7 @@ import { NotificationScreenProps } from "./NotificationScreen";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
+	did: ActiveDid;
 	person: ValidatedIdentity;
 	credentials: CredentialDocument[];
 	recentActivity: RecentActivity[];
@@ -67,11 +69,16 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 				onPress={() =>
 					this.navigate("DashDocumentDetail", {
 						document,
+						did: this.props.did,
 						activeSpecialCredentials: this.props.activeSpecialCredentials
 					})
 				}
 			>
-				<DocumentCredentialCard preview={true} document={document} context={this.props.activeSpecialCredentials} />
+				<DocumentCredentialCard
+					preview={true}
+					document={document}
+					context={{ activeDid: this.props.did, specialCredentials: this.props.activeSpecialCredentials }}
+				/>
 			</TouchableOpacity>
 		));
 	}
@@ -130,6 +137,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 export default didiConnect(
 	DashboardScreen,
 	(state): DashboardScreenStateProps => ({
+		did: state.did,
 		person: state.validatedIdentity,
 		recentActivity: state.recentActivity,
 		credentials: state.credentials,

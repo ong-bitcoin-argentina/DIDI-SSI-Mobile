@@ -70,11 +70,16 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 				onPress={() =>
 					this.navigate("DocumentDetail", {
 						document,
+						did: this.props.did,
 						activeSpecialCredentials: this.props.activeSpecialCredentials
 					})
 				}
 			>
-				<DocumentCredentialCard preview={true} document={document} context={this.props.activeSpecialCredentials} />
+				<DocumentCredentialCard
+					preview={true}
+					document={document}
+					context={{ activeDid: this.props.did, specialCredentials: this.props.activeSpecialCredentials }}
+				/>
 			</TouchableOpacity>
 		);
 	}

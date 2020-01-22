@@ -3,6 +3,7 @@ import React from "react";
 
 import { DidiText } from "../../util/DidiText";
 
+import { ActiveDid } from "../../../store/reducers/didReducer";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
@@ -12,7 +13,10 @@ import CredentialCard from "./CredentialCard";
 interface DocumentCredentialCardProps {
 	preview: boolean;
 	document: CredentialDocument;
-	context: SpecialCredentialMap;
+	context: {
+		activeDid: ActiveDid;
+		specialCredentials: SpecialCredentialMap | null;
+	};
 }
 
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
@@ -26,9 +30,15 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		let color = colors.secondary;
 		let hollow = this.props.document.specialFlag !== undefined;
 		let replacedByAnother = false;
+		let shared = false;
 
 		const specialType = doc.specialFlag?.type;
-		if (specialType) {
+
+		if (this.props.context.activeDid && this.props.context.activeDid.did() !== doc.subject.did()) {
+			color = colors.text;
+			hollow = false;
+			shared = true;
+		} else if (specialType) {
 			const dictionary: { title: string; [name: string]: string | undefined } = strings.specialCredentials[specialType];
 			title = dictionary.title;
 			data = data.map(({ label, value }) => ({
@@ -36,7 +46,10 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				value
 			}));
 
-			if (this.props.context[specialType]?.jwt !== this.props.document.jwt) {
+			if (
+				this.props.context.specialCredentials &&
+				this.props.context.specialCredentials[specialType]?.jwt !== this.props.document.jwt
+			) {
 				color = colors.error;
 				hollow = false;
 				replacedByAnother = true;
@@ -55,6 +68,11 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				hollow={hollow}
 			>
 				{this.props.children}
+				{shared && (
+					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
+						{strings.credentialCard.shared}
+					</DidiText.Card.Warning>
+				)}
 				{replacedByAnother && (
 					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
 						{strings.credentialCard.replaced}

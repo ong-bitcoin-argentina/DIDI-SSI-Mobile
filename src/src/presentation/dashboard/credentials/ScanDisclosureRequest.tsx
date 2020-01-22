@@ -86,20 +86,22 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 		try {
 			const credentials = await getCredentials();
-			const responseToken = await SelectiveDisclosureResponse.signJWT(credentials, {
-				request: this.props.request,
+			const responseToken = await SelectiveDisclosureResponse.signJWT(
+				credentials,
+				this.props.request,
 				ownClaims,
-				verifiedClaims: verifiedClaims.map(doc => doc.jwt)
-			});
+				verifiedClaims
+			);
 
 			if (this.props.request.callback) {
 				this.props.sendResponse({ callback: this.props.request.callback, token: responseToken });
 			} else {
 				this.navigate("ShowDisclosureResponse", {
-					token: responseToken
+					responseToken
 				});
 			}
 		} catch (signerError) {
+			console.warn(signerError);
 			ErrorDataAlert.alert(serviceErrors.disclosure.SIGNING_ERR);
 		}
 	}
