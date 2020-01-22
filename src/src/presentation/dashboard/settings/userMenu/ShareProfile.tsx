@@ -67,7 +67,7 @@ const connected = didiConnect(
 	ShareProfileScreen,
 	(state): ShareProfileInternalProps => {
 		return {
-			person: state.identity
+			person: state.validatedIdentity
 		};
 	}
 );

@@ -6,7 +6,6 @@ import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import { Identity } from "../../../model/Identity";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
@@ -136,7 +135,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 
 export default didiConnect(
 	SettingsScreen,
-	(state): SettingsScreenStateProps => ({ person: state.identity }),
+	(state): SettingsScreenStateProps => ({ person: state.validatedIdentity }),
 	(dispatch): SettingsScreenDispatchProps => ({
 		logout: () => dispatch({ type: "SESSION_LOGOUT" })
 	})

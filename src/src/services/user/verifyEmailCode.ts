@@ -1,38 +1,26 @@
-import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
+import { DidiServerApiClient, EthrDID } from "didi-sdk";
 
-import { EthrDID } from "../../model/EthrDID";
-import { getState } from "../internal/getState";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-import { commonUserRequest, singleCertificateCodec } from "./userServiceCommon";
-
 export interface VerifyEmailCodeArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	did: EthrDID;
 	email: string;
 	validationCode: string;
 }
 
-async function doVerifyEmailCode(args: VerifyEmailCodeArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/verifyMailCode`,
-		{
-			validationCode: args.validationCode,
-			eMail: args.email,
-			did: args.did.did()
-		},
-		singleCertificateCodec
-	);
-}
-
-const verifyEmailCodeComponent = buildComponentServiceCall(doVerifyEmailCode);
+const verifyEmailCodeComponent = buildComponentServiceCall(async (args: VerifyEmailCodeArguments) =>
+	convertError(await args.api.verifyEmailCode(args.did, args.validationCode, args.email))
+);
 
 export function verifyEmailCode(serviceKey: string, email: string, validationCode: string) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
+	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, {}, did => {
-			return verifyEmailCodeComponent(serviceKey, { baseUrl, did, email, validationCode }, certData => {
+			return verifyEmailCodeComponent(serviceKey, { api, did, email, validationCode }, certData => {
 				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
 					return serviceCallSuccess(serviceKey);
 				});

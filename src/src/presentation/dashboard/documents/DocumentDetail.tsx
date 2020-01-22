@@ -1,3 +1,4 @@
+import { CredentialDocument } from "didi-sdk";
 import React from "react";
 import { StyleSheet } from "react-native";
 
@@ -6,12 +7,13 @@ import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import strings from "../../resources/strings";
 
 export interface DocumentDetailProps {
 	document: CredentialDocument;
+	did: ActiveDid;
 	activeSpecialCredentials: SpecialCredentialMap;
 }
 
@@ -28,7 +30,7 @@ export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDet
 							preview={false}
 							document={doc}
 							key={index}
-							context={this.props.activeSpecialCredentials}
+							context={{ activeDid: this.props.did, specialCredentials: this.props.activeSpecialCredentials }}
 						/>
 					);
 				})}

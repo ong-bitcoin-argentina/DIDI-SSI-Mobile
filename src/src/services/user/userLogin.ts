@@ -1,35 +1,27 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { DidiServerApiClient, EthrDID } from "didi-sdk";
 
-import { EthrDID } from "../../model/EthrDID";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
-import { getState } from "../internal/getState";
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
-
 export interface UserLoginArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	did: EthrDID;
 	email: string;
 	password: string;
 }
 
-async function doUserLogin(args: UserLoginArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/userLogin`,
-		{ eMail: args.email, password: args.password, did: args.did.did() },
-		emptyDataCodec
-	);
-}
-
-const userLoginComponent = buildComponentServiceCall(doUserLogin);
+const userLoginComponent = buildComponentServiceCall(async (args: UserLoginArguments) =>
+	convertError(await args.api.userLogin(args.did, args.email, args.password))
+);
 
 export function userLogin(serviceKey: string, email: string, password: string) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
+	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, { errorMessage: serviceErrors.login.NO_DID }, did => {
-			return userLoginComponent(serviceKey, { baseUrl, did, email, password }, () => {
+			return userLoginComponent(serviceKey, { api, did, email, password }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

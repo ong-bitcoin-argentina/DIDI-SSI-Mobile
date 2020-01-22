@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import { ClaimDataPairs } from "didi-sdk";
+import React, { Component, Fragment } from "react";
 import { StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 
-import { ClaimDataPairs } from "../../../model/Claim";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
@@ -45,10 +45,18 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 				{data.map((item, index) => {
 					return (
 						<View key={index} style={columnStyle}>
-							<DidiText.Card.Key style={[styles.dataLabel, { color }]}>{item.label}</DidiText.Card.Key>
-							<DidiText.Card.Value style={[styles.dataValue, { color }, valueStyle]}>
-								{item.value ?? strings.credentialCard.valueNotAvailable}
-							</DidiText.Card.Value>
+							{data.length !== 1 && item.label.length > 0 ? (
+								<Fragment>
+									<DidiText.Card.Key style={[styles.dataLabel, { color }]}>{item.label}</DidiText.Card.Key>
+									<DidiText.Card.Value style={[styles.dataValue, { color }, valueStyle]}>
+										{item.value ?? strings.credentialCard.valueNotAvailable}
+									</DidiText.Card.Value>
+								</Fragment>
+							) : (
+								<DidiText.Card.Value style={[styles.dataLabel, { color, textAlign: undefined }]}>
+									{item.value ?? strings.credentialCard.valueNotAvailable}
+								</DidiText.Card.Value>
+							)}
 						</View>
 					);
 				})}
@@ -57,7 +65,7 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 	render() {
-		const color = this.props.hollow ? colors.secondary : "#FFFFFF";
+		const color = this.props.hollow ? this.props.color : "#FFFFFF";
 		return (
 			<DidiCardBody {...this.props}>
 				{this.renderTitle(color)}

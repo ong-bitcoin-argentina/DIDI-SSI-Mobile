@@ -1,7 +1,6 @@
+import { ErrorData } from "didi-sdk";
 import { Action } from "redux";
-import { CmdType, liftState, Loop, loop, LoopReducer } from "redux-loop";
-
-import { ErrorData } from "./common/ErrorData";
+import { CmdType, liftState, Loop, loop } from "redux-loop";
 
 import { StoreAction } from "../store/StoreAction";
 

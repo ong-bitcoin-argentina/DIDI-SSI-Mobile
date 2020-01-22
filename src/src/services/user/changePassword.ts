@@ -1,34 +1,26 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { DidiServerApiClient, EthrDID } from "didi-sdk";
 
-import { EthrDID } from "../../model/EthrDID";
-import { getState } from "../internal/getState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
-
 export interface ChangePasswordArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	did: EthrDID;
 	oldPassword: string;
 	newPassword: string;
 }
 
-async function doChangePassword(args: ChangePasswordArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/changePassword`,
-		{ oldPass: args.oldPassword, newPass: args.newPassword, did: args.did.did() },
-		emptyDataCodec
-	);
-}
-
-const changePasswordComponent = buildComponentServiceCall(doChangePassword);
+const changePasswordComponent = buildComponentServiceCall(async (args: ChangePasswordArguments) =>
+	convertError(await args.api.changePassword(args.did, args.oldPassword, args.newPassword))
+);
 
 export function changePassword(serviceKey: string, oldPassword: string, newPassword: string) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
+	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, {}, did => {
-			return changePasswordComponent(serviceKey, { baseUrl, oldPassword, newPassword, did }, () => {
+			return changePasswordComponent(serviceKey, { api, oldPassword, newPassword, did }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

@@ -1,36 +1,26 @@
-import { buildComponentServiceCall } from "../common/componentServiceCall";
+import { DidiServerApiClient } from "didi-sdk";
 
-import { getState } from "../internal/getState";
+import { buildComponentServiceCall } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 
 import { recoverAccount } from "./recoverAccount";
-import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
 
 export interface RecoverPasswordArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	email: string;
 	validationCode: string;
 	newPassword: string;
 }
 
-async function doRecoverPassword(args: RecoverPasswordArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/recoverPassword`,
-		{
-			eMail: args.email,
-			eMailValidationCode: args.validationCode,
-			newPass: args.newPassword
-		},
-		emptyDataCodec
-	);
-}
-
-const recoverPasswordComponent = buildComponentServiceCall(doRecoverPassword);
+const recoverPasswordComponent = buildComponentServiceCall(async (args: RecoverPasswordArguments) =>
+	convertError(await args.api.recoverPassword(args.email, args.validationCode, args.newPassword))
+);
 
 export function recoverPassword(serviceKey: string, email: string, validationCode: string, newPassword: string) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
-		return recoverPasswordComponent(serviceKey, { baseUrl, email, validationCode, newPassword }, () => {
+	return withDidiServerClient(serviceKey, {}, api => {
+		return recoverPasswordComponent(serviceKey, { api, email, validationCode, newPassword }, () => {
 			return recoverAccount(serviceKey, email, newPassword);
 		});
 	});
