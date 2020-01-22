@@ -2,6 +2,7 @@ import React from "react";
 import { LayoutRectangle, View } from "react-native";
 import { Face, TakePictureResponse } from "react-native-camera";
 
+import { assertUnreachable } from "../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DidiCamera } from "../common/DidiCamera";
@@ -172,6 +173,9 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 					this.props.onPictureTaken(this.state.rawPicture!);
 				}
 				return;
+
+			default:
+				assertUnreachable(this.state);
 		}
 	}
 }
