@@ -401,7 +401,11 @@ export default {
 	},
 	camera: {
 		notAuthorized: "Camara no autorizada",
-		scanQRInstruction: "Escanea un codigo QR"
+		scanQRInstruction: "Escanea un codigo QR",
+		noCredentials: {
+			title: "No hay credenciales",
+			message: "El codigo QR escaneado no contiene credenciales"
+		}
 	},
 	notifications: {
 		showExpired: "Mostrar peticiones vencidas",
