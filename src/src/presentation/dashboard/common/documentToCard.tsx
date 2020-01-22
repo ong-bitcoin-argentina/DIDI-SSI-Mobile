@@ -34,7 +34,8 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 
 		const specialType = doc.specialFlag?.type;
 
-		if (this.props.context.activeDid && this.props.context.activeDid.did() !== doc.subject.did()) {
+		const activeDid = this.props.context.activeDid;
+		if (activeDid && activeDid.did && activeDid.did() !== doc.subject.did()) {
 			color = colors.text;
 			hollow = false;
 			shared = true;
