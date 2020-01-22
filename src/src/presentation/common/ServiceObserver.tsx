@@ -1,5 +1,6 @@
 import React from "react";
 
+import { assertUnreachable } from "../../util/assertUnreachable";
 import { AddChildren } from "../../util/ReactExtensions";
 
 import { ServiceCallState } from "../../services/ServiceStateStore";
@@ -36,6 +37,8 @@ class ServiceObserver extends React.Component<AddChildren<ServiceObserverInterna
 				return;
 			case "IN_PROGRESS":
 				return;
+			default:
+				assertUnreachable(rq);
 		}
 	}
 
