@@ -21,7 +21,7 @@ async function doRecoverTokens(args: RecoverTokensArguments) {
 		const tokens = (await tg.getJWTs()).map(data => data.jwt);
 
 		const acceptToken = async (token: string): Promise<string | undefined> => {
-			if (isRight(await parseJWT(token, args.ethrDidUri))) {
+			if (isRight(await parseJWT(token, args.ethrDidUri, undefined))) {
 				return token;
 			} else {
 				return undefined;

@@ -240,12 +240,20 @@ export default {
 	share: {
 		title: "Compartir",
 		explanation: "Escanea el siguiente codigo QR con otra aplicación Didi",
+		generating: "Generando codigo QR...",
+		next: "Siguiente",
 		shareTitle: "Credencial Didi",
 		shareLink: "Compartir Enlace"
 	},
 	disclose: {
 		title: "Compartir",
-		explanation: "Escanea el siguiente codigo QR con la aplicación Didi que te envió la solicitud"
+		request: {
+			explanation: "Escanea el siguiente codigo QR con la aplicación Didi que te envió la solicitud",
+			next: "Siguiente"
+		},
+		response: {
+			explanation: "Escanea el siguiente codigo QR con la aplicación Didi que va a recibir las credenciales"
+		}
 	},
 	services: {
 		changePasswordSuccess: "Contraseña cambiada exitosamente.",
@@ -368,6 +376,7 @@ export default {
 	credentialCard: {
 		emitter: "Emisor: ",
 		valueNotAvailable: "N/A",
+		shared: "Credencial compartida con vos",
 		replaced: "Credencial no vigente por existir reemplazo"
 	},
 	specialCredentials: {
@@ -432,6 +441,10 @@ export default {
 		notCurrent: {
 			title: "Credencial no vigente",
 			message: "Solo es posible compartir credenciales vigentes."
+		},
+		notOwned: {
+			title: "Credencial ajena",
+			message: "Solo es posible compartir credenciales propias."
 		}
 	},
 	jwtParseError: (error: JWTParseError) => {
