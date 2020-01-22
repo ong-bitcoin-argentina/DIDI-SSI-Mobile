@@ -95,9 +95,11 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		return (
 			<TouchableOpacity
 				style={{
+					borderRadius: 10,
 					backgroundColor: isSelected ? colors.primary : colors.background,
 					marginHorizontal: 10,
-					paddingHorizontal: 10
+					paddingHorizontal: 10,
+					marginVertical: 2
 				}}
 				onPress={() => this.doSelect(document)}
 			>
