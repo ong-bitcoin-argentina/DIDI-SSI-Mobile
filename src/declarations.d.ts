@@ -9,5 +9,5 @@ declare module "react-navigation-header-buttons/src/overflowMenuPressHandlers" {
 	export function defaultOnOverflowMenuPress(params: onOverflowMenuPressParams): void;
 }
 
-declare module "ethr-did-resolver";
 declare module "redux-persist-fs-storage";
+declare module "ethr-did-resolver";

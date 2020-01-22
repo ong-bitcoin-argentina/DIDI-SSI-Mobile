@@ -1,29 +1,29 @@
+import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
 import { StyleSheet, Text } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
+import { DidiScreen, DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 
 import { ScanCredentialProps } from "./ScanCredential";
 
 export interface ScanCredentialToAddProps {
-	credential: CredentialDocument;
+	credentials: CredentialDocument[];
 }
 interface ScanCredentialToAddStateProps {
+	did: ActiveDid;
 	existingTokens: string[];
-	activeSpecialCredentials: SpecialCredentialMap;
 }
 interface ScanCredentialToAddDispatchProps {
-	addCredential(credential: CredentialDocument): void;
+	addCredentials: (credentials: CredentialDocument[]) => void;
 }
 type ScanCredentialToAddInternalProps = ScanCredentialToAddProps &
 	ScanCredentialToAddStateProps &
@@ -43,16 +43,21 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<DidiScreen style={styles.body}>
-				{
-					<DocumentCredentialCard
-						preview={false}
-						document={this.props.credential}
-						context={this.props.activeSpecialCredentials}
-					/>
-				}
-				{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
-			</DidiScreen>
+			<DidiScrollScreen style={styles.body}>
+				{this.props.credentials.map((credential, index) => {
+					return (
+						<DocumentCredentialCard
+							key={index}
+							preview={false}
+							document={credential}
+							context={{ activeDid: this.props.did, specialCredentials: null }}
+						/>
+					);
+				})}
+				{this.props.credentials.every(doc => this.props.existingTokens.includes(doc.jwt))
+					? this.renderExisting()
+					: this.renderNew()}
+			</DidiScrollScreen>
 		);
 	}
 
@@ -79,34 +84,30 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	}
 
 	private acceptCredential() {
-		this.props.addCredential(this.props.credential);
-		this.goBack();
+		this.props.addCredentials(this.props.credentials);
+		this.goToRoot();
 	}
 }
 
 const connected = didiConnect(
 	ScanCredentialToAddScreen,
-	(state): ScanCredentialToAddStateProps => {
-		return {
-			existingTokens: state.tokens,
-			activeSpecialCredentials: state.activeSpecialCredentials
-		};
-	},
-	(dispatch): ScanCredentialToAddDispatchProps => {
-		return {
-			addCredential: (credential: CredentialDocument) => dispatch({ type: "TOKEN_ENSURE", content: [credential.jwt] })
-		};
-	}
+	(state): ScanCredentialToAddStateProps => ({
+		did: state.did,
+		existingTokens: state.tokens
+	}),
+	(dispatch): ScanCredentialToAddDispatchProps => ({
+		addCredentials: (credentials: CredentialDocument[]) =>
+			dispatch({ type: "TOKEN_ENSURE", content: credentials.map(doc => doc.jwt) })
+	})
 );
 export { connected as ScanCredentialToAddScreen };
 
 const styles = StyleSheet.create({
 	body: {
-		width: "100%",
-		paddingHorizontal: 20
+		width: "100%"
 	},
 	button: {
-		width: "80%",
+		width: "100%",
 		alignSelf: "center"
 	}
 });

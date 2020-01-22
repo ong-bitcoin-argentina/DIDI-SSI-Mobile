@@ -1,3 +1,7 @@
+import { JWTParseError } from "didi-sdk";
+
+import { assertUnreachable } from "../../util/assertUnreachable";
+
 import { LivenessGesture } from "../dashboard/validateIdentity/LivenessGesture";
 
 export default {
@@ -17,24 +21,36 @@ export default {
 			title: "Mi Evolución",
 			validationIntro: "Validaciones:",
 			validations: {
-				cellPhone: "Celu",
-				email: "Mail",
-				document: "ID"
+				cellPhone: "Número de Celular",
+				email: "Correo Electrónico",
+				document: "DNI"
 			},
 			validationState: {
 				yes: "✓",
 				no: "ｘ"
 			}
 		},
-		identity: {
-			category: "Documento Identidad",
-			subTitle: "Nombre"
-		},
 		validateIdentity: {
-			startButtonTitle: "Validar Id",
-			successButtonTitle: "Éxito",
-			failureButtonTitle: "Reintentar",
-			validating: "Validación en progreso..."
+			Start: {
+				title: "Valida tu DNI para completar tu Perfil DIDI.",
+				subtitle: null,
+				button: "Validar DNI"
+			},
+			Success: {
+				title: "¡Felicitaciones! Su DNI ha sido validado.",
+				subtitle: "Recuerde que sus datos son privados.",
+				button: "OK"
+			},
+			Failure: {
+				title: "Lo lamentamos. Su identidad no ha sido validada.",
+				subtitle: "Intente nuevamente.",
+				button: "Reintentar"
+			},
+			"In Progress": {
+				title: "Validacion en progreso...",
+				subtitle: "",
+				button: null
+			}
 		},
 		recentActivities: {
 			label: "Actividades recientes",
@@ -200,9 +216,13 @@ export default {
 	documents: {
 		barTitle: "Mis Documentos",
 		detailBarTitle: "Documento",
+		emptyFilter: "No dispones de documentos en esta categoria",
 		filterAll: "Todos",
+		filterEducation: "Educación",
 		filterLivingPlace: "Vivienda",
-		filterIdentity: "Identidad"
+		filterFinance: "Finanza",
+		filterIdentity: "Identidad",
+		filterShared: "Compartidos"
 	},
 	tabNames: {
 		home: "Inicio",
@@ -218,9 +238,22 @@ export default {
 		endSession: "Cerrar Sesion"
 	},
 	share: {
-		title: "Credencial Didi",
-		explanation: "Escanea el siguiente codigo QR con otra aplicacion Didi",
+		title: "Compartir",
+		explanation: "Escanea el siguiente codigo QR con otra aplicación Didi",
+		generating: "Generando codigo QR...",
+		next: "Siguiente",
+		shareTitle: "Credencial Didi",
 		shareLink: "Compartir Enlace"
+	},
+	disclose: {
+		title: "Compartir",
+		request: {
+			explanation: "Escanea el siguiente codigo QR con la aplicación Didi que te envió la solicitud",
+			next: "Siguiente"
+		},
+		response: {
+			explanation: "Escanea el siguiente codigo QR con la aplicación Didi que va a recibir las credenciales"
+		}
 	},
 	services: {
 		changePasswordSuccess: "Contraseña cambiada exitosamente.",
@@ -343,16 +376,17 @@ export default {
 	credentialCard: {
 		emitter: "Emisor: ",
 		valueNotAvailable: "N/A",
+		shared: "Credencial compartida con vos",
 		replaced: "Credencial no vigente por existir reemplazo"
 	},
 	specialCredentials: {
 		PhoneNumberData: {
 			title: "Número de celular",
-			phoneNumber: "Número de celular"
+			phoneNumber: ""
 		},
 		EmailData: {
 			title: "E-mail",
-			email: "E-mail"
+			email: ""
 		},
 		PersonalData: {
 			title: "Datos Personales",
@@ -376,7 +410,11 @@ export default {
 	},
 	camera: {
 		notAuthorized: "Camara no autorizada",
-		scanQRInstruction: "Escanea un codigo QR"
+		scanQRInstruction: "Escanea un codigo QR",
+		noCredentials: {
+			title: "No hay credenciales",
+			message: "El codigo QR escaneado no contiene credenciales"
+		}
 	},
 	notifications: {
 		showExpired: "Mostrar peticiones vencidas",
@@ -396,12 +434,66 @@ export default {
 		alreadyScanned: "Ya dispones de esta credencial"
 	},
 	credentialShare: {
+		shareAction: "Compartir",
 		noCredentialsAvailable: "Primero obten credenciales",
-		whichFull: "¿Qué credencial deseas compartir?",
+		whichFull: "¿Qué credenciales deseas compartir?",
 		whichMicro: "¿Qué parte de la credencial deseas compartir?",
 		notCurrent: {
 			title: "Credencial no vigente",
 			message: "Solo es posible compartir credenciales vigentes."
+		},
+		notOwned: {
+			title: "Credencial ajena",
+			message: "Solo es posible compartir credenciales propias."
+		}
+	},
+	jwtParseError: (error: JWTParseError) => {
+		switch (error.type) {
+			case "AFTER_EXP":
+				const displayTimestamp = (ts: number) => new Date(ts * 1000).toLocaleString();
+				return {
+					errorCode: `TOKEN_AFTER_EXP`,
+					title: "Credencial Vencida",
+					message: `Hora actual: ${displayTimestamp(error.current)}, Vencimiento: ${displayTimestamp(error.expected)}`
+				};
+			case "BEFORE_IAT":
+				return {
+					errorCode: `TOKEN_BEFORE_IAT`,
+					title: "Error de Horario",
+					message: "Esta credencial indica que fue emitida en el futuro. Verifique la hora de su dispositivo."
+				};
+			case "JWT_DECODE_ERROR":
+				return {
+					errorCode: "TOKEN_JWT_DECODE_ERROR",
+					title: "Error al Decodificar",
+					message: "Error al extraer credenciales."
+				};
+			case "NONCREDENTIAL_WRAP_ERROR":
+				return {
+					errorCode: "NONCREDENTIAL_WRAP_ERROR",
+					title: "Error al Verificar Credencial",
+					message: "Esta credencial contiene una sub-credencial en formato desconocido."
+				};
+			case "RESOLVER_CREATION_ERROR":
+				return {
+					errorCode: "TOKEN_RESOLVER_CREATION_ERROR",
+					title: "Error de Conexión",
+					message: "Verifique tener acceso a internet."
+				};
+			case "SHAPE_DECODE_ERROR":
+				return {
+					errorCode: "TOKEN_SHAPE_DECODE_ERROR",
+					title: "Error al Interpretar Credencial",
+					message: error.errorMessage
+				};
+			case "VERIFICATION_ERROR":
+				return {
+					errorCode: "TOKEN_VERIFICATION_ERROR",
+					title: "Error al Verificar Credencial",
+					message: "Verifique tener acceso a internet."
+				};
+			default:
+				assertUnreachable(error);
 		}
 	}
 };

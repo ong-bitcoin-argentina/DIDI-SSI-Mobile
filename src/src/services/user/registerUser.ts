@@ -1,50 +1,40 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { DidiServerApiClient, EthrDID } from "didi-sdk";
 
-import { EthrDID } from "../../model/EthrDID";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
 import { getPrivateKeySeed } from "../internal/getPrivateKeySeed";
-import { getState } from "../internal/getState";
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
-
 export interface RegisterUserArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	did: EthrDID;
-	privateKeySeed: string;
-	email: string;
-	password: string;
-	phoneNumber: string;
+	data: {
+		email: string;
+		phoneNumber: string;
+		password: string;
+		privateKeySeed: string;
+	};
 }
 
-async function doRegisterUser(args: RegisterUserArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/registerUser`,
-		{
-			eMail: args.email,
-			password: args.password,
-			phoneNumber: args.phoneNumber,
-			did: args.did.did(),
-			privateKeySeed: args.privateKeySeed
-		},
-		emptyDataCodec
-	);
-}
-
-const registerUserComponent = buildComponentServiceCall(doRegisterUser);
+const registerUserComponent = buildComponentServiceCall(async (args: RegisterUserArguments) =>
+	convertError(await args.api.registerUser(args.did, args.data))
+);
 
 export function registerUser(serviceKey: string, email: string, password: string, phoneNumber: string) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
+	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, {}, did => {
 			return getPrivateKeySeed(serviceKey, { did }, privateKeySeed => {
 				const args: RegisterUserArguments = {
-					baseUrl,
+					api,
 					did,
-					privateKeySeed,
-					email,
-					password,
-					phoneNumber
+					data: {
+						email,
+						phoneNumber,
+						password,
+						privateKeySeed
+					}
 				};
 				return registerUserComponent(serviceKey, args, () => {
 					return serviceCallSuccess(serviceKey);

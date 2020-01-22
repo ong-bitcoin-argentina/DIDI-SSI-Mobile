@@ -1,7 +1,7 @@
+import { ErrorData } from "didi-sdk";
 import { Either, right } from "fp-ts/lib/Either";
 
 import { buildComponentServiceCall } from "./componentServiceCall";
-import { ErrorData } from "./ErrorData";
 
 async function doDelay(args: {
 	minutes?: number;

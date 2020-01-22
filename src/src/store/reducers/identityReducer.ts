@@ -1,4 +1,5 @@
-import { Identity } from "../../model/Identity";
+import { Identity } from "didi-sdk";
+
 import { StoreAction } from "../StoreAction";
 
 interface IdentityPatch {

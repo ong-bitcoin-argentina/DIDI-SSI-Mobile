@@ -1,11 +1,10 @@
+import { CredentialDocument, SpecialCredentialFlag } from "didi-sdk";
 import React from "react";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 
 import { DidiText } from "../../util/DidiText";
 import CredentialCard from "../common/CredentialCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
-import { SpecialCredentialFlag } from "../../../model/SpecialCredential";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 

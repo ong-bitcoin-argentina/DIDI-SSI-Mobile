@@ -1,3 +1,4 @@
+import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 
@@ -8,10 +9,11 @@ import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
 import { RecentActivity } from "../../../model/RecentActivity";
+import { reloadDid } from "../../../services/internal/reloadDid";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
@@ -23,8 +25,6 @@ import { DocumentDetailProps } from "../documents/DocumentDetail";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
-import { ValidateIdentityFailureProps } from "../validateIdentity/ValidateIdentityFailure";
-import { ValidateIdentitySuccessProps } from "../validateIdentity/ValidateIdentitySuccess";
 
 import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
@@ -34,6 +34,7 @@ import { NotificationScreenProps } from "./NotificationScreen";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
+	did: ActiveDid;
 	person: ValidatedIdentity;
 	credentials: CredentialDocument[];
 	recentActivity: RecentActivity[];
@@ -49,8 +50,6 @@ export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
 	DashboardDocuments: DocumentsScreenProps;
 	ValidateID: ValidateIdentityExplainWhatProps;
-	ValidateIDSuccess: ValidateIdentitySuccessProps;
-	ValidateIDFailure: ValidateIdentityFailureProps;
 	UserData: UserDataProps;
 	NotificationScreen: NotificationScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
@@ -70,11 +69,16 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 				onPress={() =>
 					this.navigate("DashDocumentDetail", {
 						document,
+						did: this.props.did,
 						activeSpecialCredentials: this.props.activeSpecialCredentials
 					})
 				}
 			>
-				<DocumentCredentialCard preview={true} document={document} context={this.props.activeSpecialCredentials} />
+				<DocumentCredentialCard
+					preview={true}
+					document={document}
+					context={{ activeDid: this.props.did, specialCredentials: this.props.activeSpecialCredentials }}
+				/>
 			</TouchableOpacity>
 		));
 	}
@@ -108,19 +112,17 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 							onBellPress={() => this.navigate("NotificationScreen", {})}
 						/>
 						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
-							<EvolutionCard credentials={this.props.credentials} />
-							{this.renderRegularDocuments()}
 							<IncompleteIdentityCard
 								onStartValidateId={() => this.navigate("ValidateID", {})}
 								onValidateIdSuccess={() => {
 									this.props.resetDniValidation();
-									this.navigate("ValidateIDSuccess", {});
 								}}
-								onValidateIdFailure={(message?: string) => {
+								onValidateIdFailure={() => {
 									this.props.resetDniValidation();
-									this.navigate("ValidateIDFailure", { message });
 								}}
 							/>
+							<EvolutionCard credentials={this.props.credentials} />
+							{this.renderRegularDocuments()}
 						</View>
 						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 							{this.renderRecentActivities()}
@@ -135,7 +137,8 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 export default didiConnect(
 	DashboardScreen,
 	(state): DashboardScreenStateProps => ({
-		person: state.identity,
+		did: state.did,
+		person: state.validatedIdentity,
 		recentActivity: state.recentActivity,
 		credentials: state.credentials,
 		activeSpecialCredentials: state.activeSpecialCredentials
@@ -143,6 +146,7 @@ export default didiConnect(
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
+			dispatch(reloadDid());
 			dispatch(recoverTokens());
 			dispatch(checkValidateDni());
 		},

@@ -1,5 +1,5 @@
+import { DidiServerApiClient, EthrDID, ValidateDniResponseData } from "didi-sdk";
 import { Either, isRight, right } from "fp-ts/lib/Either";
-import * as t from "io-ts";
 
 import {
 	buildComponentServiceCall,
@@ -8,65 +8,39 @@ import {
 	serviceCallSuccess,
 	simpleAction
 } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
 import { delayed } from "../common/delayed";
-import { ErrorData } from "../common/ErrorData";
 
-import { EthrDID } from "../../model/EthrDID";
 import { getState } from "../internal/getState";
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 import { ServiceCallAction } from "../ServiceStateStore";
 import { recoverTokens } from "../trustGraph/recoverTokens";
 
-import { commonUserRequest } from "./userServiceCommon";
-
-export const ValidateDniResponseCodec = t.intersection([
-	t.type({
-		operationId: t.string,
-		status: t.keyof({
-			"In Progress": null,
-			Successful: null,
-			Falied: null
-		})
-	}),
-	t.partial({
-		errorMessage: t.string
-	})
-]);
-
 export interface CheckValidateDniArguments {
-	baseUrl: string;
-
+	api: DidiServerApiClient;
 	did: EthrDID;
 	operationId: string;
 }
 
-async function doCheckValidateDni(
-	args: CheckValidateDniArguments
-): Promise<Either<ErrorData, typeof ValidateDniResponseCodec._A>> {
-	const response = await commonUserRequest(
-		"POST",
-		`${args.baseUrl}/renaper/validateDniState`,
-		{
-			did: args.did.did(),
-			operationId: args.operationId
-		},
-		ValidateDniResponseCodec
-	);
-	if (isRight(response)) {
-		return response;
-	} else {
-		return right({
-			operationId: args.operationId,
-			status: "In Progress"
-		});
-	}
-}
+const checkValidateDniComponent = buildComponentServiceCall(
+	async (args: CheckValidateDniArguments): Promise<Either<any, ValidateDniResponseData>> => {
+		const response = convertError(await args.api.checkValidateDni(args.did, args.operationId));
 
-const checkValidateDniComponent = buildComponentServiceCall(doCheckValidateDni);
+		if (isRight(response)) {
+			return response;
+		} else {
+			return right({
+				operationId: args.operationId,
+				status: "In Progress"
+			});
+		}
+	}
+);
 
 export function handleDniValidationResponse(
 	serviceKey: string,
-	response: typeof ValidateDniResponseCodec._A,
+	response: ValidateDniResponseData,
 	whenInProgress: () => ServiceCallAction
 ): ServiceCallAction {
 	switch (response.status) {
@@ -89,20 +63,21 @@ export function handleDniValidationResponse(
 
 export function checkValidateDni(): ServiceCallAction {
 	const serviceKey = "_checkValidateDni";
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
-		const localState = store.validateDni;
+	return withDidiServerClient(serviceKey, {}, api => {
+		return getState(serviceKey, {}, store => {
+			const localState = store.validateDni;
 
-		if (localState?.state !== "In Progress") {
-			return serviceCallDrop(serviceKey);
-		}
-		const operationId = localState.operationId;
+			if (localState?.state !== "In Progress") {
+				return serviceCallDrop(serviceKey);
+			}
+			const operationId = localState.operationId;
 
-		return withExistingDid(serviceKey, {}, did => {
-			return checkValidateDniComponent(serviceKey, { baseUrl, did, operationId }, response => {
-				return handleDniValidationResponse(serviceKey, response, () => {
-					return delayed(serviceKey, { minutes: 1 }, () => {
-						return checkValidateDni();
+			return withExistingDid(serviceKey, {}, did => {
+				return checkValidateDniComponent(serviceKey, { api, did, operationId }, response => {
+					return handleDniValidationResponse(serviceKey, response, () => {
+						return delayed(serviceKey, { minutes: 1 }, () => {
+							return checkValidateDni();
+						});
 					});
 				});
 			});

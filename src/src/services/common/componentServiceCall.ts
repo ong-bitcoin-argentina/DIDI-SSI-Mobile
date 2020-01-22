@@ -1,3 +1,4 @@
+import { ErrorData } from "didi-sdk";
 import { Either, isLeft } from "fp-ts/lib/Either";
 import { Cmd } from "redux-loop";
 
@@ -6,8 +7,6 @@ import { typedCmdRun } from "../common/typedCmdRun";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { StoreAction } from "../../store/StoreAction";
 import { ServiceCallAction } from "../ServiceStateStore";
-
-import { ErrorData } from "./ErrorData";
 
 export type ComponentServiceCall<Args, Result> = (
 	serviceKey: string,

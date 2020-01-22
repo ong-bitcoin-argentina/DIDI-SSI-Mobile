@@ -1,13 +1,13 @@
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { DidiServerApiClient, EthrDID } from "didi-sdk";
 
-import { EthrDID } from "../../model/EthrDID";
-import { getState } from "../internal/getState";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { convertError } from "../common/convertError";
+
+import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-import { commonUserRequest, emptyDataCodec } from "./userServiceCommon";
-
 export interface SendSmsValidatorArguments {
-	baseUrl: string;
+	api: DidiServerApiClient;
 	cellPhoneNumber: string;
 	idCheck?: {
 		did: EthrDID;
@@ -15,33 +15,19 @@ export interface SendSmsValidatorArguments {
 	};
 }
 
-async function doSendSmsValidator(args: SendSmsValidatorArguments) {
-	return commonUserRequest(
-		"POST",
-		`${args.baseUrl}/sendSmsValidator`,
-		{
-			cellPhoneNumber: args.cellPhoneNumber,
-			...(args.idCheck && {
-				did: args.idCheck.did.did(),
-				password: args.idCheck.password
-			})
-		},
-		emptyDataCodec
-	);
-}
-
-const sendSmsValidatorComponent = buildComponentServiceCall(doSendSmsValidator);
+const sendSmsValidatorComponent = buildComponentServiceCall(async (args: SendSmsValidatorArguments) =>
+	convertError(await args.api.sendSmsValidator(args.cellPhoneNumber, args.idCheck))
+);
 
 export function sendSmsValidator(serviceKey: string, cellPhoneNumber: string, password: string | null) {
-	return getState(serviceKey, {}, store => {
-		const baseUrl = store.serviceSettings.didiUserServer;
+	return withDidiServerClient(serviceKey, {}, api => {
 		if (password === null) {
-			return sendSmsValidatorComponent(serviceKey, { baseUrl, cellPhoneNumber }, () => {
+			return sendSmsValidatorComponent(serviceKey, { api, cellPhoneNumber }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		} else {
 			return withExistingDid(serviceKey, {}, did => {
-				return sendSmsValidatorComponent(serviceKey, { baseUrl, cellPhoneNumber, idCheck: { did, password } }, () => {
+				return sendSmsValidatorComponent(serviceKey, { api, cellPhoneNumber, idCheck: { did, password } }, () => {
 					return serviceCallSuccess(serviceKey);
 				});
 			});

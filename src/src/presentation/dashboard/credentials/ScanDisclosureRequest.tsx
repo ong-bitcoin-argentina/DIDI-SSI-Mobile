@@ -1,38 +1,39 @@
+import { CredentialDocument, Identity, RequestDocument, SelectiveDisclosureResponse } from "didi-sdk";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
+import { ErrorDataAlert } from "../../common/ErrorDataAlert";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
-import { CredentialDocument } from "../../../model/CredentialDocument";
-import { RequestDocument } from "../../../model/RequestDocument";
 import {
 	submitDisclosureResponse,
-	SubmitDisclosureResponseArguments
+	SubmitDisclosureResponseContent
 } from "../../../services/issuer/submitDisclosureResponse";
 import { isPendingService } from "../../../services/ServiceStateStore";
-import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
-import { getResponseClaims } from "../../../uPort/createDisclosureResponse";
+import { getCredentials } from "../../../uPort/getCredentials";
+import { serviceErrors } from "../../resources/serviceErrors";
 
 import { ScanCredentialProps } from "./ScanCredential";
+import { ShowDisclosureResponseProps } from "./ShowDisclosureResponse";
 
 export interface ScanDisclosureRequestProps {
 	request: RequestDocument;
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
-	identity: ValidatedIdentity;
+	identity: Identity;
 	credentials: CredentialDocument[];
 
 	sendDisclosureResponsePending: boolean;
 }
 interface ScanDisclosureRequestDispatchProps {
-	sendResponse: (args: SubmitDisclosureResponseArguments) => void;
+	sendResponse: (args: SubmitDisclosureResponseContent) => void;
 	storeRequest: (request: RequestDocument) => void;
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
@@ -41,6 +42,7 @@ type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
 
 export interface ScanDisclosureRequestNavigation {
 	ScanCredential: ScanCredentialProps;
+	ShowDisclosureResponse: ShowDisclosureResponseProps;
 }
 
 const serviceKey = "ScanDisclosureRequest";
@@ -70,13 +72,38 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private answerRequest() {
-		const { missing, own, verified } = getResponseClaims(
+	private async answerRequest() {
+		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
 			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
 			this.props.credentials,
 			this.props.identity
 		);
-		this.props.sendResponse({ request: this.props.request, own, verified });
+
+		if (missingRequired.length > 0) {
+			Alert.alert("Faltan Credenciales", `No dispones de datos requeridos:\n - ${missingRequired.join("\n - ")}`);
+			return;
+		}
+
+		try {
+			const credentials = await getCredentials();
+			const responseToken = await SelectiveDisclosureResponse.signJWT(
+				credentials,
+				this.props.request,
+				ownClaims,
+				verifiedClaims
+			);
+
+			if (this.props.request.callback) {
+				this.props.sendResponse({ callback: this.props.request.callback, token: responseToken });
+			} else {
+				this.navigate("ShowDisclosureResponse", {
+					responseToken
+				});
+			}
+		} catch (signerError) {
+			console.warn(signerError);
+			ErrorDataAlert.alert(serviceErrors.disclosure.SIGNING_ERR);
+		}
 	}
 
 	private onSuccess() {
@@ -96,7 +123,7 @@ export default didiConnect(
 	},
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
-			sendResponse: (args: SubmitDisclosureResponseArguments) => dispatch(submitDisclosureResponse(serviceKey, args)),
+			sendResponse: (args: SubmitDisclosureResponseContent) => dispatch(submitDisclosureResponse(serviceKey, args)),
 			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] })
 		};
 	}
