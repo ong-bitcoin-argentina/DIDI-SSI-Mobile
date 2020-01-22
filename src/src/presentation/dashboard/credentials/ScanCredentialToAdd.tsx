@@ -20,7 +20,6 @@ export interface ScanCredentialToAddProps {
 }
 interface ScanCredentialToAddStateProps {
 	existingTokens: string[];
-	activeSpecialCredentials: SpecialCredentialMap;
 }
 interface ScanCredentialToAddDispatchProps {
 	addCredential(credential: CredentialDocument): void;
@@ -44,13 +43,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={styles.body}>
-				{
-					<DocumentCredentialCard
-						preview={false}
-						document={this.props.credential}
-						context={this.props.activeSpecialCredentials}
-					/>
-				}
+				{<DocumentCredentialCard preview={false} document={this.props.credential} context={{}} />}
 				{this.props.existingTokens.includes(this.props.credential.jwt) ? this.renderExisting() : this.renderNew()}
 			</DidiScreen>
 		);
@@ -86,17 +79,12 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 
 const connected = didiConnect(
 	ScanCredentialToAddScreen,
-	(state): ScanCredentialToAddStateProps => {
-		return {
-			existingTokens: state.tokens,
-			activeSpecialCredentials: state.activeSpecialCredentials
-		};
-	},
-	(dispatch): ScanCredentialToAddDispatchProps => {
-		return {
-			addCredential: (credential: CredentialDocument) => dispatch({ type: "TOKEN_ENSURE", content: [credential.jwt] })
-		};
-	}
+	(state): ScanCredentialToAddStateProps => ({
+		existingTokens: state.tokens
+	}),
+	(dispatch): ScanCredentialToAddDispatchProps => ({
+		addCredential: (credential: CredentialDocument) => dispatch({ type: "TOKEN_ENSURE", content: [credential.jwt] })
+	})
 );
 export { connected as ScanCredentialToAddScreen };
 
