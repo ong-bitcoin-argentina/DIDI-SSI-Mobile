@@ -13,7 +13,7 @@ import { DidiScreen } from "./DidiScreen";
 
 export interface VerifyCodeProps {
 	description: string;
-	contentImageSource: ImageSourcePropType;
+	isContinueBlocked?: boolean;
 	onPressContinueButton: (inputCode: string) => void;
 	isContinuePending: boolean;
 }
@@ -35,7 +35,7 @@ export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, Verif
 
 				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
 
-				<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
+				{this.props.children}
 
 				<DidiText.Explanation.Normal>{strings.accessCommon.verify.resendCode}</DidiText.Explanation.Normal>
 
@@ -50,6 +50,6 @@ export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, Verif
 	}
 
 	private canPressContinueButton(): boolean {
-		return Validations.isValidationCode(this.state.inputCode);
+		return !this.props.isContinueBlocked && Validations.isValidationCode(this.state.inputCode);
 	}
 }
