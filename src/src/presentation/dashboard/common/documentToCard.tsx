@@ -23,7 +23,8 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 	render() {
 		const doc = this.props.document;
 
-		const issuer = doc.issuer.keyAddress().slice(0, 20);
+		const issuer = this.props.preview ? doc.issuer.keyAddress().slice(0, 20) + "..." : doc.issuer.keyAddress();
+
 		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
 		let title = doc.title;
 		let data = CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.preview : undefined);
@@ -62,7 +63,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				icon=""
 				category={category}
 				title={title}
-				subTitle={strings.credentialCard.emitter + issuer + "..."}
+				subTitle={strings.credentialCard.emitter + issuer}
 				data={data}
 				columns={this.props.preview ? CredentialDocument.numberOfColumns(doc) : 1}
 				color={color}
