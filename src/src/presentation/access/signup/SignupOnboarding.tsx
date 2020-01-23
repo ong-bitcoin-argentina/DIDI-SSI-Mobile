@@ -67,7 +67,10 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 					scrollEventThrottle={1}
 					onScroll={event => this.updateScrollPosition(event)}
 				>
-					{onboardingPages.map((page, index) => this.renderPage(page, index))}
+					{[
+						...onboardingPages.map((page, index) => this.renderPage(page, index)),
+						this.renderSkipPage(onboardingPages.length)
+					]}
 				</ScrollView>
 				{this.renderOverlay()}
 			</Fragment>
@@ -75,7 +78,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 	}
 
 	private backgroundImages() {
-		const mainPage = Math.round(this.state.scrollPage);
+		const mainPage = Math.max(0, Math.min(onboardingPages.length - 1, Math.round(this.state.scrollPage)));
 		const mainBackground = onboardingPages[mainPage].backgroundTile;
 		const offOpacity = this.state.scrollPage - mainPage;
 		if (offOpacity !== 0) {
@@ -118,6 +121,10 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 		);
 	}
 
+	private renderSkipPage(index: number) {
+		return <View key={onboardingPages.length} style={{ width: Dimensions.get("window").width }} />;
+	}
+
 	private renderCard(page: OnboardingPage) {
 		const CardBackground = page.image;
 		return (
@@ -152,21 +159,30 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 		if (Math.round(this.state.scrollPage) === onboardingPages.length - 1) {
 			this.navigate("SignupEnterPhone", {});
 		} else if (this.scrollViewRef.current) {
-			const nextPageStart = this.state.pageWidth * (this.state.scrollPage + 1);
-			this.scrollViewRef.current.scrollTo({ animated: true, x: nextPageStart, y: 0 });
+			this.setPage(this.state.scrollPage + 1);
+		}
+	}
+
+	private setPage(n: number) {
+		if (this.scrollViewRef.current) {
+			const pageStart = this.state.pageWidth * n;
+			this.scrollViewRef.current.scrollTo({ animated: true, x: pageStart, y: 0 });
 		}
 	}
 
 	private updateScrollPosition(event: NativeSyntheticEvent<NativeScrollEvent>) {
-		const contentWidth = event.nativeEvent.contentSize.width;
-		const pageWidth = contentWidth / onboardingPages.length;
-		const scrollPage = event.nativeEvent.contentOffset.x / pageWidth;
+		const pageWidth = Dimensions.get("window").width;
+		const maxPage = onboardingPages.length - 1;
 
-		if (scrollPage <= 0) {
-			this.setState({ pageWidth, scrollPage: 0 });
-		} else if (scrollPage > onboardingPages.length) {
-			this.setState({ pageWidth, scrollPage: onboardingPages.length });
+		const freeScrollPage = event.nativeEvent.contentOffset.x / pageWidth;
+
+		if (freeScrollPage > maxPage + 0.25) {
+			this.navigate("SignupEnterPhone", {}, () => {
+				this.setPage(maxPage);
+				this.setState({ pageWidth, scrollPage: maxPage });
+			});
 		} else {
+			const scrollPage = Math.max(0, Math.min(maxPage, freeScrollPage));
 			this.setState({ pageWidth, scrollPage });
 		}
 	}
