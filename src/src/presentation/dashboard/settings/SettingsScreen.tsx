@@ -6,6 +6,7 @@ import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { AppConfig } from "../../../AppConfig";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
@@ -55,13 +56,16 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 	>(strings.tabNames.settings, "DashboardHome", {});
 
 	buttons(): SettingsButton[] {
-		return [
-			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
+		const base = [
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
-			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) },
+			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) }
+		];
+		const debug = [
+			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.debug.serviceConfig.barTitle, action: () => this.navigate("ServiceSettings", {}) },
 			{ name: strings.debug.decodeJWT, action: () => this.navigate("JWTDecoderScreen", {}) }
 		];
+		return [...base, ...(AppConfig.debug ? debug : [])];
 	}
 
 	renderCartouche() {
