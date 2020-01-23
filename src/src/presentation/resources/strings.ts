@@ -374,7 +374,7 @@ export default {
 		}
 	},
 	credentialCard: {
-		emitter: "Emisor: ",
+		emitter: "ID Emisor: ",
 		valueNotAvailable: "N/A",
 		shared: "Credencial compartida con vos",
 		replaced: "Credencial no vigente por existir reemplazo"
