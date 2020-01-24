@@ -9,7 +9,9 @@ import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
+import { getIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 
@@ -21,9 +23,11 @@ export interface ScanCredentialToAddProps {
 interface ScanCredentialToAddStateProps {
 	did: ActiveDid;
 	existingTokens: string[];
+	knownIssuers: IssuerRegistry;
 }
 interface ScanCredentialToAddDispatchProps {
 	addCredentials: (credentials: CredentialDocument[]) => void;
+	loadIssuerNames: () => void;
 }
 type ScanCredentialToAddInternalProps = ScanCredentialToAddProps &
 	ScanCredentialToAddStateProps &
@@ -50,7 +54,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 							key={index}
 							preview={false}
 							document={credential}
-							context={{ activeDid: this.props.did, specialCredentials: null }}
+							context={{ activeDid: this.props.did, knownIssuers: this.props.knownIssuers, specialCredentials: null }}
 						/>
 					);
 				})}
@@ -59,6 +63,10 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 					: this.renderNew()}
 			</DidiScrollScreen>
 		);
+	}
+
+	componentDidMount() {
+		this.props.loadIssuerNames();
 	}
 
 	private renderExisting() {
@@ -93,11 +101,16 @@ const connected = didiConnect(
 	ScanCredentialToAddScreen,
 	(state): ScanCredentialToAddStateProps => ({
 		did: state.did,
-		existingTokens: state.tokens
+		existingTokens: state.tokens,
+		knownIssuers: state.knownIssuers
 	}),
 	(dispatch): ScanCredentialToAddDispatchProps => ({
-		addCredentials: (credentials: CredentialDocument[]) =>
-			dispatch({ type: "TOKEN_ENSURE", content: credentials.map(doc => doc.jwt) })
+		addCredentials: (credentials: CredentialDocument[]) => {
+			dispatch({ type: "TOKEN_ENSURE", content: credentials.map(doc => doc.jwt) });
+		},
+		loadIssuerNames: () => {
+			dispatch(getIssuerNames());
+		}
 	})
 );
 export { connected as ScanCredentialToAddScreen };

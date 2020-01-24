@@ -4,6 +4,7 @@ import React from "react";
 import { DidiText } from "../../util/DidiText";
 
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
@@ -15,6 +16,7 @@ interface DocumentCredentialCardProps {
 	document: CredentialDocument;
 	context: {
 		activeDid: ActiveDid;
+		knownIssuers: IssuerRegistry;
 		specialCredentials: SpecialCredentialMap | null;
 	};
 }
@@ -23,7 +25,15 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 	render() {
 		const doc = this.props.document;
 
-		const issuer = this.props.preview ? doc.issuer.keyAddress().slice(0, 20) + "..." : doc.issuer.keyAddress();
+		const issuerData = this.props.context.knownIssuers[doc.issuer.did()];
+		const issuerName = issuerData
+			? issuerData.name === null
+				? "Emisor desconocido"
+				: `Emisor: ${issuerData.name}`
+			: "Cargando...";
+		const issuer = this.props.preview
+			? issuerName
+			: `${issuerName}\n${strings.credentialCard.emitter + doc.issuer.keyAddress()}`;
 
 		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
 		let title = doc.title;
@@ -63,7 +73,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				icon=""
 				category={category}
 				title={title}
-				subTitle={strings.credentialCard.emitter + issuer}
+				subTitle={issuer}
 				data={data}
 				columns={this.props.preview ? CredentialDocument.numberOfColumns(doc) : 1}
 				color={color}
