@@ -9,6 +9,7 @@ import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
+import { RecentActivity } from "../../../model/RecentActivity";
 import { getIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
@@ -108,6 +109,10 @@ const connected = didiConnect(
 	}),
 	(dispatch): ScanCredentialToAddDispatchProps => ({
 		addCredentials: (credentials: CredentialDocument[]) => {
+			dispatch({
+				type: "RECENT_ACTIVITY_ADD",
+				value: RecentActivity.from("RECEIVE", credentials)
+			});
 			dispatch({ type: "TOKEN_ENSURE", content: credentials.map(doc => doc.jwt) });
 		},
 		loadIssuerNames: (issuers: EthrDID[]) => {

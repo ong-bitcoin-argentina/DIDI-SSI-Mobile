@@ -10,6 +10,7 @@ import { DidiServiceButton } from "../../util/DidiServiceButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
+import { RecentActivity } from "../../../model/RecentActivity";
 import {
 	submitDisclosureResponse,
 	SubmitDisclosureResponseContent
@@ -37,6 +38,8 @@ interface ScanDisclosureRequestStateProps {
 interface ScanDisclosureRequestDispatchProps {
 	sendResponse: (args: SubmitDisclosureResponseContent) => void;
 	storeRequest: (request: RequestDocument) => void;
+	recordCallback: (documents: CredentialDocument[]) => void;
+	recordShare: (documents: CredentialDocument[]) => void;
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
 	ScanDisclosureRequestStateProps &
@@ -98,10 +101,12 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 			if (this.props.request.callback) {
 				this.props.sendResponse({ callback: this.props.request.callback, token: responseToken });
+				this.props.recordCallback(this.props.credentials);
 			} else {
 				this.navigate("ShowDisclosureResponse", {
 					responseToken
 				});
+				this.props.recordShare(this.props.credentials);
 			}
 		} catch (signerError) {
 			console.warn(signerError);
@@ -128,7 +133,17 @@ export default didiConnect(
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
 			sendResponse: (args: SubmitDisclosureResponseContent) => dispatch(submitDisclosureResponse(serviceKey, args)),
-			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] })
+			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] }),
+			recordCallback: (documents: CredentialDocument[]) =>
+				dispatch({
+					type: "RECENT_ACTIVITY_ADD",
+					value: RecentActivity.from("SHARE", documents)
+				}),
+			recordShare: (documents: CredentialDocument[]) =>
+				dispatch({
+					type: "RECENT_ACTIVITY_ADD",
+					value: RecentActivity.from("SHARE", documents)
+				})
 		};
 	}
 );

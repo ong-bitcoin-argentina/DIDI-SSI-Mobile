@@ -10,26 +10,62 @@ interface DidiActivityProps extends ViewProps {
 	activity: RecentActivity;
 }
 
+interface ViewableRecentActivity {
+	icon: string;
+	title: string;
+	description: string;
+	date: string;
+}
+
+function convertToViewable(recentActivity: RecentActivity): ViewableRecentActivity {
+	const title = recentActivity.credentialTitle.join(", ");
+
+	const date = new Date(recentActivity.date);
+	const displayDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+	switch (recentActivity.type) {
+		case "CREATE":
+			return {
+				icon: "",
+				title: "Nueva Credencial",
+				description: `Se creó una nueva credencial a tu nombre: ${title}`,
+				date: displayDate
+			};
+		case "RECEIVE":
+			return {
+				icon: "",
+				title: "Recibiste Credenciales",
+				description: `Te compartieron ${title}`,
+				date: displayDate
+			};
+		case "SHARE":
+			return {
+				icon: "",
+				title: "Enviaste Credenciales",
+				description: `Compartiste ${title}`,
+				date: displayDate
+			};
+	}
+}
+
 export default class DidiActivity extends Component<DidiActivityProps, {}> {
 	render() {
+		const activity = convertToViewable(this.props.activity);
 		return (
 			<View {...this.props} style={[styles.activity, this.props.style]}>
 				<View style={styles.body}>
 					<View style={styles.iconContainer}>
-						<DidiText.Icon fontSize={20}>{this.props.activity.icon}</DidiText.Icon>
+						<DidiText.Icon fontSize={20}>{activity.icon}</DidiText.Icon>
 					</View>
 
 					<View style={styles.rowContainer}>
 						<View style={styles.row}>
-							<DidiText.Activity.Title style={styles.rowStart}>{this.props.activity.title}</DidiText.Activity.Title>
-							<DidiText.Activity.State>{this.props.activity.state}</DidiText.Activity.State>
+							<DidiText.Activity.Title style={styles.rowStart}>{activity.title}</DidiText.Activity.Title>
+							<DidiText.Activity.Date>{activity.date}</DidiText.Activity.Date>
 						</View>
-						<View style={styles.row}>
-							<DidiText.Activity.Description style={styles.rowStart}>
-								{this.props.activity.description}
-							</DidiText.Activity.Description>
-							<DidiText.Activity.Date>{this.props.activity.date}</DidiText.Activity.Date>
-						</View>
+						<DidiText.Activity.Description style={styles.rowStart}>
+							{activity.description}
+						</DidiText.Activity.Description>
 					</View>
 				</View>
 			</View>
