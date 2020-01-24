@@ -91,7 +91,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 				<DocumentCredentialCard
 					preview={false}
 					document={document}
-					context={{ activeDid: null, specialCredentials: null }}
+					context={{ activeDid: null, knownIssuers: {}, specialCredentials: null }}
 				/>
 			</TouchableOpacity>
 		);

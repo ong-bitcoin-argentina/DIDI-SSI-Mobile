@@ -13,7 +13,9 @@ import { RecentActivity } from "../../../model/RecentActivity";
 import { reloadDid } from "../../../services/internal/reloadDid";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
+import { getIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
@@ -36,6 +38,7 @@ export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	did: ActiveDid;
 	person: ValidatedIdentity;
+	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 	recentActivity: RecentActivity[];
 	activeSpecialCredentials: SpecialCredentialMap;
@@ -70,6 +73,7 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 					this.navigate("DashDocumentDetail", {
 						document,
 						did: this.props.did,
+						knownIssuers: this.props.knownIssuers,
 						activeSpecialCredentials: this.props.activeSpecialCredentials
 					})
 				}
@@ -77,7 +81,11 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 				<DocumentCredentialCard
 					preview={true}
 					document={document}
-					context={{ activeDid: this.props.did, specialCredentials: this.props.activeSpecialCredentials }}
+					context={{
+						activeDid: this.props.did,
+						knownIssuers: this.props.knownIssuers,
+						specialCredentials: this.props.activeSpecialCredentials
+					}}
 				/>
 			</TouchableOpacity>
 		));
@@ -140,6 +148,7 @@ export default didiConnect(
 		did: state.did,
 		person: state.validatedIdentity,
 		recentActivity: state.recentActivity,
+		knownIssuers: state.knownIssuers,
 		credentials: state.credentials,
 		activeSpecialCredentials: state.activeSpecialCredentials
 	}),
@@ -149,6 +158,7 @@ export default didiConnect(
 			dispatch(reloadDid());
 			dispatch(recoverTokens());
 			dispatch(checkValidateDni());
+			dispatch(getIssuerNames());
 		},
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" })
 	})

@@ -7,8 +7,8 @@ import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
-import { reloadDid } from "../../../services/internal/reloadDid";
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
@@ -21,6 +21,7 @@ export type DocumentsScreenProps = {};
 interface DocumentsScreenStateProps {
 	filter: (doc: CredentialDocument, did: EthrDID) => boolean;
 	did: ActiveDid;
+	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
 }
@@ -71,6 +72,7 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 					this.navigate("DocumentDetail", {
 						document,
 						did: this.props.did,
+						knownIssuers: this.props.knownIssuers,
 						activeSpecialCredentials: this.props.activeSpecialCredentials
 					})
 				}
@@ -78,7 +80,11 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 				<DocumentCredentialCard
 					preview={true}
 					document={document}
-					context={{ activeDid: this.props.did, specialCredentials: this.props.activeSpecialCredentials }}
+					context={{
+						activeDid: this.props.did,
+						knownIssuers: this.props.knownIssuers,
+						specialCredentials: this.props.activeSpecialCredentials
+					}}
 				/>
 			</TouchableOpacity>
 		);
@@ -91,6 +97,7 @@ export default function(filter: (type: CredentialDocument, did: EthrDID) => bool
 		(state): DocumentsScreenStateProps => ({
 			filter,
 			did: state.did,
+			knownIssuers: state.knownIssuers,
 			credentials: state.credentials,
 			activeSpecialCredentials: state.activeSpecialCredentials
 		})

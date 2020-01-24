@@ -8,12 +8,14 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import strings from "../../resources/strings";
 
 export interface DocumentDetailProps {
 	document: CredentialDocument;
 	did: ActiveDid;
+	knownIssuers: IssuerRegistry;
 	activeSpecialCredentials: SpecialCredentialMap;
 }
 
@@ -30,7 +32,11 @@ export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDet
 							preview={false}
 							document={doc}
 							key={index}
-							context={{ activeDid: this.props.did, specialCredentials: this.props.activeSpecialCredentials }}
+							context={{
+								activeDid: this.props.did,
+								knownIssuers: this.props.knownIssuers,
+								specialCredentials: this.props.activeSpecialCredentials
+							}}
 						/>
 					);
 				})}
