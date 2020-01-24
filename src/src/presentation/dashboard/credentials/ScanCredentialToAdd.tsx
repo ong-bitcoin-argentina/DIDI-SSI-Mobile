@@ -1,4 +1,4 @@
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
 import { StyleSheet, Text } from "react-native";
 
@@ -27,7 +27,7 @@ interface ScanCredentialToAddStateProps {
 }
 interface ScanCredentialToAddDispatchProps {
 	addCredentials: (credentials: CredentialDocument[]) => void;
-	loadIssuerNames: () => void;
+	loadIssuerNames: (issuers: EthrDID[]) => void;
 }
 type ScanCredentialToAddInternalProps = ScanCredentialToAddProps &
 	ScanCredentialToAddStateProps &
@@ -37,6 +37,8 @@ type ScanCredentialToAddState = {};
 export interface ScanCredentialToAddNavigation {
 	ScanCredential: ScanCredentialProps;
 }
+
+const serviceKey = "ScanCredentialToAddScreen";
 
 class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	ScanCredentialToAddInternalProps,
@@ -66,7 +68,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	}
 
 	componentDidMount() {
-		this.props.loadIssuerNames();
+		this.props.loadIssuerNames(this.props.credentials.map(doc => doc.issuer));
 	}
 
 	private renderExisting() {
@@ -108,8 +110,8 @@ const connected = didiConnect(
 		addCredentials: (credentials: CredentialDocument[]) => {
 			dispatch({ type: "TOKEN_ENSURE", content: credentials.map(doc => doc.jwt) });
 		},
-		loadIssuerNames: () => {
-			dispatch(getIssuerNames());
+		loadIssuerNames: (issuers: EthrDID[]) => {
+			dispatch(getIssuerNames(serviceKey, issuers));
 		}
 	})
 );
