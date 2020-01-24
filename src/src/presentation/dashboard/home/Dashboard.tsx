@@ -13,7 +13,7 @@ import { RecentActivity } from "../../../model/RecentActivity";
 import { reloadDid } from "../../../services/internal/reloadDid";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
-import { getIssuerNames } from "../../../services/user/getIssuerNames";
+import { getAllIssuerNames, getIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
@@ -158,7 +158,7 @@ export default didiConnect(
 			dispatch(reloadDid());
 			dispatch(recoverTokens());
 			dispatch(checkValidateDni());
-			dispatch(getIssuerNames());
+			dispatch(getAllIssuerNames());
 		},
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" })
 	})
