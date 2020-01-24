@@ -10,11 +10,13 @@ import { DidiServiceButton } from "../../util/DidiServiceButton";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
+import { RecentActivity } from "../../../model/RecentActivity";
 import {
 	submitDisclosureResponse,
 	SubmitDisclosureResponseContent
 } from "../../../services/issuer/submitDisclosureResponse";
 import { isPendingService } from "../../../services/ServiceStateStore";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
 import { getCredentials } from "../../../uPort/getCredentials";
 import { serviceErrors } from "../../resources/serviceErrors";
@@ -27,6 +29,7 @@ export interface ScanDisclosureRequestProps {
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
+	did: ActiveDid;
 	identity: Identity;
 	credentials: CredentialDocument[];
 
@@ -35,6 +38,8 @@ interface ScanDisclosureRequestStateProps {
 interface ScanDisclosureRequestDispatchProps {
 	sendResponse: (args: SubmitDisclosureResponseContent) => void;
 	storeRequest: (request: RequestDocument) => void;
+	recordCallback: (documents: CredentialDocument[]) => void;
+	recordShare: (documents: CredentialDocument[]) => void;
 }
 type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
 	ScanDisclosureRequestStateProps &
@@ -74,6 +79,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 	private async answerRequest() {
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
+			this.props.did!,
 			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
 			this.props.credentials,
 			this.props.identity
@@ -95,10 +101,12 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 			if (this.props.request.callback) {
 				this.props.sendResponse({ callback: this.props.request.callback, token: responseToken });
+				this.props.recordCallback(this.props.credentials);
 			} else {
 				this.navigate("ShowDisclosureResponse", {
 					responseToken
 				});
+				this.props.recordShare(this.props.credentials);
 			}
 		} catch (signerError) {
 			console.warn(signerError);
@@ -116,6 +124,7 @@ export default didiConnect(
 	ScanDisclosureRequestScreen,
 	(state): ScanDisclosureRequestStateProps => {
 		return {
+			did: state.did,
 			identity: state.identity,
 			credentials: state.credentials,
 			sendDisclosureResponsePending: isPendingService(state.serviceCalls[serviceKey])
@@ -124,7 +133,17 @@ export default didiConnect(
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
 			sendResponse: (args: SubmitDisclosureResponseContent) => dispatch(submitDisclosureResponse(serviceKey, args)),
-			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] })
+			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] }),
+			recordCallback: (documents: CredentialDocument[]) =>
+				dispatch({
+					type: "RECENT_ACTIVITY_ADD",
+					value: RecentActivity.from("SHARE", documents)
+				}),
+			recordShare: (documents: CredentialDocument[]) =>
+				dispatch({
+					type: "RECENT_ACTIVITY_ADD",
+					value: RecentActivity.from("SHARE", documents)
+				})
 		};
 	}
 );

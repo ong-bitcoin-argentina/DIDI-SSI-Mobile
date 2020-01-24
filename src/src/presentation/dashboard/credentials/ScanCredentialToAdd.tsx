@@ -1,4 +1,4 @@
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
 import { StyleSheet, Text } from "react-native";
 
@@ -9,6 +9,7 @@ import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
+import { RecentActivity } from "../../../model/RecentActivity";
 import { getIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
@@ -27,7 +28,7 @@ interface ScanCredentialToAddStateProps {
 }
 interface ScanCredentialToAddDispatchProps {
 	addCredentials: (credentials: CredentialDocument[]) => void;
-	loadIssuerNames: () => void;
+	loadIssuerNames: (issuers: EthrDID[]) => void;
 }
 type ScanCredentialToAddInternalProps = ScanCredentialToAddProps &
 	ScanCredentialToAddStateProps &
@@ -37,6 +38,8 @@ type ScanCredentialToAddState = {};
 export interface ScanCredentialToAddNavigation {
 	ScanCredential: ScanCredentialProps;
 }
+
+const serviceKey = "ScanCredentialToAddScreen";
 
 class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	ScanCredentialToAddInternalProps,
@@ -66,7 +69,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	}
 
 	componentDidMount() {
-		this.props.loadIssuerNames();
+		this.props.loadIssuerNames(this.props.credentials.map(doc => doc.issuer));
 	}
 
 	private renderExisting() {
@@ -106,10 +109,14 @@ const connected = didiConnect(
 	}),
 	(dispatch): ScanCredentialToAddDispatchProps => ({
 		addCredentials: (credentials: CredentialDocument[]) => {
+			dispatch({
+				type: "RECENT_ACTIVITY_ADD",
+				value: RecentActivity.from("RECEIVE", credentials)
+			});
 			dispatch({ type: "TOKEN_ENSURE", content: credentials.map(doc => doc.jwt) });
 		},
-		loadIssuerNames: () => {
-			dispatch(getIssuerNames());
+		loadIssuerNames: (issuers: EthrDID[]) => {
+			dispatch(getIssuerNames(serviceKey, issuers));
 		}
 	})
 );
