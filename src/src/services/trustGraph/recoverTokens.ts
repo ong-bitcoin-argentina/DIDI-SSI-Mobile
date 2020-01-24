@@ -2,12 +2,18 @@ import { parseJWT, TrustGraphClient } from "didi-sdk";
 import { isRight, left, right } from "fp-ts/lib/Either";
 
 import TypedArray from "../../util/TypedArray";
-import { buildComponentServiceCall, serviceCallDrop, simpleAction } from "../common/componentServiceCall";
+import {
+	buildComponentServiceCall,
+	parallelAction,
+	serviceCallDrop,
+	simpleAction
+} from "../common/componentServiceCall";
 
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { getCredentials } from "../../uPort/getCredentials";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
+import { getAllIssuerNames } from "../user/getIssuerNames";
 
 interface RecoverTokensArguments {
 	trustGraphUri: string;
@@ -47,7 +53,7 @@ export function recoverTokens() {
 		return withExistingDid(serviceKey, {}, didData => {
 			return recoverTokensComponent(serviceKey, { trustGraphUri, ethrDidUri }, tokens => {
 				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: tokens }, () => {
-					return serviceCallDrop(serviceKey);
+					return parallelAction(serviceKey, [getAllIssuerNames(), serviceCallDrop(serviceKey)]);
 				});
 			});
 		});

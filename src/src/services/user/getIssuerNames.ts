@@ -24,16 +24,20 @@ const getIssuerNamesComponent = buildComponentServiceCall(async (args: GetIssuer
 	return right(data);
 });
 
-export function getIssuerNames() {
-	const serviceKey = "_getIssuerNames";
+export function getIssuerNames(serviceKey: string, issuers: EthrDID[]) {
 	return withDidiServerClient(serviceKey, {}, api => {
-		return getState(serviceKey, {}, store => {
-			const issuers = store.parsedTokens.map(doc => doc.issuer);
-			return getIssuerNamesComponent(serviceKey, { api, issuers }, data => {
-				return simpleAction(serviceKey, { type: "ISSUER_REGISTER", content: data }, () => {
-					return serviceCallSuccess(serviceKey);
-				});
+		return getIssuerNamesComponent(serviceKey, { api, issuers }, data => {
+			return simpleAction(serviceKey, { type: "ISSUER_REGISTER", content: data }, () => {
+				return serviceCallSuccess(serviceKey);
 			});
 		});
+	});
+}
+
+export function getAllIssuerNames() {
+	const serviceKey = "_getAllIssuerNames";
+	return getState(serviceKey, {}, store => {
+		const issuers = store.parsedTokens.map(doc => doc.issuer);
+		return getIssuerNames(serviceKey, issuers);
 	});
 }
