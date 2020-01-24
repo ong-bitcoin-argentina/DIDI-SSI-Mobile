@@ -1,6 +1,16 @@
 import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import {
+	FlatList,
+	SafeAreaView,
+	ScrollView,
+	StatusBar,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+	ViewStyle
+} from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
@@ -49,6 +59,10 @@ interface DashboardScreenDispatchProps {
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
+interface DashboardScreenState {
+	previewActivities: boolean;
+}
+
 export interface DashboardScreenNavigation {
 	Access: StartAccessProps;
 	DashboardDocuments: DocumentsScreenProps;
@@ -58,17 +72,29 @@ export interface DashboardScreenNavigation {
 	DashDocumentDetail: DocumentDetailProps;
 }
 
-class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternalProps, {}, DashboardScreenNavigation> {
+class DashboardScreen extends NavigationEnabledComponent<
+	DashboardScreenInternalProps,
+	DashboardScreenState,
+	DashboardScreenNavigation
+> {
 	static navigationOptions = NavigationHeaderStyle.gone;
+
+	constructor(props: DashboardScreenInternalProps) {
+		super(props);
+		this.state = {
+			previewActivities: true
+		};
+	}
 
 	componentDidMount() {
 		this.props.login();
 	}
 
-	private renderRegularDocuments() {
-		return this.props.credentials.map((document, index) => (
+	private renderCard(document: CredentialDocument, index: number) {
+		return (
 			<TouchableOpacity
 				key={`RG_${index}`}
+				style={{ marginHorizontal: 20 }}
 				onPress={() =>
 					this.navigate("DashDocumentDetail", {
 						document,
@@ -88,22 +114,25 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 					}}
 				/>
 			</TouchableOpacity>
-		));
+		);
 	}
 
 	private renderRecentActivities() {
+		const activities = this.state.previewActivities ? this.props.recentActivity.slice(0, 5) : this.props.recentActivity;
 		return (
 			<View style={styles.dropdownContents}>
-				{this.props.recentActivity.map((activity, index) => {
+				{activities.map((activity, index) => {
 					return <DidiActivity key={index} activity={activity} style={styles.activities} />;
 				})}
-				<View>
-					<TouchableOpacity onPress={() => {}}>
-						<DidiText.Explanation.Emphasis style={styles.loadMoreText}>
-							{strings.dashboard.recentActivities.loadMore + " +"}
-						</DidiText.Explanation.Emphasis>
-					</TouchableOpacity>
-				</View>
+				{this.state.previewActivities && (
+					<View>
+						<TouchableOpacity onPress={() => this.setState({ previewActivities: !this.state.previewActivities })}>
+							<DidiText.Explanation.Emphasis style={styles.loadMoreText}>
+								{strings.dashboard.recentActivities.loadMore + " +"}
+							</DidiText.Explanation.Emphasis>
+						</TouchableOpacity>
+					</View>
+				)}
 			</View>
 		);
 	}
@@ -113,29 +142,38 @@ class DashboardScreen extends NavigationEnabledComponent<DashboardScreenInternal
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
-					<ScrollView style={styles.body}>
-						<HomeHeader
-							person={this.props.person}
-							onPersonPress={() => this.navigate("UserData", {})}
-							onBellPress={() => this.navigate("NotificationScreen", {})}
-						/>
-						<View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
-							<IncompleteIdentityCard
-								onStartValidateId={() => this.navigate("ValidateID", {})}
-								onValidateIdSuccess={() => {
-									this.props.resetDniValidation();
-								}}
-								onValidateIdFailure={() => {
-									this.props.resetDniValidation();
-								}}
-							/>
-							<EvolutionCard credentials={this.props.credentials} />
-							{this.renderRegularDocuments()}
-						</View>
-						<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
-							{this.renderRecentActivities()}
-						</DropdownMenu>
-					</ScrollView>
+					<FlatList
+						style={styles.body}
+						data={this.props.credentials}
+						keyExtractor={(_, index) => index.toString()}
+						renderItem={item => this.renderCard(item.item, item.index)}
+						ListHeaderComponent={
+							<Fragment>
+								<HomeHeader
+									person={this.props.person}
+									onPersonPress={() => this.navigate("UserData", {})}
+									onBellPress={() => this.navigate("NotificationScreen", {})}
+								/>
+								<View style={{ paddingHorizontal: 20, paddingTop: 8 }}>
+									<IncompleteIdentityCard
+										onStartValidateId={() => this.navigate("ValidateID", {})}
+										onValidateIdSuccess={() => {
+											this.props.resetDniValidation();
+										}}
+										onValidateIdFailure={() => {
+											this.props.resetDniValidation();
+										}}
+									/>
+									<EvolutionCard credentials={this.props.credentials} />
+								</View>
+							</Fragment>
+						}
+						ListFooterComponent={
+							<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
+								{this.renderRecentActivities()}
+							</DropdownMenu>
+						}
+					/>
 				</SafeAreaView>
 			</Fragment>
 		);
@@ -147,7 +185,7 @@ export default didiConnect(
 	(state): DashboardScreenStateProps => ({
 		did: state.did,
 		person: state.validatedIdentity,
-		recentActivity: state.recentActivity,
+		recentActivity: state.combinedRecentActivity,
 		knownIssuers: state.knownIssuers,
 		credentials: state.credentials,
 		activeSpecialCredentials: state.activeSpecialCredentials

@@ -9,12 +9,14 @@ import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import { liftUndefined } from "../util/liftUndefined";
 
 import { DidiSession } from "../model/DidiSession";
+import { RecentActivity } from "../model/RecentActivity";
 import { ServiceSettings } from "../model/ServiceSettings";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
 import { ActiveDid, didReducer } from "./reducers/didReducer";
 import { identityReducer } from "./reducers/identityReducer";
 import { issuerReducer, IssuerRegistry } from "./reducers/issuerReducer";
+import { recentActivityReducer } from "./reducers/recentActivityReducer";
 import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
 import { sessionReducer } from "./reducers/sessionReducer";
 import { tokenReducer } from "./reducers/tokenReducer";
@@ -29,6 +31,7 @@ export interface PersistedStoreContent {
 	serviceSettings: ServiceSettings;
 	validateDni: ValidateDniState;
 	knownIssuers: IssuerRegistry;
+	recentActivity: RecentActivity[];
 }
 
 const reducer = combineReducers<PersistedStoreContent, StoreAction>({
@@ -38,7 +41,8 @@ const reducer = combineReducers<PersistedStoreContent, StoreAction>({
 	userInputIdentity: identityReducer,
 	serviceSettings: serviceSettingsReducer,
 	validateDni: validateDniReducer,
-	knownIssuers: issuerReducer
+	knownIssuers: issuerReducer,
+	recentActivity: recentActivityReducer
 });
 
 const stateReconciler: StateReconciler<PersistedStoreContent> = autoMergeLevel2;

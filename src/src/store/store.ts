@@ -9,8 +9,8 @@ import { RecentActivity } from "../model/RecentActivity";
 import { ServiceCallState } from "../services/ServiceStateStore";
 
 import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
-import { sampleRecentActivity } from "./samples/sampleRecentActivity";
 import { combinedIdentitySelector, identitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
+import { combinedRecentActivitySelector } from "./selector/combinedRecentActivitySelector";
 import {
 	activeSpecialCredentialsSelector,
 	SpecialCredentialMap,
@@ -30,8 +30,7 @@ export interface StoreContent extends PersistedStoreContent {
 
 	identity: Identity;
 	validatedIdentity: ValidatedIdentity;
-
-	recentActivity: RecentActivity[];
+	combinedRecentActivity: RecentActivity[];
 }
 
 export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
@@ -47,8 +46,7 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 
 		identity: identitySelector(store),
 		validatedIdentity: combinedIdentitySelector(store),
-
-		recentActivity: sampleRecentActivity
+		combinedRecentActivity: combinedRecentActivitySelector(store)
 	};
 }
 
