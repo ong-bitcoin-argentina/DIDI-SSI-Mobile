@@ -66,6 +66,23 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 				) : (
 					<DidiText.Explanation.Normal>{strings.share.generating}</DidiText.Explanation.Normal>
 				)}
+				{this.props.documents.length === 1 ? (
+					<Fragment>
+						<DidiText.Explanation.Normal>o</DidiText.Explanation.Normal>
+						<DidiButton
+							title={strings.share.shareLink}
+							onPress={() => {
+								const jwt = this.props.documents[0].jwt;
+								Share.share({
+									title: strings.share.title,
+									message: `${this.props.sharePrefix}/${jwt}`
+								});
+							}}
+						/>
+					</Fragment>
+				) : (
+					undefined
+				)}
 			</DidiScreen>
 		);
 	}
