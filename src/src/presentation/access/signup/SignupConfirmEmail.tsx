@@ -5,6 +5,7 @@ import TypedObject from "../../../util/TypedObject";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { VerifyCodeScreen } from "../../common/VerifyCode";
+import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { ValidationStateIcon } from "../../util/ValidationStateIcon";
@@ -74,6 +75,9 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 						descriptionType="NEW"
 						stateIndicator={this.renderPasswordStateIndicator()}
 					/>
+					<DidiText.SignupPasswordInfo>
+						(8 caracteres minimo, una de cada una de: mayusculas, minusculas, numeros, caracteres especiales)
+					</DidiText.SignupPasswordInfo>
 					<DidiTextInput.Password
 						onChangeText={text => this.setState({ passwordCopy: text })}
 						descriptionType="REPEAT"

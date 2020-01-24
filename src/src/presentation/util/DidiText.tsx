@@ -281,6 +281,10 @@ const styles = {
 			...color.light,
 			...fontStyle.medium,
 			fontSize: 12
+		},
+		signupPasswordInfo: {
+			...base,
+			fontSize: 14
 		}
 	})
 };
@@ -363,5 +367,6 @@ export const DidiText = {
 	InputDescription: textWith(styles.component.inputDescription),
 	CameraExplanation: textWith(styles.component.cameraExplanation),
 	ValidationState: textWith(styles.component.validationState),
-	TabNavigationTitle: textWith(styles.component.tabNavigationTitle)
+	TabNavigationTitle: textWith(styles.component.tabNavigationTitle),
+	SignupPasswordInfo: textWith(styles.component.signupPasswordInfo)
 };
