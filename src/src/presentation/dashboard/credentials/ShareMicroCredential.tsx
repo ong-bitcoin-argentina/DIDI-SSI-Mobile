@@ -9,6 +9,7 @@ import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import colors from "../../resources/colors";
 import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
 import strings from "../../resources/strings";
@@ -17,6 +18,7 @@ import themes from "../../resources/themes";
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 
 export interface ShareMicroCredentialProps {
+	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 }
 
@@ -34,6 +36,13 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	ShareMicroCredentialNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");
+
+	constructor(props: ShareMicroCredentialProps) {
+		super(props);
+		this.state = {
+			selectedCredentials: []
+		};
+	}
 
 	render() {
 		return (
@@ -91,7 +100,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 				<DocumentCredentialCard
 					preview={false}
 					document={document}
-					context={{ activeDid: null, specialCredentials: null }}
+					context={{ activeDid: null, knownIssuers: this.props.knownIssuers, specialCredentials: null }}
 				/>
 			</TouchableOpacity>
 		);

@@ -10,6 +10,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
@@ -23,6 +24,7 @@ import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
 	did: ActiveDid;
+	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
 }
@@ -106,7 +108,11 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 				<DocumentCredentialCard
 					preview={false}
 					document={document}
-					context={{ activeDid: this.props.did, specialCredentials: this.props.activeSpecialCredentials }}
+					context={{
+						activeDid: this.props.did,
+						knownIssuers: this.props.knownIssuers,
+						specialCredentials: this.props.activeSpecialCredentials
+					}}
 				/>
 			</TouchableOpacity>
 		);
@@ -131,8 +137,9 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 			this.navigate("ShareSpecificCredential", { documents });
 		} else {
 			this.navigate("ShareMicroCredential", {
+				knownIssuers: this.props.knownIssuers,
 				credentials: documents
-					.map(doc => (doc.nested.length === 0 ? [doc] : doc.nested))
+					.map(doc => (doc.nested.length === 0 ? [doc] : [doc, ...doc.nested]))
 					.reduce((acc, next) => [...acc, ...next], [])
 			});
 		}
@@ -144,6 +151,7 @@ export default didiConnect(
 	(state): ShareCredentialInternalProps => ({
 		did: state.did,
 		credentials: state.credentials,
+		knownIssuers: state.knownIssuers,
 		activeSpecialCredentials: state.activeSpecialCredentials
 	})
 );

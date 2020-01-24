@@ -1,13 +1,13 @@
 import React from "react";
 
 import { EnterEmailScreen } from "../../common/EnterEmail";
+import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { sendMailValidator } from "../../../services/user/sendMailValidator";
 import { didiConnect } from "../../../store/store";
-import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
 import { SignupConfirmEmailProps } from "./SignupConfirmEmail";
@@ -25,7 +25,6 @@ type SignupEnterEmailInternalProps = SignupEnterEmailStateProps & SignupEnterEma
 
 interface SignupEnterEmailState {
 	email: string;
-	password: string;
 }
 
 export interface SignupEnterEmailNavigation {
@@ -47,25 +46,24 @@ class SignupEnterEmailScreen extends NavigationEnabledComponent<
 				<EnterEmailScreen
 					description={strings.signup.enterEmail.messageHead}
 					contentImageSource={require("../../resources/images/saveClean.png")}
-					buttonTitle={strings.signup.enterEmail.backupGenerate}
-					isPasswordRequired="duplicate"
-					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password!)}
+					buttonTitle={strings.accessCommon.validateButtonText}
+					isPasswordRequired={false}
+					onPressContinueButton={email => this.onPressContinueButton(email)}
 					isContinuePending={this.props.requestEmailCodePending}
 				/>
 			</ServiceObserver>
 		);
 	}
 
-	private onPressContinueButton(email: string, password: string) {
+	private onPressContinueButton(email: string) {
 		this.props.requestEmailCode(email);
-		this.setState({ email, password });
+		this.setState({ email });
 	}
 
 	private advance() {
 		this.navigate("SignupConfirmEmail", {
 			phoneNumber: this.props.phoneNumber,
-			email: this.state.email,
-			password: this.state.password
+			email: this.state.email
 		});
 	}
 }

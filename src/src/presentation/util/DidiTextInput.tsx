@@ -115,12 +115,14 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 	static Password = (props: {
 		onChangeText: (text: string) => void;
 		descriptionType: "BASIC" | "OLD" | "NEW" | "REPEAT";
+		stateIndicator?: DidiTextInputProps["stateIndicator"];
 	}) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.password[props.descriptionType]}
 				placeholder=""
 				tagImage={require("../resources/images/key.png")}
+				stateIndicator={props.stateIndicator}
 				textInputProps={{
 					secureTextEntry: true,
 					onChangeText: props.onChangeText

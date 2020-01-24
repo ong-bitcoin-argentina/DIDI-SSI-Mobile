@@ -5,6 +5,7 @@ import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import DidiButton from "../util/DidiButton";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 
+import { AppConfig } from "../../AppConfig";
 import colors from "../resources/colors";
 import strings from "../resources/strings";
 import themes from "../resources/themes";
@@ -48,11 +49,13 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 						title={strings.recovery.startAccess.recoveryButton + " >"}
 					/>
 				</SplashContent>
-				<DidiButton
-					title="DEBUG"
-					style={{ position: "absolute", top: 20, right: 20 }}
-					onPress={() => this.navigate("AccessSettings", {})}
-				/>
+				{AppConfig.debug && (
+					<DidiButton
+						title="DEBUG"
+						style={{ position: "absolute", top: 20, right: 20 }}
+						onPress={() => this.navigate("AccessSettings", {})}
+					/>
+				)}
 			</Fragment>
 		);
 	}

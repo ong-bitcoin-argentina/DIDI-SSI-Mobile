@@ -2,7 +2,7 @@ import { DidiServerApiClient, EthrDID } from "didi-sdk";
 import { isLeft, left, right } from "fp-ts/lib/Either";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
-import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
@@ -36,7 +36,9 @@ const recoverAccountComponent = buildComponentServiceCall(async (args: RecoverAc
 export function recoverAccount(serviceKey: string, email: string, password: string) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return recoverAccountComponent(serviceKey, { api, email, password }, () => {
-			return serviceCallSuccess(serviceKey);
+			return simpleAction(serviceKey, { type: "TOKEN_DELETE_ALL" }, () => {
+				return serviceCallSuccess(serviceKey);
+			});
 		});
 	});
 }
