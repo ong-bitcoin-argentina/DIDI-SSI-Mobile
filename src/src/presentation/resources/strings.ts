@@ -240,7 +240,7 @@ export default {
 		title: "Compartir",
 		explanation: "Escanea el siguiente codigo QR con otra aplicación Didi",
 		generating: "Generando codigo QR...",
-		next: "Siguiente",
+		next: "Ya compartí el codigo QR",
 		shareTitle: "Credencial Didi",
 		shareLink: "Compartir Enlace"
 	},
