@@ -139,7 +139,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 			this.navigate("ShareMicroCredential", {
 				knownIssuers: this.props.knownIssuers,
 				credentials: documents
-					.map(doc => (doc.nested.length === 0 ? [doc] : doc.nested))
+					.map(doc => (doc.nested.length === 0 ? [doc] : [doc, ...doc.nested]))
 					.reduce((acc, next) => [...acc, ...next], [])
 			});
 		}
