@@ -35,6 +35,13 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");
 
+	constructor(props: ShareMicroCredentialProps) {
+		super(props);
+		this.state = {
+			selectedCredentials: []
+		};
+	}
+
 	render() {
 		return (
 			<Fragment>
