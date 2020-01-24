@@ -183,13 +183,12 @@ export default {
 			next: "Siguiente"
 		},
 		enterEmail: {
-			messageHead:
-				"Ingrese su email y una contraseña para que pueda recuperar su Identidad Digital en caso de perder el teléfono.",
+			messageHead: "Ingrese su email para que pueda recuperar su Identidad Digital en caso de perder el teléfono.",
 			backupGenerate: "Generar Backup"
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirás un email para validar tu cuenta. Ingresa el código de 6 dígitos para verificar tu email y así completar la generación del backup de tu identidad"
+				"Recibirás un email para validar tu cuenta. Ingresa el código de 6 dígitos para verificar tu email y una contraseña para resguardar el backup de tu identidad"
 		},
 		registrationValidated: {
 			message: "Su E-mail ha sido validado y su Identidad Digital ha sido resguardada.",
@@ -202,7 +201,7 @@ export default {
 	},
 	accessCommon: {
 		validateButtonText: "Validar",
-		recoverButtonText: "Registrar",
+		recoverButtonText: "Recuperar",
 		defaultPlace: "Otros",
 		enterPhone: {
 			messageHead: "Carga tu número de celular"
@@ -241,7 +240,7 @@ export default {
 		title: "Compartir",
 		explanation: "Escanea el siguiente codigo QR con otra aplicación Didi",
 		generating: "Generando codigo QR...",
-		next: "Siguiente",
+		next: "Ya compartí el codigo QR",
 		shareTitle: "Credencial Didi",
 		shareLink: "Compartir Enlace"
 	},
@@ -374,7 +373,7 @@ export default {
 		}
 	},
 	credentialCard: {
-		emitter: "Emisor: ",
+		emitter: "ID Emisor: ",
 		valueNotAvailable: "N/A",
 		shared: "Credencial compartida con vos",
 		replaced: "Credencial no vigente por existir reemplazo"

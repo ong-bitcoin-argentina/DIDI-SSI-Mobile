@@ -1,5 +1,8 @@
 import React from "react";
+import { Image, ImageSourcePropType } from "react-native";
 import { Dispatch } from "redux";
+
+import commonStyles from "../resources/commonStyles";
 
 import { isPendingService, ServiceCallAction } from "../../services/ServiceStateStore";
 import { didiConnect } from "../../store/store";
@@ -10,7 +13,7 @@ import { VerifyCodeProps, VerifyCodeScreen } from "./VerifyCode";
 
 interface VerifyCodeWrapperProps {
 	description: VerifyCodeProps["description"];
-	contentImageSource: VerifyCodeProps["contentImageSource"];
+	contentImageSource: ImageSourcePropType;
 
 	serviceCall: (serviceKey: string, validationCode: string) => ServiceCallAction;
 	onServiceSuccess: () => void;
@@ -33,10 +36,11 @@ class VerifyCodeWrapper extends React.Component<VerifyCodeWrapperInternalProps> 
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.props.onServiceSuccess()}>
 				<VerifyCodeScreen
 					description={this.props.description}
-					contentImageSource={this.props.contentImageSource}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
 					isContinuePending={this.props.verifyPhoneCodePending}
-				/>
+				>
+					<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
+				</VerifyCodeScreen>
 			</ServiceObserver>
 		);
 	}
