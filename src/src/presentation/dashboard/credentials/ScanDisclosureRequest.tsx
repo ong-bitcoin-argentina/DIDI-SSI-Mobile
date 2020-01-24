@@ -15,6 +15,7 @@ import {
 	SubmitDisclosureResponseContent
 } from "../../../services/issuer/submitDisclosureResponse";
 import { isPendingService } from "../../../services/ServiceStateStore";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
 import { getCredentials } from "../../../uPort/getCredentials";
 import { serviceErrors } from "../../resources/serviceErrors";
@@ -27,6 +28,7 @@ export interface ScanDisclosureRequestProps {
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
+	did: ActiveDid;
 	identity: Identity;
 	credentials: CredentialDocument[];
 
@@ -74,6 +76,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 	private async answerRequest() {
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
+			this.props.did!,
 			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
 			this.props.credentials,
 			this.props.identity
@@ -116,6 +119,7 @@ export default didiConnect(
 	ScanDisclosureRequestScreen,
 	(state): ScanDisclosureRequestStateProps => {
 		return {
+			did: state.did,
 			identity: state.identity,
 			credentials: state.credentials,
 			sendDisclosureResponsePending: isPendingService(state.serviceCalls[serviceKey])
