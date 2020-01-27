@@ -11,7 +11,10 @@ export const combinedRecentActivitySelector = createSelector(
 	(did, credentials, recentActivity) => {
 		const derived = credentials
 			.filter(doc => doc.subject.did() === did?.did())
-			.map(doc => RecentActivity.from("CREATE", [doc]));
-		return [...derived, ...recentActivity].sort((l, r) => (l.date > r.date ? 1 : -1));
+			.map(doc => ({
+				...RecentActivity.from("CREATE", [doc]),
+				...(doc.issuedAt ? { date: new Date(doc.issuedAt * 1000) } : {})
+			}));
+		return [...derived, ...recentActivity].sort((l, r) => (l.date > r.date ? -1 : 1));
 	}
 );
