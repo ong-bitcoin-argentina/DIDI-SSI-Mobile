@@ -17,7 +17,7 @@ export const toplevelCredentialSelector = createSelector(
 		const res = credentials.filter(credential => !nested.find(nest => nest.jwt === credential.jwt));
 		return res.sort((l, r) => {
 			if (l.subject.did() !== r.subject.did()) {
-				if (l.subject.did() === did?.did()) {
+				if (l.subject.did() === did?.did?.()) {
 					return -1;
 				} else {
 					return +1;
