@@ -10,7 +10,7 @@ export const combinedRecentActivitySelector = createSelector(
 	st => st.persisted.recentActivity,
 	(did, credentials, recentActivity) => {
 		const derived = credentials
-			.filter(doc => doc.subject.did() === did?.did())
+			.filter(doc => doc.subject.did() === did?.did?.())
 			.map(doc => ({
 				...RecentActivity.from("CREATE", [doc]),
 				...(doc.issuedAt ? { date: new Date(doc.issuedAt * 1000) } : {})
