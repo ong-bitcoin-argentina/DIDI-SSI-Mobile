@@ -1,5 +1,4 @@
-import { parseJWT, unverifiedParseJWT } from "didi-sdk";
-import { DisclosureDocument } from "didi-sdk/src/model/DisclosureDocument";
+import { DisclosureDocument, parseJWT, unverifiedParseJWT } from "didi-sdk";
 import { array } from "fp-ts/lib/Array";
 import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";

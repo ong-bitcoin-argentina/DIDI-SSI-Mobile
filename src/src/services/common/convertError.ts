@@ -1,7 +1,6 @@
-import { ErrorData } from "didi-sdk";
+import { CommonServiceRequestError, ErrorData } from "didi-sdk";
 import { Either, isRight, left } from "fp-ts/lib/Either";
 
-import { CommonServiceRequestError } from "didi-sdk/src/util/commonServiceRequest";
 import { assertUnreachable } from "../../util/assertUnreachable";
 
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
