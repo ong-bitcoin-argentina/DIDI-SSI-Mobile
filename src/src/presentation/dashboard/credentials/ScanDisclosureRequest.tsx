@@ -80,7 +80,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	private async answerRequest() {
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
 			this.props.did!,
-			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
+			this.props.request,
 			this.props.credentials,
 			this.props.identity
 		);

@@ -54,8 +54,7 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	private async loadToken() {
-		const content = SelectiveDisclosureProposal.from(this.props.documents);
-		const token = await SelectiveDisclosureProposal.signJWT(await getCredentials(), content);
+		const token = await SelectiveDisclosureProposal.offering(await getCredentials(), this.props.documents);
 		this.setState({ token });
 	}
 
