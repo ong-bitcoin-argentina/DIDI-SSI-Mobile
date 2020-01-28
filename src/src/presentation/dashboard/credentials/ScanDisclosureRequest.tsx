@@ -1,4 +1,4 @@
-import { CredentialDocument, Identity, RequestDocument, SelectiveDisclosureResponse } from "didi-sdk";
+import { CredentialDocument, Identity, SelectiveDisclosureRequest, SelectiveDisclosureResponse } from "didi-sdk";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 
@@ -25,7 +25,7 @@ import { ScanCredentialProps } from "./ScanCredential";
 import { ShowDisclosureResponseProps } from "./ShowDisclosureResponse";
 
 export interface ScanDisclosureRequestProps {
-	request: RequestDocument;
+	request: SelectiveDisclosureRequest;
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
@@ -37,7 +37,7 @@ interface ScanDisclosureRequestStateProps {
 }
 interface ScanDisclosureRequestDispatchProps {
 	sendResponse: (args: SubmitDisclosureResponseContent) => void;
-	storeRequest: (request: RequestDocument) => void;
+	storeRequest: (request: SelectiveDisclosureRequest) => void;
 	recordCallback: (documents: CredentialDocument[]) => void;
 	recordShare: (documents: CredentialDocument[]) => void;
 }
@@ -133,7 +133,7 @@ export default didiConnect(
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
 			sendResponse: (args: SubmitDisclosureResponseContent) => dispatch(submitDisclosureResponse(serviceKey, args)),
-			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] }),
+			storeRequest: (request: SelectiveDisclosureRequest) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] }),
 			recordCallback: (documents: CredentialDocument[]) =>
 				dispatch({
 					type: "RECENT_ACTIVITY_ADD",

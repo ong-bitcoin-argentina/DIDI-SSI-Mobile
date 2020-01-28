@@ -1,4 +1,4 @@
-import { RequestDocument } from "didi-sdk";
+import { SelectiveDisclosureRequest } from "didi-sdk";
 import React, { Fragment } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 
@@ -17,7 +17,7 @@ import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest
 
 export type NotificationScreenProps = {};
 interface NotificationScreenStateProps {
-	requests: RequestDocument[];
+	requests: SelectiveDisclosureRequest[];
 }
 interface NotificationScreenDispatchProps {
 	recoverTokens: () => void;
@@ -62,7 +62,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 							onPress={() => this.setState({ showExpired: !this.state.showExpired })}
 						/>
 						{this.props.requests
-							.filter(rq => this.state.showExpired || RequestDocument.isValidNow(rq))
+							.filter(rq => this.state.showExpired || SelectiveDisclosureRequest.isValidNow(rq))
 							.map(rq => this.renderRequest(rq))}
 					</ScrollView>
 				</SafeAreaView>
@@ -70,7 +70,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private renderRequest(request: RequestDocument) {
+	private renderRequest(request: SelectiveDisclosureRequest) {
 		const now = Math.floor(Date.now() / 1000);
 		const isActive = request.expireAt ? now < request.expireAt : true;
 		return (
@@ -90,7 +90,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private onSendResponse(request: RequestDocument) {
+	private onSendResponse(request: SelectiveDisclosureRequest) {
 		this.navigate("ScanDisclosureRequest", {
 			request,
 			onGoBack: screen => screen.goBack()

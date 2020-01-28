@@ -22,7 +22,7 @@ const AppContainer = createAppContainer(AppNavigator);
 const StoreStatePanel = didiConnect(
 	class extends React.Component<StoreContent> {
 		render() {
-			//const ax: sdk.
+			//const ax: sdk.SelectiveDisclosureProposal;
 
 			const toShow = TypedObject.mapValues(this.props.serviceCalls, value => {
 				if (value === undefined || value.state !== "IN_PROGRESS" || value.command.type !== "RUN") {
