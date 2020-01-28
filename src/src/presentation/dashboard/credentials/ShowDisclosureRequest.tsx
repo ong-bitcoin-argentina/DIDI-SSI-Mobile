@@ -43,8 +43,7 @@ export class ShowDisclosureRequestScreen extends NavigationEnabledComponent<
 	}
 
 	private async loadToken() {
-		const content = SelectiveDisclosureRequest.fulfilling(this.props.proposal);
-		const token = await SelectiveDisclosureRequest.signJWT(await getCredentials(), content);
+		const token = await SelectiveDisclosureRequest.fulfilling(await getCredentials(), this.props.proposal);
 		this.setState({ token });
 	}
 
