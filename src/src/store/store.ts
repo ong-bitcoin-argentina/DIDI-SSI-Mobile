@@ -1,4 +1,4 @@
-import { CredentialDocument, Identity, RequestDocument } from "didi-sdk";
+import { CredentialDocument, Identity, SelectiveDisclosureRequest } from "didi-sdk";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -21,10 +21,10 @@ import { requestSelector } from "./selector/requestSelector";
 import { StoreAction } from "./StoreAction";
 
 export interface StoreContent extends PersistedStoreContent {
-	parsedTokens: Array<CredentialDocument | RequestDocument>;
+	parsedTokens: Array<CredentialDocument | SelectiveDisclosureRequest>;
 	credentials: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
-	requests: RequestDocument[];
+	requests: SelectiveDisclosureRequest[];
 
 	serviceCalls: ServiceCallState;
 

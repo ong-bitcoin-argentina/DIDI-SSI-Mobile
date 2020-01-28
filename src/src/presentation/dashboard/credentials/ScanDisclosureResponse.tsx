@@ -1,4 +1,4 @@
-import { DisclosureDocument, parseJWT, unverifiedParseJWT } from "didi-sdk";
+import { parseJWT, SelectiveDisclosureResponse, unverifiedParseJWT } from "didi-sdk";
 import { array } from "fp-ts/lib/Array";
 import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";
@@ -154,12 +154,12 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 			this.showAlert(errorData.title || "Error", errorData.message);
 		} else {
 			switch (parse.right.type) {
-				case "DisclosureDocument":
+				case "SelectiveDisclosureResponse":
 					this.handleDisclosure(parse.right);
 					break;
 				case "CredentialDocument":
-				case "RequestDocument":
-				case "ProposalDocument":
+				case "SelectiveDisclosureRequest":
+				case "SelectiveDisclosureProposal":
 					break;
 				default:
 					assertUnreachable(parse.right);
@@ -167,7 +167,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 		}
 	}
 
-	private async handleDisclosure(disclosure: DisclosureDocument) {
+	private async handleDisclosure(disclosure: SelectiveDisclosureResponse) {
 		const promises = disclosure.verifiedClaims.map(jwt =>
 			parseJWT(jwt, this.props.ethrDidUri, this.props.activeDid ?? undefined)
 		);

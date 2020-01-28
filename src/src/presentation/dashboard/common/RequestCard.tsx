@@ -1,4 +1,4 @@
-import { RequestDocument } from "didi-sdk";
+import { SelectiveDisclosureRequest } from "didi-sdk";
 import React, { Component } from "react";
 import { Text, View, ViewProps } from "react-native";
 
@@ -10,7 +10,7 @@ import strings from "../../resources/strings";
 import DidiCardBody from "./DidiCardBody";
 
 export interface RequestCardProps extends ViewProps {
-	request: RequestDocument;
+	request: SelectiveDisclosureRequest;
 }
 
 export class RequestCard extends Component<RequestCardProps, {}> {

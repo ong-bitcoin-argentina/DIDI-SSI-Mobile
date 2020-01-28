@@ -92,10 +92,10 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			this.showAlert(errorData.title || "Error", errorData.message);
 		} else {
 			switch (parse.right.type) {
-				case "DisclosureDocument":
+				case "SelectiveDisclosureResponse":
 					this.showAlert("Error", "Tipo de credencial inesperado");
 					break;
-				case "RequestDocument":
+				case "SelectiveDisclosureRequest":
 					this.replace("ScanDisclosureRequest", {
 						request: parse.right,
 						onGoBack: screen => {
@@ -112,7 +112,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 						this.showAlert("Error", "Credencial ajena recibida directamente");
 					}
 					break;
-				case "ProposalDocument":
+				case "SelectiveDisclosureProposal":
 					this.replace("ShowDisclosureRequest", {
 						proposal: parse.right
 					});

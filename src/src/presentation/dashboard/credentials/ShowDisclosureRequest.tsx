@@ -1,4 +1,4 @@
-import { ProposalDocument, SelectiveDisclosureRequest } from "didi-sdk";
+import { SelectiveDisclosureProposal, SelectiveDisclosureRequest } from "didi-sdk";
 import React, { Fragment } from "react";
 import { Dimensions } from "react-native";
 import QRCode from "react-native-qrcode-svg";
@@ -15,7 +15,7 @@ import strings from "../../resources/strings";
 import { ScanDisclosureResponseProps } from "./ScanDisclosureResponse";
 
 export interface ShowDisclosureRequestProps {
-	proposal: ProposalDocument;
+	proposal: SelectiveDisclosureProposal;
 }
 
 interface ShowDisclosureRequestState {
