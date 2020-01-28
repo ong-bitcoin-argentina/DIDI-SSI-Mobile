@@ -1,5 +1,4 @@
-import { CredentialDocument } from "didi-sdk";
-import { SelectiveDisclosureProposal } from "didi-sdk/src/protocol/packets/SelectiveDisclosureProposal";
+import { CredentialDocument, SelectiveDisclosureProposal } from "didi-sdk";
 import React, { Fragment } from "react";
 import { Dimensions, Share } from "react-native";
 import QRCode from "react-native-qrcode-svg";
