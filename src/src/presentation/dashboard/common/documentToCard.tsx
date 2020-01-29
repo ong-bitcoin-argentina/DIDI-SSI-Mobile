@@ -37,7 +37,9 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 
 		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
 		let title = doc.title;
-		let data = CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.preview : undefined);
+		let data = this.props.preview
+			? CredentialDocument.extractPreviewDataPairs(doc)
+			: CredentialDocument.extractAllDataPairs(doc);
 		let color = colors.secondary;
 		let hollow = this.props.document.specialFlag !== undefined;
 		let replacedByAnother = false;
