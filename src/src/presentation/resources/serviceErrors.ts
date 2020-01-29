@@ -1,5 +1,4 @@
-import { DecodeErrorReporter, ErrorData } from "didi-sdk";
-import * as t from "io-ts";
+import { ErrorData } from "didi-sdk";
 
 function error(errorCode: string, message: string): ErrorData {
 	return { errorCode, message };
@@ -11,7 +10,7 @@ export const serviceErrors = {
 		FETCH_ERR: error("FETCH_ERR", "Error al enviar peticion al servidor."),
 		JSON_ERR: error("JSON_ERR", "Error al interpretar formato de respuesta."),
 		PARSE_ERR: error("PARSE_ERR", "Error al interpretar formato de respuesta."),
-		DECODE_ERR: (errors: t.Errors) => error("DECODE_ERR", DecodeErrorReporter.extractIoError(errors).join("\n\n"))
+		DECODE_ERR: (message: string) => error("DECODE_ERR", message)
 	},
 	login: {
 		NO_DID: error(
