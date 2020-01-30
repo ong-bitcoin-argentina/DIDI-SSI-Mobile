@@ -1,4 +1,3 @@
-import * as sdk from "didi-sdk";
 import React from "react";
 import { ScrollView, Text, YellowBox } from "react-native";
 import { createAppContainer } from "react-navigation";
@@ -22,8 +21,6 @@ const AppContainer = createAppContainer(AppNavigator);
 const StoreStatePanel = didiConnect(
 	class extends React.Component<StoreContent> {
 		render() {
-			//const ax: sdk.SelectiveDisclosureProposal;
-
 			const toShow = TypedObject.mapValues(this.props.serviceCalls, value => {
 				if (value === undefined || value.state !== "IN_PROGRESS" || value.command.type !== "RUN") {
 					return value;
