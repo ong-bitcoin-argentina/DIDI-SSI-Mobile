@@ -82,6 +82,7 @@ interface LivenessCheckerState {
 	faceId: number | undefined;
 	firstAdded: Date;
 	lastAdded: Date;
+	wasEverOverTime: boolean;
 }
 
 export class LivenessChecker {
@@ -106,11 +107,15 @@ export class LivenessChecker {
 				history: new History([]),
 				faceId: face.faceID,
 				firstAdded: now,
-				lastAdded: now
+				lastAdded: now,
+				wasEverOverTime: false
 			});
-		} else if (face.faceID !== this.data.faceId) {
+		}
+		const isOverTime = now.getTime() - this.data.lastAdded.getTime() > 2000;
+
+		if (face.faceID !== this.data.faceId) {
 			return new LivenessChecker(undefined);
-		} else if (now.getTime() - this.data.lastAdded.getTime() > 2000) {
+		} else if (isOverTime && this.data.wasEverOverTime) {
 			return new LivenessChecker(undefined);
 		}
 
@@ -118,7 +123,8 @@ export class LivenessChecker {
 			history: new History([...this.data.history.values, face]),
 			faceId: this.data.faceId,
 			firstAdded: this.data.firstAdded,
-			lastAdded: now
+			lastAdded: now,
+			wasEverOverTime: isOverTime || this.data.wasEverOverTime
 		});
 	}
 

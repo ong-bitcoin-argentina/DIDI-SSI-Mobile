@@ -118,6 +118,7 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 				<DidiCamera
 					ref={ref => (this.camera = ref)}
 					cameraLocation="front"
+					cameraFlash="off"
 					cameraLandscape={false}
 					onCameraLayout={this.props.onCameraLayout}
 					onFacesDetected={faces => this.addFacesToState(faces)}
