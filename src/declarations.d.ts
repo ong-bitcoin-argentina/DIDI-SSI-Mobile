@@ -10,4 +10,3 @@ declare module "react-navigation-header-buttons/src/overflowMenuPressHandlers" {
 }
 
 declare module "redux-persist-fs-storage";
-declare module "ethr-did-resolver";
