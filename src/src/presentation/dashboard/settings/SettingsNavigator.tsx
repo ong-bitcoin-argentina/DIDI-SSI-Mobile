@@ -15,7 +15,6 @@ import { ChangePhoneEnterScreen } from "./userData/ChangePhoneEnterPhone";
 import { ChangePhoneVerifyScreen } from "./userData/ChangePhoneVerifyPhone";
 import UserDataScreen from "./userData/UserData";
 import { EditProfileScreen } from "./userMenu/EditProfile";
-import { ShareProfileScreen } from "./userMenu/ShareProfile";
 
 interface SettingsNavigatorNavigation {
 	Access: StartAccessProps;
@@ -25,7 +24,6 @@ interface SettingsNavigatorNavigation {
 export default function(then: NavTree<SettingsNavigatorNavigation>) {
 	return NavMap.from(SettingsScreen, {
 		UserData: NavMap.from(UserDataScreen, {
-			ShareProfile: NavMap.from(ShareProfileScreen, {}),
 			ChangePhoneEnterPhone: NavMap.from(ChangePhoneEnterScreen, {
 				ChangePhoneVerify: NavMap.from(ChangePhoneVerifyScreen, {
 					UserData: NavMap.placeholder(UserDataScreen)
