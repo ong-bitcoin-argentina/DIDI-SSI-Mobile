@@ -12,7 +12,6 @@ import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import { EditProfileProps } from "../userMenu/EditProfile";
-import { ShareProfileProps } from "../userMenu/ShareProfile";
 
 import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
@@ -28,7 +27,6 @@ interface UserDataInternalProps extends UserDataProps {
 type UserDataState = {};
 
 export interface UserDataNavigation {
-	ShareProfile: ShareProfileProps;
 	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
 	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
 	EditProfile: EditProfileProps;
@@ -48,12 +46,6 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 				actionTitle: strings.userData.changePhone.screenTitle,
 				onPress: navigation => {
 					navigation.navigate("ChangePhoneEnterPhone", {});
-				}
-			},
-			{
-				actionTitle: strings.userData.share.barTitle,
-				onPress: navigation => {
-					navigation.navigate("ShareProfile", {});
 				}
 			},
 			{
