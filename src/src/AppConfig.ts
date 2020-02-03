@@ -22,3 +22,5 @@ export const AppConfig: AppConfig = {
 	debug,
 	defaultServiceSettings: debug ? defaultDebugServiceSettings : defaultStagingServiceSettings
 };
+
+export const PRIVATE_KEY_SEED_PASSWORD = "***REMOVED***";

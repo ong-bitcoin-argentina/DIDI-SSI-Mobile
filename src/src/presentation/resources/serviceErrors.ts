@@ -10,6 +10,7 @@ export const serviceErrors = {
 		FETCH_ERR: error("FETCH_ERR", "Error al enviar peticion al servidor."),
 		JSON_ERR: error("JSON_ERR", "Error al interpretar formato de respuesta."),
 		PARSE_ERR: error("PARSE_ERR", "Error al interpretar formato de respuesta."),
+		CRYPTO_ERR: error("CRYPTO_ERR", "Error durante el proceso de encripción."),
 		DECODE_ERR: (message: string) => error("DECODE_ERR", message)
 	},
 	login: {

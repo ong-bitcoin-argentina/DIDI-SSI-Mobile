@@ -19,6 +19,8 @@ export function convertError<A>(from: Either<CommonServiceRequestError, A>): Eit
 			return left(serviceErrors.common.DECODE_ERR(message));
 		case "SERVER_ERROR":
 			return left(from.left.error);
+		case "CRYPTO_ERROR":
+			return left(serviceErrors.common.CRYPTO_ERR);
 		default:
 			assertUnreachable(from.left);
 	}

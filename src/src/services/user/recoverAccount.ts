@@ -10,6 +10,7 @@ import {
 } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 
+import { PRIVATE_KEY_SEED_PASSWORD } from "../../AppConfig";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { recoverTokens } from "../trustGraph/recoverTokens";
@@ -21,7 +22,7 @@ export interface RecoverAccountArguments {
 }
 
 const recoverAccountComponent = buildComponentServiceCall(async (args: RecoverAccountArguments) => {
-	const response = await args.api.recoverAccount(args.email, args.password);
+	const response = await args.api.recoverAccount(args.email, args.password, PRIVATE_KEY_SEED_PASSWORD);
 	if (isLeft(response)) {
 		return convertError(response);
 	}
