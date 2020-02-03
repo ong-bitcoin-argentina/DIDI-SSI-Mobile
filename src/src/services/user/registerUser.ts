@@ -3,6 +3,7 @@ import { DidiServerApiClient, EthrDID } from "didi-sdk";
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 
+import { PRIVATE_KEY_SEED_PASSWORD } from "../../AppConfig";
 import { getPrivateKeySeed } from "../internal/getPrivateKeySeed";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
@@ -19,7 +20,7 @@ export interface RegisterUserArguments {
 }
 
 const registerUserComponent = buildComponentServiceCall(async (args: RegisterUserArguments) =>
-	convertError(await args.api.registerUser(args.did, args.data))
+	convertError(await args.api.registerUser(args.did, PRIVATE_KEY_SEED_PASSWORD, args.data))
 );
 
 export function registerUser(serviceKey: string, email: string, password: string, phoneNumber: string) {
