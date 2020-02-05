@@ -1,10 +1,11 @@
 import { SelectiveDisclosureRequest } from "didi-sdk";
 import React, { Fragment } from "react";
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
+import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
@@ -56,15 +57,24 @@ class NotificationScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					<ScrollView style={styles.body} contentContainerStyle={styles.scrollContent}>
-						<DidiButton
-							title={this.state.showExpired ? strings.notifications.hideExpired : strings.notifications.showExpired}
-							onPress={() => this.setState({ showExpired: !this.state.showExpired })}
-						/>
-						{this.props.requests
-							.filter(rq => this.state.showExpired || SelectiveDisclosureRequest.isValidNow(rq))
-							.map(rq => this.renderRequest(rq))}
-					</ScrollView>
+					<FlatList
+						style={styles.body}
+						contentContainerStyle={styles.scrollContent}
+						data={this.props.requests.filter(rq => this.state.showExpired || SelectiveDisclosureRequest.isValidNow(rq))}
+						keyExtractor={req => req.jwt}
+						renderItem={item => this.renderRequest(item.item)}
+						ListHeaderComponent={
+							<DidiButton
+								title={this.state.showExpired ? strings.notifications.hideExpired : strings.notifications.showExpired}
+								onPress={() => this.setState({ showExpired: !this.state.showExpired })}
+							/>
+						}
+						ListEmptyComponent={
+							<View style={styles.empty}>
+								<DidiText.Explanation.Normal>{strings.notifications.noRequestsAvailable}</DidiText.Explanation.Normal>
+							</View>
+						}
+					/>
 				</SafeAreaView>
 			</Fragment>
 		);
@@ -117,5 +127,8 @@ const styles = StyleSheet.create({
 	scrollContent: {
 		paddingHorizontal: 20,
 		paddingVertical: 8
+	},
+	empty: {
+		marginVertical: 20
 	}
 });
