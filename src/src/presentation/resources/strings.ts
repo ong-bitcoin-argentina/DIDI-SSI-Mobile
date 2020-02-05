@@ -419,7 +419,8 @@ export default {
 		showExpired: "Mostrar peticiones vencidas",
 		hideExpired: "Ocultar peticiones vencidas",
 		sendResponse: "Enviar",
-		requestExpired: "Fecha límite superada."
+		requestExpired: "Fecha límite superada.",
+		noRequestsAvailable: "No dispones de notificaciones"
 	},
 	credentialRequestCard: {
 		from: "De",
