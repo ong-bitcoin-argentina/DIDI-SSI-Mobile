@@ -60,12 +60,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	render() {
 		return (
 			<ScrollView>
-				<UserHeadingComponent
-					user={this.props.identity.visual.id}
-					profileImage={this.props.identity.visual.image}
-					backgroundImage={this.props.identity.visual.backgroundImage}
-					allowEdit={true}
-				/>
+				<UserHeadingComponent user={this.props.identity.id} profileImage={this.props.identity.image} allowEdit={true} />
 
 				<View>
 					{this.renderPersonalData()}
@@ -81,7 +76,13 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 			data: personalDataStructure.order,
 			renderOne: key => {
 				const struct = personalDataStructure.structure[key];
-				const data = this.props.identity.personalData[key];
+				const data =
+					key === "cellPhone"
+						? this.props.identity.cellPhone
+						: key === "email"
+						? this.props.identity.email
+						: this.props.identity.personalData[key];
+
 				return (
 					<DidiTextInput
 						key={key}

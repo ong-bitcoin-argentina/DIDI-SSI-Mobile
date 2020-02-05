@@ -7,8 +7,12 @@ import colors from "../../../resources/colors";
 
 interface UserHeadingProps extends ViewProps {
 	user: string | undefined;
-	profileImage: ImageSourcePropType | undefined;
-	backgroundImage: ImageSourcePropType | undefined;
+	profileImage:
+		| {
+				mimetype: string;
+				data: string;
+		  }
+		| undefined;
 	allowEdit?: boolean;
 }
 
@@ -23,11 +27,7 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 				<View style={styles.backgroundImageContainer}>
 					<Image
 						style={styles.backgroundImage}
-						source={
-							this.props.backgroundImage !== undefined
-								? this.props.backgroundImage
-								: require("../../../resources/images/defaultBackgroundImage.jpg")
-						}
+						source={require("../../../resources/images/defaultBackgroundImage.jpg")}
 					/>
 				</View>
 
@@ -36,7 +36,7 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 						style={styles.identityImage}
 						source={
 							this.props.profileImage !== undefined
-								? this.props.profileImage
+								? { uri: `data:${this.props.profileImage.mimetype};base64,${this.props.profileImage.data}` }
 								: require("../../../resources/images/defaultProfileImage.png")
 						}
 					/>

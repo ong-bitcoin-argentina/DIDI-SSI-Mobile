@@ -2,6 +2,7 @@ import { Identity } from "didi-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View } from "react-native";
 
+import { assertUnreachable } from "../../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
 import DidiTextInput from "../../../util/DidiTextInput";
@@ -35,7 +36,6 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 		super(props);
 		this.state = {
 			address: {},
-			visual: {},
 			personalData: {}
 		};
 	}
@@ -50,7 +50,7 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 	}
 
 	private setStateMerging<Key extends keyof Identity>(key: Key, merge: Partial<Identity[Key]>) {
-		this.setState({ ...this.state, [key]: { ...this.state[key], ...merge } });
+		this.setState(Identity.merge({ personalData: {}, address: {}, [key]: merge }, this.state));
 	}
 
 	private textInputPropsFor(
@@ -79,7 +79,7 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 			<View style={styles.dropdownContents}>
 				{personalDataStructure.order.map(key => {
 					const struct = personalDataStructure.structure[key];
-					const id = this.props.identity.personalData[key];
+					const id = key === "cellPhone" || key === "email" ? null : this.props.identity.personalData[key];
 					return (
 						<DidiTextInput
 							key={key}
@@ -124,11 +124,7 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<ScrollView>
-					<UserHeadingComponent
-						user={this.state.visual.id}
-						profileImage={this.state.visual.image}
-						backgroundImage={this.state.visual.backgroundImage}
-					/>
+					<UserHeadingComponent user={this.props.identity.id} profileImage={this.state.image} />
 
 					<DropdownMenu
 						headerContainerStyle={{ backgroundColor: colors.primary }}
