@@ -12,18 +12,13 @@ export function identityReducer(state: Identity | undefined, action: StoreAction
 	if (state === undefined) {
 		return {
 			address: {},
-			personalData: {},
-			visual: {}
+			personalData: {}
 		};
 	}
 
 	switch (action.type) {
 		case "IDENTITY_PATCH":
-			return {
-				address: { ...state.address, ...action.value.address },
-				personalData: { ...state.personalData, ...action.value.personalData },
-				visual: { ...state.visual, ...action.value.visual }
-			};
+			return Identity.merge(action.value, state);
 
 		default:
 			return state;

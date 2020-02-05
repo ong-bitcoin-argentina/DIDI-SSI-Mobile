@@ -1,7 +1,8 @@
-import { Identity, LegalAddress, PersonalData, VisualData } from "didi-sdk";
+import { Identity, LegalAddress, PersonalIdentityData } from "didi-sdk";
 import { createSelector } from "reselect";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
+import { liftUndefined } from "../../util/liftUndefined";
 import { Nullable } from "../../util/Nullable";
 import TypedObject from "../../util/TypedObject";
 
@@ -19,8 +20,13 @@ export interface WithValidationState<T> {
 }
 
 export interface ValidatedIdentity {
-	visual: Partial<VisualData>;
-	personalData: Partial<{ [K in keyof PersonalData]: WithValidationState<PersonalData[K]> }>;
+	id?: string;
+	name?: string;
+	image?: Identity["image"];
+
+	cellPhone?: WithValidationState<NonNullable<Identity["cellPhone"]>>;
+	email?: WithValidationState<NonNullable<Identity["email"]>>;
+	personalData: Partial<{ [K in keyof PersonalIdentityData]: WithValidationState<PersonalIdentityData[K]> }>;
 	address: WithValidationState<Partial<Nullable<LegalAddress>>>;
 }
 
@@ -40,11 +46,19 @@ export const combinedIdentitySelector = createSelector(
 	st => st.persisted.userInputIdentity,
 	(credentials, userInputId) => {
 		const identity: ValidatedIdentity = {
+			image: userInputId.image,
+			cellPhone: liftUndefined(userInputId.email, value => ({
+				state: ValidationState.Pending,
+				value
+			})),
+			email: liftUndefined(userInputId.email, value => ({
+				state: ValidationState.Pending,
+				value
+			})),
 			address: {
 				state: ValidationState.Pending,
 				value: userInputId.address
 			},
-			visual: userInputId.visual,
 			personalData: TypedObject.mapValues(userInputId.personalData, v => ({
 				state: ValidationState.Pending,
 				value: v
@@ -58,13 +72,13 @@ export const combinedIdentitySelector = createSelector(
 			}
 			switch (special.type) {
 				case "EmailData":
-					identity.personalData.email = {
+					identity.email = {
 						state: ValidationState.Approved,
 						value: special.email
 					};
 					return;
 				case "PhoneNumberData":
-					identity.personalData.cellPhone = {
+					identity.cellPhone = {
 						state: ValidationState.Approved,
 						value: special.phoneNumber
 					};
@@ -89,12 +103,12 @@ export const combinedIdentitySelector = createSelector(
 		});
 
 		if (identity.personalData.firstNames && identity.personalData.lastNames) {
-			identity.visual.name = [identity.personalData.firstNames.value, identity.personalData.lastNames.value].join(" ");
-		} else if (identity.personalData.email) {
-			identity.visual.name = idFromEmail(identity.personalData.email.value);
+			identity.name = [identity.personalData.firstNames.value, identity.personalData.lastNames.value].join(" ");
+		} else if (identity.email) {
+			identity.name = idFromEmail(identity.email.value);
 		}
-		if (identity.personalData.email && !identity.visual.id) {
-			identity.visual.id = idFromEmail(identity.personalData.email.value);
+		if (identity.email && !identity.id) {
+			identity.id = idFromEmail(identity.email.value);
 		}
 		return identity;
 	}
@@ -103,8 +117,10 @@ export const combinedIdentitySelector = createSelector(
 export const identitySelector = createSelector(
 	combinedIdentitySelector,
 	(validatedIdentity): Identity => ({
+		image: validatedIdentity.image,
+		cellPhone: validatedIdentity.cellPhone?.value,
+		email: validatedIdentity.email?.value,
 		address: TypedObject.mapValues(validatedIdentity.address.value, value => (value === null ? undefined : value)),
-		personalData: TypedObject.mapValues(validatedIdentity.personalData, value => value?.value),
-		visual: validatedIdentity.visual
+		personalData: TypedObject.mapValues(validatedIdentity.personalData, value => value?.value)
 	})
 );

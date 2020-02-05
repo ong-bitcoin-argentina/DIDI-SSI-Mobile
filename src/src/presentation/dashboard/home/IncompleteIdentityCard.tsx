@@ -82,7 +82,7 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 const connected = didiConnect(
 	IncompleteIdentityCard,
 	(state): IncompleteIdentityCardStateProps => ({
-		personName: state.identity.visual.name ?? state.identity.visual.id ?? "",
+		personName: state.validatedIdentity.name ?? state.validatedIdentity.id ?? "",
 		isIdentityCredentialPresent:
 			state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
 		validateDniState: state.validateDni
