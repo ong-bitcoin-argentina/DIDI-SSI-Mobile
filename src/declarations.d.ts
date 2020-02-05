@@ -9,4 +9,6 @@ declare module "react-navigation-header-buttons/src/overflowMenuPressHandlers" {
 	export function defaultOnOverflowMenuPress(params: onOverflowMenuPressParams): void;
 }
 
+declare module "ethr-did-resolver";
+declare module "react-native-bcrypt";
 declare module "redux-persist-fs-storage";
