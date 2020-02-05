@@ -43,12 +43,9 @@ const recoverAccountComponent = buildComponentServiceCall(async (args: RecoverAc
 export function recoverAccount(serviceKey: string, email: string, password: string) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return recoverAccountComponent(serviceKey, { api, email, password }, () => {
-			return parallelAction(serviceKey, [
-				recoverTokens(),
-				simpleAction(serviceKey, { type: "TOKEN_DELETE_ALL" }, () => {
-					return serviceCallSuccess(serviceKey);
-				})
-			]);
+			return simpleAction(serviceKey, { type: "RESET_PERSISTED_STORE" }, () => {
+				return parallelAction(serviceKey, [recoverTokens(), serviceCallSuccess(serviceKey)]);
+			});
 		});
 	});
 }
