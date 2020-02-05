@@ -2,11 +2,17 @@ import { DidiServerApiClient, EthrDID } from "didi-sdk";
 import { array } from "fp-ts/lib/Array";
 import { left, right } from "fp-ts/lib/Either";
 
-import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
+import {
+	buildComponentServiceCall,
+	serviceCallDrop,
+	serviceCallSuccess,
+	simpleAction
+} from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 
 import { getState } from "../internal/getState";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
+import { ServiceCallAction } from "../ServiceStateStore";
 
 export interface GetIssuerNamesArguments {
 	api: DidiServerApiClient;
@@ -24,12 +30,10 @@ const getIssuerNamesComponent = buildComponentServiceCall(async (args: GetIssuer
 	return right(data);
 });
 
-export function getIssuerNames(serviceKey: string, issuers: EthrDID[]) {
+function baseGetIssuerNames(serviceKey: string, issuers: EthrDID[], next: () => ServiceCallAction) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return getIssuerNamesComponent(serviceKey, { api, issuers }, data => {
-			return simpleAction(serviceKey, { type: "ISSUER_REGISTER", content: data }, () => {
-				return serviceCallSuccess(serviceKey);
-			});
+			return simpleAction(serviceKey, { type: "ISSUER_REGISTER", content: data }, next);
 		});
 	});
 }
@@ -38,6 +42,12 @@ export function getAllIssuerNames() {
 	const serviceKey = "_getAllIssuerNames";
 	return getState(serviceKey, {}, store => {
 		const issuers = store.parsedTokens.map(doc => doc.issuer);
-		return getIssuerNames(serviceKey, issuers);
+		return baseGetIssuerNames(serviceKey, issuers, () => {
+			return serviceCallDrop(serviceKey);
+		});
 	});
+}
+
+export function getIssuerNames(serviceKey: string, issuers: EthrDID[]) {
+	return baseGetIssuerNames(serviceKey, issuers, () => serviceCallSuccess(serviceKey));
 }
