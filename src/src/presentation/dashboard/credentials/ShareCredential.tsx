@@ -121,8 +121,6 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 	private doSelect(document: CredentialDocument) {
 		if (document.specialFlag && this.props.activeSpecialCredentials[document.specialFlag.type]?.jwt !== document.jwt) {
 			Alert.alert(strings.credentialShare.notCurrent.title, strings.credentialShare.notCurrent.message);
-		} else if (document.subject.did() !== this.props.did?.did?.()) {
-			Alert.alert(strings.credentialShare.notOwned.title, strings.credentialShare.notOwned.message);
 		} else if (this.state.selectedCredentials.find(doc => doc.jwt === document.jwt)) {
 			const selectedCredentials = this.state.selectedCredentials.filter(doc => doc.jwt !== document.jwt);
 			this.setState({ selectedCredentials });
@@ -148,10 +146,16 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 
 export default didiConnect(
 	ShareCredentialScreen,
-	(state): ShareCredentialInternalProps => ({
-		did: state.did,
-		credentials: state.credentials,
-		knownIssuers: state.knownIssuers,
-		activeSpecialCredentials: state.activeSpecialCredentials
-	})
+	(state): ShareCredentialInternalProps => {
+		const did = state.did;
+		const credentials = did
+			? state.credentials.filter(document => document.subject.did() === did.did())
+			: state.credentials;
+		return {
+			did,
+			credentials,
+			knownIssuers: state.knownIssuers,
+			activeSpecialCredentials: state.activeSpecialCredentials
+		};
+	}
 );

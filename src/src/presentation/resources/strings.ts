@@ -441,10 +441,6 @@ export default {
 		notCurrent: {
 			title: "Credencial no vigente",
 			message: "Solo es posible compartir credenciales vigentes."
-		},
-		notOwned: {
-			title: "Credencial ajena",
-			message: "Solo es posible compartir credenciales propias."
 		}
 	},
 	jwtParseError: (error: JWTParseError) => {
