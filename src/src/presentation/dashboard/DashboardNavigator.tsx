@@ -104,7 +104,8 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				inactiveTintColor: themes.navigationIconInactive,
 				keyboardHidesTabBar: false,
 				showLabel: false
-			}
+			},
+			backBehavior: "initialRoute"
 		}
 	);
 
