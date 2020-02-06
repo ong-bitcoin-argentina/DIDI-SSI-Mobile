@@ -71,7 +71,12 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 							</View>
 						}
 						ListHeaderComponent={
-							<DidiText.Explanation.Emphasis>{strings.credentialShare.whichFull}</DidiText.Explanation.Emphasis>
+							<View>
+								<DidiText.Explanation.Emphasis>{strings.credentialShare.whichFull}</DidiText.Explanation.Emphasis>
+								<DidiText.Explanation.Small style={{ marginVertical: 10 }}>
+									{strings.credentialShare.countLimit}
+								</DidiText.Explanation.Small>
+							</View>
 						}
 						extraData={this.state}
 					/>

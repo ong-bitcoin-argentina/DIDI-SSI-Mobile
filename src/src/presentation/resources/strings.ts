@@ -438,6 +438,7 @@ export default {
 		noCredentialsAvailable: "Primero obten credenciales",
 		whichFull: "¿Qué credenciales deseas compartir?",
 		whichMicro: "¿Qué parte de la credencial deseas compartir?",
+		countLimit: "Puedes compartir una credencial por enlace, o cualquier cantidad directo a otra app Didi.",
 		notCurrent: {
 			title: "Credencial no vigente",
 			message: "Solo es posible compartir credenciales vigentes."
