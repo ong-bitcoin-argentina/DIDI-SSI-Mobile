@@ -113,7 +113,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 					});
 					break;
 				case "CredentialDocument":
-					if (true || parse.right.subject.did() === this.props.activeDid?.did?.()) {
+					if (parse.right.subject.did() === this.props.activeDid?.did?.()) {
 						this.replace("ScanCredentialToAdd", {
 							credentials: [parse.right]
 						});
