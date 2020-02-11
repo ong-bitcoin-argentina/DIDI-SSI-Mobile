@@ -22,6 +22,7 @@ export type ScanCredentialProps = {};
 interface ScanCredentialStateProps {
 	activeDid: ActiveDid;
 	ethrDidUri: string;
+	ethrDelegateUri: string;
 }
 type ScanCredentialInternalProps = ScanCredentialProps & ScanCredentialStateProps;
 
@@ -85,7 +86,15 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 
 		Vibration.vibrate(400, false);
 
-		const parse = await parseJWT(successfulParses[0].jwt, this.props.ethrDidUri, undefined);
+		const parse = await parseJWT(successfulParses[0].jwt, {
+			identityResolver: {
+				ethrUri: this.props.ethrDidUri
+			},
+			delegation: {
+				ethrUri: this.props.ethrDelegateUri
+			},
+			audience: this.props.activeDid ?? undefined
+		});
 
 		if (isLeft(parse)) {
 			const errorData = strings.jwtParseError(parse.left);
@@ -104,7 +113,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 					});
 					break;
 				case "CredentialDocument":
-					if (parse.right.subject.did() === this.props.activeDid?.did?.()) {
+					if (true || parse.right.subject.did() === this.props.activeDid?.did?.()) {
 						this.replace("ScanCredentialToAdd", {
 							credentials: [parse.right]
 						});
@@ -133,7 +142,8 @@ const connected = didiConnect(
 	ScanCredentialScreen,
 	(state): ScanCredentialStateProps => ({
 		activeDid: state.did,
-		ethrDidUri: state.serviceSettings.ethrDidUri
+		ethrDidUri: state.serviceSettings.ethrDidUri,
+		ethrDelegateUri: state.serviceSettings.ethrDelegateUri
 	})
 );
 

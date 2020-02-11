@@ -8,6 +8,7 @@ const defaultDebugServiceSettings: ServiceSettings = {
 	sharePrefix: "http://192.168.2.123:8080/api/credential_viewer",
 	trustGraphUri: "http://192.168.2.123:3001/graphql",
 	ethrDidUri: "https://mainnet.infura.io/v3/***REMOVED***",
+	ethrDelegateUri: "https://public-node.testnet.rsk.co:443",
 	didiUserServer: "http://192.168.2.123:3000/api/1.0/didi"
 };
 
@@ -15,6 +16,7 @@ const defaultStagingServiceSettings: ServiceSettings = {
 	sharePrefix: "http://192.168.2.123:8080/api/credential_viewer",
 	trustGraphUri: "http://mou.nec.com.ar/graphql",
 	ethrDidUri: "https://mainnet.infura.io/v3/***REMOVED***",
+	ethrDelegateUri: "https://public-node.testnet.rsk.co:443",
 	didiUserServer: "http://didi.nec.com.ar:8089/api/1.0/didi"
 };
 

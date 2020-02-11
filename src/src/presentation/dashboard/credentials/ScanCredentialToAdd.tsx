@@ -69,7 +69,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	}
 
 	componentDidMount() {
-		this.props.loadIssuerNames(this.props.credentials.map(doc => doc.issuer));
+		this.props.loadIssuerNames(this.props.credentials.map(CredentialDocument.displayedIssuer));
 	}
 
 	private renderExisting() {

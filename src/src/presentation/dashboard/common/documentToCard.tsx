@@ -1,4 +1,4 @@
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument, EthrDID } from "didi-sdk";
 import React from "react";
 
 import { DidiText } from "../../util/DidiText";
@@ -22,18 +22,20 @@ interface DocumentCredentialCardProps {
 }
 
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
-	render() {
-		const doc = this.props.document;
-
-		const issuerData = this.props.context.knownIssuers[doc.issuer.did()];
+	private issuerText(did: EthrDID): string {
+		const issuerData = this.props.context.knownIssuers[did.did()];
 		const issuerName = issuerData
 			? issuerData.name === null
 				? "Emisor desconocido"
 				: `Emisor: ${issuerData.name}`
 			: "Cargando...";
-		const issuer = this.props.preview
-			? issuerName
-			: `${issuerName}\n${strings.credentialCard.emitter + doc.issuer.keyAddress()}`;
+		return this.props.preview ? issuerName : `${issuerName}\n${strings.credentialCard.emitter + did.keyAddress()}`;
+	}
+
+	render() {
+		const doc = this.props.document;
+
+		const issuerText = this.issuerText(CredentialDocument.displayedIssuer(doc));
 
 		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
 		let title = doc.title;
@@ -75,7 +77,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				icon=""
 				category={category}
 				title={title}
-				subTitle={issuer}
+				subTitle={issuerText}
 				data={data}
 				columns={this.props.preview ? CredentialDocument.numberOfColumns(doc) : 1}
 				color={color}

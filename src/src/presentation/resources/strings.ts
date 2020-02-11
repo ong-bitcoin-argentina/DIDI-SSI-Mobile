@@ -489,6 +489,18 @@ export default {
 					title: "Error al Verificar Credencial",
 					message: "Verifique tener acceso a internet."
 				};
+			case "DELEGATE_CHECK_ERROR":
+				return {
+					errorCode: "TOKEN_DELEGATE_CHECK_ERROR",
+					title: "Error al Verificar Credencial",
+					message: "Verifique tener acceso a internet."
+				};
+			case "MISSING_DELEGATION_ERROR":
+				return {
+					errorCode: "TOKEN_MISSING_DELEGATION_ERROR",
+					title: "Error al Verificar Credencial",
+					message: "Esta credencial fue emitida por un delegado no autorizado."
+				};
 			default:
 				assertUnreachable(error);
 		}

@@ -10,14 +10,17 @@ import {
 } from "../common/componentServiceCall";
 
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
+import { ActiveDid } from "../../store/reducers/didReducer";
 import { getCredentials } from "../../uPort/getCredentials";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 import { getAllIssuerNames } from "../user/getIssuerNames";
 
 interface RecoverTokensArguments {
+	activeDid: ActiveDid;
 	trustGraphUri: string;
 	ethrDidUri: string;
+	ethrDelegateUri: string;
 }
 
 async function doRecoverTokens(args: RecoverTokensArguments) {
@@ -27,11 +30,16 @@ async function doRecoverTokens(args: RecoverTokensArguments) {
 		const tokens = (await tg.getJWTs()).map(data => data.jwt);
 
 		const acceptToken = async (token: string): Promise<string | undefined> => {
-			if (isRight(await parseJWT(token, args.ethrDidUri, undefined))) {
-				return token;
-			} else {
-				return undefined;
-			}
+			const parsed = await parseJWT(token, {
+				identityResolver: {
+					ethrUri: args.ethrDidUri
+				},
+				delegation: {
+					ethrUri: args.ethrDelegateUri
+				},
+				audience: args.activeDid ?? undefined
+			});
+			return isRight(parsed) ? token : undefined;
 		};
 
 		const verifiedTokens = TypedArray.flatMap(await Promise.all(tokens.map(acceptToken)), x => x);
@@ -48,10 +56,11 @@ export const recoverTokensServiceKey = "_recoverTokens";
 export function recoverTokens() {
 	const serviceKey = recoverTokensServiceKey;
 	return getState(serviceKey, {}, store => {
-		const { trustGraphUri, ethrDidUri } = store.serviceSettings;
+		const { trustGraphUri, ethrDidUri, ethrDelegateUri } = store.serviceSettings;
+		const activeDid = store.did;
 		// TODO: Combine this and part of TrustGraphClient creation into getSigner
 		return withExistingDid(serviceKey, {}, didData => {
-			return recoverTokensComponent(serviceKey, { trustGraphUri, ethrDidUri }, tokens => {
+			return recoverTokensComponent(serviceKey, { activeDid, trustGraphUri, ethrDidUri, ethrDelegateUri }, tokens => {
 				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: tokens }, () => {
 					return parallelAction(serviceKey, [getAllIssuerNames(), serviceCallDrop(serviceKey)]);
 				});
