@@ -17,6 +17,7 @@ import {
 } from "../../../services/issuer/submitDisclosureResponse";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { didiConnect } from "../../../store/store";
 import { getCredentials } from "../../../uPort/getCredentials";
 import { serviceErrors } from "../../resources/serviceErrors";
@@ -31,6 +32,7 @@ export interface ScanDisclosureRequestProps {
 interface ScanDisclosureRequestStateProps {
 	did: ActiveDid;
 	identity: Identity;
+	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 
 	sendDisclosureResponsePending: boolean;
@@ -66,7 +68,11 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={styles.body}>
-				<RequestCard style={{ marginHorizontal: 20 }} request={this.props.request} />
+				<RequestCard
+					style={{ marginHorizontal: 20 }}
+					request={this.props.request}
+					context={{ knownIssuers: this.props.knownIssuers }}
+				/>
 				<ServiceObserver serviceKey="ScanDisclosureRequest" onSuccess={() => this.onSuccess()} />
 				<DidiServiceButton
 					onPress={() => this.answerRequest()}
@@ -127,6 +133,7 @@ export default didiConnect(
 			did: state.did,
 			identity: state.identity,
 			credentials: state.credentials,
+			knownIssuers: state.knownIssuers,
 			sendDisclosureResponsePending: isPendingService(state.serviceCalls[serviceKey])
 		};
 	},

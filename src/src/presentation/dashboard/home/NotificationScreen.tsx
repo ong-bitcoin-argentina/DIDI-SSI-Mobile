@@ -10,6 +10,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { RequestCard } from "../common/RequestCard";
 
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
@@ -19,6 +20,7 @@ import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest
 export type NotificationScreenProps = {};
 interface NotificationScreenStateProps {
 	requests: SelectiveDisclosureRequest[];
+	knownIssuers: IssuerRegistry;
 }
 interface NotificationScreenDispatchProps {
 	recoverTokens: () => void;
@@ -84,7 +86,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 		const now = Math.floor(Date.now() / 1000);
 		const isActive = request.expireAt ? now < request.expireAt : true;
 		return (
-			<RequestCard key={request.jwt} request={request}>
+			<RequestCard key={request.jwt} request={request} context={{ knownIssuers: this.props.knownIssuers }}>
 				<View style={{ marginTop: 10 }}>
 					{isActive ? (
 						<DidiButton
@@ -111,7 +113,8 @@ class NotificationScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	NotificationScreen,
 	(state): NotificationScreenStateProps => ({
-		requests: state.requests
+		requests: state.requests,
+		knownIssuers: state.knownIssuers
 	}),
 	(dispatch): NotificationScreenDispatchProps => ({
 		recoverTokens: () => dispatch(recoverTokens())

@@ -424,6 +424,8 @@ export default {
 	},
 	credentialRequestCard: {
 		from: "De",
+		unknown: "Solicitante desconocido",
+		requesterID: "ID Solicitante",
 		requests: "Solicita",
 		before: "Antes de"
 	},
