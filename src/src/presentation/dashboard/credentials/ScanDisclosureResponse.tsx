@@ -23,6 +23,7 @@ export interface ScanDisclosureResponseProps {
 interface ScanDisclosureResponseStateProps {
 	activeDid: ActiveDid;
 	ethrDidUri: string;
+	ethrDelegateUri: string;
 }
 type ScanDisclosureResponseInternalProps = ScanDisclosureResponseProps & ScanDisclosureResponseStateProps;
 
@@ -147,7 +148,15 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 
 		Vibration.vibrate(400, false);
 
-		const parse = await parseJWT(successfulParses[0].jwt, this.props.ethrDidUri, this.props.activeDid ?? undefined);
+		const parse = await parseJWT(successfulParses[0].jwt, {
+			identityResolver: {
+				ethrUri: this.props.ethrDidUri
+			},
+			delegation: {
+				ethrUri: this.props.ethrDelegateUri
+			},
+			audience: this.props.activeDid ?? undefined
+		});
 
 		if (isLeft(parse)) {
 			const errorData = strings.jwtParseError(parse.left);
@@ -169,7 +178,15 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 
 	private async handleDisclosure(disclosure: SelectiveDisclosureResponse) {
 		const promises = disclosure.verifiedClaims.map(jwt =>
-			parseJWT(jwt, this.props.ethrDidUri, this.props.activeDid ?? undefined)
+			parseJWT(jwt, {
+				identityResolver: {
+					ethrUri: this.props.ethrDidUri
+				},
+				delegation: {
+					ethrUri: this.props.ethrDelegateUri
+				},
+				audience: this.props.activeDid ?? undefined
+			})
 		);
 		const parsed = await Promise.all(promises);
 		const { left: errors, right: successfulParses } = array.separate(parsed);
@@ -200,7 +217,8 @@ const connected = didiConnect(
 	ScanDisclosureResponseScreen,
 	(state): ScanDisclosureResponseStateProps => ({
 		activeDid: state.did,
-		ethrDidUri: state.serviceSettings.ethrDidUri
+		ethrDidUri: state.serviceSettings.ethrDidUri,
+		ethrDelegateUri: state.serviceSettings.ethrDelegateUri
 	})
 );
 

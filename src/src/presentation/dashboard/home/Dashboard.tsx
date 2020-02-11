@@ -1,16 +1,6 @@
 import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
-import {
-	FlatList,
-	SafeAreaView,
-	ScrollView,
-	StatusBar,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-	ViewStyle
-} from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";

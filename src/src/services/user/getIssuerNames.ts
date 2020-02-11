@@ -1,7 +1,9 @@
 import { DidiServerApiClient, EthrDID } from "didi-sdk";
+import { DidiDocument } from "didi-sdk/dist/src/model/DidiDocument";
 import { array } from "fp-ts/lib/Array";
 import { left, right } from "fp-ts/lib/Either";
 
+import TypedArray from "../../util/TypedArray";
 import {
 	buildComponentServiceCall,
 	serviceCallDrop,
@@ -20,7 +22,8 @@ export interface GetIssuerNamesArguments {
 }
 
 const getIssuerNamesComponent = buildComponentServiceCall(async (args: GetIssuerNamesArguments) => {
-	const promises = args.issuers.map(iss => args.api.getIssuerData(iss));
+	const issuers = TypedArray.uniqueElements(args.issuers, (l, r) => l.keyAddress() === r.keyAddress());
+	const promises = issuers.map(iss => args.api.getIssuerData(iss));
 	const received = await Promise.all(promises);
 	const { left: errors, right: data } = array.separate(received);
 
@@ -41,7 +44,7 @@ function baseGetIssuerNames(serviceKey: string, issuers: EthrDID[], next: () => 
 export function getAllIssuerNames() {
 	const serviceKey = "_getAllIssuerNames";
 	return getState(serviceKey, {}, store => {
-		const issuers = store.parsedTokens.map(doc => doc.issuer);
+		const issuers = store.parsedTokens.map(DidiDocument.displayedIssuer);
 		return baseGetIssuerNames(serviceKey, issuers, () => {
 			return serviceCallDrop(serviceKey);
 		});
