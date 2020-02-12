@@ -19,6 +19,7 @@ interface PictureProps {
 	cameraButtonDisabled?: boolean;
 	cameraLandscape?: boolean;
 	cameraFlash?: keyof typeof RNCamera.Constants.FlashMode;
+	cameraOutputsBase64Picture?: boolean;
 	onPictureTaken: (response: TakePictureResponse) => void;
 }
 interface BarcodeProps {
@@ -164,7 +165,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 
 		const data = await this.camera.takePictureAsync({
 			quality: 0.5,
-			base64: false,
+			base64: this.props.cameraOutputsBase64Picture ?? false,
 			pauseAfterCapture: args?.pauseAfterCapture ?? true,
 			orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait",
 			mirrorImage: false,

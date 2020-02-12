@@ -29,9 +29,7 @@ const StoreStatePanel = didiConnect(
 			});
 			return (
 				<ScrollView style={{ minHeight: 200, maxHeight: 200 }}>
-					<Text style={{ fontSize: 8 }}>
-						{JSON.stringify({ show: toShow, other: this.props.validateDni }, null, 4)}
-					</Text>
+					<Text style={{ fontSize: 8 }}>{JSON.stringify(this.props, null, 4)}</Text>
 				</ScrollView>
 			);
 		}
@@ -45,6 +43,7 @@ export default class App extends React.Component {
 			<Provider store={store}>
 				<PersistGate persistor={persistor} loading={<SplashContent />}>
 					<AppContainer />
+					<StoreStatePanel />
 				</PersistGate>
 			</Provider>
 		);

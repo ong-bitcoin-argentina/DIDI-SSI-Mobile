@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View, ViewProps } from "react-native";
 
 import { DidiText } from "../../../util/DidiText";
 
@@ -13,15 +13,12 @@ interface UserHeadingProps extends ViewProps {
 				data: string;
 		  }
 		| undefined;
-	allowEdit?: boolean;
+	onImageEditTap?: () => void;
 }
 
 export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
-	openBgImagePicker() {
-		// TODO
-	}
-
 	render() {
+		const onImageEditTap = this.props.onImageEditTap;
 		return (
 			<View>
 				<View style={styles.backgroundImageContainer}>
@@ -42,13 +39,8 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 					/>
 				</View>
 
-				{this.props.allowEdit && (
-					<TouchableOpacity
-						style={styles.cameraIconContainer}
-						onPress={() => {
-							this.openBgImagePicker();
-						}}
-					>
+				{onImageEditTap && (
+					<TouchableOpacity style={styles.cameraIconContainer} onPress={onImageEditTap}>
 						<DidiText.Icon fontSize={20}></DidiText.Icon>
 					</TouchableOpacity>
 				)}
