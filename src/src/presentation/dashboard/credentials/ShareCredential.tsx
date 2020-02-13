@@ -141,6 +141,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		} else {
 			this.navigate("ShareMicroCredential", {
 				knownIssuers: this.props.knownIssuers,
+				activeSpecialCredentials: this.props.activeSpecialCredentials,
 				credentials: documents
 					.map(doc => (doc.nested.length === 0 ? [doc] : [doc, ...doc.nested]))
 					.reduce((acc, next) => [...acc, ...next], [])
