@@ -23,7 +23,7 @@ interface ShareSpecificCredentialStateProps {
 	sharePrefix: string;
 }
 interface ShareSpecificCredentialDispatchProps {
-	recordLinkShare: (document: CredentialDocument) => void;
+	recordLinkShare: (documents: CredentialDocument[]) => void;
 }
 type ShareSpecificCredentialInternalProps = ShareSpecificCredentialProps &
 	ShareSpecificCredentialStateProps &
@@ -70,30 +70,24 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 				) : (
 					<DidiText.Explanation.Normal>{strings.share.generating}</DidiText.Explanation.Normal>
 				)}
-				{this.props.documents.length === 1 ? (
-					<Fragment>
-						<DidiText.Explanation.Normal>o</DidiText.Explanation.Normal>
-						<DidiButton
-							title={strings.share.shareLink}
-							onPress={() => {
-								this.shareLink(this.props.documents[0]);
-							}}
-						/>
-					</Fragment>
-				) : (
-					undefined
-				)}
+				<DidiText.Explanation.Normal>o</DidiText.Explanation.Normal>
+				<DidiButton
+					title={strings.share.shareLink}
+					onPress={() => {
+						this.shareLink(this.props.documents);
+					}}
+				/>
 			</DidiScreen>
 		);
 	}
 
-	private shareLink(document: CredentialDocument) {
-		const jwt = document.jwt;
+	private shareLink(documents: CredentialDocument[]) {
+		const jwt = documents.map(doc => doc.jwt).join(",");
 		Share.share({
 			title: strings.share.title,
 			message: `${this.props.sharePrefix}/${jwt}`
 		});
-		this.props.recordLinkShare(document);
+		this.props.recordLinkShare(documents);
 	}
 }
 
@@ -103,10 +97,10 @@ const connected = didiConnect(
 		sharePrefix: state.serviceSettings.sharePrefix
 	}),
 	(dispatch): ShareSpecificCredentialDispatchProps => ({
-		recordLinkShare: (document: CredentialDocument) =>
+		recordLinkShare: (documents: CredentialDocument[]) =>
 			dispatch({
 				type: "RECENT_ACTIVITY_ADD",
-				value: RecentActivity.from("SHARE", [document])
+				value: RecentActivity.from("SHARE", documents)
 			})
 	})
 );
