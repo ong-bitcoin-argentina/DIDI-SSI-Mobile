@@ -19,12 +19,10 @@ import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
-import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DocumentDetailProps } from "../documents/DocumentDetail";
-import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
 
@@ -54,8 +52,6 @@ interface DashboardScreenState {
 }
 
 export interface DashboardScreenNavigation {
-	Access: StartAccessProps;
-	DashboardDocuments: DocumentsScreenProps;
 	ValidateID: ValidateIdentityExplainWhatProps;
 	UserData: UserDataProps;
 	NotificationScreen: NotificationScreenProps;

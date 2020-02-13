@@ -15,6 +15,7 @@ import strings from "../resources/strings";
 import themes from "../resources/themes";
 
 import CredentialNavigator from "./credentials/CredentialNavigator";
+import { ScanCredentialScreen } from "./credentials/ScanCredential";
 import ScanDisclosureRequestScreen from "./credentials/ScanDisclosureRequest";
 import ShareCredentialScreen from "./credentials/ShareCredential";
 import { ShareMicroCredentialScreen } from "./credentials/ShareMicroCredential";
@@ -25,6 +26,8 @@ import DocumentsNavigator from "./documents/DocumentsNavigator";
 import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
+import UserData from "./settings/userData/UserData";
+import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 
 interface DashboardSwitchTarget {
@@ -72,7 +75,14 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		};
 	}
 
-	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, then);
+	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, {
+		NotificationScreen: NavMap.from(NotificationScreen, {
+			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen)
+		}),
+		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
+		ValidateID: NavMap.placeholder(ValidateIdentityExplainWhatScreen),
+		UserData: NavMap.placeholder(UserData)
+	});
 	const dashboardPlaceholder: NavMap<DashboardScreenProps> = NavMap.placeholder(DashboardScreen);
 
 	const BottomNavigator = createBottomTabNavigator(
@@ -124,17 +134,15 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 	}
 
 	return NavMap.from(BottomNavigatorComponent, {
-		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen)),
-		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen)),
+		ValidateID: ValidateIdentityNavigator,
+		ScanCredential: CredentialNavigator,
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
 			ShareMicroCredential: NavMap.from(ShareMicroCredentialScreen, {
 				ShareSpecificCredential: NavMap.placeholder(ShareSpecificCredentialScreen)
 			}),
-			ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {})
-		}),
-		NotificationScreen: NavMap.from(NotificationScreen, {
-			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen)
-		}),
-		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {})
+			ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {
+				ScanCredential: NavMap.placeholder(ScanCredentialScreen)
+			})
+		})
 	}).stackNavigator("DashboardRoot");
 }

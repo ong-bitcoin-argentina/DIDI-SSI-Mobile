@@ -56,7 +56,7 @@ function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StatePro
 	};
 }
 
-type DidiConnectedComponent<C, StateProps, DispatchProps> = C extends NavigationEnabledComponentConstructor<
+export type DidiConnectedComponent<C, StateProps, DispatchProps> = C extends NavigationEnabledComponentConstructor<
 	infer FullProps_1,
 	infer Navigation
 >

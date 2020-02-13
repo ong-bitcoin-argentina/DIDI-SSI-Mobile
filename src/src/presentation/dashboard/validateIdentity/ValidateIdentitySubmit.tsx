@@ -38,17 +38,9 @@ type ValidateIdentitySubmitInnerProps = ValidateIdentitySubmitProps &
 	ValidateIdentitySubmitStateProps &
 	ValidateIdentitySubmitDispatchProps;
 
-export interface ValidateIdentitySubmitNavigation {
-	DashboardRoot: {};
-}
-
 const serviceKey = "ValidateIdentity";
 
-class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<
-	ValidateIdentitySubmitInnerProps,
-	{},
-	ValidateIdentitySubmitNavigation
-> {
+class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<ValidateIdentitySubmitInnerProps, {}, {}> {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
 
 	render() {
@@ -78,7 +70,7 @@ class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<
 					{strings.validateIdentity.submit.reminder}
 				</DidiText.ValidateIdentity.Reminder>
 
-				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.navigate("DashboardRoot", {})} />
+				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.goToRoot()} />
 				<DidiServiceButton
 					title={strings.validateIdentity.submit.buttonText}
 					onPress={() =>
