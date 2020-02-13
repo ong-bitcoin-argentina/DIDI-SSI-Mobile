@@ -1,7 +1,7 @@
 import { Identity } from "didi-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View } from "react-native";
-import { TakePictureResponse } from "react-native-camera";
+import { readFile } from "react-native-fs";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
@@ -9,13 +9,10 @@ import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { DidiCamera } from "../../common/DidiCamera";
+import { DidiReticleCamera } from "../../common/DidiReticleCamera";
 
 import { Validations } from "../../../../model/Validations";
-import {
-	ValidatedIdentity,
-	ValidationState,
-	WithValidationState
-} from "../../../../store/selector/combinedIdentitySelector";
+import { ValidatedIdentity, ValidationState } from "../../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
@@ -186,10 +183,19 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 	private renderCameraView() {
 		return (
-			<DidiCamera
-				cameraLocation="front"
-				cameraOutputsBase64Picture={true}
-				onPictureTaken={pic => this.onPictureTaken(pic)}
+			<DidiReticleCamera
+				photoWidth={300}
+				photoHeight={300}
+				targetWidth={300}
+				targetHeight={300}
+				reticleShape="circle"
+				camera={(onLayout, reticle, onPictureTaken) => (
+					<DidiCamera cameraLocation="front" onCameraLayout={onLayout} onPictureTaken={onPictureTaken}>
+						{reticle}
+					</DidiCamera>
+				)}
+				cameraLandscape={false}
+				onPictureCropped={pic => this.onPictureTaken(pic)}
 			/>
 		);
 	}
@@ -203,8 +209,9 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private onPictureTaken(pic: TakePictureResponse) {
-		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data: pic.base64! } });
+	private async onPictureTaken(pic: { uri: string }) {
+		const data = await readFile(pic.uri, "base64");
+		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		this.setState({ cameraActive: false });
 	}
 

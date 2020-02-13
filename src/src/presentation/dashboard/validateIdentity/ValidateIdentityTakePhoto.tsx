@@ -1,94 +1,27 @@
-import ImageEditor, { ImageCropData } from "@react-native-community/image-editor";
-import React, { Fragment } from "react";
-import {
-	BackHandler,
-	Image,
-	LayoutRectangle,
-	NativeEventSubscription,
-	StyleProp,
-	TouchableOpacity,
-	View,
-	ViewStyle
-} from "react-native";
-import { TakePictureResponse } from "react-native-camera/types";
+import React from "react";
+import { BackHandler, Image, NativeEventSubscription, TouchableOpacity, View } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import { cameraButtonStyle } from "../common/DidiCamera";
+import { DidiReticleCamera, DidiReticleCameraProps } from "../common/DidiReticleCamera";
 
-import colors from "../../resources/colors";
 import Checkmark from "../../resources/images/cameraCheckmark.svg";
 
 import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
 import { ValidateIdentityExplanationHeader } from "./ValidateIdentityExplanationHeader";
 
 export type ValidateIdentityTakePhotoProps = {
-	photoWidth: number;
-	photoHeight: number;
-	targetWidth: number;
-	targetHeight: number;
 	confirmation: string;
-
-	camera: (
-		onLayout: (layout: LayoutRectangle) => void,
-		reticle: JSX.Element | undefined,
-		onPictureTaken: (data: TakePictureResponse) => Promise<void>,
-		reticleBounds?: LayoutRectangle
-	) => JSX.Element;
-	cameraLandscape: boolean;
 	onPictureAccepted: (response: { uri: string }, reset: () => void) => void;
-} & Omit<ValidateIdentityExplanationProps, "buttonText" | "buttonAction">;
+} & Omit<DidiReticleCameraProps, "onPictureCropped"> &
+	Omit<ValidateIdentityExplanationProps, "buttonText" | "buttonAction">;
 
-export type ValidateIdentityTakePhotoState = { layout?: LayoutRectangle } & (
+export type ValidateIdentityTakePhotoState =
 	| { state: "explanation" | "camera" }
-	| { state: "confirmation"; uri: string }
-);
+	| { state: "confirmation"; uri: string };
 
-function transpose(layout: LayoutRectangle): LayoutRectangle {
-	return {
-		height: layout.width,
-		width: layout.height,
-		x: layout.y,
-		y: layout.x
-	};
-}
-
-function scale(rect: LayoutRectangle, ratio: number): LayoutRectangle {
-	return {
-		height: rect.height * ratio,
-		width: rect.width * ratio,
-		x: rect.x * ratio,
-		y: rect.y * ratio
-	};
-}
-
-function center(rect: LayoutRectangle, to: LayoutRectangle): LayoutRectangle {
-	return {
-		height: rect.height,
-		width: rect.width,
-		x: to.x + to.width / 2 - rect.width / 2,
-		y: to.y + to.height / 2 - rect.height / 2
-	};
-}
-
-function fitRatio(rect: LayoutRectangle, into: LayoutRectangle): number {
-	const widthRatio = into.width / rect.width;
-	const heightRatio = into.height / rect.height;
-
-	return Math.min(widthRatio, heightRatio);
-}
-
-function toViewStyle(rect: LayoutRectangle): ViewStyle {
-	return {
-		width: rect.width,
-		height: rect.height,
-		top: rect.y,
-		left: rect.x,
-		position: "absolute"
-	};
-}
-
-export abstract class ValidateIdentityTakePhoto extends React.Component<
+export class ValidateIdentityTakePhoto extends React.Component<
 	ValidateIdentityTakePhotoProps,
 	ValidateIdentityTakePhotoState
 > {
@@ -134,17 +67,7 @@ export abstract class ValidateIdentityTakePhoto extends React.Component<
 					/>
 				);
 			case "camera":
-				return this.props.camera(
-					layout => this.setState({ layout }),
-					this.state.layout && (
-						<Fragment>
-							<View style={this.photoStyle(this.state.layout)} />
-							<View style={this.targetStyle(this.state.layout)} />
-						</Fragment>
-					),
-					(data: TakePictureResponse) => this.onPictureTaken(data),
-					this.state.layout && this.screenPhotoRect(this.state.layout)
-				);
+				return <DidiReticleCamera {...this.props} onPictureCropped={pic => this.onPictureTaken(pic)} />;
 			case "confirmation":
 				const uri = this.state.uri;
 				return (
@@ -169,68 +92,8 @@ export abstract class ValidateIdentityTakePhoto extends React.Component<
 		}
 	}
 
-	private screenPhotoRect(screen: LayoutRectangle) {
-		const ratio = fitRatio(this.photoRect(), screen);
-		return center(scale(this.photoRect(), ratio), screen);
-	}
-
-	private photoStyle(screen: LayoutRectangle): StyleProp<ViewStyle> {
-		return [toViewStyle(this.screenPhotoRect(screen)), { borderColor: colors.secondary, borderWidth: 2 }];
-	}
-
-	private targetStyle(screen: LayoutRectangle): StyleProp<ViewStyle> {
-		const ratio = fitRatio(this.photoRect(), screen);
-		return [
-			toViewStyle(center(scale(this.targetRect(), ratio), screen)),
-			{ borderColor: colors.primary, borderWidth: 5 }
-		];
-	}
-
-	private transposeIfNeeded(rect: LayoutRectangle): LayoutRectangle {
-		if (this.props.cameraLandscape) {
-			return transpose(rect);
-		} else {
-			return rect;
-		}
-	}
-
-	private photoRect(): LayoutRectangle {
-		return this.transposeIfNeeded({
-			x: 0,
-			y: 0,
-			width: this.props.photoWidth,
-			height: this.props.photoHeight
-		});
-	}
-
-	private targetRect(): LayoutRectangle {
-		return this.transposeIfNeeded({
-			x: 0,
-			y: 0,
-			width: this.props.targetWidth,
-			height: this.props.targetHeight
-		});
-	}
-
-	private async onPictureTaken(data: TakePictureResponse) {
-		const photoRect = this.transposeIfNeeded(this.photoRect());
-		const dataRect = {
-			x: 0,
-			y: 0,
-			width: data.width,
-			height: data.height
-		};
-
-		const ratio = fitRatio(photoRect, dataRect);
-		const cropRect = center(scale(photoRect, ratio), dataRect);
-
-		const crop: ImageCropData = {
-			offset: cropRect,
-			size: cropRect,
-			displaySize: photoRect
-		};
-		const croppedUri = await ImageEditor.cropImage(data.uri, crop);
-		this.setState({ state: "confirmation", uri: croppedUri });
+	private async onPictureTaken(data: { uri: string }) {
+		this.setState({ state: "confirmation", uri: data.uri });
 	}
 
 	private onPictureAccepted(uri: string) {
