@@ -47,7 +47,7 @@ export const combinedIdentitySelector = createSelector(
 	(credentials, userInputId) => {
 		const identity: ValidatedIdentity = {
 			image: userInputId.image,
-			cellPhone: liftUndefined(userInputId.email, value => ({
+			cellPhone: liftUndefined(userInputId.cellPhone, value => ({
 				state: ValidationState.Pending,
 				value
 			})),
