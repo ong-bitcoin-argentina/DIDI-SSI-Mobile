@@ -19,7 +19,7 @@ interface DocumentCredentialCardProps {
 	context: {
 		activeDid: ActiveDid;
 		knownIssuers: IssuerRegistry;
-		specialCredentials: SpecialCredentialMap | null;
+		specialCredentials: SpecialCredentialMap;
 	};
 }
 
@@ -109,10 +109,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		if (activeDid && activeDid.did && activeDid.did() !== doc.subject.did()) {
 			return "share";
 		} else if (specialType) {
-			if (
-				this.props.context.specialCredentials &&
-				this.props.context.specialCredentials[specialType]?.jwt !== this.props.document.jwt
-			) {
+			if (this.props.context.specialCredentials[specialType]?.jwt !== this.props.document.jwt) {
 				return "obsolete";
 			} else {
 				return "identity";
