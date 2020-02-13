@@ -60,7 +60,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	render() {
 		return (
 			<ScrollView>
-				<UserHeadingComponent user={this.props.identity.id} profileImage={this.props.identity.image} allowEdit={true} />
+				<UserHeadingComponent user={this.props.identity.id} profileImage={this.props.identity.image} />
 
 				<View>
 					{this.renderPersonalData()}
