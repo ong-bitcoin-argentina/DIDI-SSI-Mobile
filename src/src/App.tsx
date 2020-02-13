@@ -43,7 +43,6 @@ export default class App extends React.Component {
 			<Provider store={store}>
 				<PersistGate persistor={persistor} loading={<SplashContent />}>
 					<AppContainer />
-					<StoreStatePanel />
 				</PersistGate>
 			</Provider>
 		);
