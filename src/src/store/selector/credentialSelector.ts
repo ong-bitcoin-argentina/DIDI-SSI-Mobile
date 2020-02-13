@@ -38,15 +38,20 @@ export const toplevelCredentialSelector = createSelector(
 
 export type SpecialCredentialMap = Partial<Record<NonNullable<SpecialCredentialFlag>["type"], CredentialDocument>>;
 
-export const activeSpecialCredentialsSelector = createSelector(toplevelCredentialSelector, credentials => {
-	const result: SpecialCredentialMap = {};
-	credentials
-		.slice()
-		.reverse()
-		.forEach(credential => {
-			if (credential.specialFlag) {
-				result[credential.specialFlag.type] = credential;
-			}
-		});
-	return result;
-});
+export const activeSpecialCredentialsSelector = createSelector(
+	toplevelCredentialSelector,
+	st => st.persisted.did,
+	(credentials, activeDid) => {
+		const result: SpecialCredentialMap = {};
+		credentials
+			.slice()
+			.reverse()
+			.filter(credential => activeDid === null || credential.subject.did() === activeDid.did())
+			.forEach(credential => {
+				if (credential.specialFlag) {
+					result[credential.specialFlag.type] = credential;
+				}
+			});
+		return result;
+	}
+);
