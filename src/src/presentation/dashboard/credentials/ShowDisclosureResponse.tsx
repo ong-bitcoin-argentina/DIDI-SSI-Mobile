@@ -51,7 +51,7 @@ export class ShowDisclosureResponseScreen extends NavigationEnabledComponent<
 					</DidiText.Explanation.Normal>
 					<DidiButton title=">" style={styles.arrowButton} onPress={() => this.changePosition(+1)} />
 				</View>
-				<DidiButton title="Listo" onPress={() => this.goToRoot()} />
+				<DidiButton title="Listo" disabled={this.state.index !== this.maxIndex()} onPress={() => this.goToRoot()} />
 			</DidiScreen>
 		);
 	}
