@@ -18,8 +18,8 @@ import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
+import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
-import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
@@ -35,7 +35,7 @@ interface ShareCredentialState {
 
 export interface ShareCredentialNavigation {
 	ShareMicroCredential: ShareMicroCredentialProps;
-	ShareSpecificCredential: ShareSpecificCredentialProps;
+	ShareExplanation: ShareExplanationProps;
 }
 
 class ShareCredentialScreen extends NavigationEnabledComponent<
@@ -71,12 +71,9 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 							</View>
 						}
 						ListHeaderComponent={
-							<View>
-								<DidiText.Explanation.Emphasis>{strings.credentialShare.whichFull}</DidiText.Explanation.Emphasis>
-								<DidiText.Explanation.Small style={{ marginVertical: 10 }}>
-									{strings.credentialShare.countLimit}
-								</DidiText.Explanation.Small>
-							</View>
+							<DidiText.Explanation.Emphasis style={{ marginVertical: 10 }}>
+								{strings.credentialShare.whichFull}
+							</DidiText.Explanation.Emphasis>
 						}
 						extraData={this.state}
 					/>
@@ -137,7 +134,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 
 	private doShare(documents: CredentialDocument[]) {
 		if (documents.every(doc => doc.nested.length === 0)) {
-			this.navigate("ShareSpecificCredential", { documents });
+			this.navigate("ShareExplanation", { documents });
 		} else {
 			this.navigate("ShareMicroCredential", {
 				knownIssuers: this.props.knownIssuers,

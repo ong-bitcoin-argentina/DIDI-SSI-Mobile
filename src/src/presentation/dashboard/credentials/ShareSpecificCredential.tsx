@@ -9,8 +9,6 @@ import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import { RecentActivity } from "../../../model/RecentActivity";
-import { didiConnect } from "../../../store/store";
 import { getCredentials } from "../../../uPort/getCredentials";
 import strings from "../../resources/strings";
 
@@ -37,7 +35,7 @@ export interface ShareSpecificCredentialNavigation {
 	ScanCredential: ScanCredentialProps;
 }
 
-class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
+export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 	ShareSpecificCredentialInternalProps,
 	ShareSpecificCredentialState,
 	ShareSpecificCredentialNavigation
@@ -61,48 +59,16 @@ class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={{ width: "90%" }}>
-				<DidiText.Explanation.Normal>{strings.share.explanation}</DidiText.Explanation.Normal>
 				{this.state.token ? (
 					<Fragment>
+						<DidiText.Explanation.Normal>{strings.share.explanation}</DidiText.Explanation.Normal>
 						<QRCode size={0.9 * Dimensions.get("window").width} value={this.state.token} />
 						<DidiButton title={strings.share.next} onPress={() => this.navigate("ScanCredential", {})} />
 					</Fragment>
 				) : (
 					<DidiText.Explanation.Normal>{strings.share.generating}</DidiText.Explanation.Normal>
 				)}
-				<DidiText.Explanation.Normal>o</DidiText.Explanation.Normal>
-				<DidiButton
-					title={strings.share.shareLink}
-					onPress={() => {
-						this.shareLink(this.props.documents);
-					}}
-				/>
 			</DidiScreen>
 		);
 	}
-
-	private shareLink(documents: CredentialDocument[]) {
-		const jwt = documents.map(doc => doc.jwt).join(",");
-		Share.share({
-			title: strings.share.title,
-			message: `${this.props.sharePrefix}/${jwt}`
-		});
-		this.props.recordLinkShare(documents);
-	}
 }
-
-const connected = didiConnect(
-	ShareSpecificCredentialScreen,
-	(state): ShareSpecificCredentialStateProps => ({
-		sharePrefix: state.serviceSettings.sharePrefix
-	}),
-	(dispatch): ShareSpecificCredentialDispatchProps => ({
-		recordLinkShare: (documents: CredentialDocument[]) =>
-			dispatch({
-				type: "RECENT_ACTIVITY_ADD",
-				value: RecentActivity.from("SHARE", documents)
-			})
-	})
-);
-
-export { connected as ShareSpecificCredentialScreen };
