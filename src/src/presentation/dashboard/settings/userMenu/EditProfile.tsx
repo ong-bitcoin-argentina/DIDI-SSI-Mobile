@@ -148,7 +148,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 			<ScrollView>
 				<UserHeadingComponent
 					user={this.props.identity.id}
-					profileImage={this.state.identity.image}
+					profileImage={this.state.identity.image ?? this.props.identity.image}
 					onImageEditTap={() => this.setState({ cameraActive: true })}
 				/>
 
