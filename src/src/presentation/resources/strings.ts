@@ -238,11 +238,25 @@ export default {
 	},
 	share: {
 		title: "Compartir",
-		explanation: "Escanea el siguiente codigo QR con otra aplicación Didi",
 		generating: "Generando codigo QR...",
 		next: "Ya compartí el codigo QR",
 		shareTitle: "Credencial Didi",
-		shareLink: "Compartir Enlace"
+		explanation:
+			"Pide al receptor que escanee este codigo QR para comenzar.\n\nUna vez hecho eso, avanza a la proxima pantalla para escanear su respuesta, "
+	},
+	shareExplanation: {
+		title: "Compartir",
+		explanation:
+			"¿Cómo compartirás estas credenciales?\n\nEl receptor podrá verificar que las credenciales fueron enviadas intencionalmente y desde tu cuenta",
+		direct: {
+			button: "Directo a otra app Didi",
+			explanation: "Verificado como parte del proceso"
+		},
+		or: "o",
+		link: {
+			button: "Por enlace al visor",
+			explanation: "Recibirás un pedido de verificacion"
+		}
 	},
 	disclose: {
 		title: "Compartir",
@@ -440,7 +454,6 @@ export default {
 		noCredentialsAvailable: "Primero obten credenciales",
 		whichFull: "¿Qué credenciales deseas compartir?",
 		whichMicro: "¿Qué parte de la credencial deseas compartir?",
-		countLimit: "Puedes compartir una credencial por enlace, o cualquier cantidad directo a otra app Didi.",
 		notCurrent: {
 			title: "Credencial no vigente",
 			message: "Solo es posible compartir credenciales vigentes."

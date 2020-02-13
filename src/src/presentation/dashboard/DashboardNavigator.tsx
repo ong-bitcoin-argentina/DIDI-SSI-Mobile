@@ -18,6 +18,7 @@ import CredentialNavigator from "./credentials/CredentialNavigator";
 import { ScanCredentialScreen } from "./credentials/ScanCredential";
 import ScanDisclosureRequestScreen from "./credentials/ScanDisclosureRequest";
 import ShareCredentialScreen from "./credentials/ShareCredential";
+import { ShareExplanationScreen } from "./credentials/ShareExplanationScreen";
 import { ShareMicroCredentialScreen } from "./credentials/ShareMicroCredential";
 import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
 import DashboardJumpMenu from "./DashboardJumpMenu";
@@ -140,8 +141,10 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 			ShareMicroCredential: NavMap.from(ShareMicroCredentialScreen, {
 				ShareSpecificCredential: NavMap.placeholder(ShareSpecificCredentialScreen)
 			}),
-			ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {
-				ScanCredential: NavMap.placeholder(ScanCredentialScreen)
+			ShareExplanation: NavMap.from(ShareExplanationScreen, {
+				ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {
+					ScanCredential: NavMap.placeholder(ScanCredentialScreen)
+				})
 			})
 		})
 	}).stackNavigator("DashboardRoot");
