@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 
 import TypedObject from "../../../util/TypedObject";
@@ -39,6 +39,7 @@ type SignupConfirmEmailInternalProps = SignupConfirmEmailProps &
 interface SignupConfirmEmailState {
 	password?: string;
 	passwordCopy?: string;
+	didVerifyEmail: boolean;
 }
 
 export interface SignupConfirmEmailNavigation {
@@ -57,13 +58,17 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 
 	constructor(props: SignupConfirmEmailInternalProps) {
 		super(props);
-		this.state = {};
+		this.state = {
+			didVerifyEmail: false
+		};
 	}
 
 	render() {
 		return (
-			<ServiceObserver serviceKey={serviceKeyVerify} onSuccess={() => this.registerUser()}>
+			<Fragment>
+				<ServiceObserver serviceKey={serviceKeyVerify} onSuccess={() => this.registerUser()} />
 				<ServiceObserver serviceKey={serviceKeyRegister} onSuccess={() => this.navigate("SignupConfirmed", {})} />
+
 				<VerifyCodeScreen
 					description={strings.signup.registrationEmailSent.message}
 					isContinueBlocked={this.passwordErrors().length > 0 || this.arePasswordsDifferent()}
@@ -84,7 +89,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 						stateIndicator={this.renderPasswordCopyStateIndicator()}
 					/>
 				</VerifyCodeScreen>
-			</ServiceObserver>
+			</Fragment>
 		);
 	}
 
@@ -151,10 +156,15 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 	}
 
 	private onPressContinueButton(inputCode: string) {
-		this.props.verifyEmailCode(this.props.email, inputCode);
+		if (this.state.didVerifyEmail) {
+			this.registerUser();
+		} else {
+			this.props.verifyEmailCode(this.props.email, inputCode);
+		}
 	}
 
 	private registerUser() {
+		this.setState({ didVerifyEmail: true });
 		this.props.registerUser(this.props.email, this.state.password!, this.props.phoneNumber);
 	}
 }

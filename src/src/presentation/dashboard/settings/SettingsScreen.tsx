@@ -77,16 +77,16 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 						<Image
 							style={styles.identityImage}
 							source={
-								this.props.person.visual.image !== undefined
-									? this.props.person.visual.image
+								this.props.person.image !== undefined
+									? { uri: `data:${this.props.person.image.mimetype};base64,${this.props.person.image.data}` }
 									: require("../../resources/images/defaultProfileImage.png")
 							}
 						/>
 						<View style={styles.identityIdContainer}>
-							<DidiText.Settings.Name>{this.props.person.visual.name}</DidiText.Settings.Name>
+							<DidiText.Settings.Name>{this.props.person.name}</DidiText.Settings.Name>
 							<View style={{ marginTop: 3, flexDirection: "row" }}>
 								<DidiText.Settings.IdLabel>{strings.settings.idLabel + " "}</DidiText.Settings.IdLabel>
-								<DidiText.Settings.IdContent>{this.props.person.visual.id}</DidiText.Settings.IdContent>
+								<DidiText.Settings.IdContent>{this.props.person.id}</DidiText.Settings.IdContent>
 							</View>
 						</View>
 						<OpenPersonDetail width="24" height="18" style={{ marginHorizontal: 10 }} />

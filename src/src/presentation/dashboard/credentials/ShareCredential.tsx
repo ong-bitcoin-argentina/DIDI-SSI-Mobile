@@ -18,8 +18,8 @@ import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
+import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
-import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
@@ -35,7 +35,7 @@ interface ShareCredentialState {
 
 export interface ShareCredentialNavigation {
 	ShareMicroCredential: ShareMicroCredentialProps;
-	ShareSpecificCredential: ShareSpecificCredentialProps;
+	ShareExplanation: ShareExplanationProps;
 }
 
 class ShareCredentialScreen extends NavigationEnabledComponent<
@@ -71,7 +71,9 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 							</View>
 						}
 						ListHeaderComponent={
-							<DidiText.Explanation.Emphasis>{strings.credentialShare.whichFull}</DidiText.Explanation.Emphasis>
+							<DidiText.Explanation.Emphasis style={{ marginVertical: 10 }}>
+								{strings.credentialShare.whichFull}
+							</DidiText.Explanation.Emphasis>
 						}
 						extraData={this.state}
 					/>
@@ -121,8 +123,6 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 	private doSelect(document: CredentialDocument) {
 		if (document.specialFlag && this.props.activeSpecialCredentials[document.specialFlag.type]?.jwt !== document.jwt) {
 			Alert.alert(strings.credentialShare.notCurrent.title, strings.credentialShare.notCurrent.message);
-		} else if (document.subject.did() !== this.props.did?.did?.()) {
-			Alert.alert(strings.credentialShare.notOwned.title, strings.credentialShare.notOwned.message);
 		} else if (this.state.selectedCredentials.find(doc => doc.jwt === document.jwt)) {
 			const selectedCredentials = this.state.selectedCredentials.filter(doc => doc.jwt !== document.jwt);
 			this.setState({ selectedCredentials });
@@ -134,10 +134,11 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 
 	private doShare(documents: CredentialDocument[]) {
 		if (documents.every(doc => doc.nested.length === 0)) {
-			this.navigate("ShareSpecificCredential", { documents });
+			this.navigate("ShareExplanation", { documents });
 		} else {
 			this.navigate("ShareMicroCredential", {
 				knownIssuers: this.props.knownIssuers,
+				activeSpecialCredentials: this.props.activeSpecialCredentials,
 				credentials: documents
 					.map(doc => (doc.nested.length === 0 ? [doc] : [doc, ...doc.nested]))
 					.reduce((acc, next) => [...acc, ...next], [])
@@ -148,10 +149,16 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 
 export default didiConnect(
 	ShareCredentialScreen,
-	(state): ShareCredentialInternalProps => ({
-		did: state.did,
-		credentials: state.credentials,
-		knownIssuers: state.knownIssuers,
-		activeSpecialCredentials: state.activeSpecialCredentials
-	})
+	(state): ShareCredentialInternalProps => {
+		const did = state.did;
+		const credentials = did
+			? state.credentials.filter(document => document.subject.did() === did.did())
+			: state.credentials;
+		return {
+			did,
+			credentials,
+			knownIssuers: state.knownIssuers,
+			activeSpecialCredentials: state.activeSpecialCredentials
+		};
+	}
 );

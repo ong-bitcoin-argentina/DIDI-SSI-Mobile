@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View, ViewProps } from "react-native";
 
 import { DidiText } from "../../../util/DidiText";
 
@@ -7,27 +7,24 @@ import colors from "../../../resources/colors";
 
 interface UserHeadingProps extends ViewProps {
 	user: string | undefined;
-	profileImage: ImageSourcePropType | undefined;
-	backgroundImage: ImageSourcePropType | undefined;
-	allowEdit?: boolean;
+	profileImage:
+		| {
+				mimetype: string;
+				data: string;
+		  }
+		| undefined;
+	onImageEditTap?: () => void;
 }
 
 export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
-	openBgImagePicker() {
-		// TODO
-	}
-
 	render() {
+		const onImageEditTap = this.props.onImageEditTap;
 		return (
 			<View>
 				<View style={styles.backgroundImageContainer}>
 					<Image
 						style={styles.backgroundImage}
-						source={
-							this.props.backgroundImage !== undefined
-								? this.props.backgroundImage
-								: require("../../../resources/images/defaultBackgroundImage.jpg")
-						}
+						source={require("../../../resources/images/defaultBackgroundImage.jpg")}
 					/>
 				</View>
 
@@ -36,19 +33,14 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 						style={styles.identityImage}
 						source={
 							this.props.profileImage !== undefined
-								? this.props.profileImage
+								? { uri: `data:${this.props.profileImage.mimetype};base64,${this.props.profileImage.data}` }
 								: require("../../../resources/images/defaultProfileImage.png")
 						}
 					/>
 				</View>
 
-				{this.props.allowEdit && (
-					<TouchableOpacity
-						style={styles.cameraIconContainer}
-						onPress={() => {
-							this.openBgImagePicker();
-						}}
-					>
+				{onImageEditTap && (
+					<TouchableOpacity style={styles.cameraIconContainer} onPress={onImageEditTap}>
 						<DidiText.Icon fontSize={20}></DidiText.Icon>
 					</TouchableOpacity>
 				)}

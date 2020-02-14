@@ -12,7 +12,6 @@ import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import { EditProfileProps } from "../userMenu/EditProfile";
-import { ShareProfileProps } from "../userMenu/ShareProfile";
 
 import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
@@ -28,7 +27,6 @@ interface UserDataInternalProps extends UserDataProps {
 type UserDataState = {};
 
 export interface UserDataNavigation {
-	ShareProfile: ShareProfileProps;
 	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
 	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
 	EditProfile: EditProfileProps;
@@ -51,12 +49,6 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 				}
 			},
 			{
-				actionTitle: strings.userData.share.barTitle,
-				onPress: navigation => {
-					navigation.navigate("ShareProfile", {});
-				}
-			},
-			{
 				actionTitle: strings.userData.editProfile.barTitle,
 				onPress: navigation => {
 					navigation.navigate("EditProfile", {});
@@ -68,12 +60,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	render() {
 		return (
 			<ScrollView>
-				<UserHeadingComponent
-					user={this.props.identity.visual.id}
-					profileImage={this.props.identity.visual.image}
-					backgroundImage={this.props.identity.visual.backgroundImage}
-					allowEdit={true}
-				/>
+				<UserHeadingComponent user={this.props.identity.id} profileImage={this.props.identity.image} />
 
 				<View>
 					{this.renderPersonalData()}
@@ -89,7 +76,13 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 			data: personalDataStructure.order,
 			renderOne: key => {
 				const struct = personalDataStructure.structure[key];
-				const data = this.props.identity.personalData[key];
+				const data =
+					key === "cellPhone"
+						? this.props.identity.cellPhone
+						: key === "email"
+						? this.props.identity.email
+						: this.props.identity.personalData[key];
+
 				return (
 					<DidiTextInput
 						key={key}

@@ -13,6 +13,7 @@ import { RecentActivity } from "../../../model/RecentActivity";
 import { getIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 
@@ -25,6 +26,7 @@ interface ScanCredentialToAddStateProps {
 	did: ActiveDid;
 	existingTokens: string[];
 	knownIssuers: IssuerRegistry;
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 interface ScanCredentialToAddDispatchProps {
 	addCredentials: (credentials: CredentialDocument[]) => void;
@@ -57,7 +59,11 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 							key={index}
 							preview={false}
 							document={credential}
-							context={{ activeDid: this.props.did, knownIssuers: this.props.knownIssuers, specialCredentials: null }}
+							context={{
+								activeDid: this.props.did,
+								knownIssuers: this.props.knownIssuers,
+								specialCredentials: this.props.activeSpecialCredentials
+							}}
 						/>
 					);
 				})}
@@ -69,7 +75,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	}
 
 	componentDidMount() {
-		this.props.loadIssuerNames(this.props.credentials.map(doc => doc.issuer));
+		this.props.loadIssuerNames(this.props.credentials.map(CredentialDocument.displayedIssuer));
 	}
 
 	private renderExisting() {
@@ -105,7 +111,8 @@ const connected = didiConnect(
 	(state): ScanCredentialToAddStateProps => ({
 		did: state.did,
 		existingTokens: state.tokens,
-		knownIssuers: state.knownIssuers
+		knownIssuers: state.knownIssuers,
+		activeSpecialCredentials: state.activeSpecialCredentials
 	}),
 	(dispatch): ScanCredentialToAddDispatchProps => ({
 		addCredentials: (credentials: CredentialDocument[]) => {

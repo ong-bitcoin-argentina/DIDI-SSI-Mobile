@@ -1,6 +1,6 @@
 import { Identity } from "didi-sdk";
 import { AnyAction, combineReducers, createStore, Store } from "redux";
-import { install as installReduxLoop, Loop } from "redux-loop";
+import { install as installReduxLoop, liftState, Loop } from "redux-loop";
 import { persistReducer, persistStore, StateReconciler } from "redux-persist";
 import FSStorage from "redux-persist-fs-storage";
 import { PersistPartial } from "redux-persist/es/persistReducer";
@@ -67,13 +67,15 @@ const storeReducer = (
 	action: StoreAction
 ): Loop<NormalizedStoreContent, StoreAction> => {
 	const persisted = persistedReducer(
-		liftUndefined(state, s => s.persisted),
+		liftUndefined(action.type === "RESET_PERSISTED_STORE" ? undefined : state, s => s.persisted),
 		action
 	);
+
 	const [serviceCalls, actions] = serviceCallReducer(
 		liftUndefined(state, s => s.serviceCalls),
 		action
 	);
+
 	return [{ persisted, serviceCalls }, actions];
 };
 

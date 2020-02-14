@@ -1,7 +1,6 @@
 import { NavigationContainer } from "react-navigation";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
 import { createStackNavigator } from "react-navigation-stack";
-import { ConnectedComponent } from "react-redux";
 
 import NavigationEnabledComponent from "./NavigationEnabledComponent";
 
@@ -9,35 +8,25 @@ export interface NavigationEnabledComponentConstructor<Props, Navigation> {
 	new (props: Readonly<Props>): NavigationEnabledComponent<Props, {}, Navigation>;
 }
 
-type NavMapComponentConstructor<Props, Navigation, InnerProps> =
-	| NavigationEnabledComponentConstructor<Props, Navigation>
-	| ConnectedComponent<NavigationEnabledComponentConstructor<InnerProps, Navigation>, Props>;
-
 export type NavTree<Nav> = {
-	[K in Extract<keyof Nav, string>]: NavMap<Nav[K]>;
+	[K in keyof Nav]: NavMap<Nav[K]>;
 };
+
+type PropsOf<T> = T extends NavigationEnabledComponentConstructor<infer Props, infer Navigation> ? Props : never;
+type NavigationOf<T> = T extends NavigationEnabledComponentConstructor<infer Props, infer Navigation>
+	? Navigation
+	: never;
 
 type AnyConstructor = any;
 
 export default class NavMap<Props> {
-	static from<Prop, Nav, InnerProp = Prop>(
-		constructor: NavMapComponentConstructor<Prop, Nav, InnerProp>,
-		to: NavTree<Nav>
-	): NavMap<Prop> {
+	static from<T>(constructor: T, to: NavTree<NavigationOf<T>>): NavMap<PropsOf<T>> {
 		return new NavMap(constructor, false, to ? to : {});
 	}
 
-	static placeholder<Prop, Nav, InnerProp = Prop>(
-		constructor: NavMapComponentConstructor<Prop, Nav, InnerProp>
-	): NavMap<Prop> {
+	static placeholder<T>(constructor: T): NavMap<PropsOf<T>> {
 		return new NavMap(constructor, true, {});
 	}
-
-	/*static switchNavigator<Nav>(
-		from: { [K in Extract<keyof Nav, string>]: (impl: NavTree<Nav>) => NavMap<Nav[K]> }
-	): NavigationContainer {
-		return new NavMap({}, {});
-	}*/
 
 	// Prevent assignments with incompatible props
 	private unassignable?: Props;

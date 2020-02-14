@@ -28,6 +28,7 @@ type ServiceSettingsPanelState = Partial<ServiceSettings>;
 
 const displayNames: { [K in keyof ServiceSettings]: string } = {
 	ethrDidUri: "ethr-did-resolver URI",
+	ethrDelegateUri: "Ethereum Delegation URI",
 	sharePrefix: "Share URI Prefix",
 	trustGraphUri: "TrustGraph (Mouro) URI",
 	didiUserServer: "Didi server (Registration)"

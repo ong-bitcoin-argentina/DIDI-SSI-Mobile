@@ -1,12 +1,15 @@
 import { Identity } from "didi-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View } from "react-native";
+import { readFile } from "react-native-fs";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
 import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
+import { DidiCamera } from "../../common/DidiCamera";
+import { DidiReticleCamera } from "../../common/DidiReticleCamera";
 
 import { Validations } from "../../../../model/Validations";
 import { ValidatedIdentity, ValidationState } from "../../../../store/selector/combinedIdentitySelector";
@@ -26,31 +29,45 @@ interface EditProfileDispatchProps {
 }
 type EditProfileInternalProps = EditProfileProps & EditProfileStateProps & EditProfileDispatchProps;
 
+interface EditProfileState {
+	identity: Identity;
+	cameraActive: boolean;
+}
+
 export interface EditProfileNavigation {}
 
-class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalProps, Identity, EditProfileNavigation> {
+class EditProfileScreen extends NavigationEnabledComponent<
+	EditProfileInternalProps,
+	EditProfileState,
+	EditProfileNavigation
+> {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.editProfile.barTitle);
 
 	constructor(props: EditProfileInternalProps) {
 		super(props);
 		this.state = {
-			address: {},
-			visual: {},
-			personalData: {}
+			cameraActive: false,
+			identity: {
+				address: {},
+				personalData: {}
+			}
 		};
 	}
 
 	private canPressContinueButton(): boolean {
 		return (
-			(!this.state.personalData.firstNames || Validations.isName(this.state.personalData.firstNames)) &&
-			(!this.state.personalData.lastNames || Validations.isName(this.state.personalData.lastNames)) &&
-			(!this.state.personalData.document || Validations.isDocumentNumber(this.state.personalData.document)) &&
-			(!this.state.personalData.nationality || Validations.isNationality(this.state.personalData.nationality))
+			(!this.state.identity.personalData.firstNames ||
+				Validations.isName(this.state.identity.personalData.firstNames)) &&
+			(!this.state.identity.personalData.lastNames || Validations.isName(this.state.identity.personalData.lastNames)) &&
+			(!this.state.identity.personalData.document ||
+				Validations.isDocumentNumber(this.state.identity.personalData.document)) &&
+			(!this.state.identity.personalData.nationality ||
+				Validations.isNationality(this.state.identity.personalData.nationality))
 		);
 	}
 
-	private setStateMerging<Key extends keyof Identity>(key: Key, merge: Partial<Identity[Key]>) {
-		this.setState({ ...this.state, [key]: { ...this.state[key], ...merge } });
+	private setIdentityMerging(identity: Partial<Identity>) {
+		this.setState({ identity: Identity.merge(identity, this.state.identity) });
 	}
 
 	private textInputPropsFor(
@@ -74,19 +91,26 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 		return props;
 	}
 
-	renderPersonInputs() {
+	private renderPersonInputs() {
 		return (
 			<View style={styles.dropdownContents}>
 				{personalDataStructure.order.map(key => {
 					const struct = personalDataStructure.structure[key];
-					const id = this.props.identity.personalData[key];
+
+					const id =
+						key === "cellPhone" || key === "email" ? this.props.identity[key] : this.props.identity.personalData[key];
+					const onChangeText = (text: string) =>
+						key === "cellPhone" || key === "email"
+							? this.setIdentityMerging({ [key]: text })
+							: this.setIdentityMerging({ personalData: { [key]: text } });
+
 					return (
 						<DidiTextInput
 							key={key}
 							description={struct.name}
 							placeholder=""
 							textInputProps={{
-								onChangeText: text => this.setStateMerging("personalData", { [key]: text }),
+								onChangeText,
 								...this.textInputPropsFor(struct.keyboardType, id?.state, id?.value)
 							}}
 						/>
@@ -96,7 +120,7 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 		);
 	}
 
-	renderAddressInputs() {
+	private renderAddressInputs() {
 		const state = this.props.identity.address.state;
 		return (
 			<View style={styles.dropdownContents}>
@@ -109,7 +133,7 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 							description={struct.name}
 							placeholder=""
 							textInputProps={{
-								onChangeText: text => this.setStateMerging("address", { [key]: text }),
+								onChangeText: text => this.setIdentityMerging({ address: { [key]: text } }),
 								...this.textInputPropsFor(struct.keyboardType, state, value)
 							}}
 						/>
@@ -119,49 +143,80 @@ class EditProfileScreen extends NavigationEnabledComponent<EditProfileInternalPr
 		);
 	}
 
+	private renderEditView() {
+		return (
+			<ScrollView>
+				<UserHeadingComponent
+					user={this.props.identity.id}
+					profileImage={this.state.identity.image ?? this.props.identity.image}
+					onImageEditTap={() => this.setState({ cameraActive: true })}
+				/>
+
+				<DropdownMenu
+					headerContainerStyle={{ backgroundColor: colors.primary }}
+					headerTextStyle={{ color: colors.primaryText }}
+					style={styles.personalDataDropdown}
+					label={personalDataStructure.name}
+				>
+					{this.renderPersonInputs()}
+				</DropdownMenu>
+
+				<DropdownMenu
+					headerContainerStyle={{ backgroundColor: colors.primary }}
+					headerTextStyle={{ color: colors.primaryText }}
+					style={styles.personalDataDropdown}
+					label={addressDataStructure.name}
+				>
+					{this.renderAddressInputs()}
+				</DropdownMenu>
+
+				<DidiButton
+					onPress={() => {
+						this.editProfile();
+					}}
+					disabled={!this.canPressContinueButton()}
+					title={strings.userData.editProfile.saveChanges}
+				/>
+			</ScrollView>
+		);
+	}
+
+	private renderCameraView() {
+		return (
+			<DidiReticleCamera
+				photoWidth={300}
+				photoHeight={300}
+				targetWidth={300}
+				targetHeight={300}
+				reticleShape="circle"
+				camera={(onLayout, reticle, onPictureTaken) => (
+					<DidiCamera cameraLocation="front" onCameraLayout={onLayout} onPictureTaken={onPictureTaken}>
+						{reticle}
+					</DidiCamera>
+				)}
+				cameraLandscape={false}
+				onPictureCropped={pic => this.onPictureTaken(pic)}
+			/>
+		);
+	}
+
 	render() {
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<ScrollView>
-					<UserHeadingComponent
-						user={this.state.visual.id}
-						profileImage={this.state.visual.image}
-						backgroundImage={this.state.visual.backgroundImage}
-					/>
-
-					<DropdownMenu
-						headerContainerStyle={{ backgroundColor: colors.primary }}
-						headerTextStyle={{ color: colors.primaryText }}
-						style={styles.personalDataDropdown}
-						label={personalDataStructure.name}
-					>
-						{this.renderPersonInputs()}
-					</DropdownMenu>
-
-					<DropdownMenu
-						headerContainerStyle={{ backgroundColor: colors.primary }}
-						headerTextStyle={{ color: colors.primaryText }}
-						style={styles.personalDataDropdown}
-						label={addressDataStructure.name}
-					>
-						{this.renderAddressInputs()}
-					</DropdownMenu>
-
-					<DidiButton
-						onPress={() => {
-							this.editProfile();
-						}}
-						disabled={!this.canPressContinueButton()}
-						title={strings.userData.editProfile.saveChanges}
-					/>
-				</ScrollView>
+				{this.state.cameraActive ? this.renderCameraView() : this.renderEditView()}
 			</Fragment>
 		);
 	}
 
+	private async onPictureTaken(pic: { uri: string }) {
+		const data = await readFile(pic.uri, "base64");
+		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
+		this.setState({ cameraActive: false });
+	}
+
 	private editProfile() {
-		this.props.saveIdentity(this.state);
+		this.props.saveIdentity(this.state.identity);
 		this.goBack();
 	}
 }

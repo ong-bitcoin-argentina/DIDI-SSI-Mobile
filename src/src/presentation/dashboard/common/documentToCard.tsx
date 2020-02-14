@@ -1,6 +1,8 @@
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument, EthrDID } from "didi-sdk";
 import React from "react";
+import { StyleSheet } from "react-native";
 
+import { assertUnreachable } from "../../../util/assertUnreachable";
 import { DidiText } from "../../util/DidiText";
 
 import { ActiveDid } from "../../../store/reducers/didReducer";
@@ -17,80 +19,125 @@ interface DocumentCredentialCardProps {
 	context: {
 		activeDid: ActiveDid;
 		knownIssuers: IssuerRegistry;
-		specialCredentials: SpecialCredentialMap | null;
+		specialCredentials: SpecialCredentialMap;
 	};
 }
 
-export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
-	render() {
-		const doc = this.props.document;
+type CredentialStyleType = "share" | "identity" | "obsolete" | "normal";
 
-		const issuerData = this.props.context.knownIssuers[doc.issuer.did()];
+interface CredentialStyle {
+	color: string;
+	hollow: boolean;
+}
+
+const credentialStyles: Record<CredentialStyleType, CredentialStyle> = {
+	normal: {
+		color: colors.secondary,
+		hollow: false
+	},
+	identity: {
+		color: colors.secondary,
+		hollow: true
+	},
+	obsolete: {
+		color: colors.error,
+		hollow: false
+	},
+	share: {
+		color: colors.text,
+		hollow: false
+	}
+};
+
+export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
+	private issuerText(did: EthrDID): string {
+		const issuerData = this.props.context.knownIssuers[did.did()];
 		const issuerName = issuerData
 			? issuerData.name === null
 				? "Emisor desconocido"
 				: `Emisor: ${issuerData.name}`
 			: "Cargando...";
-		const issuer = this.props.preview
-			? issuerName
-			: `${issuerName}\n${strings.credentialCard.emitter + doc.issuer.keyAddress()}`;
+		return this.props.preview ? issuerName : `${issuerName}\n${strings.credentialCard.emitter + did.keyAddress()}`;
+	}
+
+	render() {
+		const doc = this.props.document;
+
+		const issuerText = this.issuerText(CredentialDocument.displayedIssuer(doc));
 
 		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
+
 		let title = doc.title;
-		let data = CredentialDocument.extractDataPairs(doc, this.props.preview ? doc.preview : undefined);
-		let color = colors.secondary;
-		let hollow = this.props.document.specialFlag !== undefined;
-		let replacedByAnother = false;
-		let shared = false;
-
+		let data = this.props.preview
+			? CredentialDocument.extractPreviewDataPairs(doc)
+			: CredentialDocument.extractAllDataPairs(doc);
 		const specialType = doc.specialFlag?.type;
-
-		const activeDid = this.props.context.activeDid;
-		if (activeDid && activeDid.did && activeDid.did() !== doc.subject.did()) {
-			color = colors.text;
-			hollow = false;
-			shared = true;
-		} else if (specialType) {
+		if (specialType) {
 			const dictionary: { title: string; [name: string]: string | undefined } = strings.specialCredentials[specialType];
 			title = dictionary.title;
 			data = data.map(({ label, value }) => ({
 				label: dictionary[label] ?? label,
 				value
 			}));
-
-			if (
-				this.props.context.specialCredentials &&
-				this.props.context.specialCredentials[specialType]?.jwt !== this.props.document.jwt
-			) {
-				color = colors.error;
-				hollow = false;
-				replacedByAnother = true;
-			}
 		}
+
+		const styleType = this.styleType();
+		const style = credentialStyles[styleType];
 
 		return (
 			<CredentialCard
 				icon=""
 				category={category}
 				title={title}
-				subTitle={issuer}
+				subTitle={issuerText}
 				data={data}
 				columns={this.props.preview ? CredentialDocument.numberOfColumns(doc) : 1}
-				color={color}
-				hollow={hollow}
+				color={style.color}
+				hollow={style.hollow}
 			>
 				{this.props.children}
-				{shared && (
-					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
-						{strings.credentialCard.shared}
-					</DidiText.Card.Warning>
-				)}
-				{replacedByAnother && (
+				{this.renderTypeMessage(styleType)}
+			</CredentialCard>
+		);
+	}
+
+	private styleType(): CredentialStyleType {
+		const doc = this.props.document;
+		const specialType = doc.specialFlag?.type;
+		const activeDid = this.props.context.activeDid;
+
+		if (activeDid && activeDid.did && activeDid.did() !== doc.subject.did()) {
+			return "share";
+		} else if (specialType) {
+			if (this.props.context.specialCredentials[specialType]?.jwt !== this.props.document.jwt) {
+				return "obsolete";
+			} else {
+				return "identity";
+			}
+		} else {
+			return "normal";
+		}
+	}
+
+	private renderTypeMessage(type: CredentialStyleType): JSX.Element | undefined {
+		switch (type) {
+			case "normal":
+			case "identity":
+				return undefined;
+			case "obsolete":
+				return (
 					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
 						{strings.credentialCard.replaced}
 					</DidiText.Card.Warning>
-				)}
-			</CredentialCard>
-		);
+				);
+			case "share":
+				return (
+					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
+						{strings.credentialCard.shared}
+					</DidiText.Card.Warning>
+				);
+			default:
+				assertUnreachable(type);
+		}
 	}
 }

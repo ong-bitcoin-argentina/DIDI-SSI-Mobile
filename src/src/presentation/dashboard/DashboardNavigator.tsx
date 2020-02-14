@@ -15,8 +15,10 @@ import strings from "../resources/strings";
 import themes from "../resources/themes";
 
 import CredentialNavigator from "./credentials/CredentialNavigator";
+import { ScanCredentialScreen } from "./credentials/ScanCredential";
 import ScanDisclosureRequestScreen from "./credentials/ScanDisclosureRequest";
 import ShareCredentialScreen from "./credentials/ShareCredential";
+import { ShareExplanationScreen } from "./credentials/ShareExplanationScreen";
 import { ShareMicroCredentialScreen } from "./credentials/ShareMicroCredential";
 import { ShareSpecificCredentialScreen } from "./credentials/ShareSpecificCredential";
 import DashboardJumpMenu from "./DashboardJumpMenu";
@@ -25,6 +27,8 @@ import DocumentsNavigator from "./documents/DocumentsNavigator";
 import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
+import UserData from "./settings/userData/UserData";
+import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 
 interface DashboardSwitchTarget {
@@ -72,8 +76,20 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		};
 	}
 
-	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, then);
 	const dashboardPlaceholder: NavMap<DashboardScreenProps> = NavMap.placeholder(DashboardScreen);
+
+	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, {
+		NotificationScreen: NavMap.from(NotificationScreen, {
+			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen)
+		}),
+		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
+		ValidateID: NavMap.placeholder(ValidateIdentityExplainWhatScreen),
+		UserData: NavMap.placeholder(UserData),
+		__DashboardSettings: SettingsNavigator({
+			...then,
+			DashboardHome: dashboardPlaceholder
+		})
+	});
 
 	const BottomNavigator = createBottomTabNavigator(
 		{
@@ -85,7 +101,14 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				""
 			),
 			*/
-			DashboardDocuments: screen(DocumentsNavigator, strings.tabNames.documents, ""),
+			DashboardDocuments: screen(
+				DocumentsNavigator({
+					...then,
+					DashboardHome: dashboardPlaceholder
+				}).stackNavigator("DashboardDocuments"),
+				strings.tabNames.documents,
+				""
+			),
 			DashboardSettings: screen(
 				SettingsNavigator({
 					...then,
@@ -104,7 +127,8 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				inactiveTintColor: themes.navigationIconInactive,
 				keyboardHidesTabBar: false,
 				showLabel: false
-			}
+			},
+			backBehavior: "initialRoute"
 		}
 	);
 
@@ -123,17 +147,17 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 	}
 
 	return NavMap.from(BottomNavigatorComponent, {
-		ValidateID: ValidateIdentityNavigator(NavMap.placeholder(DashboardScreen)),
-		ScanCredential: CredentialNavigator(NavMap.placeholder(DashboardScreen)),
+		ValidateID: ValidateIdentityNavigator,
+		ScanCredential: CredentialNavigator,
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
 			ShareMicroCredential: NavMap.from(ShareMicroCredentialScreen, {
-				ShareSpecificCredential: NavMap.placeholder(ShareSpecificCredentialScreen)
+				ShareExplanation: NavMap.placeholder(ShareExplanationScreen)
 			}),
-			ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {})
-		}),
-		NotificationScreen: NavMap.from(NotificationScreen, {
-			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen)
-		}),
-		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {})
+			ShareExplanation: NavMap.from(ShareExplanationScreen, {
+				ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {
+					ScanCredential: NavMap.placeholder(ScanCredentialScreen)
+				})
+			})
+		})
 	}).stackNavigator("DashboardRoot");
 }

@@ -1,4 +1,4 @@
-import { CredentialDocument, Identity, RequestDocument, SelectiveDisclosureResponse } from "didi-sdk";
+import { CredentialDocument, Identity, SelectiveDisclosureRequest, SelectiveDisclosureResponse } from "didi-sdk";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 
@@ -17,6 +17,7 @@ import {
 } from "../../../services/issuer/submitDisclosureResponse";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { didiConnect } from "../../../store/store";
 import { getCredentials } from "../../../uPort/getCredentials";
 import { serviceErrors } from "../../resources/serviceErrors";
@@ -25,19 +26,20 @@ import { ScanCredentialProps } from "./ScanCredential";
 import { ShowDisclosureResponseProps } from "./ShowDisclosureResponse";
 
 export interface ScanDisclosureRequestProps {
-	request: RequestDocument;
+	request: SelectiveDisclosureRequest;
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
 	did: ActiveDid;
 	identity: Identity;
+	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 
 	sendDisclosureResponsePending: boolean;
 }
 interface ScanDisclosureRequestDispatchProps {
 	sendResponse: (args: SubmitDisclosureResponseContent) => void;
-	storeRequest: (request: RequestDocument) => void;
+	storeRequest: (request: SelectiveDisclosureRequest) => void;
 	recordCallback: (documents: CredentialDocument[]) => void;
 	recordShare: (documents: CredentialDocument[]) => void;
 }
@@ -66,7 +68,11 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<DidiScreen style={styles.body}>
-				<RequestCard style={{ marginHorizontal: 20 }} request={this.props.request} />
+				<RequestCard
+					style={{ marginHorizontal: 20 }}
+					request={this.props.request}
+					context={{ knownIssuers: this.props.knownIssuers }}
+				/>
 				<ServiceObserver serviceKey="ScanDisclosureRequest" onSuccess={() => this.onSuccess()} />
 				<DidiServiceButton
 					onPress={() => this.answerRequest()}
@@ -80,7 +86,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	private async answerRequest() {
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
 			this.props.did!,
-			{ ...this.props.request, type: "SelectiveDisclosureRequest" },
+			this.props.request,
 			this.props.credentials,
 			this.props.identity
 		);
@@ -127,13 +133,14 @@ export default didiConnect(
 			did: state.did,
 			identity: state.identity,
 			credentials: state.credentials,
+			knownIssuers: state.knownIssuers,
 			sendDisclosureResponsePending: isPendingService(state.serviceCalls[serviceKey])
 		};
 	},
 	(dispatch): ScanDisclosureRequestDispatchProps => {
 		return {
 			sendResponse: (args: SubmitDisclosureResponseContent) => dispatch(submitDisclosureResponse(serviceKey, args)),
-			storeRequest: (request: RequestDocument) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] }),
+			storeRequest: (request: SelectiveDisclosureRequest) => dispatch({ type: "TOKEN_ENSURE", content: [request.jwt] }),
 			recordCallback: (documents: CredentialDocument[]) =>
 				dispatch({
 					type: "RECENT_ACTIVITY_ADD",
