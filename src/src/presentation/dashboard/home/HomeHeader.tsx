@@ -22,14 +22,14 @@ export default class HomeHeader extends React.Component<HomeHeaderProps> {
 					<Image
 						style={styles.image}
 						source={
-							this.props.person.visual.image !== undefined
-								? this.props.person.visual.image
+							this.props.person.image !== undefined
+								? { uri: `data:${this.props.person.image.mimetype};base64,${this.props.person.image.data}` }
 								: require("../../resources/images/defaultProfileImage.png")
 						}
 					/>
 					<View>
 						<DidiText.DashboardHeader.Hello>{strings.dashboard.helloMessage}</DidiText.DashboardHeader.Hello>
-						<DidiText.DashboardHeader.Name>{this.props.person.visual.id}</DidiText.DashboardHeader.Name>
+						<DidiText.DashboardHeader.Name>{this.props.person.id}</DidiText.DashboardHeader.Name>
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>

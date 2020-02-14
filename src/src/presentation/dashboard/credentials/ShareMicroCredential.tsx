@@ -10,16 +10,18 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
-import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
+import { ShareExplanationProps } from "./ShareExplanationScreen";
 
 export interface ShareMicroCredentialProps {
 	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 
 interface ShareMicroCredentialState {
@@ -27,7 +29,7 @@ interface ShareMicroCredentialState {
 }
 
 export interface ShareMicroCredentialNavigation {
-	ShareSpecificCredential: ShareSpecificCredentialProps;
+	ShareExplanation: ShareExplanationProps;
 }
 
 export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
@@ -100,7 +102,11 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 				<DocumentCredentialCard
 					preview={false}
 					document={document}
-					context={{ activeDid: null, knownIssuers: this.props.knownIssuers, specialCredentials: null }}
+					context={{
+						activeDid: null,
+						knownIssuers: this.props.knownIssuers,
+						specialCredentials: this.props.activeSpecialCredentials
+					}}
 				/>
 			</TouchableOpacity>
 		);
@@ -117,6 +123,6 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	private doShare(documents: CredentialDocument[]) {
-		this.navigate("ShareSpecificCredential", { documents });
+		this.navigate("ShareExplanation", { documents });
 	}
 }

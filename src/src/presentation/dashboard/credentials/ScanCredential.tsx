@@ -22,6 +22,7 @@ export type ScanCredentialProps = {};
 interface ScanCredentialStateProps {
 	activeDid: ActiveDid;
 	ethrDidUri: string;
+	ethrDelegateUri: string;
 }
 type ScanCredentialInternalProps = ScanCredentialProps & ScanCredentialStateProps;
 
@@ -85,17 +86,25 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 
 		Vibration.vibrate(400, false);
 
-		const parse = await parseJWT(successfulParses[0].jwt, this.props.ethrDidUri, undefined);
+		const parse = await parseJWT(successfulParses[0].jwt, {
+			identityResolver: {
+				ethrUri: this.props.ethrDidUri
+			},
+			delegation: {
+				ethrUri: this.props.ethrDelegateUri
+			},
+			audience: this.props.activeDid ?? undefined
+		});
 
 		if (isLeft(parse)) {
 			const errorData = strings.jwtParseError(parse.left);
 			this.showAlert(errorData.title || "Error", errorData.message);
 		} else {
 			switch (parse.right.type) {
-				case "DisclosureDocument":
+				case "SelectiveDisclosureResponse":
 					this.showAlert("Error", "Tipo de credencial inesperado");
 					break;
-				case "RequestDocument":
+				case "SelectiveDisclosureRequest":
 					this.replace("ScanDisclosureRequest", {
 						request: parse.right,
 						onGoBack: screen => {
@@ -112,7 +121,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 						this.showAlert("Error", "Credencial ajena recibida directamente");
 					}
 					break;
-				case "ProposalDocument":
+				case "SelectiveDisclosureProposal":
 					this.replace("ShowDisclosureRequest", {
 						proposal: parse.right
 					});
@@ -133,7 +142,8 @@ const connected = didiConnect(
 	ScanCredentialScreen,
 	(state): ScanCredentialStateProps => ({
 		activeDid: state.did,
-		ethrDidUri: state.serviceSettings.ethrDidUri
+		ethrDidUri: state.serviceSettings.ethrDidUri,
+		ethrDelegateUri: state.serviceSettings.ethrDelegateUri
 	})
 );
 

@@ -1,4 +1,4 @@
-import { LegalAddress, PersonalData } from "didi-sdk";
+import { LegalAddress, PersonalIdentityData } from "didi-sdk";
 
 import strings from "../../../resources/strings";
 
@@ -7,13 +7,13 @@ interface InputFieldDescription {
 	keyboardType?: "number-pad" | "email-address" | "phone-pad";
 }
 
-export interface ProfileInputDataStructure<T> {
+export interface ProfileInputDataStructure<T extends keyof any> {
 	name: string;
-	order: Array<keyof T>;
-	structure: { [K in keyof T]: InputFieldDescription };
+	order: T[];
+	structure: { [K in T]: InputFieldDescription };
 }
 
-export const personalDataStructure: ProfileInputDataStructure<PersonalData> = {
+export const personalDataStructure: ProfileInputDataStructure<keyof PersonalIdentityData | "cellPhone" | "email"> = {
 	name: strings.userData.personalDataLabel,
 	order: ["firstNames", "lastNames", "cellPhone", "email", "document", "nationality"],
 	structure: {
@@ -41,7 +41,7 @@ export const personalDataStructure: ProfileInputDataStructure<PersonalData> = {
 	}
 };
 
-export const addressDataStructure: ProfileInputDataStructure<LegalAddress> = {
+export const addressDataStructure: ProfileInputDataStructure<keyof LegalAddress> = {
 	name: strings.userData.addressDataLabel,
 	order: ["street", "number", "department", "floor", "neighborhood", "postCode"],
 	structure: {

@@ -50,33 +50,32 @@ const base: TextStyle = {
 };
 
 const styles = {
-	explanation: StyleSheet.create({
+	common: StyleSheet.create({
 		normal: {
 			...base
 		},
-		emphasis: {
+		bold: {
 			...base,
 			...fontStyle.bold
+		},
+		medium: {
+			...base,
+			...fontStyle.medium
 		},
 		faded: {
 			...base,
 			...color.faded
+		},
+		small: {
+			...base,
+			fontSize: 16
 		}
 	}),
 	validateIdentity: StyleSheet.create({
-		normal: {
-			...base,
-			fontSize: 16
-		},
 		title: {
 			...base,
 			...fontStyle.bold,
 			fontSize: 22
-		},
-		subtitle: {
-			...base,
-			...fontStyle.medium,
-			fontSize: 18
 		},
 		stepNumber: {
 			...base,
@@ -102,8 +101,7 @@ const styles = {
 		},
 		congrats: {
 			...base,
-			...color.primary,
-			fontSize: 18
+			...color.primary
 		},
 		reminder: {
 			...base,
@@ -122,10 +120,6 @@ const styles = {
 			...fontStyle.bold,
 			...color.error,
 			fontSize: 16
-		},
-		emphasis: {
-			...base,
-			...fontStyle.bold
 		},
 		enumerationItem: {
 			...base,
@@ -297,14 +291,15 @@ function textWith(style: TextStyle) {
 
 export const DidiText = {
 	Explanation: {
-		Normal: textWith(styles.explanation.normal),
-		Emphasis: textWith(styles.explanation.emphasis),
-		Faded: textWith(styles.explanation.faded)
+		Normal: textWith(styles.common.normal),
+		Emphasis: textWith(styles.common.bold),
+		Faded: textWith(styles.common.faded),
+		Small: textWith(styles.common.small)
 	},
 	ValidateIdentity: {
-		Normal: textWith(styles.validateIdentity.normal),
+		Normal: textWith(styles.common.small),
 		Title: textWith(styles.validateIdentity.title),
-		Subtitle: textWith(styles.validateIdentity.subtitle),
+		Subtitle: textWith(styles.common.medium),
 		StepNumber: textWith(styles.validateIdentity.stepNumber),
 		TotalNumber: textWith(styles.validateIdentity.totalNumber),
 		Enumerate: textWith(styles.validateIdentity.enumerate),
@@ -315,7 +310,7 @@ export const DidiText = {
 	ChangePassword: {
 		Explanation: textWith(styles.changePassword.explanation),
 		Error: textWith(styles.changePassword.error),
-		Emphasis: textWith(styles.changePassword.emphasis),
+		Emphasis: textWith(styles.common.bold),
 		EnumerationItem: textWith(styles.changePassword.enumerationItem)
 	},
 	Card: {

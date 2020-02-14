@@ -10,6 +10,7 @@ import { TokenAction } from "./reducers/tokenReducer";
 import { ValidateDniAction } from "./reducers/validateDniProgressReducer";
 
 export type StoreAction =
+	| { type: "RESET_PERSISTED_STORE" }
 	| TokenAction
 	| ServiceSettingAction
 	| SessionAction

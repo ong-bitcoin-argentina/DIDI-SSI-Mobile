@@ -238,11 +238,25 @@ export default {
 	},
 	share: {
 		title: "Compartir",
-		explanation: "Escanea el siguiente codigo QR con otra aplicación Didi",
 		generating: "Generando codigo QR...",
 		next: "Ya compartí el codigo QR",
 		shareTitle: "Credencial Didi",
-		shareLink: "Compartir Enlace"
+		explanation:
+			"Pide al receptor que escanee este codigo QR para comenzar.\n\nUna vez hecho eso, avanza a la proxima pantalla para escanear su respuesta, "
+	},
+	shareExplanation: {
+		title: "Compartir",
+		explanation:
+			"¿Cómo compartirás estas credenciales?\n\nEl receptor podrá verificar que las credenciales fueron enviadas intencionalmente y desde tu cuenta",
+		direct: {
+			button: "Directo a otra app Didi",
+			explanation: "Verificado como parte del proceso"
+		},
+		or: "o",
+		link: {
+			button: "Por enlace al visor",
+			explanation: "Recibirás un pedido de verificacion"
+		}
 	},
 	disclose: {
 		title: "Compartir",
@@ -281,13 +295,22 @@ export default {
 			header: "Digitalizando el DNI",
 			description:
 				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
-			confirmation: "Asegurá que el texto este al derecho y sea claramente legible."
+			confirmation: "Asegurá que el texto este al derecho y sea claramente legible.",
+			barcodeConfirmation: {
+				found: "Se identificó el código de barras.",
+				notFound: "No se identificó un código de barras. Si está de este lado del DNI, volvé a tomar la foto."
+			}
 		},
 		explainBack: {
 			step: 2,
 			header: "Digitalizando el DNI",
 			description: "Ahora da vuelta el DNI y sácale una foto del dorso.",
-			confirmation: "Asegurá que el texto este al derecho y sea claramente legible."
+			confirmation: "Asegurá que el texto este al derecho y sea claramente legible.",
+			blocked: {
+				title: "No se identificó un código de barras",
+				text:
+					"Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto anterior."
+			}
 		},
 		explainSelfie: {
 			step: 3,
@@ -419,10 +442,13 @@ export default {
 		showExpired: "Mostrar peticiones vencidas",
 		hideExpired: "Ocultar peticiones vencidas",
 		sendResponse: "Enviar",
-		requestExpired: "Fecha límite superada."
+		requestExpired: "Fecha límite superada.",
+		noRequestsAvailable: "No dispones de notificaciones"
 	},
 	credentialRequestCard: {
 		from: "De",
+		unknown: "Solicitante desconocido",
+		requesterID: "ID Solicitante",
 		requests: "Solicita",
 		before: "Antes de"
 	},
@@ -440,10 +466,6 @@ export default {
 		notCurrent: {
 			title: "Credencial no vigente",
 			message: "Solo es posible compartir credenciales vigentes."
-		},
-		notOwned: {
-			title: "Credencial ajena",
-			message: "Solo es posible compartir credenciales propias."
 		}
 	},
 	jwtParseError: (error: JWTParseError) => {
@@ -490,6 +512,18 @@ export default {
 					errorCode: "TOKEN_VERIFICATION_ERROR",
 					title: "Error al Verificar Credencial",
 					message: "Verifique tener acceso a internet."
+				};
+			case "DELEGATE_CHECK_ERROR":
+				return {
+					errorCode: "TOKEN_DELEGATE_CHECK_ERROR",
+					title: "Error al Verificar Credencial",
+					message: "Verifique tener acceso a internet."
+				};
+			case "MISSING_DELEGATION_ERROR":
+				return {
+					errorCode: "TOKEN_MISSING_DELEGATION_ERROR",
+					title: "Error al Verificar Credencial",
+					message: "Esta credencial fue emitida por un delegado no autorizado."
 				};
 			default:
 				assertUnreachable(error);

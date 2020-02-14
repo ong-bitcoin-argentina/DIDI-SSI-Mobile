@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
 
 import { DidiText } from "../../util/DidiText";
@@ -16,9 +16,10 @@ interface CommonProps {
 	cameraLocation?: keyof typeof RNCamera.Constants.Type;
 }
 interface PictureProps {
-	cameraButtonDisabled?: boolean;
+	cameraButtonDisabled?: boolean | { title: string; text: string };
 	cameraLandscape?: boolean;
 	cameraFlash?: keyof typeof RNCamera.Constants.FlashMode;
+	cameraOutputsBase64Picture?: boolean;
 	onPictureTaken: (response: TakePictureResponse) => void;
 }
 interface BarcodeProps {
@@ -134,14 +135,19 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 			return null;
 		}
 
-		if (this.props.onPictureTaken) {
-			return DidiCamera.cameraButton(() => this.takePicture(), this.props.cameraButtonDisabled);
-		} else {
+		if (!this.props.onPictureTaken) {
 			return (
 				<DidiText.CameraExplanation style={styles.cameraInstruction}>
 					{this.props.explanation}
 				</DidiText.CameraExplanation>
 			);
+		}
+
+		const disabled = this.props.cameraButtonDisabled;
+		if (typeof disabled === "object") {
+			return DidiCamera.cameraButton(() => Alert.alert(disabled.title, disabled.text));
+		} else {
+			return DidiCamera.cameraButton(() => this.takePicture(), disabled);
 		}
 	}
 
@@ -164,7 +170,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 
 		const data = await this.camera.takePictureAsync({
 			quality: 0.5,
-			base64: false,
+			base64: this.props.cameraOutputsBase64Picture ?? false,
 			pauseAfterCapture: args?.pauseAfterCapture ?? true,
 			orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait",
 			mirrorImage: false,

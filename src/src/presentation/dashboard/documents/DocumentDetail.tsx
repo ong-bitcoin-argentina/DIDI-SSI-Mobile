@@ -1,9 +1,10 @@
 import { CredentialDocument } from "didi-sdk";
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { Fragment } from "react";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
+import { DidiScreen, DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import commonStyles from "../../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
@@ -11,6 +12,7 @@ import { ActiveDid } from "../../../store/reducers/didReducer";
 import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import strings from "../../resources/strings";
+import themes from "../../resources/themes";
 
 export interface DocumentDetailProps {
 	document: CredentialDocument;
@@ -25,31 +27,43 @@ export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDet
 	render() {
 		const docList = this.props.document.nested.length === 0 ? [this.props.document] : this.props.document.nested;
 		return (
-			<DidiScreen style={styles.body}>
-				{docList.map((doc, index) => {
-					return (
-						<DocumentCredentialCard
-							preview={false}
-							document={doc}
-							key={index}
-							context={{
-								activeDid: this.props.did,
-								knownIssuers: this.props.knownIssuers,
-								specialCredentials: this.props.activeSpecialCredentials
-							}}
-						/>
-					);
-				})}
-			</DidiScreen>
+			<Fragment>
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+				<SafeAreaView style={commonStyles.view.area}>
+					<FlatList
+						style={styles.body}
+						contentContainerStyle={styles.scrollContent}
+						data={docList}
+						keyExtractor={(_, index) => index.toString()}
+						renderItem={item => this.renderCard(item.item, item.index)}
+					/>
+				</SafeAreaView>
+			</Fragment>
+		);
+	}
+
+	private renderCard(document: CredentialDocument, index: number) {
+		return (
+			<DocumentCredentialCard
+				preview={false}
+				document={document}
+				key={index}
+				context={{
+					activeDid: this.props.did,
+					knownIssuers: this.props.knownIssuers,
+					specialCredentials: this.props.activeSpecialCredentials
+				}}
+			/>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	body: {
-		width: "100%",
+		width: "100%"
+	},
+	scrollContent: {
 		paddingHorizontal: 20,
-		alignContent: "flex-start",
-		justifyContent: "flex-start"
+		paddingVertical: 8
 	}
 });
