@@ -16,7 +16,7 @@ import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
-import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
+import { ShareExplanationProps } from "./ShareExplanationScreen";
 
 export interface ShareMicroCredentialProps {
 	knownIssuers: IssuerRegistry;
@@ -29,7 +29,7 @@ interface ShareMicroCredentialState {
 }
 
 export interface ShareMicroCredentialNavigation {
-	ShareSpecificCredential: ShareSpecificCredentialProps;
+	ShareExplanation: ShareExplanationProps;
 }
 
 export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
@@ -123,6 +123,6 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	private doShare(documents: CredentialDocument[]) {
-		this.navigate("ShareSpecificCredential", { documents });
+		this.navigate("ShareExplanation", { documents });
 	}
 }

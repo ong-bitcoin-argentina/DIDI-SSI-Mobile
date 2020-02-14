@@ -139,7 +139,7 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		ScanCredential: CredentialNavigator,
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
 			ShareMicroCredential: NavMap.from(ShareMicroCredentialScreen, {
-				ShareSpecificCredential: NavMap.placeholder(ShareSpecificCredentialScreen)
+				ShareExplanation: NavMap.placeholder(ShareExplanationScreen)
 			}),
 			ShareExplanation: NavMap.from(ShareExplanationScreen, {
 				ShareSpecificCredential: NavMap.from(ShareSpecificCredentialScreen, {
