@@ -32,6 +32,7 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
+		const explainFront = strings.validateIdentity.explainFront;
 		return (
 			<ValidateIdentityTakePhoto
 				photoWidth={1800}
@@ -40,11 +41,13 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 				targetHeight={1000}
 				cameraLandscape={true}
 				header={{
-					title: strings.validateIdentity.explainFront.step,
-					header: strings.validateIdentity.explainFront.header
+					title: explainFront.step,
+					header: explainFront.header
 				}}
-				description={strings.validateIdentity.explainFront.description}
-				confirmation={strings.validateIdentity.explainFront.confirmation}
+				description={explainFront.description}
+				confirmation={`${explainFront.confirmation}\n\n${
+					this.state.documentData ? explainFront.barcodeConfirmation.found : explainFront.barcodeConfirmation.notFound
+				}`}
 				image={require("../../resources/images/validateIdentityExplainFront.png")}
 				camera={(onLayout, reticle, onPictureTaken) => (
 					<DidiCamera

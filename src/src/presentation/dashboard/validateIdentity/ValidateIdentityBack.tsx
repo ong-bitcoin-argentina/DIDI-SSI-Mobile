@@ -53,7 +53,11 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 					<DidiCamera
 						onCameraLayout={onLayout}
 						cameraLandscape={true}
-						cameraButtonDisabled={(this.props.documentData ?? this.state.documentData) === undefined}
+						cameraButtonDisabled={
+							(this.props.documentData ?? this.state.documentData) === undefined
+								? strings.validateIdentity.explainBack.blocked
+								: false
+						}
 						onPictureTaken={onPictureTaken}
 						onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
 					>

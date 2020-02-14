@@ -295,13 +295,22 @@ export default {
 			header: "Digitalizando el DNI",
 			description:
 				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
-			confirmation: "Asegurá que el texto este al derecho y sea claramente legible."
+			confirmation: "Asegurá que el texto este al derecho y sea claramente legible.",
+			barcodeConfirmation: {
+				found: "Se identificó el código de barras.",
+				notFound: "No se identificó un código de barras. Si está de este lado del DNI, volvé a tomar la foto."
+			}
 		},
 		explainBack: {
 			step: 2,
 			header: "Digitalizando el DNI",
 			description: "Ahora da vuelta el DNI y sácale una foto del dorso.",
-			confirmation: "Asegurá que el texto este al derecho y sea claramente legible."
+			confirmation: "Asegurá que el texto este al derecho y sea claramente legible.",
+			blocked: {
+				title: "No se identificó un código de barras",
+				text:
+					"Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto anterior."
+			}
 		},
 		explainSelfie: {
 			step: 3,
