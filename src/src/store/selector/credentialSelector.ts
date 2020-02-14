@@ -46,7 +46,7 @@ export const activeSpecialCredentialsSelector = createSelector(
 		credentials
 			.slice()
 			.reverse()
-			.filter(credential => activeDid === null || credential.subject.did() === activeDid.did())
+			.filter(credential => activeDid === null || credential.subject.did() === activeDid?.did?.())
 			.forEach(credential => {
 				if (credential.specialFlag) {
 					result[credential.specialFlag.type] = credential;
