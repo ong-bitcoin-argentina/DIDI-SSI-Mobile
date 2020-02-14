@@ -16,7 +16,7 @@ import { ChangePhoneVerifyScreen } from "./userData/ChangePhoneVerifyPhone";
 import UserDataScreen from "./userData/UserData";
 import { EditProfileScreen } from "./userMenu/EditProfile";
 
-interface SettingsNavigatorNavigation {
+export interface SettingsNavigatorNavigation {
 	Access: StartAccessProps;
 	DashboardHome: DashboardScreenProps;
 }

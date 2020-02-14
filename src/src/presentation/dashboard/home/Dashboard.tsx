@@ -56,6 +56,7 @@ export interface DashboardScreenNavigation {
 	UserData: UserDataProps;
 	NotificationScreen: NotificationScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
+	__DashboardSettings: {};
 }
 
 class DashboardScreen extends NavigationEnabledComponent<
