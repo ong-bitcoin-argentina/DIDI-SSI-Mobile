@@ -76,15 +76,20 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 		};
 	}
 
+	const dashboardPlaceholder: NavMap<DashboardScreenProps> = NavMap.placeholder(DashboardScreen);
+
 	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, {
 		NotificationScreen: NavMap.from(NotificationScreen, {
 			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen)
 		}),
 		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
 		ValidateID: NavMap.placeholder(ValidateIdentityExplainWhatScreen),
-		UserData: NavMap.placeholder(UserData)
+		UserData: NavMap.placeholder(UserData),
+		__DashboardSettings: SettingsNavigator({
+			...then,
+			DashboardHome: dashboardPlaceholder
+		})
 	});
-	const dashboardPlaceholder: NavMap<DashboardScreenProps> = NavMap.placeholder(DashboardScreen);
 
 	const BottomNavigator = createBottomTabNavigator(
 		{
@@ -96,7 +101,14 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				""
 			),
 			*/
-			DashboardDocuments: screen(DocumentsNavigator, strings.tabNames.documents, ""),
+			DashboardDocuments: screen(
+				DocumentsNavigator({
+					...then,
+					DashboardHome: dashboardPlaceholder
+				}).stackNavigator("DashboardDocuments"),
+				strings.tabNames.documents,
+				""
+			),
 			DashboardSettings: screen(
 				SettingsNavigator({
 					...then,
