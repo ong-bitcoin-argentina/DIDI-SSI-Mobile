@@ -66,15 +66,13 @@ const storeReducer = (
 	state: NormalizedStoreContent | undefined,
 	action: StoreAction
 ): Loop<NormalizedStoreContent, StoreAction> => {
-	const persisted = persistedReducer(
-		liftUndefined(action.type === "RESET_PERSISTED_STORE" ? undefined : state, s => s.persisted),
-		action
-	);
+	const persisted = persistedReducer(action.type === "RESET_PERSISTED_STORE" ? undefined : state?.persisted, action);
 
-	const [serviceCalls, actions] = serviceCallReducer(
-		liftUndefined(state, s => s.serviceCalls),
-		action
-	);
+	if (state !== undefined && action.type === "RESET_PERSISTED_STORE") {
+		persisted.serviceSettings = state.persisted.serviceSettings;
+	}
+
+	const [serviceCalls, actions] = serviceCallReducer(state?.serviceCalls, action);
 
 	return [{ persisted, serviceCalls }, actions];
 };
