@@ -7,10 +7,10 @@ const TypedObject = {
 		return o ? Object.values(o) : [];
 	},
 
-	mapValues<V, R>(o: { [key: string]: V }, fn: (value: V) => R): { [key: string]: R } {
+	mapValues<V, R>(o: { [key: string]: V }, fn: (value: V, key: string) => R): { [key: string]: R } {
 		const result: { [key: string]: R } = {};
 		TypedObject.keys(o).forEach(key => {
-			result[key] = fn(o[key]);
+			result[key] = fn(o[key], key as string);
 		});
 		return result;
 	},

@@ -3,6 +3,7 @@ import { ServiceCallAction } from "../services/ServiceStateStore";
 import { DidAction } from "./reducers/didReducer";
 import { IdentityAction } from "./reducers/identityReducer";
 import { IssuerAction } from "./reducers/issuerReducer";
+import { PushNotificationAction } from "./reducers/pushNotificationReducer";
 import { RecentActivityAction } from "./reducers/recentActivityReducer";
 import { ServiceSettingAction } from "./reducers/serviceSettingsReducer";
 import { SessionAction } from "./reducers/sessionReducer";
@@ -19,4 +20,5 @@ export type StoreAction =
 	| ValidateDniAction
 	| DidAction
 	| IssuerAction
-	| RecentActivityAction;
+	| RecentActivityAction
+	| PushNotificationAction;

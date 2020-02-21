@@ -3,6 +3,7 @@ import { DidiServerApiClient, EthrDID } from "didi-sdk";
 import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 
+import { getState } from "../internal/getState";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
@@ -12,6 +13,7 @@ export interface ChangePhoneNumberArguments {
 	password: string;
 	newPhoneNumber: string;
 	validationCode: string;
+	firebaseId: string | undefined;
 }
 
 const changePhoneNumberComponent = buildComponentServiceCall(async (args: ChangePhoneNumberArguments) =>
@@ -24,17 +26,20 @@ export function changePhoneNumber(
 	newPhoneNumber: string,
 	validationCode: string
 ) {
-	return withDidiServerClient(serviceKey, {}, api => {
-		return withExistingDid(serviceKey, {}, did => {
-			return changePhoneNumberComponent(
-				serviceKey,
-				{ api, did, password, validationCode, newPhoneNumber },
-				certData => {
-					return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
-						return serviceCallSuccess(serviceKey);
-					});
-				}
-			);
+	return getState(serviceKey, {}, store => {
+		const firebaseId = store.pushToken.token ?? undefined;
+		return withDidiServerClient(serviceKey, {}, api => {
+			return withExistingDid(serviceKey, {}, did => {
+				return changePhoneNumberComponent(
+					serviceKey,
+					{ api, did, password, validationCode, newPhoneNumber, firebaseId },
+					certData => {
+						return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: [certData.certificate] }, () => {
+							return serviceCallSuccess(serviceKey);
+						});
+					}
+				);
+			});
 		});
 	});
 }

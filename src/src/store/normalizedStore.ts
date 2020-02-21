@@ -6,7 +6,7 @@ import FSStorage from "redux-persist-fs-storage";
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
-import { liftUndefined } from "../util/liftUndefined";
+import TypedObject from "../util/TypedObject";
 
 import { DidiSession } from "../model/DidiSession";
 import { RecentActivity } from "../model/RecentActivity";
@@ -16,6 +16,7 @@ import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateSt
 import { ActiveDid, didReducer } from "./reducers/didReducer";
 import { identityReducer } from "./reducers/identityReducer";
 import { issuerReducer, IssuerRegistry } from "./reducers/issuerReducer";
+import { pushNotificationReducer, PushState } from "./reducers/pushNotificationReducer";
 import { recentActivityReducer } from "./reducers/recentActivityReducer";
 import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
 import { sessionReducer } from "./reducers/sessionReducer";
@@ -25,6 +26,7 @@ import { StoreAction } from "./StoreAction";
 
 export interface PersistedStoreContent {
 	did: ActiveDid;
+	pushToken: PushState;
 	sessionFlags: DidiSession;
 	tokens: string[];
 	userInputIdentity: Identity;
@@ -36,6 +38,7 @@ export interface PersistedStoreContent {
 
 const reducer = combineReducers<PersistedStoreContent, StoreAction>({
 	did: didReducer,
+	pushToken: pushNotificationReducer,
 	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
 	userInputIdentity: identityReducer,
@@ -62,6 +65,18 @@ export interface NormalizedStoreContent {
 	serviceCalls: ServiceCallState;
 }
 
+const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user" } = {
+	did: "user",
+	pushToken: "device",
+	sessionFlags: "user",
+	tokens: "user",
+	userInputIdentity: "user",
+	serviceSettings: "device",
+	validateDni: "user",
+	knownIssuers: "user",
+	recentActivity: "user"
+};
+
 const storeReducer = (
 	state: NormalizedStoreContent | undefined,
 	action: StoreAction
@@ -69,7 +84,9 @@ const storeReducer = (
 	const persisted = persistedReducer(action.type === "RESET_PERSISTED_STORE" ? undefined : state?.persisted, action);
 
 	if (state !== undefined && action.type === "RESET_PERSISTED_STORE") {
-		persisted.serviceSettings = state.persisted.serviceSettings;
+		TypedObject.keys(deletionPolicy).forEach(key => {
+			persisted[key] = state.persisted[key] as any;
+		});
 	}
 
 	const [serviceCalls, actions] = serviceCallReducer(state?.serviceCalls, action);

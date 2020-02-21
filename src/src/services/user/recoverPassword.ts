@@ -3,6 +3,7 @@ import { DidiServerApiClient } from "didi-sdk";
 import { buildComponentServiceCall } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 
+import { getState } from "../internal/getState";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 
 import { recoverAccount } from "./recoverAccount";
