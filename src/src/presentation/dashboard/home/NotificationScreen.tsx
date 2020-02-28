@@ -23,7 +23,7 @@ interface NotificationScreenStateProps {
 	knownIssuers: IssuerRegistry;
 }
 interface NotificationScreenDispatchProps {
-	recoverTokens: () => void;
+	onOpen: () => void;
 }
 type NotificationScreenInternalProps = NotificationScreenProps &
 	NotificationScreenStateProps &
@@ -51,7 +51,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 	}
 
 	componentDidMount() {
-		this.props.recoverTokens();
+		this.props.onOpen();
 	}
 
 	render() {
@@ -117,7 +117,10 @@ const connected = didiConnect(
 		knownIssuers: state.knownIssuers
 	}),
 	(dispatch): NotificationScreenDispatchProps => ({
-		recoverTokens: () => dispatch(recoverTokens())
+		onOpen: () => {
+			dispatch(recoverTokens());
+			dispatch({ type: "DID_SEE_REQUESTS" });
+		}
 	})
 );
 

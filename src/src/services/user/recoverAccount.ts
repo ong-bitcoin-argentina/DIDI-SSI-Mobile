@@ -12,6 +12,7 @@ import { convertError } from "../common/convertError";
 
 import { PRIVATE_KEY_SEED_PASSWORD } from "../../AppConfig";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
+import { getState } from "../internal/getState";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { recoverTokens } from "../trustGraph/recoverTokens";
 
@@ -19,10 +20,11 @@ export interface RecoverAccountArguments {
 	api: DidiServerApiClient;
 	email: string;
 	password: string;
+	firebaseId: string | undefined;
 }
 
 const recoverAccountComponent = buildComponentServiceCall(async (args: RecoverAccountArguments) => {
-	const response = await args.api.recoverAccount(args.email, args.password, PRIVATE_KEY_SEED_PASSWORD);
+	const response = await args.api.recoverAccount(args.email, args.password, PRIVATE_KEY_SEED_PASSWORD, args.firebaseId);
 	if (isLeft(response)) {
 		return convertError(response);
 	}
@@ -41,10 +43,13 @@ const recoverAccountComponent = buildComponentServiceCall(async (args: RecoverAc
 });
 
 export function recoverAccount(serviceKey: string, email: string, password: string) {
-	return withDidiServerClient(serviceKey, {}, api => {
-		return recoverAccountComponent(serviceKey, { api, email, password }, () => {
-			return simpleAction(serviceKey, { type: "RESET_PERSISTED_STORE" }, () => {
-				return parallelAction(serviceKey, [recoverTokens(), serviceCallSuccess(serviceKey)]);
+	return getState(serviceKey, {}, store => {
+		const firebaseId = store.pushToken.token ?? undefined;
+		return withDidiServerClient(serviceKey, {}, api => {
+			return recoverAccountComponent(serviceKey, { api, email, password, firebaseId }, () => {
+				return simpleAction(serviceKey, { type: "RESET_PERSISTED_STORE" }, () => {
+					return parallelAction(serviceKey, [recoverTokens(), serviceCallSuccess(serviceKey)]);
+				});
 			});
 		});
 	});

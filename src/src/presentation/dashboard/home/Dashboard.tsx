@@ -13,10 +13,9 @@ import { RecentActivity } from "../../../model/RecentActivity";
 import { reloadDid } from "../../../services/internal/reloadDid";
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
-import { getAllIssuerNames, getIssuerNames } from "../../../services/user/getIssuerNames";
+import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
-import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
@@ -35,7 +34,6 @@ import { NotificationScreenProps } from "./NotificationScreen";
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	did: ActiveDid;
-	person: ValidatedIdentity;
 	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 	recentActivity: RecentActivity[];
@@ -137,7 +135,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 						ListHeaderComponent={
 							<Fragment>
 								<HomeHeader
-									person={this.props.person}
 									onPersonPress={() => this.navigate("UserData", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
 								/>
@@ -171,7 +168,6 @@ export default didiConnect(
 	DashboardScreen,
 	(state): DashboardScreenStateProps => ({
 		did: state.did,
-		person: state.validatedIdentity,
 		recentActivity: state.combinedRecentActivity,
 		knownIssuers: state.knownIssuers,
 		credentials: state.credentials,
@@ -181,7 +177,6 @@ export default didiConnect(
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
 			dispatch(reloadDid());
-			dispatch(recoverTokens());
 			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},

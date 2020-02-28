@@ -46,7 +46,7 @@ export default class DashboardJumpMenu extends NavigationEnabledComponent<
 		return (
 			<View {...this.props} pointerEvents="box-none">
 				<FloatingAction
-					color="#FFBD10"
+					color={colors.highlight}
 					overlayColor="rgba(0, 0, 0, 0.66)"
 					actions={actions}
 					onPressItem={name => name && this.navigate(name as keyof DashboardJumpNavigation, {})}

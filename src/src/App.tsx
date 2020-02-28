@@ -8,6 +8,7 @@ import TypedObject from "./util/TypedObject";
 
 import AppNavigator from "./presentation/AppNavigator";
 import { SplashContent } from "./presentation/SplashContent";
+import { PushNotificationReceiver } from "./services/PushNotificationObserver";
 import { persistor, store } from "./store/normalizedStore";
 import { didiConnect, StoreContent } from "./store/store";
 
@@ -19,7 +20,7 @@ YellowBox.ignoreWarnings([
 const AppContainer = createAppContainer(AppNavigator);
 
 const StoreStatePanel = didiConnect(
-	class extends React.Component<StoreContent> {
+	class extends React.PureComponent<StoreContent> {
 		render() {
 			const toShow = TypedObject.mapValues(this.props.serviceCalls, value => {
 				if (value === undefined || value.state !== "IN_PROGRESS" || value.command.type !== "RUN") {
@@ -42,7 +43,9 @@ export default class App extends React.Component {
 		return (
 			<Provider store={store}>
 				<PersistGate persistor={persistor} loading={<SplashContent />}>
+					<PushNotificationReceiver />
 					<AppContainer />
+					{false && <StoreStatePanel />}
 				</PersistGate>
 			</Provider>
 		);
