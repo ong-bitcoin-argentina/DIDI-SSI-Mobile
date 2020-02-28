@@ -48,7 +48,10 @@ export function recoverAccount(serviceKey: string, email: string, password: stri
 		return withDidiServerClient(serviceKey, {}, api => {
 			return recoverAccountComponent(serviceKey, { api, email, password, firebaseId }, () => {
 				return simpleAction(serviceKey, { type: "RESET_PERSISTED_STORE" }, () => {
-					return parallelAction(serviceKey, [recoverTokens(), serviceCallSuccess(serviceKey)]);
+					return parallelAction(serviceKey, [
+						recoverTokens(tokens => simpleAction(serviceKey, { type: "SEEN_TOKEN_ADD", content: tokens })),
+						serviceCallSuccess(serviceKey)
+					]);
 				});
 			});
 		});

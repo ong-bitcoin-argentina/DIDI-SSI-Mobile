@@ -80,7 +80,8 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 
 	const dashboardHome: NavMap<DashboardScreenProps> = NavMap.from(DashboardScreen, {
 		NotificationScreen: NavMap.from(NotificationScreen, {
-			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen)
+			ScanDisclosureRequest: NavMap.placeholder(ScanDisclosureRequestScreen),
+			DocumentDetail: NavMap.placeholder(DocumentDetailScreen)
 		}),
 		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
 		ValidateID: NavMap.placeholder(ValidateIdentityExplainWhatScreen),

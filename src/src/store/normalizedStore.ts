@@ -18,6 +18,7 @@ import { identityReducer } from "./reducers/identityReducer";
 import { issuerReducer, IssuerRegistry } from "./reducers/issuerReducer";
 import { pushNotificationReducer, PushState } from "./reducers/pushNotificationReducer";
 import { recentActivityReducer } from "./reducers/recentActivityReducer";
+import { seenTokenReducer } from "./reducers/seenTokenReducer";
 import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
 import { sessionReducer } from "./reducers/sessionReducer";
 import { tokenReducer } from "./reducers/tokenReducer";
@@ -29,6 +30,7 @@ export interface PersistedStoreContent {
 	pushToken: PushState;
 	sessionFlags: DidiSession;
 	tokens: string[];
+	seenTokens: string[];
 	userInputIdentity: Identity;
 	serviceSettings: ServiceSettings;
 	validateDni: ValidateDniState;
@@ -41,6 +43,7 @@ const reducer = combineReducers<PersistedStoreContent, StoreAction>({
 	pushToken: pushNotificationReducer,
 	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
+	seenTokens: seenTokenReducer,
 	userInputIdentity: identityReducer,
 	serviceSettings: serviceSettingsReducer,
 	validateDni: validateDniReducer,
@@ -70,6 +73,7 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	pushToken: "device",
 	sessionFlags: "user",
 	tokens: "user",
+	seenTokens: "user",
 	userInputIdentity: "user",
 	serviceSettings: "device",
 	validateDni: "user",
