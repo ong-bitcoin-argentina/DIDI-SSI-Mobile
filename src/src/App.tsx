@@ -22,6 +22,10 @@ const AppContainer = createAppContainer(AppNavigator);
 const StoreStatePanel = didiConnect(
 	class extends React.PureComponent<StoreContent> {
 		render() {
+			if (true) {
+				return null;
+			}
+
 			const toShow = TypedObject.mapValues(this.props.serviceCalls, value => {
 				if (value === undefined || value.state !== "IN_PROGRESS" || value.command.type !== "RUN") {
 					return value;
@@ -45,7 +49,7 @@ export default class App extends React.Component {
 				<PersistGate persistor={persistor} loading={<SplashContent />}>
 					<PushNotificationReceiver />
 					<AppContainer />
-					{false && <StoreStatePanel />}
+					<StoreStatePanel />
 				</PersistGate>
 			</Provider>
 		);
