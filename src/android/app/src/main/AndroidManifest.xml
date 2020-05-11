@@ -40,16 +40,6 @@
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
                   android:resource="@android:color/white"/>
 
-      <receiver
-          android:name="com.google.android.gms.gcm.GcmReceiver"
-          android:exported="true"
-          android:permission="com.google.android.c2dm.permission.SEND" >
-          <intent-filter>
-              <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-              <category android:name="${applicationId}" />
-          </intent-filter>
-      </receiver>
-
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
           <intent-filter>
