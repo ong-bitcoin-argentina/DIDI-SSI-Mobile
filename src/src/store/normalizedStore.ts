@@ -1,11 +1,12 @@
 import { Identity } from "didi-sdk";
 import { AnyAction, combineReducers, createStore, Store } from "redux";
-import { install as installReduxLoop, liftState, Loop } from "redux-loop";
+import { combineReducers as combineLoopReducers, install as installReduxLoop, liftState, Loop } from "redux-loop";
 import { persistReducer, persistStore, StateReconciler } from "redux-persist";
 import FSStorage from "redux-persist-fs-storage";
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
+import { assertUnreachable } from "../util/assertUnreachable";
 import TypedObject from "../util/TypedObject";
 
 import { DidiSession } from "../model/DidiSession";
@@ -36,7 +37,7 @@ export interface PersistedStoreContent {
 	recentActivity: RecentActivity[];
 }
 
-const reducer = combineReducers<PersistedStoreContent, StoreAction>({
+const persistedStoreContentReducer = combineReducers<PersistedStoreContent, StoreAction>({
 	did: didReducer,
 	pushToken: pushNotificationReducer,
 	sessionFlags: sessionReducer,
@@ -47,23 +48,6 @@ const reducer = combineReducers<PersistedStoreContent, StoreAction>({
 	knownIssuers: issuerReducer,
 	recentActivity: recentActivityReducer
 });
-
-const stateReconciler: StateReconciler<PersistedStoreContent> = autoMergeLevel2;
-
-const persistedReducer = persistReducer(
-	{
-		key: "root",
-		keyPrefix: "",
-		storage: FSStorage(),
-		stateReconciler
-	},
-	reducer
-);
-
-export interface NormalizedStoreContent {
-	persisted: PersistedStoreContent & PersistPartial;
-	serviceCalls: ServiceCallState;
-}
 
 const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user" } = {
 	did: "user",
@@ -77,22 +61,41 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	recentActivity: "user"
 };
 
-const storeReducer = (
-	state: NormalizedStoreContent | undefined,
-	action: StoreAction
-): Loop<NormalizedStoreContent, StoreAction> => {
-	const persisted = persistedReducer(action.type === "RESET_PERSISTED_STORE" ? undefined : state?.persisted, action);
-
-	if (state !== undefined && action.type === "RESET_PERSISTED_STORE") {
-		TypedObject.keys(deletionPolicy).forEach(key => {
-			persisted[key] = state.persisted[key] as any;
-		});
+function deletionReducer(state: PersistedStoreContent | undefined, action: StoreAction): PersistedStoreContent {
+	if (state === undefined || action.type !== "RESET_PERSISTED_STORE") {
+		return persistedStoreContentReducer(state, action);
 	}
 
-	const [serviceCalls, actions] = serviceCallReducer(state?.serviceCalls, action);
+	const nextState = persistedStoreContentReducer(undefined, action);
+	TypedObject.keys(deletionPolicy).forEach(key => {
+		if (deletionPolicy[key] === "device") {
+			nextState[key] = state[key] as any;
+		}
+	});
+	return nextState;
+}
 
-	return [{ persisted, serviceCalls }, actions];
-};
+const stateReconciler: StateReconciler<PersistedStoreContent> = autoMergeLevel2;
+
+const persistedReducer = persistReducer(
+	{
+		key: "root",
+		keyPrefix: "",
+		storage: FSStorage(),
+		stateReconciler
+	},
+	deletionReducer
+);
+
+export interface NormalizedStoreContent {
+	persisted: PersistedStoreContent & PersistPartial;
+	serviceCalls: ServiceCallState;
+}
+
+const storeReducer = combineLoopReducers({
+	persisted: persistedReducer,
+	serviceCalls: serviceCallReducer
+});
 
 export const store = createStore(
 	storeReducer as any,
