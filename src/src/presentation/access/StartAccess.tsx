@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { StyleSheet } from "react-native";
+import { RNUportHDSigner } from "react-native-uport-signer";
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import DidiButton from "../util/DidiButton";
@@ -15,12 +16,14 @@ import { AccessSettingsProps } from "./AccessSettings";
 import { LoginScreenProps } from "./login/LoginScreen";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
+import { SignupWithResetProps } from "./signup/SignupWithReset";
 
 export type StartAccessProps = {};
 
 export interface StartAccessNavigation {
 	Login: LoginScreenProps;
 	SignupOnboarding: SignupOnboardingProps;
+	SignupWithReset: SignupWithResetProps;
 	RecoveryExplanation: RecoveryExplanationProps;
 	AccessSettings: AccessSettingsProps;
 }
@@ -38,7 +41,7 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 						title={strings.recovery.startAccess.loginButton}
 					/>
 					<DidiButton
-						onPress={() => this.navigate("SignupOnboarding", {})}
+						onPress={this.goToSignup}
 						style={styles.primaryButton}
 						title={strings.recovery.startAccess.createButton}
 					/>
@@ -59,6 +62,15 @@ export class StartAccessScreen extends NavigationEnabledComponent<StartAccessPro
 			</Fragment>
 		);
 	}
+
+	private goToSignup = async () => {
+		const hasSeed = await RNUportHDSigner.hasSeed();
+		if (hasSeed) {
+			this.navigate("SignupWithReset", {});
+		} else {
+			this.navigate("SignupOnboarding", {});
+		}
+	};
 }
 
 const styles = StyleSheet.create({

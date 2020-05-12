@@ -193,6 +193,14 @@ export default {
 		registrationValidated: {
 			message: "Su E-mail ha sido validado y su Identidad Digital ha sido resguardada.",
 			buttonEnter: "Ingresar a Didi"
+		},
+		reset: {
+			message:
+				"No podés tener más de una cuenta guardada en un dispositivo.\n\n" +
+				"Antes de crear otra cuenta, debés borrar la copia local de tu cuenta actual.\n\n" +
+				"Para volver a usar tu cuenta actual, tendrás que Recuperar Cuenta.",
+			cancel: "Salir sin cambios",
+			doDelete: "Borrar copia local"
 		}
 	},
 	login: {
