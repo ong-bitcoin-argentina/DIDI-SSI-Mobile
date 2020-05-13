@@ -5,6 +5,7 @@ import { RNUportHDSigner } from "react-native-uport-signer";
 import { serviceCallSuccess } from "../../../services/common/componentServiceCall";
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import { ServiceObserver } from "../../common/ServiceObserver";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
@@ -42,17 +43,24 @@ class SignupWithResetScreen extends NavigationEnabledComponent<
 				<DidiText.Explanation.Normal>{strings.signup.reset.message}</DidiText.Explanation.Normal>
 				<Image source={require("../../resources/images/emailConfirmed.png")} style={commonStyles.image.image} />
 				<View>
-					<DidiButton style={styles.deleteButton} onPress={this.doDelete} title={strings.signup.reset.doDelete} />
+					<ServiceObserver
+						serviceKey={serviceKey}
+						onSuccess={() => {
+							this.replace("SignupEnterPhone", {});
+						}}
+					/>
+					<DidiButton
+						style={styles.deleteButton}
+						title={strings.signup.reset.doDelete}
+						onPress={() => {
+							this.props.resetStore();
+						}}
+					/>
 					<DidiButton onPress={() => this.goBack()} title={strings.signup.reset.cancel} />
 				</View>
 			</DidiScreen>
 		);
 	}
-
-	private doDelete = async () => {
-		this.props.resetStore();
-		this.replace("SignupEnterPhone", {});
-	};
 }
 
 const serviceKey = "ResetSignup";

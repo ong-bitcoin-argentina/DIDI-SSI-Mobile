@@ -70,11 +70,12 @@ const connected = didiConnect(
 	}),
 	(dispatch): EnterPhoneWrapperDispatchProps => ({
 		requestSmsCode: (createDid: boolean, cellPhoneNumber: string, password: string | null) => {
-			let call = sendSmsValidator(serviceKey, cellPhoneNumber, password);
+			const call = sendSmsValidator(serviceKey, cellPhoneNumber, password);
 			if (createDid) {
-				call = ensureDid(serviceKey, () => call);
+				dispatch(ensureDid(serviceKey, () => call));
+			} else {
+				dispatch(call);
 			}
-			dispatch(call);
 		}
 	})
 );
