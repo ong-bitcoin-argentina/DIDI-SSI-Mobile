@@ -18,6 +18,9 @@ import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import HollowDot from "../../resources/images/onboardingCircle.svg";
+import FullDot from "../../resources/images/onboardingCircleActive.svg";
+import CloseCross from "../../resources/images/onboardingClose.svg";
 import onboardingPages, { OnboardingPage } from "../../resources/onboardingPages";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -100,7 +103,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 				<View pointerEvents="box-none" style={styles.closeArea}>
 					<TouchableOpacity style={styles.closeContainer} onPress={() => this.goBack()}>
 						<DidiText.SignupCloseButton>{strings.signup.onboarding.close}</DidiText.SignupCloseButton>
-						<Image style={styles.closeButtonImage} source={require("../../resources/images/onboardingExit.png")} />
+						<CloseCross width={22} height={22} style={styles.closeButtonImage} />
 					</TouchableOpacity>
 				</View>
 				<View pointerEvents="box-none" style={styles.cardArea} />
@@ -143,13 +146,15 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 	}
 
 	private renderDots() {
-		const emptyDot = require("../../resources/images/onboardingCircle.png");
-		const selectedDot = require("../../resources/images/onboardingCircleActive.png");
+		const size = 12;
 		return (
 			<View style={styles.dotContainer}>
 				{onboardingPages.map((_, index) => {
-					const source = index === Math.round(this.state.scrollPage) ? selectedDot : emptyDot;
-					return <Image key={index} source={source} style={styles.dot} />;
+					if (index === Math.round(this.state.scrollPage)) {
+						return <FullDot width={size} height={size} style={styles.dot} />;
+					} else {
+						return <HollowDot width={size} height={size} style={styles.dot} />;
+					}
 				})}
 			</View>
 		);
@@ -157,6 +162,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 
 	private advancePage() {
 		if (Math.round(this.state.scrollPage) === onboardingPages.length - 1) {
+			this.nextScreen();
 			this.navigate("SignupEnterPhone", {});
 		} else if (this.scrollViewRef.current) {
 			this.setPage(this.state.scrollPage + 1);
@@ -177,7 +183,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 		const freeScrollPage = event.nativeEvent.contentOffset.x / pageWidth;
 
 		if (freeScrollPage > maxPage + 0.25) {
-			this.navigate("SignupEnterPhone", {}, () => {
+			this.nextScreen(() => {
 				this.setPage(maxPage);
 				this.setState({ pageWidth, scrollPage: maxPage });
 			});
@@ -186,6 +192,10 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 			this.setState({ pageWidth, scrollPage });
 		}
 	}
+
+	private nextScreen = (andThen?: () => void) => {
+		this.navigate("SignupEnterPhone", {}, andThen);
+	};
 }
 
 const styles = StyleSheet.create({
@@ -199,7 +209,9 @@ const styles = StyleSheet.create({
 	},
 	closeArea: {
 		flex: 1,
-		marginHorizontal: 20
+		flexDirection: "row",
+		marginHorizontal: 20,
+		justifyContent: "flex-end"
 	},
 	cardArea: {
 		flex: 4,
@@ -223,13 +235,10 @@ const styles = StyleSheet.create({
 	closeContainer: {
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "flex-end",
-		flex: 1
+		justifyContent: "flex-end"
 	},
 	closeButtonImage: {
-		marginLeft: 10,
-		width: 22,
-		height: 22
+		marginHorizontal: 10
 	},
 	progressArea: {
 		flex: 1,
@@ -254,8 +263,6 @@ const styles = StyleSheet.create({
 		alignSelf: "center"
 	},
 	dot: {
-		width: 12,
-		height: 12,
-		marginHorizontal: 2
+		marginHorizontal: 4
 	}
 });
