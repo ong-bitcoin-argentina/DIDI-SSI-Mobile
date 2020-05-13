@@ -20,6 +20,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import HollowDot from "../../resources/images/onboardingCircle.svg";
 import FullDot from "../../resources/images/onboardingCircleActive.svg";
+import NextDot from "../../resources/images/onboardingCircleNext.svg";
 import CloseCross from "../../resources/images/onboardingClose.svg";
 import onboardingPages, { OnboardingPage } from "../../resources/onboardingPages";
 import strings from "../../resources/strings";
@@ -156,6 +157,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 						return <HollowDot width={size} height={size} style={styles.dot} />;
 					}
 				})}
+				<NextDot width={size} height={size} style={styles.dot} />
 			</View>
 		);
 	}
