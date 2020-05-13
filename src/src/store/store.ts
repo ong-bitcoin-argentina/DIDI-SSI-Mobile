@@ -16,15 +16,15 @@ import {
 	SpecialCredentialMap,
 	toplevelCredentialSelector
 } from "./selector/credentialSelector";
+import { newTokensAvailableSelector } from "./selector/newTokensAvailableSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
-import { requestSelector } from "./selector/requestSelector";
 import { StoreAction } from "./StoreAction";
 
 export interface StoreContent extends PersistedStoreContent {
 	parsedTokens: Array<CredentialDocument | SelectiveDisclosureRequest>;
 	credentials: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
-	requests: SelectiveDisclosureRequest[];
+	newTokensAvailable: boolean;
 
 	serviceCalls: ServiceCallState;
 
@@ -40,7 +40,7 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 		parsedTokens: parsedTokenSelector(store),
 		credentials: toplevelCredentialSelector(store),
 		activeSpecialCredentials: activeSpecialCredentialsSelector(store),
-		requests: requestSelector(store),
+		newTokensAvailable: newTokensAvailableSelector(store),
 
 		serviceCalls: store.serviceCalls,
 
@@ -56,6 +56,9 @@ function mapState<StateProps>(mapStateToProps: (state: StoreContent) => StatePro
 	};
 }
 
+/**
+ * Elimina StateProps y DispatchProps de los props del component C
+ */
 export type DidiConnectedComponent<C, StateProps, DispatchProps> = C extends NavigationEnabledComponentConstructor<
 	infer FullProps_1,
 	infer Navigation
@@ -65,11 +68,22 @@ export type DidiConnectedComponent<C, StateProps, DispatchProps> = C extends Nav
 	? ComponentType<Omit<FullProps_2, keyof StateProps | keyof DispatchProps>>
 	: never;
 
+/**
+ * Conecta este componente al store desnormalizado, creando un nuevo componente
+ * cuyos props excluyen a los provistos en la funcion mapStateToProps
+ * @see denormalizeStore
+ */
 export function didiConnect<StateProps, C>(
 	component: C,
 	mapStateToProps: (state: StoreContent) => StateProps
 ): DidiConnectedComponent<C, StateProps, {}>;
 
+/**
+ * Conecta este componente al store desnormalizado, creando un nuevo componente
+ * cuyos props excluyen a los provistos en las funciones mapStateToProps y
+ * mapDispatchToProps
+ * @see denormalizeStore
+ */
 export function didiConnect<StateProps, DispatchProps, C>(
 	component: C,
 	mapStateToProps: (state: StoreContent) => StateProps,

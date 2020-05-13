@@ -47,7 +47,10 @@ export function recoverAccount(serviceKey: string, email: string, password: stri
 			return recoverAccountComponent(serviceKey, { api, email, password, firebaseId }, phrase => {
 				return importDid(serviceKey, phrase, activeDid => {
 					return simpleAction(serviceKey, { type: "RESET_PERSISTED_STORE" }, () => {
-						return parallelAction(serviceKey, [recoverTokens(), serviceCallSuccess(serviceKey)]);
+						return parallelAction(serviceKey, [
+							recoverTokens(tokens => simpleAction(serviceKey, { type: "SEEN_TOKEN_ADD", content: tokens })),
+							serviceCallSuccess(serviceKey)
+						]);
 					});
 				});
 			});

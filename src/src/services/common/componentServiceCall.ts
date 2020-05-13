@@ -31,9 +31,13 @@ export function parallelAction(serviceKey: string, actions: ServiceCallAction[])
 export function simpleAction(
 	serviceKey: string,
 	action: StoreAction,
-	next: () => ServiceCallAction
+	next?: () => ServiceCallAction
 ): ServiceCallAction {
-	return { type: "SERVICE_CALL_START", serviceKey, call: Cmd.list([Cmd.action(action), Cmd.action(next())]) };
+	if (next) {
+		return { type: "SERVICE_CALL_START", serviceKey, call: Cmd.list([Cmd.action(action), Cmd.action(next())]) };
+	} else {
+		return { type: "SERVICE_CALL_START", serviceKey, call: Cmd.action(action) };
+	}
 }
 
 export function buildComponentServiceCall<Args, Result>(

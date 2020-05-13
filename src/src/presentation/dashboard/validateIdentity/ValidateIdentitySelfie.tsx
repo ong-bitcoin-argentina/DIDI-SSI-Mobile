@@ -1,5 +1,5 @@
 import React from "react";
-import { LayoutRectangle, View } from "react-native";
+import { LayoutRectangle, Vibration, View } from "react-native";
 import { Face, TakePictureResponse } from "react-native-camera";
 
 import { assertUnreachable } from "../../../util/assertUnreachable";
@@ -155,6 +155,7 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 				this.setState({ state: "capture" });
 				try {
 					const data = await this.camera.takePicture({ pauseAfterCapture: false });
+					Vibration.vibrate(400, false);
 					this.setState({
 						state: "liveness",
 						rawPicture: data,

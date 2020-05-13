@@ -1,29 +1,39 @@
-import { SelectiveDisclosureRequest } from "didi-sdk";
+import { CredentialDocument, SelectiveDisclosureRequest } from "didi-sdk";
 import React, { Fragment } from "react";
-import { FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
+import { assertUnreachable } from "../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { DocumentCredentialCard } from "../common/documentToCard";
 import { RequestCard } from "../common/RequestCard";
 
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest";
+import { DocumentDetailProps, DocumentDetailScreen } from "../documents/DocumentDetail";
 
 export type NotificationScreenProps = {};
 interface NotificationScreenStateProps {
-	requests: SelectiveDisclosureRequest[];
+	did: ActiveDid;
+	parsedTokens: Array<CredentialDocument | SelectiveDisclosureRequest>;
+	seenTokens: string[];
 	knownIssuers: IssuerRegistry;
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 interface NotificationScreenDispatchProps {
 	onOpen: () => void;
+	markAsJustSeen: (tokens: string[]) => void;
 }
 type NotificationScreenInternalProps = NotificationScreenProps &
 	NotificationScreenStateProps &
@@ -31,9 +41,11 @@ type NotificationScreenInternalProps = NotificationScreenProps &
 
 type NotificationScreenState = {
 	showExpired: boolean;
+	initialSeenTokens: string[];
 };
 export interface NotificationScreenNavigation {
 	ScanDisclosureRequest: ScanDisclosureRequestProps;
+	DocumentDetail: DocumentDetailProps;
 }
 
 class NotificationScreen extends NavigationEnabledComponent<
@@ -46,7 +58,8 @@ class NotificationScreen extends NavigationEnabledComponent<
 	constructor(props: NotificationScreenInternalProps) {
 		super(props);
 		this.state = {
-			showExpired: false
+			showExpired: false,
+			initialSeenTokens: props.seenTokens
 		};
 	}
 
@@ -55,6 +68,21 @@ class NotificationScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
+		const toShow = this.props.parsedTokens.filter(tk => {
+			if (!this.state.initialSeenTokens.includes(tk.jwt)) {
+				return true;
+			}
+			switch (tk.type) {
+				case "CredentialDocument":
+					return false;
+				case "SelectiveDisclosureRequest":
+					return this.state.showExpired || SelectiveDisclosureRequest.isValidNow(tk);
+				default:
+					assertUnreachable(tk);
+			}
+		});
+		this.props.markAsJustSeen(this.props.parsedTokens.map(tk => tk.jwt));
+
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -62,9 +90,9 @@ class NotificationScreen extends NavigationEnabledComponent<
 					<FlatList
 						style={styles.body}
 						contentContainerStyle={styles.scrollContent}
-						data={this.props.requests.filter(rq => this.state.showExpired || SelectiveDisclosureRequest.isValidNow(rq))}
+						data={toShow}
 						keyExtractor={req => req.jwt}
-						renderItem={item => this.renderRequest(item.item)}
+						renderItem={item => this.renderItem(item.item)}
 						ListHeaderComponent={
 							<DidiButton
 								title={this.state.showExpired ? strings.notifications.hideExpired : strings.notifications.showExpired}
@@ -79,6 +107,42 @@ class NotificationScreen extends NavigationEnabledComponent<
 					/>
 				</SafeAreaView>
 			</Fragment>
+		);
+	}
+
+	private renderItem(item: CredentialDocument | SelectiveDisclosureRequest) {
+		switch (item.type) {
+			case "CredentialDocument":
+				return this.renderCredential(item);
+			case "SelectiveDisclosureRequest":
+				return this.renderRequest(item);
+			default:
+				assertUnreachable(item);
+		}
+	}
+
+	private renderCredential(document: CredentialDocument) {
+		return (
+			<TouchableOpacity
+				onPress={() =>
+					this.navigate("DocumentDetail", {
+						document,
+						did: this.props.did,
+						knownIssuers: this.props.knownIssuers,
+						activeSpecialCredentials: this.props.activeSpecialCredentials
+					})
+				}
+			>
+				<DocumentCredentialCard
+					preview={true}
+					document={document}
+					context={{
+						activeDid: this.props.did,
+						knownIssuers: this.props.knownIssuers,
+						specialCredentials: this.props.activeSpecialCredentials
+					}}
+				/>
+			</TouchableOpacity>
 		);
 	}
 
@@ -113,14 +177,15 @@ class NotificationScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	NotificationScreen,
 	(state): NotificationScreenStateProps => ({
-		requests: state.requests,
-		knownIssuers: state.knownIssuers
+		did: state.did,
+		parsedTokens: state.parsedTokens,
+		seenTokens: state.seenTokens,
+		knownIssuers: state.knownIssuers,
+		activeSpecialCredentials: state.activeSpecialCredentials
 	}),
 	(dispatch): NotificationScreenDispatchProps => ({
-		onOpen: () => {
-			dispatch(recoverTokens());
-			dispatch({ type: "DID_SEE_REQUESTS" });
-		}
+		onOpen: () => dispatch(recoverTokens()),
+		markAsJustSeen: (tokens: string[]) => dispatch({ type: "SEEN_TOKEN_ADD", content: tokens })
 	})
 );
 
