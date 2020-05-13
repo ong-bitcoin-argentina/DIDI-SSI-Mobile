@@ -102,7 +102,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 		return (
 			<View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
 				<View pointerEvents="box-none" style={styles.closeArea}>
-					<TouchableOpacity style={styles.closeContainer} onPress={() => this.goBack()}>
+					<TouchableOpacity style={styles.closeContainer} onPress={() => this.nextScreen()}>
 						<DidiText.SignupCloseButton>{strings.signup.onboarding.close}</DidiText.SignupCloseButton>
 						<CloseCross width={22} height={22} style={styles.closeButtonImage} />
 					</TouchableOpacity>
