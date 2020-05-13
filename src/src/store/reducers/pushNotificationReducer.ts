@@ -11,7 +11,6 @@ export interface PushNotificationContent {
 
 export type PushState = {
 	token: PushToken | null;
-	hasUnseenRequests: boolean;
 	pending: PushNotificationContent[];
 };
 
@@ -27,14 +26,11 @@ interface ClearPendingPush {
 	type: "CLEAR_PUSH";
 	value: PushNotificationContent;
 }
-interface DidSeeRequests {
-	type: "DID_SEE_REQUESTS";
-}
-export type PushNotificationAction = SetPushToken | RegisterPendingPush | ClearPendingPush | DidSeeRequests;
+export type PushNotificationAction = SetPushToken | RegisterPendingPush | ClearPendingPush;
 
 export function pushNotificationReducer(state: PushState | undefined, action: StoreAction): PushState {
 	if (state === undefined) {
-		return { token: null, hasUnseenRequests: false, pending: [] };
+		return { token: null, pending: [] };
 	}
 
 	switch (action.type) {
@@ -44,16 +40,11 @@ export function pushNotificationReducer(state: PushState | undefined, action: St
 		case "REGISTER_PUSH":
 			return {
 				...state,
-				hasUnseenRequests:
-					state.hasUnseenRequests || action.value.type === "SHARE_REQ" || action.value.type === "VALIDATION_REQ",
 				pending: [...state.pending, action.value]
 			};
 
 		case "CLEAR_PUSH":
 			return { ...state, pending: state.pending.filter(val => val !== action.value) };
-
-		case "DID_SEE_REQUESTS":
-			return { ...state, hasUnseenRequests: false };
 
 		default:
 			return state;

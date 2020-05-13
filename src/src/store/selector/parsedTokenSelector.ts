@@ -14,9 +14,16 @@ export const parsedTokenSelector = createSelector(
 		const persistentDocuments = TypedArray.flatMap(documents, doc =>
 			doc.type === "CredentialDocument" || doc.type === "SelectiveDisclosureRequest" ? doc : undefined
 		);
-		return persistentDocuments.reduce(
-			(acc: typeof persistentDocuments, curr) => (acc.find(x => curr.jwt === x.jwt) ? acc : [...acc, curr]),
-			[]
-		);
+		return TypedArray.uniqueElements(persistentDocuments, (l, r) => l.jwt === r.jwt).sort((l, r) => {
+			if (l.issuedAt) {
+				if (r.issuedAt) {
+					return r.issuedAt - l.issuedAt;
+				} else {
+					return +1;
+				}
+			} else {
+				return -1;
+			}
+		});
 	}
 );

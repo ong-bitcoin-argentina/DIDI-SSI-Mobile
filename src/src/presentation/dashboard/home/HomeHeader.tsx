@@ -20,7 +20,7 @@ export interface HomeHeaderProps {
 interface HomeHeaderStateProps {
 	person: ValidatedIdentity;
 	isLoadingCredentials: boolean;
-	hasPendingNotification: boolean;
+	newTokensAvailable: boolean;
 }
 
 interface HomeHeaderDispatchProps {
@@ -64,7 +64,7 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 				<View style={styles.activityIndicatorContainer}>
 					{this.props.isLoadingCredentials ? <ActivityIndicator size="large" color={colors.secondary} /> : undefined}
 					<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
-						<DidiText.Icon color={this.props.hasPendingNotification ? colors.highlight : undefined} fontSize={24}>
+						<DidiText.Icon color={this.props.newTokensAvailable ? colors.highlight : undefined} fontSize={24}>
 							
 						</DidiText.Icon>
 					</TouchableOpacity>
@@ -79,7 +79,7 @@ export default didiConnect(
 	(state): HomeHeaderStateProps => ({
 		person: state.validatedIdentity,
 		isLoadingCredentials: state.serviceCalls[recoverTokensServiceKey]?.state === "IN_PROGRESS",
-		hasPendingNotification: state.pushToken.hasUnseenRequests
+		newTokensAvailable: state.newTokensAvailable
 	}),
 	(dispatch): HomeHeaderDispatchProps => ({
 		recoverTokens: () => dispatch(recoverTokens())

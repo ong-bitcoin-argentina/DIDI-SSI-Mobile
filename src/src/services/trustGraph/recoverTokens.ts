@@ -14,6 +14,7 @@ import { ActiveDid } from "../../store/reducers/didReducer";
 import { getCredentials } from "../../uPort/getCredentials";
 import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
+import { ServiceCallAction } from "../ServiceStateStore";
 import { getAllIssuerNames } from "../user/getIssuerNames";
 
 interface RecoverTokensArguments {
@@ -53,7 +54,7 @@ const recoverTokensComponent = buildComponentServiceCall(doRecoverTokens);
 
 export const recoverTokensServiceKey = "_recoverTokens";
 
-export function recoverTokens() {
+export function recoverTokens(then?: (tokens: string[]) => ServiceCallAction) {
 	const serviceKey = recoverTokensServiceKey;
 	return getState(serviceKey, {}, store => {
 		const { trustGraphUri, ethrDidUri, ethrDelegateUri } = store.serviceSettings;
@@ -62,7 +63,11 @@ export function recoverTokens() {
 		return withExistingDid(serviceKey, {}, didData => {
 			return recoverTokensComponent(serviceKey, { activeDid, trustGraphUri, ethrDidUri, ethrDelegateUri }, tokens => {
 				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: tokens }, () => {
-					return parallelAction(serviceKey, [getAllIssuerNames(), serviceCallDrop(serviceKey)]);
+					return parallelAction(serviceKey, [
+						getAllIssuerNames(),
+						serviceCallDrop(serviceKey),
+						...(then ? [then(tokens)] : [])
+					]);
 				});
 			});
 		});
