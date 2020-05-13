@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ensureDid } from "../../services/internal/ensureDid";
+import { ensureDid } from "../../services/internal/uportSigner";
 import { isPendingService } from "../../services/ServiceStateStore";
 import { sendSmsValidator } from "../../services/user/sendSmsValidator";
 import { didiConnect } from "../../store/store";
@@ -72,7 +72,7 @@ const connected = didiConnect(
 		requestSmsCode: (createDid: boolean, cellPhoneNumber: string, password: string | null) => {
 			let call = sendSmsValidator(serviceKey, cellPhoneNumber, password);
 			if (createDid) {
-				call = ensureDid(serviceKey, call);
+				call = ensureDid(serviceKey, () => call);
 			}
 			dispatch(call);
 		}

@@ -2,6 +2,7 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
+import { serviceCallSuccess } from "../../../services/common/componentServiceCall";
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
@@ -9,6 +10,7 @@ import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { deleteDid } from "../../../services/internal/uportSigner";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
@@ -48,12 +50,12 @@ class SignupWithResetScreen extends NavigationEnabledComponent<
 	}
 
 	private doDelete = async () => {
-		const seeds = await RNUportHDSigner.listSeedAddresses();
-		await Promise.all(seeds.map(seed => RNUportHDSigner.deleteSeed(seed)));
 		this.props.resetStore();
 		this.replace("SignupEnterPhone", {});
 	};
 }
+
+const serviceKey = "ResetSignup";
 
 const connected = didiConnect(
 	SignupWithResetScreen,
@@ -61,7 +63,10 @@ const connected = didiConnect(
 		did: state.did
 	}),
 	dispatch => ({
-		resetStore: () => dispatch({ type: "RESET_PERSISTED_STORE" })
+		resetStore: () => {
+			dispatch(deleteDid(serviceKey));
+			dispatch({ type: "RESET_PERSISTED_STORE" });
+		}
 	})
 );
 

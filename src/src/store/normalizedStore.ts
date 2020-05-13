@@ -50,7 +50,7 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 });
 
 const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user" } = {
-	did: "user",
+	did: "device",
 	pushToken: "device",
 	sessionFlags: "user",
 	tokens: "user",

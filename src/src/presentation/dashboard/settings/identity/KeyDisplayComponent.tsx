@@ -7,7 +7,7 @@ import { DidiText } from "../../../util/DidiText";
 
 export interface KeyDisplayProps extends ViewProps {
 	seed: KeyAddress;
-	onSeedDeleted: () => void;
+	deleteSeed: () => void;
 }
 interface KeyDisplayState {
 	deleteIdentityOnNextTap: boolean;
@@ -62,8 +62,7 @@ export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDis
 	}
 
 	private deleteSeed(seed: KeyAddress) {
-		RNUportHDSigner.deleteSeed(seed);
+		this.props.deleteSeed();
 		this.setState({ deleteIdentityOnNextTap: false });
-		this.props.onSeedDeleted();
 	}
 }

@@ -24,6 +24,8 @@ declare module "react-native-uport-signer" {
 		deleteSeed(address: KeyAddress): void;
 		showSeed(address: KeyAddress, explanation: string): Promise<SeedPhrase>;
 
+		validateMnemonic(phrase: SeedPhrase): Promise<boolean>;
+
 		signJwt(
 			address: KeyAddress,
 			path: DerivationPath,

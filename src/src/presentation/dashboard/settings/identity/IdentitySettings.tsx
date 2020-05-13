@@ -1,32 +1,41 @@
 import React, { Fragment } from "react";
-import { RNUportHDSigner } from "react-native-uport-signer";
 
+import { serviceCallSuccess } from "../../../../services/common/componentServiceCall";
 import { DidiScreen } from "../../../common/DidiScreen";
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
-import { DidiText } from "../../../util/DidiText";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
+
+import { deleteDid, ensureDid, importDid } from "../../../../services/internal/uportSigner";
+import { ActiveDid } from "../../../../store/reducers/didReducer";
+import { didiConnect } from "../../../../store/store";
 
 import { CredentialRecoveryComponent } from "./CredentialRecoveryComponent";
 import { KeyDisplayComponent } from "./KeyDisplayComponent";
 import { KeyRecoveryComponent } from "./KeyRecoveryComponent";
 
-export type IdentitySettingsProps = {};
-interface IdentitySettingsState {
-	seeds?: string[];
+export interface IdentitySettingsProps {}
+interface IdentitySettingsStateProps {
+	activeDid: ActiveDid;
 }
+interface IdentitySettingsDispatchProps {
+	createAddress: () => void;
+	importAddress: (phrase: string) => void;
+	deleteAddress: () => void;
+}
+type IdentitySettingsInnerProps = IdentitySettingsProps & IdentitySettingsStateProps & IdentitySettingsDispatchProps;
+
 export type IdentitySettingsNavigation = {};
 
 export default class IdentitySettingsScreen extends NavigationEnabledComponent<
-	IdentitySettingsProps,
-	IdentitySettingsState,
+	IdentitySettingsInnerProps,
+	{},
 	IdentitySettingsNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Copia de Seguridad");
 
-	constructor(props: IdentitySettingsProps) {
+	constructor(props: IdentitySettingsInnerProps) {
 		super(props);
 		this.state = {};
-		this.reloadSeeds();
 	}
 
 	render() {
@@ -34,27 +43,35 @@ export default class IdentitySettingsScreen extends NavigationEnabledComponent<
 	}
 
 	private renderContent() {
-		if (this.state.seeds === undefined) {
-			return <DidiText.Explanation.Emphasis>Cargando</DidiText.Explanation.Emphasis>;
-		} else if (this.state.seeds.length === 0) {
-			return <KeyRecoveryComponent onSeedCreated={() => this.reloadSeeds()} />;
+		if (this.props.activeDid === null) {
+			return <KeyRecoveryComponent createAddress={this.props.createAddress} importAddress={this.props.importAddress} />;
 		} else {
 			return (
 				<Fragment>
 					<KeyDisplayComponent
 						style={{ flex: 1 }}
-						seed={this.state.seeds[0]}
-						onSeedDeleted={() => this.reloadSeeds()}
+						seed={this.props.activeDid.keyAddress()}
+						deleteSeed={this.props.deleteAddress}
 					/>
 					<CredentialRecoveryComponent style={{ flex: 1 }} />
 				</Fragment>
 			);
 		}
 	}
-
-	private reloadSeeds() {
-		RNUportHDSigner.listSeedAddresses().then(seeds => {
-			this.setState({ seeds });
-		});
-	}
 }
+
+const serviceKey = "IdentitySettings";
+
+const connected = didiConnect(
+	IdentitySettingsScreen,
+	(state): IdentitySettingsStateProps => ({
+		activeDid: state.did
+	}),
+	(dispatch): IdentitySettingsDispatchProps => ({
+		createAddress: () => dispatch(ensureDid(serviceKey)),
+		importAddress: (phrase: string) => dispatch(importDid(serviceKey, phrase)),
+		deleteAddress: () => dispatch(deleteDid(serviceKey))
+	})
+);
+
+export { connected as IdentitySettingsScreen };

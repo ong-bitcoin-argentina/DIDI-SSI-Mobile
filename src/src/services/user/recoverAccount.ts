@@ -1,5 +1,5 @@
 import { DidiServerApiClient, EthrDID } from "didi-sdk";
-import { isLeft, left, right } from "fp-ts/lib/Either";
+import { isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
 import {
@@ -13,6 +13,7 @@ import { convertError } from "../common/convertError";
 import { PRIVATE_KEY_SEED_PASSWORD } from "../../AppConfig";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { getState } from "../internal/getState";
+import { importDid } from "../internal/uportSigner";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { recoverTokens } from "../trustGraph/recoverTokens";
 
@@ -24,21 +25,18 @@ export interface RecoverAccountArguments {
 }
 
 const recoverAccountComponent = buildComponentServiceCall(async (args: RecoverAccountArguments) => {
-	const response = await args.api.recoverAccount(args.email, args.password, PRIVATE_KEY_SEED_PASSWORD, args.firebaseId);
+	const response = convertError(
+		await args.api.recoverAccount(args.email, args.password, PRIVATE_KEY_SEED_PASSWORD, args.firebaseId)
+	);
 	if (isLeft(response)) {
-		return convertError(response);
+		return response;
 	}
 
 	try {
 		const phrase = Buffer.from(response.right.privateKeySeed, "base64").toString("utf8");
-		const nextAddress = await RNUportHDSigner.importSeed(phrase, "simple");
-
-		const addresses = await RNUportHDSigner.listSeedAddresses();
-		addresses.filter(addr => addr !== nextAddress.address).forEach(seed => RNUportHDSigner.deleteSeed(seed));
-
-		return right(EthrDID.fromKeyAddress(nextAddress.address));
+		return right(phrase);
 	} catch (e) {
-		return left(serviceErrors.did.WRITE_ERROR);
+		return left(serviceErrors.did.PARSE_MNEMONIC);
 	}
 });
 
@@ -46,9 +44,11 @@ export function recoverAccount(serviceKey: string, email: string, password: stri
 	return getState(serviceKey, {}, store => {
 		const firebaseId = store.pushToken.token ?? undefined;
 		return withDidiServerClient(serviceKey, {}, api => {
-			return recoverAccountComponent(serviceKey, { api, email, password, firebaseId }, () => {
-				return simpleAction(serviceKey, { type: "RESET_PERSISTED_STORE" }, () => {
-					return parallelAction(serviceKey, [recoverTokens(), serviceCallSuccess(serviceKey)]);
+			return recoverAccountComponent(serviceKey, { api, email, password, firebaseId }, phrase => {
+				return importDid(serviceKey, phrase, activeDid => {
+					return simpleAction(serviceKey, { type: "RESET_PERSISTED_STORE" }, () => {
+						return parallelAction(serviceKey, [recoverTokens(), serviceCallSuccess(serviceKey)]);
+					});
 				});
 			});
 		});

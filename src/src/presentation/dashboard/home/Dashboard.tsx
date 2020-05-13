@@ -10,8 +10,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard } from "../common/documentToCard";
 
 import { RecentActivity } from "../../../model/RecentActivity";
-import { reloadDid } from "../../../services/internal/reloadDid";
-import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
@@ -176,7 +174,6 @@ export default didiConnect(
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
-			dispatch(reloadDid());
 			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},
