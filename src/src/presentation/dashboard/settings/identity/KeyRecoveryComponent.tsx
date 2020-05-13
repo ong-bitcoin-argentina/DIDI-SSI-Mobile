@@ -1,15 +1,16 @@
 import React from "react";
-import { View, ViewProps } from "react-native";
-import { RNUportHDSigner, SeedPhrase } from "react-native-uport-signer";
+import { View } from "react-native";
 
 import DidiButton from "../../../util/DidiButton";
 import DidiTextInput from "../../../util/DidiTextInput";
 
-export interface KeyRecoveryProps extends ViewProps {
-	onSeedCreated: () => void;
+export interface KeyRecoveryProps {
+	createAddress: () => void;
+	importAddress: (phrase: string) => void;
 }
+
 interface KeyRecoveryState {
-	importSeed?: SeedPhrase;
+	importSeed?: string;
 }
 
 export class KeyRecoveryComponent extends React.Component<KeyRecoveryProps, KeyRecoveryState> {
@@ -20,8 +21,8 @@ export class KeyRecoveryComponent extends React.Component<KeyRecoveryProps, KeyR
 
 	render() {
 		return (
-			<View {...this.props}>
-				<DidiButton title="Crear Identidad" onPress={() => this.createAddress()} />
+			<View>
+				<DidiButton title="Crear Identidad" onPress={() => this.props.createAddress()} />
 				<View>
 					<DidiTextInput
 						description="Importar Identidad"
@@ -31,25 +32,13 @@ export class KeyRecoveryComponent extends React.Component<KeyRecoveryProps, KeyR
 					<DidiButton
 						title="Importar"
 						onPress={() => {
-							this.importSeed();
+							if (this.state.importSeed) {
+								this.props.importAddress(this.state.importSeed);
+							}
 						}}
 					/>
 				</View>
 			</View>
 		);
-	}
-
-	private createAddress() {
-		RNUportHDSigner.createSeed("simple").then(() => {
-			this.props.onSeedCreated();
-		});
-	}
-
-	private importSeed() {
-		if (this.state.importSeed) {
-			RNUportHDSigner.importSeed(this.state.importSeed, "simple").then(() => {
-				this.props.onSeedCreated();
-			});
-		}
 	}
 }

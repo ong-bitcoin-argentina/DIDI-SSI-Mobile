@@ -19,6 +19,7 @@ import { SignupEnterPhoneScreen } from "./signup/SignupEnterPhone";
 import { SignupOnboardingScreen } from "./signup/SignupOnboarding";
 import { SignupPhoneVerifiedScreen } from "./signup/SignupPhoneVerified";
 import { SignupVerifyPhoneScreen } from "./signup/SignupVerifyPhone";
+import { SignupWithResetScreen } from "./signup/SignupWithReset";
 import { StartAccessScreen } from "./StartAccess";
 
 interface AccessSwitchTarget {
@@ -66,10 +67,13 @@ function recovery(then: NavTree<AccessSwitchTarget>) {
 	});
 }
 
-export default function(then: NavTree<AccessSwitchTarget>) {
+export default function (then: NavTree<AccessSwitchTarget>) {
 	return NavMap.from(StartAccessScreen, {
 		Login: login(then),
 		SignupOnboarding: signup(then),
+		SignupWithReset: NavMap.from(SignupWithResetScreen, {
+			SignupEnterPhone: NavMap.placeholder(SignupEnterPhoneScreen)
+		}),
 		RecoveryExplanation: recovery(then),
 		AccessSettings: NavMap.from(AccessSettingsScreen, then)
 	});

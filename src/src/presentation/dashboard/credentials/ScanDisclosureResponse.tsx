@@ -2,7 +2,7 @@ import { parseJWT, SelectiveDisclosureResponse, unverifiedParseJWT } from "didi-
 import { array } from "fp-ts/lib/Array";
 import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";
-import { Alert, StatusBar, Vibration } from "react-native";
+import { ActivityIndicator, Alert, StatusBar, StyleSheet, Vibration, View } from "react-native";
 
 import { assertUnreachable } from "../../../util/assertUnreachable";
 import TypedArray from "../../../util/TypedArray";
@@ -12,6 +12,7 @@ import { DidiCamera } from "../common/DidiCamera";
 
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
+import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
@@ -29,6 +30,7 @@ type ScanDisclosureResponseInternalProps = ScanDisclosureResponseProps & ScanDis
 
 interface ScanDisclosureResponseState {
 	scanPaused: boolean;
+	isVerifying: boolean;
 	collected?: {
 		accumulatedToken: string;
 		currentIndex: number;
@@ -49,7 +51,8 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 	constructor(props: ScanDisclosureResponseInternalProps) {
 		super(props);
 		this.state = {
-			scanPaused: false
+			scanPaused: false,
+			isVerifying: false
 		};
 	}
 
@@ -60,11 +63,18 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 				<DidiCamera
 					onBarcodeScanned={(content, type) => type === "qr" && this.onScanQR(content)}
 					explanation={
-						this.state.collected === undefined
+						this.state.isVerifying
+							? "Procesando..."
+							: this.state.collected === undefined
 							? strings.camera.scanQRInstruction
 							: `Codigo ${this.state.collected.currentIndex + 1}/${this.state.collected.maxIndex + 1}`
 					}
 				/>
+				{this.state.isVerifying ? (
+					<View style={styles.verifyingBackground}>
+						<ActivityIndicator size={72} />
+					</View>
+				) : null}
 			</Fragment>
 		);
 	}
@@ -109,8 +119,9 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 			return;
 		} else if (this.state.collected.currentIndex + 1 !== currentIndex) {
 			this.showAlert(
-				`Este codigo QR no es el esperado (actual: ${currentIndex + 1}, esperado: ${this.state.collected.currentIndex +
-					2})`
+				`Este codigo QR no es el esperado (actual: ${currentIndex + 1}, esperado: ${
+					this.state.collected.currentIndex + 2
+				})`
 			);
 			return;
 		}
@@ -148,6 +159,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 
 		Vibration.vibrate(400, false);
 
+		this.setState({ isVerifying: true });
 		const parse = await parseJWT(successfulParses[0].jwt, {
 			identityResolver: {
 				ethrUri: this.props.ethrDidUri
@@ -157,10 +169,12 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 			},
 			audience: this.props.activeDid ?? undefined
 		});
+		this.setState({ isVerifying: false });
 
 		if (isLeft(parse)) {
 			const errorData = strings.jwtParseError(parse.left);
 			this.showAlert(errorData.title || "Error", errorData.message);
+			this.setState({ collected: undefined });
 		} else {
 			switch (parse.right.type) {
 				case "SelectiveDisclosureResponse":
@@ -223,3 +237,12 @@ const connected = didiConnect(
 );
 
 export { connected as ScanDisclosureResponseScreen };
+
+const styles = StyleSheet.create({
+	verifyingBackground: {
+		...StyleSheet.absoluteFillObject,
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: "#00000088"
+	}
+});

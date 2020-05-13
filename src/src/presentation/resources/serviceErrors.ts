@@ -22,6 +22,8 @@ export const serviceErrors = {
 	did: {
 		READ_ERROR: error("SIGNER_READ_ERR", "Error al obtener DID almacenado."),
 		WRITE_ERROR: error("SIGNER_WRITE_ERR", "Error al almacenar nuevo DID."),
+		DELETE_ERROR: error("SIGNER_DELETE_ERR", "Error al eliminar DID actual."),
+		PARSE_MNEMONIC: error("SIGNER_PARSE_MNEMONIC", "Error al regenerar clave privada"),
 		PARSE_ADDRESS: (address: string) =>
 			error("DID_PARSE_ADDR_ERR", `DID address '${address}' no cumple el formato esperado`),
 		PARSE_DID: (did: string) => error("DID_PARSE_ERR", `DID '${did}' no cumple el formato esperado`)
