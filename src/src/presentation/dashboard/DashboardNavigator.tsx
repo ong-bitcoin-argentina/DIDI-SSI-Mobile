@@ -1,6 +1,12 @@
 import React from "react";
 import { StyleSheet, View, ViewProps } from "react-native";
-import { NavigationContainer, NavigationScreenProp, NavigationState } from "react-navigation";
+import {
+	NavigationActions,
+	NavigationContainer,
+	NavigationScreenProp,
+	NavigationState,
+	StackActions
+} from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
@@ -39,7 +45,7 @@ export interface NavigatorProps extends ViewProps {
 	navigation: NavigationScreenProp<NavigationState>;
 }
 
-export default function(then: NavTree<DashboardSwitchTarget>) {
+export default function (then: NavTree<DashboardSwitchTarget>) {
 	function screen(InnerNavigator: NavigationContainer, title: string, image: string) {
 		class DashboardNavigator extends React.Component<NavigatorProps> {
 			static router = InnerNavigator.router;
@@ -129,7 +135,13 @@ export default function(then: NavTree<DashboardSwitchTarget>) {
 				keyboardHidesTabBar: false,
 				showLabel: false
 			},
-			backBehavior: "initialRoute"
+			backBehavior: "initialRoute",
+			defaultNavigationOptions: {
+				tabBarOnPress: props => {
+					props.navigation.dispatch(StackActions.popToTop());
+					props.defaultHandler();
+				}
+			}
 		}
 	);
 
