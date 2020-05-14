@@ -5,6 +5,7 @@ import { VerifyCodeWrapper } from "../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { changePhoneNumber } from "../../../services/user/changePhoneNumber";
+import { sendSmsValidator } from "../../../services/user/sendSmsValidator";
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import strings from "../../resources/strings";
 
@@ -33,6 +34,7 @@ export class RecoveryVerifyPhoneScreen extends NavigationEnabledComponent<
 					changePhoneNumber(serviceKey, this.props.password, this.props.newPhoneNumber, validationCode)
 				}
 				onServiceSuccess={() => this.navigate("Dashboard", {})}
+				onResendCodePress={serviceKey => sendSmsValidator(serviceKey, this.props.newPhoneNumber, this.props.password)}
 			/>
 		);
 	}

@@ -9,14 +9,17 @@ import { didiConnect } from "../../store/store";
 import { StoreAction } from "../../store/StoreAction";
 
 import { ServiceObserver } from "./ServiceObserver";
-import { VerifyCodeProps, VerifyCodeScreen } from "./VerifyCode";
+import { VerifyCodeComponent, VerifyCodeProps } from "./VerifyCode";
 
 interface VerifyCodeWrapperProps {
 	description: VerifyCodeProps["description"];
 	contentImageSource: ImageSourcePropType;
 
+	serviceButtonText?: string;
 	serviceCall: (serviceKey: string, validationCode: string) => ServiceCallAction;
 	onServiceSuccess: () => void;
+
+	onResendCodePress: (serviceKey: string) => ServiceCallAction;
 }
 interface VerifyCodeWrapperStateProps {
 	verifyPhoneCodePending: boolean;
@@ -28,19 +31,23 @@ type VerifyCodeWrapperInternalProps = VerifyCodeWrapperProps &
 	VerifyCodeWrapperStateProps &
 	VerifyCodeWrapperDispatchProps;
 
-const serviceKey = "VerifyCode";
+const serviceKey = "VerifyCodeWrapper";
 
 class VerifyCodeWrapper extends React.Component<VerifyCodeWrapperInternalProps> {
 	render() {
 		return (
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.props.onServiceSuccess()}>
-				<VerifyCodeScreen
+				<VerifyCodeComponent
 					description={this.props.description}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
 					isContinuePending={this.props.verifyPhoneCodePending}
+					continueButtonText={this.props.serviceButtonText}
+					onResendCodePress={sk => {
+						this.props.dispatch(this.props.onResendCodePress(sk));
+					}}
 				>
 					<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
-				</VerifyCodeScreen>
+				</VerifyCodeComponent>
 			</ServiceObserver>
 		);
 	}

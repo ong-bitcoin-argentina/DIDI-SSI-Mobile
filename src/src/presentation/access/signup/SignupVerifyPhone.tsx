@@ -1,10 +1,10 @@
 import React from "react";
-import { Alert } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { VerifyCodeWrapper } from "../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { sendSmsValidator } from "../../../services/user/sendSmsValidator";
 import { verifySmsCode } from "../../../services/user/verifySmsCode";
 import strings from "../../resources/strings";
 
@@ -32,6 +32,7 @@ export class SignupVerifyPhoneScreen extends NavigationEnabledComponent<
 				contentImageSource={require("../../resources/images/phoneRecover.png")}
 				serviceCall={(serviceKey, validationCode) => verifySmsCode(serviceKey, this.props.phoneNumber, validationCode)}
 				onServiceSuccess={() => this.navigate("SignupPhoneVerified", { phoneNumber: this.props.phoneNumber })}
+				onResendCodePress={serviceKey => sendSmsValidator(serviceKey, this.props.phoneNumber, null)}
 			/>
 		);
 	}

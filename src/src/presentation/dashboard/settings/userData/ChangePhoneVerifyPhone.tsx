@@ -6,6 +6,7 @@ import { VerifyCodeWrapper } from "../../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { changePhoneNumber } from "../../../../services/user/changePhoneNumber";
+import { sendSmsValidator } from "../../../../services/user/sendSmsValidator";
 import strings from "../../../resources/strings";
 
 import { UserDataProps } from "./UserData";
@@ -34,6 +35,7 @@ export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
 					changePhoneNumber(serviceKey, this.props.password, this.props.newPhoneNumber, validationCode)
 				}
 				onServiceSuccess={() => this.onSuccess()}
+				onResendCodePress={serviceKey => sendSmsValidator(serviceKey, this.props.newPhoneNumber, this.props.password)}
 			/>
 		);
 	}

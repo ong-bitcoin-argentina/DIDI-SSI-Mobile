@@ -222,7 +222,7 @@ const styles = {
 			...base,
 			fontFamily: "MaterialIcons-Regular"
 		},
-		forgotPasswordButton: {
+		italicTextButton: {
 			...base,
 			...fontStyle.italic,
 			fontSize: 15
@@ -357,7 +357,8 @@ export const DidiText = {
 			/>
 		);
 	},
-	ForgotPasswordButton: textWith(styles.component.forgotPasswordButton),
+	ForgotPasswordButton: textWith(styles.component.italicTextButton),
+	ResendCodeButton: textWith(styles.component.italicTextButton),
 	SignupCloseButton: textWith(styles.component.signupCloseButton),
 	InputDescription: textWith(styles.component.inputDescription),
 	CameraExplanation: textWith(styles.component.cameraExplanation),
