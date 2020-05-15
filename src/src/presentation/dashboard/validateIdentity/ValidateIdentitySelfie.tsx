@@ -66,11 +66,14 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 						onCameraLayout={onLayout}
 						gesture={this.state.gesture}
 						reticle={reticle}
-						onPictureTaken={onPictureTaken}
+						onPictureTaken={data => {
+							Vibration.vibrate(400, false);
+							return onPictureTaken(data);
+						}}
 						reticleBounds={reticleBounds}
 					/>
 				)}
-				onPictureAccepted={(data, reset) =>
+				onPictureAccepted={(data, reset) => {
 					this.navigate(
 						"ValidateIdentitySubmit",
 						{
@@ -78,8 +81,8 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 							selfie: data
 						},
 						reset
-					)
-				}
+					);
+				}}
 			/>
 		);
 	}
@@ -134,6 +137,12 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 		);
 	}
 
+	componentDidUpdate(prevProps: SelfieCameraProps, prevState: SelfieCameraState) {
+		if (this.state.state !== "capture" && prevState.state !== this.state.state) {
+			Vibration.vibrate(400, false);
+		}
+	}
+
 	private async addFacesToState(faces: Face[]) {
 		if (this.camera === null) {
 			// Can this even happen?
@@ -155,7 +164,6 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 				this.setState({ state: "capture" });
 				try {
 					const data = await this.camera.takePicture({ pauseAfterCapture: false });
-					Vibration.vibrate(400, false);
 					this.setState({
 						state: "liveness",
 						rawPicture: data,

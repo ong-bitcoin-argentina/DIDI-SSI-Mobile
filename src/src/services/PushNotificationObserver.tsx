@@ -1,8 +1,12 @@
 import React from "react";
 import PushNotification from "react-native-push-notification";
 
+import { ServiceObserver } from "../presentation/common/ServiceObserver";
+
 import { PushNotificationContent, PushToken } from "../store/reducers/pushNotificationReducer";
 import { didiConnect } from "../store/store";
+
+import { renewFirebaseToken } from "./user/renewFirebaseToken";
 
 export interface PushNotificationObserverProps {
 	onNotificationReceived: (notification: PushNotificationContent) => { didHandle: boolean };
@@ -64,16 +68,16 @@ type PushNotificationObject = {
 	  }
 );
 
+const serviceKey = "PushNotificationObserver";
+
 export const PushNotificationReceiver = didiConnect(
 	class extends React.PureComponent<ReceiverDispatchProps> {
 		componentDidMount() {
 			PushNotification.configure({
 				onRegister: token => {
-					console.warn("TOKEN", token.token);
 					this.props.registerPushToken(token.token);
 				},
 				onNotification: ((notification: PushNotificationObject) => {
-					console.warn("PUSH", notification);
 					if (notification.userInteraction) {
 						return;
 					}
@@ -111,12 +115,15 @@ export const PushNotificationReceiver = didiConnect(
 		}
 
 		render() {
-			return null;
+			return <ServiceObserver serviceKey={serviceKey} onSuccess={() => null} />;
 		}
 	},
 	state => ({}),
 	(dispatch): ReceiverDispatchProps => ({
-		registerPushToken: (value: PushToken) => dispatch({ type: "SET_PUSH_TOKEN", value }),
+		registerPushToken: (firebaseId: PushToken) => {
+			dispatch({ type: "SET_PUSH_TOKEN", value: firebaseId });
+			dispatch(renewFirebaseToken(serviceKey, firebaseId));
+		},
 		recordReceivedPush: (value: PushNotificationContent) => dispatch({ type: "REGISTER_PUSH", value })
 	})
 );

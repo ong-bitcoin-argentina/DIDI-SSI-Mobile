@@ -6,6 +6,7 @@ import { VerifyCodeWrapper } from "../../../common/VerifyCodeWrapper";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 
 import { changeEmail } from "../../../../services/user/changeEmail";
+import { sendMailValidator } from "../../../../services/user/sendMailValidator";
 import strings from "../../../resources/strings";
 
 import { UserDataProps } from "./UserData";
@@ -34,6 +35,7 @@ export class ChangeEmailVerifyScreen extends NavigationEnabledComponent<
 					changeEmail(serviceKey, this.props.password, this.props.newEmail, validationCode)
 				}
 				onServiceSuccess={() => this.onSuccess()}
+				onResendCodePress={serviceKey => sendMailValidator(serviceKey, this.props.newEmail, this.props.password)}
 			/>
 		);
 	}

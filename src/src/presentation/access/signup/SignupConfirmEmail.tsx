@@ -1,10 +1,11 @@
 import React, { Fragment } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
+import { Dispatch } from "redux";
 
 import TypedObject from "../../../util/TypedObject";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
-import { VerifyCodeScreen } from "../../common/VerifyCode";
+import { VerifyCodeComponent } from "../../common/VerifyCode";
 import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -13,9 +14,11 @@ import { ValidationStateIcon } from "../../util/ValidationStateIcon";
 import { Validations } from "../../../model/Validations";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { registerUser } from "../../../services/user/registerUser";
+import { sendMailValidator } from "../../../services/user/sendMailValidator";
 import { verifyEmailCode } from "../../../services/user/verifyEmailCode";
 import { ValidationState } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
+import { StoreAction } from "../../../store/StoreAction";
 import strings from "../../resources/strings";
 
 import { SignupConfirmedProps } from "./SignupConfirmed";
@@ -31,6 +34,7 @@ interface SignupConfirmEmailStateProps {
 interface SignupConfirmEmailDispatchProps {
 	verifyEmailCode(email: string, validationCode: string): void;
 	registerUser: (email: string, password: string, phoneNumber: string) => void;
+	dispatch: Dispatch<StoreAction>;
 }
 type SignupConfirmEmailInternalProps = SignupConfirmEmailProps &
 	SignupConfirmEmailStateProps &
@@ -69,8 +73,11 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 				<ServiceObserver serviceKey={serviceKeyVerify} onSuccess={() => this.registerUser()} />
 				<ServiceObserver serviceKey={serviceKeyRegister} onSuccess={() => this.navigate("SignupConfirmed", {})} />
 
-				<VerifyCodeScreen
+				<VerifyCodeComponent
 					description={strings.signup.registrationEmailSent.message}
+					onResendCodePress={serviceKey => {
+						this.props.dispatch(sendMailValidator(serviceKey, this.props.email, null));
+					}}
 					isContinueBlocked={this.passwordErrors().length > 0 || this.arePasswordsDifferent()}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
 					isContinuePending={this.props.registerUserPending || this.props.verifyEmailCodePending}
@@ -88,7 +95,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 						descriptionType="REPEAT"
 						stateIndicator={this.renderPasswordCopyStateIndicator()}
 					/>
-				</VerifyCodeScreen>
+				</VerifyCodeComponent>
 			</Fragment>
 		);
 	}
@@ -180,7 +187,9 @@ const connected = didiConnect(
 			dispatch(verifyEmailCode(serviceKeyVerify, email, validationCode)),
 
 		registerUser: (email: string, password: string, phoneNumber: string) =>
-			dispatch(registerUser(serviceKeyRegister, email, password, phoneNumber))
+			dispatch(registerUser(serviceKeyRegister, email, password, phoneNumber)),
+
+		dispatch
 	})
 );
 

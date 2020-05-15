@@ -1,7 +1,6 @@
 import React from "react";
-import { Image, ImageSourcePropType } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 
-import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
@@ -10,9 +9,12 @@ import { Validations } from "../../model/Validations";
 import strings from "../resources/strings";
 
 import { DidiScreen } from "./DidiScreen";
+import { ServiceObserver } from "./ServiceObserver";
 
 export interface VerifyCodeProps {
 	description: string;
+	onResendCodePress: (serviceKey: string) => void;
+	continueButtonText?: string;
 	isContinueBlocked?: boolean;
 	onPressContinueButton: (inputCode: string) => void;
 	isContinuePending: boolean;
@@ -22,7 +24,7 @@ interface VerifyCodeState {
 	inputCode?: string;
 }
 
-export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, VerifyCodeState> {
+export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, VerifyCodeState> {
 	constructor(props: VerifyCodeProps) {
 		super(props);
 		this.state = {};
@@ -37,12 +39,15 @@ export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, Verif
 
 				{this.props.children}
 
-				<DidiText.Explanation.Normal>{strings.accessCommon.verify.resendCode}</DidiText.Explanation.Normal>
+				<TouchableOpacity onPress={this.onResendCodePress}>
+					<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCodeResendSuccess} />
+					<DidiText.ResendCodeButton>{strings.accessCommon.verify.resendCode}</DidiText.ResendCodeButton>
+				</TouchableOpacity>
 
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}
 					onPress={() => this.props.onPressContinueButton(this.state.inputCode!)}
-					title={strings.accessCommon.validateButtonText}
+					title={this.props.continueButtonText ?? strings.accessCommon.validateButtonText}
 					isPending={this.props.isContinuePending || false}
 				/>
 			</DidiScreen>
@@ -52,4 +57,17 @@ export class VerifyCodeScreen extends React.PureComponent<VerifyCodeProps, Verif
 	private canPressContinueButton(): boolean {
 		return !this.props.isContinueBlocked && Validations.isValidationCode(this.state.inputCode);
 	}
+
+	private onResendCodePress = () => {
+		this.props.onResendCodePress(serviceKey);
+	};
+
+	private onCodeResendSuccess = () => {
+		Alert.alert(
+			strings.accessCommon.verify.resendCodeSuccess.title,
+			strings.accessCommon.verify.resendCodeSuccess.body
+		);
+	};
 }
+
+const serviceKey = "VerifyCode";

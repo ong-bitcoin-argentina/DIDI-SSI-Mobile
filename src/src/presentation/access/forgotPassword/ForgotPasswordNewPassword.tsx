@@ -1,19 +1,12 @@
 import React from "react";
-import { Image, View } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import { ServiceObserver } from "../../common/ServiceObserver";
-import commonStyles from "../../resources/commonStyles";
-import { DidiServiceButton } from "../../util/DidiServiceButton";
-import { DidiText } from "../../util/DidiText";
+import { VerifyCodeWrapper } from "../../common/VerifyCodeWrapper";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
-import { Validations } from "../../../model/Validations";
-import { isPendingService } from "../../../services/ServiceStateStore";
 import { recoverPassword } from "../../../services/user/recoverPassword";
-import { didiConnect } from "../../../store/store";
+import { sendMailValidator } from "../../../services/user/sendMailValidator";
 import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import strings from "../../resources/strings";
 
@@ -33,16 +26,13 @@ type ForgotPasswordNewPasswordInternalProps = ForgotPasswordNewPasswordProps &
 interface ForgotPasswordNewPasswordState {
 	password: string;
 	passwordCopy: string;
-	verificationCode: string;
 }
 
 export interface ForgotPasswordNewPasswordNavigation {
 	Dashboard: DashboardScreenProps;
 }
 
-const serviceKey = "RecoverPassword";
-
-class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
+export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 	ForgotPasswordNewPasswordInternalProps,
 	ForgotPasswordNewPasswordState,
 	ForgotPasswordNewPasswordNavigation
@@ -52,52 +42,27 @@ class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 	constructor(props: ForgotPasswordNewPasswordInternalProps) {
 		super(props);
 		this.state = {
-			verificationCode: "",
 			password: "",
 			passwordCopy: ""
 		};
 	}
 
-	private canPressContinueButton(): boolean {
-		return Validations.isPassword(this.state.password) && this.state.passwordCopy === this.state.password;
-	}
-
 	render() {
 		return (
-			<DidiScreen>
-				<DidiText.Explanation.Emphasis>{strings.recovery.passwordChange.messageHead}</DidiText.Explanation.Emphasis>
-
-				<Image source={require("../../resources/images/recoverPassword.png")} style={commonStyles.image.image} />
-
-				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ verificationCode: text })} />
-
+			<VerifyCodeWrapper
+				description={strings.recovery.passwordChange.messageHead}
+				contentImageSource={require("../../resources/images/recoverPassword.png")}
+				serviceButtonText={strings.accessCommon.recoverButtonText}
+				serviceCall={(serviceKey, validationCode) =>
+					recoverPassword(serviceKey, this.props.email, validationCode, this.state.password)
+				}
+				onServiceSuccess={() => this.navigate("Dashboard", {})}
+				onResendCodePress={serviceKey => sendMailValidator(serviceKey, this.props.email, null)}
+			>
 				<DidiTextInput.Password onChangeText={text => this.setState({ password: text })} descriptionType="NEW" />
 
 				<DidiTextInput.Password onChangeText={text => this.setState({ passwordCopy: text })} descriptionType="REPEAT" />
-
-				<View />
-
-				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.navigate("Dashboard", {})} />
-				<DidiServiceButton
-					title={strings.accessCommon.recoverButtonText}
-					disabled={!this.canPressContinueButton()}
-					onPress={() => this.props.recoverPassword(this.props.email, this.state.verificationCode, this.state.password)}
-					isPending={this.props.recoverPasswordPending}
-				/>
-			</DidiScreen>
+			</VerifyCodeWrapper>
 		);
 	}
 }
-
-const connected = didiConnect(
-	ForgotPasswordNewPasswordScreen,
-	(state): ForgotPasswordNewPasswordStateProps => ({
-		recoverPasswordPending: isPendingService(state.serviceCalls[serviceKey])
-	}),
-	(dispatch): ForgotPasswordNewPasswordDispatchProps => ({
-		recoverPassword: (email: string, validationCode: string, newPassword: string) =>
-			dispatch(recoverPassword(serviceKey, email, validationCode, newPassword))
-	})
-);
-
-export { connected as ForgotPasswordNewPasswordScreen };

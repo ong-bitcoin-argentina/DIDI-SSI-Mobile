@@ -109,7 +109,10 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		if (activeDid && activeDid.did && activeDid.did() !== doc.subject.did()) {
 			return "share";
 		} else if (specialType) {
-			if (this.props.context.specialCredentials[specialType]?.jwt !== this.props.document.jwt) {
+			const special = this.props.context.specialCredentials[specialType];
+			if (special === undefined) {
+				return "identity";
+			} else if (special.jwt !== this.props.document.jwt) {
 				return "obsolete";
 			} else {
 				return "identity";

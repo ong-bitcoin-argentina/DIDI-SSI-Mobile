@@ -2,7 +2,7 @@ import { parseJWT, unverifiedParseJWT } from "didi-sdk";
 import { array } from "fp-ts/lib/Array";
 import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";
-import { Alert, StatusBar, Vibration } from "react-native";
+import { ActivityIndicator, Alert, StatusBar, StyleSheet, Vibration, View } from "react-native";
 
 import { assertUnreachable } from "../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -28,6 +28,7 @@ type ScanCredentialInternalProps = ScanCredentialProps & ScanCredentialStateProp
 
 interface ScanCredentialState {
 	scanPaused: boolean;
+	isVerifying: boolean;
 }
 export interface ScanCredentialNavigation {
 	ScanCredentialToAdd: ScanCredentialToAddProps;
@@ -45,7 +46,8 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 	constructor(props: ScanCredentialInternalProps) {
 		super(props);
 		this.state = {
-			scanPaused: false
+			scanPaused: false,
+			isVerifying: false
 		};
 	}
 
@@ -55,8 +57,13 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<DidiCamera
 					onBarcodeScanned={(content, type) => type === "qr" && this.onScanQR(content)}
-					explanation={strings.camera.scanQRInstruction}
+					explanation={this.state.isVerifying ? "Procesando..." : strings.camera.scanQRInstruction}
 				/>
+				{this.state.isVerifying ? (
+					<View style={styles.verifyingBackground}>
+						<ActivityIndicator size={72} />
+					</View>
+				) : null}
 			</Fragment>
 		);
 	}
@@ -85,7 +92,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 		}
 
 		Vibration.vibrate(400, false);
-
+		this.setState({ isVerifying: true });
 		const parse = await parseJWT(successfulParses[0].jwt, {
 			identityResolver: {
 				ethrUri: this.props.ethrDidUri
@@ -95,6 +102,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			},
 			audience: this.props.activeDid ?? undefined
 		});
+		this.setState({ isVerifying: false });
 
 		if (isLeft(parse)) {
 			const errorData = strings.jwtParseError(parse.left);
@@ -148,3 +156,12 @@ const connected = didiConnect(
 );
 
 export { connected as ScanCredentialScreen };
+
+const styles = StyleSheet.create({
+	verifyingBackground: {
+		...StyleSheet.absoluteFillObject,
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: "#00000088"
+	}
+});

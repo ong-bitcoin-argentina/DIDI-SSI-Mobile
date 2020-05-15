@@ -217,7 +217,11 @@ export default {
 		verify: {
 			phoneMessageHead: "Ingresa el código de 6 dígitos para verificar tu celular",
 			emailMessageHead: "Ingresa el código de 6 dígitos para verificar tu email",
-			resendCode: "¿No recibiste el código?"
+			resendCode: "¿No recibiste el código?",
+			resendCodeSuccess: {
+				title: "Código reenviado",
+				body: "Tené en cuenta que, por seguridad, solo se aceptará el último código que te enviamos."
+			}
 		}
 	},
 	documents: {
