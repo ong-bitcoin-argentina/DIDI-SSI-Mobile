@@ -6,12 +6,12 @@ import FSStorage from "redux-persist-fs-storage";
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
-import { assertUnreachable } from "../util/assertUnreachable";
 import TypedObject from "../util/TypedObject";
 
 import { DidiSession } from "../model/DidiSession";
 import { RecentActivity } from "../model/RecentActivity";
 import { ServiceSettings } from "../model/ServiceSettings";
+import { reloadDid } from "../services/internal/reloadDid";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
 import { ActiveDid, didReducer } from "./reducers/didReducer";
@@ -108,4 +108,6 @@ export const store = createStore(
 	})
 ) as Store<any, AnyAction>;
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store, {}, () => {
+	store.dispatch(reloadDid());
+});
