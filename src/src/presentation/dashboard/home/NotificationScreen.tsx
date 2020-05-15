@@ -53,7 +53,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 	NotificationScreenState,
 	NotificationScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Notificationes");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.notifications.barTitle);
 
 	constructor(props: NotificationScreenInternalProps) {
 		super(props);

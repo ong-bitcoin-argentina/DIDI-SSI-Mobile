@@ -4,6 +4,33 @@ import { assertUnreachable } from "../../util/assertUnreachable";
 
 import { LivenessGesture } from "../dashboard/validateIdentity/LivenessGesture";
 
+function formatDatePart(date: Date) {
+	const months = [
+		"Enero",
+		"Febrero",
+		"Marzo",
+		"Abril",
+		"Mayo",
+		"Junio",
+		"Julio",
+		"Agosto",
+		"Septiembre",
+		"Octubre",
+		"Noviembre",
+		"Diciembre"
+	];
+	return `${date.getDay()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+}
+
+function formatHourPart(date: Date) {
+	const pad = (n: number) => (n < 10 ? `0${n}` : n);
+	return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+}
+
+function formatFullDate(date: Date) {
+	return `${formatDatePart(date)}, ${formatHourPart(date)}`;
+}
+
 export default {
 	debug: {
 		menu: "Debug Menu",
@@ -28,11 +55,12 @@ export default {
 			validationState: {
 				yes: "✓",
 				no: "ｘ"
-			}
+			},
+			formatDate: formatDatePart
 		},
 		validateIdentity: {
 			Start: {
-				title: "Valida tu DNI para completar tu Perfil DIDI.",
+				title: "Validá tu DNI para completar tu Perfil DIDI.",
 				subtitle: null,
 				button: "Validar DNI"
 			},
@@ -61,7 +89,7 @@ export default {
 		scanCredential: "Escanear Credenciales",
 		shareCredential: "Compartir",
 		createRound: "Armar Ronda",
-		documents: "Ver Documentos",
+		documents: "Ver Credenciales",
 		identity: "Ver ID",
 		editProfile: "Editar Perfil"
 	},
@@ -81,7 +109,7 @@ export default {
 			firstNameMessage: "Nombre(s)",
 			lastNameMessage: "Apellido(s)",
 			cellMessage: "Celular",
-			emailMessage: "E-mail",
+			emailMessage: "Email",
 			documentMessage: "DU / CI / Pasaporte",
 			nationalityMessage: "Nacionalidad",
 			addressMessage: "Domicilio",
@@ -95,7 +123,7 @@ export default {
 		},
 		changePassword: {
 			barTitle: "Cambio de Contraseña",
-			explanation: "Ingresa tu contraseña actual y tu nueva contraseña",
+			explanation: "Ingresá tu contraseña actual y tu nueva contraseña",
 			requirementHeader: "Tu nueva contraseña debe tener:",
 			indicator: {
 				missing: "- ",
@@ -124,11 +152,11 @@ export default {
 		},
 		changeEmail: {
 			screenTitle: "Cambiar Email",
-			messageHead: "Ingresa tu nuevo email y tu contraseña actual."
+			messageHead: "Ingresá tu nuevo email y tu contraseña actual."
 		},
 		changePhone: {
 			screenTitle: "Cambiar Teléfono",
-			messageHead: "Ingresa tu nuevo numero de telefono y tu contraseña actual."
+			messageHead: "Ingresá tu nuevo número de teléfono y tu contraseña actual."
 		}
 	},
 	recovery: {
@@ -139,21 +167,21 @@ export default {
 			loginButton: "Ingresar"
 		},
 		enterEmail: {
-			messageHead: "Ingresa tu email y contraseña",
+			messageHead: "Ingresá tu email y contraseña",
 			forgotPasswordMessage: "No recuerdo la contraseña"
 		},
 		explanation: {
 			messageMotivesTitle: "Si quieres recuperar la cuenta es porque:",
-			messageMotives: ["Te robaron el teléfono", "Cambiaste tu nro. de teléfono", "Perdiste tu teléfono"],
-			rememberEmailMessage: "Debes recordar tu email y contraseña de resguardo para recuperar tu cuenta",
+			messageMotives: ["Te robaron el teléfono", "Cambiaste tu número", "Perdiste tu teléfono"],
+			rememberEmailMessage: "Tenés que recordar tu email y contraseña de resguardo para recuperar tu cuenta",
 			startButtonText: "Iniciar"
 		},
 		passwordRecover: {
 			messageHead: "Recuperar Contraseña"
 		},
 		passwordRecoverEmailSent: {
-			message: "Se te ha enviado un email para comenzar el proceso de recuperación de su contraseña",
-			buttonText: "Ver mis E-mails"
+			message: "Se te envió un email para empezar el proceso de recuperación de tu contraseña",
+			buttonText: "Ver mis Emails"
 		},
 		passwordRecoverConfirmationCode: {
 			messageHead: "Ingrese el código enviado por email",
@@ -161,7 +189,7 @@ export default {
 		},
 		passwordChange: {
 			barTitle: "Recuperar Contraseña",
-			messageHead: "Ingresa tu nueva contraseña"
+			messageHead: "Ingresá tu nueva contraseña"
 		}
 	},
 	signup: {
@@ -170,7 +198,7 @@ export default {
 			close: "Cerrar"
 		},
 		enterPhone: {
-			messageHead: "Ingresa tu teléfono para registrarte en la aplicación"
+			messageHead: "Ingresá tu teléfono para registrarte en la aplicación"
 		},
 		phoneVerified: {
 			messageHead: "Su número de teléfono fue validado con éxito",
@@ -188,10 +216,10 @@ export default {
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirás un email para validar tu cuenta. Ingresa el código de 6 dígitos para verificar tu email y una contraseña para resguardar el backup de tu identidad"
+				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email y una contraseña para resguardar el backup de tu identidad"
 		},
 		registrationValidated: {
-			message: "Su E-mail ha sido validado y su Identidad Digital ha sido resguardada.",
+			message: "Tu email fue validado con éxito y tu Identidad Digital fue resguardada.",
 			buttonEnter: "Ingresar a Didi"
 		},
 		reset: {
@@ -204,7 +232,7 @@ export default {
 		}
 	},
 	login: {
-		messageHead: "Ingresa tu email y contraseña",
+		messageHead: "Ingresá tu email y contraseña",
 		buttonText: "Ingresar"
 	},
 	accessCommon: {
@@ -212,12 +240,12 @@ export default {
 		recoverButtonText: "Recuperar",
 		defaultPlace: "Otros",
 		enterPhone: {
-			messageHead: "Carga tu número de celular"
+			messageHead: "Cargá tu número de celular"
 		},
 		verify: {
-			phoneMessageHead: "Ingresa el código de 6 dígitos para verificar tu celular",
-			emailMessageHead: "Ingresa el código de 6 dígitos para verificar tu email",
-			resendCode: "¿No recibiste el código?",
+			phoneMessageHead: "Ingresá el código de 6 dígitos para verificar tu celular",
+			emailMessageHead: "Ingresá el código de 6 dígitos para verificar tu email",
+			resendCode: "¿No recibiste el código?\nReenviar código",
 			resendCodeSuccess: {
 				title: "Código reenviado",
 				body: "Tené en cuenta que, por seguridad, solo se aceptará el último código que te enviamos."
@@ -225,9 +253,9 @@ export default {
 		}
 	},
 	documents: {
-		barTitle: "Mis Documentos",
-		detailBarTitle: "Documento",
-		emptyFilter: "No dispones de documentos en esta categoria",
+		barTitle: "Mis Credenciales",
+		detailBarTitle: "Credencial",
+		emptyFilter: "Todavía no hay credenciales de esta categoría",
 		filterAll: "Todos",
 		filterEducation: "Educación",
 		filterLivingPlace: "Vivienda",
@@ -238,7 +266,7 @@ export default {
 	tabNames: {
 		home: "Inicio",
 		rounds: "Rondas",
-		documents: "Documentos",
+		documents: "Credenciales",
 		settings: "Configuración"
 	},
 	settings: {
@@ -250,18 +278,18 @@ export default {
 	},
 	share: {
 		title: "Compartir",
-		generating: "Generando codigo QR...",
-		next: "Ya compartí el codigo QR",
+		generating: "Generando código QR...",
+		next: "Ya compartí el código QR",
 		shareTitle: "Credencial Didi",
 		explanation:
-			"Pide al receptor que escanee este codigo QR para comenzar.\n\nUna vez hecho eso, avanza a la proxima pantalla para escanear su respuesta, "
+			"Pedile al receptor que escanee este código QR para empezar a compartir tus credenciales.\n\nUna vez hecho esto, le aparecerá un código nuevo al receptor. Avanzá a la próxima pantalla para escanear su código."
 	},
 	shareExplanation: {
 		title: "Compartir",
 		explanation:
 			"¿Cómo compartirás estas credenciales?\n\nEl receptor podrá verificar que las credenciales fueron enviadas intencionalmente y desde tu cuenta",
 		direct: {
-			button: "Directo a otra app Didi",
+			button: "Directo a otra App DIDI",
 			explanation: "Verificado como parte del proceso"
 		},
 		or: "o",
@@ -273,16 +301,16 @@ export default {
 	disclose: {
 		title: "Compartir",
 		request: {
-			explanation: "Escanea el siguiente codigo QR con la aplicación Didi que te envió la solicitud",
+			explanation: "Escaneá el siguiente código QR con la App DIDI que te está compartiendo sus credenciales.",
 			next: "Siguiente"
 		},
 		response: {
-			explanation: "Escanea el siguiente codigo QR con la aplicación Didi que va a recibir las credenciales"
+			explanation: "Escaneá el siguiente código QR con la App DIDI con la que estás compartiendo tus credenciales."
 		}
 	},
 	services: {
 		changePasswordSuccess: "Contraseña cambiada exitosamente.",
-		changePhoneSuccess: "Número de telefono cambiado exitosamente.",
+		changePhoneSuccess: "Número de teléfono cambiado exitosamente.",
 		changeEmailSuccess: "Email cambiado exitosamente."
 	},
 	validateIdentity: {
@@ -291,15 +319,19 @@ export default {
 		step: "Paso",
 		stepTotal: "/3",
 		what: {
-			header: "¿Que es validación de identidad?",
+			header: "¿Qué es la validación de identidad?",
 			description:
-				"Es un simple proceso mediante el cual vas a poder confirmar que vos sos quien decis ser. Y con ello, podrás acceder a todos los servicios de la APP.",
+				"Es un proceso simple mediante el cual vas a poder confirmar que vos sos quien decís ser. De esta forma, vas a poder acceder a todos los servicios de DIDI.",
 			buttonText: "Siguiente"
 		},
 		howTo: {
-			header: "¿Como lo hago?",
-			intro: "Sigue estos pasos:",
-			steps: ["Busca un lugar iluminado y con fondo claro", "Tene tu DNI a mano", "Acceso a internet o datos moviles"],
+			header: "¿Cómo lo hago?",
+			intro: "Segui estos pasos:",
+			steps: [
+				"Buscá un lugar iluminado y con fondo claro",
+				"Tené tu DNI a mano",
+				"Tené acceso a internet o datos móviles"
+			],
 			buttonText: "Comencemos"
 		},
 		explainFront: {
@@ -307,7 +339,7 @@ export default {
 			header: "Digitalizando el DNI",
 			description:
 				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
-			confirmation: "Asegurá que el texto este al derecho y sea claramente legible.",
+			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
 			barcodeConfirmation: {
 				found: "Se identificó el código de barras.",
 				notFound: "No se identificó un código de barras. Si está de este lado del DNI, volvé a tomar la foto."
@@ -316,8 +348,8 @@ export default {
 		explainBack: {
 			step: 2,
 			header: "Digitalizando el DNI",
-			description: "Ahora da vuelta el DNI y sácale una foto del dorso.",
-			confirmation: "Asegurá que el texto este al derecho y sea claramente legible.",
+			description: "Ahora da vuelta el DNI y sacale una foto del dorso.",
+			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
 			blocked: {
 				title: "No se identificó un código de barras",
 				text:
@@ -329,18 +361,16 @@ export default {
 			header: "Foto Selfie y Prueba de Vida",
 			description: (gesture: LivenessGesture) => {
 				const common =
-					"Busca una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando lo diga, ";
+					"Busca una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando te lo pida, ";
 				switch (gesture) {
 					case LivenessGesture.SMILE:
-						return common + "sonrie.";
+						return common + "sonreí.";
 					case LivenessGesture.TURN_LEFT:
-						return common + "mira a tu hombro izquierdo.";
 					case LivenessGesture.TURN_RIGHT:
-						return common + "mira a tu hombro derecho.";
+						return common + "mirá al hombro que te indica la pantalla.";
 					case LivenessGesture.WINK_LEFT:
-						return common + "guiña tu ojo izquierdo.";
 					case LivenessGesture.WINK_RIGHT:
-						return common + "guiña tu ojo derecho.";
+						return common + "guiñá el ojo que te indica la pantalla.";
 				}
 			},
 			gestureExplanation: (gesture: LivenessGesture) => {
@@ -357,14 +387,22 @@ export default {
 						return "Guiñá tu ojo derecho";
 				}
 			},
-			confirmation: "Asegurá que tu cara sea claramente visible y no este cubierta.",
-			cameraExplanation: "Enfoca tu cara"
+			confirmation: "Asegurate de que tu cara sea claramente visible y no esté cubierta.",
+			cameraExplanation: "Enfocá tu cara"
 		},
 		submit: {
 			header: "Validación de Identidad",
 			congrats: "Se enviaran los siguientes datos a validar por ReNaPer:",
-			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
-			buttonText: "OK"
+			reminder: "Recordá que tus datos son privados y no serán compartidos.",
+			buttonText: "OK",
+			items: {
+				dni: "DNI",
+				gender: "Género",
+				firstNames: "Nombre(s)",
+				lastNames: "Apellido(s)",
+				birthDate: "Fecha de Nacimiento",
+				tramitId: "Número de tramite"
+			}
 		},
 		success: {
 			header: "Validación de Identidad",
@@ -389,7 +427,7 @@ export default {
 			placeholder: ""
 		},
 		email: {
-			description: "E-mail",
+			description: "Email",
 			placeholder: ""
 		},
 		verificationCode: {
@@ -411,7 +449,8 @@ export default {
 		emitter: "ID Emisor: ",
 		valueNotAvailable: "N/A",
 		shared: "Credencial compartida con vos",
-		replaced: "Credencial no vigente por existir reemplazo"
+		replaced: "Credencial no vigente por existir reemplazo",
+		formatDate: formatFullDate
 	},
 	specialCredentials: {
 		PhoneNumberData: {
@@ -419,7 +458,7 @@ export default {
 			phoneNumber: ""
 		},
 		EmailData: {
-			title: "E-mail",
+			title: "Email",
 			email: ""
 		},
 		PersonalData: {
@@ -444,18 +483,19 @@ export default {
 	},
 	camera: {
 		notAuthorized: "Camara no autorizada",
-		scanQRInstruction: "Escanea un codigo QR",
+		scanQRInstruction: "Escaneá un código QR",
 		noCredentials: {
 			title: "No hay credenciales",
-			message: "El codigo QR escaneado no contiene credenciales"
+			message: "El código QR escaneado no contiene credenciales"
 		}
 	},
 	notifications: {
-		showExpired: "Mostrar peticiones vencidas",
-		hideExpired: "Ocultar peticiones vencidas",
+		barTitle: "Notificaciones",
+		showExpired: "Mostrar solicitudes vencidas",
+		hideExpired: "Ocultar solicitudes vencidas",
 		sendResponse: "Enviar",
 		requestExpired: "Fecha límite superada.",
-		noRequestsAvailable: "No dispones de notificaciones"
+		noRequestsAvailable: "No tenés nuevas notificaciones"
 	},
 	credentialRequestCard: {
 		from: "De",

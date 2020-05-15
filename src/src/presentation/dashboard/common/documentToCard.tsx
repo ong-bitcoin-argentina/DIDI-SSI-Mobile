@@ -65,7 +65,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 
 		const issuerText = this.issuerText(CredentialDocument.displayedIssuer(doc));
 
-		const category = doc.issuedAt ? new Date(doc.issuedAt * 1000).toLocaleString() : "Credencial";
+		const category = doc.issuedAt ? strings.credentialCard.formatDate(new Date(doc.issuedAt * 1000)) : "Credencial";
 
 		let title = doc.title;
 		let data = this.props.preview
