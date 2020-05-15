@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { RNUportHDSigner } from "react-native-uport-signer";
 
 import { serviceCallSuccess } from "../../../../services/common/componentServiceCall";
 import { DidiScreen } from "../../../common/DidiScreen";
@@ -26,7 +27,7 @@ type IdentitySettingsInnerProps = IdentitySettingsProps & IdentitySettingsStateP
 
 export type IdentitySettingsNavigation = {};
 
-export default class IdentitySettingsScreen extends NavigationEnabledComponent<
+class IdentitySettingsScreen extends NavigationEnabledComponent<
 	IdentitySettingsInnerProps,
 	{},
 	IdentitySettingsNavigation
@@ -43,7 +44,7 @@ export default class IdentitySettingsScreen extends NavigationEnabledComponent<
 	}
 
 	private renderContent() {
-		if (this.props.activeDid === null) {
+		if (!this.props.activeDid) {
 			return <KeyRecoveryComponent createAddress={this.props.createAddress} importAddress={this.props.importAddress} />;
 		} else {
 			return (
