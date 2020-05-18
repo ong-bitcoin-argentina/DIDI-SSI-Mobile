@@ -46,7 +46,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 	ScanDisclosureResponseState,
 	ScanDisclosureResponseNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.scanCredential.barTitle);
 
 	constructor(props: ScanDisclosureResponseInternalProps) {
 		super(props);
@@ -67,7 +67,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 							? "Procesando..."
 							: this.state.collected === undefined
 							? strings.camera.scanQRInstruction
-							: `Codigo ${this.state.collected.currentIndex + 1}/${this.state.collected.maxIndex + 1}`
+							: `Código ${this.state.collected.currentIndex + 1}/${this.state.collected.maxIndex + 1}`
 					}
 				/>
 				{this.state.isVerifying ? (
@@ -87,7 +87,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 
 		const matched = content.match("^_(\\d+)/(\\d+)_:(.*)$");
 		if (matched?.length !== 4) {
-			this.showAlert("Formato inesperado en QR");
+			this.showAlert(strings.scanDisclosureResponse.wrongFormat);
 			return;
 		}
 		const [_, currentIndexString, maxIndexString, tokenPart] = matched;
@@ -96,7 +96,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 
 		if (this.state.collected === undefined) {
 			if (currentIndex !== 0) {
-				this.showAlert("Por favor comenza desde el primer codigo QR");
+				this.showAlert(strings.scanDisclosureResponse.wrongStart);
 				return;
 			}
 			this.setState({
@@ -111,7 +111,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 		}
 
 		if (this.state.collected.maxIndex !== maxIndex) {
-			this.showAlert("Este codigo QR pertenece a otra secuencia");
+			this.showAlert(strings.scanDisclosureResponse.wrongMaxIndex);
 			return;
 		} else if (this.state.collected.currentIndex === currentIndex) {
 			// This can happen if the user waits to switch until the code is recognized
@@ -119,9 +119,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 			return;
 		} else if (this.state.collected.currentIndex + 1 !== currentIndex) {
 			this.showAlert(
-				`Este codigo QR no es el esperado (actual: ${currentIndex + 1}, esperado: ${
-					this.state.collected.currentIndex + 2
-				})`
+				strings.scanDisclosureResponse.wrongIndex(currentIndex + 1, this.state.collected.currentIndex + 2)
 			);
 			return;
 		}
@@ -151,7 +149,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 		if (successfulParses.length === 0) {
 			if (errors.length !== 0) {
 				const errorData = strings.jwtParseError(errors[0]);
-				this.showAlert(errorData.title || "Error", errorData.message);
+				this.showAlert(errorData.title, errorData.message);
 				this.setState({ collected: undefined });
 			}
 			return;
@@ -173,7 +171,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 
 		if (isLeft(parse)) {
 			const errorData = strings.jwtParseError(parse.left);
-			this.showAlert(errorData.title || "Error", errorData.message);
+			this.showAlert(errorData.title, errorData.message);
 			this.setState({ collected: undefined });
 		} else {
 			switch (parse.right.type) {
@@ -208,7 +206,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 		if (successfulParses.length === 0) {
 			if (errors.length !== 0) {
 				const errorData = strings.jwtParseError(errors[0]);
-				this.showAlert(errorData.title || "Error", errorData.message);
+				this.showAlert(errorData.title, errorData.message);
 				this.setState({ collected: undefined });
 			}
 			return;

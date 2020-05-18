@@ -21,6 +21,7 @@ import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { didiConnect } from "../../../store/store";
 import { getCredentials } from "../../../uPort/getCredentials";
 import { serviceErrors } from "../../resources/serviceErrors";
+import strings from "../../resources/strings";
 
 import { ScanCredentialProps } from "./ScanCredential";
 import { ShowDisclosureResponseProps } from "./ShowDisclosureResponse";
@@ -59,7 +60,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	{},
 	ScanDisclosureRequestNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.scanCredential.barTitle);
 
 	componentDidMount() {
 		this.props.storeRequest(this.props.request);
@@ -92,7 +93,8 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		);
 
 		if (missingRequired.length > 0) {
-			Alert.alert("Faltan Credenciales", `No dispones de datos requeridos:\n - ${missingRequired.join("\n - ")}`);
+			const required = missingRequired.map(strings.credentialRequestCard.formatField).join("\n - ");
+			Alert.alert("Faltan Credenciales", `No dispones de datos requeridos:\n - ${required}`);
 			return;
 		}
 

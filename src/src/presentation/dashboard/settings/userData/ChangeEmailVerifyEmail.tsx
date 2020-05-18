@@ -24,7 +24,7 @@ export class ChangeEmailVerifyScreen extends NavigationEnabledComponent<
 	{},
 	ChangeEmailVerifyScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Cambiar Teléfono");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.changeEmail.screenTitle);
 
 	render() {
 		return (

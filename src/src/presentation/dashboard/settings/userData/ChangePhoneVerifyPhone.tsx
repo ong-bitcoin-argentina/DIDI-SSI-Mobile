@@ -24,7 +24,7 @@ export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
 	{},
 	ChangePhoneVerifyScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Cambiar Teléfono");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.changePhone.screenTitle);
 
 	render() {
 		return (

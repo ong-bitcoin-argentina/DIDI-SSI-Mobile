@@ -48,7 +48,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 	ScanCredentialToAddState,
 	ScanCredentialToAddNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.scanCredential.barTitle);
 
 	render() {
 		return (

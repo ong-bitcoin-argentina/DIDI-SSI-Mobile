@@ -9,6 +9,7 @@ import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent
 import { deleteDid, ensureDid, importDid } from "../../../../services/internal/uportSigner";
 import { ActiveDid } from "../../../../store/reducers/didReducer";
 import { didiConnect } from "../../../../store/store";
+import strings from "../../../resources/strings";
 
 import { CredentialRecoveryComponent } from "./CredentialRecoveryComponent";
 import { KeyDisplayComponent } from "./KeyDisplayComponent";
@@ -32,7 +33,7 @@ class IdentitySettingsScreen extends NavigationEnabledComponent<
 	{},
 	IdentitySettingsNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Copia de Seguridad");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.settings.identityBackup);
 
 	constructor(props: IdentitySettingsInnerProps) {
 		super(props);

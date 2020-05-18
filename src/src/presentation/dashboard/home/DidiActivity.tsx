@@ -5,6 +5,7 @@ import { DidiText } from "../../util/DidiText";
 
 import { RecentActivity } from "../../../model/RecentActivity";
 import colors from "../../resources/colors";
+import strings from "../../resources/strings";
 
 interface DidiActivityProps extends ViewProps {
 	activity: RecentActivity;
@@ -23,29 +24,10 @@ function convertToViewable(recentActivity: RecentActivity): ViewableRecentActivi
 	const date = new Date(recentActivity.date);
 	const displayDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
-	switch (recentActivity.type) {
-		case "CREATE":
-			return {
-				icon: "",
-				title: "Nueva Credencial",
-				description: `Se creó una nueva credencial a tu nombre: ${title}`,
-				date: displayDate
-			};
-		case "RECEIVE":
-			return {
-				icon: "",
-				title: "Recibiste Credenciales",
-				description: `Te compartieron ${title}`,
-				date: displayDate
-			};
-		case "SHARE":
-			return {
-				icon: "",
-				title: "Enviaste Credenciales",
-				description: `Compartiste ${title}`,
-				date: displayDate
-			};
-	}
+	return {
+		...strings.activityHistory[recentActivity.type](title),
+		date: displayDate
+	};
 }
 
 export default class DidiActivity extends Component<DidiActivityProps, {}> {

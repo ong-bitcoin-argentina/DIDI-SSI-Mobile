@@ -41,7 +41,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 	ScanCredentialState,
 	ScanCredentialNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Credenciales");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.scanCredential.barTitle);
 
 	constructor(props: ScanCredentialInternalProps) {
 		super(props);
@@ -57,7 +57,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<DidiCamera
 					onBarcodeScanned={(content, type) => type === "qr" && this.onScanQR(content)}
-					explanation={this.state.isVerifying ? "Procesando..." : strings.camera.scanQRInstruction}
+					explanation={this.state.isVerifying ? strings.camera.processing : strings.camera.scanQRInstruction}
 				/>
 				{this.state.isVerifying ? (
 					<View style={styles.verifyingBackground}>
@@ -86,7 +86,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 		if (successfulParses.length === 0) {
 			if (errors.length !== 0) {
 				const errorData = strings.jwtParseError(errors[0]);
-				this.showAlert(errorData.title || "Error", errorData.message);
+				this.showAlert(errorData.title, errorData.message);
 			}
 			return;
 		}
@@ -106,11 +106,11 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 
 		if (isLeft(parse)) {
 			const errorData = strings.jwtParseError(parse.left);
-			this.showAlert(errorData.title || "Error", errorData.message);
+			this.showAlert(errorData.title, errorData.message);
 		} else {
 			switch (parse.right.type) {
 				case "SelectiveDisclosureResponse":
-					this.showAlert("Error", "Tipo de credencial inesperado");
+					this.showAlert(strings.scanCredential.wrongType.title, strings.scanCredential.wrongType.message);
 					break;
 				case "SelectiveDisclosureRequest":
 					this.replace("ScanDisclosureRequest", {
@@ -126,7 +126,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 							credentials: [parse.right]
 						});
 					} else {
-						this.showAlert("Error", "Credencial ajena recibida directamente");
+						this.showAlert(strings.scanCredential.foreign.title, strings.scanCredential.foreign.message);
 					}
 					break;
 				case "SelectiveDisclosureProposal":

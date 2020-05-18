@@ -53,7 +53,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 					<View style={{ flex: 1, alignItems: "center" }}>
 						<DidiTextInput
 							viewProps={{ style: { width: 100 } }}
-							description="Código de País"
+							description={strings.accessCommon.enterPhone.countryCode}
 							placeholder="54"
 							textInputProps={{
 								onChangeText: inputCountryCode => this.setState({ inputCountryCode })

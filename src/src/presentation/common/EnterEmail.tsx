@@ -15,7 +15,7 @@ export interface EnterEmailProps {
 	contentImageSource: ImageSourcePropType;
 	buttonTitle: string;
 
-	isPasswordRequired: true | false | "duplicate";
+	isPasswordRequired: true | false;
 	onPressContinueButton: (email: string, password: string | null) => void;
 	isContinuePending: boolean;
 }
@@ -39,9 +39,6 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 		if (this.props.isPasswordRequired && !Validations.isPassword(this.state.password)) {
 			return false;
 		}
-		if (this.props.isPasswordRequired === "duplicate" && this.state.password !== this.state.passwordCopy) {
-			return false;
-		}
 		return true;
 	}
 
@@ -58,13 +55,6 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 					<DidiTextInput.Password onChangeText={text => this.setState({ password: text })} descriptionType="BASIC" />
 				) : (
 					<View />
-				)}
-
-				{this.props.isPasswordRequired === "duplicate" && (
-					<DidiTextInput.Password
-						onChangeText={text => this.setState({ passwordCopy: text })}
-						descriptionType="REPEAT"
-					/>
 				)}
 
 				{this.props.children}

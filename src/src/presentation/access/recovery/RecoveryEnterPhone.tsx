@@ -21,7 +21,7 @@ export class RecoveryEnterPhoneScreen extends NavigationEnabledComponent<
 	{},
 	RecoveryEnterPhoneNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Recuperar Cuenta");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
 	render() {
 		return (
