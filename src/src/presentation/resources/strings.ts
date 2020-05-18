@@ -252,8 +252,7 @@ export default {
 				body: "Tené en cuenta que, por seguridad, solo se aceptará el último código que te enviamos."
 			}
 		},
-		passwordDescription:
-			"(8 caracteres minimo, una de cada una de: mayúsculas, minúsculas, números, caracteres especiales)"
+		passwordDescription: "Usá ocho caracteres como mínimo con una combinación de letras, números y símbolos"
 	},
 	documents: {
 		barTitle: "Mis Credenciales",
