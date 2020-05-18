@@ -298,7 +298,8 @@ export default {
 		link: {
 			button: "Por enlace al visor",
 			explanation: "Recibirás un pedido de verificación"
-		}
+		},
+		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de DIDI:\n\n${sharedUri}`
 	},
 	disclose: {
 		title: "Compartir",
