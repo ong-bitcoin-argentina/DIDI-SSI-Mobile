@@ -216,7 +216,7 @@ export default {
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email y una contraseña para resguardar el backup de tu identidad"
+				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email. Luego, ingresa una contraseña para tu cuenta."
 		},
 		registrationValidated: {
 			message: "Tu email fue validado con éxito y tu Identidad Digital fue resguardada.",
@@ -333,7 +333,7 @@ export default {
 			steps: [
 				"Buscá un lugar iluminado y con fondo claro",
 				"Tené tu DNI a mano",
-				"Tené acceso a internet o datos móviles"
+				"Tené acceso a internet o a datos móviles"
 			],
 			buttonText: "Comencemos"
 		},
@@ -364,7 +364,7 @@ export default {
 			header: "Foto Selfie y Prueba de Vida",
 			description: (gesture: LivenessGesture) => {
 				const common =
-					"Busca una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando te lo pida, ";
+					"Buscá una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando te lo pida, ";
 				switch (gesture) {
 					case LivenessGesture.SMILE:
 						return common + "sonreí.";
@@ -439,7 +439,7 @@ export default {
 		},
 		cellPhoneNumber: {
 			description: "Número de celular",
-			placeholder: "código área + número sin el 15"
+			placeholder: "código área + número sin 15"
 		},
 		password: {
 			BASIC: "Contraseña",
@@ -464,7 +464,7 @@ export default {
 				return "N/A";
 			}
 			const map: Partial<Record<string | number, string>> = {
-				true: "Si",
+				true: "Sí",
 				false: "No"
 			};
 
@@ -597,9 +597,9 @@ export default {
 	},
 	credentialReceivedInScan: {
 		addCredential: "¿Agregar esta credencial?",
-		doAdd: "Si",
+		doAdd: "Sí",
 		goBack: "No",
-		alreadyScanned: "Ya dispones de esta credencial"
+		alreadyScanned: "Ya tenés esta credencial"
 	},
 	credentialShare: {
 		shareAction: "Compartir",
@@ -641,7 +641,7 @@ export default {
 				return {
 					errorCode: `TOKEN_BEFORE_IAT`,
 					title: "Error de Horario",
-					message: "Esta credencial indica que fue emitida en el futuro. Verifique la hora de su dispositivo."
+					message: "Esta credencial indica que fue emitida en el futuro. Verificá la hora de tu dispositivo."
 				};
 			case "JWT_DECODE_ERROR":
 				return {
@@ -653,13 +653,13 @@ export default {
 				return {
 					errorCode: "NONCREDENTIAL_WRAP_ERROR",
 					title: "Error al Verificar Credencial",
-					message: "Esta credencial contiene una sub-credencial en formato desconocido."
+					message: "Esta credencial contiene una sub-credencial en formato desconocido. Comunicate con su emisor."
 				};
 			case "RESOLVER_CREATION_ERROR":
 				return {
 					errorCode: "TOKEN_RESOLVER_CREATION_ERROR",
 					title: "Error de Conexión",
-					message: "Verifique tener acceso a internet."
+					message: "Verificá tener acceso a internet."
 				};
 			case "SHAPE_DECODE_ERROR":
 				return {
@@ -671,19 +671,19 @@ export default {
 				return {
 					errorCode: "TOKEN_VERIFICATION_ERROR",
 					title: "Error al Verificar Credencial",
-					message: "Verifique tener acceso a internet."
+					message: "Verificá tener acceso a internet."
 				};
 			case "DELEGATE_CHECK_ERROR":
 				return {
 					errorCode: "TOKEN_DELEGATE_CHECK_ERROR",
 					title: "Error al Verificar Credencial",
-					message: "Verifique tener acceso a internet."
+					message: "Verificá tener acceso a internet."
 				};
 			case "MISSING_DELEGATION_ERROR":
 				return {
 					errorCode: "TOKEN_MISSING_DELEGATION_ERROR",
 					title: "Error al Verificar Credencial",
-					message: "Esta credencial fue emitida por un delegado no autorizado."
+					message: "Esta credencial fue emitida por un delegado no autorizado. Comunicate con su emisor."
 				};
 			default:
 				assertUnreachable(error);
