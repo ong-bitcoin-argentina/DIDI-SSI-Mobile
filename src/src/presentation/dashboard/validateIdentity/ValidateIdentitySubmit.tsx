@@ -44,6 +44,8 @@ class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<ValidateId
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
 
 	render() {
+		const documentDataKeys = ["dni", "gender", "firstNames", "lastNames", "birthDate", "tramitId"] as const;
+
 		return (
 			<DidiScreen>
 				<DidiText.ValidateIdentity.Title>{strings.validateIdentity.submit.header}</DidiText.ValidateIdentity.Title>
@@ -52,12 +54,11 @@ class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<ValidateId
 				</DidiText.ValidateIdentity.Congrats>
 
 				<View>
-					<Text>DNI: {this.props.documentData.dni}</Text>
-					<Text>Genero: {this.props.documentData.gender}</Text>
-					<Text>Nombre(s): {this.props.documentData.firstNames}</Text>
-					<Text>Apellido(s): {this.props.documentData.lastNames}</Text>
-					<Text>Fecha de Nacimiento: {this.props.documentData.birthDate}</Text>
-					<Text>Numero de tramite: {this.props.documentData.tramitId}</Text>
+					{documentDataKeys.map(key => (
+						<Text key={key}>
+							{strings.validateIdentity.submit.items[key]}: {this.props.documentData.dni}
+						</Text>
+					))}
 				</View>
 
 				<View style={{ justifyContent: "space-around", flexDirection: "row" }}>

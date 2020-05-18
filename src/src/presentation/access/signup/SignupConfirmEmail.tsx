@@ -88,7 +88,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 						stateIndicator={this.renderPasswordStateIndicator()}
 					/>
 					<DidiText.SignupPasswordInfo>
-						(8 caracteres minimo, una de cada una de: mayusculas, minusculas, numeros, caracteres especiales)
+						(8 caracteres minimo, una de cada una de: mayusculas, minusculas, números, caracteres especiales)
 					</DidiText.SignupPasswordInfo>
 					<DidiTextInput.Password
 						onChangeText={text => this.setState({ passwordCopy: text })}

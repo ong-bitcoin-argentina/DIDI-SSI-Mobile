@@ -19,7 +19,7 @@ const pages: OnboardingPage[] = [
 		image: Image1,
 		backgroundColor: "#8351C5",
 		backgroundTile: require("./images/onboardingTile1.png"),
-		title: "¿Qué podes hacer?",
+		title: "¿Qué podés hacer?",
 		body:
 			"Con Didi vas a poder armar rondas comunitarias de plata y crear tu identidad digital sin intermediarios y de manera segura."
 	},
@@ -27,8 +27,8 @@ const pages: OnboardingPage[] = [
 		image: Image2,
 		backgroundColor: "#CB296E",
 		backgroundTile: require("./images/onboardingTile2.png"),
-		title: "Podés generar certificados",
-		body: "Con Didi vas a poder acceder a todos tus certificados de cursos y propiedades."
+		title: "Podés generar credenciales",
+		body: "Con Didi vas a poder acceder a todos tus credenciales de cursos y propiedades."
 	},
 	{
 		image: Image3,

@@ -68,7 +68,7 @@ export class DocumentsScreenNavigator extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		DocumentsScreenNavigatorNavigation,
 		"DashboardHome"
-	>(strings.tabNames.settings, "DashboardHome", {});
+	>(strings.tabNames.documents, "DashboardHome", {});
 
 	static router = DocumentsScreenInnerNavigator.router;
 

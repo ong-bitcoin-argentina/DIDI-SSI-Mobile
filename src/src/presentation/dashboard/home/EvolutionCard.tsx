@@ -27,7 +27,7 @@ export class EvolutionCard extends React.Component<EvolutionCardProps> {
 		];
 		const progress = (100 / data.length) * data.filter(v => v.value === str.validationState.yes).length;
 
-		const now = new Date();
+		const dateText = str.formatDate(new Date());
 
 		return (
 			<CredentialCard
@@ -50,7 +50,7 @@ export class EvolutionCard extends React.Component<EvolutionCardProps> {
 				}
 				category={str.category}
 				title={str.title}
-				subTitle={`${now.getDate()}/${1 + now.getMonth()}/${now.getFullYear()}`}
+				subTitle={dateText}
 				color={colors.primary}
 				data={[{ label: str.validationIntro, value: "" }, ...data]}
 				columns={1}
