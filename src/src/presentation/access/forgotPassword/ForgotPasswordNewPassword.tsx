@@ -2,7 +2,7 @@ import React from "react";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { VerifyCodeWrapper } from "../../common/VerifyCodeWrapper";
-import DidiTextInput from "../../util/DidiTextInput";
+import { PasswordPickComponent } from "../../dashboard/common/PasswordPickComponent";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { recoverPassword } from "../../../services/user/recoverPassword";
@@ -24,8 +24,7 @@ type ForgotPasswordNewPasswordInternalProps = ForgotPasswordNewPasswordProps &
 	ForgotPasswordNewPasswordDispatchProps;
 
 interface ForgotPasswordNewPasswordState {
-	password: string;
-	passwordCopy: string;
+	password: string | null;
 }
 
 export interface ForgotPasswordNewPasswordNavigation {
@@ -42,8 +41,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 	constructor(props: ForgotPasswordNewPasswordInternalProps) {
 		super(props);
 		this.state = {
-			password: "",
-			passwordCopy: ""
+			password: null
 		};
 	}
 
@@ -53,15 +51,14 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 				description={strings.recovery.passwordChange.messageHead}
 				contentImageSource={require("../../resources/images/recoverPassword.png")}
 				serviceButtonText={strings.accessCommon.recoverButtonText}
+				isServiceBlocked={this.state.password === null}
 				serviceCall={(serviceKey, validationCode) =>
-					recoverPassword(serviceKey, this.props.email, validationCode, this.state.password)
+					recoverPassword(serviceKey, this.props.email, validationCode, this.state.password!)
 				}
 				onServiceSuccess={() => this.navigate("Dashboard", {})}
 				onResendCodePress={serviceKey => sendMailValidator(serviceKey, this.props.email, null)}
 			>
-				<DidiTextInput.Password onChangeText={text => this.setState({ password: text })} descriptionType="NEW" />
-
-				<DidiTextInput.Password onChangeText={text => this.setState({ passwordCopy: text })} descriptionType="REPEAT" />
+				<PasswordPickComponent onPasswordChange={password => this.setState({ password })} />
 			</VerifyCodeWrapper>
 		);
 	}

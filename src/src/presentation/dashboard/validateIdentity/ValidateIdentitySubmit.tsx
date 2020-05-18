@@ -56,7 +56,7 @@ class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<ValidateId
 				<View>
 					{documentDataKeys.map(key => (
 						<Text key={key}>
-							{strings.validateIdentity.submit.items[key]}: {this.props.documentData.dni}
+							{strings.validateIdentity.submit.items[key]}: {this.props.documentData[key]}
 						</Text>
 					))}
 				</View>

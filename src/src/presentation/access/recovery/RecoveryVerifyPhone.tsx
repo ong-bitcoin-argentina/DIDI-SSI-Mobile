@@ -23,7 +23,7 @@ export class RecoveryVerifyPhoneScreen extends NavigationEnabledComponent<
 	{},
 	RecoveryVerifyPhoneNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Recuperar cuenta");
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
 	render() {
 		return (

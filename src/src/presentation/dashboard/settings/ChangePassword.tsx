@@ -1,7 +1,6 @@
 import React from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert } from "react-native";
 
-import TypedObject from "../../../util/TypedObject";
 import { DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
@@ -9,12 +8,11 @@ import { DidiServiceButton } from "../../util/DidiServiceButton";
 import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import { PasswordPickComponent } from "../common/PasswordPickComponent";
 
-import { Validations } from "../../../model/Validations";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { changePassword } from "../../../services/user/changePassword";
 import { didiConnect } from "../../../store/store";
-import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
 export type ChangePasswordProps = {};
@@ -27,9 +25,8 @@ interface ChangePasswordDispatchProps {
 type ChangePasswordInternalProps = ChangePasswordProps & ChangePasswordStateProps & ChangePasswordDispatchProps;
 
 type ChangePasswordState = {
-	oldKey: string;
-	key: string;
-	keyDup: string;
+	oldPassword: string;
+	password: string | null;
 };
 
 const serviceKey = "ChangePassword";
@@ -40,60 +37,30 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 	constructor(props: ChangePasswordInternalProps) {
 		super(props);
 		this.state = {
-			oldKey: "",
-			key: "",
-			keyDup: ""
+			oldPassword: "",
+			password: null
 		};
 	}
 
 	render() {
-		const passwordErrors = Validations.validatePassword(this.state.key);
-		const passwordsMatch = this.state.key === this.state.keyDup;
-
 		return (
 			<DidiScrollScreen>
 				<DidiText.ChangePassword.Emphasis>
 					{strings.userData.changePassword.explanation}
 				</DidiText.ChangePassword.Emphasis>
 
-				<DidiTextInput.Password onChangeText={text => this.setState({ oldKey: text })} descriptionType="OLD" />
+				<DidiTextInput.Password onChangeText={text => this.setState({ oldPassword: text })} descriptionType="OLD" />
 
-				<View>
-					<DidiText.ChangePassword.Explanation>
-						{strings.userData.changePassword.requirementHeader}
-					</DidiText.ChangePassword.Explanation>
-					{TypedObject.keys(strings.userData.changePassword.requirements).map(key => {
-						const accepted = passwordErrors.find(e => e.toString() === key) === undefined;
-
-						const indicator = accepted
-							? strings.userData.changePassword.indicator.ok
-							: strings.userData.changePassword.indicator.missing;
-						const text = strings.userData.changePassword.requirements[key];
-						const color = accepted ? colors.success : undefined;
-						return (
-							<DidiText.ChangePassword.EnumerationItem style={{ color }} key={key}>
-								{indicator}
-								{text}
-							</DidiText.ChangePassword.EnumerationItem>
-						);
-					})}
-				</View>
-
-				<View>
-					<DidiTextInput.Password onChangeText={text => this.setState({ key: text })} descriptionType="NEW" />
-
-					<DidiTextInput.Password onChangeText={text => this.setState({ keyDup: text })} descriptionType="REPEAT" />
-				</View>
-
-				<DidiText.ChangePassword.Error>
-					{!passwordsMatch && this.state.keyDup.length > 0 ? strings.userData.changePassword.mismatch : ""}
-				</DidiText.ChangePassword.Error>
+				<PasswordPickComponent
+					showFullPasswordRequirements={true}
+					onPasswordChange={password => this.setState({ password })}
+				/>
 
 				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.onSuccess()} />
 				<DidiServiceButton
 					title={strings.userData.changePassword.changePassword}
-					disabled={this.state.oldKey.length === 0 || !passwordsMatch || passwordErrors.length > 0}
-					onPress={() => this.props.changePassword(this.state.oldKey, this.state.key)}
+					disabled={this.state.oldPassword.length === 0 || this.state.password === null}
+					onPress={() => this.props.changePassword(this.state.oldPassword, this.state.password!)}
 					isPending={this.props.changePasswordPending}
 				/>
 			</DidiScrollScreen>

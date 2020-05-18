@@ -13,9 +13,10 @@ import { VerifyCodeComponent, VerifyCodeProps } from "./VerifyCode";
 
 interface VerifyCodeWrapperProps {
 	description: VerifyCodeProps["description"];
-	contentImageSource: ImageSourcePropType;
+	contentImageSource?: ImageSourcePropType;
 
 	serviceButtonText?: string;
+	isServiceBlocked?: boolean;
 	serviceCall: (serviceKey: string, validationCode: string) => ServiceCallAction;
 	onServiceSuccess: () => void;
 
@@ -40,13 +41,17 @@ class VerifyCodeWrapper extends React.Component<VerifyCodeWrapperInternalProps> 
 				<VerifyCodeComponent
 					description={this.props.description}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
+					isContinueBlocked={this.props.isServiceBlocked}
 					isContinuePending={this.props.verifyPhoneCodePending}
 					continueButtonText={this.props.serviceButtonText}
 					onResendCodePress={sk => {
 						this.props.dispatch(this.props.onResendCodePress(sk));
 					}}
 				>
-					<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
+					{this.props.children}
+					{this.props.contentImageSource ? (
+						<Image style={commonStyles.image.image} source={this.props.contentImageSource} />
+					) : null}
 				</VerifyCodeComponent>
 			</ServiceObserver>
 		);

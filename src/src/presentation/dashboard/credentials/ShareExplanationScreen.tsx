@@ -75,7 +75,7 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 		const jwt = documents.map(doc => doc.jwt).join(",");
 		Share.share({
 			title: strings.shareExplanation.title,
-			message: `${this.props.sharePrefix}/${jwt}`
+			message: strings.shareExplanation.shareMessage(`${this.props.sharePrefix}/${jwt}`)
 		});
 		this.props.recordLinkShare(documents);
 	}

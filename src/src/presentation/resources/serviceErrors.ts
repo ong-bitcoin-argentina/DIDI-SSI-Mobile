@@ -29,9 +29,9 @@ export const serviceErrors = {
 		PARSE_DID: (did: string) => error("DID_PARSE_ERR", `DID '${did}' no cumple el formato esperado`)
 	},
 	disclosure: {
-		SIGNING_ERR: error("SIGNING_ERR", "Error al firmar respuesta a la peticion.")
+		SIGNING_ERR: error("SIGNING_ERR", "Error al firmar respuesta a la petición.")
 	},
 	trustGraph: {
-		FETCH_ERR: error("FETCH_TG_ERR", "Error al recuperar credenciales del servidor.")
+		FETCH_ERR: error("FETCH_TG_ERR", "Error al recuperar credenciales del servidor. Volvé a probar en unos minutos.")
 	}
 };

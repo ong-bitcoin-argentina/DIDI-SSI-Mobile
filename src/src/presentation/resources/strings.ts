@@ -36,10 +36,10 @@ export default {
 		menu: "Debug Menu",
 		decodeJWT: "Decodificar JWT",
 		serviceConfig: {
-			barTitle: "Configuracion de Servicios",
-			instructions: "Dejar un input vacio y guardar lo retorna a su valor por defecto"
+			barTitle: "Configuración de Servicios",
+			instructions: "Dejar un input vacío y guardar lo retorna a su valor por defecto"
 		},
-		screenInProgress: "Pantalla en Construccion"
+		screenInProgress: "Pantalla en Construcción"
 	},
 	dashboard: {
 		helloMessage: "Hola",
@@ -75,7 +75,7 @@ export default {
 				button: "Reintentar"
 			},
 			"In Progress": {
-				title: "Validacion en progreso...",
+				title: "Validación en progreso...",
 				subtitle: "",
 				button: null
 			}
@@ -119,7 +119,7 @@ export default {
 			departmentMessage: "Departamento",
 			floorMessage: "Piso",
 			neighborhoodMessage: "Barrio",
-			postCodeMessage: "Codigo Postal"
+			postCodeMessage: "Código Postal"
 		},
 		changePassword: {
 			barTitle: "Cambio de Contraseña",
@@ -130,11 +130,11 @@ export default {
 				ok: "✓ "
 			},
 			requirements: {
-				PASSWORD_TOO_SHORT: "8 o mas caracteres",
-				PASSWORD_MISSING_UPPERCASE: "1 o mas mayusculas",
-				PASSWORD_MISSING_LOWERCASE: "1 o mas minusculas",
-				PASSWORD_MISSING_NUMBER: "1 o mas numeros",
-				PASSWORD_MISSING_SPECIAL: "1 o mas caracteres especiales"
+				PASSWORD_TOO_SHORT: "8 o más caracteres",
+				PASSWORD_MISSING_UPPERCASE: "Mayúsculas",
+				PASSWORD_MISSING_LOWERCASE: "Minúsculas",
+				PASSWORD_MISSING_NUMBER: "Números",
+				PASSWORD_MISSING_SPECIAL: "Símbolos"
 			},
 			mismatch: "Las contraseñas no coinciden",
 			changePassword: "Cambiar Contraseña"
@@ -143,7 +143,7 @@ export default {
 			barTitle: "Compartir",
 			share: "Compartir",
 
-			personalData: "DatosPersonales",
+			personalData: "Datos Personales",
 			familyMessage: "Familia",
 			coursesMessage: "Cursos",
 			jobsMessage: "Trabajos",
@@ -216,7 +216,7 @@ export default {
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email y una contraseña para resguardar el backup de tu identidad"
+				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email. Luego, ingresa una contraseña para tu cuenta."
 		},
 		registrationValidated: {
 			message: "Tu email fue validado con éxito y tu Identidad Digital fue resguardada.",
@@ -240,7 +240,8 @@ export default {
 		recoverButtonText: "Recuperar",
 		defaultPlace: "Otros",
 		enterPhone: {
-			messageHead: "Cargá tu número de celular"
+			messageHead: "Cargá tu número de celular",
+			countryCode: "Código de País"
 		},
 		verify: {
 			phoneMessageHead: "Ingresá el código de 6 dígitos para verificar tu celular",
@@ -250,7 +251,8 @@ export default {
 				title: "Código reenviado",
 				body: "Tené en cuenta que, por seguridad, solo se aceptará el último código que te enviamos."
 			}
-		}
+		},
+		passwordDescription: "Usá ocho caracteres como mínimo con una combinación de letras, números y símbolos"
 	},
 	documents: {
 		barTitle: "Mis Credenciales",
@@ -274,7 +276,7 @@ export default {
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
 		about: "Acerca de Didi",
-		endSession: "Cerrar Sesion"
+		endSession: "Cerrar Sesión"
 	},
 	share: {
 		title: "Compartir",
@@ -295,8 +297,9 @@ export default {
 		or: "o",
 		link: {
 			button: "Por enlace al visor",
-			explanation: "Recibirás un pedido de verificacion"
-		}
+			explanation: "Recibirás un pedido de verificación"
+		},
+		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de DIDI:\n\n${sharedUri}`
 	},
 	disclose: {
 		title: "Compartir",
@@ -326,11 +329,11 @@ export default {
 		},
 		howTo: {
 			header: "¿Cómo lo hago?",
-			intro: "Segui estos pasos:",
+			intro: "Seguí estos pasos:",
 			steps: [
 				"Buscá un lugar iluminado y con fondo claro",
 				"Tené tu DNI a mano",
-				"Tené acceso a internet o datos móviles"
+				"Tené acceso a internet o a datos móviles"
 			],
 			buttonText: "Comencemos"
 		},
@@ -361,7 +364,7 @@ export default {
 			header: "Foto Selfie y Prueba de Vida",
 			description: (gesture: LivenessGesture) => {
 				const common =
-					"Busca una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando te lo pida, ";
+					"Buscá una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando te lo pida, ";
 				switch (gesture) {
 					case LivenessGesture.SMILE:
 						return common + "sonreí.";
@@ -436,7 +439,7 @@ export default {
 		},
 		cellPhoneNumber: {
 			description: "Número de celular",
-			placeholder: "código area + número sin el 15"
+			placeholder: "código área + número sin 15"
 		},
 		password: {
 			BASIC: "Contraseña",
@@ -446,11 +449,33 @@ export default {
 		}
 	},
 	credentialCard: {
-		emitter: "ID Emisor: ",
+		emitter: {
+			id: "ID Emisor: ",
+			unknown: "Emisor desconocido",
+			known: (name: string) => `Emisor: ${name}`,
+			loading: "Cargando..."
+		},
 		valueNotAvailable: "N/A",
 		shared: "Credencial compartida con vos",
 		replaced: "Credencial no vigente por existir reemplazo",
-		formatDate: formatFullDate
+		formatDate: formatFullDate,
+		formatValue: (value: string | number | null): string => {
+			if (value === null) {
+				return "N/A";
+			}
+			const map: Partial<Record<string | number, string>> = {
+				true: "Sí",
+				false: "No"
+			};
+
+			const dateRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/;
+			if (typeof value === "string" && value.match(dateRegex)) {
+				const date = new Date(value);
+				return formatDatePart(date);
+			} else {
+				return map[value] ?? `${value}`;
+			}
+		}
 	},
 	specialCredentials: {
 		PhoneNumberData: {
@@ -482,12 +507,31 @@ export default {
 		}
 	},
 	camera: {
-		notAuthorized: "Camara no autorizada",
+		notAuthorized: "Cámara no autorizada",
 		scanQRInstruction: "Escaneá un código QR",
+		processing: "Procesando...",
 		noCredentials: {
 			title: "No hay credenciales",
 			message: "El código QR escaneado no contiene credenciales"
 		}
+	},
+	scanCredential: {
+		barTitle: "Credenciales",
+		wrongType: {
+			title: "Error",
+			message: "Tipo de credencial inesperado"
+		},
+		foreign: {
+			title: "Error",
+			message: "Credencial ajena recibida directamente"
+		}
+	},
+	scanDisclosureResponse: {
+		wrongFormat: "Formato inesperado en QR",
+		wrongStart: "Por favor comenzá desde el primer código QR",
+		wrongMaxIndex: "Este código QR pertenece a otra secuencia",
+		wrongIndex: (current: number, expected: number) =>
+			`Este código QR no es el esperado (actual: ${current}, esperado: ${expected})`
 	},
 	notifications: {
 		barTitle: "Notificaciones",
@@ -500,19 +544,66 @@ export default {
 	credentialRequestCard: {
 		from: "De",
 		unknown: "Solicitante desconocido",
+		loading: "Cargando...",
 		requesterID: "ID Solicitante",
 		requests: "Solicita",
-		before: "Antes de"
+		before: "Antes de",
+		formatEndDate: formatFullDate,
+		formatField: (name: string): string => {
+			switch (name.toLowerCase()) {
+				case "names":
+				case "firstnames":
+				case "nombre":
+					return "NOMBRE";
+				case "apellido":
+				case "lastnames":
+					return "APELLIDO";
+				case "dni":
+				case "document":
+					return "DNI";
+				case "name":
+				case "full name":
+					return "NOMBRE COMPLETO";
+				case "email":
+					return "EMAIL";
+				case "country":
+				case "nationality":
+					return "NACIONALIDAD";
+				case "cellphone":
+				case "phone":
+					return "TELÉFONO";
+				case "street":
+				case "streetaddress":
+					return "CALLE";
+				case "numberstreet":
+				case "addressnumber":
+					return "NÚMERO DE CALLE";
+				case "department":
+					return "DEPARTAMENTO";
+				case "floor":
+					return "PISO";
+				case "city":
+				case "neighborhood":
+					return "BARRIO";
+				case "zipcode":
+				case "postcode":
+					return "CÓDIGO POSTAL";
+				case "expiration date":
+					return "FECHA DE VENCIMIENTO";
+				default:
+					return name;
+			}
+		}
 	},
 	credentialReceivedInScan: {
 		addCredential: "¿Agregar esta credencial?",
-		doAdd: "Si",
+		doAdd: "Sí",
 		goBack: "No",
-		alreadyScanned: "Ya dispones de esta credencial"
+		alreadyScanned: "Ya tenés esta credencial"
 	},
 	credentialShare: {
 		shareAction: "Compartir",
-		noCredentialsAvailable: "Primero obten credenciales",
+		noCredentialsAvailable: "Primero obtén credenciales",
 		whichFull: "¿Qué credenciales deseas compartir?",
 		whichMicro: "¿Qué parte de la credencial deseas compartir?",
 		notCurrent: {
@@ -520,20 +611,37 @@ export default {
 			message: "Solo es posible compartir credenciales vigentes."
 		}
 	},
+	activityHistory: {
+		CREATE: (title: string) => ({
+			icon: "",
+			title: "Nueva Credencial",
+			description: `Se creó una nueva credencial a tu nombre: ${title}`
+		}),
+		RECEIVE: (title: string) => ({
+			icon: "",
+			title: "Recibiste Credenciales",
+			description: `Te compartieron ${title}`
+		}),
+		SHARE: (title: string) => ({
+			icon: "",
+			title: "Enviaste Credenciales",
+			description: `Compartiste ${title}`
+		})
+	},
 	jwtParseError: (error: JWTParseError) => {
 		switch (error.type) {
 			case "AFTER_EXP":
-				const displayTimestamp = (ts: number) => new Date(ts * 1000).toLocaleString();
+				const displayTimestamp = (ts: number) => formatFullDate(new Date(ts * 1000));
 				return {
 					errorCode: `TOKEN_AFTER_EXP`,
 					title: "Credencial Vencida",
-					message: `Hora actual: ${displayTimestamp(error.current)}, Vencimiento: ${displayTimestamp(error.expected)}`
+					message: `Hora actual: ${displayTimestamp(error.current)}\n\nVencimiento: ${displayTimestamp(error.expected)}`
 				};
 			case "BEFORE_IAT":
 				return {
 					errorCode: `TOKEN_BEFORE_IAT`,
 					title: "Error de Horario",
-					message: "Esta credencial indica que fue emitida en el futuro. Verifique la hora de su dispositivo."
+					message: "Esta credencial indica que fue emitida en el futuro. Verificá la hora de tu dispositivo."
 				};
 			case "JWT_DECODE_ERROR":
 				return {
@@ -545,13 +653,13 @@ export default {
 				return {
 					errorCode: "NONCREDENTIAL_WRAP_ERROR",
 					title: "Error al Verificar Credencial",
-					message: "Esta credencial contiene una sub-credencial en formato desconocido."
+					message: "Esta credencial contiene una sub-credencial en formato desconocido. Comunicate con su emisor."
 				};
 			case "RESOLVER_CREATION_ERROR":
 				return {
 					errorCode: "TOKEN_RESOLVER_CREATION_ERROR",
 					title: "Error de Conexión",
-					message: "Verifique tener acceso a internet."
+					message: "Verificá tener acceso a internet."
 				};
 			case "SHAPE_DECODE_ERROR":
 				return {
@@ -563,19 +671,19 @@ export default {
 				return {
 					errorCode: "TOKEN_VERIFICATION_ERROR",
 					title: "Error al Verificar Credencial",
-					message: "Verifique tener acceso a internet."
+					message: "Verificá tener acceso a internet."
 				};
 			case "DELEGATE_CHECK_ERROR":
 				return {
 					errorCode: "TOKEN_DELEGATE_CHECK_ERROR",
 					title: "Error al Verificar Credencial",
-					message: "Verifique tener acceso a internet."
+					message: "Verificá tener acceso a internet."
 				};
 			case "MISSING_DELEGATION_ERROR":
 				return {
 					errorCode: "TOKEN_MISSING_DELEGATION_ERROR",
 					title: "Error al Verificar Credencial",
-					message: "Esta credencial fue emitida por un delegado no autorizado."
+					message: "Esta credencial fue emitida por un delegado no autorizado. Comunicate con su emisor."
 				};
 			default:
 				assertUnreachable(error);

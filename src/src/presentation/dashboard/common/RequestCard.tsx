@@ -24,13 +24,15 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 			? issuerData.name === null
 				? strings.credentialRequestCard.unknown
 				: issuerData.name
-			: "Cargando...";
+			: strings.credentialRequestCard.loading;
 	}
 
 	render() {
 		const did = SelectiveDisclosureRequest.displayedIssuer(this.props.request);
 		const issuerName = this.issuerName(did);
-		const endDate = this.props.request.expireAt && new Date(this.props.request.expireAt * 1000).toLocaleString();
+		const endDate = this.props.request.expireAt
+			? strings.credentialRequestCard.formatEndDate(new Date(this.props.request.expireAt * 1000))
+			: undefined;
 		return (
 			<DidiCardBody icon="" color={colors.secondary} hollow={true} {...this.props}>
 				<View>
@@ -45,10 +47,12 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 					</Text>
 
 					<DidiText.Card.Key>{strings.credentialRequestCard.requests + ": "}</DidiText.Card.Key>
-					{Object.entries(this.props.request.verifiedClaims).map(([title, rq], index) => {
+					{Object.entries(this.props.request.verifiedClaims).map(([field, rq], index) => {
+						const title = strings.credentialRequestCard.formatField(field);
 						return <DidiText.Card.Key key={index}>{`    - ${title}`}</DidiText.Card.Key>;
 					})}
-					{Object.entries(this.props.request.ownClaims).map(([title, rq], index) => {
+					{Object.entries(this.props.request.ownClaims).map(([field, rq], index) => {
+						const title = strings.credentialRequestCard.formatField(field);
 						return <DidiText.Card.Key key={index}>{`    - ${title}`}</DidiText.Card.Key>;
 					})}
 					{endDate && (

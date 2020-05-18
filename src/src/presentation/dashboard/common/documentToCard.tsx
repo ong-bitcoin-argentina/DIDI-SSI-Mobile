@@ -54,10 +54,10 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		const issuerData = this.props.context.knownIssuers[did.did()];
 		const issuerName = issuerData
 			? issuerData.name === null
-				? "Emisor desconocido"
-				: `Emisor: ${issuerData.name}`
-			: "Cargando...";
-		return this.props.preview ? issuerName : `${issuerName}\n${strings.credentialCard.emitter + did.keyAddress()}`;
+				? strings.credentialCard.emitter.unknown
+				: strings.credentialCard.emitter.known(issuerData.name)
+			: strings.credentialCard.emitter.loading;
+		return this.props.preview ? issuerName : `${issuerName}\n${strings.credentialCard.emitter.id + did.keyAddress()}`;
 	}
 
 	render() {

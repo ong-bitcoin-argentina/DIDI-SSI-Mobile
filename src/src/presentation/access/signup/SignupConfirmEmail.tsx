@@ -1,22 +1,16 @@
 import React, { Fragment } from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
 import { Dispatch } from "redux";
 
-import TypedObject from "../../../util/TypedObject";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { VerifyCodeComponent } from "../../common/VerifyCode";
-import { DidiText } from "../../util/DidiText";
-import DidiTextInput from "../../util/DidiTextInput";
+import { PasswordPickComponent } from "../../dashboard/common/PasswordPickComponent";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { ValidationStateIcon } from "../../util/ValidationStateIcon";
 
-import { Validations } from "../../../model/Validations";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { registerUser } from "../../../services/user/registerUser";
 import { sendMailValidator } from "../../../services/user/sendMailValidator";
 import { verifyEmailCode } from "../../../services/user/verifyEmailCode";
-import { ValidationState } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
 import { StoreAction } from "../../../store/StoreAction";
 import strings from "../../resources/strings";
@@ -41,8 +35,7 @@ type SignupConfirmEmailInternalProps = SignupConfirmEmailProps &
 	SignupConfirmEmailDispatchProps;
 
 interface SignupConfirmEmailState {
-	password?: string;
-	passwordCopy?: string;
+	password: string | null;
 	didVerifyEmail: boolean;
 }
 
@@ -63,6 +56,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 	constructor(props: SignupConfirmEmailInternalProps) {
 		super(props);
 		this.state = {
+			password: null,
 			didVerifyEmail: false
 		};
 	}
@@ -78,88 +72,14 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 					onResendCodePress={serviceKey => {
 						this.props.dispatch(sendMailValidator(serviceKey, this.props.email, null));
 					}}
-					isContinueBlocked={this.passwordErrors().length > 0 || this.arePasswordsDifferent()}
+					isContinueBlocked={this.state.password === null}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
 					isContinuePending={this.props.registerUserPending || this.props.verifyEmailCodePending}
 				>
-					<DidiTextInput.Password
-						onChangeText={text => this.setState({ password: text })}
-						descriptionType="NEW"
-						stateIndicator={this.renderPasswordStateIndicator()}
-					/>
-					<DidiText.SignupPasswordInfo>
-						(8 caracteres minimo, una de cada una de: mayusculas, minusculas, números, caracteres especiales)
-					</DidiText.SignupPasswordInfo>
-					<DidiTextInput.Password
-						onChangeText={text => this.setState({ passwordCopy: text })}
-						descriptionType="REPEAT"
-						stateIndicator={this.renderPasswordCopyStateIndicator()}
-					/>
+					<PasswordPickComponent onPasswordChange={password => this.setState({ password })} />
 				</VerifyCodeComponent>
 			</Fragment>
 		);
-	}
-
-	private passwordErrors() {
-		return Validations.validatePassword(this.state.password);
-	}
-
-	private arePasswordsDifferent() {
-		return this.state.password !== this.state.passwordCopy;
-	}
-
-	private renderPasswordStateIndicator() {
-		if (!this.state.password) {
-			return undefined;
-		}
-
-		const errors = this.passwordErrors();
-		if (errors.length === 0) {
-			return (
-				<View style={{ padding: 10, justifyContent: "center" }}>
-					<ValidationStateIcon validationState={ValidationState.Approved} useWords={false} />
-				</View>
-			);
-		} else {
-			return (
-				<TouchableOpacity style={{ padding: 10, justifyContent: "center" }} onPress={() => this.alertPasswordErrors()}>
-					<ValidationStateIcon validationState={ValidationState.Rejected} useWords={false} />
-				</TouchableOpacity>
-			);
-		}
-	}
-
-	private alertPasswordErrors() {
-		const errors = this.passwordErrors();
-
-		const messages = TypedObject.keys(strings.userData.changePassword.requirements).map(key => {
-			const accepted = errors.find(e => e.toString() === key) === undefined;
-
-			const indicator = accepted
-				? strings.userData.changePassword.indicator.ok
-				: strings.userData.changePassword.indicator.missing;
-			const text = strings.userData.changePassword.requirements[key];
-			return `${indicator}${text}`;
-		});
-		Alert.alert("Requisitos de contraseña", messages.join("\n"));
-	}
-
-	private renderPasswordCopyStateIndicator() {
-		if (!this.state.passwordCopy) {
-			return undefined;
-		} else if (this.arePasswordsDifferent()) {
-			return (
-				<View style={{ padding: 10, justifyContent: "center" }}>
-					<ValidationStateIcon validationState={ValidationState.Rejected} useWords={false} />
-				</View>
-			);
-		} else {
-			return (
-				<View style={{ padding: 10, justifyContent: "center" }}>
-					<ValidationStateIcon validationState={ValidationState.Approved} useWords={false} />
-				</View>
-			);
-		}
 	}
 
 	private onPressContinueButton(inputCode: string) {
