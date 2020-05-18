@@ -457,7 +457,24 @@ export default {
 		valueNotAvailable: "N/A",
 		shared: "Credencial compartida con vos",
 		replaced: "Credencial no vigente por existir reemplazo",
-		formatDate: formatFullDate
+		formatDate: formatFullDate,
+		formatValue: (value: string | number | null): string => {
+			if (value === null) {
+				return "N/A";
+			}
+			const map: Partial<Record<string | number, string>> = {
+				true: "Si",
+				false: "No"
+			};
+
+			const dateRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/;
+			if (typeof value === "string" && value.match(dateRegex)) {
+				const date = new Date(value);
+				return formatDatePart(date);
+			} else {
+				return map[value] ?? `${value}`;
+			}
+		}
 	},
 	specialCredentials: {
 		PhoneNumberData: {

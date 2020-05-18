@@ -43,17 +43,18 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 		return (
 			<View style={styles.keyValueContainer}>
 				{data.map((item, index) => {
+					const effectiveValue = strings.credentialCard.formatValue(item.value);
 					return (
 						<View key={index} style={columnStyle}>
 							{data.length === 1 && item.label.length === 0 ? (
 								<DidiText.Card.Value style={[styles.dataLabel, { color, textAlign: undefined }]}>
-									{item.value ?? strings.credentialCard.valueNotAvailable}
+									{effectiveValue}
 								</DidiText.Card.Value>
 							) : (
 								<Fragment>
 									<DidiText.Card.Key style={[styles.dataLabel, { color }]}>{item.label}</DidiText.Card.Key>
 									<DidiText.Card.Value style={[styles.dataValue, { color }, valueStyle]}>
-										{item.value ?? strings.credentialCard.valueNotAvailable}
+										{effectiveValue}
 									</DidiText.Card.Value>
 								</Fragment>
 							)}
