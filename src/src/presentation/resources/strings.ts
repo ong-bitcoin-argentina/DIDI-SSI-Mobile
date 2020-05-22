@@ -19,7 +19,7 @@ function formatDatePart(date: Date) {
 		"Noviembre",
 		"Diciembre"
 	];
-	return `${date.getDay()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+	return `${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
 }
 
 function formatHourPart(date: Date) {
