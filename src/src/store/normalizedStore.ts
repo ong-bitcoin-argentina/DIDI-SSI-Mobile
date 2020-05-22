@@ -2,7 +2,7 @@ import { Identity } from "didi-sdk";
 import { AnyAction, combineReducers, createStore, Store } from "redux";
 import { combineReducers as combineLoopReducers, install as installReduxLoop, liftState, Loop } from "redux-loop";
 import { persistReducer, persistStore, StateReconciler } from "redux-persist";
-import FSStorage from "redux-persist-fs-storage";
+import FilesystemStorage from "redux-persist-filesystem-storage";
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
@@ -23,6 +23,7 @@ import { seenTokenReducer } from "./reducers/seenTokenReducer";
 import { serviceSettingsReducer } from "./reducers/serviceSettingsReducer";
 import { sessionReducer } from "./reducers/sessionReducer";
 import { tokenReducer } from "./reducers/tokenReducer";
+import { tokensInLastSyncReducer } from "./reducers/tokensInLastSyncReducer";
 import { validateDniReducer, ValidateDniState } from "./reducers/validateDniProgressReducer";
 import { StoreAction } from "./StoreAction";
 
@@ -31,6 +32,7 @@ export interface PersistedStoreContent {
 	pushToken: PushState;
 	sessionFlags: DidiSession;
 	tokens: string[];
+	tokensInLastSync: string[] | null;
 	seenTokens: string[];
 	userInputIdentity: Identity;
 	serviceSettings: ServiceSettings;
@@ -44,6 +46,7 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 	pushToken: pushNotificationReducer,
 	sessionFlags: sessionReducer,
 	tokens: tokenReducer,
+	tokensInLastSync: tokensInLastSyncReducer,
 	seenTokens: seenTokenReducer,
 	userInputIdentity: identityReducer,
 	serviceSettings: serviceSettingsReducer,
@@ -57,6 +60,7 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	pushToken: "device",
 	sessionFlags: "user",
 	tokens: "user",
+	tokensInLastSync: "user",
 	seenTokens: "user",
 	userInputIdentity: "user",
 	serviceSettings: "device",
@@ -85,7 +89,7 @@ const persistedReducer = persistReducer(
 	{
 		key: "root",
 		keyPrefix: "",
-		storage: FSStorage(),
+		storage: FilesystemStorage,
 		stateReconciler
 	},
 	deletionReducer

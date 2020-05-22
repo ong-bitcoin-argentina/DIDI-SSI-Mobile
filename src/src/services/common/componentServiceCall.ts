@@ -61,11 +61,14 @@ export function buildComponentServiceCall<Args, Result>(
 						return next(value.right);
 					}
 				},
-				(err: unknown) => ({
-					type: "SERVICE_CALL_FAILURE",
-					serviceKey,
-					error: serviceErrors.common.UNKNOWN_ERR
-				})
+				(err: unknown) => {
+					console.warn(err);
+					return {
+						type: "SERVICE_CALL_FAILURE",
+						serviceKey,
+						error: serviceErrors.common.UNKNOWN_ERR
+					};
+				}
 			)
 		};
 	};

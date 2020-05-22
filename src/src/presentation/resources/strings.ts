@@ -19,7 +19,7 @@ function formatDatePart(date: Date) {
 		"Noviembre",
 		"Diciembre"
 	];
-	return `${date.getDay()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+	return `${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
 }
 
 function formatHourPart(date: Date) {
@@ -457,6 +457,7 @@ export default {
 		},
 		valueNotAvailable: "N/A",
 		shared: "Credencial compartida con vos",
+		revoked: "Credencial revocada",
 		replaced: "Credencial no vigente por existir reemplazo",
 		formatDate: formatFullDate,
 		formatValue: (value: string | number | null): string => {
@@ -513,6 +514,12 @@ export default {
 		noCredentials: {
 			title: "No hay credenciales",
 			message: "El código QR escaneado no contiene credenciales"
+		},
+		wrongShare: {
+			title: "¡Falta un paso!",
+			message:
+				"Para poder leer este código QR correctamente necesitás escanear un QR anterior.\n" +
+				"Pedile a la persona que te está compartiendo sus credenciales que te lo muestre para poder escanearlo y seguir con el proceso."
 		}
 	},
 	scanCredential: {

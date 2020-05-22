@@ -165,7 +165,6 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 	private advancePage() {
 		if (Math.round(this.state.scrollPage) === onboardingPages.length - 1) {
 			this.nextScreen();
-			this.navigate("SignupEnterPhone", {});
 		} else if (this.scrollViewRef.current) {
 			this.setPage(this.state.scrollPage + 1);
 		}
@@ -196,7 +195,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 	}
 
 	private nextScreen = (andThen?: () => void) => {
-		this.navigate("SignupEnterPhone", {}, andThen);
+		this.replace("SignupEnterPhone", {}, andThen);
 	};
 }
 

@@ -74,6 +74,12 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 		}
 		this.setState({ scanPaused: true });
 
+		const segmentedCredentialMatch = content.match("^_(\\d+)/(\\d+)_:(.*)$");
+		if (segmentedCredentialMatch?.length === 4) {
+			this.showAlert(strings.camera.wrongShare.title, strings.camera.wrongShare.message);
+			return;
+		}
+
 		const tokenPart = "[-_=a-zA-Z0-9]+";
 		const matches = content.match(new RegExp(`${tokenPart}\\.${tokenPart}\\.${tokenPart}`, "g")) || [];
 		if (matches.length === 0) {

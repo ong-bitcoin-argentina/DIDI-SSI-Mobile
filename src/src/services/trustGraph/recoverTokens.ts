@@ -62,7 +62,7 @@ export function recoverTokens(then?: (tokens: string[]) => ServiceCallAction) {
 		// TODO: Combine this and part of TrustGraphClient creation into getSigner
 		return withExistingDid(serviceKey, {}, didData => {
 			return recoverTokensComponent(serviceKey, { activeDid, trustGraphUri, ethrDidUri, ethrDelegateUri }, tokens => {
-				return simpleAction(serviceKey, { type: "TOKEN_ENSURE", content: tokens }, () => {
+				return simpleAction(serviceKey, { type: "TOKEN_SYNC", content: tokens }, () => {
 					return parallelAction(serviceKey, [
 						getAllIssuerNames(),
 						serviceCallDrop(serviceKey),
