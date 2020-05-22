@@ -513,6 +513,12 @@ export default {
 		noCredentials: {
 			title: "No hay credenciales",
 			message: "El código QR escaneado no contiene credenciales"
+		},
+		wrongShare: {
+			title: "¡Falta un paso!",
+			message:
+				"Para poder leer este código QR correctamente necesitás escanear un QR anterior.\n" +
+				"Pedile a la persona que te está compartiendo sus credenciales que te lo muestre para poder escanearlo y seguir con el proceso."
 		}
 	},
 	scanCredential: {
