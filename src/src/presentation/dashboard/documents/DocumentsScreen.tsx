@@ -1,15 +1,13 @@
 import { CredentialDocument, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
-import { FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard } from "../common/documentToCard";
+import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
 
 import { ActiveDid } from "../../../store/reducers/didReducer";
-import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -21,9 +19,8 @@ export type DocumentsScreenProps = {};
 interface DocumentsScreenStateProps {
 	filter: (doc: CredentialDocument, did: EthrDID) => boolean;
 	did: ActiveDid;
-	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
-	activeSpecialCredentials: SpecialCredentialMap;
+	credentialContext: DocumentCredentialCardContext;
 }
 type DocumentsScreenInternalProps = DocumentsScreenProps & DocumentsScreenStateProps;
 
@@ -71,35 +68,24 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 				onPress={() =>
 					this.navigate("DocumentDetail", {
 						document,
-						did: this.props.did,
-						knownIssuers: this.props.knownIssuers,
-						activeSpecialCredentials: this.props.activeSpecialCredentials
+						credentialContext: this.props.credentialContext
 					})
 				}
 			>
-				<DocumentCredentialCard
-					preview={true}
-					document={document}
-					context={{
-						activeDid: this.props.did,
-						knownIssuers: this.props.knownIssuers,
-						specialCredentials: this.props.activeSpecialCredentials
-					}}
-				/>
+				<DocumentCredentialCard preview={true} document={document} context={this.props.credentialContext} />
 			</TouchableOpacity>
 		);
 	}
 }
 
-export default function(filter: (type: CredentialDocument, did: EthrDID) => boolean) {
+export default function (filter: (type: CredentialDocument, did: EthrDID) => boolean) {
 	return didiConnect(
 		DocumentsScreen,
 		(state): DocumentsScreenStateProps => ({
 			filter,
 			did: state.did,
-			knownIssuers: state.knownIssuers,
 			credentials: state.credentials,
-			activeSpecialCredentials: state.activeSpecialCredentials
+			credentialContext: extractContext(state)
 		})
 	);
 }

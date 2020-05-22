@@ -7,10 +7,8 @@ import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard } from "../common/documentToCard";
+import { DocumentCredentialCard, DocumentCredentialCardContext } from "../common/documentToCard";
 
-import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import colors from "../../resources/colors";
 import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
 import strings from "../../resources/strings";
@@ -19,9 +17,8 @@ import themes from "../../resources/themes";
 import { ShareExplanationProps } from "./ShareExplanationScreen";
 
 export interface ShareMicroCredentialProps {
-	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
-	activeSpecialCredentials: SpecialCredentialMap;
+	credentialContext: DocumentCredentialCardContext;
 }
 
 interface ShareMicroCredentialState {
@@ -69,9 +66,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 						}
 						extraData={this.state}
 					/>
-					{this.state.selectedCredentials.length === 0 ? (
-						undefined
-					) : (
+					{this.state.selectedCredentials.length === 0 ? undefined : (
 						<FloatingAction
 							color={colors.backgroundSeparator}
 							overrideWithAction={true}
@@ -99,15 +94,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 				}}
 				onPress={() => this.doSelect(document)}
 			>
-				<DocumentCredentialCard
-					preview={false}
-					document={document}
-					context={{
-						activeDid: null,
-						knownIssuers: this.props.knownIssuers,
-						specialCredentials: this.props.activeSpecialCredentials
-					}}
-				/>
+				<DocumentCredentialCard preview={false} document={document} context={this.props.credentialContext} />
 			</TouchableOpacity>
 		);
 	}

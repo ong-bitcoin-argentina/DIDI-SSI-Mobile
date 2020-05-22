@@ -9,13 +9,11 @@ import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard } from "../common/documentToCard";
+import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
 import { RequestCard } from "../common/RequestCard";
 
 import { recoverTokens } from "../../../services/trustGraph/recoverTokens";
 import { ActiveDid } from "../../../store/reducers/didReducer";
-import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
@@ -28,8 +26,7 @@ interface NotificationScreenStateProps {
 	did: ActiveDid;
 	parsedTokens: Array<CredentialDocument | SelectiveDisclosureRequest>;
 	seenTokens: string[];
-	knownIssuers: IssuerRegistry;
-	activeSpecialCredentials: SpecialCredentialMap;
+	credentialContext: DocumentCredentialCardContext;
 }
 interface NotificationScreenDispatchProps {
 	onOpen: () => void;
@@ -127,21 +124,11 @@ class NotificationScreen extends NavigationEnabledComponent<
 				onPress={() =>
 					this.navigate("DocumentDetail", {
 						document,
-						did: this.props.did,
-						knownIssuers: this.props.knownIssuers,
-						activeSpecialCredentials: this.props.activeSpecialCredentials
+						credentialContext: this.props.credentialContext
 					})
 				}
 			>
-				<DocumentCredentialCard
-					preview={true}
-					document={document}
-					context={{
-						activeDid: this.props.did,
-						knownIssuers: this.props.knownIssuers,
-						specialCredentials: this.props.activeSpecialCredentials
-					}}
-				/>
+				<DocumentCredentialCard preview={true} document={document} context={this.props.credentialContext} />
 			</TouchableOpacity>
 		);
 	}
@@ -150,7 +137,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 		const now = Math.floor(Date.now() / 1000);
 		const isActive = request.expireAt ? now < request.expireAt : true;
 		return (
-			<RequestCard key={request.jwt} request={request} context={{ knownIssuers: this.props.knownIssuers }}>
+			<RequestCard key={request.jwt} request={request} context={this.props.credentialContext}>
 				<View style={{ marginTop: 10 }}>
 					{isActive ? (
 						<DidiButton
@@ -180,8 +167,7 @@ const connected = didiConnect(
 		did: state.did,
 		parsedTokens: state.parsedTokens,
 		seenTokens: state.seenTokens,
-		knownIssuers: state.knownIssuers,
-		activeSpecialCredentials: state.activeSpecialCredentials
+		credentialContext: extractContext(state)
 	}),
 	(dispatch): NotificationScreenDispatchProps => ({
 		onOpen: () => dispatch(recoverTokens()),

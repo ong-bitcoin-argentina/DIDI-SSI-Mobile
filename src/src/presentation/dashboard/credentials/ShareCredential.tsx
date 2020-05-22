@@ -7,10 +7,14 @@ import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard } from "../common/documentToCard";
+import {
+	credentialState,
+	DocumentCredentialCard,
+	DocumentCredentialCardContext,
+	extractContext
+} from "../common/documentToCard";
 
 import { ActiveDid } from "../../../store/reducers/didReducer";
-import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
@@ -23,8 +27,8 @@ import { ShareMicroCredentialProps } from "./ShareMicroCredential";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
+	credentialContext: DocumentCredentialCardContext;
 	did: ActiveDid;
-	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
 }
@@ -77,9 +81,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 						}
 						extraData={this.state}
 					/>
-					{this.state.selectedCredentials.length === 0 ? (
-						undefined
-					) : (
+					{this.state.selectedCredentials.length === 0 ? undefined : (
 						<FloatingAction
 							color={colors.backgroundSeparator}
 							overrideWithAction={true}
@@ -107,21 +109,25 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 				}}
 				onPress={() => this.doSelect(document)}
 			>
-				<DocumentCredentialCard
-					preview={false}
-					document={document}
-					context={{
-						activeDid: this.props.did,
-						knownIssuers: this.props.knownIssuers,
-						specialCredentials: this.props.activeSpecialCredentials
-					}}
-				/>
+				<DocumentCredentialCard preview={false} document={document} context={this.props.credentialContext} />
 			</TouchableOpacity>
 		);
 	}
 
+	private contextAllowsShare(document: CredentialDocument): boolean {
+		switch (credentialState(document, this.props.credentialContext)) {
+			case "normal":
+			case "identity":
+				return true;
+			case "obsolete":
+			case "revoked":
+			case "share":
+				return false;
+		}
+	}
+
 	private doSelect(document: CredentialDocument) {
-		if (document.specialFlag && this.props.activeSpecialCredentials[document.specialFlag.type]?.jwt !== document.jwt) {
+		if (!this.contextAllowsShare(document)) {
 			Alert.alert(strings.credentialShare.notCurrent.title, strings.credentialShare.notCurrent.message);
 		} else if (this.state.selectedCredentials.find(doc => doc.jwt === document.jwt)) {
 			const selectedCredentials = this.state.selectedCredentials.filter(doc => doc.jwt !== document.jwt);
@@ -137,11 +143,10 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 			this.navigate("ShareExplanation", { documents });
 		} else {
 			this.navigate("ShareMicroCredential", {
-				knownIssuers: this.props.knownIssuers,
-				activeSpecialCredentials: this.props.activeSpecialCredentials,
 				credentials: documents
 					.map(doc => (doc.nested.length === 0 ? [doc] : [doc, ...doc.nested]))
-					.reduce((acc, next) => [...acc, ...next], [])
+					.reduce((acc, next) => [...acc, ...next], []),
+				credentialContext: this.props.credentialContext
 			});
 		}
 	}
@@ -157,8 +162,8 @@ export default didiConnect(
 		return {
 			did,
 			credentials,
-			knownIssuers: state.knownIssuers,
-			activeSpecialCredentials: state.activeSpecialCredentials
+			activeSpecialCredentials: state.activeSpecialCredentials,
+			credentialContext: extractContext(state)
 		};
 	}
 );

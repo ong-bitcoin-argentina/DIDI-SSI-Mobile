@@ -2,23 +2,17 @@ import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet } from "react-native";
 
-import { DidiScreen, DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard } from "../common/documentToCard";
+import { DocumentCredentialCard, DocumentCredentialCardContext } from "../common/documentToCard";
 
-import { ActiveDid } from "../../../store/reducers/didReducer";
-import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 export interface DocumentDetailProps {
 	document: CredentialDocument;
-	did: ActiveDid;
-	knownIssuers: IssuerRegistry;
-	activeSpecialCredentials: SpecialCredentialMap;
+	credentialContext: DocumentCredentialCardContext;
 }
 
 export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDetailProps, {}, {}> {
@@ -44,16 +38,7 @@ export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDet
 
 	private renderCard(document: CredentialDocument, index: number) {
 		return (
-			<DocumentCredentialCard
-				preview={false}
-				document={document}
-				key={index}
-				context={{
-					activeDid: this.props.did,
-					knownIssuers: this.props.knownIssuers,
-					specialCredentials: this.props.activeSpecialCredentials
-				}}
-			/>
+			<DocumentCredentialCard preview={false} document={document} key={index} context={this.props.credentialContext} />
 		);
 	}
 }

@@ -7,14 +7,12 @@ import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard } from "../common/documentToCard";
+import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
 
 import { RecentActivity } from "../../../model/RecentActivity";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
-import { IssuerRegistry } from "../../../store/reducers/issuerReducer";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
@@ -32,10 +30,9 @@ import { NotificationScreenProps } from "./NotificationScreen";
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	did: ActiveDid;
-	knownIssuers: IssuerRegistry;
 	credentials: CredentialDocument[];
 	recentActivity: RecentActivity[];
-	activeSpecialCredentials: SpecialCredentialMap;
+	credentialContext: DocumentCredentialCardContext;
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
@@ -81,21 +78,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 				onPress={() =>
 					this.navigate("DashDocumentDetail", {
 						document,
-						did: this.props.did,
-						knownIssuers: this.props.knownIssuers,
-						activeSpecialCredentials: this.props.activeSpecialCredentials
+						credentialContext: this.props.credentialContext
 					})
 				}
 			>
-				<DocumentCredentialCard
-					preview={true}
-					document={document}
-					context={{
-						activeDid: this.props.did,
-						knownIssuers: this.props.knownIssuers,
-						specialCredentials: this.props.activeSpecialCredentials
-					}}
-				/>
+				<DocumentCredentialCard preview={true} document={document} context={this.props.credentialContext} />
 			</TouchableOpacity>
 		);
 	}
@@ -167,9 +154,8 @@ export default didiConnect(
 	(state): DashboardScreenStateProps => ({
 		did: state.did,
 		recentActivity: state.combinedRecentActivity,
-		knownIssuers: state.knownIssuers,
 		credentials: state.credentials,
-		activeSpecialCredentials: state.activeSpecialCredentials
+		credentialContext: extractContext(state)
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {

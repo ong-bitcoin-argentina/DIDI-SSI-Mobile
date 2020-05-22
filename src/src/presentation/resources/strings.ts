@@ -457,6 +457,7 @@ export default {
 		},
 		valueNotAvailable: "N/A",
 		shared: "Credencial compartida con vos",
+		revoked: "Credencial revocada",
 		replaced: "Credencial no vigente por existir reemplazo",
 		formatDate: formatFullDate,
 		formatValue: (value: string | number | null): string => {
