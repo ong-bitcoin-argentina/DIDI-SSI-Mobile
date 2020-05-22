@@ -2,7 +2,7 @@ import { Identity } from "didi-sdk";
 import { AnyAction, combineReducers, createStore, Store } from "redux";
 import { combineReducers as combineLoopReducers, install as installReduxLoop, liftState, Loop } from "redux-loop";
 import { persistReducer, persistStore, StateReconciler } from "redux-persist";
-import FSStorage from "redux-persist-fs-storage";
+import FilesystemStorage from "redux-persist-filesystem-storage";
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
@@ -89,7 +89,7 @@ const persistedReducer = persistReducer(
 	{
 		key: "root",
 		keyPrefix: "",
-		storage: FSStorage(),
+		storage: FilesystemStorage,
 		stateReconciler
 	},
 	deletionReducer
