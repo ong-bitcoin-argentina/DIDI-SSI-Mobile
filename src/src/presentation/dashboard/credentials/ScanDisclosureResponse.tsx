@@ -167,7 +167,6 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 			},
 			audience: this.props.activeDid ?? undefined
 		});
-		this.setState({ isVerifying: false });
 
 		if (isLeft(parse)) {
 			const errorData = strings.jwtParseError(parse.left);
@@ -176,7 +175,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 		} else {
 			switch (parse.right.type) {
 				case "SelectiveDisclosureResponse":
-					this.handleDisclosure(parse.right);
+					await this.handleDisclosure(parse.right);
 					break;
 				case "CredentialDocument":
 				case "SelectiveDisclosureRequest":
@@ -186,6 +185,8 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 					assertUnreachable(parse.right);
 			}
 		}
+
+		this.setState({ isVerifying: false });
 	}
 
 	private async handleDisclosure(disclosure: SelectiveDisclosureResponse) {
