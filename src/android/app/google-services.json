@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "991780565891",
+    "firebase_url": "https://didi-ssi-mobile.firebaseio.com",
+    "project_id": "didi-ssi-mobile",
+    "storage_bucket": "didi-ssi-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991780565891:android:2b7a6fa77a679bec3bfcb6",
+        "android_client_info": {
+          "package_name": "com.didi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991780565891-kk76fudibabe2aicpo28892qsifunijj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh5amwTJ6A1mJmv-3y9A9IhsYYa0NpAWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991780565891-kk76fudibabe2aicpo28892qsifunijj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

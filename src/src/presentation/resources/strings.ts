@@ -269,7 +269,12 @@ export default {
 		home: "Inicio",
 		rounds: "Rondas",
 		documents: "Credenciales",
-		settings: "Configuración"
+		settings: "Configuración",
+		semillas: "Semillas"
+	},
+	semillas: {
+		barTitle: "Mis Credenciales semillas",
+		detailBarTitle: "Programa Semillas",
 	},
 	settings: {
 		idLabel: "ID:",
