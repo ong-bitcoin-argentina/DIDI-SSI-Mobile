@@ -269,7 +269,21 @@ export default {
 		home: "Inicio",
 		rounds: "Rondas",
 		documents: "Credenciales",
-		settings: "Configuración"
+		settings: "Configuración",
+		semillas: "Semillas"
+	},
+	semillas: {
+		barTitle: "Mis Credenciales semillas",
+		detailBarTitle: "Programa Semillas",
+		getCredentials: "Quiero mis credenciales",
+		credentials: "Credenciales",
+		detailFirst:
+			"Si sos parte del programa Semillas ahora podes tener tus credenciales que certifican y validan tus datos personales.",
+		detailSecond:
+			"Tus credenciales son privadas, con ellas vas a poder guardar y proteger tu información de manera segura y confiable..",
+		detailThird:
+			"Gracias a que son portables, las podes llevar con vos, acceder a ellas siempre que lo necesites y compartirlas con quién vos quieras.",
+		credentialsSuccess: "Tus credenciales fueron guardadas correctamente"
 	},
 	settings: {
 		idLabel: "ID:",

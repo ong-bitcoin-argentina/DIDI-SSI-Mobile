@@ -51,6 +51,10 @@ const base: TextStyle = {
 
 const styles = {
 	common: StyleSheet.create({
+		large: {
+			...base,
+			fontSize: 22
+		},
 		normal: {
 			...base
 		},
@@ -290,6 +294,7 @@ function textWith(style: TextStyle) {
 }
 
 export const DidiText = {
+	Title: textWith(styles.common.large),
 	Explanation: {
 		Normal: textWith(styles.common.normal),
 		Emphasis: textWith(styles.common.bold),
