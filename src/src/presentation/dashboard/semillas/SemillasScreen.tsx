@@ -21,6 +21,7 @@ export interface LoginScreenProps {}
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
+	didDni: String;
 }
 interface SemillasScreenDispatchProps {
 	getCredentials: () => void;
@@ -42,7 +43,7 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 	>(strings.semillas.detailBarTitle, "DashboardHome", {});
 
 	render() {
-		const { getCredentials } = this.props;
+		const { getCredentials, didDni } = this.props;
 
 		return (
 			<Fragment>
@@ -81,7 +82,8 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 export default didiConnect(
 	SemillasScreen,
 	(state): SemillasScreenStateProps => ({
-		pendingCredentials: isPendingService(state.serviceCalls[serviceKey])
+		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
+		didDni: state.did.didDni
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: () => dispatch(getUserCredentials(serviceKey))

@@ -155,7 +155,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 export default didiConnect(
 	ShareCredentialScreen,
 	(state): ShareCredentialInternalProps => {
-		const did = state.did;
+		const did = state.did.activeDid;
 		const credentials = did
 			? state.credentials.filter(document => document.subject.did() === did.did())
 			: state.credentials;

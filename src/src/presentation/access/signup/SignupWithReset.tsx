@@ -68,7 +68,7 @@ const serviceKey = "ResetSignup";
 const connected = didiConnect(
 	SignupWithResetScreen,
 	state => ({
-		did: state.did
+		did: state.did.activeDid
 	}),
 	dispatch => ({
 		resetStore: () => {

@@ -83,7 +83,7 @@ export default function (filter: (type: CredentialDocument, did: EthrDID) => boo
 		DocumentsScreen,
 		(state): DocumentsScreenStateProps => ({
 			filter,
-			did: state.did,
+			did: state.did.activeDid,
 			credentials: state.credentials,
 			credentialContext: extractContext(state)
 		})
