@@ -6,7 +6,7 @@ export type ActiveDid = EthrDID | null;
 
 export interface DidState {
 	activeDid: ActiveDid;
-	didDni: String;
+	didDni: boolean;
 }
 
 interface SetActiveDid {
@@ -16,7 +16,7 @@ interface SetActiveDid {
 
 interface SetDidDni {
 	type: "SET_DID_DNI";
-	value: String;
+	value: boolean;
 }
 
 export type DidAction = SetActiveDid | SetDidDni;
@@ -25,11 +25,9 @@ export function didReducer(state: DidState | undefined, action: StoreAction): Di
 	if (state === undefined) {
 		return {
 			activeDid: null,
-			didDni: ""
+			didDni: false
 		};
 	}
-
-	console.log("Reduced", state);
 
 	switch (action.type) {
 		case "SET_ACTIVE_DID":

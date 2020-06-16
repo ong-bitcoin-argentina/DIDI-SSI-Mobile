@@ -47,7 +47,7 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 
 		return (
 			<Fragment>
-				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.onCredentialsAdded()} />
+				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<ScrollView>
