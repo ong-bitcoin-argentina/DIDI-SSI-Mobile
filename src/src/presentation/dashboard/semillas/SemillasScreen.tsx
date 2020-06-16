@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, ScrollView } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -49,24 +49,26 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.onCredentialsAdded()} />
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
-					<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
-					<DidiText.Explanation.Small style={styles.paragraph}>
-						{strings.semillas.detailFirst}
-					</DidiText.Explanation.Small>
-					<DidiText.Explanation.Small style={styles.paragraph}>
-						{strings.semillas.detailSecond}
-					</DidiText.Explanation.Small>
-					<DidiText.Explanation.Small style={styles.paragraph}>
-						{strings.semillas.detailThird}
-					</DidiText.Explanation.Small>
-					<DidiServiceButton
-						onPress={getCredentials}
-						title={strings.semillas.getCredentials}
-						style={styles.button}
-						isPending={false}
-					/>
-				</SafeAreaView>
+				<ScrollView>
+					<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
+						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
+						<DidiText.Explanation.Small style={styles.paragraph}>
+							{strings.semillas.detailFirst}
+						</DidiText.Explanation.Small>
+						<DidiText.Explanation.Small style={styles.paragraph}>
+							{strings.semillas.detailSecond}
+						</DidiText.Explanation.Small>
+						<DidiText.Explanation.Small style={styles.paragraph}>
+							{strings.semillas.detailThird}
+						</DidiText.Explanation.Small>
+						<DidiServiceButton
+							onPress={getCredentials}
+							title={strings.semillas.getCredentials}
+							style={styles.button}
+							isPending={false}
+						/>
+					</SafeAreaView>
+				</ScrollView>
 			</Fragment>
 		);
 	}
@@ -91,6 +93,7 @@ const styles = StyleSheet.create({
 		width: "100%"
 	},
 	scrollContent: {
+		backgroundColor: "white",
 		paddingHorizontal: 20,
 		paddingVertical: 8
 	},
