@@ -29,6 +29,8 @@ const categoryFilter = (category: DocumentFilterType) => (doc: CredentialDocumen
 export const DocumentsScreenInnerNavigator = createMaterialTopTabNavigator(
 	{
 		DocumentsAll: screen(strings.documents.filterAll, () => true),
+		DocumentsBenefits: screen(strings.documents.filterBenefits, categoryFilter("education")),
+		DocumentsWork: screen(strings.documents.filterWork, categoryFilter("education")),
 		DocumentsEducation: screen(strings.documents.filterEducation, categoryFilter("education")),
 		DocumentsLivingPlace: screen(strings.documents.filterLivingPlace, categoryFilter("livingPlace")),
 		DocumentsFinance: screen(strings.documents.filterFinance, categoryFilter("finance")),
