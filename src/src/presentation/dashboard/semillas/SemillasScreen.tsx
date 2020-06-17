@@ -21,7 +21,7 @@ export interface LoginScreenProps {}
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
-	didDni: String;
+	didDni: Boolean;
 }
 interface SemillasScreenDispatchProps {
 	getCredentials: () => void;
@@ -65,7 +65,7 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 						<DidiServiceButton
 							onPress={getCredentials}
 							title={strings.semillas.getCredentials}
-							style={styles.button}
+							style={{ ...styles.button, ...(didDni ? styles.hidden : {}) }}
 							isPending={false}
 						/>
 					</SafeAreaView>
@@ -114,5 +114,8 @@ const styles = StyleSheet.create({
 		height: 50,
 		width: 50,
 		marginVertical: 25
+	},
+	hidden: {
+		display: "none"
 	}
 });

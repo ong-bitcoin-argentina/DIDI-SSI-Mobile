@@ -50,9 +50,9 @@ function getSemillasDidi(token: string) {
 }
 
 export function getUserCredentials(serviceKey: string) {
-	return getCredentialDidiComponent(serviceKey, {}, result => {
-		return simpleAction(serviceKey, { type: "SET_DID_DNI", value: true }, () => {
-			return serviceCallSuccess(serviceKey);
-		});
+	//return getCredentialDidiComponent(serviceKey, {}, result => {
+	return simpleAction(serviceKey, { type: "SET_DID_DNI", value: true }, () => {
+		return serviceCallSuccess(serviceKey);
 	});
+	//});
 }
