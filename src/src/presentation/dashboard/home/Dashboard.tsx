@@ -152,7 +152,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 export default didiConnect(
 	DashboardScreen,
 	(state): DashboardScreenStateProps => ({
-		did: state.did,
+		did: state.did.activeDid,
 		recentActivity: state.combinedRecentActivity,
 		credentials: state.credentials,
 		credentialContext: extractContext(state)

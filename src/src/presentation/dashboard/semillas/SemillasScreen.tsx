@@ -21,6 +21,7 @@ export interface LoginScreenProps {}
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
+	didDni: Boolean;
 }
 interface SemillasScreenDispatchProps {
 	getCredentials: () => void;
@@ -42,11 +43,11 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 	>(strings.semillas.detailBarTitle, "DashboardHome", {});
 
 	render() {
-		const { getCredentials } = this.props;
+		const { getCredentials, didDni } = this.props;
 
 		return (
 			<Fragment>
-				<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.onCredentialsAdded()} />
+				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<ScrollView>
@@ -64,7 +65,7 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 						<DidiServiceButton
 							onPress={getCredentials}
 							title={strings.semillas.getCredentials}
-							style={styles.button}
+							style={{ ...styles.button, ...(didDni ? styles.hidden : {}) }}
 							isPending={false}
 						/>
 					</SafeAreaView>
@@ -81,7 +82,8 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 export default didiConnect(
 	SemillasScreen,
 	(state): SemillasScreenStateProps => ({
-		pendingCredentials: isPendingService(state.serviceCalls[serviceKey])
+		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
+		didDni: state.did.didDni
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: () => dispatch(getUserCredentials(serviceKey))
@@ -112,5 +114,8 @@ const styles = StyleSheet.create({
 		height: 50,
 		width: 50,
 		marginVertical: 25
+	},
+	hidden: {
+		display: "none"
 	}
 });

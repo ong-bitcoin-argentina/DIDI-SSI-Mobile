@@ -24,7 +24,7 @@ export interface DocumentCredentialCardContext {
 
 export function extractContext(storeState: StoreContent): DocumentCredentialCardContext {
 	return {
-		activeDid: storeState.did,
+		activeDid: storeState.did.activeDid,
 		knownIssuers: storeState.knownIssuers,
 		lastTokenSync: storeState.tokensInLastSync,
 		specialCredentials: storeState.activeSpecialCredentials

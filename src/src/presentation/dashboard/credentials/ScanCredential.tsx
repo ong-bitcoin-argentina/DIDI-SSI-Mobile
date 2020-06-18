@@ -155,7 +155,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	ScanCredentialScreen,
 	(state): ScanCredentialStateProps => ({
-		activeDid: state.did,
+		activeDid: state.did.activeDid,
 		ethrDidUri: state.serviceSettings.ethrDidUri,
 		ethrDelegateUri: state.serviceSettings.ethrDelegateUri
 	})

@@ -14,7 +14,7 @@ import { ServiceSettings } from "../model/ServiceSettings";
 import { reloadDid } from "../services/internal/reloadDid";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
-import { ActiveDid, didReducer } from "./reducers/didReducer";
+import { DidState, didReducer } from "./reducers/didReducer";
 import { identityReducer } from "./reducers/identityReducer";
 import { issuerReducer, IssuerRegistry } from "./reducers/issuerReducer";
 import { pushNotificationReducer, PushState } from "./reducers/pushNotificationReducer";
@@ -28,7 +28,7 @@ import { validateDniReducer, ValidateDniState } from "./reducers/validateDniProg
 import { StoreAction } from "./StoreAction";
 
 export interface PersistedStoreContent {
-	did: ActiveDid;
+	did: DidState;
 	pushToken: PushState;
 	sessionFlags: DidiSession;
 	tokens: string[];
