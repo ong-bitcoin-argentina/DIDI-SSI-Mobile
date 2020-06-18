@@ -263,7 +263,9 @@ export default {
 		filterLivingPlace: "Vivienda",
 		filterFinance: "Finanza",
 		filterIdentity: "Identidad",
-		filterShared: "Compartidos"
+		filterShared: "Compartidos",
+		filterBenefits: "Beneficios",
+		filterWork: "Laboral"
 	},
 	tabNames: {
 		home: "Inicio",
