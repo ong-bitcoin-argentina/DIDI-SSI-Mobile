@@ -11,7 +11,7 @@ export interface DidState {
 
 interface SetActiveDid {
 	type: "SET_ACTIVE_DID";
-	value: EthrDID;
+	value: ActiveDid;
 }
 
 interface SetDidDni {
@@ -31,7 +31,7 @@ export function didReducer(state: DidState | undefined, action: StoreAction): Di
 
 	switch (action.type) {
 		case "SET_ACTIVE_DID":
-			return { ...state, ...action.value };
+			return { ...state, activeDid: action.value };
 
 		case "SET_DID_DNI":
 			return { ...state, didDni: action.value };
