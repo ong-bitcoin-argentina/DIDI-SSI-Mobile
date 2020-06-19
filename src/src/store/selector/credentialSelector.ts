@@ -18,7 +18,7 @@ export const toplevelCredentialSelector = createSelector(
 
 		return res.sort((l, r) => {
 			if (l.subject.did() !== r.subject.did()) {
-				if (l.subject.did() === did?.did?.()) {
+				if (l.subject.did() === did?.activeDid?.did?.()) {
 					return -1;
 				} else {
 					return +1;
@@ -46,7 +46,7 @@ export const activeSpecialCredentialsSelector = createSelector(
 		credentials
 			.slice()
 			.reverse()
-			.filter(credential => activeDid === null || credential.subject.did() === activeDid?.did?.())
+			.filter(credential => activeDid === null || credential.subject.did() === activeDid.activeDid?.did?.())
 			.forEach(credential => {
 				if (credential.specialFlag) {
 					result[credential.specialFlag.type] = credential;
