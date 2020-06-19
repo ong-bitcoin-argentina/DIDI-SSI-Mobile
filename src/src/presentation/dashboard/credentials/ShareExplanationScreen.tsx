@@ -48,16 +48,6 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 
 				<View>
 					<DidiButton
-						title={strings.shareExplanation.direct.button}
-						onPress={() => this.shareDirect(this.props.documents)}
-					/>
-					<DidiText.Explanation.Normal>{strings.shareExplanation.direct.explanation}</DidiText.Explanation.Normal>
-				</View>
-
-				<DidiText.Explanation.Normal>{strings.shareExplanation.or}</DidiText.Explanation.Normal>
-
-				<View>
-					<DidiButton
 						title={strings.shareExplanation.link.button}
 						onPress={() => this.shareLink(this.props.documents)}
 					/>
@@ -65,10 +55,6 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 				</View>
 			</DidiScreen>
 		);
-	}
-
-	private shareDirect(documents: CredentialDocument[]) {
-		this.navigate("ShareSpecificCredential", { documents });
 	}
 
 	private shareLink(documents: CredentialDocument[]) {

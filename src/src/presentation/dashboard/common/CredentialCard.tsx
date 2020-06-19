@@ -32,6 +32,7 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 
 	private renderKeyValuePairs(color: string) {
 		const columns = this.props.columns || 1;
+
 		const data = this.props.data || [];
 
 		const columnStyle: ViewStyle = {
