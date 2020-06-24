@@ -27,7 +27,7 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	private renderTitle(color: string) {
 		return (
 			<View style={styles.headerData}>
-				<DidiText.Card.Category style={{ color }}>{this.props.category}</DidiText.Card.Category>
+				{!this.hasLayout() && <DidiText.Card.Category style={{ color }}>{this.props.category}</DidiText.Card.Category>}
 				<DidiText.Card.Title style={{ color }}>{this.props.title}</DidiText.Card.Title>
 				<DidiText.Card.Subtitle style={{ color: `${color}${colors.subtitleAlpha}` }}>
 					{this.props.subTitle}
@@ -112,11 +112,15 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 	render() {
-		const { hollow, color, layout } = this.props;
+		const { hollow, color, layout, icon } = this.props;
 		const cardColor = hollow ? color : "#FFFFFF";
 
 		return (
-			<DidiCardBody {...this.props} backgroundUrl={layout?.backgroundImage}>
+			<DidiCardBody
+				{...this.props}
+				icon={this.hasLayout() ? "" : icon}
+				backgroundUrl={"https://i.imgur.com/gaMx1Wo.png"}
+			>
 				{this.renderTitle(cardColor)}
 				{this.renderKeyValuePairs(cardColor)}
 				{this.props.children}
