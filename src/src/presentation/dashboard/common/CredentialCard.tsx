@@ -1,4 +1,4 @@
-import { ClaimDataPairs } from "didi-sdk";
+import { ClaimDataPairs, DocumentLayout } from "didi-sdk";
 import React, { Component, Fragment } from "react";
 import { StyleSheet, Text, TextStyle, View, ViewStyle, ImageBackground } from "react-native";
 
@@ -15,6 +15,12 @@ export interface CredentialCardProps extends DidiCardBodyProps {
 	subTitle: string;
 	data?: ClaimDataPairs;
 	columns?: 1 | 2 | 3;
+	layout?: DocumentLayout;
+}
+
+interface DataRow {
+	data?: ClaimDataPairs;
+	columns?: number;
 }
 
 export default class CredentialCard extends Component<CredentialCardProps, {}> {
@@ -30,53 +36,56 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 		);
 	}
 
-	private splitDataIntoRows() {
-		const { data, columns } = this.props;
+	private hasLayout(): boolean {
+		const { layout } = this.props;
+		return !!layout && layout.rows.length > 0;
+	}
+
+	private splitDataIntoRows(): DataRow[] {
+		const { data, columns, layout } = this.props;
 		const credFields = [...(data || [])];
 
+		if (this.hasLayout()) {
+			return (
+				layout?.rows.map(row => {
+					return {
+						...row,
+						data: [...credFields.splice(0, row.columns)]
+					};
+				}) || []
+			);
+		}
 		return [
 			{
 				data,
 				columns
 			}
 		];
-		// if layout
-		const layout = {
-			rows: [
-				{
-					columns: columns
-				}
-			]
-		};
+	}
 
-		return layout.rows.map(row => {
-			return {
-				...row,
-				data: [...credFields.splice(0, row.columns)]
-			};
-		});
+	private getItem(label: string, color: string, valueStyle: TextStyle, effectiveValue: string) {
+		const valueText = (
+			<DidiText.Card.Value style={[styles.dataValue, { color }, valueStyle]}>{effectiveValue}</DidiText.Card.Value>
+		);
+
+		const layout = this.hasLayout();
+
+		return (
+			<Fragment>
+				<DidiText.Card.Key style={[styles.dataLabel, { color }]}>
+					{label} {layout && valueText}
+				</DidiText.Card.Key>
+				{!layout && valueText}
+			</Fragment>
+		);
 	}
 
 	private renderKeyValuePairs(color: string) {
 		const rowData = this.splitDataIntoRows();
 
-		console.log("datax", JSON.stringify(rowData));
-
-		// const layout = {
-		// 	rows: [
-		// 		{
-		// 			columns: 3
-		// 		},
-		// 		{
-		// 			columns: 1
-		// 		}
-		// 	],
-		// 	backgroundImage: "http://localhost:3500/img/SancorSalud.png"
-		// };
-
 		const columnStyles: ViewStyle[] = rowData.map(row => ({
 			flexDirection: row.columns === 1 ? "row" : "column",
-			width: `${100 / row.columns}%`
+			width: `${100 / (row.columns || 1)}%`
 		}));
 		const valueStyle: TextStyle[] = rowData.map(row =>
 			row.columns === 1 ? { marginBottom: 0, textAlign: "right" } : { marginBottom: 5, textAlign: "left" }
@@ -84,21 +93,16 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 
 		return rowData.map((row, i) => (
 			<View style={styles.keyValueContainer}>
-				{row.data.map((item, index) => {
+				{row.data?.map((item, index) => {
 					const effectiveValue = strings.credentialCard.formatValue(item.value);
 					return (
 						<View key={index} style={columnStyles[i]}>
-							{row.data.length === 1 && item.label.length === 0 ? (
+							{row.data?.length === 1 && item.label.length === 0 ? (
 								<DidiText.Card.Value style={[styles.dataLabel, { color, textAlign: undefined }]}>
 									{effectiveValue}
 								</DidiText.Card.Value>
 							) : (
-								<Fragment>
-									<DidiText.Card.Key style={[styles.dataLabel, { color }]}>{item.label}</DidiText.Card.Key>
-									<DidiText.Card.Value style={[styles.dataValue, { color }, valueStyle[i]]}>
-										{effectiveValue}
-									</DidiText.Card.Value>
-								</Fragment>
+								this.getItem(item.label, color, valueStyle[i], effectiveValue)
 							)}
 						</View>
 					);
@@ -108,11 +112,13 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 	render() {
-		const color = this.props.hollow ? this.props.color : "#FFFFFF";
+		const { hollow, color, layout } = this.props;
+		const cardColor = hollow ? color : "#FFFFFF";
+
 		return (
-			<DidiCardBody {...this.props}>
-				{this.renderTitle(color)}
-				{this.renderKeyValuePairs(color)}
+			<DidiCardBody {...this.props} backgroundUrl={layout?.backgroundImage}>
+				{this.renderTitle(cardColor)}
+				{this.renderKeyValuePairs(cardColor)}
 				{this.props.children}
 			</DidiCardBody>
 		);

@@ -23,6 +23,7 @@ const colors = {
 
 	secondary: "#24CDD2",
 	secondaryText: "#FFFFFF",
+	darkText: "#545454",
 
 	editableSetting: "#F6EAAE",
 	highlight: "#FFBD10",

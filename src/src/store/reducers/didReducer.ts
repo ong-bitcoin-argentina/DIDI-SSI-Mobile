@@ -19,6 +19,8 @@ interface SetDidDni {
 	value: boolean;
 }
 
+// TODO agregar immutable helper
+
 export type DidAction = SetActiveDid | SetDidDni;
 
 export function didReducer(state: DidState | undefined, action: StoreAction): DidState {

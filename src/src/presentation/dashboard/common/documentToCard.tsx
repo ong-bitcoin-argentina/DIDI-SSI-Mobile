@@ -128,6 +128,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		return (
 			<CredentialCard
 				icon=""
+				layout={doc.preview?.cardLayout}
 				category={category}
 				title={title}
 				subTitle={issuerText}
