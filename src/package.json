@@ -14,7 +14,7 @@
 	},
 	"dependencies": {
 		"@react-native-community/image-editor": "^2.2.0",
-		"didi-sdk": "git+ssh://git@github.com:NEC-LATAM/DIDI_app_sdk.git",
+		"didi-sdk": "git@github.com:ong-bitcoin-argentina/DIDI-SSI-app_sdk.git#atix-dev",
 		"fp-ts": "^2.4.0",
 		"jwt-decode": "^2.2.0",
 		"react": "16.12.0",
