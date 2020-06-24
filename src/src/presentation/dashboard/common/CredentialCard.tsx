@@ -114,15 +114,12 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	render() {
 		const { hollow, color, layout, icon } = this.props;
 		const cardColor = hollow ? color : "#FFFFFF";
+		const style = layout?.style == "dark" ? color : cardColor;
 
 		return (
-			<DidiCardBody
-				{...this.props}
-				icon={this.hasLayout() ? "" : icon}
-				backgroundUrl={"https://i.imgur.com/gaMx1Wo.png"}
-			>
-				{this.renderTitle(cardColor)}
-				{this.renderKeyValuePairs(cardColor)}
+			<DidiCardBody {...this.props} icon={this.hasLayout() ? "" : icon} backgroundUrl={layout?.backgroundImage}>
+				{this.renderTitle(style)}
+				{this.renderKeyValuePairs(style)}
 				{this.props.children}
 			</DidiCardBody>
 		);
