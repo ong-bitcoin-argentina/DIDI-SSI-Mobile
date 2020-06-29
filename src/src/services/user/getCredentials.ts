@@ -9,6 +9,7 @@ import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 import { serviceRequest } from "../common/serviceRequest";
 import { Either, left, right } from "fp-ts/lib/Either";
+import { stringify } from "querystring";
 
 export interface UserCredentialsArguments {}
 
@@ -22,7 +23,7 @@ interface DidIdResult {
 
 async function getCredentialDidi(args: { errorMessage?: ErrorData }): Promise<Either<ErrorData, DidIdResult>> {
 	try {
-		const user = await login("admin", "admin@atixlabs");
+		const user = await login("didiUser@atixlabs.com", "admin");
 		const didi = await getSemillasDidi(user.accessToken);
 		return right(didi);
 	} catch (error) {
@@ -31,7 +32,7 @@ async function getCredentialDidi(args: { errorMessage?: ErrorData }): Promise<Ei
 }
 
 const getCredentialDidiComponent = buildComponentServiceCall(getCredentialDidi);
-
+// TODO mover a archivo env
 function login(username: string, password: string) {
 	return serviceRequest<SemillasUser>("https://api.staging.semillas.atixlabs.com/auth/login", {
 		password,
@@ -50,9 +51,9 @@ function getSemillasDidi(token: string) {
 }
 
 export function getUserCredentials(serviceKey: string) {
-	//return getCredentialDidiComponent(serviceKey, {}, result => {
-	return simpleAction(serviceKey, { type: "SET_DID_DNI", value: true }, () => {
-		return serviceCallSuccess(serviceKey);
+	return getCredentialDidiComponent(serviceKey, {}, result => {
+		return simpleAction(serviceKey, { type: "SET_DID_DNI", value: result.message.length > 0 }, () => {
+			return serviceCallSuccess(serviceKey);
+		});
 	});
-	//});
 }

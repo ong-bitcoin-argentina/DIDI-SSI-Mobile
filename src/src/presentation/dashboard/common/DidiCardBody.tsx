@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ViewProps } from "react-native";
+import { StyleSheet, View, ViewProps, ImageBackground } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 
@@ -8,25 +8,41 @@ export interface DidiCardBodyProps extends ViewProps {
 	color: string;
 	hollow?: boolean;
 	decoration?: JSX.Element;
+	backgroundUrl?: string;
 }
 
 export default class DidiCardBody extends Component<DidiCardBodyProps> {
 	render() {
-		const bodyStyle = this.props.hollow
-			? { borderColor: this.props.color, backgroundColor: "#FFF", borderWidth: 2 }
-			: { backgroundColor: this.props.color };
-		return (
-			<View {...this.props} style={[styles.bodyDefaults, bodyStyle, this.props.style]}>
+		const { backgroundUrl, decoration, hollow, color, icon, children, style } = this.props;
+		const bodyStyle = hollow
+			? { borderColor: color, backgroundColor: "#FFF", borderWidth: 2 }
+			: { backgroundColor: color };
+
+		const content = (
+			<React.Fragment>
 				<View style={styles.headerContainer}>
 					<View style={styles.headerIconContainer}>
-						<DidiText.Icon fontSize={30} color={this.props.hollow ? this.props.color : undefined}>
-							{this.props.icon}
+						<DidiText.Icon fontSize={30} color={hollow ? color : undefined}>
+							{icon}
 						</DidiText.Icon>
 					</View>
-					<View style={styles.textContainer}>{this.props.children}</View>
+					<View style={styles.textContainer}>{children}</View>
 				</View>
-				{this.props.decoration && <View style={styles.imageContainer}>{this.props.decoration}</View>}
-			</View>
+				{decoration && <View style={styles.imageContainer}>{decoration}</View>}
+			</React.Fragment>
+		);
+
+		const bodyProps = {
+			...this.props,
+			style: [styles.bodyDefaults, bodyStyle, style]
+		};
+
+		return backgroundUrl ? (
+			<ImageBackground {...bodyProps} source={{ uri: backgroundUrl }}>
+				{content}
+			</ImageBackground>
+		) : (
+			<View {...bodyProps}>{content}</View>
 		);
 	}
 }
@@ -50,7 +66,8 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		flex: 0,
 		minHeight: 180,
-		marginVertical: 8
+		marginVertical: 8,
+		width: "auto"
 	},
 
 	headerIconContainer: {
