@@ -21,13 +21,19 @@ interface DidIdResult {
 	message: string;
 }
 
-async function getCredentialDidi(args: { errorMessage?: ErrorData }): Promise<Either<ErrorData, DidIdResult>> {
+interface GetCredentialsArguments {
+	dni: string;
+	did: EthrDID;
+}
+
+async function getCredentialDidi(args: GetCredentialsArguments): Promise<Either<ErrorData, DidIdResult>> {
 	try {
 		const user = await login("didiUser@atixlabs.com", "admin");
-		const didi = await getSemillasDidi(user.accessToken);
+		const didi = await getSemillasDidi(user.accessToken, args.did, args.dni);
 		return right(didi);
 	} catch (error) {
-		return left(args.errorMessage || serviceErrors.common.FETCH_ERR);
+		console.log(error);
+		return left(serviceErrors.common.FETCH_ERR);
 	}
 }
 
@@ -40,20 +46,25 @@ function login(username: string, password: string) {
 	});
 }
 
-function getSemillasDidi(token: string) {
+function getSemillasDidi(token: string, did: EthrDID, dni: string) {
 	return serviceRequest<DidIdResult>(
 		"https://api.staging.semillas.atixlabs.com/credentials/didi",
-		{},
+		{
+			did: did.did(),
+			dni: dni
+		},
 		{
 			Authorization: `Bearer ${token}`
 		}
 	);
 }
 
-export function getUserCredentials(serviceKey: string) {
-	return getCredentialDidiComponent(serviceKey, {}, result => {
-		return simpleAction(serviceKey, { type: "SET_DID_DNI", value: result.message.length > 0 }, () => {
-			return serviceCallSuccess(serviceKey);
+export function getUserCredentials(serviceKey: string, dni: string) {
+	return withExistingDid(serviceKey, { errorMessage: serviceErrors.login.NO_DID }, did => {
+		return getCredentialDidiComponent(serviceKey, { did, dni }, result => {
+			return simpleAction(serviceKey, { type: "SET_DID_DNI", value: result.message.length > 0 }, () => {
+				return serviceCallSuccess(serviceKey);
+			});
 		});
 	});
 }

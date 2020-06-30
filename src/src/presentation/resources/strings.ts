@@ -278,6 +278,7 @@ export default {
 		barTitle: "Mis Credenciales semillas",
 		detailBarTitle: "Programa Semillas",
 		getCredentials: "Quiero mis credenciales",
+		noDni: "Debes haber validado tu DNI para obtener tus credenciales",
 		credentials: "Credenciales",
 		detailFirst:
 			"Si sos parte del programa Semillas ahora podés tener tus credenciales que certifican y validan tus datos personales.",
