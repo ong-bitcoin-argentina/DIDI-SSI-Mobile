@@ -16,8 +16,9 @@ import { ServiceObserver } from "../../common/ServiceObserver";
 import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
+import { PrestadoresProps } from './PrestadoresScreen';
 
-export interface LoginScreenProps {}
+export interface LoginScreenProps {};
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
@@ -31,25 +32,28 @@ type SemillasScreenInternalProps = LoginScreenProps & SemillasScreenStateProps &
 
 export interface SemillasScreenNavigation {
 	DashboardHome: DashboardScreenProps;
+	Prestadores: PrestadoresProps;
 }
 
 const serviceKey = "CreateSemillasCredentials";
 
-class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalProps, {}, {}> {
+class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalProps, {}, SemillasScreenNavigation> {
 	// navigationOptions makes reference to the topbar navigation, in this case, with a left arrow which function is return to home
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		SemillasScreenNavigation,
 		"DashboardHome"
 	>(strings.semillas.detailBarTitle, "DashboardHome", {});
 
+	
 	render() {
-		const { getCredentials, didDni } = this.props;
-
+		const { didDni, getCredentials } = this.props;
+		
 		return (
 			<Fragment>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+
 				<ScrollView>
 					<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
 						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
@@ -62,12 +66,22 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 						<DidiText.Explanation.Small style={styles.paragraph}>
 							{strings.semillas.detailThird}
 						</DidiText.Explanation.Small>
-						<DidiServiceButton
-							onPress={getCredentials}
-							title={strings.semillas.getCredentials}
-							style={{ ...styles.button, ...(didDni ? styles.hidden : {}) }}
-							isPending={false}
-						/>
+						{
+							didDni ? 
+								<DidiServiceButton
+									onPress={() => this.navigate("Prestadores", {}) }
+									title="Ver Beneficios"
+									style={styles.button}
+									isPending={false}
+								/> 
+								:
+								<DidiServiceButton
+									onPress={getCredentials}
+									title={strings.semillas.getCredentials}
+									style={styles.button}
+									isPending={false}
+								/>
+						}
 					</SafeAreaView>
 				</ScrollView>
 			</Fragment>
@@ -96,7 +110,6 @@ const styles = StyleSheet.create({
 	},
 	scrollContent: {
 		backgroundColor: "white",
-		paddingHorizontal: 20,
 		paddingVertical: 8
 	},
 	paragraph: {

@@ -109,7 +109,7 @@ export const PushNotificationReceiver = didiConnect(
 							return;
 					}
 				}) as any,
-				senderID: "420010989732",
+				senderID: "247471219459",
 				requestPermissions: true
 			});
 		}

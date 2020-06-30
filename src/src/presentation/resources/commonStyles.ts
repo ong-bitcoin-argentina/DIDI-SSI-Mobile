@@ -14,7 +14,7 @@ export default {
 		area: {
 			backgroundColor: colors.background,
 			flex: 1,
-			alignItems: "center"
+			alignItems: "center",
 		},
 		body: {
 			width: "80%",
@@ -27,6 +27,29 @@ export default {
 			justifyContent: "space-between",
 			paddingHorizontal: "10%",
 			paddingVertical: 30
+		},
+	}),
+	benefit: StyleSheet.create({
+		view: {
+			flex: 1,
+			padding: 20,
+		},
+		area: {
+			backgroundColor: colors.background,
+			flex: 1,
+			alignItems: "center",
+			paddingHorizontal: 20,
+			paddingVertical: 10
+		},
+		header: {
+			width: '100%',
+			textAlign: 'left',
+			marginVertical: 10
+		},
+		bottomButton: {
+			paddingVertical: 20,
+			height: 20
 		}
+
 	})
 };
