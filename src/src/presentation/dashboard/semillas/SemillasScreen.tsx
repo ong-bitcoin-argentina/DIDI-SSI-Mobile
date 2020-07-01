@@ -1,8 +1,10 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View } from "react-native";
+import { CredentialDocument } from "didi-sdk";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
+import Alert from "../../util/Alert";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { didiConnect } from "../../../store/store";
@@ -23,12 +25,17 @@ export interface LoginScreenProps {};
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
 	didDni: Boolean;
+	semillasCredential?: CredentialDocument;
 }
 interface SemillasScreenDispatchProps {
 	getCredentials: () => void;
 }
 
 type SemillasScreenInternalProps = LoginScreenProps & SemillasScreenStateProps & SemillasScreenDispatchProps;
+
+type SemillasScreenState = {
+	haveSemillasCredential: boolean;
+}
 
 export interface SemillasScreenNavigation {
 	DashboardHome: DashboardScreenProps;
@@ -37,17 +44,26 @@ export interface SemillasScreenNavigation {
 
 const serviceKey = "CreateSemillasCredentials";
 
-class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalProps, {}, SemillasScreenNavigation> {
+const { detailBarTitle, detailFirst, detailSecond, detailThird, credentialsSuccess, credetialsPending } = strings.semillas;
+
+class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalProps, SemillasScreenState, SemillasScreenNavigation> {
 	// navigationOptions makes reference to the topbar navigation, in this case, with a left arrow which function is return to home
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		SemillasScreenNavigation,
 		"DashboardHome"
-	>(strings.semillas.detailBarTitle, "DashboardHome", {});
+	>(detailBarTitle, "DashboardHome", {});
+
+	constructor(props: SemillasScreenInternalProps) {
+		super(props);
+		this.state = {
+			haveSemillasCredential: !!this.props.semillasCredential
+		};
+	}
 
 	
 	render() {
 		const { didDni, getCredentials } = this.props;
-		
+
 		return (
 			<Fragment>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
@@ -58,22 +74,27 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 					<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
 						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
 						<DidiText.Explanation.Small style={styles.paragraph}>
-							{strings.semillas.detailFirst}
+							{detailFirst}
 						</DidiText.Explanation.Small>
 						<DidiText.Explanation.Small style={styles.paragraph}>
-							{strings.semillas.detailSecond}
+							{detailSecond}
 						</DidiText.Explanation.Small>
 						<DidiText.Explanation.Small style={styles.paragraph}>
-							{strings.semillas.detailThird}
+							{detailThird}
 						</DidiText.Explanation.Small>
 						{
 							didDni ? 
-								<DidiServiceButton
-									onPress={() => this.navigate("Prestadores", {}) }
-									title="Ver Beneficios"
-									style={styles.button}
-									isPending={false}
-								/> 
+								(
+									this.state.haveSemillasCredential ?
+										<DidiServiceButton
+											onPress={() => this.navigate("Prestadores", {})}
+											title="Ver Beneficios"
+											style={styles.button}
+											isPending={false}
+										/>
+										:
+										<Alert text={credetialsPending} style={{ marginBottom:50 }} />
+								) 
 								:
 								<DidiServiceButton
 									onPress={getCredentials}
@@ -89,15 +110,17 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 	}
 
 	onCredentialsAdded = () => {
-		DataAlert.alert(strings.semillas.credentials, strings.semillas.credentialsSuccess);
+		DataAlert.alert(strings.semillas.credentials, credentialsSuccess);
 	};
+
 }
 
 export default didiConnect(
 	SemillasScreen,
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
-		didDni: state.did.didDni
+		didDni: state.did.didDni,
+		semillasCredential: state.semillasCredential
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: () => dispatch(getUserCredentials(serviceKey))

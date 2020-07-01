@@ -11,6 +11,7 @@ import { ErrorDataAlert } from "./ErrorDataAlert";
 interface ServiceObserverProps {
 	serviceKey: string;
 	onSuccess: () => void;
+	onError?: () => void;
 	keepCallChainOnExit?: boolean;
 }
 interface ServiceObserverStateProps {
@@ -33,6 +34,7 @@ class ServiceObserver extends React.Component<AddChildren<ServiceObserverInterna
 				this.props.dropCallChain(this.props.serviceKey);
 				return;
 			case "FAILED":
+				this.props.onError && this.props.onError();
 				ErrorDataAlert.alert(rq.error, () => this.props.dropCallChain(this.props.serviceKey));
 				return;
 			case "IN_PROGRESS":

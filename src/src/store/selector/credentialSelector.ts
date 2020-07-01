@@ -1,5 +1,6 @@
 import { CredentialDocument, EthrDID, SpecialCredentialFlag } from "didi-sdk";
 import { createSelector } from "reselect";
+import SemillasCredentialMock from './credentialMockup';
 
 import TypedArray from "../../util/TypedArray";
 
@@ -33,6 +34,19 @@ export const toplevelCredentialSelector = createSelector(
 				return -1;
 			}
 		});
+	}
+);
+
+export const semillasCredentialSelector = createSelector(
+	allCredentialSelector,
+	st => st.persisted.did,
+	(credentials) => {
+		// TODO: descomentar las siguientes lineas cuando este chequeado el endpoint de credencial semillas
+		// const nested = credentials.map(c => c.nested).reduce((acc, next) => acc.concat(next), []);
+		// const res = credentials.filter(credential => !nested.find(nest => nest.jwt === credential.jwt));
+		// return res.find(item => item.title.toLowerCase().includes('semillas'));
+
+		return SemillasCredentialMock.find(item => item.title.toLowerCase().includes('semillas'));
 	}
 );
 

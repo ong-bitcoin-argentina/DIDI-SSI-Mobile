@@ -62,7 +62,9 @@ const randomBeneficiario = function (index:number) {
         id: index,
         name: randomSelect(names),
         phone: randomPhone(),
-        DNI: randomDNI()
+        DNI: randomDNI(),
+        birthday: '03/03/4456',
+        email: 'example@atix.com'
 	}
 }
 

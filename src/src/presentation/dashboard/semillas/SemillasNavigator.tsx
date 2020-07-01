@@ -9,6 +9,7 @@ export interface SemillasNavigatorNavigation {
 	DashboardHome: DashboardScreenProps;
 	Prestadores: {};
 	Beneficiary: {};
+	
 }
 
 export default function(then: NavTree<SemillasNavigatorNavigation>) {

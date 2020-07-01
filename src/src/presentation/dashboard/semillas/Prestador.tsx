@@ -2,14 +2,16 @@ import React from 'react';
 import { SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import { DidiText } from "../../util/DidiText";
 
+export type PrestadorModel = {
+    id: string;
+    category: string;
+    name: string;
+    phone: string;
+    benefit: string;
+}
+
 type PrestadorProps = {
-    item: {
-        id: string;
-        category: string;
-        name: string;
-        phone: string;
-        benefit: string;
-    };
+    item: PrestadorModel;
     active: boolean;
     onPress: any;
 };

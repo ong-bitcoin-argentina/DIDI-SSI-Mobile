@@ -286,11 +286,13 @@ export default {
 		detailThird:
 			"Gracias a que son portables, las podés llevar con vos, acceder a ellas siempre que lo necesites y compartirlas sólo con quien vos quieras.",
 		credentialsSuccess: "Tus credenciales fueron guardadas correctamente",
+		credetialsPending: "Tus Credenciales de Beneficios Semillas ya han sido solicitadas y se encuentran en proceso... Pronto podrás acceder a los Beneficios de Semillas!!",
 		steps: {
 			first: "Paso 1: Elegí con quién querés el turno.",
 			second: { 
 				title: "Paso 2: Elegí para quien es el turno.",
-				detail: "Solicitante del turno"
+				detail: "Solicitante del turno",
+				modalTitle: "Estás por compartir la siguiente información"
 			},
 			third: {
 				title: "Paso 3: El Beneficio fue solicitado con éxito!",
