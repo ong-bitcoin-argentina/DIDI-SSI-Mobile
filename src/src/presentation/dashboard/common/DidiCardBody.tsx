@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, ViewProps, ImageBackground, Dimensions } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
+import colors from "../../resources/colors";
 
 export interface DidiCardBodyProps extends ViewProps {
 	icon: string;
@@ -36,7 +37,7 @@ export default class DidiCardBody extends Component<DidiCardBodyProps> {
 		const imageSize = {
 			height: Math.round((dimensions.width * 9) / 16),
 			width: dimensions.width - 40,
-			backgroundColor: "#F5F5F5",
+			backgroundColor: colors.background,
 			marginVertical: 0
 		};
 
