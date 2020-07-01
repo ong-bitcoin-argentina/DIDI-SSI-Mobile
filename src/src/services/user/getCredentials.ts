@@ -1,15 +1,10 @@
-import { DidiServerApiClient, EthrDID, ErrorData } from "didi-sdk";
-
+import { EthrDID, ErrorData } from "didi-sdk";
 import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
-import { convertError } from "../common/convertError";
-
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
-import { getState } from "../internal/getState";
-import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 import { serviceRequest } from "../common/serviceRequest";
 import { Either, left, right } from "fp-ts/lib/Either";
-import { stringify } from "querystring";
+import { AppConfig } from "../../AppConfig";
 
 export interface UserCredentialsArguments {}
 
@@ -28,7 +23,8 @@ interface GetCredentialsArguments {
 
 async function getCredentialDidi(args: GetCredentialsArguments): Promise<Either<ErrorData, DidIdResult>> {
 	try {
-		const user = await login("didiUser@atixlabs.com", "admin");
+		const semillasUser = AppConfig.defaultServiceSettings.semillasLogin;
+		const user = await login(semillasUser.user, semillasUser.password);
 		const didi = await getSemillasDidi(user.accessToken, args.did, args.dni);
 		return right(didi);
 	} catch (error) {
@@ -40,7 +36,7 @@ async function getCredentialDidi(args: GetCredentialsArguments): Promise<Either<
 const getCredentialDidiComponent = buildComponentServiceCall(getCredentialDidi);
 // TODO mover a archivo env
 function login(username: string, password: string) {
-	return serviceRequest<SemillasUser>("https://api.staging.semillas.atixlabs.com/auth/login", {
+	return serviceRequest<SemillasUser>(`${AppConfig.defaultServiceSettings.semillasServerUri}/auth/login`, {
 		password,
 		username
 	});
@@ -48,7 +44,7 @@ function login(username: string, password: string) {
 
 function getSemillasDidi(token: string, did: EthrDID, dni: string) {
 	return serviceRequest<DidIdResult>(
-		"https://api.staging.semillas.atixlabs.com/credentials/didi",
+		`${AppConfig.defaultServiceSettings.semillasServerUri}/credentials/didi`,
 		{
 			did: did.did(),
 			dni: dni
