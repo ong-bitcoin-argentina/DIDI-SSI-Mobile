@@ -19,13 +19,15 @@ import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
 import { PrestadoresProps } from './PrestadoresScreen';
+import { SemillasIdentityModel } from '../../../model/SemillasIdentity';
 
 export interface LoginScreenProps {};
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
 	didDni: Boolean;
-	semillasCredential?: CredentialDocument;
+	semillasCredential?: SemillasIdentityModel;
+	semillasBeneficiarios?: SemillasIdentityModel[];
 }
 interface SemillasScreenDispatchProps {
 	getCredentials: () => void;
@@ -120,7 +122,8 @@ export default didiConnect(
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
 		didDni: state.did.didDni,
-		semillasCredential: state.semillasCredential
+		semillasCredential: state.semillasCredential,
+		semillasBeneficiarios: state.semillasBeneficiarios
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: () => dispatch(getUserCredentials(serviceKey))

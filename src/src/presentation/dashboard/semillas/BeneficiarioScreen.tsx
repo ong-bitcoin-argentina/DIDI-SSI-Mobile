@@ -9,17 +9,18 @@ import { DidiServiceButton } from "../../util/DidiServiceButton";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import Beneficiary, { BeneficiaryModel } from './Beneficiary';
+import Beneficiary from './Beneficiario';
 import { PrestadorModel } from './Prestador';
+import { SemillasIdentityModel } from '../../../model/SemillasIdentity';
 
-export type BeneficiaryProps = { };
+export type BeneficiarioProps = { };
 
 interface BeneficiaryScreenStateProps { 
 	activePrestador: PrestadorModel
 };
 
 type BeneficiaryScreenState = {
-	selected:BeneficiaryModel;
+	selected:SemillasIdentityModel;
 	selectedName:string;
 	modalVisible:boolean;
 };
@@ -101,9 +102,6 @@ class BeneficiaryScreen extends NavigationEnabledComponent<BeneficiaryScreenInte
 							
 							<Beneficiary item={selected} />
 
-							<DidiText.Explanation.Small>
-								Estado del beneficio
-							</DidiText.Explanation.Small>
 							<DidiText.Explanation.Small>
 								Caracter
 							</DidiText.Explanation.Small>

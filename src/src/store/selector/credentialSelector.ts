@@ -1,6 +1,12 @@
 import { CredentialDocument, EthrDID, SpecialCredentialFlag } from "didi-sdk";
 import { createSelector } from "reselect";
 import SemillasCredentialMock from './credentialMockup';
+import { 
+	getSemillasCredentials, 
+	ownSemillasCredentialCondition, 
+	semillasTitularCondition, 
+	semillasFamiliarCondition 
+} from '../../util/semillasHelpers';
 
 import TypedArray from "../../util/TypedArray";
 
@@ -41,12 +47,19 @@ export const semillasCredentialSelector = createSelector(
 	allCredentialSelector,
 	st => st.persisted.did,
 	(credentials) => {
-		// TODO: descomentar las siguientes lineas cuando este chequeado el endpoint de credencial semillas
-		// const nested = credentials.map(c => c.nested).reduce((acc, next) => acc.concat(next), []);
-		// const res = credentials.filter(credential => !nested.find(nest => nest.jwt === credential.jwt));
-		// return res.find(item => item.title.toLowerCase().includes('semillas'));
-
-		return SemillasCredentialMock.find(item => item.title.toLowerCase().includes('semillas'));
+		// TODO: usar credenciales reales en lugar de mock
+		const semillasCredentials = getSemillasCredentials(SemillasCredentialMock);
+		return semillasCredentials.find(ownSemillasCredentialCondition);
+	}
+);
+	
+export const semillasBeneficiariosSelector = createSelector(
+	allCredentialSelector,
+	st => st.persisted.did,
+	(credentials) => {
+		// TODO: usar credenciales reales en lugar de mock
+		const isOwner = SemillasCredentialMock.some(semillasTitularCondition);
+		return isOwner ? SemillasCredentialMock.filter(semillasFamiliarCondition) : undefined;
 	}
 );
 

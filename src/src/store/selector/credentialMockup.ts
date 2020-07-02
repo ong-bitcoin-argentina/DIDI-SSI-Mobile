@@ -2,7 +2,15 @@ export default [
 	{
 		category: "identity",
 		data: {
-			email: "nlaitan@atixlabs.com"
+			"Dni Titular": "35986491",
+			"Nombre Titular": "Nicolas Laitan",
+			"Relacion con Titular": "titular",
+			"Dni Beneficiario": "35986491",
+			"Nombre Beneficiario": "Nicolas Laitan",
+			"Genero": "Masculino",
+			"Fecha de Nacimiento": "1992-09-06",
+			"NOMBRE": "Nicolas",
+			"APELLIDO": "Laitan"
 		},
 		delegator: undefined,
 		expireAt: undefined,
@@ -21,13 +29,25 @@ export default [
 		subject: {
 			address: "0xe78adccd1fea12a62828cc87a522e4836e4ddf3b"
 		},
-		title: "Semillas Beneficio",
+		title: "Semillas Identidad",
 		type: "CredentialDocument",
-		wrapped: {}
+		wrapped: {
+
+		}
 	},
 	{
 		category: "identity",
-		data: { email: "nlaitan@atixlabs.com" },
+		data: { 
+			"Dni Titular": "35986491",
+			"Nombre Titular": "Nicolas Laitan",
+			"Relacion con Titular": "familiar",
+			"Dni Beneficiario": "24412410",
+			"Nombre Beneficiario": "Edgardo Quiroga",
+			"Genero": "Masculino",
+			"Fecha de Nacimiento": "1975-02-11",
+			"NOMBRE": "Edgardo",
+			"APELLIDO": "Quiroga"	
+		},
 		delegator: undefined,
 		expireAt: undefined,
 		issuedAt: 1593202350,
@@ -38,7 +58,7 @@ export default [
 		preview: { fields: [], type: 0 },
 		specialFlag: { email: "nlaitan@atixlabs.com", type: "EmailData" },
 		subject: { address: "0xe78adccd1fea12a62828cc87a522e4836e4ddf3b" },
-		title: "Email",
+		title: "Semillas Beneficios",
 		type: "CredentialDocument",
 		wrapped: {}
 	}

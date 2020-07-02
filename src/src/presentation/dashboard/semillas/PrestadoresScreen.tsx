@@ -10,7 +10,7 @@ import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import Prestador from './Prestador';
-import { BeneficiaryProps } from './BeneficiaryScreen';
+import { BeneficiarioProps } from './BeneficiarioScreen';
 
 
 export type PrestadoresProps = {};
@@ -24,7 +24,7 @@ type PrestadoresScreenState = {
 type PrestadoresScreenInternalProps = PrestadoresScreenStateProps;
 
 export interface PrestadoresScreenNavigation {
-	Beneficiary: BeneficiaryProps;
+	Beneficiario: BeneficiarioProps;
 }
 
 import { randomPrestadores } from './mockup';
