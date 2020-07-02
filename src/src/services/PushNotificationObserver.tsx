@@ -1,5 +1,6 @@
 import React from "react";
 import PushNotification from "react-native-push-notification";
+import { NOTIFICATION_SENDER_ID } from '../AppConfig';
 
 import { ServiceObserver } from "../presentation/common/ServiceObserver";
 
@@ -109,7 +110,7 @@ export const PushNotificationReceiver = didiConnect(
 							return;
 					}
 				}) as any,
-				senderID: "247471219459",
+				senderID: NOTIFICATION_SENDER_ID,
 				requestPermissions: true
 			});
 		}
