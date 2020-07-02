@@ -1,6 +1,7 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { DidiText } from "../../util/DidiText";
+import semillasImagesSources from './imagesSources';
 
 export type PrestadorModel = {
     id: string;
@@ -8,6 +9,7 @@ export type PrestadorModel = {
     name: string;
     phone: string;
     benefit: string;
+    speciality:string;
 }
 
 type PrestadorProps = {
@@ -17,7 +19,7 @@ type PrestadorProps = {
 };
 
 function Prestador(props: PrestadorProps) {
-    const { category, name, phone, benefit } = props.item;
+    const { category, name, phone, benefit, speciality } = props.item;
     const { active } = props;
     const { title, description, highlight, inside, label } = styles;
     return (
@@ -26,14 +28,15 @@ function Prestador(props: PrestadorProps) {
                 onPress={props.onPress}
                 style={inside}
             >
-                <DidiText.Explanation.Small style={title}>
-                    Icono / Imagen
-                </DidiText.Explanation.Small>
+                <Image
+                    style={styles.image}
+                    source={ semillasImagesSources[category] }
+                />
                 <DidiText.Explanation.Small style={title}>
                     {name}
                 </DidiText.Explanation.Small>
                 <DidiText.Explanation.Small style={description}>
-                    {category}
+                    {speciality}
                 </DidiText.Explanation.Small>
                 <DidiText.Explanation.Small style={description}>
                     {phone}
@@ -80,5 +83,9 @@ const styles = StyleSheet.create({
 		borderWidth: 3,
 		borderColor:'#3471eb',
 		borderRadius: 10
-	}
+    },
+    image: {
+        height: 50,
+        width: 50
+    }
 });

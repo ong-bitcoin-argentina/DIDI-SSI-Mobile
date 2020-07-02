@@ -1,5 +1,6 @@
 // TODO: borrar cuando se traiga data de semillas
-const categories = [ "Odontología", "Oftalmología", "Clinica Médica", "Dermatología" ];
+const categories = [ "salud", "oportunidad", "finanza", "saber", "sueno" ];
+const specialities = [ "Odontología", "Clínica Médica", "Oftalmología", "Dermatología", "Otorrinolaringología" ];
 const entities = [
     "Sunny Walkway",
     "Dental Total",
@@ -43,7 +44,8 @@ function randomDNI() {
 const randomPrestador = function (index:number) {
 	return {
         id: index,
-		category: randomSelect(categories),
+        category: randomSelect(categories),
+        speciality: randomSelect(specialities),
         name: randomSelect(entities),
         phone: randomPhone(),
         benefit: '10%'

@@ -58,16 +58,18 @@ class PrestadoresScreen extends NavigationEnabledComponent<PrestadoresScreenInte
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
-				<DidiText.Explanation.Small style={header}>
-					{strings.semillas.steps.first}
-				</DidiText.Explanation.Small>
 				<View style={view}>
+					<DidiText.Explanation.Small style={header}>
+						{strings.semillas.steps.first}
+					</DidiText.Explanation.Small>
+
 					<FlatList
 						numColumns={2}
 						data={DATA}
 						renderItem={({ item }) => <Prestador item={item} active={(item.id === activeId)} onPress={() => this.onSelect(item)} />}
 						keyExtractor={item => item.id}
 					/>
+					
 					{
 						(activeId == 0 || activeId) &&
 						<DidiServiceButton
