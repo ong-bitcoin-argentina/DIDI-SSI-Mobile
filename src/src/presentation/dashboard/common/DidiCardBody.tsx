@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ViewProps, ImageBackground } from "react-native";
+import { StyleSheet, View, ViewProps, ImageBackground, Dimensions } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
+import colors from "../../resources/colors";
 
 export interface DidiCardBodyProps extends ViewProps {
 	icon: string;
@@ -32,15 +33,26 @@ export default class DidiCardBody extends Component<DidiCardBodyProps> {
 			</React.Fragment>
 		);
 
+		const dimensions = Dimensions.get("window");
+		const imageSize = {
+			height: Math.round((dimensions.width * 9) / 16),
+			width: dimensions.width - 40,
+			backgroundColor: colors.background,
+			marginVertical: 0
+		};
+
 		const bodyProps = {
 			...this.props,
-			style: [styles.bodyDefaults, bodyStyle, style]
+			style: [styles.bodyDefaults, bodyStyle, style, backgroundUrl ? imageSize : {}]
 		};
 
 		return backgroundUrl ? (
-			<ImageBackground {...bodyProps} source={{ uri: backgroundUrl }}>
-				{content}
-			</ImageBackground>
+			<View>
+				<ImageBackground {...bodyProps} source={{ uri: backgroundUrl }} resizeMode="contain">
+					{content}
+					<DidiText.Title></DidiText.Title>
+				</ImageBackground>
+			</View>
 		) : (
 			<View {...bodyProps}>{content}</View>
 		);
@@ -74,7 +86,6 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start",
 		marginRight: 25
 	},
-
 	imageContainer: {
 		position: "absolute",
 		top: 10,
