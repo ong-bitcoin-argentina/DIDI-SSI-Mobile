@@ -1,3 +1,4 @@
+// TODO: borrar cuando se traiga data de semillas
 const categories = [ "Odontología", "Oftalmología", "Clinica Médica", "Dermatología" ];
 const entities = [
     "Sunny Walkway",
