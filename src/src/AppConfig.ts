@@ -1,4 +1,5 @@
 import { ServiceSettings } from "./model/ServiceSettings";
+import Config from "react-native-config";
 
 type AppConfig = { debug: boolean; defaultServiceSettings: ServiceSettings };
 
@@ -35,4 +36,5 @@ export const AppConfig: AppConfig = {
 	defaultServiceSettings: debug ? defaultDebugServiceSettings : defaultStagingServiceSettings
 };
 
-export const PRIVATE_KEY_SEED_PASSWORD = "***REMOVED***";
+export const PRIVATE_KEY_SEED_PASSWORD = Config.PRIVATE_KEY_SEED_PASSWORD;
+export const NOTIFICATION_SENDER_ID = Config.NOTIFICATION_SENDER_ID;
