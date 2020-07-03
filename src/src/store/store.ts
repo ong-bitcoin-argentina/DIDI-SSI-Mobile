@@ -21,7 +21,7 @@ import {
 import { newTokensAvailableSelector } from "./selector/newTokensAvailableSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { StoreAction } from "./StoreAction";
-import { SemillasIdentityModel } from '../model/SemillasIdentity';
+import { SemillasIdentityModel } from "../model/SemillasIdentity";
 
 export interface StoreContent extends PersistedStoreContent {
 	parsedTokens: Array<CredentialDocument | SelectiveDisclosureRequest>;

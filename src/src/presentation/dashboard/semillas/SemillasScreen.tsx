@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View } from "react-native";
-import { CredentialDocument } from "didi-sdk";
+// import { CredentialDocument } from "didi-sdk";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -19,15 +19,14 @@ import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
 import { PrestadoresProps } from './PrestadoresScreen';
-import { SemillasIdentityModel } from '../../../model/SemillasIdentity';
+import { CredentialDocument } from "didi-sdk";
 
 export interface LoginScreenProps {};
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
 	didDni: Boolean;
-	semillasCredential?: SemillasIdentityModel;
-	semillasBeneficiarios?: SemillasIdentityModel[];
+	semillasCredential?: CredentialDocument;
 }
 interface SemillasScreenDispatchProps {
 	getCredentials: () => void;
@@ -123,7 +122,6 @@ export default didiConnect(
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
 		didDni: state.did.didDni,
 		semillasCredential: state.semillasCredential,
-		semillasBeneficiarios: state.semillasBeneficiarios
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: () => dispatch(getUserCredentials(serviceKey))

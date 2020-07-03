@@ -1,31 +1,38 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { View, StyleSheet } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import { SemillasIdentityModel } from '../../../model/SemillasIdentity';
 
-type BeneficiaryProps = {
+type BeneficiarioProps = {
     item:SemillasIdentityModel;
 };
 
-function Beneficiary(props: BeneficiaryProps) {
-    const { item } = props.item;
+const blacklist = [
+    "NOMBRE",
+    "APELLIDO",
+    "Dni Titular",
+    "Nombre Titular",
+    "Relacion con Titular",
+    "Genero"
+]
+
+function Beneficiary(props: BeneficiarioProps) {
+    const { item } = props;
+
     return (
         <View style={{ paddingVertical:10 }}>
-            <DidiText.Explanation.Small>
-                
-            </DidiText.Explanation.Small>
-            <DidiText.Explanation.Small>
-                
-            </DidiText.Explanation.Small>
-            <DidiText.Explanation.Small>
-                
-            </DidiText.Explanation.Small>
-            <DidiText.Explanation.Small>
-                
-            </DidiText.Explanation.Small>
-            <DidiText.Explanation.Small>
-                
-            </DidiText.Explanation.Small>
+            {
+                Object.keys(item).filter(key => !blacklist.includes(key)).map(key => (
+                    <Fragment>
+                        <DidiText.Explanation.Small style={styles.key}>
+                            {key}
+                        </DidiText.Explanation.Small>
+                        <DidiText.Explanation.Small>
+                            {item[key]}
+                        </DidiText.Explanation.Small>
+                    </Fragment>
+                ))
+            }
         </View>
     )
 }
@@ -33,5 +40,8 @@ function Beneficiary(props: BeneficiaryProps) {
 export default Beneficiary;
 
 const styles = StyleSheet.create({
-
+    key: {
+        fontSize: 13,
+        marginTop: 7
+    }
 });

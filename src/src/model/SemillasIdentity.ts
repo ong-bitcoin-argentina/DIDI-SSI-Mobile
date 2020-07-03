@@ -1,4 +1,4 @@
-export type SemillasIdentityModel = {
+export interface SemillasIdentityModel {
     "Dni Titular": string;
     "Nombre Titular": string;
     "Relacion con Titular": string;

@@ -288,7 +288,11 @@ export default {
 		credentialsSuccess: "Tus credenciales fueron guardadas correctamente",
 		credetialsPending: "Tus Credenciales de Beneficios Semillas ya han sido solicitadas y se encuentran en proceso... Pronto podrás acceder a los Beneficios de Semillas!!",
 		steps: {
-			first: "Paso 1: Elegí con quién querés el turno.",
+			first: {
+				title: "Paso 1: Elegí con quién querés el turno.",
+				email: "O podés escribir el mail del destinatario de la credencial",
+				writeEmail: "Mail del destinatario"
+			},
 			second: { 
 				title: "Paso 2: Elegí para quien es el turno.",
 				detail: "Solicitante del turno",

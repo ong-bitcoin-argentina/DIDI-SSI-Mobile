@@ -3,9 +3,7 @@ import { createSelector } from "reselect";
 import SemillasCredentialMock from './credentialMockup';
 import { 
 	getSemillasCredentials, 
-	ownSemillasCredentialCondition, 
-	semillasTitularCondition, 
-	semillasFamiliarCondition 
+	getOwnSemillasCredential
 } from '../../util/semillasHelpers';
 
 import TypedArray from "../../util/TypedArray";
@@ -48,8 +46,7 @@ export const semillasCredentialSelector = createSelector(
 	st => st.persisted.did,
 	(credentials) => {
 		// TODO: usar credenciales reales en lugar de mock
-		const semillasCredentials = getSemillasCredentials(SemillasCredentialMock);
-		return semillasCredentials.find(ownSemillasCredentialCondition);
+		return getOwnSemillasCredential(SemillasCredentialMock);
 	}
 );
 	
@@ -58,8 +55,7 @@ export const semillasBeneficiariosSelector = createSelector(
 	st => st.persisted.did,
 	(credentials) => {
 		// TODO: usar credenciales reales en lugar de mock
-		const isOwner = SemillasCredentialMock.some(semillasTitularCondition);
-		return isOwner ? SemillasCredentialMock.filter(semillasFamiliarCondition) : undefined;
+		return getSemillasCredentials(SemillasCredentialMock);
 	}
 );
 

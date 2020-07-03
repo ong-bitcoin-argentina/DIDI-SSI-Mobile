@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
-import { StatusBar, StyleSheet, View, Picker, Modal, Alert, TouchableHighlight } from "react-native";
+import { StatusBar, StyleSheet, View, Picker, Modal } from "react-native";
 
+import { didiConnect } from "../../../store/store";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -9,55 +10,60 @@ import { DidiServiceButton } from "../../util/DidiServiceButton";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import Beneficiary from './Beneficiario';
+import Beneficiario from './Beneficiario';
 import { PrestadorModel } from './Prestador';
-import { SemillasIdentityModel } from '../../../model/SemillasIdentity';
+// import { SemillasIdentityModel } from '../../../model/SemillasIdentity';
+import { getFullName, getDniBeneficiario } from '../../../util/semillasHelpers';
+import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 
-export type BeneficiarioProps = { };
-
-interface BeneficiaryScreenStateProps { 
-	activePrestador: PrestadorModel
+export type BeneficiarioProps = { 
+	activePrestador: PrestadorModel;
 };
 
-type BeneficiaryScreenState = {
+interface BeneficiarioScreenStateProps { 
+	semillasCredential?: SemillasIdentityModel;
+	semillasBeneficiarios: SemillasIdentityModel[];
+};
+
+type BeneficiarioScreenState = {
+	isOwner?: boolean;
 	selected:SemillasIdentityModel;
-	selectedName:string;
+	selectedName?:string;
 	modalVisible:boolean;
 };
 
-type BeneficiaryScreenInternalProps = BeneficiaryScreenStateProps;
+type BeneficiarioScreenInternalProps = BeneficiarioScreenStateProps & BeneficiarioProps;
 
-export interface BeneficiaryScreenNavigation {
+export interface BeneficiarioScreenNavigation {
     
 }
 
-import { randomBeneficiarios } from './mockup';
-const DATA:BeneficiaryModel[] = randomBeneficiarios(20);
-
-class BeneficiaryScreen extends NavigationEnabledComponent<BeneficiaryScreenInternalProps, BeneficiaryScreenState, BeneficiaryScreenNavigation> {
+class BeneficiarioScreen extends NavigationEnabledComponent<BeneficiarioScreenInternalProps, BeneficiarioScreenState, BeneficiarioScreenNavigation> {
 	
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.semillas.detailBarTitle);
 	
-	constructor(props: BeneficiaryScreenInternalProps) {
+	constructor(props: BeneficiarioScreenInternalProps) {
 		super(props);
+		const selected = this.props.semillasBeneficiarios[0];
 		this.state = {
-			selected: DATA[0],
-			selectedName: DATA[0].name,
+			selected,
+			selectedName: getFullName(selected),
 			modalVisible: false
 		};
 	}
 
-	handleChangePicker = (selectedName, index) => {
+	handleChangePicker = (selectedName:string, index:number) => {
+		const selected = this.props.semillasBeneficiarios[index];
 		this.setState({
 			selectedName,
-			selected: DATA[index]
+			selected
 		})
 	}
 
 	render() {
 		const { bottomButton, header, view } = commonStyles.benefit;
+		const { modal } = commonStyles;
 		const { selected, selectedName, modalVisible } = this.state;
-		const { activePrestador } = this.props;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -75,11 +81,18 @@ class BeneficiaryScreen extends NavigationEnabledComponent<BeneficiaryScreenInte
 						<Picker
 							selectedValue={selectedName}
 							style={{ height: 50 }}
+							itemStyle={{textAlign:'center'}}
 							onValueChange={(value,index) => this.handleChangePicker(value,index)}
 							mode="dialog"
 						>
 							{
-								DATA.map(({id,name}) => <Picker.Item label={name} value={id} key={id} />)
+								this.props.semillasBeneficiarios.map((credential) => (
+									<Picker.Item 
+										label={getFullName(credential)} 
+										value={getDniBeneficiario(credential)} 
+										key={getDniBeneficiario(credential)}
+									/>
+								))
 							}
 						</Picker>
 					</View>
@@ -94,30 +107,26 @@ class BeneficiaryScreen extends NavigationEnabledComponent<BeneficiaryScreenInte
 				</View>
 				
 				<Modal animationType="fade" transparent={true} visible={modalVisible} >
-					<View style={styles.centeredView}>
-						<View style={styles.modalView}>
+					<View style={modal.centeredView}>
+						<View style={modal.view}>
 							<DidiText.Explanation.Small>
 								{strings.semillas.steps.second.modalTitle}
 							</DidiText.Explanation.Small>
 							
-							<Beneficiary item={selected} />
+							<Beneficiario item={selected} />
 
-							<DidiText.Explanation.Small>
-								Caracter
-							</DidiText.Explanation.Small>
-
-							<View style={styles.modalFooter}>
+							<View style={modal.footer}>
 								<DidiServiceButton
 									onPress={() => { this.setState({modalVisible:!modalVisible}) }}
 									title="Cancelar"
-									style={styles.smallButton}
+									style={modal.smallButton}
 									isPending={false}
 								/>
 
 								<DidiServiceButton
 									onPress={() => { console.log('navegar a siguiente paso') }}
 									title="Compartir"
-									style={styles.smallButton}
+									style={modal.smallButton}
 									isPending={false}
 								/>
 							</View>
@@ -132,7 +141,13 @@ class BeneficiaryScreen extends NavigationEnabledComponent<BeneficiaryScreenInte
 
 }
 
-export default BeneficiaryScreen;
+export default didiConnect(
+	BeneficiarioScreen,
+	(state): BeneficiarioScreenStateProps => ({
+		semillasCredential: state.semillasCredential,
+		semillasBeneficiarios: state.semillasBeneficiarios,
+	})
+);
 
 const styles = StyleSheet.create({
 	pickerContainer: {
@@ -143,47 +158,9 @@ const styles = StyleSheet.create({
 		marginTop: 30,
 		marginBottom: 50
 	},
-	centeredView: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		marginTop: 22
-	},
-	modalView: {
-		margin: 20,
-		backgroundColor: "white",
-		borderRadius: 8,
-		paddingVertical: 10,
-		paddingHorizontal: 20,
-		width: '90%',
-		height: '70%',
-		alignItems: "center",
-		shadowColor: "#000",
-		shadowOffset: {
-			width: 0,
-			height: 2
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5
-	},
-	modalFooter: {
-		flex: 1,
-		flexDirection: 'row',
-		bottom: 10,
-		position: 'absolute'
-	},
-	smallButton: {
-		height: 40,
-		paddingHorizontal: 20
-	},
 	textStyle: {
 		color: "white",
 		fontWeight: "bold",
 		textAlign: "center"
 	},
-	modalText: {
-		marginBottom: 15,
-		textAlign: "center"
-	}
 });

@@ -71,7 +71,7 @@ const randomBeneficiario = function (index:number) {
 	}
 }
 
-export const randomBeneficiarios = function(length:number) {
+export const randomBeneficiarios = (length:number) => {
     let array:object[] = [];
     for (let i = 0; i < length; i++) {
         array.push(randomBeneficiario(i));

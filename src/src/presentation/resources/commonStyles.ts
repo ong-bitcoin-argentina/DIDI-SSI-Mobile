@@ -50,6 +50,45 @@ export default {
 			paddingVertical: 20,
 			height: 20
 		}
-
+	}),
+	modal: StyleSheet.create({
+		centeredView: {
+			flex: 1,
+			justifyContent: "center",
+			alignItems: "center",
+			marginTop: 22
+		},
+		view: {
+			margin: 20,
+			backgroundColor: "white",
+			borderRadius: 8,
+			paddingVertical: 10,
+			paddingHorizontal: 20,
+			width: '90%',
+			height: '70%',
+			alignItems: "center",
+			shadowColor: "#000",
+			shadowOffset: {
+				width: 0,
+				height: 2
+			},
+			shadowOpacity: 0.25,
+			shadowRadius: 3.84,
+			elevation: 5
+		},
+		footer: {
+			flex: 1,
+			flexDirection: 'row',
+			bottom: 10,
+			position: 'absolute'
+		},
+		smallButton: {
+			height: 40,
+			paddingHorizontal: 20
+		},
+		text: {
+			marginBottom: 15,
+			textAlign: "center"
+		}
 	})
 };
