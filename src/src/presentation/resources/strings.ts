@@ -75,7 +75,7 @@ export default {
 				button: "Reintentar"
 			},
 			"In Progress": {
-				title: "Validación en progreso...",
+				title: "Validando tus datos..., este proceso puede demorar unos minutos...",
 				subtitle: "",
 				button: null
 			}
@@ -252,7 +252,8 @@ export default {
 				body: "Tené en cuenta que, por seguridad, solo se aceptará el último código que te enviamos."
 			}
 		},
-		passwordDescription: "Usá ocho caracteres como mínimo con una combinación de letras, números y símbolos"
+		passwordDescription:
+			"Usá ocho caracteres como mínimo con una combinación de letras mayúsculas y minusculas, de números y símbolos"
 	},
 	documents: {
 		barTitle: "Mis Credenciales",
@@ -289,16 +290,16 @@ export default {
 		credentialsSuccess: "Tus credenciales fueron guardadas correctamente",
 		steps: {
 			first: "Paso 1: Elegí con quién querés el turno.",
-			second: { 
+			second: {
 				title: "Paso 2: Elegí para quien es el turno.",
 				detail: "Solicitante del turno"
 			},
 			third: {
 				title: "Paso 3: El Beneficio fue solicitado con éxito!",
 				prestador: "El Prestador se comunicará con vos a la brevedad.",
-				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio",
-			},
-		},
+				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio"
+			}
+		}
 	},
 	settings: {
 		idLabel: "ID:",
@@ -325,7 +326,7 @@ export default {
 		},
 		or: "o",
 		link: {
-			button: "Por enlace al visor",
+			button: "Compartir enlace",
 			explanation: "Recibirás un pedido de verificación"
 		},
 		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de DIDI:\n\n${sharedUri}`
@@ -424,7 +425,7 @@ export default {
 		},
 		submit: {
 			header: "Validación de Identidad",
-			congrats: "Se enviaran los siguientes datos a validar por ReNaPer:",
+			congrats: "Se enviarán los siguientes datos a validar por ReNaPer:",
 			reminder: "Recordá que tus datos son privados y no serán compartidos.",
 			buttonText: "OK",
 			items: {
