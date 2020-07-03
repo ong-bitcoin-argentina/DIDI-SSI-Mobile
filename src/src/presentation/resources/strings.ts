@@ -286,7 +286,19 @@ export default {
 			"Tus credenciales son privadas, con ellas vas a poder guardar y proteger tu información de manera segura y confiable.",
 		detailThird:
 			"Gracias a que son portables, las podés llevar con vos, acceder a ellas siempre que lo necesites y compartirlas sólo con quien vos quieras.",
-		credentialsSuccess: "Tus credenciales fueron guardadas correctamente"
+		credentialsSuccess: "Tus credenciales fueron guardadas correctamente",
+		steps: {
+			first: "Paso 1: Elegí con quién querés el turno.",
+			second: { 
+				title: "Paso 2: Elegí para quien es el turno.",
+				detail: "Solicitante del turno"
+			},
+			third: {
+				title: "Paso 3: El Beneficio fue solicitado con éxito!",
+				prestador: "El Prestador se comunicará con vos a la brevedad.",
+				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio",
+			},
+		},
 	},
 	settings: {
 		idLabel: "ID:",

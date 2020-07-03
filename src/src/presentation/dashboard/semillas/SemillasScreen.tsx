@@ -17,6 +17,7 @@ import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
 import { CredentialDocument } from "didi-sdk";
+import { PrestadoresProps } from "./PrestadoresScreen";
 
 export interface LoginScreenProps {}
 
@@ -37,11 +38,16 @@ type SemillasScreenInternalProps = LoginScreenProps & SemillasScreenStateProps &
 
 export interface SemillasScreenNavigation {
 	DashboardHome: DashboardScreenProps;
+	Prestadores: PrestadoresProps;
 }
 
 const serviceKey = "CreateSemillasCredentials";
 
-class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalProps, SemillasScreenState, {}> {
+class SemillasScreen extends NavigationEnabledComponent<
+	SemillasScreenInternalProps,
+	SemillasScreenState,
+	SemillasScreenNavigation
+> {
 	// navigationOptions makes reference to the topbar navigation, in this case, with a left arrow which function is return to home
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		SemillasScreenNavigation,
@@ -69,17 +75,44 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 		}
 	}
 
-	render() {
+	renderButton() {
 		const { getCredentials, didDni, pendingCredentials } = this.props;
 		const { dni } = this.state;
 
 		const showButtonStyle = { ...styles.button, ...(didDni || !dni ? styles.hidden : {}) };
 
+		if (!dni) {
+			return (
+				<DidiText.Explanation.Emphasis style={styles.warningMessage}>
+					{strings.semillas.noDni}
+				</DidiText.Explanation.Emphasis>
+			);
+		}
+
+		return didDni ? (
+			<DidiServiceButton
+				onPress={() => this.navigate("Prestadores", {})}
+				title="Ver Beneficios"
+				style={styles.button}
+				isPending={false}
+			/>
+		) : (
+			<DidiServiceButton
+				onPress={() => getCredentials(dni)}
+				title={strings.semillas.getCredentials}
+				style={showButtonStyle}
+				isPending={pendingCredentials}
+			/>
+		);
+	}
+
+	render() {
 		return (
 			<Fragment>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+
 				<ScrollView>
 					<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
 						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
@@ -92,18 +125,8 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 						<DidiText.Explanation.Small style={styles.paragraph}>
 							{strings.semillas.detailThird}
 						</DidiText.Explanation.Small>
-						<DidiServiceButton
-							onPress={() => getCredentials(dni)}
-							title={strings.semillas.getCredentials}
-							style={showButtonStyle}
-							isPending={pendingCredentials}
-						/>
 
-						{!dni && (
-							<DidiText.Explanation.Emphasis style={styles.warningMessage}>
-								{strings.semillas.noDni}
-							</DidiText.Explanation.Emphasis>
-						)}
+						{this.renderButton()}
 					</SafeAreaView>
 				</ScrollView>
 			</Fragment>
@@ -133,7 +156,6 @@ const styles = StyleSheet.create({
 	},
 	scrollContent: {
 		backgroundColor: "white",
-		paddingHorizontal: 20,
 		paddingVertical: 8
 	},
 	warningMessage: {
