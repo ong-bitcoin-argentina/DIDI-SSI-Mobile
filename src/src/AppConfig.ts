@@ -10,7 +10,12 @@ const defaultDebugServiceSettings: ServiceSettings = {
 	trustGraphUri: "http://192.168.1.6:3001/graphql",
 	ethrDidUri: "https://did.testnet.rsk.co:4444",
 	ethrDelegateUri: "https://did.testnet.rsk.co:4444",
-	didiUserServer: "http://192.168.1.6:3000/api/1.0/didi"
+	didiUserServer: "http://192.168.1.6:3000/api/1.0/didi",
+	semillasServerUri: "https://api.staging.semillas.atixlabs.com",
+	semillasLogin: {
+		user: "didiUser@atixlabs.com",
+		password: "admin"
+	}
 };
 
 const defaultStagingServiceSettings: ServiceSettings = {
@@ -18,7 +23,12 @@ const defaultStagingServiceSettings: ServiceSettings = {
 	trustGraphUri: "http://mou.nec.com.ar/graphql",
 	ethrDidUri: "https://did.testnet.rsk.co:4444",
 	ethrDelegateUri: "https://did.testnet.rsk.co:4444",
-	didiUserServer: "http://didi.nec.com.ar:8089/api/1.0/didi"
+	didiUserServer: "http://didi.nec.com.ar:8089/api/1.0/didi",
+	semillasServerUri: "https://api.staging.semillas.atixlabs.com",
+	semillasLogin: {
+		user: "didiUser@atixlabs.com",
+		password: "admin"
+	}
 };
 
 export const AppConfig: AppConfig = {

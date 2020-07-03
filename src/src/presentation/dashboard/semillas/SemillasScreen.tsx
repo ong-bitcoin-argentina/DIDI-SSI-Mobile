@@ -16,16 +16,22 @@ import { ServiceObserver } from "../../common/ServiceObserver";
 import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
-import { PrestadoresProps } from './PrestadoresScreen';
+import { CredentialDocument } from "didi-sdk";
+import { PrestadoresProps } from "./PrestadoresScreen";
 
-export interface LoginScreenProps {};
+export interface LoginScreenProps {}
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
 	didDni: Boolean;
+	credentials: CredentialDocument[];
 }
+interface SemillasScreenState {
+	dni: string;
+}
+
 interface SemillasScreenDispatchProps {
-	getCredentials: () => void;
+	getCredentials: (dni: string) => void;
 }
 
 type SemillasScreenInternalProps = LoginScreenProps & SemillasScreenStateProps & SemillasScreenDispatchProps;
@@ -37,17 +43,70 @@ export interface SemillasScreenNavigation {
 
 const serviceKey = "CreateSemillasCredentials";
 
-class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalProps, {}, SemillasScreenNavigation> {
+class SemillasScreen extends NavigationEnabledComponent<
+	SemillasScreenInternalProps,
+	SemillasScreenState,
+	SemillasScreenNavigation
+> {
 	// navigationOptions makes reference to the topbar navigation, in this case, with a left arrow which function is return to home
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		SemillasScreenNavigation,
 		"DashboardHome"
 	>(strings.semillas.detailBarTitle, "DashboardHome", {});
 
-	
+	constructor(props: SemillasScreenInternalProps) {
+		super(props);
+		this.state = {
+			dni: ""
+		};
+	}
+
+	componentDidMount() {
+		const { credentials } = this.props;
+		// We look into the credentials to check if there's an identity credential with DNI
+		const cred = credentials.find(
+			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data.dni
+		);
+
+		if (cred && cred.data.dni) {
+			this.setState({
+				dni: cred.data.dni.toString()
+			});
+		}
+	}
+
+	renderButton() {
+		const { getCredentials, didDni, pendingCredentials } = this.props;
+		const { dni } = this.state;
+
+		const showButtonStyle = { ...styles.button, ...(didDni || !dni ? styles.hidden : {}) };
+
+		if (!dni) {
+			return (
+				<DidiText.Explanation.Emphasis style={styles.warningMessage}>
+					{strings.semillas.noDni}
+				</DidiText.Explanation.Emphasis>
+			);
+		}
+
+		return didDni ? (
+			<DidiServiceButton
+				onPress={() => this.navigate("Prestadores", {})}
+				title="Ver Beneficios"
+				style={styles.button}
+				isPending={false}
+			/>
+		) : (
+			<DidiServiceButton
+				onPress={() => getCredentials(dni)}
+				title={strings.semillas.getCredentials}
+				style={showButtonStyle}
+				isPending={pendingCredentials}
+			/>
+		);
+	}
+
 	render() {
-		const { didDni, getCredentials } = this.props;
-		
 		return (
 			<Fragment>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
@@ -66,22 +125,8 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 						<DidiText.Explanation.Small style={styles.paragraph}>
 							{strings.semillas.detailThird}
 						</DidiText.Explanation.Small>
-						{
-							didDni ? 
-								<DidiServiceButton
-									onPress={() => this.navigate("Prestadores", {}) }
-									title="Ver Beneficios"
-									style={styles.button}
-									isPending={false}
-								/> 
-								:
-								<DidiServiceButton
-									onPress={getCredentials}
-									title={strings.semillas.getCredentials}
-									style={styles.button}
-									isPending={false}
-								/>
-						}
+
+						{this.renderButton()}
 					</SafeAreaView>
 				</ScrollView>
 			</Fragment>
@@ -97,10 +142,11 @@ export default didiConnect(
 	SemillasScreen,
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
-		didDni: state.did.didDni
+		didDni: state.did.didDni,
+		credentials: state.credentials
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
-		getCredentials: () => dispatch(getUserCredentials(serviceKey))
+		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni))
 	})
 );
 
@@ -111,6 +157,10 @@ const styles = StyleSheet.create({
 	scrollContent: {
 		backgroundColor: "white",
 		paddingVertical: 8
+	},
+	warningMessage: {
+		fontSize: 18,
+		marginTop: 20
 	},
 	paragraph: {
 		marginVertical: 10,
