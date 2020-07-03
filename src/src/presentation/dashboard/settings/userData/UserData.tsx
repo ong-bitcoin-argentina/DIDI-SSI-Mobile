@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View, ViewProps } from "react-native";
+import { ScrollView, StyleSheet, Text, View, ViewProps, Clipboard, ToastAndroid } from "react-native";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiTextInput from "../../../util/DidiTextInput";
@@ -17,11 +17,17 @@ import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
 import { addressDataStructure, personalDataStructure } from "./ProfileInputDescription";
 import { UserHeadingComponent } from "./UserHeading";
+import { KeyDisplayComponent } from "../identity/KeyDisplayComponent";
+import { ActiveDid } from "../../../../store/reducers/didReducer";
+import { KeyAddress } from "react-native-uport-signer";
+import { DidiText } from "../../../util/DidiText";
+import DidiButton from "../../../util/DidiButton";
 
 export type UserDataProps = ViewProps;
 
 interface UserDataInternalProps extends UserDataProps {
 	identity: ValidatedIdentity;
+	activeDid: ActiveDid;
 }
 
 type UserDataState = {};
@@ -57,6 +63,23 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		]
 	);
 
+	renderDid() {
+		const { activeDid } = this.props;
+		const seed = activeDid.keyAddress();
+		return (
+			<View style={styles.did}>
+				<DidiText.Explanation.Emphasis>{strings.userData.activeIdentity}:</DidiText.Explanation.Emphasis>
+				<DidiText.Explanation.Normal>{seed}</DidiText.Explanation.Normal>
+				<DidiButton title={strings.userData.actions.copy} onPress={() => this.copyDID(seed)} />
+			</View>
+		);
+	}
+
+	private copyDID(seed: KeyAddress) {
+		Clipboard.setString(seed);
+		ToastAndroid.show(strings.actions.copied, ToastAndroid.SHORT);
+	}
+
 	render() {
 		return (
 			<ScrollView>
@@ -65,6 +88,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 				<View>
 					{this.renderPersonalData()}
 					{this.renderAddressData()}
+					{this.renderDid()}
 				</View>
 			</ScrollView>
 		);
@@ -123,9 +147,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 					<View style={styles.addressValidationInsert}>
 						<ValidationStateIcon validationState={this.props.identity.address.state} useWords={true} />
 					</View>
-				) : (
-					undefined
-				)
+				) : undefined
 		});
 	}
 
@@ -152,7 +174,8 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 export default didiConnect(
 	UserDataScreen,
 	(state): UserDataInternalProps => ({
-		identity: state.validatedIdentity
+		identity: state.validatedIdentity,
+		activeDid: state.did.activeDid
 	})
 );
 
@@ -170,5 +193,8 @@ const styles = StyleSheet.create({
 	addressValidationInsert: {
 		alignItems: "flex-end",
 		marginHorizontal: 20
+	},
+	did: {
+		padding: 5
 	}
 });

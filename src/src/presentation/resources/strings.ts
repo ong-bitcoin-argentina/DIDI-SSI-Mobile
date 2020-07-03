@@ -32,6 +32,9 @@ function formatFullDate(date: Date) {
 }
 
 export default {
+	actions: {
+		copied: "Copiado"
+	},
 	debug: {
 		menu: "Debug Menu",
 		decodeJWT: "Decodificar JWT",
@@ -97,6 +100,10 @@ export default {
 		barTitle: "Mi perfil",
 		personalDataLabel: "Datos personales",
 		addressDataLabel: "Domicilio Legal",
+		activeIdentity: "Identidad activa (DID)",
+		actions: {
+			copy: "Copiar DID"
+		},
 		states: {
 			approved: "Aprobado",
 			pending: "Pendiente",
