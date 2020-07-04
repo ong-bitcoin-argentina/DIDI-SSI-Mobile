@@ -309,7 +309,12 @@ export default {
 		idLabel: "ID:",
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
-		about: "Acerca de Didi",
+		about: { 
+			title: "Acerca de Didi",
+			first: "DIDI es una solución tecnológica de identidad digital descentralizada mediante modelos de Blockchain.",
+			second: "A través de DIDI, podrás construir una identidad digital que certifique y valide datos sociales, cívicos y económicos, por medio de credenciales verificables emitidas por terceros (instituciones o individuos) con información que acredita que sos portadora de ciertos atributos que tienen que ver con tu identidad.",
+			third: "DIDI utiliza el protocolo de credenciales verificables de la identidad digital auto soberana (SSI) cuyos estándares fueron definidos por World Wide Web Consortium (W3C), de manera que el usuario pueda resguardar su información de forma privada asegurando los requisitos de privacidad, control, portabilidad a su vez que garantiza integridad de los datos y autenticidad de emisor."
+		},
 		endSession: "Cerrar Sesión"
 	},
 	share: {

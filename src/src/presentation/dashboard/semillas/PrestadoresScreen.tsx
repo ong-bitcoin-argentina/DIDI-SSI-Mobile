@@ -85,12 +85,12 @@ class PrestadoresScreen extends NavigationEnabledComponent<PrestadoresScreenInte
 
 
 					<FlatList
-						numColumns={2}
+						numColumns={1}
 						data={DATA}
 						renderItem={({ item }) => <Prestador item={item} active={(item.id === activeId)} onPress={() => this.onSelect(item)} />}
-						keyExtractor={item => item.id}
+						keyExtractor={({id}) => `${id}`}
 						ListFooterComponent={
-							<Fragment>
+							<View style={{ marginTop: 20 }}>
 								<DidiText.Explanation.Small>
 									{strings.semillas.steps.first.email}
 								</DidiText.Explanation.Small>
@@ -100,7 +100,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<PrestadoresScreenInte
 									style={{ height:30 }}
 									isPending={false}
 								/>
-							</Fragment>
+							</View>
 						}
 					/>
 					

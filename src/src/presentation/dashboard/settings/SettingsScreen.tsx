@@ -58,7 +58,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 	buttons(): SettingsButton[] {
 		const base = [
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
-			{ name: strings.settings.about, action: () => this.navigate("AboutThisAppScreen", {}) }
+			{ name: strings.settings.about.title, action: () => this.navigate("AboutThisAppScreen", {}) }
 		];
 		const debug = [
 			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },

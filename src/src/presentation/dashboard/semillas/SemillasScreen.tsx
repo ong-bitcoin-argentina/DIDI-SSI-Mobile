@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View } from "react-native";
-// import { CredentialDocument } from "didi-sdk";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -20,13 +19,15 @@ import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
 import { PrestadoresProps } from './PrestadoresScreen';
 import { CredentialDocument } from "didi-sdk";
+import { mustHavePrestadoresEnabled } from "../../../util/semillasHelpers";
+import { PRESTADORES_FEATURE } from '../../../AppConfig';
 
 export interface LoginScreenProps {};
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
 	didDni: Boolean;
-	semillasCredential?: CredentialDocument;
+	semillasAllCredentials?: CredentialDocument[];
 }
 interface SemillasScreenDispatchProps {
 	getCredentials: () => void;
@@ -35,7 +36,7 @@ interface SemillasScreenDispatchProps {
 type SemillasScreenInternalProps = LoginScreenProps & SemillasScreenStateProps & SemillasScreenDispatchProps;
 
 type SemillasScreenState = {
-	haveSemillasCredential: boolean;
+	prestadoresEnabled: boolean;
 }
 
 export interface SemillasScreenNavigation {
@@ -57,7 +58,7 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 	constructor(props: SemillasScreenInternalProps) {
 		super(props);
 		this.state = {
-			haveSemillasCredential: !!this.props.semillasCredential
+			prestadoresEnabled: mustHavePrestadoresEnabled(this.props.semillasAllCredentials)
 		};
 	}
 
@@ -86,15 +87,18 @@ class SemillasScreen extends NavigationEnabledComponent<SemillasScreenInternalPr
 						{
 							didDni ? 
 								(
-									this.state.haveSemillasCredential ?
-										<DidiServiceButton
-											onPress={() => this.navigate("Prestadores", {})}
-											title="Ver Beneficios"
-											style={styles.button}
-											isPending={false}
-										/>
-										:
-										<Alert text={credetialsPending} style={{ marginBottom:50 }} />
+									PRESTADORES_FEATURE &&
+									(
+										this.state.prestadoresEnabled ?
+											<DidiServiceButton
+												onPress={() => this.navigate("Prestadores", {})}
+												title="Ver Beneficios"
+												style={styles.button}
+												isPending={false}
+											/>
+											:
+											<Alert text={credetialsPending} style={{ marginBottom:50 }} />
+									)
 								) 
 								:
 								<DidiServiceButton
@@ -121,7 +125,7 @@ export default didiConnect(
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
 		didDni: state.did.didDni,
-		semillasCredential: state.semillasCredential,
+		semillasAllCredentials: state.semillasAllCredentials,
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: () => dispatch(getUserCredentials(serviceKey))

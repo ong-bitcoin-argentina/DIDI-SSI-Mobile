@@ -2,8 +2,8 @@ import { CredentialDocument, EthrDID, SpecialCredentialFlag } from "didi-sdk";
 import { createSelector } from "reselect";
 import SemillasCredentialMock from './credentialMockup';
 import { 
-	getSemillasCredentials, 
-	getOwnSemillasCredential
+	isSemillasIdentityCredential, 
+	isSemillasCrendential
 } from '../../util/semillasHelpers';
 
 import TypedArray from "../../util/TypedArray";
@@ -41,21 +41,12 @@ export const toplevelCredentialSelector = createSelector(
 	}
 );
 
-export const semillasCredentialSelector = createSelector(
+export const semillasAllCredentialsSelector = createSelector(
 	allCredentialSelector,
 	st => st.persisted.did,
 	(credentials) => {
 		// TODO: usar credenciales reales en lugar de mock
-		return getOwnSemillasCredential(SemillasCredentialMock);
-	}
-);
-	
-export const semillasBeneficiariosSelector = createSelector(
-	allCredentialSelector,
-	st => st.persisted.did,
-	(credentials) => {
-		// TODO: usar credenciales reales en lugar de mock
-		return getSemillasCredentials(SemillasCredentialMock);
+		return SemillasCredentialMock.filter(isSemillasCrendential);
 	}
 );
 

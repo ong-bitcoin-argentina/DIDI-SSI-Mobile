@@ -1,5 +1,5 @@
 import { CredentialDocument } from "didi-sdk";
-import { SemillasIdentityModel } from '../model/SemillasIdentity';
+import { SemillasIdentityModel } from "../model/SemillasIdentity";
 
 const keys = {
 	relationship: "Relacion con Titular",
@@ -10,34 +10,44 @@ const keys = {
 	dniTitular: "Dni Titular"
 }
 
-export const getDniBeneficiario = (data) => {
-	return data[keys.dniBeneficiario];
+// Conditions
+const isIdentityCrendential = (credential:any):boolean => {
+	return credential.category.includes('identity');
 }
 
-export const isSemillasCrendential = (credential:any) => {
+const isSemillasTitular = (data):boolean => {
+	return data[keys.relationship] ? data[keys.relationship].includes('titular') : false;
+}
+
+export const isSemillasCrendential = (credential:any):boolean => {
 	return credential.title.toLowerCase().includes('semillas');
 }
 
-export const getSemillasCredentials = (credentials:CredentialDocument[]) => {
-	return credentials.filter(isSemillasCrendential).map(credential => credential.data);
+export const isSemillasIdentityCredential = (credential:CredentialDocument):boolean => {
+	return isSemillasCrendential(credential) && isIdentityCrendential(credential);
 }
 
-const isOwnSemillasCredential = (data:SemillasIdentityModel) => {
-	return (isSemillasTitular(data) || data);
+export const isSemillasIdentityTitularCredential = (credential:CredentialDocument):boolean => {
+	return (isSemillasIdentityCredential(credential) && isSemillasTitular(credential.data));
 }
 
-export const getOwnSemillasCredential = (data:SemillasIdentityModel[]) => {
-	return data.find(isOwnSemillasCredential);
+export const isSemillasBenefitCrendential = (credential:any):boolean => {
+	return isSemillasCrendential(credential) && credential.category.includes('benefit');
+}
+
+// Getters
+export const getDniBeneficiario = (data) => {
+	return data[keys.dniBeneficiario];
 }
 
 export const getFullName = (data?:any) => {
 	return data[keys.nameBeneficiario];
 }
 
-export const isSemillasTitular = (data):boolean => {
-	return data[keys.relationship] ? data[keys.relationship].includes('titular') : false;
+export const getSemillasIdentitiesData = (credentials?:CredentialDocument[]):any[] => {
+	return credentials ? credentials.filter(isIdentityCrendential).map(item => item.data) : [];
 }
 
-export const isSemillasFamiliar = (data):boolean => {
-	return data[keys.relationship] ? data[keys.relationship].includes('familiar') : false;
+export const mustHavePrestadoresEnabled = (credentials?:CredentialDocument[]):boolean => {
+	return !!(credentials && (credentials.some(isSemillasIdentityCredential) && credentials.some(isSemillasBenefitCrendential)));
 }

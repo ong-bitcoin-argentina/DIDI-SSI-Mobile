@@ -15,19 +15,16 @@ import {
 	activeSpecialCredentialsSelector,
 	SpecialCredentialMap,
 	toplevelCredentialSelector,
-	semillasCredentialSelector,
-	semillasBeneficiariosSelector
+	semillasAllCredentialsSelector,
 } from "./selector/credentialSelector";
 import { newTokensAvailableSelector } from "./selector/newTokensAvailableSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
 import { StoreAction } from "./StoreAction";
-import { SemillasIdentityModel } from "../model/SemillasIdentity";
 
 export interface StoreContent extends PersistedStoreContent {
 	parsedTokens: Array<CredentialDocument | SelectiveDisclosureRequest>;
 	credentials: CredentialDocument[];
-	semillasCredential?: SemillasIdentityModel;
-	semillasBeneficiarios?: SemillasIdentityModel[];
+	semillasAllCredentials?: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
 	newTokensAvailable: boolean;
 
@@ -44,8 +41,7 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 
 		parsedTokens: parsedTokenSelector(store),
 		credentials: toplevelCredentialSelector(store),
-		semillasCredential: semillasCredentialSelector(store),
-		semillasBeneficiarios: semillasBeneficiariosSelector(store),
+		semillasAllCredentials: semillasAllCredentialsSelector(store),
 		activeSpecialCredentials: activeSpecialCredentialsSelector(store),
 		newTokensAvailable: newTokensAvailableSelector(store),
 

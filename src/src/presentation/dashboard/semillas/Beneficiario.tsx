@@ -18,12 +18,12 @@ const blacklist = [
 
 function Beneficiary(props: BeneficiarioProps) {
     const { item } = props;
-
+    const keysList = Object.keys(item).filter(key => !blacklist.includes(key));
     return (
         <View style={{ paddingVertical:10 }}>
             {
-                Object.keys(item).filter(key => !blacklist.includes(key)).map(key => (
-                    <Fragment>
+                keysList.map(key => (
+                    <Fragment key={key}>
                         <DidiText.Explanation.Small style={styles.key}>
                             {key}
                         </DidiText.Explanation.Small>

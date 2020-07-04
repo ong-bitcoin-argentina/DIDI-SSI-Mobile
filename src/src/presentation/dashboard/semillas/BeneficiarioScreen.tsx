@@ -12,21 +12,20 @@ import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import Beneficiario from './Beneficiario';
 import { PrestadorModel } from './Prestador';
-// import { SemillasIdentityModel } from '../../../model/SemillasIdentity';
-import { getFullName, getDniBeneficiario } from '../../../util/semillasHelpers';
+import { getFullName, getDniBeneficiario, getSemillasIdentitiesData } from '../../../util/semillasHelpers';
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
+import { CredentialDocument } from "didi-sdk";
 
 export type BeneficiarioProps = { 
 	activePrestador: PrestadorModel;
 };
 
 interface BeneficiarioScreenStateProps { 
-	semillasCredential?: SemillasIdentityModel;
-	semillasBeneficiarios: SemillasIdentityModel[];
+	semillasAllCredentials?: CredentialDocument[];
 };
 
 type BeneficiarioScreenState = {
-	isOwner?: boolean;
+	identityCredentials:SemillasIdentityModel[];
 	selected:SemillasIdentityModel;
 	selectedName?:string;
 	modalVisible:boolean;
@@ -44,8 +43,10 @@ class BeneficiarioScreen extends NavigationEnabledComponent<BeneficiarioScreenIn
 	
 	constructor(props: BeneficiarioScreenInternalProps) {
 		super(props);
-		const selected = this.props.semillasBeneficiarios[0];
+		const identityCredentials = getSemillasIdentitiesData(props.semillasAllCredentials);
+		const selected = identityCredentials[0];
 		this.state = {
+			identityCredentials,
 			selected,
 			selectedName: getFullName(selected),
 			modalVisible: false
@@ -53,7 +54,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<BeneficiarioScreenIn
 	}
 
 	handleChangePicker = (selectedName:string, index:number) => {
-		const selected = this.props.semillasBeneficiarios[index];
+		const selected = this.state.identityCredentials[index];
 		this.setState({
 			selectedName,
 			selected
@@ -82,15 +83,16 @@ class BeneficiarioScreen extends NavigationEnabledComponent<BeneficiarioScreenIn
 							selectedValue={selectedName}
 							style={{ height: 50 }}
 							itemStyle={{textAlign:'center'}}
+							
 							onValueChange={(value,index) => this.handleChangePicker(value,index)}
 							mode="dialog"
 						>
 							{
-								this.props.semillasBeneficiarios.map((credential) => (
+								this.state.identityCredentials.map((credentialData) => (
 									<Picker.Item 
-										label={getFullName(credential)} 
-										value={getDniBeneficiario(credential)} 
-										key={getDniBeneficiario(credential)}
+										label={getFullName(credentialData)} 
+										value={getDniBeneficiario(credentialData)} 
+										key={getDniBeneficiario(credentialData)}
 									/>
 								))
 							}
@@ -144,8 +146,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<BeneficiarioScreenIn
 export default didiConnect(
 	BeneficiarioScreen,
 	(state): BeneficiarioScreenStateProps => ({
-		semillasCredential: state.semillasCredential,
-		semillasBeneficiarios: state.semillasBeneficiarios,
+		semillasAllCredentials: state.semillasAllCredentials,
 	})
 );
 

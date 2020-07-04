@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image, View } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import semillasImagesSources from './imagesSources';
 
@@ -28,22 +28,26 @@ function Prestador(props: PrestadorProps) {
                 onPress={props.onPress}
                 style={inside}
             >
-                <Image
-                    style={styles.image}
-                    source={ semillasImagesSources[category] }
-                />
-                <DidiText.Explanation.Small style={title}>
-                    {name}
-                </DidiText.Explanation.Small>
-                <DidiText.Explanation.Small style={description}>
-                    {speciality}
-                </DidiText.Explanation.Small>
-                <DidiText.Explanation.Small style={description}>
-                    {phone}
-                </DidiText.Explanation.Small>
-                <DidiText.Explanation.Small style={{...description, ...label}}>
-                    Beneficio: {benefit}
-                </DidiText.Explanation.Small>
+                <View style={styles.imageContainer}>
+                    <Image
+                        style={styles.image}
+                        source={ semillasImagesSources[category] }
+                    />
+                </View>
+                <View>
+                    <DidiText.Explanation.Small style={title}>
+                        {name}
+                    </DidiText.Explanation.Small>
+                    <DidiText.Explanation.Small style={description}>
+                        {speciality}
+                    </DidiText.Explanation.Small>
+                    <DidiText.Explanation.Small style={description}>
+                        {phone}
+                    </DidiText.Explanation.Small>
+                    <DidiText.Explanation.Small style={{...description, ...label}}>
+                        Beneficio: {benefit}
+                    </DidiText.Explanation.Small>
+                </View>
             </TouchableOpacity>
         </SafeAreaView>
     )
@@ -54,10 +58,12 @@ export default Prestador;
 const styles = StyleSheet.create({
 	title: {
         fontSize: 10, 
-        fontWeight:'bold'
+        fontWeight:'bold',
+        marginVertical: 2
     },
     description: {
-        fontSize: 10
+        fontSize: 10,
+        marginVertical: 2
 	},
 	label: {
         paddingVertical: 1,
@@ -71,11 +77,11 @@ const styles = StyleSheet.create({
 		borderRadius:8, 
 		borderColor:'#f0f0f0',
 		borderWidth:1,
-		height: 120,
+		height: 100,
     },
     inside: {
         flex: 1,
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
@@ -85,7 +91,10 @@ const styles = StyleSheet.create({
 		borderRadius: 10
     },
     image: {
-        height: 50,
-        width: 50
+        height: 80,
+        width: 80
+    },
+    imageContainer: {
+        textAlign: 'center'
     }
 });
