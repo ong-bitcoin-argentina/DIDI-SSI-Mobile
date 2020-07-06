@@ -230,10 +230,9 @@ export default {
 			buttonEnter: "Ingresar a Didi"
 		},
 		reset: {
-			message:
-				"No podés tener más de una cuenta guardada en un dispositivo.\n\n" +
-				"Antes de crear otra cuenta, debés borrar la copia local de tu cuenta actual.\n\n" +
-				"Para volver a usar tu cuenta actual, tendrás que Recuperar Cuenta.",
+			message: "Este dispositivo tiene registrada otra cuenta. Para reemplazarla...",
+			messageRecover:
+				"Si ya tenés una cuenta en DIDI y querés recuperarla, solo tenés que importarla a este dispositivo.",
 			cancel: "Salir sin cambios",
 			doDelete: "Borrar copia local"
 		}
