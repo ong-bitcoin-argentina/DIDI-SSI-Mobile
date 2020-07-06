@@ -25,11 +25,13 @@ export class ValidateIdentityExplanationHeader extends React.Component<ValidateI
 
 	private renderTitle() {
 		if (typeof this.props.title === "string") {
-			return <DidiText.ValidateIdentity.Title>{this.props.title}</DidiText.ValidateIdentity.Title>;
+			return <DidiText.ValidateIdentity.Title style={styles.title}>{this.props.title}</DidiText.ValidateIdentity.Title>;
 		} else {
 			return (
 				<Text style={{ alignSelf: "center" }}>
-					<DidiText.ValidateIdentity.Title>{strings.validateIdentity.step + " "}</DidiText.ValidateIdentity.Title>
+					<DidiText.ValidateIdentity.Title style={styles.title}>
+						{strings.validateIdentity.step + " "}
+					</DidiText.ValidateIdentity.Title>
 					<DidiText.ValidateIdentity.StepNumber>{this.props.title}</DidiText.ValidateIdentity.StepNumber>
 					<DidiText.ValidateIdentity.TotalNumber>
 						{strings.validateIdentity.stepTotal}
@@ -42,7 +44,10 @@ export class ValidateIdentityExplanationHeader extends React.Component<ValidateI
 
 const styles = StyleSheet.create({
 	header: {
-		paddingVertical: 10,
+		paddingVertical: 5,
 		backgroundColor: colors.backgroundSeparator
+	},
+	title: {
+		fontSize: 20
 	}
 });

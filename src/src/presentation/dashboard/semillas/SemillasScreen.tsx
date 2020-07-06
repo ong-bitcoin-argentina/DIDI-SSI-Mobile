@@ -18,7 +18,7 @@ import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
 import { mustHavePrestadoresEnabled } from "../../../util/semillasHelpers";
-import { PRESTADORES_FEATURE } from '../../../AppConfig';
+import { PRESTADORES_FEATURE } from "../../../AppConfig";
 import { CredentialDocument } from "didi-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
 
@@ -48,7 +48,14 @@ export interface SemillasScreenNavigation {
 
 const serviceKey = "CreateSemillasCredentials";
 
-const { detailBarTitle, detailFirst, detailSecond, detailThird, credentialsSuccess, credetialsPending } = strings.semillas;
+const {
+	detailBarTitle,
+	detailFirst,
+	detailSecond,
+	detailThird,
+	credentialsSuccess,
+	credetialsPending
+} = strings.semillas;
 
 class SemillasScreen extends NavigationEnabledComponent<
 	SemillasScreenInternalProps,
@@ -84,18 +91,8 @@ class SemillasScreen extends NavigationEnabledComponent<
 	}
 
 	renderButton() {
-		const { getCredentials, didDni, pendingCredentials } = this.props;
-		const { dni, prestadoresEnabled } = this.state;
-
-		const showButtonStyle = { ...styles.button, ...(didDni || !dni ? styles.hidden : {}) };
-
-		if (!dni) {
-			return (
-				<DidiText.Explanation.Emphasis style={styles.warningMessage}>
-					{strings.semillas.noDni}
-				</DidiText.Explanation.Emphasis>
-			);
-		}
+		const { didDni, pendingCredentials } = this.props;
+		const { prestadoresEnabled } = this.state;
 
 		return didDni ? (
 			prestadoresEnabled ? (
@@ -105,14 +102,14 @@ class SemillasScreen extends NavigationEnabledComponent<
 					style={styles.button}
 					isPending={false}
 				/>
-				) : (
-					<Alert text={credetialsPending} style={{ marginBottom:50 }} />
-				)
+			) : (
+				<Alert text={credetialsPending} style={{ marginBottom: 50 }} />
+			)
 		) : (
 			<DidiServiceButton
-				onPress={() => getCredentials(dni)}
+				onPress={this.onGetCredentials}
 				title={strings.semillas.getCredentials}
-				style={showButtonStyle}
+				style={styles.button}
 				isPending={pendingCredentials}
 			/>
 		);
@@ -128,29 +125,30 @@ class SemillasScreen extends NavigationEnabledComponent<
 				<ScrollView>
 					<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
 						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
-						<DidiText.Explanation.Small style={styles.paragraph}>
-							{detailFirst}
-						</DidiText.Explanation.Small>
-						<DidiText.Explanation.Small style={styles.paragraph}>
-							{detailSecond}
-						</DidiText.Explanation.Small>
-						<DidiText.Explanation.Small style={styles.paragraph}>
-							{detailThird}
-						</DidiText.Explanation.Small>
-						{
-							PRESTADORES_FEATURE &&
-							this.renderButton()
-						}
+						<DidiText.Explanation.Small style={styles.paragraph}>{detailFirst}</DidiText.Explanation.Small>
+						<DidiText.Explanation.Small style={styles.paragraph}>{detailSecond}</DidiText.Explanation.Small>
+						<DidiText.Explanation.Small style={styles.paragraph}>{detailThird}</DidiText.Explanation.Small>
+						{PRESTADORES_FEATURE && this.renderButton()}
 					</SafeAreaView>
 				</ScrollView>
 			</Fragment>
 		);
 	}
 
+	onGetCredentials = () => {
+		const { getCredentials } = this.props;
+		const { dni } = this.state;
+
+		if (!dni) {
+			DataAlert.alert(strings.semillas.credentials, strings.semillas.noDni);
+		} else {
+			getCredentials(dni);
+		}
+	};
+
 	onCredentialsAdded = () => {
 		DataAlert.alert(strings.semillas.credentials, credentialsSuccess);
 	};
-
 }
 
 export default didiConnect(
