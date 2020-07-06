@@ -1,10 +1,6 @@
 import { CredentialDocument, EthrDID, SpecialCredentialFlag } from "didi-sdk";
 import { createSelector } from "reselect";
-import SemillasCredentialMock from './credentialMockup';
-import { 
-	isSemillasIdentityCredential, 
-	isSemillasCrendential
-} from '../../util/semillasHelpers';
+import { isSemillasCrendential } from '../../util/semillasHelpers';
 
 import TypedArray from "../../util/TypedArray";
 
