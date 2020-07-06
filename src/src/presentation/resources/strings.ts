@@ -294,7 +294,7 @@ export default {
 			"Tus credenciales son privadas, con ellas vas a poder guardar y proteger tu información de manera segura y confiable.",
 		detailThird:
 			"Gracias a que son portables, las podés llevar con vos, acceder a ellas siempre que lo necesites y compartirlas sólo con quien vos quieras.",
-		credentialsSuccess: "Tus credenciales fueron guardadas correctamente",
+		credentialsSuccess: "Pronto vas a recibir tus credenciales de Semillas. Este proceso puede demorar unos días...",
 		steps: {
 			first: "Paso 1: Elegí con quién querés el turno.",
 			second: {
