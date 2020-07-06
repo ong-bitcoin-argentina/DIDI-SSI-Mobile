@@ -76,18 +76,8 @@ class SemillasScreen extends NavigationEnabledComponent<
 	}
 
 	renderButton() {
-		const { getCredentials, didDni, pendingCredentials } = this.props;
+		const { didDni, pendingCredentials } = this.props;
 		const { dni } = this.state;
-
-		const showButtonStyle = { ...styles.button, ...(didDni || !dni ? styles.hidden : {}) };
-
-		if (!dni) {
-			return (
-				<DidiText.Explanation.Emphasis style={styles.warningMessage}>
-					{strings.semillas.noDni}
-				</DidiText.Explanation.Emphasis>
-			);
-		}
 
 		return didDni ? (
 			<DidiServiceButton
@@ -98,9 +88,9 @@ class SemillasScreen extends NavigationEnabledComponent<
 			/>
 		) : (
 			<DidiServiceButton
-				onPress={() => getCredentials(dni)}
+				onPress={this.onGetCredentials}
 				title={strings.semillas.getCredentials}
-				style={showButtonStyle}
+				style={styles.button}
 				isPending={pendingCredentials}
 			/>
 		);
@@ -132,6 +122,17 @@ class SemillasScreen extends NavigationEnabledComponent<
 			</Fragment>
 		);
 	}
+
+	onGetCredentials = () => {
+		const { getCredentials } = this.props;
+		const { dni } = this.state;
+
+		if (!dni) {
+			DataAlert.alert(strings.semillas.credentials, strings.semillas.noDni);
+		} else {
+			getCredentials(dni);
+		}
+	};
 
 	onCredentialsAdded = () => {
 		DataAlert.alert(strings.semillas.credentials, strings.semillas.credentialsSuccess);
