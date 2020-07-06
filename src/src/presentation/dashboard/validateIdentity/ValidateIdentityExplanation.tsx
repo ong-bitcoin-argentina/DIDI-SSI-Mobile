@@ -32,7 +32,7 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 					<View {...this.props.viewProps} style={[styles.body, this.props.viewProps?.style]}>
 						<ValidateIdentityExplanationHeader {...this.props.header} />
 						{this.renderDescription()}
-						<Image style={commonStyles.image.image} source={this.props.image} />
+						<Image style={styles.image} source={this.props.image} />
 						{this.renderImageAndButton()}
 					</View>
 				</SafeAreaView>
@@ -60,8 +60,8 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 const styles = StyleSheet.create({
 	body: {
 		marginHorizontal: 20,
-		marginTop: 40,
-		marginBottom: 30,
+		marginTop: 10,
+		marginBottom: 15,
 		alignSelf: "stretch",
 		alignItems: "stretch",
 		justifyContent: "space-between",
@@ -72,6 +72,8 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.backgroundSeparator
 	},
 	image: {
-		alignSelf: "center"
+		alignSelf: "center",
+		width: 166,
+		height: 144
 	}
 });

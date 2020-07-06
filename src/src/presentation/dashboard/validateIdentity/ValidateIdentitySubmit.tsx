@@ -48,7 +48,6 @@ class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<ValidateId
 
 		return (
 			<DidiScreen>
-				<DidiText.ValidateIdentity.Title>{strings.validateIdentity.submit.header}</DidiText.ValidateIdentity.Title>
 				<DidiText.ValidateIdentity.Congrats>
 					{strings.validateIdentity.submit.congrats}
 				</DidiText.ValidateIdentity.Congrats>

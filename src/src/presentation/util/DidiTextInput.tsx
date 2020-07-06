@@ -106,7 +106,10 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				tagImage={require("../resources/images/phone.png")}
 				textInputProps={{
 					keyboardType: "phone-pad",
-					onChangeText: props.onChangeText
+					onChangeText: props.onChangeText,
+					style: {
+						fontSize: 14
+					}
 				}}
 			/>
 		);

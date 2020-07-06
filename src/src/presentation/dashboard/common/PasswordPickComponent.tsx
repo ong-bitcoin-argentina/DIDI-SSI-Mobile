@@ -31,14 +31,24 @@ export class PasswordPickComponent extends React.Component<Props, State> {
 	}
 
 	componentDidUpdate(prevProps: Props, prevState: State) {
-		const password = (state: State) => (state.password === state.passwordCopy ? state.password : null);
+		const password = (state: State) =>
+			state.password === state.passwordCopy && this.validPasswords() && Validations.isPassword(state.password)
+				? state.password
+				: null;
 		if (password(this.state) !== password(prevState)) {
 			this.props.onPasswordChange(password(this.state));
 		}
 	}
 
+	validPasswords = () => {
+		const { password, passwordCopy } = this.state;
+
+		return this.passwordErrors(password).length === 0 && this.passwordErrors(passwordCopy).length === 0;
+	};
+
 	render() {
-		const passwordErrors = this.passwordErrors();
+		const { password } = this.state;
+		const passwordErrors = this.passwordErrors(password);
 
 		return (
 			<Fragment>
@@ -97,11 +107,12 @@ export class PasswordPickComponent extends React.Component<Props, State> {
 	}
 
 	private renderPasswordStateIndicator() {
-		if (!this.state.password) {
+		const { password } = this.state;
+
+		if (!password) {
 			return undefined;
 		}
-
-		const errors = this.passwordErrors();
+		const errors = this.passwordErrors(password);
 		if (errors.length === 0) {
 			return (
 				<View style={{ padding: 10, justifyContent: "center" }}>
@@ -118,9 +129,10 @@ export class PasswordPickComponent extends React.Component<Props, State> {
 	}
 
 	private renderPasswordCopyStateIndicator() {
-		if (!this.state.passwordCopy) {
+		const { passwordCopy } = this.state;
+		if (!passwordCopy) {
 			return undefined;
-		} else if (this.arePasswordsDifferent()) {
+		} else if (this.arePasswordsDifferent() || this.passwordErrors(passwordCopy).length > 0) {
 			return (
 				<TouchableOpacity style={{ padding: 10, justifyContent: "center" }} onPress={() => this.alertPasswordsDiffer()}>
 					<ValidationStateIcon validationState={ValidationState.Rejected} useWords={false} />
@@ -135,8 +147,8 @@ export class PasswordPickComponent extends React.Component<Props, State> {
 		}
 	}
 
-	private passwordErrors() {
-		return Validations.validatePassword(this.state.password);
+	private passwordErrors(password: string) {
+		return Validations.validatePassword(password);
 	}
 
 	private arePasswordsDifferent() {
@@ -144,7 +156,8 @@ export class PasswordPickComponent extends React.Component<Props, State> {
 	}
 
 	private alertPasswordErrors() {
-		const errors = this.passwordErrors();
+		const { password } = this.state;
+		const errors = this.passwordErrors(password);
 
 		const messages = TypedObject.keys(strings.userData.changePassword.requirements).map(key => {
 			const accepted = errors.find(e => e.toString() === key) === undefined;
