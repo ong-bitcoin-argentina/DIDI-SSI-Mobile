@@ -33,13 +33,9 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 	}
 
 	private canPressContinueButton(): boolean {
-		const { email, password, passwordCopy } = this.state;
+		const { email, password } = this.state;
 
-		if (
-			!Validations.isEmail(email) ||
-			(this.props.isPasswordRequired && !Validations.isPassword(password)) ||
-			password !== passwordCopy
-		) {
+		if (!Validations.isEmail(email) || (this.props.isPasswordRequired && !password)) {
 			return false;
 		}
 		return true;

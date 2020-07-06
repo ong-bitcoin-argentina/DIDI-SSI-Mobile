@@ -31,11 +31,20 @@ export class PasswordPickComponent extends React.Component<Props, State> {
 	}
 
 	componentDidUpdate(prevProps: Props, prevState: State) {
-		const password = (state: State) => (state.password === state.passwordCopy ? state.password : null);
+		const password = (state: State) =>
+			state.password === state.passwordCopy && this.validPasswords() && Validations.isPassword(state.password)
+				? state.password
+				: null;
 		if (password(this.state) !== password(prevState)) {
 			this.props.onPasswordChange(password(this.state));
 		}
 	}
+
+	validPasswords = () => {
+		const { password, passwordCopy } = this.state;
+
+		return this.passwordErrors(password).length === 0 && this.passwordErrors(passwordCopy).length === 0;
+	};
 
 	render() {
 		const { password } = this.state;
