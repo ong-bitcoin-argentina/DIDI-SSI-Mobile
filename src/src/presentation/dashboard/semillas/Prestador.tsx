@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Image, View } from "react-native";
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image, View, ViewStyle } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import semillasImagesSources from './imagesSources';
 
@@ -16,14 +16,15 @@ type PrestadorProps = {
     item: PrestadorModel;
     active: boolean;
     onPress: any;
+    style?: ViewStyle
 };
 
 function Prestador(props: PrestadorProps) {
     const { category, name, phone, benefit, speciality } = props.item;
-    const { active } = props;
+    const { active, style } = props;
     const { title, description, highlight, inside, label } = styles;
     return (
-        <SafeAreaView style={[styles.item, (active && highlight)]}>
+        <SafeAreaView style={[styles.item, (active && highlight), style && style ]}>
             <TouchableOpacity 
                 onPress={props.onPress}
                 style={inside}

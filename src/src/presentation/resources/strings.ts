@@ -318,7 +318,10 @@ export default {
 				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio"
 			}
 		},
-		shareMessage: "Estás a punto de compartir tu DNI con Semillas ¿Desea continuar?"
+		shareMessage: "Estás a punto de compartir tu DNI con Semillas ¿Desea continuar?",
+		call: "Llamar",
+		whatsApp: "WhatsApp",
+		callLater: "Llamaré luego"
 	},
 	settings: {
 		idLabel: "ID:",

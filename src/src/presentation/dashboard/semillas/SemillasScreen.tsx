@@ -95,7 +95,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 		const { prestadoresEnabled } = this.state;
 
 		return didDni ? (
-			!prestadoresEnabled ? (
+			prestadoresEnabled ? (
 				<DidiServiceButton
 					onPress={() => this.navigate("Prestadores", {})}
 					title="Ver Beneficios"
