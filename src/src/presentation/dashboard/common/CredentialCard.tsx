@@ -16,6 +16,7 @@ export interface CredentialCardProps extends DidiCardBodyProps {
 	data?: ClaimDataPairs;
 	columns?: 1 | 2 | 3;
 	layout?: DocumentLayout;
+	preview: boolean;
 }
 
 interface DataRow {
@@ -25,13 +26,14 @@ interface DataRow {
 
 export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	private renderTitle(color: string) {
+		const { preview, title, category, subTitle } = this.props;
 		return (
 			<View style={styles.headerData}>
-				{!this.hasLayout() && <DidiText.Card.Category style={{ color }}>{this.props.category}</DidiText.Card.Category>}
-				<DidiText.Card.Title style={{ color }}>{this.props.title}</DidiText.Card.Title>
-				<DidiText.Card.Subtitle style={{ color: `${color}${colors.subtitleAlpha}` }}>
-					{this.props.subTitle}
-				</DidiText.Card.Subtitle>
+				{(!this.hasLayout() || !preview) && (
+					<DidiText.Card.Category style={{ color }}>{category}</DidiText.Card.Category>
+				)}
+				<DidiText.Card.Title style={{ color }}>{title}</DidiText.Card.Title>
+				<DidiText.Card.Subtitle style={{ color: `${color}${colors.subtitleAlpha}` }}>{subTitle}</DidiText.Card.Subtitle>
 			</View>
 		);
 	}
@@ -112,12 +114,16 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 	render() {
-		const { hollow, color, layout, icon } = this.props;
-		const cardColor = hollow ? color : "#FFFFFF";
-		const style = layout?.style == "dark" ? color : cardColor;
+		const { hollow, color, layout, icon, preview } = this.props;
+		const cardColor = hollow ? color : colors.lightBackground;
+		const style = layout?.style == "dark" && preview ? colors.darkText : cardColor;
 
 		return (
-			<DidiCardBody {...this.props} icon={this.hasLayout() ? "" : icon} backgroundUrl={layout?.backgroundImage}>
+			<DidiCardBody
+				{...this.props}
+				icon={this.hasLayout() ? "" : icon}
+				backgroundUrl={preview ? layout?.backgroundImage : undefined}
+			>
 				{this.renderTitle(style)}
 				{this.renderKeyValuePairs(style)}
 				{this.props.children}
