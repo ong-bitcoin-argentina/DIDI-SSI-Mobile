@@ -27,7 +27,7 @@ export interface LoginScreenProps {}
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
 	didDni: Boolean;
-	semillasAllCredentials?: CredentialDocument[];
+	allSemillasCredentials?: CredentialDocument[];
 	credentials: CredentialDocument[];
 }
 interface SemillasScreenState {
@@ -64,7 +64,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	constructor(props: SemillasScreenInternalProps) {
 		super(props);
 		this.state = {
-			prestadoresEnabled: mustHavePrestadoresEnabled(this.props.semillasAllCredentials),
+			prestadoresEnabled: mustHavePrestadoresEnabled(this.props.allSemillasCredentials),
 			dni: ""
 		};
 	}
@@ -158,7 +158,7 @@ export default didiConnect(
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
 		didDni: state.did.didDni,
-		semillasAllCredentials: state.semillasAllCredentials,
+		allSemillasCredentials: state.allSemillasCredentials,
 		credentials: state.credentials
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({

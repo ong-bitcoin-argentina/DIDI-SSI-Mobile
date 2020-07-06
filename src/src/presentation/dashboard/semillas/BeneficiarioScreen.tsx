@@ -21,7 +21,7 @@ export type BeneficiarioProps = {
 };
 
 interface BeneficiarioScreenStateProps { 
-	semillasAllCredentials?: CredentialDocument[];
+	allSemillasCredentials?: CredentialDocument[];
 };
 
 type BeneficiarioScreenState = {
@@ -43,7 +43,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<BeneficiarioScreenIn
 	
 	constructor(props: BeneficiarioScreenInternalProps) {
 		super(props);
-		const identityCredentials = getSemillasIdentitiesData(props.semillasAllCredentials);
+		const identityCredentials = getSemillasIdentitiesData(props.allSemillasCredentials);
 		const selected = identityCredentials[0];
 		this.state = {
 			identityCredentials,
@@ -146,7 +146,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<BeneficiarioScreenIn
 export default didiConnect(
 	BeneficiarioScreen,
 	(state): BeneficiarioScreenStateProps => ({
-		semillasAllCredentials: state.semillasAllCredentials,
+		allSemillasCredentials: state.allSemillasCredentials,
 	})
 );
 

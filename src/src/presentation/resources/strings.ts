@@ -545,6 +545,17 @@ export default {
 			floor: "Piso",
 			department: "Departamento",
 			municipality: "Municipalidad"
+		},
+		Semillas: {
+			title: "semillas",
+			keys: {
+				relationship: "Relacion con Titular",
+				name: "NOMBRE",
+				lastName: "APELLIDO",
+				nameBeneficiario: "Nombre Beneficiario",
+				dniBeneficiario: "Dni Beneficiario",
+				dniTitular: "Dni Titular"
+			}
 		}
 	},
 	camera: {

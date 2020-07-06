@@ -41,12 +41,12 @@ export const toplevelCredentialSelector = createSelector(
 	}
 );
 
-export const semillasAllCredentialsSelector = createSelector(
+export const allSemillasCredentialsSelector = createSelector(
 	allCredentialSelector,
 	st => st.persisted.did,
 	(credentials) => {
 		// TODO: usar credenciales reales en lugar de mock
-		return SemillasCredentialMock.filter(isSemillasCrendential);
+		return credentials.filter(isSemillasCrendential);
 	}
 );
 

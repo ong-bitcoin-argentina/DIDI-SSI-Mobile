@@ -1,14 +1,7 @@
 import { CredentialDocument } from "didi-sdk";
-import { SemillasIdentityModel } from "../model/SemillasIdentity";
-
-const keys = {
-	relationship: "Relacion con Titular",
-	name: "NOMBRE",
-	lastName: "APELLIDO",
-	nameBeneficiario: "Nombre Beneficiario",
-	dniBeneficiario: "Dni Beneficiario",
-	dniTitular: "Dni Titular"
-}
+import strings from '../presentation/resources/strings';
+const { Semillas } = strings.specialCredentials;
+const { keys } = strings.specialCredentials.Semillas;
 
 // Conditions
 const isIdentityCrendential = (credential:any):boolean => {
@@ -20,7 +13,7 @@ const isSemillasTitular = (data):boolean => {
 }
 
 export const isSemillasCrendential = (credential:any):boolean => {
-	return credential.title.toLowerCase().includes('semillas');
+	return credential.title.toLowerCase().includes(Semillas.title);
 }
 
 export const isSemillasIdentityCredential = (credential:CredentialDocument):boolean => {
