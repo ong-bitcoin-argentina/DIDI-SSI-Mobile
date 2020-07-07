@@ -280,6 +280,7 @@ export default {
 		getCredentials: "Quiero mis credenciales",
 		noDni: "Debes completar el proceso de validación de identidad antes de poder acceder a los Beneficios de Semillas.",
 		credentials: "Credenciales",
+		writeEmail: "Escribe un email",
 		detailFirst:
 			"Si sos parte del programa Semillas ahora podés tener tus credenciales que certifican y validan tus datos personales.",
 		detailSecond:
@@ -521,11 +522,13 @@ export default {
 	specialCredentials: {
 		PhoneNumberData: {
 			title: "Número de celular",
-			phoneNumber: ""
+			phoneNumber: "",
+			key: "PhoneNumberData"
 		},
 		EmailData: {
 			title: "Email",
-			email: ""
+			email: "",
+			key: "EmailData"
 		},
 		PersonalData: {
 			title: "Datos Personales",
@@ -685,6 +688,14 @@ export default {
 			title: "Enviaste Credenciales",
 			description: `Compartiste ${title}`
 		})
+	},
+	general: {
+		cancel: "Cancelar",
+		share: "Compartir",
+		next: "Siguiente",
+		filterBy: {
+			category: "Filtrar por categoría"
+		}
 	},
 	jwtParseError: (error: JWTParseError) => {
 		switch (error.type) {
