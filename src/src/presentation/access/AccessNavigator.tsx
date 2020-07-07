@@ -72,7 +72,8 @@ export default function (then: NavTree<AccessSwitchTarget>) {
 		Login: login(then),
 		SignupOnboarding: signup(then),
 		SignupWithReset: NavMap.from(SignupWithResetScreen, {
-			SignupEnterPhone: NavMap.placeholder(SignupEnterPhoneScreen)
+			SignupEnterPhone: NavMap.placeholder(SignupEnterPhoneScreen),
+			RecoveryExplanation: recovery(then)
 		}),
 		RecoveryExplanation: recovery(then),
 		AccessSettings: NavMap.from(AccessSettingsScreen, then)

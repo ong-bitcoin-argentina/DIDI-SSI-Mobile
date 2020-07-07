@@ -37,10 +37,12 @@ export class ValidateIdentityExplainHowScreen extends NavigationEnabledComponent
 						{strings.validateIdentity.howTo.steps.map((step, index) => {
 							return (
 								<View style={styles.listItemContainer} key={index}>
-									<DidiText.ValidateIdentity.Enumerate style={styles.listNumber}>
+									<DidiText.ValidateIdentity.Enumerate style={[styles.listNumber, styles.listItem]}>
 										{index + 1}.
 									</DidiText.ValidateIdentity.Enumerate>
-									<DidiText.ValidateIdentity.EnumerationItem>{step}</DidiText.ValidateIdentity.EnumerationItem>
+									<DidiText.ValidateIdentity.EnumerationItem style={styles.listItem}>
+										{step}
+									</DidiText.ValidateIdentity.EnumerationItem>
 								</View>
 							);
 						})}
@@ -66,5 +68,8 @@ const styles = StyleSheet.create({
 	listNumber: {
 		width: 20,
 		marginRight: 10
+	},
+	listItem: {
+		fontSize: 16
 	}
 });
