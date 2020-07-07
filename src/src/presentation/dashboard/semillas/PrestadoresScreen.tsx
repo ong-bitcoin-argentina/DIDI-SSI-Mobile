@@ -70,7 +70,8 @@ class PrestadoresScreen extends NavigationEnabledComponent<PrestadoresScreenInte
 	onSelect = (prestador: PrestadorModel) => {
 		const same = (prestador.id === this.state.activePrestador?.id);
 		this.setState({
-			activePrestador: same ? undefined : prestador, 
+			activePrestador: same ? undefined : prestador,
+			customEmail: ''
 		});
 	}
 
