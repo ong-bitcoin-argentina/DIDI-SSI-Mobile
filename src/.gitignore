@@ -63,3 +63,4 @@ android/app/debug.keystore
 
 # CocoaPods
 /ios/Pods/
+.env
