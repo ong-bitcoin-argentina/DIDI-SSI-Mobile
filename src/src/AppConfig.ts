@@ -38,3 +38,4 @@ export const AppConfig: AppConfig = {
 
 export const PRIVATE_KEY_SEED_PASSWORD = Config.PRIVATE_KEY_SEED_PASSWORD;
 export const NOTIFICATION_SENDER_ID = Config.NOTIFICATION_SENDER_ID;
+export const PRESTADORES_FEATURE = (Config.PRESTADORES_FEATURE === 'true');

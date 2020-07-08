@@ -14,7 +14,8 @@ import { combinedRecentActivitySelector } from "./selector/combinedRecentActivit
 import {
 	activeSpecialCredentialsSelector,
 	SpecialCredentialMap,
-	toplevelCredentialSelector
+	toplevelCredentialSelector,
+	allSemillasCredentialsSelector,
 } from "./selector/credentialSelector";
 import { newTokensAvailableSelector } from "./selector/newTokensAvailableSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
@@ -23,6 +24,7 @@ import { StoreAction } from "./StoreAction";
 export interface StoreContent extends PersistedStoreContent {
 	parsedTokens: Array<CredentialDocument | SelectiveDisclosureRequest>;
 	credentials: CredentialDocument[];
+	allSemillasCredentials?: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
 	newTokensAvailable: boolean;
 
@@ -39,6 +41,7 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 
 		parsedTokens: parsedTokenSelector(store),
 		credentials: toplevelCredentialSelector(store),
+		allSemillasCredentials: allSemillasCredentialsSelector(store),
 		activeSpecialCredentials: activeSpecialCredentialsSelector(store),
 		newTokensAvailable: newTokensAvailableSelector(store),
 

@@ -1,5 +1,6 @@
 import { CredentialDocument, EthrDID, SpecialCredentialFlag } from "didi-sdk";
 import { createSelector } from "reselect";
+import { isSemillasCrendential } from '../../util/semillasHelpers';
 
 import TypedArray from "../../util/TypedArray";
 
@@ -33,6 +34,14 @@ export const toplevelCredentialSelector = createSelector(
 				return -1;
 			}
 		});
+	}
+);
+
+export const allSemillasCredentialsSelector = createSelector(
+	allCredentialSelector,
+	st => st.persisted.did,
+	(credentials) => {
+		return credentials.filter(isSemillasCrendential);
 	}
 );
 

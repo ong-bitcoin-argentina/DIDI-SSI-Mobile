@@ -1,89 +1,102 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { PureComponent } from 'react';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image, View } from "react-native";
 import { DidiText } from "../../util/DidiText";
-import semillasImagesSources from './imagesSources';
+import colors from '../../resources/colors';
+import FastImage from 'react-native-fast-image';
 
-type PrestadorProps = {
-    item: {
-        id: string;
-        category: string;
-        speciality: string;
-        name: string;
-        phone: string;
-        benefit: string;
-    };
-    active: boolean;
-    onPress: any;
-};
 
-function Prestador(props: PrestadorProps) {
-    const { category, name, phone, benefit, speciality } = props.item;
-    const { active } = props;
-    const { title, description, highlight, inside, label } = styles;
-    return (
-        <SafeAreaView style={[styles.item, (active && highlight)]}>
-            <TouchableOpacity 
-                onPress={props.onPress}
-                style={inside}
-            >
-                <Image
-                    style={styles.image}
-                    source={ semillasImagesSources[category] }
-                />
-                <DidiText.Explanation.Small style={title}>
-                    {name}
-                </DidiText.Explanation.Small>
-                <DidiText.Explanation.Small style={description}>
-                    {speciality}
-                </DidiText.Explanation.Small>
-                <DidiText.Explanation.Small style={description}>
-                    {phone}
-                </DidiText.Explanation.Small>
-                <DidiText.Explanation.Small style={{...description, ...label}}>
-                    Beneficio: {benefit}
-                </DidiText.Explanation.Small>
-            </TouchableOpacity>
-        </SafeAreaView>
-    )
+export type PrestadorModel = {
+    id: number;
+    category: string;
+    name: string;
+    phone: string;
+    benefit: string;
+    speciality:string;
 }
 
-export default Prestador;
+type PrestadorProps = {
+    item: PrestadorModel;
+    active: boolean;
+    onPress: any;
+    image: any;
+};
+
+export default class Prestador extends PureComponent<PrestadorProps, {}> {
+
+    render() {
+        return (
+            <SafeAreaView style={[styles.item, (this.props.active && styles.highlight)]}>
+                <TouchableOpacity 
+                    onPress={this.props.onPress}
+                    style={styles.inside}
+                >
+                    <View>
+                        <FastImage
+                            style={styles.image}
+                            source={ this.props.image }
+                            priority={FastImage.priority.low}
+                        />
+                    </View>
+                    <View>
+                        <DidiText.Explanation.Small style={styles.title}>
+                            {this.props.item.name}
+                        </DidiText.Explanation.Small>
+                        <DidiText.Explanation.Small style={styles.description}>
+                            {this.props.item.speciality}
+                        </DidiText.Explanation.Small>
+                        <DidiText.Explanation.Small style={styles.description}>
+                            {this.props.item.phone}
+                        </DidiText.Explanation.Small>
+                        <DidiText.Explanation.Small style={{...styles.description, ...styles.label}}>
+                            Beneficio: {this.props.item.benefit}
+                        </DidiText.Explanation.Small>
+                    </View>
+                </TouchableOpacity>
+            </SafeAreaView>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
 	title: {
         fontSize: 10, 
-        fontWeight:'bold'
+        fontWeight:'bold',
+        marginVertical: 2
     },
     description: {
-        fontSize: 10
+        fontSize: 10,
+        marginVertical: 2
 	},
 	label: {
         paddingVertical: 1,
         paddingHorizontal: 5,
-		backgroundColor: '#f5476b',
-		color: 'white'
+		backgroundColor: colors.label.background,
+		color: colors.label.text
 	},
 	item: {
         flex: 1, 
         margin: 1,
 		borderRadius:8, 
-		borderColor:'#f0f0f0',
+		borderColor: colors.border.light,
 		borderWidth:1,
-		height: 120,
+		// height: 100,
     },
     inside: {
         flex: 1,
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
 	highlight: {
 		borderWidth: 3,
-		borderColor:'#3471eb',
+		borderColor: colors.primary,
 		borderRadius: 10
     },
     image: {
-        height: 50,
-        width: 50
+        height: 80,
+        width: 80
+    },
+    imageContainer: {
+        textAlign: 'center'
     }
 });

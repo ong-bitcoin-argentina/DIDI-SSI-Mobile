@@ -3,6 +3,7 @@ import { SafeAreaView, StatusBar, StyleSheet, ScrollView } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
+import Alert from "../../util/Alert";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { didiConnect } from "../../../store/store";
@@ -16,18 +17,25 @@ import { ServiceObserver } from "../../common/ServiceObserver";
 import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
+import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
+import { PRESTADORES_FEATURE } from '../../../AppConfig';
 import { CredentialDocument } from "didi-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
+import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 
 export interface LoginScreenProps {}
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
 	didDni: Boolean;
+	allSemillasCredentials?: CredentialDocument[];
 	credentials: CredentialDocument[];
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 interface SemillasScreenState {
 	dni: string;
+	prestadoresEnabled: boolean;
 }
 
 interface SemillasScreenDispatchProps {
@@ -43,6 +51,15 @@ export interface SemillasScreenNavigation {
 
 const serviceKey = "CreateSemillasCredentials";
 
+const {
+	detailBarTitle,
+	detailFirst,
+	detailSecond,
+	detailThird,
+	credentialsSuccess,
+	credetialsPending
+} = strings.semillas;
+
 class SemillasScreen extends NavigationEnabledComponent<
 	SemillasScreenInternalProps,
 	SemillasScreenState,
@@ -52,11 +69,12 @@ class SemillasScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		SemillasScreenNavigation,
 		"DashboardHome"
-	>(strings.semillas.detailBarTitle, "DashboardHome", {});
+	>(detailBarTitle, "DashboardHome", {});
 
 	constructor(props: SemillasScreenInternalProps) {
 		super(props);
 		this.state = {
+			prestadoresEnabled: haveValidIdentityAndBenefit(this.props.allSemillasCredentials) && haveEmailAndPhone(this.props.activeSpecialCredentials),
 			dni: ""
 		};
 	}
@@ -77,15 +95,19 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	renderButton() {
 		const { didDni, pendingCredentials } = this.props;
-		const { dni } = this.state;
+		const { prestadoresEnabled } = this.state;
 
 		return didDni ? (
-			<DidiServiceButton
-				onPress={() => this.navigate("Prestadores", {})}
-				title="Ver Beneficios"
-				style={styles.button}
-				isPending={false}
-			/>
+			prestadoresEnabled ? (
+				<DidiServiceButton
+					onPress={() => this.navigate("Prestadores", {})}
+					title="Ver Beneficios"
+					style={styles.button}
+					isPending={false}
+				/>
+			) : (
+				<Alert text={credetialsPending} style={{ marginBottom: 50 }} />
+			)
 		) : (
 			<DidiServiceButton
 				onPress={this.onGetCredentials}
@@ -106,17 +128,10 @@ class SemillasScreen extends NavigationEnabledComponent<
 				<ScrollView>
 					<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
 						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
-						<DidiText.Explanation.Small style={styles.paragraph}>
-							{strings.semillas.detailFirst}
-						</DidiText.Explanation.Small>
-						<DidiText.Explanation.Small style={styles.paragraph}>
-							{strings.semillas.detailSecond}
-						</DidiText.Explanation.Small>
-						<DidiText.Explanation.Small style={styles.paragraph}>
-							{strings.semillas.detailThird}
-						</DidiText.Explanation.Small>
-
-						{this.renderButton()}
+						<DidiText.Explanation.Small style={styles.paragraph}>{detailFirst}</DidiText.Explanation.Small>
+						<DidiText.Explanation.Small style={styles.paragraph}>{detailSecond}</DidiText.Explanation.Small>
+						<DidiText.Explanation.Small style={styles.paragraph}>{detailThird}</DidiText.Explanation.Small>
+						{PRESTADORES_FEATURE && this.renderButton()}
 					</SafeAreaView>
 				</ScrollView>
 			</Fragment>
@@ -135,7 +150,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	};
 
 	onCredentialsAdded = () => {
-		DataAlert.alert(strings.semillas.credentials, strings.semillas.credentialsSuccess);
+		DataAlert.alert(strings.semillas.credentials, credentialsSuccess);
 	};
 }
 
@@ -144,7 +159,9 @@ export default didiConnect(
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
 		didDni: state.did.didDni,
-		credentials: state.credentials
+		allSemillasCredentials: state.allSemillasCredentials,
+		credentials: state.credentials,
+		activeSpecialCredentials: state.activeSpecialCredentials
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni))

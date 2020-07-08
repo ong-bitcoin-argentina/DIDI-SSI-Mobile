@@ -287,6 +287,7 @@ export default {
 		getCredentials: "Quiero mis credenciales",
 		noDni: "Debes completar el proceso de validación de identidad antes de poder acceder a los Beneficios de Semillas.",
 		credentials: "Credenciales",
+		writeEmail: "Escribe un email",
 		detailFirst:
 			"Si sos parte del programa Semillas ahora podés tener tus credenciales que certifican y validan tus datos personales.",
 		detailSecond:
@@ -294,11 +295,18 @@ export default {
 		detailThird:
 			"Gracias a que son portables, las podés llevar con vos, acceder a ellas siempre que lo necesites y compartirlas sólo con quien vos quieras.",
 		credentialsSuccess: "Pronto vas a recibir tus credenciales de Semillas. Este proceso puede demorar unos días...",
+		credetialsPending:
+			"Tus Credenciales de Beneficios Semillas ya han sido solicitadas y se encuentran en proceso... Pronto podrás acceder a los Beneficios de Semillas!!",
 		steps: {
-			first: "Paso 1: Elegí con quién querés el turno.",
+			first: {
+				title: "Paso 1: Elegí con quién querés el turno.",
+				email: "O podés escribir el mail del destinatario de la credencial",
+				writeEmail: "Mail del destinatario"
+			},
 			second: {
 				title: "Paso 2: Elegí para quien es el turno.",
-				detail: "Solicitante del turno"
+				detail: "Solicitante del turno",
+				modalTitle: "Estás por compartir la siguiente información"
 			},
 			third: {
 				title: "Paso 3: El Beneficio fue solicitado con éxito!",
@@ -311,7 +319,14 @@ export default {
 		idLabel: "ID:",
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
-		about: "Acerca de Didi",
+		about: {
+			title: "Acerca de Didi",
+			first: "DIDI es una solución tecnológica de identidad digital descentralizada mediante modelos de Blockchain.",
+			second:
+				"A través de DIDI, podrás construir una identidad digital que certifique y valide datos sociales, cívicos y económicos, por medio de credenciales verificables emitidas por terceros (instituciones o individuos) con información que acredita que sos portadora de ciertos atributos que tienen que ver con tu identidad.",
+			third:
+				"DIDI utiliza el protocolo de credenciales verificables de la identidad digital auto soberana (SSI) cuyos estándares fueron definidos por World Wide Web Consortium (W3C), de manera que el usuario pueda resguardar su información de forma privada asegurando los requisitos de privacidad, control, portabilidad a su vez que garantiza integridad de los datos y autenticidad de emisor."
+		},
 		endSession: "Cerrar Sesión"
 	},
 	share: {
@@ -517,11 +532,13 @@ export default {
 	specialCredentials: {
 		PhoneNumberData: {
 			title: "Número de celular",
-			phoneNumber: ""
+			phoneNumber: "",
+			key: "PhoneNumberData"
 		},
 		EmailData: {
 			title: "Email",
-			email: ""
+			email: "",
+			key: "EmailData"
 		},
 		PersonalData: {
 			title: "Datos Personales",
@@ -541,6 +558,17 @@ export default {
 			floor: "Piso",
 			department: "Departamento",
 			municipality: "Municipalidad"
+		},
+		Semillas: {
+			title: "semillas",
+			keys: {
+				relationship: "Relacion con Titular",
+				name: "NOMBRE",
+				lastName: "APELLIDO",
+				nameBeneficiario: "Nombre Beneficiario",
+				dniBeneficiario: "Dni Beneficiario",
+				dniTitular: "Dni Titular"
+			}
 		}
 	},
 	camera: {
@@ -670,6 +698,14 @@ export default {
 			title: "Enviaste Credenciales",
 			description: `Compartiste ${title}`
 		})
+	},
+	general: {
+		cancel: "Cancelar",
+		share: "Compartir",
+		next: "Siguiente",
+		filterBy: {
+			category: "Filtrar por categoría"
+		}
 	},
 	jwtParseError: (error: JWTParseError) => {
 		switch (error.type) {
