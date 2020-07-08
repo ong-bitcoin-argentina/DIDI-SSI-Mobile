@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -125,9 +125,11 @@ class SemillasScreen extends NavigationEnabledComponent<
 				<ScrollView>
 					<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
 						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
-						<DidiText.Explanation.Small style={styles.paragraph}>{detailFirst}</DidiText.Explanation.Small>
-						<DidiText.Explanation.Small style={styles.paragraph}>{detailSecond}</DidiText.Explanation.Small>
-						<DidiText.Explanation.Small style={styles.paragraph}>{detailThird}</DidiText.Explanation.Small>
+						<View style={{ paddingHorizontal:15 }}>
+							<DidiText.Explanation.Small style={styles.paragraph}>{detailFirst}</DidiText.Explanation.Small>
+							<DidiText.Explanation.Small style={styles.paragraph}>{detailSecond}</DidiText.Explanation.Small>
+							<DidiText.Explanation.Small style={styles.paragraph}>{detailThird}</DidiText.Explanation.Small>
+						</View>
 						{PRESTADORES_FEATURE && this.renderButton()}
 					</SafeAreaView>
 				</ScrollView>
@@ -146,7 +148,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	};
 
 	onCredentialsAdded = () => {
-		DataAlert.alert(strings.semillas.credentials, credentialsSuccess);
+		DataAlert.alert(strings.semillas.program, credentialsSuccess);
 	};
 
 	showCredentialConfirmation = () => {

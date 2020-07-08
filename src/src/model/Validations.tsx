@@ -31,8 +31,7 @@ export enum PasswordValidationErrors {
 	TOO_SHORT = "PASSWORD_TOO_SHORT",
 	MISSING_UPPERCASE = "PASSWORD_MISSING_UPPERCASE",
 	MISSING_LOWERCASE = "PASSWORD_MISSING_LOWERCASE",
-	MISSING_NUMBER = "PASSWORD_MISSING_NUMBER",
-	MISSING_SPECIAL = "PASSWORD_MISSING_SPECIAL"
+	MISSING_NUMBER = "PASSWORD_MISSING_NUMBER"
 }
 
 export const Validations = {
@@ -60,8 +59,7 @@ export const Validations = {
 			[PasswordValidationErrors.TOO_SHORT]: hasMinLength(8),
 			[PasswordValidationErrors.MISSING_UPPERCASE]: matchesRegex("[A-Z]"),
 			[PasswordValidationErrors.MISSING_LOWERCASE]: matchesRegex("[a-z]"),
-			[PasswordValidationErrors.MISSING_NUMBER]: matchesRegex("[0-9]"),
-			[PasswordValidationErrors.MISSING_SPECIAL]: matchesRegex("[^A-Za-z0-9]")
+			[PasswordValidationErrors.MISSING_NUMBER]: matchesRegex("[0-9]")
 		};
 		return TypedObject.keys(checks).filter(c => !checks[c](password));
 	}

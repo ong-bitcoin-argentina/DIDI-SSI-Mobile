@@ -37,8 +37,10 @@ export default {
 	},
 	buttons: {
 		accept: "Aceptar",
+		acceptAlternative: "Acepto",
 		ok: "OK",
-		cancel: "Cancelar"
+		cancel: "Cancelar",
+		back: "Volver"
 	},
 	debug: {
 		menu: "Debug Menu",
@@ -146,7 +148,6 @@ export default {
 				PASSWORD_MISSING_UPPERCASE: "Mayúsculas",
 				PASSWORD_MISSING_LOWERCASE: "Minúsculas",
 				PASSWORD_MISSING_NUMBER: "Números",
-				PASSWORD_MISSING_SPECIAL: "Símbolos"
 			},
 			mismatch: "Las contraseñas no coinciden",
 			changePassword: "Cambiar Contraseña"
@@ -239,6 +240,7 @@ export default {
 			messageRecover:
 				"Si ya tenés una cuenta en DIDI y querés recuperarla, solo tenés que importarla a este dispositivo.",
 			cancel: "Salir sin cambios",
+			register: "Registrá una cuenta nueva",
 			doDelete: "Borrar copia local"
 		}
 	},
@@ -264,7 +266,7 @@ export default {
 			}
 		},
 		passwordDescription:
-			"Usá ocho caracteres como mínimo con una combinación de letras mayúsculas y minusculas, de números y símbolos"
+			"Usá ocho caracteres como mínimo con una combinación de letras mayúsculas y minusculas, de números"
 	},
 	documents: {
 		barTitle: "Mis Credenciales",
@@ -273,7 +275,7 @@ export default {
 		filterAll: "Todos",
 		filterEducation: "Educación",
 		filterLivingPlace: "Vivienda",
-		filterFinance: "Finanza",
+		filterFinance: "Finanzas",
 		filterIdentity: "Identidad",
 		filterShared: "Compartidos",
 		filterBenefits: "Beneficios",
@@ -292,6 +294,7 @@ export default {
 		getCredentials: "Quiero mis credenciales",
 		noDni: "Debes completar el proceso de validación de identidad antes de poder acceder a los Beneficios de Semillas.",
 		credentials: "Credenciales",
+		program: "Programa Semillas",
 		detailFirst:
 			"Si sos parte del programa Semillas ahora podés tener tus credenciales que certifican y validan tus datos personales.",
 		detailSecond:
@@ -318,7 +321,7 @@ export default {
 				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio"
 			}
 		},
-		shareMessage: "Estás a punto de compartir tu DNI con Semillas ¿Desea continuar?",
+		shareMessage: "DIDI quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.",
 		call: "Llamar",
 		whatsApp: "WhatsApp",
 		callLater: "Llamaré luego"

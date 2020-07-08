@@ -7,8 +7,8 @@ export const DataAlert = {
 
 		if (onOk) {
 			buttons = [
-				{ text: strings.buttons.cancel, onPress: onClose },
-				{ text: strings.buttons.ok, onPress: onOk }
+				{ text: strings.buttons.back, onPress: onClose },
+				{ text: strings.buttons.acceptAlternative, onPress: onOk }
 			];
 		}
 
