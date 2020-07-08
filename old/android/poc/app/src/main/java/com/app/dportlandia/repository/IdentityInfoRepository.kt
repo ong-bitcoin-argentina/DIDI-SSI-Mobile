@@ -5,7 +5,7 @@ import android.content.Context
 class IdentityInfoRepository(
     context: Context
 ) {
-    private val sharedPreferences = context.getSharedPreferences("com.didi.dportlandia.identity", Context.MODE_PRIVATE)
+    private val sharedPreferences = context.getSharedPreferences("com.didiapp.dportlandia.identity", Context.MODE_PRIVATE)
 
     fun get(): Map<String, String> {
         return sharedPreferences.all.mapValues { it.value.toString() }

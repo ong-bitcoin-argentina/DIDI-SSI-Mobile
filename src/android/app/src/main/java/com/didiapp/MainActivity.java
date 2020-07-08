@@ -1,4 +1,4 @@
-package com.didi;
+package com.didiapp;
 
 import com.facebook.react.ReactActivity;
 
