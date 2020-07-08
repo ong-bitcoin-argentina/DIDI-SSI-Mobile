@@ -65,6 +65,17 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		});
 	};
 
+	toggleModal = () => {
+		const { modalVisible } = this.state;
+		this.setState({ modalVisible: !modalVisible });
+	};
+
+	finish = () => {
+		const { activePrestador } = this.props;
+		this.toggleModal();
+		this.navigate("RequestFinished", { activePrestador });
+	};
+
 	render() {
 		const { bottomButton, header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
@@ -116,19 +127,14 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 
 							<View style={modal.footer}>
 								<DidiServiceButton
-									onPress={() => {
-										this.setState({ modalVisible: !modalVisible });
-									}}
+									onPress={this.toggleModal}
 									title="Cancelar"
 									style={modal.smallButton}
 									isPending={false}
 								/>
 
 								<DidiServiceButton
-									onPress={() => {
-										this.setState({ modalVisible: !modalVisible });
-										this.navigate("RequestFinished", { activePrestador });
-									}}
+									onPress={this.finish}
 									title="Compartir"
 									style={modal.smallButton}
 									isPending={false}
