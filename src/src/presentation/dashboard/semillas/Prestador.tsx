@@ -1,10 +1,12 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Image, View, ViewStyle } from "react-native";
+import React, { PureComponent } from 'react';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image, View } from "react-native";
 import { DidiText } from "../../util/DidiText";
-import semillasImagesSources from './imagesSources';
+import colors from '../../resources/colors';
+import FastImage from 'react-native-fast-image';
+
 
 export type PrestadorModel = {
-    id: string;
+    id: number;
     category: string;
     name: string;
     phone: string;
@@ -16,45 +18,44 @@ type PrestadorProps = {
     item: PrestadorModel;
     active: boolean;
     onPress: any;
-    style?: ViewStyle
+    image: any;
 };
 
-function Prestador(props: PrestadorProps) {
-    const { category, name, phone, benefit, speciality } = props.item;
-    const { active, style } = props;
-    const { title, description, highlight, inside, label } = styles;
-    return (
-        <SafeAreaView style={[styles.item, (active && highlight), style && style ]}>
-            <TouchableOpacity 
-                onPress={props.onPress}
-                style={inside}
-            >
-                <View style={styles.imageContainer}>
-                    <Image
-                        style={styles.image}
-                        source={ semillasImagesSources[category] }
-                    />
-                </View>
-                <View>
-                    <DidiText.Explanation.Small style={title}>
-                        {name}
-                    </DidiText.Explanation.Small>
-                    <DidiText.Explanation.Small style={description}>
-                        {speciality}
-                    </DidiText.Explanation.Small>
-                    <DidiText.Explanation.Small style={description}>
-                        {phone}
-                    </DidiText.Explanation.Small>
-                    <DidiText.Explanation.Small style={{...description, ...label}}>
-                        Beneficio: {benefit}
-                    </DidiText.Explanation.Small>
-                </View>
-            </TouchableOpacity>
-        </SafeAreaView>
-    )
-}
+export default class Prestador extends PureComponent<PrestadorProps, {}> {
 
-export default Prestador;
+    render() {
+        return (
+            <SafeAreaView style={[styles.item, (this.props.active && styles.highlight)]}>
+                <TouchableOpacity 
+                    onPress={this.props.onPress}
+                    style={styles.inside}
+                >
+                    <View>
+                        <FastImage
+                            style={styles.image}
+                            source={ this.props.image }
+                            priority={FastImage.priority.low}
+                        />
+                    </View>
+                    <View>
+                        <DidiText.Explanation.Small style={styles.title}>
+                            {this.props.item.name}
+                        </DidiText.Explanation.Small>
+                        <DidiText.Explanation.Small style={styles.description}>
+                            {this.props.item.speciality}
+                        </DidiText.Explanation.Small>
+                        <DidiText.Explanation.Small style={styles.description}>
+                            {this.props.item.phone}
+                        </DidiText.Explanation.Small>
+                        <DidiText.Explanation.Small style={{...styles.description, ...styles.label}}>
+                            Beneficio: {this.props.item.benefit}
+                        </DidiText.Explanation.Small>
+                    </View>
+                </TouchableOpacity>
+            </SafeAreaView>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
 	title: {
@@ -69,16 +70,16 @@ const styles = StyleSheet.create({
 	label: {
         paddingVertical: 1,
         paddingHorizontal: 5,
-		backgroundColor: '#f5476b',
-		color: 'white'
+		backgroundColor: colors.label.background,
+		color: colors.label.text
 	},
 	item: {
         flex: 1, 
         margin: 1,
 		borderRadius:8, 
-		borderColor:'#f0f0f0',
+		borderColor: colors.border.light,
 		borderWidth:1,
-		height: 100,
+		// height: 100,
     },
     inside: {
         flex: 1,
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     },
 	highlight: {
 		borderWidth: 3,
-		borderColor:'#3471eb',
+		borderColor: colors.primary,
 		borderRadius: 10
     },
     image: {

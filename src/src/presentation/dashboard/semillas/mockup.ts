@@ -1,5 +1,9 @@
+import { PrestadorModel } from "./Prestador";
+import { semillasCategories } from "../../resources/constants";
+
+const categories = Object.keys(semillasCategories);
+
 // TODO: borrar cuando se traiga data de semillas
-const categories = [ "salud", "oportunidad", "finanza", "saber", "sueno" ];
 const specialities = [ "Odontología", "Clínica Médica", "Oftalmología", "Dermatología", "Otorrinolaringología" ];
 const entities = [
     "Sunny Walkway",
@@ -52,8 +56,8 @@ const randomPrestador = function (index:number) {
 	}
 }
 
-export const randomPrestadores = function(length:number) {
-    let array:object[] = [];
+export const randomPrestadores = function(length:number):PrestadorModel[] {
+    let array:PrestadorModel[] = [];
     for (let i = 0; i < length; i++) {
         array.push(randomPrestador(i));
     }

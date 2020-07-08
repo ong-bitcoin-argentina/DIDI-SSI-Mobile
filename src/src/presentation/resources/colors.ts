@@ -7,6 +7,7 @@ const colors = {
 	backgroundSeparator: "#C3C3C3",
 
 	text: "#4A4A4A",
+	textLight: "#7a7a7a",
 	textFaded: "#9B9B9B",
 
 	dangerous: "#FF0000",
@@ -20,6 +21,15 @@ const colors = {
 	primaryShadow: "#2F77DC",
 	primaryDark: "#205196",
 	primaryText: "#FFFFFF",
+
+	border: {
+		light: '#f0f0f0'
+	},
+
+	label: { 
+		background: '#f5476b',
+		text: 'white' 
+	},
 
 	secondary: "#24CDD2",
 	secondaryText: "#FFFFFF",

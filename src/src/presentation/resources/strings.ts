@@ -147,7 +147,7 @@ export default {
 				PASSWORD_TOO_SHORT: "8 o más caracteres",
 				PASSWORD_MISSING_UPPERCASE: "Mayúsculas",
 				PASSWORD_MISSING_LOWERCASE: "Minúsculas",
-				PASSWORD_MISSING_NUMBER: "Números",
+				PASSWORD_MISSING_NUMBER: "Números"
 			},
 			mismatch: "Las contraseñas no coinciden",
 			changePassword: "Cambiar Contraseña"
@@ -295,6 +295,7 @@ export default {
 		noDni: "Debes completar el proceso de validación de identidad antes de poder acceder a los Beneficios de Semillas.",
 		credentials: "Credenciales",
 		program: "Programa Semillas",
+		writeEmail: "Escribe un email",
 		detailFirst:
 			"Si sos parte del programa Semillas ahora podés tener tus credenciales que certifican y validan tus datos personales.",
 		detailSecond:
@@ -321,7 +322,8 @@ export default {
 				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio"
 			}
 		},
-		shareMessage: "DIDI quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.",
+		shareMessage:
+			"DIDI quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.",
 		call: "Llamar",
 		whatsApp: "WhatsApp",
 		callLater: "Llamaré luego"
@@ -543,11 +545,13 @@ export default {
 	specialCredentials: {
 		PhoneNumberData: {
 			title: "Número de celular",
-			phoneNumber: ""
+			phoneNumber: "",
+			key: "PhoneNumberData"
 		},
 		EmailData: {
 			title: "Email",
-			email: ""
+			email: "",
+			key: "EmailData"
 		},
 		PersonalData: {
 			title: "Datos Personales",
@@ -707,6 +711,14 @@ export default {
 			title: "Enviaste Credenciales",
 			description: `Compartiste ${title}`
 		})
+	},
+	general: {
+		cancel: "Cancelar",
+		share: "Compartir",
+		next: "Siguiente",
+		filterBy: {
+			category: "Filtrar por categoría"
+		}
 	},
 	jwtParseError: (error: JWTParseError) => {
 		switch (error.type) {
