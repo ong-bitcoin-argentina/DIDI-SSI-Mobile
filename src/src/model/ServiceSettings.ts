@@ -4,4 +4,9 @@ export interface ServiceSettings {
 	ethrDidUri: string;
 	ethrDelegateUri: string;
 	didiUserServer: string;
+	semillasServerUri: string;
+	semillasLogin: {
+		user: string;
+		password: string;
+	};
 }

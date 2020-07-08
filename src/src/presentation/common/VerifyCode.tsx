@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity, StyleSheet } from "react-native";
 
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import { DidiText } from "../util/DidiText";
@@ -33,7 +33,9 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, Ve
 	render() {
 		return (
 			<DidiScreen>
-				<DidiText.Explanation.Emphasis>{this.props.description}</DidiText.Explanation.Emphasis>
+				<DidiText.Explanation.Emphasis style={styles.description}>
+					{this.props.description}
+				</DidiText.Explanation.Emphasis>
 
 				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
 
@@ -71,3 +73,9 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, Ve
 }
 
 const serviceKey = "VerifyCode";
+
+const styles = StyleSheet.create({
+	description: {
+		fontSize: 14
+	}
+});

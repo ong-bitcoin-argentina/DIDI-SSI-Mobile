@@ -102,17 +102,19 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 	}
 
 	render() {
-		const doc = this.props.document;
+		const { document, context, preview, children } = this.props;
 
-		const issuerText = this.issuerText(CredentialDocument.displayedIssuer(doc));
+		const issuerText = this.issuerText(CredentialDocument.displayedIssuer(document));
 
-		const category = doc.issuedAt ? strings.credentialCard.formatDate(new Date(doc.issuedAt * 1000)) : "Credencial";
+		const category = document.issuedAt
+			? strings.credentialCard.formatDate(new Date(document.issuedAt * 1000))
+			: "Credencial";
 
-		let title = doc.title;
-		let data = this.props.preview
-			? CredentialDocument.extractPreviewDataPairs(doc)
-			: CredentialDocument.extractAllDataPairs(doc);
-		const specialType = doc.specialFlag?.type;
+		let title = document.title;
+		let data = preview
+			? CredentialDocument.extractPreviewDataPairs(document)
+			: CredentialDocument.extractAllDataPairs(document);
+		const specialType = document.specialFlag?.type;
 		if (specialType) {
 			const dictionary: { title: string; [name: string]: string | undefined } = strings.specialCredentials[specialType];
 			title = dictionary.title;
@@ -122,21 +124,23 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 			}));
 		}
 
-		const styleType = credentialState(this.props.document, this.props.context);
+		const styleType = credentialState(document, context);
 		const style = credentialStyles[styleType];
 
 		return (
 			<CredentialCard
 				icon=""
+				layout={document.preview?.cardLayout}
 				category={category}
 				title={title}
 				subTitle={issuerText}
 				data={data}
-				columns={this.props.preview ? CredentialDocument.numberOfColumns(doc) : 1}
+				columns={preview ? CredentialDocument.numberOfColumns(document) : 1}
 				color={style.color}
 				hollow={style.hollow}
+				preview={preview}
 			>
-				{this.props.children}
+				{children}
 				{this.renderTypeMessage(styleType)}
 			</CredentialCard>
 		);
