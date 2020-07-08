@@ -7,5 +7,5 @@ export default {
     oportunidad: require(`${baseSembrando}-oportunidades.png`),
     saber: require(`${baseSembrando}-saberes.png`),
     sueno: require(`${baseSembrando}-suenos.png`),
-    finanza: require(`${basePath}-finanzas-inclusivas.png`),
+    finanza: require(`${basePath}-finanzas-inclusivas.png`)
 }

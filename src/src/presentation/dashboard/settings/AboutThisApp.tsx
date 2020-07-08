@@ -28,8 +28,8 @@ export class AboutThisAppScreen extends NavigationEnabledComponent<
 						<Image style={styles.didiLogo} source={require("../../resources/images/didiLogo.png")} />
 					</View>
 					{
-						texts.map(text => (
-							<DidiText.Explanation.Small style={styles.paragraph}>
+						texts.map((text,index) => (
+							<DidiText.Explanation.Small style={styles.paragraph} key={index}>
 								{text}
 							</DidiText.Explanation.Small>
 						))

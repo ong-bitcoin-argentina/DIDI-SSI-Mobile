@@ -17,10 +17,12 @@ import { ServiceObserver } from "../../common/ServiceObserver";
 import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
-import { mustHavePrestadoresEnabled } from "../../../util/semillasHelpers";
-import { PRESTADORES_FEATURE } from "../../../AppConfig";
+import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
+import { PRESTADORES_FEATURE } from '../../../AppConfig';
 import { CredentialDocument } from "didi-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
+import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 
 export interface LoginScreenProps {}
 
@@ -29,6 +31,7 @@ interface SemillasScreenStateProps {
 	didDni: Boolean;
 	allSemillasCredentials?: CredentialDocument[];
 	credentials: CredentialDocument[];
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 interface SemillasScreenState {
 	dni: string;
@@ -71,7 +74,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	constructor(props: SemillasScreenInternalProps) {
 		super(props);
 		this.state = {
-			prestadoresEnabled: mustHavePrestadoresEnabled(this.props.allSemillasCredentials),
+			prestadoresEnabled: haveValidIdentityAndBenefit(this.props.allSemillasCredentials) && haveEmailAndPhone(this.props.activeSpecialCredentials),
 			dni: ""
 		};
 	}
@@ -168,7 +171,8 @@ export default didiConnect(
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
 		didDni: state.did.didDni,
 		allSemillasCredentials: state.allSemillasCredentials,
-		credentials: state.credentials
+		credentials: state.credentials,
+		activeSpecialCredentials: state.activeSpecialCredentials
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni))

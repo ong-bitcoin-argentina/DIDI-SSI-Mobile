@@ -16,13 +16,17 @@ import { getFullName, getDniBeneficiario, getSemillasIdentitiesData } from "../.
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 import { CredentialDocument } from "didi-sdk";
 import { RequestFinishedProps } from "./RequestFinishedScreen";
+import colors from "../../resources/colors";
+import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 
 export type BeneficiarioProps = {
-	activePrestador: PrestadorModel;
+	activePrestador?: PrestadorModel;
+	customEmail?: string;
 };
 
 interface BeneficiarioScreenStateProps {
 	allSemillasCredentials?: CredentialDocument[];
+	activeSpecialCredentials: SpecialCredentialMap;
 }
 
 type BeneficiarioScreenState = {
@@ -76,6 +80,10 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		this.navigate("RequestFinished", { activePrestador });
 	};
 
+	openModal = () => {
+		this.setState({ modalVisible: true });
+	};
+
 	render() {
 		const { bottomButton, header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
@@ -109,10 +117,8 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 					</View>
 
 					<DidiServiceButton
-						onPress={() => {
-							this.setState({ modalVisible: true });
-						}}
-						title="SIGUIENTE"
+						onPress={this.openModal}
+						title={strings.general.next.toUpperCase()}
 						style={bottomButton}
 						isPending={false}
 					/>
@@ -121,21 +127,23 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 				<Modal animationType="fade" transparent={true} visible={modalVisible}>
 					<View style={modal.centeredView}>
 						<View style={modal.view}>
-							<DidiText.Explanation.Small>{strings.semillas.steps.second.modalTitle}</DidiText.Explanation.Small>
+							<DidiText.Explanation.Small style={{ fontSize: 13 }}>
+								{strings.semillas.steps.second.modalTitle}
+							</DidiText.Explanation.Small>
 
 							<Beneficiario item={selected} />
 
 							<View style={modal.footer}>
 								<DidiServiceButton
 									onPress={this.toggleModal}
-									title="Cancelar"
+									title={strings.general.cancel}
 									style={modal.smallButton}
 									isPending={false}
 								/>
 
 								<DidiServiceButton
 									onPress={this.finish}
-									title="Compartir"
+									title={strings.general.share}
 									style={modal.smallButton}
 									isPending={false}
 								/>
@@ -151,7 +159,8 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 export default didiConnect(
 	BeneficiarioScreen,
 	(state): BeneficiarioScreenStateProps => ({
-		allSemillasCredentials: state.allSemillasCredentials
+		allSemillasCredentials: state.allSemillasCredentials,
+		activeSpecialCredentials: state.activeSpecialCredentials
 	})
 );
 
@@ -159,13 +168,13 @@ const styles = StyleSheet.create({
 	pickerContainer: {
 		paddingVertical: 10,
 		borderWidth: 1,
-		borderColor: "grey",
+		borderColor: colors.border.light,
 		borderRadius: 6,
 		marginTop: 30,
 		marginBottom: 50
 	},
 	textStyle: {
-		color: "white",
+		color: colors.label.text,
 		fontWeight: "bold",
 		textAlign: "center"
 	}

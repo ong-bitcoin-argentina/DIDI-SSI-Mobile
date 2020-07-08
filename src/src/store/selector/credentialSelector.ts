@@ -41,7 +41,6 @@ export const allSemillasCredentialsSelector = createSelector(
 	allCredentialSelector,
 	st => st.persisted.did,
 	(credentials) => {
-		// TODO: usar credenciales reales en lugar de mock
 		return credentials.filter(isSemillasCrendential);
 	}
 );
