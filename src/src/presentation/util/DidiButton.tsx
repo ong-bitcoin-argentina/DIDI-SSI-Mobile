@@ -32,7 +32,7 @@ export default class DidiButton extends React.Component<DidiButtonProps> {
 	}
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 	button: {
 		flexDirection: "row",
 		justifyContent: "center",

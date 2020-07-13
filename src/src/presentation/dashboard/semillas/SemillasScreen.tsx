@@ -139,18 +139,29 @@ class SemillasScreen extends NavigationEnabledComponent<
 	}
 
 	onGetCredentials = () => {
-		const { getCredentials } = this.props;
 		const { dni } = this.state;
 
 		if (!dni) {
 			DataAlert.alert(strings.semillas.credentials, strings.semillas.noDni);
 		} else {
-			getCredentials(dni);
+			this.showCredentialConfirmation();
 		}
 	};
 
 	onCredentialsAdded = () => {
 		DataAlert.alert(strings.semillas.credentials, credentialsSuccess);
+	};
+
+	showCredentialConfirmation = () => {
+		const { getCredentials } = this.props;
+		const { dni } = this.state;
+
+		DataAlert.alert(
+			strings.semillas.credentials,
+			strings.semillas.shareMessage,
+			() => {},
+			() => getCredentials(dni)
+		);
 	};
 }
 

@@ -35,6 +35,11 @@ export default {
 	actions: {
 		copied: "Copiado"
 	},
+	buttons: {
+		accept: "Aceptar",
+		ok: "OK",
+		cancel: "Cancelar"
+	},
 	debug: {
 		menu: "Debug Menu",
 		decodeJWT: "Decodificar JWT",
@@ -313,7 +318,11 @@ export default {
 				prestador: "El Prestador se comunicará con vos a la brevedad.",
 				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio"
 			}
-		}
+		},
+		shareMessage: "Estás a punto de compartir tu DNI con Semillas ¿Desea continuar?",
+		call: "Llamar",
+		whatsApp: "WhatsApp",
+		callLater: "Llamaré luego"
 	},
 	settings: {
 		idLabel: "ID:",

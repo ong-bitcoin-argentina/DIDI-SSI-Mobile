@@ -57,11 +57,11 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 
 	buttons(): SettingsButton[] {
 		const base = [
+			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.about.title, action: () => this.navigate("AboutThisAppScreen", {}) }
 		];
 		const debug = [
-			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			...base,
 			{ name: strings.debug.serviceConfig.barTitle, action: () => this.navigate("ServiceSettings", {}) },
 			{ name: strings.debug.decodeJWT, action: () => this.navigate("JWTDecoderScreen", {}) }
