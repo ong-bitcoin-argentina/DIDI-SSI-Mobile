@@ -100,7 +100,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 		const { prestadoresEnabled } = this.state;
 
 		return didDni ? (
-			PRESTADORES_FEATURE ??
+			PRESTADORES_FEATURE &&
 				(prestadoresEnabled ? (
 					<DidiServiceButton
 						onPress={() => this.navigate("Prestadores", {})}
