@@ -7,7 +7,7 @@ import com.app.dportlandia.model.VerifiedClaim
 class VerifiedClaimRepository(
     context: Context
 ) {
-    private val sharedPreferences = context.getSharedPreferences("com.didi.dportlandia.verified_claims", Context.MODE_PRIVATE)
+    private val sharedPreferences = context.getSharedPreferences("com.didiapp.dportlandia.verified_claims", Context.MODE_PRIVATE)
 
     fun get(): List<VerifiedClaim> {
         return sharedPreferences.all.keys

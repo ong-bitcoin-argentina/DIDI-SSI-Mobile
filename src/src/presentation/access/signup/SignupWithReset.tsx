@@ -52,7 +52,7 @@ class SignupWithResetScreen extends NavigationEnabledComponent<
 							this.replace("SignupEnterPhone", {});
 						}}
 					/>
-					<DidiButton onPress={() => this.props.resetStore()} title={strings.signup.reset.cancel} />
+					<DidiButton onPress={() => this.props.resetStore()} title={strings.signup.reset.register} />
 				</View>
 				<DidiText.Explanation.Normal>{strings.signup.reset.messageRecover}</DidiText.Explanation.Normal>
 				<DidiButton
