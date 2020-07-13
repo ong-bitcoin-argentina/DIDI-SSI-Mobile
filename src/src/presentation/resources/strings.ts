@@ -266,7 +266,7 @@ export default {
 			}
 		},
 		passwordDescription:
-			"Usá ocho caracteres como mínimo con una combinación de letras mayúsculas y minusculas, de números"
+			"Usá ocho caracteres como mínimo con una combinación de números, letras mayúsculas y minúsculas."
 	},
 	documents: {
 		barTitle: "Mis Credenciales",
