@@ -18,7 +18,7 @@ import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/user/getCredentials";
 import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
-import { PRESTADORES_FEATURE } from '../../../AppConfig';
+import { PRESTADORES_FEATURE } from "../../../AppConfig";
 import { CredentialDocument } from "didi-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
@@ -74,7 +74,9 @@ class SemillasScreen extends NavigationEnabledComponent<
 	constructor(props: SemillasScreenInternalProps) {
 		super(props);
 		this.state = {
-			prestadoresEnabled: haveValidIdentityAndBenefit(this.props.allSemillasCredentials) && haveEmailAndPhone(this.props.activeSpecialCredentials),
+			prestadoresEnabled:
+				haveValidIdentityAndBenefit(this.props.allSemillasCredentials) &&
+				haveEmailAndPhone(this.props.activeSpecialCredentials),
 			dni: ""
 		};
 	}
@@ -98,16 +100,17 @@ class SemillasScreen extends NavigationEnabledComponent<
 		const { prestadoresEnabled } = this.state;
 
 		return didDni ? (
-			prestadoresEnabled ? (
-				<DidiServiceButton
-					onPress={() => this.navigate("Prestadores", {})}
-					title="Ver Beneficios"
-					style={styles.button}
-					isPending={false}
-				/>
-			) : (
-				<Alert text={credetialsPending} style={{ marginBottom: 50 }} />
-			)
+			PRESTADORES_FEATURE ??
+				(prestadoresEnabled ? (
+					<DidiServiceButton
+						onPress={() => this.navigate("Prestadores", {})}
+						title="Ver Beneficios"
+						style={styles.button}
+						isPending={false}
+					/>
+				) : (
+					<Alert text={credetialsPending} style={{ marginBottom: 50 }} />
+				))
 		) : (
 			<DidiServiceButton
 				onPress={this.onGetCredentials}
@@ -128,12 +131,12 @@ class SemillasScreen extends NavigationEnabledComponent<
 				<ScrollView>
 					<SafeAreaView style={{ ...commonStyles.view.area, ...styles.scrollContent }}>
 						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
-						<View style={{ paddingHorizontal:15 }}>
+						<View style={{ paddingHorizontal: 15 }}>
 							<DidiText.Explanation.Small style={styles.paragraph}>{detailFirst}</DidiText.Explanation.Small>
 							<DidiText.Explanation.Small style={styles.paragraph}>{detailSecond}</DidiText.Explanation.Small>
 							<DidiText.Explanation.Small style={styles.paragraph}>{detailThird}</DidiText.Explanation.Small>
 						</View>
-						{PRESTADORES_FEATURE && this.renderButton()}
+						{this.renderButton()}
 					</SafeAreaView>
 				</ScrollView>
 			</Fragment>
