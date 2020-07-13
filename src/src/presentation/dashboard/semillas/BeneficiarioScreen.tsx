@@ -15,10 +15,11 @@ import { PrestadorModel } from "./Prestador";
 import { getFullName, getDniBeneficiario, getSemillasIdentitiesData } from "../../../util/semillasHelpers";
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 import { CredentialDocument } from "didi-sdk";
+import { RequestFinishedProps } from "./RequestFinishedScreen";
 import colors from "../../resources/colors";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 
-export type BeneficiarioProps = { 
+export type BeneficiarioProps = {
 	activePrestador?: PrestadorModel;
 	customEmail?: string;
 };
@@ -26,7 +27,7 @@ export type BeneficiarioProps = {
 interface BeneficiarioScreenStateProps {
 	allSemillasCredentials?: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
-};
+}
 
 type BeneficiarioScreenState = {
 	identityCredentials: SemillasIdentityModel[];
@@ -56,7 +57,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 			identityCredentials,
 			selected,
 			selectedName: getFullName(selected),
-			modalVisible: false,
+			modalVisible: false
 		};
 	}
 
@@ -68,9 +69,20 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		});
 	};
 
+	toggleModal = () => {
+		const { modalVisible } = this.state;
+		this.setState({ modalVisible: !modalVisible });
+	};
+
+	finish = () => {
+		const { activePrestador } = this.props;
+		this.toggleModal();
+		this.navigate("RequestFinished", { activePrestador });
+	};
+
 	openModal = () => {
-		this.setState({ modalVisible:true });
-	}
+		this.setState({ modalVisible: true });
+	};
 
 	render() {
 		const { bottomButton, header, view } = commonStyles.benefit;
@@ -105,7 +117,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 					</View>
 
 					<DidiServiceButton
-						onPress={() => { this.openModal() }}
+						onPress={this.openModal}
 						title={strings.general.next.toUpperCase()}
 						style={bottomButton}
 						isPending={false}
@@ -115,22 +127,22 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 				<Modal animationType="fade" transparent={true} visible={modalVisible}>
 					<View style={modal.centeredView}>
 						<View style={modal.view}>
-							<DidiText.Explanation.Small style={{ fontSize:13 }}>
+							<DidiText.Explanation.Small style={{ fontSize: 13 }}>
 								{strings.semillas.steps.second.modalTitle}
 							</DidiText.Explanation.Small>
-							
+
 							<Beneficiario item={selected} />
 
 							<View style={modal.footer}>
 								<DidiServiceButton
-									onPress={() => { this.setState({modalVisible:!modalVisible}) }}
+									onPress={this.toggleModal}
 									title={strings.general.cancel}
 									style={modal.smallButton}
 									isPending={false}
 								/>
 
 								<DidiServiceButton
-									onPress={() => { console.log('navegar a siguiente paso') }}
+									onPress={this.finish}
 									title={strings.general.share}
 									style={modal.smallButton}
 									isPending={false}

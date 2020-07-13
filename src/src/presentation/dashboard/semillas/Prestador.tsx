@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { SafeAreaView, StyleSheet, TouchableOpacity, Image, View } from "react-native";
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image, View, ViewStyle } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 import FastImage from "react-native-fast-image";
@@ -17,6 +17,7 @@ type PrestadorProps = {
 	item: PrestadorModel;
 	active: boolean;
 	onPress: any;
+	style?: ViewStyle;
 	image: any;
 };
 
