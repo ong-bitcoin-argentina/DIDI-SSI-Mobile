@@ -1,6 +1,6 @@
 import { CredentialDocument, EthrDID, SpecialCredentialFlag } from "didi-sdk";
 import { createSelector } from "reselect";
-import { isSemillasCrendential } from '../../util/semillasHelpers';
+import { isSemillasCrendential } from "../../util/semillasHelpers";
 
 import TypedArray from "../../util/TypedArray";
 
@@ -40,7 +40,7 @@ export const toplevelCredentialSelector = createSelector(
 export const allSemillasCredentialsSelector = createSelector(
 	allCredentialSelector,
 	st => st.persisted.did,
-	(credentials) => {
+	credentials => {
 		return credentials.filter(isSemillasCrendential);
 	}
 );

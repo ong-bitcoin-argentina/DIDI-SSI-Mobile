@@ -319,7 +319,9 @@ export default {
 			third: {
 				title: "Paso 3: El Beneficio fue solicitado con éxito!",
 				prestador: "El Prestador se comunicará con vos a la brevedad.",
-				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio"
+				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio",
+				whatsappMessage: "Hola, escribo para concretar la reserva de turno",
+				whatsappError: "Ocurrió un error al abrir Whatsapp"
 			}
 		},
 		shareMessage:
