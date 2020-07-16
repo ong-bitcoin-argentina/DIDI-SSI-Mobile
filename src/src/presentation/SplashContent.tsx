@@ -16,7 +16,7 @@ export class SplashContent extends React.Component<AddChildren<{}>> {
 				</View>
 				<SafeAreaView style={styles.area}>
 					<View style={styles.imageContainer}>
-						<Image style={styles.didiLogo} source={require("./resources/images/didiLogo.png")} />
+						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
 					</View>
 					<View style={styles.buttonContainer}>{this.props.children}</View>
 				</SafeAreaView>
@@ -31,11 +31,8 @@ const styles = StyleSheet.create({
 		alignItems: "center"
 	},
 	imageContainer: {
-		alignItems: "stretch",
-		justifyContent: "space-evenly",
 		flex: 1,
-		flexDirection: "row",
-		marginTop: 10
+		flexDirection: "row"
 	},
 	buttonContainer: {
 		width: "80%",
@@ -45,8 +42,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10
 	},
 	didiLogo: {
-		width: "33%",
-		resizeMode: "contain",
-		alignSelf: "flex-end"
+		width: "52%",
+		resizeMode: "contain"
 	}
 });

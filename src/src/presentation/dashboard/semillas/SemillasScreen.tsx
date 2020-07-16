@@ -23,6 +23,7 @@ import { CredentialDocument } from "didi-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
+import { ErrorDataAlert } from "../../common/ErrorDataAlert";
 
 export interface LoginScreenProps {}
 

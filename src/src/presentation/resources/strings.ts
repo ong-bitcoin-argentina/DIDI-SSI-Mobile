@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import { JWTParseError } from "didi-sdk";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
@@ -30,6 +31,14 @@ function formatHourPart(date: Date) {
 function formatFullDate(date: Date) {
 	return `${formatDatePart(date)}, ${formatHourPart(date)}`;
 }
+
+const appName = "ai·di";
+
+const styles = StyleSheet.create({
+	bold: {
+		fontWeight: "bold"
+	}
+});
 
 export default {
 	actions: {
@@ -70,7 +79,7 @@ export default {
 		},
 		validateIdentity: {
 			Start: {
-				title: "Validá tu DNI para completar tu Perfil DIDI.",
+				title: `Validá tu DNI para completar tu Perfil ${appName}.`,
 				subtitle: null,
 				button: "Validar DNI"
 			},
@@ -233,12 +242,11 @@ export default {
 		},
 		registrationValidated: {
 			message: "Tu email fue validado con éxito y tu Identidad Digital fue resguardada.",
-			buttonEnter: "Ingresar a Didi"
+			buttonEnter: `Ingresar a ${appName}`
 		},
 		reset: {
 			message: "Este dispositivo tiene registrada otra cuenta. Para reemplazarla...",
-			messageRecover:
-				"Si ya tenés una cuenta en DIDI y querés recuperarla, solo tenés que importarla a este dispositivo.",
+			messageRecover: `Si ya tenés una cuenta en ${appName} y querés recuperarla, solo tenés que importarla a este dispositivo.`,
 			cancel: "Salir sin cambios",
 			register: "Registrá una cuenta nueva",
 			doDelete: "Borrar copia local"
@@ -324,8 +332,7 @@ export default {
 				whatsappError: "Ocurrió un error al abrir Whatsapp"
 			}
 		},
-		shareMessage:
-			"DIDI quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.",
+		shareMessage: `${appName} quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.`,
 		call: "Llamar",
 		whatsApp: "WhatsApp",
 		callLater: "Llamaré luego"
@@ -335,12 +342,50 @@ export default {
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
 		about: {
-			title: "Acerca de Didi",
-			first: "DIDI es una solución tecnológica de identidad digital descentralizada mediante modelos de Blockchain.",
-			second:
-				"A través de DIDI, podrás construir una identidad digital que certifique y valide datos sociales, cívicos y económicos, por medio de credenciales verificables emitidas por terceros (instituciones o individuos) con información que acredita que sos portadora de ciertos atributos que tienen que ver con tu identidad.",
-			third:
-				"DIDI utiliza el protocolo de credenciales verificables de la identidad digital auto soberana (SSI) cuyos estándares fueron definidos por World Wide Web Consortium (W3C), de manera que el usuario pueda resguardar su información de forma privada asegurando los requisitos de privacidad, control, portabilidad a su vez que garantiza integridad de los datos y autenticidad de emisor."
+			title: `Acerca de ${appName}`,
+			paragraphs: [
+				[
+					{
+						style: styles.bold,
+						text: appName
+					},
+					{
+						style: {},
+						text:
+							" es una solución tecnológica de identidad digital descentralizada mediante modelos de Blockchain desarrollada en el marco del"
+					},
+					{
+						style: styles.bold,
+						text: " Proyecto DIDI, Identidad Digital para la inclusión."
+					}
+				],
+				[
+					{
+						style: {},
+						text: "A través de la app "
+					},
+					{
+						style: styles.bold,
+						text: appName
+					},
+					{
+						style: {},
+						text:
+							", podrás construir una identidad digital que certifique y valide datos sociales, cívicos y económicos, por medio de credenciales verificables emitidas por terceros (instituciones o individuos) con información que acredita que sos portadora o portador de ciertos atributos que tienen que ver con tu identidad."
+					}
+				],
+				[
+					{
+						style: styles.bold,
+						text: appName
+					},
+					{
+						style: {},
+						text:
+							" utiliza el protocolo de credenciales verificables de la identidad digital auto soberana (SSI) cuyos estándares fueron definidos por World Wide Web Consortium (W3C), de manera que el usuario pueda resguardar su información de forma privada asegurando los requisitos de privacidad, control, portabilidad a su vez que garantiza integridad de los datos y autenticidad de emisor."
+					}
+				]
+			]
 		},
 		endSession: "Cerrar Sesión"
 	},
@@ -348,7 +393,7 @@ export default {
 		title: "Compartir",
 		generating: "Generando código QR...",
 		next: "Ya compartí el código QR",
-		shareTitle: "Credencial Didi",
+		shareTitle: `Credencial ${appName}`,
 		explanation:
 			"Pedile al receptor que escanee este código QR para empezar a compartir tus credenciales.\n\nUna vez hecho esto, le aparecerá un código nuevo al receptor. Avanzá a la próxima pantalla para escanear su código."
 	},
@@ -357,24 +402,23 @@ export default {
 		explanation:
 			"¿Cómo compartirás estas credenciales?\n\nEl receptor podrá verificar que las credenciales fueron enviadas intencionalmente y desde tu cuenta",
 		direct: {
-			button: "Directo a otra App DIDI",
+			button: `Directo a otra App ${appName}`,
 			explanation: "Verificado como parte del proceso"
 		},
 		or: "o",
 		link: {
-			button: "Compartir enlace",
-			explanation: "Recibirás un pedido de verificación"
+			button: "Compartir enlace"
 		},
-		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de DIDI:\n\n${sharedUri}`
+		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de ${appName}:\n\n${sharedUri}`
 	},
 	disclose: {
 		title: "Compartir",
 		request: {
-			explanation: "Escaneá el siguiente código QR con la App DIDI que te está compartiendo sus credenciales.",
+			explanation: `Escaneá el siguiente código QR con la App ${appName} que te está compartiendo sus credenciales.`,
 			next: "Siguiente"
 		},
 		response: {
-			explanation: "Escaneá el siguiente código QR con la App DIDI con la que estás compartiendo tus credenciales."
+			explanation: `Escaneá el siguiente código QR con la App ${appName} con la que estás compartiendo tus credenciales.`
 		}
 	},
 	services: {
@@ -389,8 +433,7 @@ export default {
 		stepTotal: "/3",
 		what: {
 			header: "¿Qué es la validación de identidad?",
-			description:
-				"Es un proceso simple mediante el cual vas a poder confirmar que vos sos quien decís ser. De esta forma, vas a poder acceder a todos los servicios de DIDI.",
+			description: `Es un proceso simple mediante el cual vas a poder confirmar que vos sos quien decís ser. De esta forma, vas a poder acceder a todos los servicios de ${appName}.`,
 			buttonText: "Siguiente"
 		},
 		howTo: {

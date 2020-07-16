@@ -8,6 +8,9 @@ import { didiConnect } from "../../store/store";
 
 import { ErrorDataAlert } from "./ErrorDataAlert";
 
+// TODO: checkear que se logueen errores en firebase
+const errorCodesBlacklist = ["USER_GET", "FETCH_TG_ERR"];
+
 interface ServiceObserverProps {
 	serviceKey: string;
 	onSuccess: () => void;
@@ -24,18 +27,21 @@ type ServiceObserverInternalProps = ServiceObserverProps & ServiceObserverStateP
 
 class ServiceObserver extends React.Component<AddChildren<ServiceObserverInternalProps>> {
 	componentDidUpdate() {
-		const rq = this.props.callState[this.props.serviceKey];
+		const { dropCallChain, onError, onSuccess, serviceKey } = this.props;
+		const rq = this.props.callState[serviceKey];
 		if (rq === undefined) {
 			return;
 		}
 		switch (rq.state) {
 			case "SUCCEEDED":
-				this.props.onSuccess();
-				this.props.dropCallChain(this.props.serviceKey);
+				onSuccess();
+				dropCallChain(serviceKey);
 				return;
 			case "FAILED":
-				this.props.onError && this.props.onError();
-				ErrorDataAlert.alert(rq.error, () => this.props.dropCallChain(this.props.serviceKey));
+				onError && onError();
+				if (!errorCodesBlacklist.includes(rq.error.errorCode)) {
+					ErrorDataAlert.alert(rq.error, () => dropCallChain(serviceKey));
+				}
 				return;
 			case "IN_PROGRESS":
 				return;

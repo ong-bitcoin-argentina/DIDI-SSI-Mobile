@@ -1,6 +1,6 @@
 import React from "react";
 import PushNotification from "react-native-push-notification";
-import { NOTIFICATION_SENDER_ID } from '../AppConfig';
+import { NOTIFICATION_SENDER_ID } from "../AppConfig";
 
 import { ServiceObserver } from "../presentation/common/ServiceObserver";
 

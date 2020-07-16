@@ -51,7 +51,6 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 						title={strings.shareExplanation.link.button}
 						onPress={() => this.shareLink(this.props.documents)}
 					/>
-					<DidiText.Explanation.Normal>{strings.shareExplanation.link.explanation}</DidiText.Explanation.Normal>
 				</View>
 			</DidiScreen>
 		);

@@ -34,7 +34,7 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 						source={
 							this.props.profileImage !== undefined
 								? { uri: `data:${this.props.profileImage.mimetype};base64,${this.props.profileImage.data}` }
-								: require("../../../resources/images/defaultProfileImage.png")
+								: require("../../../resources/images/logo-space.png")
 						}
 					/>
 				</View>
