@@ -198,7 +198,8 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation "com.google.firebase:firebase-analytics:17.2.2"
+    implementation "com.google.firebase:firebase-functions:18.0.0"
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";

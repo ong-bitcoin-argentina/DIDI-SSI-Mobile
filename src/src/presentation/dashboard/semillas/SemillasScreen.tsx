@@ -24,6 +24,7 @@ import { PrestadoresProps } from "./PrestadoresScreen";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 import { ErrorDataAlert } from "../../common/ErrorDataAlert";
+import { logger } from "firebase-functions";
 
 export interface LoginScreenProps {}
 
@@ -94,6 +95,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 				dni: cred.data.dni.toString()
 			});
 		}
+		logger.log("Entrando a pantalla semillas");
 	}
 
 	renderButton() {
