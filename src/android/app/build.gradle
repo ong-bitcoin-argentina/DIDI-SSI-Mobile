@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.didiapp"
+        applicationId "com.aidi"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

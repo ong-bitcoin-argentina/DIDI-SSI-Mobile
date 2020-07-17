@@ -126,7 +126,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 						{strings.semillas.steps.first.title}
 					</DidiText.Explanation.Small>
 
-					<View style={{ marginVertical: 0, flex: 1, flexDirection: "row", alignItems: "center" }}>
+					<View style={styles.filter}>
 						<View style={{ flex: 1 }}>
 							<DidiText.Explanation.Small style={styles.pickerLabel}>
 								{strings.general.filterBy.category}
@@ -218,5 +218,11 @@ const styles = StyleSheet.create({
 	pickerLabel: {
 		textAlign: "left",
 		fontSize: 12
+	},
+	filter: {
+		marginBottom: 10,
+		flex: 1 / 2,
+		flexDirection: "row",
+		alignItems: "center"
 	}
 });
