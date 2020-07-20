@@ -23,8 +23,6 @@ import { CredentialDocument } from "didi-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
-import { ErrorDataAlert } from "../../common/ErrorDataAlert";
-// import { logger } from "firebase-functions";
 
 export interface LoginScreenProps {}
 
