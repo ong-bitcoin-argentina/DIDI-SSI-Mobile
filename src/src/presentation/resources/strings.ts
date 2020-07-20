@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
 });
 
 export default {
+	appName,
 	actions: {
 		copied: "Copiado"
 	},
@@ -238,7 +239,10 @@ export default {
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email. Luego, ingresa una contraseña para tu cuenta."
+				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email. Luego, ingresa una contraseña para tu cuenta.",
+			registerDetail: `Registrándote en ${appName}, aceptás nuestros `,
+			terms: "Términos y Condiciones",
+			policies: "Políticas de Privacidad"
 		},
 		registrationValidated: {
 			message: "Tu email fue validado con éxito y tu Identidad Digital fue resguardada.",

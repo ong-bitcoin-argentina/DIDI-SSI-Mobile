@@ -49,7 +49,7 @@ const base: TextStyle = {
 	...color.dark
 };
 
-const styles = {
+export const styles = {
 	common: StyleSheet.create({
 		large: {
 			...base,
