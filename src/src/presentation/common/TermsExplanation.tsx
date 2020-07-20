@@ -10,6 +10,8 @@ type TermsProps = {
 	style?: any;
 };
 
+type TermsState = {};
+
 export default class TermsExplanation extends Component<TermsProps, TermsState> {
 	render() {
 		return (
