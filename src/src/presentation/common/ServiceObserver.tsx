@@ -2,11 +2,11 @@ import React from "react";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
 import { AddChildren } from "../../util/ReactExtensions";
-
 import { ServiceCallState } from "../../services/ServiceStateStore";
 import { didiConnect } from "../../store/store";
-
 import { ErrorDataAlert } from "./ErrorDataAlert";
+
+import crashlytics from "@react-native-firebase/crashlytics";
 
 // TODO: checkear que se logueen errores en firebase
 const errorCodesBlacklist = ["USER_GET", "FETCH_TG_ERR"];
@@ -39,6 +39,7 @@ class ServiceObserver extends React.Component<AddChildren<ServiceObserverInterna
 				return;
 			case "FAILED":
 				onError && onError();
+				crashlytics().recordError(new Error(rq.error.message));
 				if (!errorCodesBlacklist.includes(rq.error.errorCode)) {
 					ErrorDataAlert.alert(rq.error, () => dropCallChain(serviceKey));
 				}
