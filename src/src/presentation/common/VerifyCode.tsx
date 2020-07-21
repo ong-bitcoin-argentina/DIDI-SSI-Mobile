@@ -10,6 +10,7 @@ import strings from "../resources/strings";
 
 import { DidiScreen } from "./DidiScreen";
 import { ServiceObserver } from "./ServiceObserver";
+import { ScrollView } from "react-native-gesture-handler";
 
 export interface VerifyCodeProps {
 	description: string;
@@ -20,11 +21,18 @@ export interface VerifyCodeProps {
 	isContinuePending: boolean;
 }
 
+type CustomChildrens = {
+	firstChildren?: any;
+	secondChildren?: any;
+};
+
+type VerifyCodeInternalProps = VerifyCodeProps & CustomChildrens;
+
 interface VerifyCodeState {
 	inputCode?: string;
 }
 
-export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, VerifyCodeState> {
+export class VerifyCodeComponent extends React.PureComponent<VerifyCodeInternalProps, VerifyCodeState> {
 	constructor(props: VerifyCodeProps) {
 		super(props);
 		this.state = {};
@@ -39,12 +47,14 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, Ve
 
 				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
 
-				{this.props.children}
+				{this.props.children || this.props.firstChildren}
 
 				<TouchableOpacity onPress={this.onResendCodePress}>
 					<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCodeResendSuccess} />
 					<DidiText.ResendCodeButton>{strings.accessCommon.verify.resendCode}</DidiText.ResendCodeButton>
 				</TouchableOpacity>
+
+				{this.props.secondChildren}
 
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}

@@ -3,7 +3,7 @@ import Config from "react-native-config";
 
 type AppConfig = { debug: boolean; defaultServiceSettings: ServiceSettings };
 
-const debug: boolean = false;
+const debug: boolean = true;
 
 const defaultDebugServiceSettings: ServiceSettings = {
 	sharePrefix: "https://viewer.staging.didi.atixlabs.com/api/credential_viewer",
