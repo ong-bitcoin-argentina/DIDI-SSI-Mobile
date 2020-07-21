@@ -57,12 +57,12 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 
 	buttons(): SettingsButton[] {
 		const base = [
-			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.about.title, action: () => this.navigate("AboutThisAppScreen", {}) }
 		];
 		const debug = [
 			...base,
+			{ name: strings.settings.identityBackup, action: () => this.navigate("IdentitySettings", {}) },
 			{ name: strings.debug.serviceConfig.barTitle, action: () => this.navigate("ServiceSettings", {}) },
 			{ name: strings.debug.decodeJWT, action: () => this.navigate("JWTDecoderScreen", {}) }
 		];
@@ -79,7 +79,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 							source={
 								this.props.person.image !== undefined
 									? { uri: `data:${this.props.person.image.mimetype};base64,${this.props.person.image.data}` }
-									: require("../../resources/images/defaultProfileImage.png")
+									: require("../../resources/images/logo-space.png")
 							}
 						/>
 						<View style={styles.identityIdContainer}>

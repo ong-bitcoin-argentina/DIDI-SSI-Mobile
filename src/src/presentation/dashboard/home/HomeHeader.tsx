@@ -53,7 +53,7 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 						source={
 							this.props.person.image !== undefined
 								? { uri: `data:${this.props.person.image.mimetype};base64,${this.props.person.image.data}` }
-								: require("../../resources/images/defaultProfileImage.png")
+								: require("../../resources/images/logo-space.png")
 						}
 					/>
 					<View>

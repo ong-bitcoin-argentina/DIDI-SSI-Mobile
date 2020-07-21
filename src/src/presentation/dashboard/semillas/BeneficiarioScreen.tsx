@@ -75,9 +75,10 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 	};
 
 	finish = () => {
-		const { activePrestador } = this.props;
+		const { activePrestador, customEmail } = this.props;
+		const propToPass = customEmail ? { customEmail } : { activePrestador };
 		this.toggleModal();
-		this.navigate("RequestFinished", { activePrestador });
+		this.navigate("RequestFinished", propToPass);
 	};
 
 	openModal = () => {
@@ -88,7 +89,6 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		const { bottomButton, header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
 		const { selected, selectedName, modalVisible } = this.state;
-		const { activePrestador } = this.props;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />

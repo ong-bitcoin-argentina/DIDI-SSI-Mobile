@@ -1,4 +1,4 @@
-package com.didiapp;
+package com.aidi;
 
 import android.app.Application;
 import android.util.Log;

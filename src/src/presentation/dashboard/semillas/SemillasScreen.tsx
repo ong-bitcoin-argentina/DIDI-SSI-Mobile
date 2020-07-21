@@ -93,6 +93,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 				dni: cred.data.dni.toString()
 			});
 		}
+		// logger.log("Entrando a pantalla semillas");
 	}
 
 	renderButton() {
