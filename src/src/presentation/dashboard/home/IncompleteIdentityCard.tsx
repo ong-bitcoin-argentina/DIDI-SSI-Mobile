@@ -67,7 +67,7 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 
 	render() {
 		const { isIdentityCredentialPresent, validateDniState } = this.props;
-		// Only with "Finished" check it works, but some users still have the old configuration and this must considered
+		// Only with "Finished" check it works, but some users still have the old configuration and this must be considered
 		if ((isIdentityCredentialPresent && validateDniState === null) || validateDniState?.state === "Finished") {
 			return null;
 		} else {
