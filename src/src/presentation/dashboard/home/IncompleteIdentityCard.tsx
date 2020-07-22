@@ -38,10 +38,8 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 		const texts = strings.dashboard.validateIdentity[state?.state ?? "Start"];
 		return (
 			<Fragment>
-				<DidiText.Card.Title style={styles.titleColor}>{texts.title}</DidiText.Card.Title>
-				{texts.subtitle === null ? (
-					undefined
-				) : (
+				{texts && <DidiText.Card.Title style={styles.titleColor}>{texts.title}</DidiText.Card.Title>}
+				{texts && texts.subtitle && (
 					<DidiText.Card.Subtitle style={styles.subtitleColor}>{texts.subtitle}</DidiText.Card.Subtitle>
 				)}
 			</Fragment>
@@ -62,11 +60,15 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 				return undefined;
 			case "Success":
 				return this.renderButton(strings.dashboard.validateIdentity.Success.button, this.props.onValidateIdSuccess);
+			case "Finished":
+				return undefined;
 		}
 	}
 
 	render() {
-		if (this.props.isIdentityCredentialPresent && this.props.validateDniState === null) {
+		const { isIdentityCredentialPresent, validateDniState } = this.props;
+		// Only with "Finished" check it works, but some users still have the old configuration and this must considered
+		if ((isIdentityCredentialPresent && validateDniState === null) || validateDniState?.state === "Finished") {
 			return null;
 		} else {
 			return (

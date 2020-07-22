@@ -2,6 +2,9 @@ import { StoreAction } from "../StoreAction";
 
 type ValidateDniFinalState =
 	| {
+			state: "Finished";
+	  }
+	| {
 			state: "Success";
 	  }
 	| {
