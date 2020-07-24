@@ -148,7 +148,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 		const { dni } = this.state;
 
 		if (!dni) {
-			DataAlert.alert(strings.semillas.credentials, strings.semillas.noDni);
+			DataAlert.alert(strings.semillas.program, strings.semillas.noDni);
 		} else {
 			this.showCredentialConfirmation();
 		}
@@ -163,7 +163,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 		const { dni } = this.state;
 
 		DataAlert.alert(
-			strings.semillas.credentials,
+			strings.semillas.program,
 			strings.semillas.shareMessage,
 			() => {},
 			() => getCredentials(dni)
