@@ -19,15 +19,15 @@ const defaultDebugServiceSettings: ServiceSettings = {
 };
 
 const defaultStagingServiceSettings: ServiceSettings = {
-	sharePrefix: "http://alpha.didi.org.ar/api/credential_viewer",
-	trustGraphUri: "http:/alpha.didi.org.ar/graphql",
+	sharePrefix: "https://viewer.alpha.didi.org.ar/api/credential_viewer",
+	trustGraphUri: "https://mouro.alpha.didi.org.ar/graphql",
 	ethrDidUri: "https://did.testnet.rsk.co:4444",
 	ethrDelegateUri: "https://did.testnet.rsk.co:4444",
-	didiUserServer: "http://alpha.didi.org.ar/api/1.0/didi",
-	semillasServerUri: "http://20.49.23.47",
+	didiUserServer: "https://server.alpha.didi.org.ar/api/1.0/didi",
+	semillasServerUri: "https://api.semillas.didi.org.ar",
 	semillasLogin: {
-		user: "didiUser@atixlabs.com",
-		password: "admin"
+		user: Config.SEMILLAS_USERNAME,
+		password: Config.SEMILLAS_PASSWORD
 	}
 };
 
