@@ -56,10 +56,9 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 					this.props.onValidateIdFailure();
 					this.props.onStartValidateId();
 				});
-			case "In Progress":
-				return undefined;
 			case "Success":
 				return this.renderButton(strings.dashboard.validateIdentity.Success.button, this.props.onValidateIdSuccess);
+			case "In Progress":
 			case "Finished":
 				return undefined;
 		}
