@@ -94,9 +94,13 @@ export default {
 				subtitle: "Intente nuevamente.",
 				button: "Reintentar"
 			},
+			Finished: {
+				title: null,
+				subtitle: null
+			},
 			"In Progress": {
 				title: "Validando tus datos..., este proceso puede demorar unos minutos...",
-				subtitle: "",
+				subtitle: null,
 				button: null
 			}
 		},

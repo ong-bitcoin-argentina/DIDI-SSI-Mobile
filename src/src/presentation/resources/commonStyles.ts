@@ -14,7 +14,7 @@ export default {
 		area: {
 			backgroundColor: colors.background,
 			flex: 1,
-			alignItems: "center",
+			alignItems: "center"
 		},
 		body: {
 			width: "80%",
@@ -27,12 +27,12 @@ export default {
 			justifyContent: "space-between",
 			paddingHorizontal: "10%",
 			paddingVertical: 30
-		},
+		}
 	}),
 	benefit: StyleSheet.create({
 		view: {
 			flex: 1,
-			padding: 20,
+			padding: 20
 		},
 		area: {
 			backgroundColor: colors.background,
@@ -42,8 +42,8 @@ export default {
 			paddingVertical: 10
 		},
 		header: {
-			width: '100%',
-			textAlign: 'left',
+			width: "100%",
+			textAlign: "left",
 			marginBottom: 0
 		},
 		bottomButton: {
@@ -64,8 +64,8 @@ export default {
 			borderRadius: 8,
 			paddingVertical: 10,
 			paddingHorizontal: 20,
-			width: '90%',
-			height: '70%',
+			width: "90%",
+			height: "70%",
 			alignItems: "center",
 			shadowColor: "#000",
 			shadowOffset: {
@@ -78,9 +78,9 @@ export default {
 		},
 		footer: {
 			flex: 1,
-			flexDirection: 'row',
+			flexDirection: "row",
 			bottom: 10,
-			position: 'absolute'
+			position: "absolute"
 		},
 		smallButton: {
 			height: 40,

@@ -8,9 +8,8 @@ import DidiTextInput from "../util/DidiTextInput";
 import { Validations } from "../../model/Validations";
 import strings from "../resources/strings";
 
-import { DidiScreen } from "./DidiScreen";
+import { DidiScrollScreen } from "./DidiScreen";
 import { ServiceObserver } from "./ServiceObserver";
-import { ScrollView } from "react-native-gesture-handler";
 
 export interface VerifyCodeProps {
 	description: string;
@@ -40,7 +39,7 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeInternalP
 
 	render() {
 		return (
-			<DidiScreen>
+			<DidiScrollScreen>
 				<DidiText.Explanation.Emphasis style={styles.description}>
 					{this.props.description}
 				</DidiText.Explanation.Emphasis>
@@ -62,7 +61,7 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeInternalP
 					title={this.props.continueButtonText ?? strings.accessCommon.validateButtonText}
 					isPending={this.props.isContinuePending || false}
 				/>
-			</DidiScreen>
+			</DidiScrollScreen>
 		);
 	}
 
