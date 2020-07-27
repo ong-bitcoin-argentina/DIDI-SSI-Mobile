@@ -35,13 +35,11 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 
 	private renderMessages(): JSX.Element {
 		const state = this.props.validateDniState;
-		const texts = strings.dashboard.validateIdentity[state?.state ?? "Start"];
+		const { title, subtitle } = strings.dashboard.validateIdentity[state?.state ?? "Start"];
 		return (
 			<Fragment>
-				{texts && <DidiText.Card.Title style={styles.titleColor}>{texts.title}</DidiText.Card.Title>}
-				{texts && texts.subtitle && (
-					<DidiText.Card.Subtitle style={styles.subtitleColor}>{texts.subtitle}</DidiText.Card.Subtitle>
-				)}
+				<DidiText.Card.Title style={styles.titleColor}>{title}</DidiText.Card.Title>
+				<DidiText.Card.Subtitle style={styles.subtitleColor}>{subtitle}</DidiText.Card.Subtitle>
 			</Fragment>
 		);
 	}
