@@ -26,6 +26,8 @@ import { tokenReducer } from "./reducers/tokenReducer";
 import { tokensInLastSyncReducer } from "./reducers/tokensInLastSyncReducer";
 import { validateDniReducer, ValidateDniState } from "./reducers/validateDniProgressReducer";
 import { StoreAction } from "./StoreAction";
+import { prestadoresReducer, PrestadoresRegistry } from "./reducers/prestadoresReducer";
+import { PrestadorModel } from "../model/Prestador";
 
 export interface PersistedStoreContent {
 	did: DidState;
@@ -38,6 +40,7 @@ export interface PersistedStoreContent {
 	serviceSettings: ServiceSettings;
 	validateDni: ValidateDniState;
 	knownIssuers: IssuerRegistry;
+	prestadores: PrestadoresRegistry;
 	recentActivity: RecentActivity[];
 }
 
@@ -52,6 +55,7 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 	serviceSettings: serviceSettingsReducer,
 	validateDni: validateDniReducer,
 	knownIssuers: issuerReducer,
+	prestadores: prestadoresReducer,
 	recentActivity: recentActivityReducer
 });
 
@@ -66,6 +70,7 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	serviceSettings: "device",
 	validateDni: "user",
 	knownIssuers: "user",
+	prestadores: "user",
 	recentActivity: "user"
 };
 
