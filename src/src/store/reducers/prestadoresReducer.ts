@@ -18,11 +18,7 @@ export type PrestadoresAction = PrestadoresActionRegister | PrestadoresActionRes
 
 export type PrestadoresRegistry = PrestadorModel[];
 
-export function prestadoresReducer(state: PrestadoresRegistry, action: StoreAction): PrestadoresRegistry {
-	if (state === undefined) {
-		return [];
-	}
-
+export function prestadoresReducer(state: PrestadoresRegistry = [], action: StoreAction): PrestadoresRegistry {
 	switch (action.type) {
 		case "SET_PRESTADORES":
 			return action.content.data;
@@ -30,6 +26,6 @@ export function prestadoresReducer(state: PrestadoresRegistry, action: StoreActi
 			return [];
 
 		default:
-			return state;
+			return state ?? [];
 	}
 }
