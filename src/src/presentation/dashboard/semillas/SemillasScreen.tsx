@@ -16,8 +16,7 @@ import SemillasLogo from "../../resources/images/sem-logo.svg";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
-import { getUserCredentials } from "../../../services/user/getCredentials";
-import { getSemillasPrestadores } from "../../../services/user/getPrestadores";
+import { getUserCredentials } from "../../../services/semillas/getCredentials";
 import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
 import { PRESTADORES_FEATURE } from "../../../AppConfig";
 import { CredentialDocument } from "didi-sdk";
@@ -41,7 +40,6 @@ interface SemillasScreenState {
 
 interface SemillasScreenDispatchProps {
 	getCredentials: (dni: string) => void;
-	getPrestadores: () => void;
 }
 
 type SemillasScreenInternalProps = LoginScreenProps & SemillasScreenStateProps & SemillasScreenDispatchProps;
@@ -51,7 +49,6 @@ export interface SemillasScreenNavigation {
 	Prestadores: PrestadoresProps;
 }
 
-const serviceKeyPrestadores = "GetPrestadores";
 const serviceKey = "CreateSemillasCredentials";
 
 const {
@@ -102,7 +99,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 		const { didDni, pendingCredentials } = this.props;
 		const { prestadoresEnabled } = this.state;
 
-		return !didDni ? (
+		return didDni ? (
 			PRESTADORES_FEATURE &&
 				(prestadoresEnabled ? (
 					<DidiServiceButton
@@ -161,15 +158,14 @@ class SemillasScreen extends NavigationEnabledComponent<
 	};
 
 	showCredentialConfirmation = () => {
-		const { getPrestadores } = this.props;
+		const { getCredentials } = this.props;
 		const { dni } = this.state;
 
 		DataAlert.alert(
 			strings.semillas.credentials,
 			strings.semillas.shareMessage,
 			() => {},
-			() => getPrestadores()
-			// () => getCredentials(dni)
+			() => getCredentials(dni)
 		);
 	};
 }
@@ -184,8 +180,7 @@ export default didiConnect(
 		activeSpecialCredentials: state.activeSpecialCredentials
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
-		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni)),
-		getPrestadores: () => dispatch(getSemillasPrestadores(serviceKeyPrestadores))
+		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni))
 	})
 );
 

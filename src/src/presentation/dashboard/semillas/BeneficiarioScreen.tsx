@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { StatusBar, StyleSheet, View, Picker, Modal } from "react-native";
+import { StatusBar, StyleSheet, View, Picker, Modal, Alert } from "react-native";
 
 import { didiConnect } from "../../../store/store";
 import commonStyles from "../../resources/commonStyles";
@@ -11,13 +11,15 @@ import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import Beneficiario from "./Beneficiario";
-import { PrestadorModel } from "./Prestador";
 import { getFullName, getDniBeneficiario, getSemillasIdentitiesData } from "../../../util/semillasHelpers";
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 import { CredentialDocument } from "didi-sdk";
 import { RequestFinishedProps } from "./RequestFinishedScreen";
 import colors from "../../resources/colors";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
+import { PrestadorModel } from "../../../model/Prestador";
+import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
+import { getClient } from "../../../services/internal/withDidiServerClient";
 
 export type BeneficiarioProps = {
 	activePrestador?: PrestadorModel;
@@ -34,6 +36,9 @@ type BeneficiarioScreenState = {
 	selected: SemillasIdentityModel;
 	selectedName?: string;
 	modalVisible: boolean;
+	shareInProgress: boolean;
+	email: string;
+	phoneNumber: string;
 };
 
 type BeneficiarioScreenInternalProps = BeneficiarioScreenStateProps & BeneficiarioProps;
@@ -57,7 +62,10 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 			identityCredentials,
 			selected,
 			selectedName: getFullName(selected),
-			modalVisible: false
+			modalVisible: false,
+			shareInProgress: false,
+			email: getEmail(props.activeSpecialCredentials),
+			phoneNumber: getPhoneNumber(props.activeSpecialCredentials)
 		};
 	}
 
@@ -74,6 +82,37 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		this.setState({ modalVisible: !modalVisible });
 	};
 
+	getShareableData() {
+		const { dniBeneficiario, nameBeneficiario, birthDate, cert } = strings.specialCredentials.Semillas.keys;
+		const { selected } = this.state;
+		return {
+			[cert]: selected[cert],
+			[dniBeneficiario]: selected[dniBeneficiario],
+			[nameBeneficiario]: selected[nameBeneficiario],
+			[birthDate]: selected[birthDate]
+		};
+	}
+
+	shareData = () => {
+		this.setState({ shareInProgress: true });
+		const { email, phoneNumber } = this.state;
+		const data = {
+			email,
+			phoneNumber,
+			...this.getShareableData()
+		};
+		getClient()
+			.shareData(data)
+			.then(result => {
+				this.setState({ shareInProgress: false });
+				this.finish();
+			})
+			.catch(err => {
+				console.log(err);
+				Alert.alert(strings.semillas.errorShareData);
+			});
+	};
+
 	finish = () => {
 		const { activePrestador, customEmail } = this.props;
 		const propToPass = customEmail ? { customEmail } : { activePrestador };
@@ -88,7 +127,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 	render() {
 		const { bottomButton, header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
-		const { selected, selectedName, modalVisible } = this.state;
+		const { selected, selectedName, modalVisible, email, phoneNumber } = this.state;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -131,7 +170,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 								{strings.semillas.steps.second.modalTitle}
 							</DidiText.Explanation.Small>
 
-							<Beneficiario item={selected} />
+							<Beneficiario item={selected} email={email} phoneNumber={phoneNumber} />
 
 							<View style={modal.footer}>
 								<DidiServiceButton
@@ -142,10 +181,10 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 								/>
 
 								<DidiServiceButton
-									onPress={this.finish}
+									onPress={this.shareData}
 									title={strings.general.share}
 									style={modal.smallButton}
-									isPending={false}
+									isPending={this.state.shareInProgress}
 								/>
 							</View>
 						</View>

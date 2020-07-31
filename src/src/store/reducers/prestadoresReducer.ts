@@ -9,7 +9,12 @@ interface PrestadoresActionRegister {
 	type: "SET_PRESTADORES";
 	content: PrestadoresResponse;
 }
-export type PrestadoresAction = PrestadoresActionRegister;
+
+interface PrestadoresActionReset {
+	type: "RESET_PRESTADORES";
+}
+
+export type PrestadoresAction = PrestadoresActionRegister | PrestadoresActionReset;
 
 export type PrestadoresRegistry = PrestadorModel[];
 
@@ -21,6 +26,8 @@ export function prestadoresReducer(state: PrestadoresRegistry, action: StoreActi
 	switch (action.type) {
 		case "SET_PRESTADORES":
 			return action.content.data;
+		case "RESET_PRESTADORES":
+			return [];
 
 		default:
 			return state;

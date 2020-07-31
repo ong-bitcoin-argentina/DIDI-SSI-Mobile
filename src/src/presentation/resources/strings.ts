@@ -339,7 +339,8 @@ export default {
 		shareMessage: `${appName} quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.`,
 		call: "Llamar",
 		whatsApp: "WhatsApp",
-		callLater: "Llamaré luego"
+		callLater: "Llamaré luego",
+		errorShareData: "Ocurrió un error al compartir tus datos"
 	},
 	settings: {
 		idLabel: "ID:",
@@ -624,12 +625,14 @@ export default {
 		Semillas: {
 			title: "semillas",
 			keys: {
+				cert: "CERTIFICADO O CURSO",
 				relationship: "Relacion con Titular",
 				name: "NOMBRE",
 				lastName: "APELLIDO",
 				nameBeneficiario: "Nombre Beneficiario",
 				dniBeneficiario: "Dni Beneficiario",
-				dniTitular: "Dni Titular"
+				dniTitular: "Dni Titular",
+				birthDate: "Fecha de Nacimiento"
 			}
 		}
 	},
