@@ -22,7 +22,7 @@ export class SplashContent extends React.Component<AddChildren<{}>> {
 						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
 					</View>
 					<View style={{ marginTop: 40 }}>
-						<DidiText.Explanation.Small style={{ color: colors.logoLight }}>{VERSION}</DidiText.Explanation.Small>
+						<DidiText.Explanation.Small style={styles.version}>{VERSION}</DidiText.Explanation.Small>
 					</View>
 					<View style={styles.buttonContainer}>{this.props.children}</View>
 				</SafeAreaView>
@@ -50,5 +50,9 @@ const styles = StyleSheet.create({
 	didiLogo: {
 		width: "52%",
 		resizeMode: "contain"
+	},
+	version: {
+		color: colors.primary,
+		fontSize: 14
 	}
 });
