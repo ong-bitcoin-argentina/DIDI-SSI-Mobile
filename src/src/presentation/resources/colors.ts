@@ -21,14 +21,16 @@ const colors = {
 	primaryShadow: "#2F77DC",
 	primaryDark: "#205196",
 	primaryText: "#FFFFFF",
+	logo: "#32CCD6",
+	logoLight: "#4bd5de",
 
 	border: {
-		light: '#f0f0f0'
+		light: "#f0f0f0"
 	},
 
-	label: { 
-		background: '#f5476b',
-		text: 'white' 
+	label: {
+		background: "#f5476b",
+		text: "white"
 	},
 
 	secondary: "#24CDD2",
