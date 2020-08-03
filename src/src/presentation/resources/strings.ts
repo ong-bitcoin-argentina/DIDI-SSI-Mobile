@@ -633,7 +633,10 @@ export default {
 				lastName: "APELLIDO",
 				nameBeneficiario: "Nombre Beneficiario",
 				dniBeneficiario: "Dni Beneficiario",
-				dniTitular: "Dni Titular"
+				dniTitular: "Dni Titular",
+				birthdate: "Fecha de Nacimiento",
+				genre: "Genero",
+				cert: "CERTIFICADO O CURSO"
 			}
 		}
 	},
