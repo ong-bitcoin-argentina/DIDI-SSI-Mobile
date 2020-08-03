@@ -31,12 +31,6 @@ const defaultStagingServiceSettings: ServiceSettings = {
 	}
 };
 
-// https://server.alpha.didi.org.ar/
-// https://viewer.alpha.didi.org.ar/api/credential_viewer/asd
-// https://mouro.alpha.didi.org.ar/graphql
-// https://issuer.api.alpha.didi.org.ar/
-// https://issuer.alpha.didi.org.ar/
-
 export const AppConfig: AppConfig = {
 	debug,
 	defaultServiceSettings: debug ? defaultDebugServiceSettings : defaultStagingServiceSettings
