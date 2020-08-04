@@ -14,9 +14,9 @@ Steps to follow for generate an release version of APK
     MYAPP_RELEASE_KEY_ALIAS=youralias
     MYAPP_RELEASE_STORE_PASSWORD=yourpassword
     MYAPP_RELEASE_KEY_PASSWORD=yourkey
-2. In `./src/src/AppConfig.ts` set debug = false
 
 ### Generating APK 
-Run `npm run build` in `./src` for build and create apk
+1. Check ALWAYS that `./src/src/AppConfig.ts` have `debug = false`, if not, set it.
+2. Run `npm run build` in `./src` for build and create apk
 
 The expected output is on `./src/android/app/build/outputs/apk/release/app-release.apk`
