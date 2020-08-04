@@ -66,3 +66,4 @@ android/app/release.keystore
 # CocoaPods
 /ios/Pods/
 .env
+.env.*
