@@ -5,6 +5,9 @@ import { AddChildren } from "../util/ReactExtensions";
 
 import Background from "./resources/images/startAccessBackground.svg";
 import themes from "./resources/themes";
+import { DidiText } from "./util/DidiText";
+import colors from "./resources/colors";
+import { VERSION } from "../AppConfig";
 
 export class SplashContent extends React.Component<AddChildren<{}>> {
 	render() {
@@ -17,6 +20,9 @@ export class SplashContent extends React.Component<AddChildren<{}>> {
 				<SafeAreaView style={styles.area}>
 					<View style={styles.imageContainer}>
 						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
+					</View>
+					<View style={{ marginTop: 40 }}>
+						<DidiText.Explanation.Small style={styles.version}>{VERSION}</DidiText.Explanation.Small>
 					</View>
 					<View style={styles.buttonContainer}>{this.props.children}</View>
 				</SafeAreaView>
@@ -44,5 +50,9 @@ const styles = StyleSheet.create({
 	didiLogo: {
 		width: "52%",
 		resizeMode: "contain"
+	},
+	version: {
+		color: colors.primary,
+		fontSize: 14
 	}
 });

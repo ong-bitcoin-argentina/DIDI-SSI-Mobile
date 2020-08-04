@@ -23,12 +23,12 @@ const colors = {
 	primaryText: "#FFFFFF",
 
 	border: {
-		light: '#f0f0f0'
+		light: "#f0f0f0"
 	},
 
-	label: { 
-		background: '#f5476b',
-		text: 'white' 
+	label: {
+		background: "#f5476b",
+		text: "white"
 	},
 
 	secondary: "#24CDD2",
