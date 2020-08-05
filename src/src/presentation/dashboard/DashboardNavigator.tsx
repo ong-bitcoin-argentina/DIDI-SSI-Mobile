@@ -139,10 +139,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				activeTintColor: themes.navigationIconActive,
 				inactiveTintColor: themes.navigationIconInactive,
 				keyboardHidesTabBar: false,
-				showLabel: false,
-				style: {
-					backgroundColor: "red"
-				}
+				showLabel: false
 			},
 			backBehavior: "initialRoute",
 			defaultNavigationOptions: {
