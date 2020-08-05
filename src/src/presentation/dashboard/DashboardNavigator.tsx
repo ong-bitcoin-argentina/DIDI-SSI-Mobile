@@ -101,11 +101,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 
 	const BottomNavigator = createBottomTabNavigator(
 		{
-			DashboardHome: screen(
-				dashboardHome.stackNavigator("DashboardHome"), 
-				strings.tabNames.home, 
-				"home"
-			),
+			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, "home"),
 			/*
 			DashboardRounds: screen(
 				NavMap.from(RoundsScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds"),
@@ -143,7 +139,10 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				activeTintColor: themes.navigationIconActive,
 				inactiveTintColor: themes.navigationIconInactive,
 				keyboardHidesTabBar: false,
-				showLabel: false
+				showLabel: false,
+				style: {
+					backgroundColor: "red"
+				}
 			},
 			backBehavior: "initialRoute",
 			defaultNavigationOptions: {
@@ -161,6 +160,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 
 		render() {
 			const { navigation } = this.props;
+			console.log(this.props);
 			return (
 				<ServiceObserver serviceKey={recoverTokensServiceKey} onSuccess={() => null}>
 					<BottomNavigator navigation={navigation} />
