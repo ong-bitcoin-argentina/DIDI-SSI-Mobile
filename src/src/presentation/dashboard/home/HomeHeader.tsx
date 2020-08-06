@@ -25,11 +25,13 @@ interface HomeHeaderStateProps {
 
 interface HomeHeaderDispatchProps {
 	recoverTokens: () => void;
+	resetPrestadores: () => void;
 }
 
 class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps & HomeHeaderDispatchProps> {
 	componentDidMount() {
 		this.props.recoverTokens();
+		this.props.resetPrestadores();
 	}
 
 	render() {
@@ -82,7 +84,8 @@ export default didiConnect(
 		newTokensAvailable: state.newTokensAvailable
 	}),
 	(dispatch): HomeHeaderDispatchProps => ({
-		recoverTokens: () => dispatch(recoverTokens())
+		recoverTokens: () => dispatch(recoverTokens()),
+		resetPrestadores: () => dispatch({ type: "RESET_PRESTADORES" })
 	})
 );
 

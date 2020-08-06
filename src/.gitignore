@@ -30,7 +30,7 @@ build/
 local.properties
 *.iml
 android/app/google-services.json
-gradle.properties
+android/gradle.properties
 # Visual Studio Code
 #
 .vscode/
@@ -66,3 +66,4 @@ android/app/release.keystore
 # CocoaPods
 /ios/Pods/
 .env
+.env.*

@@ -16,7 +16,7 @@ import SemillasLogo from "../../resources/images/sem-logo.svg";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
-import { getUserCredentials } from "../../../services/user/getCredentials";
+import { getUserCredentials } from "../../../services/semillas/getCredentials";
 import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
 import { PRESTADORES_FEATURE } from "../../../AppConfig";
 import { CredentialDocument } from "didi-sdk";

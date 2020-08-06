@@ -4,15 +4,7 @@ import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 import FastImage from "react-native-fast-image";
 import semillasImagesSources from "./imagesSources";
-
-export type PrestadorModel = {
-	id: number;
-	category: keyof typeof semillasImagesSources;
-	name: string;
-	phone: string;
-	benefit: string;
-	speciality: string;
-};
+import { PrestadorModel } from "../../../model/Prestador";
 
 type PrestadorProps = {
 	item: PrestadorModel;

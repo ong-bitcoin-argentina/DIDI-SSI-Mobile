@@ -9,6 +9,7 @@ export function convertError<A>(from: Either<CommonServiceRequestError, A>): Eit
 	if (isRight(from)) {
 		return from;
 	}
+
 	switch (from.left.type) {
 		case "FETCH_ERROR":
 			return left(serviceErrors.common.FETCH_ERR);

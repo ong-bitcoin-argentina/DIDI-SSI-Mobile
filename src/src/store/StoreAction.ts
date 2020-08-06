@@ -10,6 +10,7 @@ import { ServiceSettingAction } from "./reducers/serviceSettingsReducer";
 import { SessionAction } from "./reducers/sessionReducer";
 import { TokenAction } from "./reducers/tokenReducer";
 import { ValidateDniAction } from "./reducers/validateDniProgressReducer";
+import { PrestadoresAction } from "./reducers/prestadoresReducer";
 
 export type StoreAction =
 	| { type: "RESET_PERSISTED_STORE" }
@@ -23,4 +24,5 @@ export type StoreAction =
 	| DidAction
 	| IssuerAction
 	| RecentActivityAction
+	| PrestadoresAction
 	| PushNotificationAction;
