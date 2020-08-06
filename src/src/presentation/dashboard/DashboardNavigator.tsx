@@ -157,7 +157,6 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 
 		render() {
 			const { navigation } = this.props;
-			console.log(this.props);
 			return (
 				<ServiceObserver serviceKey={recoverTokensServiceKey} onSuccess={() => null}>
 					<BottomNavigator navigation={navigation} />
