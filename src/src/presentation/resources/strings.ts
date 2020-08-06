@@ -636,7 +636,7 @@ export default {
 				nameBeneficiario: "Nombre Beneficiario",
 				dniBeneficiario: "Dni Beneficiario",
 				dniTitular: "Dni Titular",
-				birthdate: "Fecha de Nacimiento",
+				birthDate: "Fecha de Nacimiento",
 				genre: "Genero"
 			}
 		}

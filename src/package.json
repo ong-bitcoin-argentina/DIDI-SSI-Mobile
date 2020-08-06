@@ -9,7 +9,7 @@
 		"android": "ENVFILE=.env.staging react-native run-android",
 		"ios": "react-native run-ios",
 		"build": "cd android && ENVFILE=.env.production && ./gradlew assembleRelease",
-		"buildStage": "cd android && ENVFILE=.env.staging && ./gradlew assembleRelease",
+		"build:stage": "cd android && ENVFILE=.env.staging && ./gradlew assembleStagingRelease",
 		"debugBuild": "cd android && ./gradlew assembleDebug",
 		"deploy": "curl -F 'versionNumber=0.0.x' -F 'versionComment=Automatic Build'  -F 'userFile=@./android/app/build/outputs/apk/release/app-release.apk'   https://appscloud.creativecore.com.ar/delivery/edit/sendForm.php?app=nec-didi"
 	},

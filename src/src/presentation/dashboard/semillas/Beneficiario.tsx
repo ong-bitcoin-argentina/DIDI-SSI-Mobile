@@ -8,7 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import colors from "../../resources/colors";
 import { DidiText } from "../../util/DidiText";
 import strings from "../../resources/strings";
-const { nameBeneficiario, birthdate, dniBeneficiario, relationship, cert } = strings.specialCredentials.Semillas.keys;
+const { nameBeneficiario, birthDate, dniBeneficiario, relationship, cert } = strings.specialCredentials.Semillas.keys;
 const { Small } = DidiText;
 
 type BeneficiarioGlobalProps = {
@@ -46,7 +46,7 @@ class Beneficiario extends Component<BeneficiarioProps, BeneficiarioState> {
 						<Small style={value}>{item[cert]}</Small>
 						<Small style={value}>{item[nameBeneficiario]}</Small>
 						<Small style={value}>{item[dniBeneficiario]}</Small>
-						<Small style={value}>{item[birthdate]}</Small>
+						<Small style={value}>{item[birthDate]}</Small>
 						<Small style={value}>{item[relationship]}</Small>
 						<Small style={value}>{email}</Small>
 						<Small style={value}>{phoneNumber}</Small>
