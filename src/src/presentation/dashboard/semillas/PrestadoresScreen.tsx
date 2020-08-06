@@ -1,43 +1,49 @@
-import React, { Fragment, PureComponent } from "react";
-import { StatusBar, FlatList, View, Modal, Alert, Picker, StyleSheet } from "react-native";
+import React, { Fragment } from "react";
+import { StatusBar, FlatList, View, Modal, Alert, Picker, StyleSheet, ActivityIndicator } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 
-import semillasImagesSources from "./imagesSources";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import Prestador, { PrestadorModel } from "./Prestador";
+import Prestador from "./Prestador";
+import { PrestadorModel } from "../../../model/Prestador";
 import { BeneficiarioProps } from "./BeneficiarioScreen";
 import { Validations } from "../../../model/Validations";
 import commonStyles from "../../resources/commonStyles";
+import { didiConnect } from "../../../store/store";
+import { getSemillasPrestadores } from "../../../services/semillas/getPrestadores";
+import { semillasCategoriesFilters } from "../../resources/constants";
 const { bottomButton, header, view } = commonStyles.benefit;
 const { modal } = commonStyles;
 
 export type PrestadoresProps = {};
 
-interface PrestadoresScreenStateProps {}
+interface PrestadoresScreenStateProps {
+	prestadores: PrestadorModel[];
+}
 
 type PrestadoresScreenState = {
 	activePrestador?: PrestadorModel;
 	modalVisible: boolean;
+	loading: boolean;
 	customEmail: string;
 	categoryFilter: string;
 	actualList: PrestadorModel[];
-	completeList: PrestadorModel[];
 };
 
-type PrestadoresScreenInternalProps = PrestadoresScreenStateProps;
+interface PrestadoresScreenDispatchProps {
+	getPrestadores: () => void;
+}
+
+type PrestadoresScreenInternalProps = PrestadoresScreenStateProps & PrestadoresScreenDispatchProps;
 
 export interface PrestadoresScreenNavigation {
 	Beneficiario: BeneficiarioProps;
 }
-
-import { randomPrestadores } from "./mockup";
-import { semillasCategoriesFilters } from "../../resources/constants";
 
 class PrestadoresScreen extends NavigationEnabledComponent<
 	PrestadoresScreenInternalProps,
@@ -49,21 +55,28 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 	constructor(props: PrestadoresScreenInternalProps) {
 		super(props);
 		this.state = {
-			completeList: [],
-			actualList: [],
+			actualList: this.props.prestadores,
 			activePrestador: undefined,
 			modalVisible: false,
 			customEmail: "",
-			categoryFilter: "noFilter"
+			categoryFilter: "noFilter",
+			loading: this.props.prestadores.length === 0
 		};
 	}
 
 	componentDidMount() {
-		const completeList = randomPrestadores(30);
-		this.setState({
-			completeList,
-			actualList: completeList
-		});
+		if (this.props.prestadores.length === 0) {
+			this.props.getPrestadores();
+		}
+	}
+
+	componentDidUpdate(prevProps: any) {
+		if (prevProps.prestadores !== this.props.prestadores) {
+			this.setState({
+				actualList: this.props.prestadores,
+				loading: false
+			});
+		}
 	}
 
 	onSelect = (prestador: PrestadorModel) => {
@@ -93,10 +106,10 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 
 	handleFilterChange = (categoryFilter: string) => {
 		const mustFilter = categoryFilter !== "noFilter";
-		const { completeList } = this.state;
+		const { prestadores } = this.props;
 		this.setState({
 			categoryFilter,
-			actualList: completeList.filter(item => !mustFilter || item.category === categoryFilter)
+			actualList: prestadores.filter(item => !mustFilter || item.category === categoryFilter)
 		});
 	};
 
@@ -115,8 +128,38 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 		);
 	};
 
+	renderLoading = () => {
+		return <ActivityIndicator size="large" />;
+	};
+
+	renderList = () => {
+		return (
+			<FlatList
+				numColumns={1}
+				data={this.state.actualList}
+				renderItem={this.renderPrestador}
+				keyExtractor={({ id }) => `${id}`}
+				maxToRenderPerBatch={8}
+				updateCellsBatchingPeriod={30}
+				windowSize={9}
+				getItemLayout={this.getItemLayout}
+				ListFooterComponent={
+					<View style={{ marginTop: 20 }}>
+						<DidiText.Explanation.Small>{strings.semillas.steps.first.email}</DidiText.Explanation.Small>
+						<DidiServiceButton
+							onPress={() => this.setState({ modalVisible: true })}
+							title={strings.semillas.writeEmail}
+							style={{ height: 30 }}
+							isPending={false}
+						/>
+					</View>
+				}
+			/>
+		);
+	};
+
 	render() {
-		const { activePrestador, modalVisible, categoryFilter, actualList } = this.state;
+		const { activePrestador, modalVisible, categoryFilter, loading } = this.state;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -146,29 +189,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 						</View>
 					</View>
 
-					<View style={{ flex: 5 }}>
-						<FlatList
-							numColumns={1}
-							data={actualList}
-							renderItem={this.renderPrestador}
-							keyExtractor={({ id }) => `${id}`}
-							maxToRenderPerBatch={8}
-							updateCellsBatchingPeriod={30}
-							windowSize={9}
-							getItemLayout={this.getItemLayout}
-							ListFooterComponent={
-								<View style={{ marginTop: 20 }}>
-									<DidiText.Explanation.Small>{strings.semillas.steps.first.email}</DidiText.Explanation.Small>
-									<DidiServiceButton
-										onPress={() => this.setState({ modalVisible: true })}
-										title={strings.semillas.writeEmail}
-										style={{ height: 30 }}
-										isPending={false}
-									/>
-								</View>
-							}
-						/>
-					</View>
+					<View style={{ flex: 5 }}>{loading ? this.renderLoading() : this.renderList()}</View>
 
 					{activePrestador && activePrestador.id > -1 && (
 						<DidiServiceButton
@@ -212,7 +233,15 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 	}
 }
 
-export default PrestadoresScreen;
+export default didiConnect(
+	PrestadoresScreen,
+	(state): PrestadoresScreenStateProps => ({
+		prestadores: state.prestadores
+	}),
+	(dispatch): PrestadoresScreenDispatchProps => ({
+		getPrestadores: () => dispatch(getSemillasPrestadores("GetPrestadores"))
+	})
+);
 
 const styles = StyleSheet.create({
 	pickerLabel: {

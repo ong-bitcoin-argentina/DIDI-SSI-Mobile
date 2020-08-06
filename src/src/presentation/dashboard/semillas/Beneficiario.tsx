@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
