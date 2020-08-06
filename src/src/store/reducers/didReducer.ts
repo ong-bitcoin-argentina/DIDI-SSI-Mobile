@@ -9,6 +9,8 @@ export interface DidState {
 	didDni: boolean;
 }
 
+type ReceivedState = DidState | undefined;
+
 interface SetActiveDid {
 	type: "SET_ACTIVE_DID";
 	value: ActiveDid;
@@ -19,24 +21,29 @@ interface SetDidDni {
 	value: boolean;
 }
 
+interface ResetDidDni {
+	type: "RESET_DID_DNI";
+}
+
 // TODO agregar immutable helper
 
-export type DidAction = SetActiveDid | SetDidDni;
+export type DidAction = SetActiveDid | SetDidDni | ResetDidDni;
 
-export function didReducer(state: DidState | undefined, action: StoreAction): DidState {
-	if (state === undefined) {
-		return {
-			activeDid: null,
-			didDni: false
-		};
-	}
+const initialValue = {
+	activeDid: null,
+	didDni: false
+};
 
+export function didReducer(state: ReceivedState = initialValue, action: StoreAction): DidState {
 	switch (action.type) {
 		case "SET_ACTIVE_DID":
 			return { ...state, activeDid: action.value };
 
 		case "SET_DID_DNI":
 			return { ...state, didDni: action.value };
+
+		case "RESET_DID_DNI":
+			return initialValue;
 
 		default:
 			return state;

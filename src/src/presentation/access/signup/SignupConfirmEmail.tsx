@@ -69,19 +69,17 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 				<ServiceObserver serviceKey={serviceKeyVerify} onSuccess={() => this.registerUser()} />
 				<ServiceObserver serviceKey={serviceKeyRegister} onSuccess={() => this.navigate("SignupConfirmed", {})} />
 
-				<ScrollView>
-					<VerifyCodeComponent
-						description={strings.signup.registrationEmailSent.message}
-						onResendCodePress={serviceKey => {
-							this.props.dispatch(sendMailValidator(serviceKey, this.props.email, null));
-						}}
-						isContinueBlocked={this.state.password === null}
-						onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
-						isContinuePending={this.props.registerUserPending || this.props.verifyEmailCodePending}
-						firstChildren={<PasswordPickComponent onPasswordChange={password => this.setState({ password })} />}
-						secondChildren={<TermsExplanation style={{ marginVertical: 20 }} />}
-					/>
-				</ScrollView>
+				<VerifyCodeComponent
+					description={strings.signup.registrationEmailSent.message}
+					onResendCodePress={serviceKey => {
+						this.props.dispatch(sendMailValidator(serviceKey, this.props.email, null));
+					}}
+					isContinueBlocked={this.state.password === null}
+					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
+					isContinuePending={this.props.registerUserPending || this.props.verifyEmailCodePending}
+					firstChildren={<PasswordPickComponent onPasswordChange={password => this.setState({ password })} />}
+					secondChildren={<TermsExplanation style={{ marginVertical: 20 }} />}
+				/>
 			</>
 		);
 	}

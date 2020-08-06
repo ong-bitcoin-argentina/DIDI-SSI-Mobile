@@ -17,12 +17,18 @@ interface CredentialRecoveryStateProps {
 interface CredentialRecoveryDispatchProps {
 	recoverTokens: () => void;
 	deleteAllTokens: () => void;
+	deleteDidDni: () => void;
 }
 type CredentialRecoveryInternalProps = CredentialRecoveryProps &
 	CredentialRecoveryStateProps &
 	CredentialRecoveryDispatchProps;
 
 class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInternalProps> {
+	handleDeleteLocalData = () => {
+		this.props.deleteAllTokens();
+		this.props.deleteDidDni();
+	};
+
 	render() {
 		return (
 			<View {...this.props}>
@@ -31,7 +37,7 @@ class CredentialRecoveryComponent extends React.Component<CredentialRecoveryInte
 					{this.props.tokens.length}
 				</DidiText.Explanation.Normal>
 
-				<DidiButton title="Borrar Credenciales Locales" onPress={() => this.props.deleteAllTokens()} />
+				<DidiButton title="Borrar Credenciales Locales" onPress={this.handleDeleteLocalData} />
 				<DidiButton title="Cargar Credenciales Remotas" onPress={() => this.props.recoverTokens()} />
 			</View>
 		);
@@ -50,7 +56,8 @@ const connected = didiConnect(
 	(dispatch): CredentialRecoveryDispatchProps => {
 		return {
 			recoverTokens: () => dispatch(recoverTokens()),
-			deleteAllTokens: () => dispatch({ type: "TOKEN_DELETE_ALL" })
+			deleteAllTokens: () => dispatch({ type: "TOKEN_DELETE_ALL" }),
+			deleteDidDni: () => dispatch({ type: "RESET_DID_DNI" })
 		};
 	}
 );

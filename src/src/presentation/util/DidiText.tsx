@@ -295,6 +295,7 @@ function textWith(style: TextStyle) {
 
 export const DidiText = {
 	Title: textWith(styles.common.large),
+	Small: textWith(styles.common.small),
 	Explanation: {
 		Normal: textWith(styles.common.normal),
 		Emphasis: textWith(styles.common.bold),

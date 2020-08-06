@@ -35,15 +35,11 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 
 	private renderMessages(): JSX.Element {
 		const state = this.props.validateDniState;
-		const texts = strings.dashboard.validateIdentity[state?.state ?? "Start"];
+		const { title, subtitle } = strings.dashboard.validateIdentity[state?.state ?? "Start"];
 		return (
 			<Fragment>
-				<DidiText.Card.Title style={styles.titleColor}>{texts.title}</DidiText.Card.Title>
-				{texts.subtitle === null ? (
-					undefined
-				) : (
-					<DidiText.Card.Subtitle style={styles.subtitleColor}>{texts.subtitle}</DidiText.Card.Subtitle>
-				)}
+				<DidiText.Card.Title style={styles.titleColor}>{title}</DidiText.Card.Title>
+				<DidiText.Card.Subtitle style={styles.subtitleColor}>{subtitle}</DidiText.Card.Subtitle>
 			</Fragment>
 		);
 	}
@@ -58,15 +54,18 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 					this.props.onValidateIdFailure();
 					this.props.onStartValidateId();
 				});
-			case "In Progress":
-				return undefined;
 			case "Success":
 				return this.renderButton(strings.dashboard.validateIdentity.Success.button, this.props.onValidateIdSuccess);
+			case "In Progress":
+			case "Finished":
+				return undefined;
 		}
 	}
 
 	render() {
-		if (this.props.isIdentityCredentialPresent && this.props.validateDniState === null) {
+		const { isIdentityCredentialPresent, validateDniState } = this.props;
+		// Only with "Finished" check it works, but some users still have the old configuration and this must be considered
+		if ((isIdentityCredentialPresent && validateDniState === null) || validateDniState?.state === "Finished") {
 			return null;
 		} else {
 			return (
