@@ -307,6 +307,7 @@ export default {
 	semillas: {
 		barTitle: "Mis Credenciales semillas",
 		detailBarTitle: "Programa Semillas",
+		validationTitle: "Validación de Identidad - Semillas",
 		getCredentials: "Quiero mis credenciales",
 		noDni: "Debes completar el proceso de validación de identidad antes de poder acceder a los Beneficios de Semillas.",
 		credentials: "Credenciales",
@@ -344,7 +345,19 @@ export default {
 		call: "Llamar",
 		whatsApp: "WhatsApp",
 		callLater: "Llamaré luego",
-		errorShareData: "Ocurrió un error al compartir tus datos"
+		errorShareData: "Ocurrió un error al compartir tus datos",
+		validate: {
+			shouldDo: "Debes completar el proceso de validación de Identidad para acceder a los beneficios de Semillas.",
+			identity: "Validar Identidad a través de Semillas",
+			DNI: "Validar DNI con Semillas",
+			question: "¿No lográs validar tu identidad?",
+			description: "Si estás teniendo dificultades para validar tu identidad, lo podes realizar a través de Semillas.",
+			writeDNI: "Escribí tu número de DNI aquí, sin puntos ni espacios:",
+			willBeContacting: "Se van a estar contactando con vos para completar el proceso de validación.",
+			semillasProcessing: "Tu solicitud de validación de identidad está siendo procesada por Semillas.",
+			semillasContacting: "En estos días se contactarán con vos para completar el proceso.",
+			rememberYouCan: "Recordá que siempre vas a poder"
+		}
 	},
 	settings: {
 		idLabel: "ID:",
@@ -546,6 +559,10 @@ export default {
 		lastName: {
 			description: "Apellido",
 			placeholder: ""
+		},
+		DNI: {
+			description: "DNI",
+			placeholder: "Escriba su DNI"
 		},
 		email: {
 			description: "Email",

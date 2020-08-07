@@ -11,6 +11,7 @@ import { SessionAction } from "./reducers/sessionReducer";
 import { TokenAction } from "./reducers/tokenReducer";
 import { ValidateDniAction } from "./reducers/validateDniProgressReducer";
 import { PrestadoresAction } from "./reducers/prestadoresReducer";
+import { ValidateSemillasDniAction } from "./reducers/validateSemillasDniReducer";
 
 export type StoreAction =
 	| { type: "RESET_PERSISTED_STORE" }
@@ -21,6 +22,7 @@ export type StoreAction =
 	| ServiceCallAction
 	| IdentityAction
 	| ValidateDniAction
+	| ValidateSemillasDniAction
 	| DidAction
 	| IssuerAction
 	| RecentActivityAction

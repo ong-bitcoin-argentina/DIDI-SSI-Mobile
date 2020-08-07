@@ -90,5 +90,27 @@ export default {
 			marginBottom: 15,
 			textAlign: "center"
 		}
+	}),
+	button: StyleSheet.create({
+		lightRed: {
+			height: 36,
+			backgroundColor: colors.error,
+			paddingHorizontal: 20
+		},
+		lightGreen: {
+			height: 36,
+			backgroundColor: colors.greenSemillas,
+			paddingHorizontal: 20
+		}
+	}),
+	util: StyleSheet.create({
+		paragraphSm: {
+			marginVertical: 7,
+			fontSize: 14
+		},
+		paragraphMd: {
+			marginVertical: 11,
+			fontSize: 18
+		}
 	})
 };
