@@ -5,7 +5,7 @@ import BeneficiarioScreen from "./BeneficiarioScreen";
 
 import { DashboardScreenProps } from "../home/Dashboard";
 import RequestFinishedScreen from "./RequestFinishedScreen";
-import SemillasValidationScreen from "./SemillasValidationScreen";
+import SemillasValidationScreen from "./validation/SemillasValidationScreen";
 import ValidateIdentityNavigator from "../validateIdentity/ValidateIdentityNavigator";
 
 export interface SemillasNavigatorNavigation {

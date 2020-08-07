@@ -352,7 +352,7 @@ export default {
 			DNI: "Validar DNI con Semillas",
 			question: "¿No lográs validar tu identidad?",
 			description: "Si estás teniendo dificultades para validar tu identidad, lo podes realizar a través de Semillas.",
-			writeDNI: "Escribí tu número de DNI aquí, sin puntos ni espacios:",
+			needData: "Para ello, es necesario que completes los siguientes datos:",
 			willBeContacting: "Se van a estar contactando con vos para completar el proceso de validación.",
 			semillasProcessing: "Tu solicitud de validación de identidad está siendo procesada por Semillas.",
 			semillasContacting: "En estos días se contactarán con vos para completar el proceso.",
@@ -562,7 +562,7 @@ export default {
 		},
 		DNI: {
 			description: "DNI",
-			placeholder: "Escriba su DNI"
+			placeholder: "DNI sin puntos ni espacios"
 		},
 		email: {
 			description: "Email",

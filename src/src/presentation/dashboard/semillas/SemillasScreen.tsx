@@ -25,7 +25,6 @@ import { SpecialCredentialMap } from "../../../store/selector/credentialSelector
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 import DidiButton from "../../util/DidiButton";
 import commonStyles from "../../resources/commonStyles";
-import { ValidateDniState } from "../../../store/reducers/validateDniProgressReducer";
 const { modal, button, util, view } = commonStyles;
 const {
 	detailBarTitle,
@@ -46,12 +45,12 @@ interface SemillasScreenStateProps {
 	allSemillasCredentials?: CredentialDocument[];
 	credentials: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
-	semillasPending: boolean;
-	semillasFailure: boolean;
+	semillasValidationPending: boolean;
+	semillasValidationFailure: boolean;
+	prestadoresEnabled: boolean;
 }
 interface SemillasScreenState {
 	dni: string;
-	prestadoresEnabled: boolean;
 	modalVisible: boolean;
 }
 
@@ -84,9 +83,6 @@ class SemillasScreen extends NavigationEnabledComponent<
 	constructor(props: SemillasScreenInternalProps) {
 		super(props);
 		this.state = {
-			prestadoresEnabled:
-				haveValidIdentityAndBenefit(this.props.allSemillasCredentials) &&
-				haveEmailAndPhone(this.props.activeSpecialCredentials),
 			dni: "",
 			modalVisible: false
 		};
@@ -121,7 +117,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	renderButtonBenefits() {
 		if (PRESTADORES_FEATURE) {
-			const { prestadoresEnabled } = this.state;
+			const { prestadoresEnabled } = this.props;
 			return prestadoresEnabled ? (
 				<DidiServiceButton
 					onPress={() => this.navigate("Prestadores", {})}
@@ -193,7 +189,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	};
 
 	renderRequestDescription = () => {
-		const { semillasFailure } = this.props;
+		const { semillasValidationFailure } = this.props;
 		return (
 			<View style={{ paddingTop: 10 }}>
 				<Small style={styles.modalText}>{validate.shouldDo}</Small>
@@ -205,7 +201,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 					/>
 				</View>
 
-				{!semillasFailure && (
+				{!semillasValidationFailure && (
 					<View>
 						<Small style={styles.smallText}>{validate.question}</Small>
 						<Small
@@ -221,7 +217,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	};
 
 	render() {
-		const { semillasPending, didRequested, haveValidDni } = this.props;
+		const { semillasValidationPending, didRequested, haveIdentityCredential } = this.props;
 		return (
 			<Fragment>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
@@ -236,7 +232,9 @@ class SemillasScreen extends NavigationEnabledComponent<
 							<Small style={util.paragraphMd}>{detailSecond}</Small>
 							<Small style={util.paragraphMd}>{detailThird}</Small>
 						</View>
-						{didRequested || !haveValidDni ? this.renderButtonWantCredentials() : this.renderButtonBenefits()}
+						{!didRequested || !haveIdentityCredential
+							? this.renderButtonWantCredentials()
+							: this.renderButtonBenefits()}
 					</SafeAreaView>
 				</ScrollView>
 
@@ -248,7 +246,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 				>
 					<View style={modal.centeredView}>
 						<View style={[modal.view, { height: "60%" }]}>
-							{semillasPending ? this.renderPendingRequest() : this.renderRequestDescription()}
+							{semillasValidationPending ? this.renderPendingRequest() : this.renderRequestDescription()}
 
 							<View style={modal.footer}>
 								<DidiButton onPress={this.toggleModal} title={strings.general.cancel} style={modal.smallButton} />
@@ -265,14 +263,17 @@ export default didiConnect(
 	SemillasScreen,
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
-		didRequested: false,
-		// didRequested: state.did.didRequested,
 		allSemillasCredentials: state.allSemillasCredentials,
 		credentials: state.credentials,
 		activeSpecialCredentials: state.activeSpecialCredentials,
-		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
-		semillasPending: state.validateSemillasDni?.state === "In Progress",
-		semillasFailure: state.validateSemillasDni?.state === "Failure"
+		prestadoresEnabled:
+			haveValidIdentityAndBenefit(state.allSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials),
+		didRequested: false,
+		// didRequested: state.did.didRequested,
+		haveIdentityCredential: false,
+		// haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
+		semillasValidationPending: state.validateSemillasDni?.state === "In Progress",
+		semillasValidationFailure: state.validateSemillasDni?.state === "Failure"
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni))

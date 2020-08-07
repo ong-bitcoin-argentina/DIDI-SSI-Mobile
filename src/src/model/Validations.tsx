@@ -24,6 +24,12 @@ function hasMinLength(length: number): (code?: string) => boolean {
 	};
 }
 
+function hasLengthBetween(min: number, max: number): (code?: string) => boolean {
+	return code => {
+		return !!code && code.length >= min && code.length <= max;
+	};
+}
+
 const isNumber = matchesRegex("^[0-9]*$");
 
 export enum PasswordValidationErrors {
@@ -44,6 +50,8 @@ export const Validations = {
 	},
 
 	isDocumentNumber: isNumber,
+
+	isDNI: hasLengthBetween(7, 8),
 
 	isPhoneNumber: isNumber,
 
