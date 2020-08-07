@@ -25,6 +25,7 @@ import { SpecialCredentialMap } from "../../../store/selector/credentialSelector
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 import DidiButton from "../../util/DidiButton";
 import commonStyles from "../../resources/commonStyles";
+import { ValidateDniState } from "../../../store/reducers/validateDniProgressReducer";
 const { modal, button, util, view } = commonStyles;
 const {
 	detailBarTitle,
@@ -40,13 +41,13 @@ export interface LoginScreenProps {}
 
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
-	didDni: Boolean;
+	haveIdentityCredential: Boolean;
+	didRequested: Boolean;
 	allSemillasCredentials?: CredentialDocument[];
 	credentials: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
 	semillasPending: boolean;
 	semillasFailure: boolean;
-	renaperPending: boolean;
 }
 interface SemillasScreenState {
 	dni: string;
@@ -105,12 +106,22 @@ class SemillasScreen extends NavigationEnabledComponent<
 		}
 	}
 
-	renderButton() {
-		const { didDni, pendingCredentials } = this.props;
-		const { prestadoresEnabled } = this.state;
+	renderButtonWantCredentials() {
+		const { pendingCredentials, haveIdentityCredential, didRequested } = this.props;
+		const onPressAction = haveIdentityCredential && !didRequested ? this.onGetCredentials : this.toggleModal;
+		return (
+			<DidiServiceButton
+				onPress={onPressAction}
+				title={strings.semillas.getCredentials}
+				style={styles.button}
+				isPending={pendingCredentials}
+			/>
+		);
+	}
 
-		// TODO: remove !
-		if (didDni && PRESTADORES_FEATURE) {
+	renderButtonBenefits() {
+		if (PRESTADORES_FEATURE) {
+			const { prestadoresEnabled } = this.state;
 			return prestadoresEnabled ? (
 				<DidiServiceButton
 					onPress={() => this.navigate("Prestadores", {})}
@@ -120,15 +131,6 @@ class SemillasScreen extends NavigationEnabledComponent<
 				/>
 			) : (
 				<Alert text={credetialsPending} style={{ marginBottom: 50 }} />
-			);
-		} else if (!didDni) {
-			return (
-				<DidiServiceButton
-					onPress={this.toggleModal}
-					title={strings.semillas.getCredentials}
-					style={styles.button}
-					isPending={pendingCredentials}
-				/>
 			);
 		}
 	}
@@ -151,6 +153,16 @@ class SemillasScreen extends NavigationEnabledComponent<
 	goToSemillasValidation = () => {
 		this.toggleModal();
 		this.navigate("ValidateSemillasID", {});
+	};
+
+	onGetCredentials = () => {
+		const { dni } = this.state;
+
+		if (!dni) {
+			DataAlert.alert(strings.semillas.program, strings.semillas.noDni);
+		} else {
+			this.showCredentialConfirmation();
+		}
 	};
 
 	showCredentialConfirmation = () => {
@@ -209,7 +221,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	};
 
 	render() {
-		const { renaperPending, semillasPending } = this.props;
+		const { semillasPending, didRequested, haveValidDni } = this.props;
 		return (
 			<Fragment>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
@@ -224,7 +236,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 							<Small style={util.paragraphMd}>{detailSecond}</Small>
 							<Small style={util.paragraphMd}>{detailThird}</Small>
 						</View>
-						{this.renderButton()}
+						{didRequested || !haveValidDni ? this.renderButtonWantCredentials() : this.renderButtonBenefits()}
 					</SafeAreaView>
 				</ScrollView>
 
@@ -236,8 +248,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 				>
 					<View style={modal.centeredView}>
 						<View style={[modal.view, { height: "60%" }]}>
-							{/* TODO: sujeto a decision de negocio */}
-							{semillasPending && !renaperPending ? this.renderPendingRequest() : this.renderRequestDescription()}
+							{semillasPending ? this.renderPendingRequest() : this.renderRequestDescription()}
 
 							<View style={modal.footer}>
 								<DidiButton onPress={this.toggleModal} title={strings.general.cancel} style={modal.smallButton} />
@@ -254,13 +265,14 @@ export default didiConnect(
 	SemillasScreen,
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
-		didDni: state.did.didDni,
+		didRequested: false,
+		// didRequested: state.did.didRequested,
 		allSemillasCredentials: state.allSemillasCredentials,
 		credentials: state.credentials,
 		activeSpecialCredentials: state.activeSpecialCredentials,
+		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
 		semillasPending: state.validateSemillasDni?.state === "In Progress",
-		semillasFailure: state.validateSemillasDni?.state === "Failure",
-		renaperPending: state.validateDni?.state === "In Progress"
+		semillasFailure: state.validateSemillasDni?.state === "Failure"
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni))

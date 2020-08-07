@@ -6,7 +6,7 @@ export type ActiveDid = EthrDID | null;
 
 export interface DidState {
 	activeDid: ActiveDid;
-	didDni: boolean;
+	didRequested: boolean;
 }
 
 type ReceivedState = DidState | undefined;
@@ -31,7 +31,7 @@ export type DidAction = SetActiveDid | SetDidDni | ResetDidDni;
 
 const initialValue = {
 	activeDid: null,
-	didDni: false
+	didRequested: false
 };
 
 export function didReducer(state: ReceivedState = initialValue, action: StoreAction): DidState {
@@ -40,7 +40,7 @@ export function didReducer(state: ReceivedState = initialValue, action: StoreAct
 			return { ...state, activeDid: action.value };
 
 		case "SET_DID_DNI":
-			return { ...state, didDni: action.value };
+			return { ...state, didRequested: action.value };
 
 		case "RESET_DID_DNI":
 			return initialValue;
