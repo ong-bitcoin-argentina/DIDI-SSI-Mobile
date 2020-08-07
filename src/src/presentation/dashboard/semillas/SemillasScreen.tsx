@@ -236,7 +236,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 				>
 					<View style={modal.centeredView}>
 						<View style={[modal.view, { height: "60%" }]}>
-							{/* TODO: remove ! */}
+							{/* TODO: sujeto a decision de negocio */}
 							{semillasPending && !renaperPending ? this.renderPendingRequest() : this.renderRequestDescription()}
 
 							<View style={modal.footer}>
