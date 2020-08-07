@@ -73,6 +73,10 @@ export const styles = {
 		small: {
 			...base,
 			fontSize: 16
+		},
+		tiny: {
+			...base,
+			fontSize: 14
 		}
 	}),
 	validateIdentity: StyleSheet.create({
@@ -300,7 +304,8 @@ export const DidiText = {
 		Normal: textWith(styles.common.normal),
 		Emphasis: textWith(styles.common.bold),
 		Faded: textWith(styles.common.faded),
-		Small: textWith(styles.common.small)
+		Small: textWith(styles.common.small),
+		Tiny: textWith(styles.common.tiny)
 	},
 	ValidateIdentity: {
 		Normal: textWith(styles.common.small),

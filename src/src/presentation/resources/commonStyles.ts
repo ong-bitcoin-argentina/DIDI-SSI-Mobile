@@ -76,11 +76,25 @@ export default {
 			shadowRadius: 3.84,
 			elevation: 5
 		},
+		title: {
+			fontSize: 19,
+			fontWeight: "bold",
+			textAlign: "left",
+			alignSelf: "flex-start"
+		},
+		subtitle: {
+			fontSize: 16,
+			fontWeight: "bold",
+			textAlign: "left",
+			alignSelf: "flex-start"
+		},
 		footer: {
+			width: "100%",
 			flex: 1,
 			flexDirection: "row",
 			bottom: 10,
-			position: "absolute"
+			position: "absolute",
+			alignSelf: "center"
 		},
 		smallButton: {
 			height: 40,

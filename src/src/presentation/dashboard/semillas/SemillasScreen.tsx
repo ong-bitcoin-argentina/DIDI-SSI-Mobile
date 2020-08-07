@@ -208,7 +208,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 							onPress={this.goToSemillasValidation}
 							style={[styles.smallText, { textDecorationLine: "underline" }]}
 						>
-							{validate.identity}
+							{validate.identityFromSemillas}
 						</Small>
 					</View>
 				)}
@@ -247,10 +247,6 @@ class SemillasScreen extends NavigationEnabledComponent<
 					<View style={modal.centeredView}>
 						<View style={[modal.view, { height: "60%" }]}>
 							{semillasValidationPending ? this.renderPendingRequest() : this.renderRequestDescription()}
-
-							<View style={modal.footer}>
-								<DidiButton onPress={this.toggleModal} title={strings.general.cancel} style={modal.smallButton} />
-							</View>
 						</View>
 					</View>
 				</Modal>
@@ -268,10 +264,8 @@ export default didiConnect(
 		activeSpecialCredentials: state.activeSpecialCredentials,
 		prestadoresEnabled:
 			haveValidIdentityAndBenefit(state.allSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials),
-		didRequested: false,
-		// didRequested: state.did.didRequested,
-		haveIdentityCredential: false,
-		// haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
+		didRequested: state.did.didRequested,
+		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
 		semillasValidationPending: state.validateSemillasDni?.state === "In Progress",
 		semillasValidationFailure: state.validateSemillasDni?.state === "Failure"
 	}),
