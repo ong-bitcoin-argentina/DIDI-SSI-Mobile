@@ -64,6 +64,7 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 	};
 
 	handleConfirm = () => {
+		// TODO: when endpoint is ready, make a fetch and show success or error with an Alert
 		this.props.semillasValidationStart();
 		this.toggleModal();
 		this.navigate("DashboardHome", {});
