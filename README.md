@@ -21,11 +21,9 @@ Steps to follow for generate an release version of APK
 ### Generating APK 
 A. Run `npm run build` in `/src` for build and create apk for production.
 
-Expected output is on `/src/android/app/build/outputs/apk/release/app-release.apk`
-
 B. Run `npm run build:stage` in `/src` for build and create apk for staging.
 
-Expected output is on `/src/android/app/build/outputs/apk/staging/release/app-staging-release.apk`
+Expected output (for both) is on `/src/android/app/build/outputs/apk/staging/release/app-staging-release.apk`
 
 ---
 ## DIDI-SDK
