@@ -4,11 +4,18 @@
 [https://sketch.cloud/s/9ZYbM/a/DJD3aj/play](url)
 
 
+---
+
+
 ## Environment
 ### .env.production y .env.staging
 Obtener archivos desde Google Drive (pedir acceso) y agregarlos a la carpeta /src del proyecto
 ### google-services.json
 Obtener archivo desde Google Drive o Firebase del proyecto, y agregarlo a `/src/android/app`
+
+
+---
+
 
 ## APK Deployment
 Steps to follow for generate an release version of APK
@@ -25,7 +32,9 @@ B. Run `npm run build:stage` in `/src` for build and create apk for staging.
 
 Expected output (for both) is on `/src/android/app/build/outputs/apk/staging/release/app-staging-release.apk`
 
+
 ---
+
 ## DIDI-SDK
 
 Para el correcto funcionamiento de la aplicación, se debe hacer una modificacion de entorno sobre el DIDI-SDK.
