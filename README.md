@@ -31,8 +31,6 @@ Change VERSIONCODE (add 1, for example from 4 to 5) in `.env.production` and:
 
 Run `npm run build` in `/src` for build and create apk for production.
 
-or
-
 #### B. Staging
 Change VERSION (add 1 at last, for example from 1.0.9 to 1.0.10) in `.env.staging`) and:
 
