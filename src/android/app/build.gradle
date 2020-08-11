@@ -1,6 +1,12 @@
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
+project.ext.envConfigFiles = [
+    debug: ".env.staging",
+    staging: ".env.staging",
+    release: ".env.production",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -131,10 +137,19 @@ android {
         applicationId "com.aidi"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode project.env.get("VERSIONCODE").toInteger()
+        versionName project.env.get("VERSION")
         missingDimensionStrategy 'react-native-camera', 'general'
     }
+
+    flavorDimensions "default"
+
+    productFlavors { //add this object
+        staging {
+            resValue "string", "build_config_package", "com.aidi"
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -159,13 +174,12 @@ android {
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
         release {
-            signingConfig signingConfigs.release
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            //signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -218,4 +232,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"

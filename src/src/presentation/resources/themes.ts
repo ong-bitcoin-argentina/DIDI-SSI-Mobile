@@ -1,12 +1,13 @@
 import colors, { Color } from "./colors";
 import DidiTheme from "./DidiTheme";
+import { QA } from "../../AppConfig";
 
 const primaryTheme: DidiTheme = {
 	background: colors.background,
 	foreground: colors.text,
 	foregroundFaded: colors.textFaded,
 
-	navigation: colors.primary,
+	navigation: QA ? colors.primaryGray : colors.primary,
 	darkNavigation: colors.primaryDark,
 	navigationText: colors.primaryText,
 
