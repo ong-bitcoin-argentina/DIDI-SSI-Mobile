@@ -76,11 +76,25 @@ export default {
 			shadowRadius: 3.84,
 			elevation: 5
 		},
+		title: {
+			fontSize: 19,
+			fontWeight: "bold",
+			textAlign: "left",
+			alignSelf: "flex-start"
+		},
+		subtitle: {
+			fontSize: 16,
+			fontWeight: "bold",
+			textAlign: "left",
+			alignSelf: "flex-start"
+		},
 		footer: {
+			width: "100%",
 			flex: 1,
 			flexDirection: "row",
 			bottom: 10,
-			position: "absolute"
+			position: "absolute",
+			alignSelf: "center"
 		},
 		smallButton: {
 			height: 40,
@@ -89,6 +103,28 @@ export default {
 		text: {
 			marginBottom: 15,
 			textAlign: "center"
+		}
+	}),
+	button: StyleSheet.create({
+		lightRed: {
+			height: 36,
+			backgroundColor: colors.error,
+			paddingHorizontal: 20
+		},
+		lightGreen: {
+			height: 36,
+			backgroundColor: colors.greenSemillas,
+			paddingHorizontal: 20
+		}
+	}),
+	util: StyleSheet.create({
+		paragraphSm: {
+			marginVertical: 7,
+			fontSize: 14
+		},
+		paragraphMd: {
+			marginVertical: 11,
+			fontSize: 18
 		}
 	})
 };

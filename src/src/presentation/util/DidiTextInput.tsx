@@ -17,6 +17,7 @@ export interface DidiTextInputProps {
 
 	stateIndicator?: JSX.Element;
 	textInputProps?: TextInputProps;
+	maxLength?: number;
 }
 
 export default class DidiTextInput extends React.Component<DidiTextInputProps> {
@@ -36,7 +37,12 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 					<View style={style.stateContainer}>
 						<View style={style.inputContainer}>
 							<DidiText.InputDescription>{this.props.description}</DidiText.InputDescription>
-							<TextInput {...textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
+							<TextInput
+								{...textInputProps}
+								style={textInputStyle}
+								placeholder={this.props.placeholder}
+								maxLength={this.props.maxLength}
+							/>
 						</View>
 						{this.props.stateIndicator}
 					</View>
@@ -66,6 +72,20 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				textInputProps={{
 					onChangeText: props.onChangeText
 				}}
+			/>
+		);
+	};
+
+	static DNI = (props: { onChangeText(text: string): void }) => {
+		return (
+			<DidiTextInput
+				description={strings.textInput.DNI.description}
+				placeholder={strings.textInput.DNI.placeholder}
+				textInputProps={{
+					keyboardType: "number-pad",
+					onChangeText: props.onChangeText
+				}}
+				maxLength={8}
 			/>
 		);
 	};

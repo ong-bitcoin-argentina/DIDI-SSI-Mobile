@@ -50,6 +50,7 @@ export default {
 		acceptAlternative: "Acepto",
 		ok: "OK",
 		cancel: "Cancelar",
+		reject: "Rechazar",
 		back: "Volver"
 	},
 	debug: {
@@ -307,6 +308,7 @@ export default {
 	semillas: {
 		barTitle: "Mis Credenciales semillas",
 		detailBarTitle: "Programa Semillas",
+		validationTitle: "Validación de Identidad - Semillas",
 		getCredentials: "Quiero mis credenciales",
 		noDni: "Debes completar el proceso de validación de identidad antes de poder acceder a los Beneficios de Semillas.",
 		credentials: "Credenciales",
@@ -344,7 +346,21 @@ export default {
 		call: "Llamar",
 		whatsApp: "WhatsApp",
 		callLater: "Llamaré luego",
-		errorShareData: "Ocurrió un error al compartir tus datos"
+		errorShareData: "Ocurrió un error al compartir tus datos",
+		validate: {
+			shouldDo: "Debes completar el proceso de validación de Identidad para acceder a los beneficios de Semillas.",
+			identityFromSemillas: "Validar Identidad a través de Semillas",
+			DNI: "Validar DNI con Semillas",
+			question: "¿No lográs validar tu identidad?",
+			description: "Si estás teniendo dificultades para validar tu identidad, lo podes realizar a través de Semillas.",
+			descriptionSharing: "Estás por compartir la siguiente información con Semillas:",
+			needData: "Para ello, es necesario que completes los siguientes datos:",
+			willBeContacting: "Se van a estar contactando con vos para completar el proceso de validación.",
+			willBeContactingBrevity: "Se van a estar contactando con vos a la brevedad.",
+			semillasProcessing: "Tu solicitud de validación de identidad está siendo procesada por Semillas.",
+			semillasContacting: "En estos días se contactarán con vos para completar el proceso.",
+			rememberYouCan: "Recordá que siempre vas a poder"
+		}
 	},
 	settings: {
 		idLabel: "ID:",
@@ -546,6 +562,10 @@ export default {
 		lastName: {
 			description: "Apellido",
 			placeholder: ""
+		},
+		DNI: {
+			description: "DNI",
+			placeholder: "DNI sin puntos ni espacios"
 		},
 		email: {
 			description: "Email",
@@ -773,6 +793,10 @@ export default {
 		cancel: "Cancelar",
 		share: "Compartir",
 		next: "Siguiente",
+		nameAndLastname: "Nombre y Apellido",
+		declaredDNI: "DNI declarado",
+		email: "eMail",
+		phone: "Celular",
 		filterBy: {
 			category: "Filtrar por categoría"
 		}

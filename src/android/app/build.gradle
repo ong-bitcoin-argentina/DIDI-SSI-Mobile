@@ -144,7 +144,10 @@ android {
 
     flavorDimensions "default"
 
-    productFlavors { //add this object
+    productFlavors {
+        dev {
+            resValue "string", "build_config_package", "com.aidi"
+        }
         staging {
             resValue "string", "build_config_package", "com.aidi"
         }
