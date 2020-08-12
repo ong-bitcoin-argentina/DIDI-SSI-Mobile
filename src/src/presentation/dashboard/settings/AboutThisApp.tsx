@@ -7,6 +7,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DidiText } from "../../util/DidiText";
 import strings from "../../resources/strings";
 const { paragraphs } = strings.settings.about;
+const { Small } = DidiText.Explanation;
 
 export type AboutThisAppScreenProps = {};
 type AboutThisAppScreenState = {};
@@ -29,9 +30,9 @@ export class AboutThisAppScreen extends NavigationEnabledComponent<
 					{paragraphs.map((p, index) => (
 						<Text style={styles.paragraph} key={index}>
 							{p.map((item, subindex) => (
-								<DidiText.Explanation.Small style={item.style} key={subindex}>
+								<Small style={item.style} key={subindex}>
 									{item.text}
-								</DidiText.Explanation.Small>
+								</Small>
 							))}
 						</Text>
 					))}

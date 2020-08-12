@@ -44,7 +44,8 @@ export default {
 		header: {
 			width: "100%",
 			textAlign: "left",
-			marginBottom: 8
+			marginBottom: 8,
+			fontSize: 19
 		},
 		bottomButton: {
 			paddingVertical: 20,
@@ -56,7 +57,8 @@ export default {
 			flex: 1,
 			justifyContent: "center",
 			alignItems: "center",
-			marginTop: 22
+			marginTop: 22,
+			width: "100%"
 		},
 		view: {
 			margin: 20,
@@ -92,6 +94,7 @@ export default {
 			width: "100%",
 			flex: 1,
 			flexDirection: "row",
+			justifyContent: "space-around",
 			bottom: 10,
 			position: "absolute",
 			alignSelf: "center"

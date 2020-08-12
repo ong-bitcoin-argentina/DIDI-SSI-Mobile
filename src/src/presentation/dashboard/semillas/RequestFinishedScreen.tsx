@@ -123,7 +123,9 @@ export default RequestFinishedScreen;
 
 const styles = StyleSheet.create({
 	description: {
-		marginVertical: 10
+		marginTop: 22,
+		marginBottom: 8,
+		fontSize: 16
 	},
 	prestador: {
 		margin: 10,

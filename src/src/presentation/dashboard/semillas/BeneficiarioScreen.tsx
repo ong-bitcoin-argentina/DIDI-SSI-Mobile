@@ -20,9 +20,10 @@ import { SpecialCredentialMap } from "../../../store/selector/credentialSelector
 import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
 import { getClient } from "../../../services/internal/withDidiServerClient";
+import SemillasLogo from "../../resources/images/sem-logo.svg";
 const { title, description, detail, modalTitle } = strings.semillas.steps.second;
 
-const { Small, Tiny } = DidiText.Explanation;
+const { Small, Tiny, Normal } = DidiText.Explanation;
 
 export type BeneficiarioProps = {
 	activePrestador?: PrestadorModel;
@@ -169,8 +170,14 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 
 				<Modal animationType="fade" transparent={true} visible={modalVisible}>
 					<View style={modal.centeredView}>
-						<View style={modal.view}>
-							<Small style={{ fontSize: 13 }}>{modalTitle}</Small>
+						<View style={[modal.view, styles.modalView]}>
+							<View style={styles.modalImage}>
+								<Small style={{ alignSelf: "center", fontWeight: "bold", fontSize: 18 }}>
+									{selected["Nombre Beneficiario"]}
+								</Small>
+								<SemillasLogo viewBox="0 0 128 39" width={100} height={58} style={styles.logo} />
+							</View>
+							<Small style={styles.modalTitle}>{modalTitle}:</Small>
 
 							<Beneficiario item={selected} email={email} phoneNumber={phoneNumber} />
 
@@ -185,7 +192,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 								<DidiServiceButton
 									onPress={this.shareData}
 									title={strings.general.share}
-									style={modal.smallButton}
+									style={[modal.smallButton, { backgroundColor: colors.greenSemillas }]}
 									isPending={this.state.shareInProgress}
 								/>
 							</View>
@@ -222,5 +229,24 @@ const styles = StyleSheet.create({
 	description: {
 		textAlign: "left",
 		marginTop: 12
+	},
+	logo: {
+		height: 40,
+		// marginVertical: 10,
+		alignSelf: "flex-end"
+	},
+	modalImage: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignContent: "center",
+		alignItems: "center",
+		width: "100%"
+	},
+	modalView: {
+		height: 380
+	},
+	modalTitle: {
+		fontSize: 16,
+		textAlign: "left"
 	}
 });
