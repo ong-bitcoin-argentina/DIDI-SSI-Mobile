@@ -1,7 +1,7 @@
 import React from "react";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
-import { View, StyleSheet, Modal } from "react-native";
+import { View, StyleSheet, Modal, Alert } from "react-native";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import DidiButton from "../../../util/DidiButton";
@@ -13,17 +13,22 @@ import { Validations } from "../../../../model/Validations";
 import { DashboardScreenProps } from "../../home/Dashboard";
 import { didiConnect } from "../../../../store/store";
 import { getEmail, getPhoneNumber } from "../../../../util/specialCredentialsHelpers";
+import { validateDniWithSemillas } from "../../../../services/semillas/validateDni";
+import { SemillasNeedsToValidateDni } from "didi-sdk";
+import { ServiceObserver } from "../../../common/ServiceObserver";
 const { Tiny, Small, Normal } = DidiText.Explanation;
 const { validate } = strings.semillas;
 const { declaredDNI, nameAndLastname, phone } = strings.general;
 const { accept, reject } = strings.buttons;
+
+const serviceKey = "ValidateDniWithSemillas";
 
 interface Navigation {
 	DashboardHome: DashboardScreenProps;
 }
 
 interface DispatchProps {
-	semillasValidationStart: () => void;
+	semillasValidationStart: (data: SemillasNeedsToValidateDni) => void;
 }
 
 interface StateProps {
@@ -63,11 +68,25 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 		this.setState({ modalVisible: !this.state.modalVisible });
 	};
 
-	handleConfirm = () => {
+	handleValidateConfirm = () => {
 		// TODO: when endpoint is ready, make a fetch and show success or error with an Alert
-		this.props.semillasValidationStart();
+		const { dni, name, lastname } = this.state;
+		const { email, phoneNumber } = this.props;
+		const data = {
+			dni,
+			phoneNumber,
+			email,
+			name,
+			lastname
+		};
+		this.props.semillasValidationStart(data);
 		this.toggleModal();
-		this.navigate("DashboardHome", {});
+	};
+
+	onSuccessRequest = () => {
+		Alert.alert(strings.semillas.program, validate.successRequest, [
+			{ text: "OK", onPress: () => this.navigate("DashboardHome", {}) }
+		]);
 	};
 
 	render() {
@@ -77,6 +96,7 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 		const { modal } = commonStyles;
 		return (
 			<ScrollView>
+				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onSuccessRequest} />
 				<View style={styles.container}>
 					<View style={[border, area]}>
 						<Small style={text}>{validate.description}</Small>
@@ -123,7 +143,7 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 							<Tiny style={description}>{validate.willBeContactingBrevity}</Tiny>
 							<View style={modal.footer}>
 								<DidiButton onPress={this.toggleModal} title={reject} style={modal.smallButton} />
-								<DidiButton onPress={this.handleConfirm} title={accept} style={modal.smallButton} />
+								<DidiButton onPress={this.handleValidateConfirm} title={accept} style={modal.smallButton} />
 							</View>
 						</View>
 					</View>
@@ -140,7 +160,7 @@ export default didiConnect(
 		phoneNumber: getPhoneNumber(state.activeSpecialCredentials)
 	}),
 	(dispatch): DispatchProps => ({
-		semillasValidationStart: () => dispatch({ type: "VALIDATE_SEMILLAS_DNI_START" })
+		semillasValidationStart: data => dispatch(validateDniWithSemillas(serviceKey, data))
 	})
 );
 

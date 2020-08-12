@@ -42,9 +42,7 @@ interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
 	haveIdentityCredential: Boolean;
 	didRequested: Boolean;
-	allSemillasCredentials?: CredentialDocument[];
 	credentials: CredentialDocument[];
-	activeSpecialCredentials: SpecialCredentialMap;
 	semillasValidationPending: boolean;
 	semillasValidationFailure: boolean;
 	prestadoresEnabled: boolean;
@@ -259,9 +257,7 @@ export default didiConnect(
 	SemillasScreen,
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
-		allSemillasCredentials: state.allSemillasCredentials,
 		credentials: state.credentials,
-		activeSpecialCredentials: state.activeSpecialCredentials,
 		prestadoresEnabled:
 			haveValidIdentityAndBenefit(state.allSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials),
 		didRequested: state.did.didRequested,

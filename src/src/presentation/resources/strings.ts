@@ -359,7 +359,8 @@ export default {
 			willBeContactingBrevity: "Se van a estar contactando con vos a la brevedad.",
 			semillasProcessing: "Tu solicitud de validación de identidad está siendo procesada por Semillas.",
 			semillasContacting: "En estos días se contactarán con vos para completar el proceso.",
-			rememberYouCan: "Recordá que siempre vas a poder"
+			rememberYouCan: "Recordá que siempre vas a poder",
+			successRequest: "La solicitud de validación de DNI se registró de manera correcta, pronto tendrás novedades."
 		}
 	},
 	settings: {
