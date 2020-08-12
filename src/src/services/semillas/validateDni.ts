@@ -22,7 +22,7 @@ const validateDniComponent = buildComponentServiceCall(async (args: ValidateDniA
 	return left(response.left);
 });
 
-export function validateDniWithSemillas(serviceKey: string, data: SemillasNeedsToValidate) {
+export function validateDniWithSemillas(serviceKey: string, data: SemillasNeedsToValidateDni) {
 	return withDidiServerClient(serviceKey, { errorMessage: NO_DID }, api => {
 		return withExistingDid(serviceKey, { errorMessage: NO_DID }, did => {
 			return validateDniComponent(serviceKey, { api, did, data }, result => {

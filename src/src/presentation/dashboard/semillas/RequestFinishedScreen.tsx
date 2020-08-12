@@ -9,13 +9,19 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import Prestador, { PrestadorModel } from "./Prestador";
+import Prestador from "./Prestador";
 import DidiButton from "../../util/DidiButton";
 import WhatsAppIcon from "../../resources/images/icon_whatsapp.svg";
 import CallIcon from "../../resources/images/phone.svg";
 import DidiButtonImage from "../../util/DidiButtonImage";
 import { DashboardScreenProps } from "../home/Dashboard";
 import { ScrollView } from "react-native-gesture-handler";
+import { PrestadorModel } from "../../../model/Prestador";
+
+const { Small, Tiny } = DidiText.Explanation;
+
+const { needCoordinate, title, whatsappError, whatsappMessage } = strings.semillas.steps.third;
+const { call, whatsApp, callLater, detailBarTitle } = strings.semillas;
 
 export type RequestFinishedProps = {};
 
@@ -33,7 +39,7 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 	{},
 	RequestFinishedNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.semillas.detailBarTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitle(detailBarTitle);
 
 	constructor(props: RequestFinishedScreenProps) {
 		super(props);
@@ -42,20 +48,18 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 		};
 	}
 
-	onWhatsAppMessage = () => {
+	handleWhatsappPress = () => {
 		const { activePrestador } = this.props;
 		if (activePrestador) {
-			// TODO define whatsappMessage
-			const { whatsappError, whatsappMessage } = strings.semillas.steps.third;
-			const link = `whatsapp://send?text=${whatsappMessage}&phone=${activePrestador.phone}`;
+			const link = `whatsapp://send?text=${whatsappMessage}&phone=${activePrestador.whatsappNumber}`;
 			Linking.openURL(link).catch(err => {
 				console.log(err);
-				Alert.alert(whatsappError);
+				Alert.alert("Error", whatsappError);
 			});
 		}
 	};
 
-	onCall = () => {
+	handleCallPress = () => {
 		const { activePrestador } = this.props;
 		if (activePrestador) Linking.openURL(`tel:${activePrestador.phone}`);
 	};
@@ -68,20 +72,18 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
 				<ScrollView style={view}>
-					<DidiText.Explanation.Small style={header}>{strings.semillas.steps.third.title}</DidiText.Explanation.Small>
-
-					<DidiText.Explanation.Small style={styles.description}>
-						{strings.semillas.steps.third.prestador} {strings.semillas.steps.third.beneficiario}
-					</DidiText.Explanation.Small>
+					<Small style={header}>{title}</Small>
 
 					<View style={{ flex: 1 }}>
 						<View style={styles.prestadorContainer}>
 							{customEmail ? (
-								<DidiText.Explanation.Small>Mail: {customEmail}</DidiText.Explanation.Small>
+								<Small>Mail: {customEmail}</Small>
 							) : (
 								<Prestador style={styles.prestador} item={activePrestador} active={false} onPress={() => {}} />
 							)}
 						</View>
+
+						<Tiny style={styles.description}>{needCoordinate}</Tiny>
 
 						{customEmail ? (
 							<View style={{ marginTop: 10 }}>
@@ -95,21 +97,17 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 						) : (
 							<View>
 								<View style={styles.buttons}>
+									<DidiButtonImage title={call} image={<CallIcon />} onPress={this.handleCallPress}></DidiButtonImage>
 									<DidiButtonImage
-										title={strings.semillas.call}
-										image={<CallIcon />}
-										onPress={this.onCall}
-									></DidiButtonImage>
-									<DidiButtonImage
-										title={strings.semillas.whatsApp}
+										title={whatsApp}
 										image={<WhatsAppIcon />}
-										onPress={this.onWhatsAppMessage}
+										onPress={this.handleWhatsappPress}
 									></DidiButtonImage>
 								</View>
 								<DidiButton
-									title={strings.semillas.callLater}
+									title={callLater}
 									onPress={() => {
-										// this.navigate("DashboardHome", {});
+										this.navigate("DashboardHome", {});
 									}}
 								/>
 							</View>

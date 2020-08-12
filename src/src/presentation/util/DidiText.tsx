@@ -76,7 +76,7 @@ export const styles = {
 		},
 		tiny: {
 			...base,
-			fontSize: 14
+			fontSize: 13
 		}
 	}),
 	validateIdentity: StyleSheet.create({

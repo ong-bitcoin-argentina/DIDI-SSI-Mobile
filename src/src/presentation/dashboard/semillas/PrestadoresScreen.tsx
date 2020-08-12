@@ -122,7 +122,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 		};
 	};
 
-	renderPrestador = ({ item }: any) => {
+	renderPrestador = ({ item }: { item: PrestadorModel }) => {
 		return (
 			<Prestador item={item} active={item.id === this.state.activePrestador?.id} onPress={() => this.onSelect(item)} />
 		);
@@ -182,7 +182,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 								onValueChange={this.handleFilterChange}
 								mode="dialog"
 							>
-								{Object.keys(semillasCategoriesFilters).map(key => (
+								{Object.keys(semillasCategoriesFilters).map((key: string) => (
 									<Picker.Item label={semillasCategoriesFilters[key]} value={key} key={key} />
 								))}
 							</Picker>
