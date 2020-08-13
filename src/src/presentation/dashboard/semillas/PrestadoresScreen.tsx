@@ -108,7 +108,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 	};
 
 	handleFilterChange = (categoryFilter: string) => {
-		const mustFilter = categoryFilter !== "noFilter";
+		const mustFilter = categoryFilter !== "No filtrar";
 		const { prestadores } = this.props;
 		this.setState({
 			categoryFilter,
@@ -168,7 +168,9 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
 				<View style={view}>
-					<Small style={[header, styles.header]}>{title}</Small>
+					<Small style={[header]} adjustsFontSizeToFit>
+						{title}
+					</Small>
 
 					<View style={styles.filter}>
 						<View style={{ flex: 1 }}>
