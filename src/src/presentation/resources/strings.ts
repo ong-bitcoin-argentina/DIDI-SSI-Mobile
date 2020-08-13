@@ -334,7 +334,15 @@ export default {
 				description:
 					"Recordá que podés utilizarlo con cualquier integrante de tu grupo familiar registrado en Semillas.",
 				detail: "Seleccioná quién lo usará",
-				modalTitle: "Estás por compartir la siguiente información"
+				modalTitle: "Estás por compartir la siguiente información",
+				labels: {
+					dni: "DNI",
+					name: "Nombre y Apellido",
+					birth: "Fecha de Nacimiento",
+					character: "Carácter",
+					mail: "Email",
+					phone: "Teléfono"
+				}
 			},
 			third: {
 				title: "El Beneficio fue solicitado con éxito!",

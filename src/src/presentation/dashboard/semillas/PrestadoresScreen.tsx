@@ -18,7 +18,10 @@ import { didiConnect } from "../../../store/store";
 import { getSemillasPrestadores } from "../../../services/semillas/getPrestadores";
 import { semillasCategoriesFilters } from "./constants";
 const { bottomButton, header, view } = commonStyles.benefit;
+const { steps, writeEmail } = strings.semillas;
+const { email, title } = steps.first;
 const { modal } = commonStyles;
+const { Small } = DidiText.Explanation;
 
 export type PrestadoresProps = {};
 
@@ -145,10 +148,10 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				getItemLayout={this.getItemLayout}
 				ListFooterComponent={
 					<View style={{ marginTop: 20 }}>
-						<DidiText.Explanation.Small>{strings.semillas.steps.first.email}</DidiText.Explanation.Small>
+						<Small>{email}</Small>
 						<DidiServiceButton
 							onPress={() => this.setState({ modalVisible: true })}
-							title={strings.semillas.writeEmail}
+							title={writeEmail}
 							style={{ height: 30 }}
 							isPending={false}
 						/>
@@ -165,15 +168,11 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
 				<View style={view}>
-					<DidiText.Explanation.Small style={[header, { flex: 1 }]}>
-						{strings.semillas.steps.first.title}
-					</DidiText.Explanation.Small>
+					<Small style={[header, styles.header]}>{title}</Small>
 
 					<View style={styles.filter}>
 						<View style={{ flex: 1 }}>
-							<DidiText.Explanation.Small style={styles.pickerLabel}>
-								{strings.general.filterBy.category}
-							</DidiText.Explanation.Small>
+							<Small style={styles.pickerLabel}>{strings.general.filterBy.category}</Small>
 						</View>
 						<View style={{ flex: 1 }}>
 							<Picker
@@ -189,7 +188,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 						</View>
 					</View>
 
-					<View style={{ flex: 5 }}>{loading ? this.renderLoading() : this.renderList()}</View>
+					<View style={{ flex: 8 }}>{loading ? this.renderLoading() : this.renderList()}</View>
 
 					{activePrestador && activePrestador.id > -1 && (
 						<DidiServiceButton
@@ -244,13 +243,17 @@ export default didiConnect(
 );
 
 const styles = StyleSheet.create({
+	header: {
+		flex: 1
+	},
 	pickerLabel: {
 		textAlign: "left",
-		fontSize: 12
+		fontSize: 14
 	},
 	filter: {
-		marginBottom: 10,
-		flex: 1 / 2,
+		marginTop: -10,
+		marginBottom: 14,
+		flex: 1,
 		flexDirection: "row",
 		alignItems: "center"
 	}
