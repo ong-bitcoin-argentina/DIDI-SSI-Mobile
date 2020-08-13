@@ -30,7 +30,7 @@ export default class Prestador extends PureComponent<PrestadorProps, {}> {
 					<View style={styles.textContainer}>
 						<Small style={styles.title}>{item.name}</Small>
 						{item.speciality && <Small style={styles.description}>{item.speciality}</Small>}
-						<Small style={styles.label}>Beneficio: {item.benefit}</Small>
+						<Small style={styles.label}>Beneficio: {item.benefit}%</Small>
 					</View>
 				</TouchableOpacity>
 			</SafeAreaView>

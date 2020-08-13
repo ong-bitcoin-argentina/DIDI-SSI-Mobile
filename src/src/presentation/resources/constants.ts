@@ -1,12 +1,12 @@
-export const semillasCategories = {
-    salud: "Salud",
-    sueno: "Sueños",
-    finanza: "Finanzas",
-    oportunidad: "Oportunidad",
-    saber: "Saber",
-}
+const semillasCategories = {
+	salud: "Salud",
+	sueno: "Sueño",
+	finanza: "Finanza",
+	oportunidad: "Oportunidad",
+	saber: "Saber"
+};
 
 export const semillasCategoriesFilters = {
-    noFilter: "No filtrar",
-    ...semillasCategories
-}
+	noFilter: "No filtrar",
+	...semillasCategories
+};

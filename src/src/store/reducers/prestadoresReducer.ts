@@ -2,6 +2,7 @@ import { PrestadorModel } from "../../model/Prestador";
 import { StoreAction } from "../StoreAction";
 
 export type PrestadoresResponse = {
+	status: string;
 	data: PrestadorModel[];
 };
 

@@ -3,9 +3,9 @@ const basePath = `../../resources/images/semillas`;
 const baseSembrando = `${basePath}-sembrando`;
 
 export default {
-	salud: require(`${baseSembrando}-salud.png`),
-	oportunidad: require(`${baseSembrando}-oportunidades.png`),
-	saber: require(`${baseSembrando}-saberes.png`),
-	sueno: require(`${baseSembrando}-suenos.png`),
-	finanza: require(`${basePath}-finanzas-inclusivas.png`)
+	["Salud"]: require(`${baseSembrando}-salud.png`),
+	["Oportunidad"]: require(`${baseSembrando}-oportunidades.png`),
+	["Saber"]: require(`${baseSembrando}-saberes.png`),
+	["Sueño"]: require(`${baseSembrando}-suenos.png`),
+	["Finanza"]: require(`${basePath}-finanzas-inclusivas.png`)
 };
