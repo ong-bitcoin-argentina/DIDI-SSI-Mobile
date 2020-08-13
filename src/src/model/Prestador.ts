@@ -5,6 +5,7 @@ export type PrestadorModel = {
 	category: keyof typeof semillasImagesSources;
 	name: string;
 	phone: string;
+	whatsappNumber: string;
 	benefit: string;
 	speciality: string;
 };

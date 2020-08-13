@@ -20,6 +20,9 @@ import { SpecialCredentialMap } from "../../../store/selector/credentialSelector
 import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
 import { getClient } from "../../../services/internal/withDidiServerClient";
+const { title, description, detail, modalTitle } = strings.semillas.steps.second;
+
+const { Small, Tiny } = DidiText.Explanation;
 
 export type BeneficiarioProps = {
 	activePrestador?: PrestadorModel;
@@ -133,10 +136,11 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
 				<View style={view}>
-					<DidiText.Explanation.Small style={header}>{strings.semillas.steps.second.title}</DidiText.Explanation.Small>
+					<Small style={header}>{title}</Small>
+					<Tiny style={styles.description}>{description}</Tiny>
 
 					<View style={styles.pickerContainer}>
-						<DidiText.Explanation.Small>{strings.semillas.steps.second.detail}</DidiText.Explanation.Small>
+						<Small>{detail}</Small>
 
 						<Picker
 							selectedValue={selectedName}
@@ -166,9 +170,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 				<Modal animationType="fade" transparent={true} visible={modalVisible}>
 					<View style={modal.centeredView}>
 						<View style={modal.view}>
-							<DidiText.Explanation.Small style={{ fontSize: 13 }}>
-								{strings.semillas.steps.second.modalTitle}
-							</DidiText.Explanation.Small>
+							<Small style={{ fontSize: 13 }}>{modalTitle}</Small>
 
 							<Beneficiario item={selected} email={email} phoneNumber={phoneNumber} />
 
@@ -209,12 +211,16 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: colors.border.light,
 		borderRadius: 6,
-		marginTop: 30,
-		marginBottom: 50
+		marginTop: 20,
+		marginBottom: 40
 	},
 	textStyle: {
 		color: colors.label.text,
 		fontWeight: "bold",
 		textAlign: "center"
+	},
+	description: {
+		textAlign: "left",
+		marginTop: 12
 	}
 });

@@ -44,7 +44,7 @@ export default {
 		header: {
 			width: "100%",
 			textAlign: "left",
-			marginBottom: 0
+			marginBottom: 8
 		},
 		bottomButton: {
 			paddingVertical: 20,

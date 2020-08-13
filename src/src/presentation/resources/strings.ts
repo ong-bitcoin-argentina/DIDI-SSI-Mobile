@@ -325,21 +325,22 @@ export default {
 			"Tus Credenciales de Beneficios Semillas ya han sido solicitadas y se encuentran en proceso... Pronto podrás acceder a los Beneficios de Semillas!!",
 		steps: {
 			first: {
-				title: "Paso 1: Elegí con quién querés el turno.",
+				title: "¿A qué servicio querés acceder?",
 				email: "O podés escribir el mail del destinatario de la credencial",
 				writeEmail: "Mail del destinatario"
 			},
 			second: {
-				title: "Paso 2: Elegí para quien es el turno.",
-				detail: "Solicitante del turno",
+				title: "Elegí quién va a usar el beneficio.",
+				description:
+					"Recordá que podés utilizarlo con cualquier integrante de tu grupo familiar registrado en Semillas.",
+				detail: "Seleccioná quién lo usará",
 				modalTitle: "Estás por compartir la siguiente información"
 			},
 			third: {
-				title: "Paso 3: El Beneficio fue solicitado con éxito!",
-				prestador: "El Prestador se comunicará con vos a la brevedad.",
-				beneficiario: "Contactate con el Prestador para coordinar los detalles del Beneficio",
-				whatsappMessage: "Hola, escribo para concretar la reserva de turno",
-				whatsappError: "Ocurrió un error al abrir Whatsapp"
+				title: "El Beneficio fue solicitado con éxito!",
+				needCoordinate: "¿Necesitás coordinar tu turno?",
+				whatsappMessage: "¡Hola! Pertenezco al programa Semillas y quisiera solicitar un turno.",
+				whatsappError: "Ocurrió un error al abrir Whatsapp, confirme que lo tiene instalado en su dispositivo."
 			}
 		},
 		shareMessage: `${appName} quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.`,
