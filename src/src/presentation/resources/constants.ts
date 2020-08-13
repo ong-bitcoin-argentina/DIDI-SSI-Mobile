@@ -1,9 +1,9 @@
 const semillasCategories = {
-	salud: "Salud",
-	sueno: "Sueño",
-	finanza: "Finanza",
-	oportunidad: "Oportunidad",
-	saber: "Saber"
+	["Salud"]: "Salud",
+	["Oportunidad"]: "Oportunidad",
+	["Saber"]: "Saber",
+	["Sueño"]: "Sueño",
+	["Finanza"]: "Finanza"
 };
 
 export const semillasCategoriesFilters = {

@@ -16,7 +16,7 @@ import { Validations } from "../../../model/Validations";
 import commonStyles from "../../resources/commonStyles";
 import { didiConnect } from "../../../store/store";
 import { getSemillasPrestadores } from "../../../services/semillas/getPrestadores";
-import { semillasCategoriesFilters } from "../../resources/constants";
+import { semillasCategoriesFilters } from "./constants";
 const { bottomButton, header, view } = commonStyles.benefit;
 const { modal } = commonStyles;
 
@@ -182,8 +182,8 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 								onValueChange={this.handleFilterChange}
 								mode="dialog"
 							>
-								{Object.keys(semillasCategoriesFilters).map((key: string) => (
-									<Picker.Item label={semillasCategoriesFilters[key]} value={key} key={key} />
+								{semillasCategoriesFilters.map((value: string) => (
+									<Picker.Item label={value} value={value} key={value} />
 								))}
 							</Picker>
 						</View>
