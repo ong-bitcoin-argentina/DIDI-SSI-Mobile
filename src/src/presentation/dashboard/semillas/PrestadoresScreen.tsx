@@ -16,7 +16,7 @@ import { Validations } from "../../../model/Validations";
 import commonStyles from "../../resources/commonStyles";
 import { didiConnect } from "../../../store/store";
 import { getSemillasPrestadores } from "../../../services/semillas/getPrestadores";
-import { semillasCategoriesFilters } from "../../resources/constants";
+import { semillasCategoriesFilters } from "./constants";
 const { bottomButton, header, view } = commonStyles.benefit;
 const { steps, writeEmail } = strings.semillas;
 const { email, title } = steps.first;
@@ -108,11 +108,11 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 	};
 
 	handleFilterChange = (categoryFilter: string) => {
-		const mustFilter = categoryFilter !== "noFilter";
+		const mustFilter = categoryFilter !== "No filtrar";
 		const { prestadores } = this.props;
 		this.setState({
 			categoryFilter,
-			actualList: prestadores.filter(item => !mustFilter || item.category === categoryFilter)
+			actualList: prestadores.filter(item => !mustFilter || item.providerCategoryDto?.name === categoryFilter)
 		});
 	};
 
@@ -168,8 +168,10 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
 				<View style={view}>
-					<Small style={[header, styles.header]}>{title}</Small>
 
+					<Small style={[header]} adjustsFontSizeToFit>
+						{title}
+					</Small>
 					<View style={styles.filter}>
 						<View style={{ flex: 1 }}>
 							<Small style={styles.pickerLabel}>{strings.general.filterBy.category}</Small>
@@ -181,8 +183,8 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 								onValueChange={this.handleFilterChange}
 								mode="dialog"
 							>
-								{Object.keys(semillasCategoriesFilters).map((key: string) => (
-									<Picker.Item label={semillasCategoriesFilters[key]} value={key} key={key} />
+								{semillasCategoriesFilters.map((value: string) => (
+									<Picker.Item label={value} value={value} key={value} />
 								))}
 							</Picker>
 						</View>

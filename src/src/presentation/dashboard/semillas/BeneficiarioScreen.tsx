@@ -137,7 +137,9 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
 				<View style={view}>
-					<Small style={header}>{title}</Small>
+					<Small style={header} adjustsFontSizeToFit>
+						{title}
+					</Small>
 					<Tiny style={styles.description}>{description}</Tiny>
 
 					<View style={styles.pickerContainer}>
