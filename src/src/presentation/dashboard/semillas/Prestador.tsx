@@ -21,10 +21,10 @@ export default class Prestador extends PureComponent<PrestadorProps, {}> {
 			<SafeAreaView style={[styles.item, active && styles.highlight]}>
 				<TouchableOpacity onPress={onPress} style={styles.container}>
 					<View style={{ flex: 3, alignItems: "center" }}>
-						{item.category && (
+						{item.providerCategoryDto && (
 							<FastImage
 								style={styles.image}
-								source={semillasImagesSources[item.category]}
+								source={semillasImagesSources[item.providerCategoryDto.name]}
 								priority={FastImage.priority.low}
 							/>
 						)}

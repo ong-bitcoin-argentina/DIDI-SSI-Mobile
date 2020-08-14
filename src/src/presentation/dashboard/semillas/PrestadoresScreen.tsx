@@ -112,7 +112,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 		const { prestadores } = this.props;
 		this.setState({
 			categoryFilter,
-			actualList: prestadores.filter(item => !mustFilter || item.category === categoryFilter)
+			actualList: prestadores.filter(item => !mustFilter || item.providerCategoryDto?.name === categoryFilter)
 		});
 	};
 
