@@ -168,10 +168,10 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
 				<View style={view}>
+
 					<Small style={[header]} adjustsFontSizeToFit>
 						{title}
 					</Small>
-
 					<View style={styles.filter}>
 						<View style={{ flex: 1 }}>
 							<Small style={styles.pickerLabel}>{strings.general.filterBy.category}</Small>
