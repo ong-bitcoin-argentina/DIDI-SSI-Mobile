@@ -1,7 +1,7 @@
 import semillasImagesSources from "../presentation/dashboard/semillas/constants";
 
 export type PrestadorModel = {
-	id: number;
+	id: number | string;
 	providerCategoryDto?: {
 		id: number;
 		name: keyof typeof semillasImagesSources;

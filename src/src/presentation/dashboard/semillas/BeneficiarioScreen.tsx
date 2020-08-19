@@ -1,29 +1,34 @@
 import React, { Fragment } from "react";
 import { StatusBar, StyleSheet, View, Picker, Modal, Alert } from "react-native";
-
 import { didiConnect } from "../../../store/store";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
-
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import Beneficiario from "./Beneficiario";
-import { getFullName, getDniBeneficiario, getSemillasIdentitiesData } from "../../../util/semillasHelpers";
+import {
+	getFullName,
+	getDniBeneficiario,
+	getSemillasIdentitiesData,
+	getSemillasBenefitCredential,
+	getSemillasIdentitiesCredentials
+} from "../../../util/semillasHelpers";
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 import { CredentialDocument } from "didi-sdk";
 import { RequestFinishedProps } from "./RequestFinishedScreen";
 import colors from "../../resources/colors";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
 import { getClient } from "../../../services/internal/withDidiServerClient";
 import SemillasLogo from "../../resources/images/sem-logo.svg";
-const { title, description, detail, modalTitle } = strings.semillas.steps.second;
 
-const { Small, Tiny, Normal } = DidiText.Explanation;
+const { title, description, detail, modalTitle } = strings.semillas.steps.second;
+const { keys } = strings.specialCredentials.Semillas;
+
+const { Small, Tiny } = DidiText.Explanation;
 
 export type BeneficiarioProps = {
 	activePrestador?: PrestadorModel;
@@ -32,17 +37,21 @@ export type BeneficiarioProps = {
 
 interface BeneficiarioScreenStateProps {
 	allSemillasCredentials?: CredentialDocument[];
-	activeSpecialCredentials: SpecialCredentialMap;
+	benefitCredential: CredentialDocument;
+	email: string;
+	identitiesCredentials: CredentialDocument[];
+	identitiesData: SemillasIdentityModel[];
+	phoneNumber: string;
+	sharePrefix: string;
+	did?: string;
 }
 
 type BeneficiarioScreenState = {
-	identityCredentials: SemillasIdentityModel[];
+	identityCredential: CredentialDocument;
+	modalVisible: boolean;
 	selected: SemillasIdentityModel;
 	selectedName?: string;
-	modalVisible: boolean;
 	shareInProgress: boolean;
-	email: string;
-	phoneNumber: string;
 };
 
 type BeneficiarioScreenInternalProps = BeneficiarioScreenStateProps & BeneficiarioProps;
@@ -60,24 +69,24 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 
 	constructor(props: BeneficiarioScreenInternalProps) {
 		super(props);
-		const identityCredentials = getSemillasIdentitiesData(props.allSemillasCredentials);
-		const selected = identityCredentials[0];
+		const selected = props.identitiesData[0];
+		const identityCredential = props.identitiesCredentials[0];
 		this.state = {
-			identityCredentials,
+			identityCredential,
 			selected,
 			selectedName: getFullName(selected),
 			modalVisible: false,
-			shareInProgress: false,
-			email: getEmail(props.activeSpecialCredentials),
-			phoneNumber: getPhoneNumber(props.activeSpecialCredentials)
+			shareInProgress: false
 		};
 	}
 
 	handleChangePicker = (selectedName: string, index: number) => {
-		const selected = this.state.identityCredentials[index];
+		const identityCredential = this.props.identitiesCredentials[index];
+		const selected = this.props.identitiesData[index];
 		this.setState({
 			selectedName,
-			selected
+			selected,
+			identityCredential
 		});
 	};
 
@@ -86,25 +95,26 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		this.setState({ modalVisible: !modalVisible });
 	};
 
-	getShareableData() {
-		const { dniBeneficiario, nameBeneficiario, birthDate, cert } = strings.specialCredentials.Semillas.keys;
-		const { selected } = this.state;
-		return {
-			[cert]: selected[cert],
-			[dniBeneficiario]: selected[dniBeneficiario],
-			[nameBeneficiario]: selected[nameBeneficiario],
-			[birthDate]: selected[birthDate]
-		};
-	}
+	getLinkJWT = () => {
+		const { benefitCredential, sharePrefix } = this.props;
+		const { identityCredential } = this.state;
+		return `${sharePrefix}/${identityCredential.jwt},${benefitCredential.jwt}`;
+	};
 
 	shareData = () => {
 		this.setState({ shareInProgress: true });
-		const { email, phoneNumber } = this.state;
+		const { email, phoneNumber, activePrestador, did } = this.props;
+		const { selected } = this.state;
 		const data = {
+			did,
 			email,
 			phoneNumber,
-			...this.getShareableData()
+			providerId: activePrestador?.id,
+			customProviderEmail: this.props.customEmail,
+			[keys.dniBeneficiario]: selected[keys.dniBeneficiario],
+			viewerJWT: this.getLinkJWT()
 		};
+		console.log(data);
 		getClient()
 			.shareData(data)
 			.then(result => {
@@ -131,7 +141,8 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 	render() {
 		const { bottomButton, header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
-		const { selected, selectedName, modalVisible, email, phoneNumber } = this.state;
+		const { selected, selectedName, modalVisible, shareInProgress } = this.state;
+		const { email, phoneNumber, identitiesData } = this.props;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -149,10 +160,10 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 							selectedValue={selectedName}
 							style={{ height: 50 }}
 							itemStyle={{ textAlign: "center" }}
-							onValueChange={(value, index) => this.handleChangePicker(value, index)}
+							onValueChange={this.handleChangePicker}
 							mode="dialog"
 						>
-							{this.state.identityCredentials.map(credentialData => (
+							{identitiesData.map(credentialData => (
 								<Picker.Item
 									label={getFullName(credentialData)}
 									value={getDniBeneficiario(credentialData)}
@@ -195,7 +206,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 									onPress={this.shareData}
 									title={strings.general.share}
 									style={[modal.smallButton, { backgroundColor: colors.greenSemillas }]}
-									isPending={this.state.shareInProgress}
+									isPending={shareInProgress}
 								/>
 							</View>
 						</View>
@@ -210,7 +221,13 @@ export default didiConnect(
 	BeneficiarioScreen,
 	(state): BeneficiarioScreenStateProps => ({
 		allSemillasCredentials: state.allSemillasCredentials,
-		activeSpecialCredentials: state.activeSpecialCredentials
+		did: state.did.activeDid?.did(),
+		benefitCredential: getSemillasBenefitCredential(state.allSemillasCredentials),
+		email: getEmail(state.activeSpecialCredentials),
+		identitiesCredentials: getSemillasIdentitiesCredentials(state.allSemillasCredentials),
+		identitiesData: getSemillasIdentitiesData(state.allSemillasCredentials),
+		phoneNumber: getPhoneNumber(state.activeSpecialCredentials),
+		sharePrefix: state.serviceSettings.sharePrefix
 	})
 );
 
