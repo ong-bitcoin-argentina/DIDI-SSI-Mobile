@@ -43,7 +43,7 @@ interface BeneficiarioScreenStateProps {
 	identitiesData: SemillasIdentityModel[];
 	phoneNumber: string;
 	sharePrefix: string;
-	did?: string;
+	did: string;
 }
 
 type BeneficiarioScreenState = {
@@ -108,13 +108,12 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		const data = {
 			did,
 			email,
-			phoneNumber,
+			phone: phoneNumber,
 			providerId: activePrestador?.id,
 			customProviderEmail: this.props.customEmail,
-			[keys.dniBeneficiario]: selected[keys.dniBeneficiario],
+			dni: selected[keys.dniBeneficiario],
 			viewerJWT: this.getLinkJWT()
 		};
-		console.log(data);
 		getClient()
 			.shareData(data)
 			.then(result => {
@@ -139,7 +138,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 	};
 
 	render() {
-		const { bottomButton, header, view } = commonStyles.benefit;
+		const { header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
 		const { selected, selectedName, modalVisible, shareInProgress } = this.state;
 		const { email, phoneNumber, identitiesData } = this.props;
@@ -151,14 +150,13 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 					<Small style={header} adjustsFontSizeToFit>
 						{title}
 					</Small>
-					<Tiny style={styles.description}>{description}</Tiny>
 
 					<View style={styles.pickerContainer}>
-						<Small>{detail}</Small>
+						{/* <Small>{detail}</Small> */}
 
 						<Picker
 							selectedValue={selectedName}
-							style={{ height: 50 }}
+							// style={{ height: 50 }}
 							itemStyle={{ textAlign: "center" }}
 							onValueChange={this.handleChangePicker}
 							mode="dialog"
@@ -173,26 +171,25 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 						</Picker>
 					</View>
 
-					<DidiServiceButton
-						onPress={this.openModal}
-						title={strings.general.next.toUpperCase()}
-						style={bottomButton}
-						isPending={false}
-					/>
+					<Tiny style={styles.description}>{description}</Tiny>
+
+					<DidiServiceButton onPress={this.openModal} title={strings.general.next.toUpperCase()} isPending={false} />
 				</View>
 
 				<Modal animationType="fade" transparent={true} visible={modalVisible}>
 					<View style={modal.centeredView}>
 						<View style={[modal.view, styles.modalView]}>
 							<View style={styles.modalImage}>
-								<Small style={{ alignSelf: "center", fontWeight: "bold", fontSize: 18 }}>
-									{selected["Nombre Beneficiario"]}
-								</Small>
+								{/* <Small style={{ alignSelf: "center", fontWeight: "bold", fontSize: 18 }}>{selected["APELLIDO"]}</Small> */}
 								<SemillasLogo viewBox="0 0 128 39" width={100} height={58} style={styles.logo} />
 							</View>
 							<Small style={styles.modalTitle}>{modalTitle}:</Small>
 
 							<Beneficiario item={selected} email={email} phoneNumber={phoneNumber} />
+
+							<Small style={{ color: colors.greenSemillas, alignSelf: "flex-start" }}>
+								{strings.semillas.benefitCredentialActive}
+							</Small>
 
 							<View style={modal.footer}>
 								<DidiServiceButton
@@ -233,12 +230,12 @@ export default didiConnect(
 
 const styles = StyleSheet.create({
 	pickerContainer: {
-		paddingVertical: 10,
+		paddingVertical: 2,
 		borderWidth: 1,
 		borderColor: colors.border.light,
 		borderRadius: 6,
 		marginTop: 20,
-		marginBottom: 40
+		marginBottom: 20
 	},
 	textStyle: {
 		color: colors.label.text,
@@ -246,12 +243,12 @@ const styles = StyleSheet.create({
 		textAlign: "center"
 	},
 	description: {
-		textAlign: "left",
-		marginTop: 12
+		textAlign: "center",
+		fontSize: 16,
+		marginBottom: 80
 	},
 	logo: {
-		height: 40,
-		// marginVertical: 10,
+		height: 50,
 		alignSelf: "flex-end"
 	},
 	modalImage: {
@@ -265,7 +262,7 @@ const styles = StyleSheet.create({
 		height: 380
 	},
 	modalTitle: {
-		fontSize: 16,
+		fontSize: 17,
 		textAlign: "left"
 	}
 });

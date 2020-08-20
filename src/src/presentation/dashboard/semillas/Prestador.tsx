@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { SafeAreaView, StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
+import { SafeAreaView, StyleSheet, TouchableOpacity, View, ViewStyle, Text } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 import FastImage from "react-native-fast-image";
@@ -32,7 +32,10 @@ export default class Prestador extends PureComponent<PrestadorProps, {}> {
 					<View style={styles.textContainer}>
 						<Small style={styles.title}>{item.name}</Small>
 						{item.speciality && <Small style={styles.description}>{item.speciality}</Small>}
-						<Small style={styles.label}>Beneficio: {item.benefit}%</Small>
+						<Text style={{ textAlign: "center" }}>
+							<Small style={[styles.label, { fontWeight: "normal" }]}>Beneficio: </Small>
+							<Small style={styles.label}>{item.benefit}%</Small>
+						</Text>
 					</View>
 				</TouchableOpacity>
 			</SafeAreaView>
@@ -42,21 +45,21 @@ export default class Prestador extends PureComponent<PrestadorProps, {}> {
 
 const styles = StyleSheet.create({
 	title: {
-		fontSize: 15,
+		fontSize: 19,
 		fontWeight: "bold",
 		textAlignVertical: "center"
 	},
 	description: {
-		fontSize: 12
+		fontSize: 16
 	},
 	label: {
 		marginTop: 2,
-		fontSize: 10,
+		fontSize: 16,
 		paddingVertical: 1,
 		paddingHorizontal: 6,
 		borderRadius: 9,
-		backgroundColor: colors.label.background,
-		color: colors.label.text,
+		color: colors.greenSemillas,
+		fontWeight: "bold",
 		alignSelf: "center"
 	},
 	item: {
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 4,
 		borderColor: colors.border.light,
 		borderWidth: 1,
-		minHeight: 90
+		minHeight: 105
 	},
 	container: {
 		flex: 1,

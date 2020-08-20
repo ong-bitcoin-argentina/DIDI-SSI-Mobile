@@ -97,12 +97,17 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 						) : (
 							<View>
 								<View style={styles.buttons}>
-									<DidiButtonImage title={call} image={<CallIcon />} onPress={this.handleCallPress}></DidiButtonImage>
-									<DidiButtonImage
-										title={whatsApp}
-										image={<WhatsAppIcon />}
-										onPress={this.handleWhatsappPress}
-									></DidiButtonImage>
+									{activePrestador?.phone && (
+										<DidiButtonImage title={call} image={<CallIcon />} onPress={this.handleCallPress}></DidiButtonImage>
+									)}
+
+									{activePrestador?.whatsappNumber && (
+										<DidiButtonImage
+											title={whatsApp}
+											image={<WhatsAppIcon />}
+											onPress={this.handleWhatsappPress}
+										></DidiButtonImage>
+									)}
 								</View>
 								<DidiButton
 									title={callLater}
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
 	description: {
 		marginTop: 22,
 		marginBottom: 8,
-		fontSize: 16
+		fontSize: 18
 	},
 	prestador: {
 		margin: 10,

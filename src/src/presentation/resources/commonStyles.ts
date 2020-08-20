@@ -43,13 +43,9 @@ export default {
 		},
 		header: {
 			width: "100%",
-			textAlign: "left",
+			textAlign: "center",
 			marginBottom: 8,
 			fontSize: 19
-		},
-		bottomButton: {
-			paddingVertical: 20,
-			height: 20
 		}
 	}),
 	modal: StyleSheet.create({

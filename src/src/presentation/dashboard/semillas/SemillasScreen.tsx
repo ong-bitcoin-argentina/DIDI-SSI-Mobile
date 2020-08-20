@@ -25,6 +25,7 @@ import { SpecialCredentialMap } from "../../../store/selector/credentialSelector
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 import DidiButton from "../../util/DidiButton";
 import commonStyles from "../../resources/commonStyles";
+import colors from "../../resources/colors";
 const { modal, button, util, view } = commonStyles;
 const {
 	detailBarTitle,
@@ -195,7 +196,8 @@ class SemillasScreen extends NavigationEnabledComponent<
 					<DidiButton
 						onPress={this.goToRenaperValidation}
 						title={strings.validateIdentity.header}
-						style={[button.lightRed, { marginTop: 20 }]}
+						// TODO: pass inline style to style's object
+						style={[button.lightRed, { marginTop: 20, paddingVertical: 26 }]}
 					/>
 				</View>
 
@@ -298,11 +300,11 @@ const styles = StyleSheet.create({
 		display: "none"
 	},
 	smallText: {
-		fontSize: 12,
-		textAlign: "right"
+		fontSize: 14,
+		color: colors.textLight
 	},
 	modalText: {
-		fontSize: 15,
-		textAlign: "left"
+		fontSize: 17,
+		textAlign: "center"
 	}
 });

@@ -4,7 +4,7 @@ const baseSembrando = `${basePath}-sembrando`;
 
 const semillasCategories = ["Finanza", "Oportunidad", "Saber", "Salud", "Sueño"];
 
-export const semillasCategoriesFilters = ["No filtrar", ...semillasCategories];
+export const semillasCategoriesFilters = ["Todas", ...semillasCategories];
 
 export default {
 	["Salud"]: require(`${baseSembrando}-salud.png`),
