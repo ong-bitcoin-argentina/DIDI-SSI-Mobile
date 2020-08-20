@@ -11,9 +11,9 @@ import strings from "../../resources/strings";
 import { SignupPhoneVerifiedProps } from "./SignupPhoneVerified";
 import { didiConnect } from "../../../store/store";
 import { CodeState } from "../../../store/reducers/phoneVerificationReducer";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { DidiText } from "../../util/DidiText";
-
+import { QA } from "../../../AppConfig";
 interface SignupVerifyPhoneStateProps {
 	codeConfirmation: CodeState;
 }
@@ -35,9 +35,10 @@ const SignupVerifyPhoneScreen = class SignupVerifyPhoneScreen extends Navigation
 	render() {
 		return (
 			<Fragment>
-				<DidiText.Explanation.Emphasis style={styles.description}>
+				{QA && <DidiText.Explanation.Emphasis style={styles.description}>
 					QA: {this.props.codeConfirmation.code}
 				</DidiText.Explanation.Emphasis>
+				}
 				<VerifyCodeWrapper
 					description={strings.accessCommon.verify.phoneMessageHead}
 					contentImageSource={require("../../resources/images/phoneRecover.png")}
