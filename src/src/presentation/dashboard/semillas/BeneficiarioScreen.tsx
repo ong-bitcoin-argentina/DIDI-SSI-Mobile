@@ -50,7 +50,7 @@ type BeneficiarioScreenState = {
 	identityCredential?: CredentialDocument;
 	modalVisible: boolean;
 	selected?: ClaimData;
-	selectedName?: string;
+	selectedValue?: string;
 	shareInProgress: boolean;
 };
 
@@ -74,17 +74,17 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		this.state = {
 			identityCredential,
 			selected,
-			selectedName: getFullName(selected),
+			selectedValue: getDniBeneficiario(selected),
 			modalVisible: false,
 			shareInProgress: false
 		};
 	}
 
-	handleChangePicker = (selectedName: string, index: number) => {
+	handleChangePicker = (selectedValue: string, index: number) => {
 		const identityCredential = this.props.identitiesCredentials[index];
 		const selected = identityCredential.data;
 		this.setState({
-			selectedName,
+			selectedValue,
 			selected,
 			identityCredential
 		});
@@ -137,7 +137,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 	render() {
 		const { header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
-		const { selected, selectedName, modalVisible, shareInProgress } = this.state;
+		const { selected, selectedValue, modalVisible, shareInProgress } = this.state;
 		const { email, phoneNumber, identitiesData } = this.props;
 		return (
 			<Fragment>
@@ -152,8 +152,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 						{/* <Small>{detail}</Small> */}
 
 						<Picker
-							selectedValue={selectedName}
-							// style={{ height: 50 }}
+							selectedValue={selectedValue}
 							itemStyle={{ textAlign: "center" }}
 							onValueChange={this.handleChangePicker}
 							mode="dialog"
