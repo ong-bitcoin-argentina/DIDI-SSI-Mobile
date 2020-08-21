@@ -347,6 +347,7 @@ export default {
 			third: {
 				title: "El Beneficio fue solicitado con éxito!",
 				needCoordinate: "¿Necesitás coordinar tu turno?",
+				willBeContacted: "Serás contactado a la brevedad.",
 				whatsappMessage: "¡Hola! Pertenezco al programa Semillas y quisiera solicitar un turno.",
 				whatsappError: "Ocurrió un error al abrir Whatsapp, confirme que lo tiene instalado en su dispositivo."
 			}

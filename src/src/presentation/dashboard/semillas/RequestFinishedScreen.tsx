@@ -20,10 +20,14 @@ import { PrestadorModel } from "../../../model/Prestador";
 
 const { Small, Tiny } = DidiText.Explanation;
 
-const { needCoordinate, title, whatsappError, whatsappMessage } = strings.semillas.steps.third;
+const { needCoordinate, title, whatsappError, whatsappMessage, willBeContacted } = strings.semillas.steps.third;
 const { call, whatsApp, callLater, detailBarTitle } = strings.semillas;
 
 export type RequestFinishedProps = {};
+export type RequestFinishedState = {
+	selectedValue: string;
+	haveContact: boolean;
+};
 
 interface RequestFinishedScreenProps {
 	activePrestador?: PrestadorModel;
@@ -36,15 +40,17 @@ export interface RequestFinishedNavigation {
 
 class RequestFinishedScreen extends NavigationEnabledComponent<
 	RequestFinishedScreenProps,
-	{},
+	RequestFinishedState,
 	RequestFinishedNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(detailBarTitle);
 
 	constructor(props: RequestFinishedScreenProps) {
 		super(props);
+		const { activePrestador } = props;
 		this.state = {
-			selectedValue: ""
+			selectedValue: "",
+			haveContact: !!(activePrestador?.phone || activePrestador?.whatsappNumber)
 		};
 	}
 
@@ -64,9 +70,18 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 		if (activePrestador) Linking.openURL(`tel:${activePrestador.phone}`);
 	};
 
+	renderPhone = () => {
+		return <DidiButtonImage title={call} image={<CallIcon />} onPress={this.handleCallPress} />;
+	};
+
+	renderWhatsapp = () => {
+		return <DidiButtonImage title={whatsApp} image={<WhatsAppIcon />} onPress={this.handleWhatsappPress} />;
+	};
+
 	render() {
 		const { header, view } = commonStyles.benefit;
 		const { activePrestador, customEmail } = this.props;
+		const { haveContact } = this.state;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -83,7 +98,11 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 							)}
 						</View>
 
-						<Tiny style={styles.description}>{needCoordinate}</Tiny>
+						{!haveContact ? (
+							<Tiny style={styles.description}>{willBeContacted}</Tiny>
+						) : (
+							<Tiny style={styles.description}>{needCoordinate}</Tiny>
+						)}
 
 						{customEmail ? (
 							<View style={{ marginTop: 10 }}>
@@ -97,17 +116,8 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 						) : (
 							<View>
 								<View style={styles.buttons}>
-									{activePrestador?.phone && (
-										<DidiButtonImage title={call} image={<CallIcon />} onPress={this.handleCallPress}></DidiButtonImage>
-									)}
-
-									{activePrestador?.whatsappNumber && (
-										<DidiButtonImage
-											title={whatsApp}
-											image={<WhatsAppIcon />}
-											onPress={this.handleWhatsappPress}
-										></DidiButtonImage>
-									)}
+									{activePrestador?.phone && this.renderPhone()}
+									{activePrestador?.whatsappNumber && this.renderWhatsapp()}
 								</View>
 								<DidiButton
 									title={callLater}

@@ -51,7 +51,9 @@ export const getSemillasBenefitCredential = (credentials?: CredentialDocument[])
 };
 
 export const getSemillasIdentitiesCredentials = (credentials?: CredentialDocument[]): any[] => {
-	return credentials ? credentials.filter(isSemillasIdentityValidCredential) : [];
+	return credentials
+		? credentials.filter(isSemillasIdentityValidCredential).sort((a, b) => getFullName(a.data) > getFullName(b.data))
+		: [];
 };
 
 export const getSemillasIdentitiesData = (credentials?: CredentialDocument[]): any[] => {

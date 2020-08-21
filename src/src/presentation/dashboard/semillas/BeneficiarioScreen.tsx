@@ -17,7 +17,7 @@ import {
 	getSemillasIdentitiesCredentials
 } from "../../../util/semillasHelpers";
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument, ClaimData } from "didi-sdk";
 import { RequestFinishedProps } from "./RequestFinishedScreen";
 import colors from "../../resources/colors";
 import { PrestadorModel } from "../../../model/Prestador";
@@ -47,9 +47,9 @@ interface BeneficiarioScreenStateProps {
 }
 
 type BeneficiarioScreenState = {
-	identityCredential: CredentialDocument;
+	identityCredential?: CredentialDocument;
 	modalVisible: boolean;
-	selected: SemillasIdentityModel;
+	selected?: ClaimData;
 	selectedName?: string;
 	shareInProgress: boolean;
 };
@@ -69,8 +69,8 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 
 	constructor(props: BeneficiarioScreenInternalProps) {
 		super(props);
-		const selected = props.identitiesData[0];
-		const identityCredential = props.identitiesCredentials[0];
+		const identityCredential = props.identitiesCredentials.find(item => item.data[keys.relationship] === "titular");
+		const selected = identityCredential?.data;
 		this.state = {
 			identityCredential,
 			selected,
@@ -82,7 +82,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 
 	handleChangePicker = (selectedName: string, index: number) => {
 		const identityCredential = this.props.identitiesCredentials[index];
-		const selected = this.props.identitiesData[index];
+		const selected = identityCredential.data;
 		this.setState({
 			selectedName,
 			selected,
@@ -98,7 +98,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 	getLinkJWT = () => {
 		const { benefitCredential, sharePrefix } = this.props;
 		const { identityCredential } = this.state;
-		return `${sharePrefix}/${identityCredential.jwt},${benefitCredential.jwt}`;
+		return `${sharePrefix}/${identityCredential?.jwt},${benefitCredential.jwt}`;
 	};
 
 	shareData = () => {
@@ -111,19 +111,16 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 			phone: phoneNumber,
 			providerId: activePrestador?.id,
 			customProviderEmail: this.props.customEmail,
-			dni: selected[keys.dniBeneficiario],
+			dni: selected && selected[keys.dniBeneficiario],
 			viewerJWT: this.getLinkJWT()
 		};
 		getClient()
 			.shareData(data)
-			.then(result => {
-				this.setState({ shareInProgress: false });
-				this.finish();
-			})
+			.then(() => this.finish())
 			.catch(err => {
-				console.log(err);
 				Alert.alert(strings.semillas.errorShareData);
-			});
+			})
+			.finally(() => this.setState({ shareInProgress: false }));
 	};
 
 	finish = () => {

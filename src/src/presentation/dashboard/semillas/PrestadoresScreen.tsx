@@ -199,7 +199,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 
 				<Modal animationType="fade" transparent={true} visible={modalVisible}>
 					<View style={modal.centeredView}>
-						<View style={[modal.view, { height: "50%" }]}>
+						<View style={[modal.view, { height: 250 }]}>
 							<Normal style={styles.emailDescription}>{writeEmail}</Normal>
 							<DidiTextInput.Email onChangeText={customEmail => this.handleChangeCustomEmail(customEmail)} />
 

@@ -31,7 +31,7 @@ export default class Prestador extends PureComponent<PrestadorProps, {}> {
 					</View>
 					<View style={styles.textContainer}>
 						<Small style={styles.title}>{item.name}</Small>
-						{item.speciality && <Small style={styles.description}>{item.speciality}</Small>}
+						{!!item.speciality && <Small style={styles.description}>{item.speciality}</Small>}
 						<Text style={{ textAlign: "center" }}>
 							<Small style={[styles.label, { fontWeight: "normal" }]}>Beneficio: </Small>
 							<Small style={styles.label}>{item.benefit}%</Small>
