@@ -12,6 +12,7 @@ import { TokenAction } from "./reducers/tokenReducer";
 import { ValidateDniAction } from "./reducers/validateDniProgressReducer";
 import { PrestadoresAction } from "./reducers/prestadoresReducer";
 import { ValidateSemillasDniAction } from "./reducers/validateSemillasDniReducer";
+import { CodeAction } from "./reducers/phoneVerificationReducer";
 
 export type StoreAction =
 	| { type: "RESET_PERSISTED_STORE" }
@@ -27,4 +28,5 @@ export type StoreAction =
 	| IssuerAction
 	| RecentActivityAction
 	| PrestadoresAction
-	| PushNotificationAction;
+	| PushNotificationAction
+	| CodeAction;
