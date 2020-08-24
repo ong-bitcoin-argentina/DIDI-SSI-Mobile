@@ -16,7 +16,7 @@ import { Validations } from "../../../model/Validations";
 import commonStyles from "../../resources/commonStyles";
 import { didiConnect } from "../../../store/store";
 import { getSemillasPrestadores } from "../../../services/semillas/getPrestadores";
-import { semillasCategoriesFilters } from "./constants";
+import { semillasCategoriesFilters, categories } from "./constants";
 import colors from "../../resources/colors";
 const { header, view } = commonStyles.benefit;
 const { steps, writeEmail } = strings.semillas;
@@ -109,7 +109,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 	};
 
 	handleFilterChange = (categoryFilter: string) => {
-		const mustFilter = categoryFilter !== "Todas";
+		const mustFilter = categoryFilter !== categories.all;
 		const { prestadores } = this.props;
 		this.setState({
 			categoryFilter,
