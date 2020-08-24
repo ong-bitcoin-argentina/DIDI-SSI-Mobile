@@ -2,9 +2,30 @@
 const basePath = `../../resources/images/semillas`;
 const baseSembrando = `${basePath}-sembrando`;
 
-const semillasCategories = ["Finanza", "Oportunidad", "Saber", "Salud", "Sueño"];
+const semillasCategories = [
+	{
+		label: "Finanzas",
+		value: "Finanza"
+	},
+	{
+		label: "Oportunidades",
+		value: "Oportunidad"
+	},
+	{
+		label: "Saberes",
+		value: "Saber"
+	},
+	{
+		label: "Salud",
+		value: "Salud"
+	},
+	{
+		label: "Sueños",
+		value: "Sueño"
+	}
+];
 
-export const semillasCategoriesFilters = ["Todas", ...semillasCategories];
+export const semillasCategoriesFilters = [{ label: "Todas", value: "Todas" }, ...semillasCategories];
 
 export default {
 	["Salud"]: require(`${baseSembrando}-salud.png`),

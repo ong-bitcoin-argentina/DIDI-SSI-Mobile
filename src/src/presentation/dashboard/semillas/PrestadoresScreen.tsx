@@ -63,7 +63,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 			activePrestador: undefined,
 			modalVisible: false,
 			customEmail: "",
-			categoryFilter: "noFilter",
+			categoryFilter: "Todas",
 			loading: this.props.prestadores.length === 0
 		};
 	}
@@ -148,11 +148,16 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				windowSize={9}
 				getItemLayout={this.getItemLayout}
 				ListFooterComponent={
-					<View style={{ marginTop: 20 }}>
-						<Small onPress={() => this.setState({ modalVisible: true })} style={[{ textDecorationLine: "underline" }]}>
-							{email}
-						</Small>
-					</View>
+					!this.state.activePrestador && (
+						<View style={{ marginTop: 20 }}>
+							<Small
+								onPress={() => this.setState({ modalVisible: true })}
+								style={[{ textDecorationLine: "underline" }]}
+							>
+								{email}
+							</Small>
+						</View>
+					)
 				}
 			/>
 		);
@@ -179,8 +184,8 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 								onValueChange={this.handleFilterChange}
 								mode="dialog"
 							>
-								{semillasCategoriesFilters.map((value: string) => (
-									<Picker.Item label={value} value={value} key={value} />
+								{semillasCategoriesFilters.map(item => (
+									<Picker.Item label={item.label} value={item.value} key={item.value} />
 								))}
 							</Picker>
 						</View>
