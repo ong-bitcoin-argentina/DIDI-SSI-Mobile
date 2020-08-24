@@ -63,7 +63,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 			activePrestador: undefined,
 			modalVisible: false,
 			customEmail: "",
-			categoryFilter: "Todas",
+			categoryFilter: categories.all,
 			loading: this.props.prestadores.length === 0
 		};
 	}
