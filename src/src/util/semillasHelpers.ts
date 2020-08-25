@@ -16,21 +16,21 @@ const isSemillasBenefitCrendential = (credential: CredentialDocument): boolean =
 	return !!(isSemillasCrendential(credential) && credential.category?.includes("benefit"));
 };
 
-const isValidCredential = (credential: CredentialDocument): boolean => {
+const isActiveCredential = (credential: CredentialDocument): boolean => {
 	return !credential.expireAt || credential.expireAt > Date.now();
 };
 
-const isSemillasIdentityValidCredential = (credential: CredentialDocument): boolean => {
+const isSemillasIdentityActiveCredential = (credential: CredentialDocument, context: any): boolean => {
 	return (
 		credential &&
 		isSemillasIdentityCredential(credential) &&
-		isValidCredential(credential) &&
+		isActiveCredential(credential) &&
 		!!getFullName(credential.data)
 	);
 };
 
-const isSemillasBenefitValidCredential = (credential: CredentialDocument): boolean => {
-	return credential && isSemillasBenefitCrendential(credential) && isValidCredential(credential);
+const isSemillasBenefitActiveCredential = (credential: CredentialDocument): boolean => {
+	return credential && isSemillasBenefitCrendential(credential) && isActiveCredential(credential);
 };
 
 export const isSemillasCrendential = (credential: any): boolean => {
@@ -47,12 +47,12 @@ export const getFullName = (data?: any) => {
 };
 
 export const getSemillasBenefitCredential = (credentials?: CredentialDocument[]): any => {
-	return credentials ? credentials.find(isSemillasBenefitValidCredential) : [];
+	return credentials ? credentials.find(isSemillasBenefitActiveCredential) : [];
 };
 
 export const getSemillasIdentitiesCredentials = (credentials?: CredentialDocument[]): any[] => {
 	return credentials
-		? credentials.filter(isSemillasIdentityValidCredential).sort((a, b) => getFullName(a.data) > getFullName(b.data))
+		? credentials.filter(isSemillasIdentityActiveCredential).sort((a, b) => getFullName(a.data) > getFullName(b.data))
 		: [];
 };
 
@@ -63,7 +63,7 @@ export const getSemillasIdentitiesData = (credentials?: CredentialDocument[]): a
 export const haveValidIdentityAndBenefit = (credentials?: CredentialDocument[]): boolean => {
 	return !!(
 		credentials &&
-		credentials.some(isSemillasIdentityValidCredential) &&
-		credentials.some(isSemillasBenefitValidCredential)
+		credentials.some(isSemillasIdentityActiveCredential) &&
+		credentials.some(isSemillasBenefitActiveCredential)
 	);
 };

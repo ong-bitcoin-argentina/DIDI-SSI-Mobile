@@ -47,7 +47,7 @@ export interface NavigatorProps extends ViewProps {
 }
 
 export default function (then: NavTree<DashboardSwitchTarget>) {
-	function screen(InnerNavigator: NavigationContainer, title: string, image: string) {
+	function screen(InnerNavigator: NavigationContainer, title: string, image: string, withFloatButton: boolean = true) {
 		class DashboardNavigator extends React.Component<NavigatorProps> {
 			static router = InnerNavigator.router;
 			render() {
@@ -55,11 +55,13 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				return (
 					<View style={{ flex: 1 }}>
 						<InnerNavigator navigation={navigation} style={[StyleSheet.absoluteFill, { zIndex: 0, elevation: 0 }]} />
-						<DashboardJumpMenu
-							navigation={navigation}
-							showJumpButton={true}
-							style={[StyleSheet.absoluteFill, { zIndex: 1, elevation: 1 }]}
-						/>
+						{withFloatButton && (
+							<DashboardJumpMenu
+								navigation={navigation}
+								showJumpButton={true}
+								style={[StyleSheet.absoluteFill, { zIndex: 1, elevation: 1 }]}
+							/>
+						)}
 					</View>
 				);
 			}
@@ -120,7 +122,8 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			DashboardSemillas: screen(
 				SemillasNavigator().stackNavigator("DashboardSemillas"),
 				strings.tabNames.semillas,
-				"spa"
+				"spa",
+				false
 			),
 			DashboardSettings: screen(
 				SettingsNavigator({

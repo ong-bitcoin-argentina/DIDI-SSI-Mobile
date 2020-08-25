@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { SafeAreaView, StyleSheet, TouchableOpacity, View, ViewStyle, Text } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
@@ -18,7 +18,7 @@ type PrestadorProps = {
 
 type PrestadorState = {};
 
-export default class Prestador extends Component<PrestadorProps, PrestadorState> {
+export default class Prestador extends PureComponent<PrestadorProps, PrestadorState> {
 	render() {
 		const { item, active, onPress } = this.props;
 		return (
