@@ -13,8 +13,8 @@ export default abstract class NavigationEnabledComponent<Props, State, Nav> exte
 	__navigationTypeReference?: Nav;
 
 	componentDidCatch(error: any, info: any) {
-		crashlytics().recordError(error);
 		crashlytics().log(info.componentStack);
+		crashlytics().recordError(error);
 	}
 
 	navigation() {

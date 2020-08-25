@@ -328,7 +328,9 @@ export default {
 			first: {
 				title: "¿A qué servicio querés acceder?",
 				email: "¿No encontrás tu servicio?",
-				writeEmail: "Mail del destinatario"
+				writeEmail: "Mail del destinatario",
+				noCredentials:
+					"Para ir al siguiente paso es necesario tener credenciales de Identidad y Beneficio Semillas activa"
 			},
 			second: {
 				title: "Elegí quién va a usar el beneficio:",

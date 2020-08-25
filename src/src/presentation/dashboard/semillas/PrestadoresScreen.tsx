@@ -18,9 +18,11 @@ import { didiConnect } from "../../../store/store";
 import { getSemillasPrestadores } from "../../../services/semillas/getPrestadores";
 import { semillasCategoriesFilters, categories } from "./constants";
 import colors from "../../resources/colors";
+import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
+import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 const { header, view } = commonStyles.benefit;
-const { steps, writeEmail } = strings.semillas;
-const { email, title } = steps.first;
+const { steps, writeEmail, program } = strings.semillas;
+const { email, title, noCredentials } = steps.first;
 const { modal } = commonStyles;
 const { Small, Normal } = DidiText.Explanation;
 
@@ -28,6 +30,7 @@ export type PrestadoresProps = {};
 
 interface PrestadoresScreenStateProps {
 	prestadores: PrestadorModel[];
+	prestadoresEnabled: boolean;
 }
 
 type PrestadoresScreenState = {
@@ -98,11 +101,19 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				activePrestador: undefined,
 				modalVisible: false
 			});
-			this.navigate("Beneficiario", { customEmail });
+			this.goNext({ customEmail });
 		} else {
 			Alert.alert("Por favor, escriba un email válido");
 		}
 	};
+
+	goNext({ customEmail, activePrestador }: any) {
+		if (this.props.prestadoresEnabled) {
+			this.navigate("Beneficiario", { customEmail, activePrestador });
+		} else {
+			Alert.alert(program, noCredentials);
+		}
+	}
 
 	handleChangeCustomEmail = (customEmail: string) => {
 		this.setState({ customEmail });
@@ -195,14 +206,14 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 
 					{activePrestador && activePrestador.id > -1 && (
 						<DidiServiceButton
-							onPress={() => this.navigate("Beneficiario", { activePrestador })}
+							onPress={() => this.goNext({ activePrestador })}
 							title={strings.general.next.toUpperCase()}
 							isPending={false}
 						/>
 					)}
 				</View>
 
-				<Modal animationType="fade" transparent={true} visible={modalVisible}>
+				<Modal animationType="fade" transparent visible={modalVisible}>
 					<View style={modal.centeredView}>
 						<View style={[modal.view, { height: 250 }]}>
 							<Normal style={styles.emailDescription}>{writeEmail}</Normal>
@@ -238,7 +249,9 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 export default didiConnect(
 	PrestadoresScreen,
 	(state): PrestadoresScreenStateProps => ({
-		prestadores: state.prestadores
+		prestadores: state.prestadores,
+		prestadoresEnabled:
+			haveValidIdentityAndBenefit(state.allSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials)
 	}),
 	(dispatch): PrestadoresScreenDispatchProps => ({
 		getPrestadores: () => dispatch(getSemillasPrestadores("GetPrestadores"))
