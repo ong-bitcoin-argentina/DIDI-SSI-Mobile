@@ -61,9 +61,7 @@ export const activeSpecialCredentialsSelector = createSelector(
 export const allSemillasCredentialsSelector = createSelector(
 	allCredentialSelector,
 	st => st.persisted.did,
-	credentials => {
-		return credentials.filter(isSemillasCrendential);
-	}
+	credentials => credentials.filter(isSemillasCrendential)
 );
 
 const contextSelector = createSelector(
