@@ -11,4 +11,5 @@ export type PrestadorModel = {
 	whatsappNumber: string;
 	benefit: string;
 	speciality: string;
+	description?: string;
 };
