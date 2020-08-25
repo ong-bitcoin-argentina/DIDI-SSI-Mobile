@@ -1,5 +1,3 @@
-import { ActiveDid } from "../reducers/didReducer";
-import { IssuerRegistry } from "../reducers/issuerReducer";
 import { CredentialDocument, EthrDID, SpecialCredentialFlag } from "didi-sdk";
 import { createSelector } from "reselect";
 import { isSemillasCrendential } from "../../util/semillasHelpers";
@@ -12,13 +10,6 @@ import { credentialState } from "../../presentation/dashboard/common/documentToC
 const allCredentialSelector = createSelector(parsedTokenSelector, tokens =>
 	TypedArray.flatMap(tokens, (tk): CredentialDocument | null => (tk.type === "CredentialDocument" ? tk : null))
 );
-
-export type CredentialContext = {
-	activeDid?: ActiveDid;
-	lastTokenSync?: string[] | null;
-	knownIssuers?: IssuerRegistry;
-	specialCredentials: SpecialCredentialMap;
-};
 
 export const toplevelCredentialSelector = createSelector(
 	allCredentialSelector,
