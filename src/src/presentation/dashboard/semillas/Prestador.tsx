@@ -18,7 +18,7 @@ type PrestadorProps = {
 
 type PrestadorState = {};
 
-export default class Prestador extends Component<PrestadorProps, PrestadorState> {
+export default class Prestador extends PureComponent<PrestadorProps, PrestadorState> {
 	render() {
 		const { item, active, onPress } = this.props;
 		return (

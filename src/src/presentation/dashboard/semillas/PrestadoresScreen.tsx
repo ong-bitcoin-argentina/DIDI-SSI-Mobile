@@ -264,7 +264,8 @@ const styles = StyleSheet.create({
 	},
 	pickerLabel: {
 		textAlign: "right",
-		fontSize: 16
+		fontSize: 16,
+		marginRight: 6
 	},
 	filter: {
 		marginTop: 6,
@@ -274,7 +275,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		borderWidth: 1,
 		borderColor: colors.border.light,
-		borderRadius: 10
+		borderRadius: 10,
+		paddingVertical: 4
 	},
 	emailDescription: {
 		marginTop: 10,

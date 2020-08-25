@@ -16,6 +16,7 @@ import {
 	SpecialCredentialMap,
 	toplevelCredentialSelector,
 	allSemillasCredentialsSelector,
+	activeSemillasCredentialsSelector
 } from "./selector/credentialSelector";
 import { newTokensAvailableSelector } from "./selector/newTokensAvailableSelector";
 import { parsedTokenSelector } from "./selector/parsedTokenSelector";
@@ -25,6 +26,7 @@ export interface StoreContent extends PersistedStoreContent {
 	parsedTokens: Array<CredentialDocument | SelectiveDisclosureRequest>;
 	credentials: CredentialDocument[];
 	allSemillasCredentials?: CredentialDocument[];
+	activeSemillasCredentials: CredentialDocument[];
 	activeSpecialCredentials: SpecialCredentialMap;
 	newTokensAvailable: boolean;
 
@@ -42,6 +44,8 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 		parsedTokens: parsedTokenSelector(store),
 		credentials: toplevelCredentialSelector(store),
 		allSemillasCredentials: allSemillasCredentialsSelector(store),
+		activeSemillasCredentials: activeSemillasCredentialsSelector(store),
+
 		activeSpecialCredentials: activeSpecialCredentialsSelector(store),
 		newTokensAvailable: newTokensAvailableSelector(store),
 

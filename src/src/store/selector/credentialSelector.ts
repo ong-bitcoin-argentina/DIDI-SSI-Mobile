@@ -5,6 +5,7 @@ import { isSemillasCrendential } from "../../util/semillasHelpers";
 import TypedArray from "../../util/TypedArray";
 
 import { parsedTokenSelector } from "./parsedTokenSelector";
+import { credentialState } from "../../presentation/dashboard/common/documentToCard";
 
 const allCredentialSelector = createSelector(parsedTokenSelector, tokens =>
 	TypedArray.flatMap(tokens, (tk): CredentialDocument | null => (tk.type === "CredentialDocument" ? tk : null))
@@ -37,14 +38,6 @@ export const toplevelCredentialSelector = createSelector(
 	}
 );
 
-export const allSemillasCredentialsSelector = createSelector(
-	allCredentialSelector,
-	st => st.persisted.did,
-	credentials => {
-		return credentials.filter(isSemillasCrendential);
-	}
-);
-
 export type SpecialCredentialMap = Partial<Record<NonNullable<SpecialCredentialFlag>["type"], CredentialDocument>>;
 
 export const activeSpecialCredentialsSelector = createSelector(
@@ -62,5 +55,41 @@ export const activeSpecialCredentialsSelector = createSelector(
 				}
 			});
 		return result;
+	}
+);
+
+export const allSemillasCredentialsSelector = createSelector(
+	allCredentialSelector,
+	st => st.persisted.did,
+	credentials => credentials.filter(isSemillasCrendential)
+);
+
+const contextSelector = createSelector(
+	st => st.persisted,
+	activeSpecialCredentialsSelector,
+	(persisted, activeSpecialCredentials) => {
+		return {
+			activeDid: persisted.did.activeDid,
+			knownIssuers: persisted.knownIssuers,
+			lastTokenSync: persisted.tokensInLastSync,
+			specialCredentials: activeSpecialCredentials
+		};
+	}
+);
+
+const credentialStates = {
+	obsolete: "obsolete",
+	identity: "identity",
+	share: "share",
+	revoked: "revoked",
+	normal: "normal"
+};
+
+export const activeSemillasCredentialsSelector = createSelector(
+	allSemillasCredentialsSelector,
+	contextSelector,
+	(credentials, context) => {
+		const blacklist = [credentialStates.obsolete, credentialStates.revoked];
+		return credentials.filter(cred => !blacklist.includes(credentialState(cred, context)));
 	}
 );

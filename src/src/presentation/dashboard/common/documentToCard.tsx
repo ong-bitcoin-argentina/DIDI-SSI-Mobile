@@ -31,7 +31,7 @@ export function extractContext(storeState: StoreContent): DocumentCredentialCard
 	};
 }
 
-type CredentialState = "share" | "identity" | "revoked" | "obsolete" | "normal";
+export type CredentialState = "share" | "identity" | "revoked" | "obsolete" | "normal";
 
 export function credentialState(document: CredentialDocument, context: DocumentCredentialCardContext): CredentialState {
 	const specialType = document.specialFlag?.type;
