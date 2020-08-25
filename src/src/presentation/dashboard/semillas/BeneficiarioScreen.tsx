@@ -101,7 +101,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		return `${sharePrefix}/${identityCredential?.jwt},${benefitCredential.jwt}`;
 	};
 
-	shareData = () => {
+	shareData = async () => {
 		this.setState({ shareInProgress: true });
 		const { email, phoneNumber, activePrestador, did } = this.props;
 		const { selected } = this.state;
@@ -114,13 +114,13 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 			dni: selected && selected[keys.dniBeneficiario],
 			viewerJWT: this.getLinkJWT()
 		};
-		getClient()
-			.shareData(data)
-			.then(() => this.finish())
-			.catch(err => {
-				Alert.alert(strings.semillas.errorShareData);
-			})
-			.finally(() => this.setState({ shareInProgress: false }));
+		try {
+			await getClient().shareData(data);
+			this.finish();
+		} catch (e) {
+			Alert.alert(strings.semillas.errorShareData);
+		}
+		this.setState({ shareInProgress: false });
 	};
 
 	finish = () => {
