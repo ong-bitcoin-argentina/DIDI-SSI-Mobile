@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { SafeAreaView, StyleSheet, TouchableOpacity, View, ViewStyle, Text } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
