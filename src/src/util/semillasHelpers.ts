@@ -50,20 +50,18 @@ export const getSemillasBenefitCredential = (credentials?: CredentialDocument[])
 	return credentials ? credentials.find(isSemillasBenefitActiveCredential) : [];
 };
 
-export const getSemillasIdentitiesCredentials = (credentials?: CredentialDocument[]): any[] => {
+export const getSemillasIdentitiesCredentials = (credentials: CredentialDocument[] = []): any[] => {
 	return credentials
-		? credentials.filter(isSemillasIdentityActiveCredential).sort((a, b) => getFullName(a.data) > getFullName(b.data))
-		: [];
+		.filter(isSemillasIdentityActiveCredential)
+		.sort((a, b) => getFullName(a.data) > getFullName(b.data));
 };
 
 export const getSemillasIdentitiesData = (credentials?: CredentialDocument[]): any[] => {
 	return getSemillasIdentitiesCredentials(credentials).map(item => item.data);
 };
 
-export const haveValidIdentityAndBenefit = (credentials?: CredentialDocument[]): boolean => {
+export const haveValidIdentityAndBenefit = (credentials: CredentialDocument[] = []): boolean => {
 	return !!(
-		credentials &&
-		credentials.some(isSemillasIdentityActiveCredential) &&
-		credentials.some(isSemillasBenefitActiveCredential)
+		credentials.some(isSemillasIdentityActiveCredential) && credentials.some(isSemillasBenefitActiveCredential)
 	);
 };
