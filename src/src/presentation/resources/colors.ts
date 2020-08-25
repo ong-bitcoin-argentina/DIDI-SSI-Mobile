@@ -40,6 +40,8 @@ const colors = {
 	editableSetting: "#F6EAAE",
 	highlight: "#FFBD10",
 
+	shadow: "rgba(0,0,0,.4)",
+
 	subtitleAlpha: "A0"
 };
 

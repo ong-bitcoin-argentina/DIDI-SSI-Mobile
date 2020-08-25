@@ -24,6 +24,7 @@ import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
 import { getClient } from "../../../services/internal/withDidiServerClient";
 import SemillasLogo from "../../resources/images/sem-logo.svg";
+import { extractContext } from "../common/documentToCard";
 
 const { title, description, detail, modalTitle } = strings.semillas.steps.second;
 const { keys } = strings.specialCredentials.Semillas;
@@ -36,7 +37,7 @@ export type BeneficiarioProps = {
 };
 
 interface BeneficiarioScreenStateProps {
-	allSemillasCredentials?: CredentialDocument[];
+	// activeSemillasCredentials?: CredentialDocument[];
 	benefitCredential: CredentialDocument;
 	email: string;
 	identitiesCredentials: CredentialDocument[];
@@ -69,8 +70,9 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 
 	constructor(props: BeneficiarioScreenInternalProps) {
 		super(props);
-		const identityCredential = props.identitiesCredentials.find(item => item.data[keys.relationship] === "titular");
-		const selected = identityCredential?.data;
+		const firstHolder = props.identitiesCredentials.find(item => item.data[keys.relationship] === "titular");
+		const identityCredential = firstHolder ?? props.identitiesCredentials[0];
+		const selected = identityCredential.data;
 		this.state = {
 			identityCredential,
 			selected,
@@ -149,19 +151,17 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 					</Small>
 
 					<View style={styles.pickerContainer}>
-						{/* <Small>{detail}</Small> */}
-
 						<Picker
 							selectedValue={selectedValue}
 							itemStyle={{ textAlign: "center" }}
 							onValueChange={this.handleChangePicker}
 							mode="dialog"
 						>
-							{identitiesData.map(credentialData => (
+							{identitiesData.map((credentialData, index) => (
 								<Picker.Item
 									label={getFullName(credentialData)}
 									value={getDniBeneficiario(credentialData)}
-									key={getDniBeneficiario(credentialData)}
+									key={index}
 								/>
 							))}
 						</Picker>
@@ -176,7 +176,6 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 					<View style={modal.centeredView}>
 						<View style={[modal.view, styles.modalView]}>
 							<View style={styles.modalImage}>
-								{/* <Small style={{ alignSelf: "center", fontWeight: "bold", fontSize: 18 }}>{selected["APELLIDO"]}</Small> */}
 								<SemillasLogo viewBox="0 0 128 39" width={100} height={58} style={styles.logo} />
 							</View>
 							<Small style={styles.modalTitle}>{modalTitle}:</Small>
@@ -213,12 +212,11 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 export default didiConnect(
 	BeneficiarioScreen,
 	(state): BeneficiarioScreenStateProps => ({
-		allSemillasCredentials: state.allSemillasCredentials,
+		benefitCredential: getSemillasBenefitCredential(state.activeSemillasCredentials),
 		did: state.did.activeDid?.did(),
-		benefitCredential: getSemillasBenefitCredential(state.allSemillasCredentials),
 		email: getEmail(state.activeSpecialCredentials),
-		identitiesCredentials: getSemillasIdentitiesCredentials(state.allSemillasCredentials),
-		identitiesData: getSemillasIdentitiesData(state.allSemillasCredentials),
+		identitiesCredentials: getSemillasIdentitiesCredentials(state.activeSemillasCredentials),
+		identitiesData: getSemillasIdentitiesData(state.activeSemillasCredentials),
 		phoneNumber: getPhoneNumber(state.activeSpecialCredentials),
 		sharePrefix: state.serviceSettings.sharePrefix
 	})
@@ -227,6 +225,7 @@ export default didiConnect(
 const styles = StyleSheet.create({
 	pickerContainer: {
 		paddingVertical: 2,
+		paddingHorizontal: 16,
 		borderWidth: 1,
 		borderColor: colors.border.light,
 		borderRadius: 6,

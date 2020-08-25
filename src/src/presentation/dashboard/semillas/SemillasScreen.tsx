@@ -46,7 +46,6 @@ interface SemillasScreenStateProps {
 	credentials: CredentialDocument[];
 	semillasValidationPending: boolean;
 	semillasValidationFailure: boolean;
-	prestadoresEnabled: boolean;
 }
 interface SemillasScreenState {
 	dni: string;
@@ -115,19 +114,14 @@ class SemillasScreen extends NavigationEnabledComponent<
 	}
 
 	renderButtonBenefits() {
-		if (PRESTADORES_FEATURE) {
-			const { prestadoresEnabled } = this.props;
-			return prestadoresEnabled ? (
-				<DidiServiceButton
-					onPress={() => this.navigate("Prestadores", {})}
-					title="Ver Beneficios"
-					style={styles.button}
-					isPending={false}
-				/>
-			) : (
-				<Alert text={credetialsPending} style={{ marginBottom: 50 }} />
-			);
-		}
+		return (
+			<DidiServiceButton
+				onPress={() => this.navigate("Prestadores", {})}
+				title="Ver Beneficios"
+				style={styles.button}
+				isPending={false}
+			/>
+		);
 	}
 
 	toggleModal = () => {
@@ -196,8 +190,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 					<DidiButton
 						onPress={this.goToRenaperValidation}
 						title={strings.validateIdentity.header}
-						// TODO: pass inline style to style's object
-						style={[button.lightRed, { marginTop: 20, paddingVertical: 26 }]}
+						style={[button.lightRed, styles.renaperButton]}
 					/>
 				</View>
 
@@ -260,8 +253,6 @@ export default didiConnect(
 	(state): SemillasScreenStateProps => ({
 		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
 		credentials: state.credentials,
-		prestadoresEnabled:
-			haveValidIdentityAndBenefit(state.allSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials),
 		didRequested: state.did.didRequested,
 		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
 		semillasValidationPending: state.validateSemillasDni?.state === "In Progress",
@@ -283,6 +274,10 @@ const styles = StyleSheet.create({
 	warningMessage: {
 		fontSize: 18,
 		marginTop: 20
+	},
+	renaperButton: {
+		marginTop: 20,
+		paddingVertical: 26
 	},
 	button: {
 		marginTop: 30,

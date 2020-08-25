@@ -53,8 +53,8 @@ export default {
 			flex: 1,
 			justifyContent: "center",
 			alignItems: "center",
-			marginTop: 22,
-			width: "100%"
+			width: "100%",
+			backgroundColor: colors.shadow
 		},
 		view: {
 			margin: 20,
