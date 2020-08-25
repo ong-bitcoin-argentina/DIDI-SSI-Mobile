@@ -307,13 +307,14 @@ export default {
 	},
 	semillas: {
 		barTitle: "Mis Credenciales semillas",
+		benefitCredentialActive: "Credencial de Beneficios activa",
 		detailBarTitle: "Programa Semillas",
 		validationTitle: "Validación de Identidad - Semillas",
 		getCredentials: "Quiero mis credenciales",
 		noDni: "Debes completar el proceso de validación de identidad antes de poder acceder a los Beneficios de Semillas.",
 		credentials: "Credenciales",
 		program: "Programa Semillas",
-		writeEmail: "Escribe un email",
+		writeEmail: "Escribe la dirección de email de tu contacto para compartir tus credenciales de Semillas:",
 		detailFirst:
 			"Si sos parte del programa Semillas ahora podés tener tus credenciales que certifican y validan tus datos personales.",
 		detailSecond:
@@ -326,13 +327,12 @@ export default {
 		steps: {
 			first: {
 				title: "¿A qué servicio querés acceder?",
-				email: "O podés escribir el mail del destinatario de la credencial",
+				email: "¿No encontrás tu servicio?",
 				writeEmail: "Mail del destinatario"
 			},
 			second: {
-				title: "Elegí quién va a usar el beneficio.",
-				description:
-					"Recordá que podés utilizarlo con cualquier integrante de tu grupo familiar registrado en Semillas.",
+				title: "Elegí quién va a usar el beneficio:",
+				description: "Recordá que podés utilizarlo con tus familiares registrados en Semillas.",
 				detail: "Seleccioná quién lo usará",
 				modalTitle: "Estás por compartir la siguiente información",
 				labels: {
@@ -347,6 +347,7 @@ export default {
 			third: {
 				title: "El Beneficio fue solicitado con éxito!",
 				needCoordinate: "¿Necesitás coordinar tu turno?",
+				willBeContacted: "Serás contactado a la brevedad.",
 				whatsappMessage: "¡Hola! Pertenezco al programa Semillas y quisiera solicitar un turno.",
 				whatsappError: "Ocurrió un error al abrir Whatsapp, confirme que lo tiene instalado en su dispositivo."
 			}
@@ -357,7 +358,7 @@ export default {
 		callLater: "Llamaré luego",
 		errorShareData: "Ocurrió un error al compartir tus datos",
 		validate: {
-			shouldDo: "Debes completar el proceso de validación de Identidad para acceder a los beneficios de Semillas.",
+			shouldDo: "Debes completar la validación de Identidad para acceder a los beneficios de Semillas.",
 			identityFromSemillas: "Validar Identidad a través de Semillas",
 			DNI: "Validar DNI con Semillas",
 			question: "¿No lográs validar tu identidad?",
@@ -808,7 +809,7 @@ export default {
 		email: "eMail",
 		phone: "Celular",
 		filterBy: {
-			category: "Filtrar por categoría"
+			category: "Categoría:"
 		}
 	},
 	jwtParseError: (error: JWTParseError) => {

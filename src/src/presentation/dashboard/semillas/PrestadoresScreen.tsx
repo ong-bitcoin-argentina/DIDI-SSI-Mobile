@@ -16,12 +16,13 @@ import { Validations } from "../../../model/Validations";
 import commonStyles from "../../resources/commonStyles";
 import { didiConnect } from "../../../store/store";
 import { getSemillasPrestadores } from "../../../services/semillas/getPrestadores";
-import { semillasCategoriesFilters } from "./constants";
-const { bottomButton, header, view } = commonStyles.benefit;
+import { semillasCategoriesFilters, categories } from "./constants";
+import colors from "../../resources/colors";
+const { header, view } = commonStyles.benefit;
 const { steps, writeEmail } = strings.semillas;
 const { email, title } = steps.first;
 const { modal } = commonStyles;
-const { Small } = DidiText.Explanation;
+const { Small, Normal } = DidiText.Explanation;
 
 export type PrestadoresProps = {};
 
@@ -108,7 +109,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 	};
 
 	handleFilterChange = (categoryFilter: string) => {
-		const mustFilter = categoryFilter !== "No filtrar";
+		const mustFilter = categoryFilter !== categories.all;
 		const { prestadores } = this.props;
 		this.setState({
 			categoryFilter,
@@ -148,13 +149,9 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				getItemLayout={this.getItemLayout}
 				ListFooterComponent={
 					<View style={{ marginTop: 20 }}>
-						<Small>{email}</Small>
-						<DidiServiceButton
-							onPress={() => this.setState({ modalVisible: true })}
-							title={writeEmail}
-							style={{ height: 30 }}
-							isPending={false}
-						/>
+						<Small onPress={() => this.setState({ modalVisible: true })} style={[{ textDecorationLine: "underline" }]}>
+							{email}
+						</Small>
 					</View>
 				}
 			/>
@@ -168,7 +165,6 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
 				<View style={view}>
-
 					<Small style={[header]} adjustsFontSizeToFit>
 						{title}
 					</Small>
@@ -176,7 +172,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 						<View style={{ flex: 1 }}>
 							<Small style={styles.pickerLabel}>{strings.general.filterBy.category}</Small>
 						</View>
-						<View style={{ flex: 1 }}>
+						<View style={{ flex: 2 }}>
 							<Picker
 								selectedValue={categoryFilter}
 								style={{ height: "100%" }}
@@ -196,7 +192,6 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 						<DidiServiceButton
 							onPress={() => this.navigate("Beneficiario", { activePrestador })}
 							title={strings.general.next.toUpperCase()}
-							style={bottomButton}
 							isPending={false}
 						/>
 					)}
@@ -204,7 +199,8 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 
 				<Modal animationType="fade" transparent={true} visible={modalVisible}>
 					<View style={modal.centeredView}>
-						<View style={[modal.view, { height: "50%" }]}>
+						<View style={[modal.view, { height: 250 }]}>
+							<Normal style={styles.emailDescription}>{writeEmail}</Normal>
 							<DidiTextInput.Email onChangeText={customEmail => this.handleChangeCustomEmail(customEmail)} />
 
 							<View style={modal.footer}>
@@ -249,14 +245,21 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	pickerLabel: {
-		textAlign: "left",
-		fontSize: 14
+		textAlign: "right",
+		fontSize: 16
 	},
 	filter: {
-		marginTop: -10,
+		marginTop: 6,
 		marginBottom: 14,
 		flex: 1,
 		flexDirection: "row",
-		alignItems: "center"
+		alignItems: "center",
+		borderWidth: 1,
+		borderColor: colors.border.light,
+		borderRadius: 10
+	},
+	emailDescription: {
+		marginTop: 10,
+		marginBottom: 22
 	}
 });

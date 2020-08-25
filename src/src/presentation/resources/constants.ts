@@ -7,6 +7,6 @@ const semillasCategories = {
 };
 
 export const semillasCategoriesFilters = {
-	noFilter: "No filtrar",
+	noFilter: "Todas",
 	...semillasCategories
 };

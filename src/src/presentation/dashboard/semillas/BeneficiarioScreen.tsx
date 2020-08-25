@@ -1,29 +1,34 @@
 import React, { Fragment } from "react";
 import { StatusBar, StyleSheet, View, Picker, Modal, Alert } from "react-native";
-
 import { didiConnect } from "../../../store/store";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
-
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import Beneficiario from "./Beneficiario";
-import { getFullName, getDniBeneficiario, getSemillasIdentitiesData } from "../../../util/semillasHelpers";
+import {
+	getFullName,
+	getDniBeneficiario,
+	getSemillasIdentitiesData,
+	getSemillasBenefitCredential,
+	getSemillasIdentitiesCredentials
+} from "../../../util/semillasHelpers";
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument, ClaimData } from "didi-sdk";
 import { RequestFinishedProps } from "./RequestFinishedScreen";
 import colors from "../../resources/colors";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
 import { getClient } from "../../../services/internal/withDidiServerClient";
 import SemillasLogo from "../../resources/images/sem-logo.svg";
-const { title, description, detail, modalTitle } = strings.semillas.steps.second;
 
-const { Small, Tiny, Normal } = DidiText.Explanation;
+const { title, description, detail, modalTitle } = strings.semillas.steps.second;
+const { keys } = strings.specialCredentials.Semillas;
+
+const { Small, Tiny } = DidiText.Explanation;
 
 export type BeneficiarioProps = {
 	activePrestador?: PrestadorModel;
@@ -32,17 +37,21 @@ export type BeneficiarioProps = {
 
 interface BeneficiarioScreenStateProps {
 	allSemillasCredentials?: CredentialDocument[];
-	activeSpecialCredentials: SpecialCredentialMap;
+	benefitCredential: CredentialDocument;
+	email: string;
+	identitiesCredentials: CredentialDocument[];
+	identitiesData: SemillasIdentityModel[];
+	phoneNumber: string;
+	sharePrefix: string;
+	did: string;
 }
 
 type BeneficiarioScreenState = {
-	identityCredentials: SemillasIdentityModel[];
-	selected: SemillasIdentityModel;
-	selectedName?: string;
+	identityCredential?: CredentialDocument;
 	modalVisible: boolean;
+	selected?: ClaimData;
+	selectedValue?: string;
 	shareInProgress: boolean;
-	email: string;
-	phoneNumber: string;
 };
 
 type BeneficiarioScreenInternalProps = BeneficiarioScreenStateProps & BeneficiarioProps;
@@ -60,24 +69,24 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 
 	constructor(props: BeneficiarioScreenInternalProps) {
 		super(props);
-		const identityCredentials = getSemillasIdentitiesData(props.allSemillasCredentials);
-		const selected = identityCredentials[0];
+		const identityCredential = props.identitiesCredentials.find(item => item.data[keys.relationship] === "titular");
+		const selected = identityCredential?.data;
 		this.state = {
-			identityCredentials,
+			identityCredential,
 			selected,
-			selectedName: getFullName(selected),
+			selectedValue: getDniBeneficiario(selected),
 			modalVisible: false,
-			shareInProgress: false,
-			email: getEmail(props.activeSpecialCredentials),
-			phoneNumber: getPhoneNumber(props.activeSpecialCredentials)
+			shareInProgress: false
 		};
 	}
 
-	handleChangePicker = (selectedName: string, index: number) => {
-		const selected = this.state.identityCredentials[index];
+	handleChangePicker = (selectedValue: string, index: number) => {
+		const identityCredential = this.props.identitiesCredentials[index];
+		const selected = identityCredential.data;
 		this.setState({
-			selectedName,
-			selected
+			selectedValue,
+			selected,
+			identityCredential
 		});
 	};
 
@@ -86,35 +95,32 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		this.setState({ modalVisible: !modalVisible });
 	};
 
-	getShareableData() {
-		const { dniBeneficiario, nameBeneficiario, birthDate, cert } = strings.specialCredentials.Semillas.keys;
-		const { selected } = this.state;
-		return {
-			[cert]: selected[cert],
-			[dniBeneficiario]: selected[dniBeneficiario],
-			[nameBeneficiario]: selected[nameBeneficiario],
-			[birthDate]: selected[birthDate]
-		};
-	}
+	getLinkJWT = () => {
+		const { benefitCredential, sharePrefix } = this.props;
+		const { identityCredential } = this.state;
+		return `${sharePrefix}/${identityCredential?.jwt},${benefitCredential.jwt}`;
+	};
 
-	shareData = () => {
+	shareData = async () => {
 		this.setState({ shareInProgress: true });
-		const { email, phoneNumber } = this.state;
+		const { email, phoneNumber, activePrestador, did } = this.props;
+		const { selected } = this.state;
 		const data = {
+			did,
 			email,
-			phoneNumber,
-			...this.getShareableData()
+			phone: phoneNumber,
+			providerId: activePrestador?.id,
+			customProviderEmail: this.props.customEmail,
+			dni: selected && selected[keys.dniBeneficiario],
+			viewerJWT: this.getLinkJWT()
 		};
-		getClient()
-			.shareData(data)
-			.then(result => {
-				this.setState({ shareInProgress: false });
-				this.finish();
-			})
-			.catch(err => {
-				console.log(err);
-				Alert.alert(strings.semillas.errorShareData);
-			});
+		try {
+			await getClient().shareData(data);
+			this.finish();
+		} catch (e) {
+			Alert.alert(strings.semillas.errorShareData);
+		}
+		this.setState({ shareInProgress: false });
 	};
 
 	finish = () => {
@@ -129,9 +135,10 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 	};
 
 	render() {
-		const { bottomButton, header, view } = commonStyles.benefit;
+		const { header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
-		const { selected, selectedName, modalVisible, email, phoneNumber } = this.state;
+		const { selected, selectedValue, modalVisible, shareInProgress } = this.state;
+		const { email, phoneNumber, identitiesData } = this.props;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -140,19 +147,17 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 					<Small style={header} adjustsFontSizeToFit>
 						{title}
 					</Small>
-					<Tiny style={styles.description}>{description}</Tiny>
 
 					<View style={styles.pickerContainer}>
-						<Small>{detail}</Small>
+						{/* <Small>{detail}</Small> */}
 
 						<Picker
-							selectedValue={selectedName}
-							style={{ height: 50 }}
+							selectedValue={selectedValue}
 							itemStyle={{ textAlign: "center" }}
-							onValueChange={(value, index) => this.handleChangePicker(value, index)}
+							onValueChange={this.handleChangePicker}
 							mode="dialog"
 						>
-							{this.state.identityCredentials.map(credentialData => (
+							{identitiesData.map(credentialData => (
 								<Picker.Item
 									label={getFullName(credentialData)}
 									value={getDniBeneficiario(credentialData)}
@@ -162,26 +167,25 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 						</Picker>
 					</View>
 
-					<DidiServiceButton
-						onPress={this.openModal}
-						title={strings.general.next.toUpperCase()}
-						style={bottomButton}
-						isPending={false}
-					/>
+					<Tiny style={styles.description}>{description}</Tiny>
+
+					<DidiServiceButton onPress={this.openModal} title={strings.general.next.toUpperCase()} isPending={false} />
 				</View>
 
 				<Modal animationType="fade" transparent={true} visible={modalVisible}>
 					<View style={modal.centeredView}>
 						<View style={[modal.view, styles.modalView]}>
 							<View style={styles.modalImage}>
-								<Small style={{ alignSelf: "center", fontWeight: "bold", fontSize: 18 }}>
-									{selected["Nombre Beneficiario"]}
-								</Small>
+								{/* <Small style={{ alignSelf: "center", fontWeight: "bold", fontSize: 18 }}>{selected["APELLIDO"]}</Small> */}
 								<SemillasLogo viewBox="0 0 128 39" width={100} height={58} style={styles.logo} />
 							</View>
 							<Small style={styles.modalTitle}>{modalTitle}:</Small>
 
 							<Beneficiario item={selected} email={email} phoneNumber={phoneNumber} />
+
+							<Small style={{ color: colors.greenSemillas, alignSelf: "flex-start" }}>
+								{strings.semillas.benefitCredentialActive}
+							</Small>
 
 							<View style={modal.footer}>
 								<DidiServiceButton
@@ -195,7 +199,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 									onPress={this.shareData}
 									title={strings.general.share}
 									style={[modal.smallButton, { backgroundColor: colors.greenSemillas }]}
-									isPending={this.state.shareInProgress}
+									isPending={shareInProgress}
 								/>
 							</View>
 						</View>
@@ -210,18 +214,24 @@ export default didiConnect(
 	BeneficiarioScreen,
 	(state): BeneficiarioScreenStateProps => ({
 		allSemillasCredentials: state.allSemillasCredentials,
-		activeSpecialCredentials: state.activeSpecialCredentials
+		did: state.did.activeDid?.did(),
+		benefitCredential: getSemillasBenefitCredential(state.allSemillasCredentials),
+		email: getEmail(state.activeSpecialCredentials),
+		identitiesCredentials: getSemillasIdentitiesCredentials(state.allSemillasCredentials),
+		identitiesData: getSemillasIdentitiesData(state.allSemillasCredentials),
+		phoneNumber: getPhoneNumber(state.activeSpecialCredentials),
+		sharePrefix: state.serviceSettings.sharePrefix
 	})
 );
 
 const styles = StyleSheet.create({
 	pickerContainer: {
-		paddingVertical: 10,
+		paddingVertical: 2,
 		borderWidth: 1,
 		borderColor: colors.border.light,
 		borderRadius: 6,
 		marginTop: 20,
-		marginBottom: 40
+		marginBottom: 20
 	},
 	textStyle: {
 		color: colors.label.text,
@@ -229,12 +239,12 @@ const styles = StyleSheet.create({
 		textAlign: "center"
 	},
 	description: {
-		textAlign: "left",
-		marginTop: 12
+		textAlign: "center",
+		fontSize: 16,
+		marginBottom: 80
 	},
 	logo: {
-		height: 40,
-		// marginVertical: 10,
+		height: 50,
 		alignSelf: "flex-end"
 	},
 	modalImage: {
@@ -248,7 +258,7 @@ const styles = StyleSheet.create({
 		height: 380
 	},
 	modalTitle: {
-		fontSize: 16,
+		fontSize: 17,
 		textAlign: "left"
 	}
 });

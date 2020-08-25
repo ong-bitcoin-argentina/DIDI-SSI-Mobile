@@ -4,7 +4,6 @@ import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
 import { didiConnect } from "../../../store/store";
 import { getPhoneNumber, getEmail } from "../../../util/specialCredentialsHelpers";
-import { ScrollView } from "react-native-gesture-handler";
 import strings from "../../resources/strings";
 import KeyValueText from "../../util/KeyValueText";
 const { nameBeneficiario, birthDate, dniBeneficiario, relationship, cert } = strings.specialCredentials.Semillas.keys;
@@ -38,18 +37,14 @@ class Beneficiario extends Component<BeneficiarioProps, BeneficiarioState> {
 		const { item } = this.props;
 		const { phoneNumber, email } = this.state;
 		return (
-			<ScrollView>
-				<View style={{ paddingVertical: 10 }}>
-					<View style={{ alignItems: "flex-start" }}>
-						<KeyValueText name={name} value={item[nameBeneficiario]} />
-						<KeyValueText name={dni} value={item[dniBeneficiario]} />
-						<KeyValueText name={birth} value={item[birthDate]} />
-						<KeyValueText name={character} value={item[relationship]} />
-						<KeyValueText name={mail} value={email} />
-						<KeyValueText name={phone} value={phoneNumber} />
-					</View>
-				</View>
-			</ScrollView>
+			<View style={{ paddingVertical: 10 }}>
+				<KeyValueText name={name} value={item[nameBeneficiario]} />
+				<KeyValueText name={dni} value={item[dniBeneficiario]} />
+				<KeyValueText name={birth} value={item[birthDate]} />
+				<KeyValueText name={character} value={item[relationship]} />
+				<KeyValueText name={mail} value={email} />
+				<KeyValueText name={phone} value={phoneNumber} />
+			</View>
 		);
 	}
 }
