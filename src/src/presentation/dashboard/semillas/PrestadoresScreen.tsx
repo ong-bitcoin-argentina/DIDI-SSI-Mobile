@@ -75,6 +75,7 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 		if (this.props.prestadores.length === 0) {
 			this.props.getPrestadores();
 		}
+		console.log(this.props.prestadoresEnabled);
 	}
 
 	componentDidUpdate(prevProps: any) {
@@ -251,7 +252,7 @@ export default didiConnect(
 	(state): PrestadoresScreenStateProps => ({
 		prestadores: state.prestadores,
 		prestadoresEnabled:
-			haveValidIdentityAndBenefit(state.allSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials)
+			haveValidIdentityAndBenefit(state.activeSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials)
 	}),
 	(dispatch): PrestadoresScreenDispatchProps => ({
 		getPrestadores: () => dispatch(getSemillasPrestadores("GetPrestadores"))
