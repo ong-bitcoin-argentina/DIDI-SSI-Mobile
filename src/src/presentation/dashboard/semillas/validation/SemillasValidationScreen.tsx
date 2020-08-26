@@ -16,7 +16,8 @@ import { getEmail, getPhoneNumber } from "../../../../util/specialCredentialsHel
 import { validateDniWithSemillas } from "../../../../services/semillas/validateDni";
 import { SemillasNeedsToValidateDni } from "didi-sdk";
 import { ServiceObserver } from "../../../common/ServiceObserver";
-const { Tiny, Small, Normal } = DidiText.Explanation;
+import KeyValueText from "../../../util/KeyValueText";
+const { Small, Normal } = DidiText.Explanation;
 const { validate } = strings.semillas;
 const { declaredDNI, nameAndLastname, phone } = strings.general;
 const { accept, reject } = strings.buttons;
@@ -99,8 +100,8 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onSuccessRequest} />
 				<View style={styles.container}>
 					<View style={[border, area]}>
-						<Small style={text}>{validate.description}</Small>
-						<Small style={text}>{validate.needData}</Small>
+						<Normal style={text}>{validate.description}</Normal>
+						<Normal style={text}>{validate.needData}</Normal>
 
 						<View style={input}>
 							<DidiTextInput.DNI onChangeText={dni => this.setState({ dni })} />
@@ -112,7 +113,7 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 							<DidiTextInput.LastName onChangeText={lastname => this.setState({ lastname })} />
 						</View>
 
-						<Small style={text}>{validate.willBeContacting}</Small>
+						<Normal style={text}>{validate.willBeContacting}</Normal>
 						<View>
 							<DidiButton
 								title={validate.DNI}
@@ -133,14 +134,15 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 				>
 					<View style={modal.centeredView}>
 						<View style={[modal.view, styles.modalView]}>
-							<Normal style={[modal.title, { marginBottom: 15 }]}>{validate.identityFromSemillas}</Normal>
-							<Tiny style={description}>{validate.descriptionSharing}</Tiny>
-							<Tiny style={value}>{`${declaredDNI}: ${dni}`}</Tiny>
-							<Tiny style={value}>{`${nameAndLastname}: ${name} ${lastname}`}</Tiny>
-							<Tiny style={value}>{`${phone}: ${phoneNumber}`}</Tiny>
-							<Tiny style={value}>{`${strings.general.email}: ${email}`}</Tiny>
-
-							<Tiny style={description}>{validate.willBeContactingBrevity}</Tiny>
+							<View style={{}}>
+								<Normal style={[modal.title, { marginBottom: 15 }]}>{validate.identityFromSemillas}</Normal>
+								<Small style={description}>{validate.descriptionSharing}</Small>
+								<KeyValueText name={declaredDNI} value={dni} />
+								<KeyValueText name={nameAndLastname} value={`${name} ${lastname}`} />
+								<KeyValueText name={phone} value={dni} />
+								<KeyValueText name={strings.general.email} value={email} />
+								<Small style={description}>{validate.willBeContactingBrevity}</Small>
+							</View>
 							<View style={modal.footer}>
 								<DidiButton onPress={this.toggleModal} title={reject} style={modal.smallButton} />
 								<DidiButton onPress={this.handleValidateConfirm} title={accept} style={modal.smallButton} />
@@ -180,10 +182,7 @@ const styles = StyleSheet.create({
 		padding: 15
 	},
 	modalView: {
-		justifyContent: "flex-start",
-		alignContent: "flex-start",
-		alignItems: "flex-start",
-		height: "70%"
+		alignItems: "flex-start"
 	},
 	description: {
 		textAlign: "left",
@@ -191,7 +190,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: colors.greenSemillas,
-		fontSize: 14,
 		textAlign: "left",
 		marginBottom: 8
 	},
