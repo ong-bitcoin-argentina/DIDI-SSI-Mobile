@@ -29,8 +29,10 @@ export function sendSmsValidator(serviceKey: string, cellPhoneNumber: string, pa
 			});
 		} else {
 			return withExistingDid(serviceKey, {}, did => {
-				return sendSmsValidatorComponent(serviceKey, { api, cellPhoneNumber, idCheck: { did, password } }, () => {
-					return serviceCallSuccess(serviceKey);
+				return sendSmsValidatorComponent(serviceKey, { api, cellPhoneNumber, idCheck: { did, password } }, (data) => {
+					return simpleAction(serviceKey, { type: "SET_CURRENT_VALID_CODE", value: data.code }, () => {
+						return serviceCallSuccess(serviceKey);
+					});
 				});
 			});
 		}
