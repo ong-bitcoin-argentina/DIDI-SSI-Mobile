@@ -3,7 +3,6 @@ import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View, Modal } from "re
 
 import { DidiText } from "../../util/DidiText";
 const { Small } = DidiText.Explanation;
-import Alert from "../../util/Alert";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { didiConnect } from "../../../store/store";
@@ -17,15 +16,12 @@ import { ServiceObserver } from "../../common/ServiceObserver";
 import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/semillas/getCredentials";
-import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
-import { PRESTADORES_FEATURE } from "../../../AppConfig";
 import { CredentialDocument } from "didi-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
-import { SpecialCredentialMap } from "../../../store/selector/credentialSelector";
-import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 import DidiButton from "../../util/DidiButton";
 import commonStyles from "../../resources/commonStyles";
 import colors from "../../resources/colors";
+import { LATEST_FEATURE } from "../../../AppConfig";
 const { modal, button, util, view } = commonStyles;
 const {
 	detailBarTitle,
@@ -102,7 +98,8 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	renderButtonWantCredentials() {
 		const { pendingCredentials, haveIdentityCredential, didRequested } = this.props;
-		const onPressAction = haveIdentityCredential && !didRequested ? this.onGetCredentials : this.toggleModal;
+		const onPressAction =
+			(haveIdentityCredential && !didRequested) || !LATEST_FEATURE ? this.onGetCredentials : this.toggleModal;
 		return (
 			<DidiServiceButton
 				onPress={onPressAction}
