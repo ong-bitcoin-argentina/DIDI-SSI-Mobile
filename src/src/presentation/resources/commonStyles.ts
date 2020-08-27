@@ -57,13 +57,11 @@ export default {
 			backgroundColor: colors.shadow
 		},
 		view: {
-			margin: 20,
 			backgroundColor: "white",
 			borderRadius: 8,
-			paddingVertical: 10,
+			paddingVertical: 20,
 			paddingHorizontal: 20,
 			width: "90%",
-			height: "70%",
 			alignItems: "center",
 			shadowColor: "#000",
 			shadowOffset: {
@@ -72,7 +70,7 @@ export default {
 			},
 			shadowOpacity: 0.25,
 			shadowRadius: 3.84,
-			elevation: 5
+			elevation: 10
 		},
 		title: {
 			fontSize: 19,
@@ -88,12 +86,9 @@ export default {
 		},
 		footer: {
 			width: "100%",
-			flex: 1,
 			flexDirection: "row",
 			justifyContent: "space-around",
-			bottom: 10,
-			position: "absolute",
-			alignSelf: "center"
+			marginTop: 10
 		},
 		smallButton: {
 			height: 40,

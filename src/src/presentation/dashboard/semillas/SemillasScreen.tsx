@@ -23,15 +23,7 @@ import commonStyles from "../../resources/commonStyles";
 import colors from "../../resources/colors";
 import { LATEST_FEATURE } from "../../../AppConfig";
 const { modal, button, util, view } = commonStyles;
-const {
-	detailBarTitle,
-	detailFirst,
-	detailSecond,
-	detailThird,
-	credentialsSuccess,
-	credetialsPending,
-	validate
-} = strings.semillas;
+const { detailBarTitle, detailFirst, detailSecond, detailThird, credentialsSuccess, validate } = strings.semillas;
 
 export interface LoginScreenProps {}
 
@@ -165,7 +157,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	renderPendingRequest = () => {
 		return (
-			<View style={{ paddingTop: 10 }}>
+			<View>
 				<Small style={styles.modalText}>{validate.semillasProcessing}</Small>
 				<Small style={styles.modalText}>{validate.semillasContacting}</Small>
 				<View style={{ marginTop: 30 }}>
@@ -235,8 +227,9 @@ class SemillasScreen extends NavigationEnabledComponent<
 					onRequestClose={this.toggleModal}
 				>
 					<View style={modal.centeredView}>
-						<View style={[modal.view, { height: "60%" }]}>
+						<View style={[modal.view]}>
 							{semillasValidationPending ? this.renderPendingRequest() : this.renderRequestDescription()}
+							<DidiButton title={strings.buttons.cancel} onPress={this.toggleModal} style={{ marginTop: 40 }} />
 						</View>
 					</View>
 				</Modal>
