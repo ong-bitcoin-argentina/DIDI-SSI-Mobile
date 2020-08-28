@@ -24,9 +24,8 @@ import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
 import { getClient } from "../../../services/internal/withDidiServerClient";
 import SemillasLogo from "../../resources/images/sem-logo.svg";
-import { extractContext } from "../common/documentToCard";
 
-const { title, description, detail, modalTitle } = strings.semillas.steps.second;
+const { title, description, modalTitle } = strings.semillas.steps.second;
 const { keys } = strings.specialCredentials.Semillas;
 
 const { Small, Tiny } = DidiText.Explanation;
@@ -120,7 +119,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 			await getClient().shareData(data);
 			this.finish();
 		} catch (e) {
-			Alert.alert(strings.semillas.errorShareData);
+			Alert.alert("Error", e.message);
 		}
 		this.setState({ shareInProgress: false });
 	};
