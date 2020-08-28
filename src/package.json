@@ -17,6 +17,7 @@
 		"@react-native-community/image-editor": "^2.2.0",
 		"@react-native-firebase/app": "8.2.0",
 		"@react-native-firebase/crashlytics": "8.1.2",
+		"@react-native-firebase/dynamic-links": "^7.5.1",
 		"@react-native-firebase/functions": "7.2.2",
 		"didi-sdk": "git+ssh://git@github.com:ong-bitcoin-argentina/DIDI-SSI-app_sdk.git#atix-dev",
 		"fp-ts": "^2.4.0",

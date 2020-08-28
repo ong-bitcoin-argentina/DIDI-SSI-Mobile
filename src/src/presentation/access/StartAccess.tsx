@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Linking } from "react-native";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
@@ -17,6 +17,7 @@ import { LoginScreenProps } from "./login/LoginScreen";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 import { SignupWithResetProps } from "./signup/SignupWithReset";
+import dynamicLinks from "@react-native-firebase/dynamic-links";
 
 export type StartAccessProps = {};
 
@@ -30,6 +31,16 @@ export interface StartAccessNavigation {
 
 export class StartAccessScreen extends NavigationEnabledComponent<StartAccessProps, {}, StartAccessNavigation> {
 	static navigationOptions = NavigationHeaderStyle.gone;
+
+	componentDidMount = () => {
+		dynamicLinks().getInitialLink().then( ( link:DynamicLink ) => {
+			if (link != undefined){
+				if (link.url.match(/login/)){
+					this.navigate("Login", {})
+				}
+			}
+		});
+	};
 
 	render() {
 		return (

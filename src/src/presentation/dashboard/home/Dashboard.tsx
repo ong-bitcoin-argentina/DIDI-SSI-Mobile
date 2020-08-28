@@ -1,6 +1,6 @@
 import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View, Linking } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
@@ -26,6 +26,7 @@ import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
 import { IncompleteIdentityCard } from "./IncompleteIdentityCard";
 import { NotificationScreenProps } from "./NotificationScreen";
+import dynamicLinks from "@react-native-firebase/dynamic-links";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -69,6 +70,13 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	componentDidMount() {
 		this.props.login();
+		dynamicLinks().getInitialLink().then( ( link:DynamicLink ) => {
+			if (link != undefined){
+				if (link.url.match(/login/)){
+					Linking.openURL(`https://aidi.page.link/bAmq`);
+				}
+			}
+		});
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
