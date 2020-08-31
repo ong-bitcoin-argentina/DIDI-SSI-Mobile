@@ -139,7 +139,7 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 								<Small style={description}>{validate.descriptionSharing}</Small>
 								<KeyValueText name={declaredDNI} value={dni} />
 								<KeyValueText name={nameAndLastname} value={`${name} ${lastname}`} />
-								<KeyValueText name={phone} value={dni} />
+								<KeyValueText name={phone} value={phoneNumber} />
 								<KeyValueText name={strings.general.email} value={email} />
 								<Small style={description}>{validate.willBeContactingBrevity}</Small>
 							</View>
