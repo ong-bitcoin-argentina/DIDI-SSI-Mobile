@@ -48,7 +48,7 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 
 				<Image source={this.props.contentImageSource} style={commonStyles.image.image} />
 
-				<DidiTextInput.Email onChangeText={text => this.setState({ email: text })} />
+				<DidiTextInput.Email onChangeText={text => this.setState({ email: text.toLowerCase() })} />
 
 				{this.props.isPasswordRequired ? (
 					<DidiTextInput.Password onChangeText={text => this.setState({ password: text })} descriptionType="BASIC" />
