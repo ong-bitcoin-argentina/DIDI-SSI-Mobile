@@ -131,7 +131,8 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 					DashboardHome: dashboardPlaceholder
 				}).stackNavigator("DashboardSettings"),
 				strings.tabNames.settings,
-				"settings"
+				"settings",
+				false
 			)
 		},
 		{

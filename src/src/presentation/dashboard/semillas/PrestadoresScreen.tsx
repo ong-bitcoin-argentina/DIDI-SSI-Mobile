@@ -251,7 +251,7 @@ export default didiConnect(
 	(state): PrestadoresScreenStateProps => ({
 		prestadores: state.prestadores,
 		prestadoresEnabled:
-			haveValidIdentityAndBenefit(state.allSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials)
+			haveValidIdentityAndBenefit(state.activeSemillasCredentials) && haveEmailAndPhone(state.activeSpecialCredentials)
 	}),
 	(dispatch): PrestadoresScreenDispatchProps => ({
 		getPrestadores: () => dispatch(getSemillasPrestadores("GetPrestadores"))

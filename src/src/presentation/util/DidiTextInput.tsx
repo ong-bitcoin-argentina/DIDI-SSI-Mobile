@@ -98,6 +98,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				tagImage={require("../resources/images/email.png")}
 				textInputProps={{
 					keyboardType: "email-address",
+					autoCapitalize: 'none',
 					onChangeText: props.onChangeText
 				}}
 			/>
