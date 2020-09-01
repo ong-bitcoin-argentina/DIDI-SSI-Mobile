@@ -116,8 +116,8 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 						) : (
 							<View>
 								<View style={styles.buttons}>
-									{activePrestador?.phone && this.renderPhone()}
-									{activePrestador?.whatsappNumber && this.renderWhatsapp()}
+									{!!activePrestador?.phone && this.renderPhone()}
+									{!!activePrestador?.whatsappNumber && this.renderWhatsapp()}
 								</View>
 								<DidiButton
 									title={callLater}
