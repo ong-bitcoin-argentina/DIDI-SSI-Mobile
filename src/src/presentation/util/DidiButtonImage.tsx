@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import DidiButton, { DidiButtonProps, styles as didiButtonStyles } from "./DidiButton";
+import { DidiText } from "./DidiText";
 import { Text } from "react-native-svg";
 import themes from "../resources/themes";
 
@@ -19,12 +20,16 @@ export default class DidiButtonImage extends React.Component<DidiButtonImageProp
 		styles;
 		const { image } = this.props;
 		return (
-			<View style={[didiButtonStyles.button, currentButtonColor]}>
-				<View>{image}</View>
-				<Text>
-					<DidiButton {...this.props} />
-				</Text>
-			</View>
+			<TouchableOpacity
+				accessibilityRole="button"
+				{...this.props}
+				style={[styles.button, currentButtonColor, this.props.style]}
+			>
+				<View style={styles.image}>{image}</View>
+				<DidiText.Button disabled={this.props.disabled || false} style={this.props.titleStyle}>
+					{this.props.title}
+				</DidiText.Button>
+			</TouchableOpacity>
 		);
 	}
 }
@@ -44,5 +49,9 @@ const styles = StyleSheet.create({
 	},
 	btn: {
 		flexDirection: "row"
+	},
+	image: {
+		resizeMode: 'contain',
+		marginRight: 10
 	}
 });
