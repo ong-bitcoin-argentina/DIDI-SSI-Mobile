@@ -37,6 +37,7 @@ import SemillasNavigator from "./semillas/SemillasNavigator";
 import UserData from "./settings/userData/UserData";
 import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
+import { RoundsScreen } from "./rounds/RoundsScreen";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -104,13 +105,12 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	const BottomNavigator = createBottomTabNavigator(
 		{
 			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, "home"),
-			/*
 			DashboardRounds: screen(
 				NavMap.from(RoundsScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
-				""
+				"",
+				false
 			),
-			*/
 			DashboardDocuments: screen(
 				DocumentsNavigator({
 					...then,
