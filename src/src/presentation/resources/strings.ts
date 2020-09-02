@@ -330,7 +330,7 @@ export default {
 				email: "¿No encontrás tu servicio?",
 				writeEmail: "Mail del destinatario",
 				noCredentials:
-					"Para ir al siguiente paso es necesario tener credenciales de Identidad y Beneficio Semillas activa"
+					"Para poder acceder a los Servicios debes tener tu Credencial de Beneficios Semillas activa"
 			},
 			second: {
 				title: "Elegí quién va a usar el beneficio:",
