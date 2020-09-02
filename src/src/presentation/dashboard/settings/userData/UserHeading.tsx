@@ -59,9 +59,9 @@ const styles = StyleSheet.create({
 	backgroundImageContainer: {},
 	identityImageContainer: {
 		position: "absolute",
+		alignSelf: 'center',
+		justifyContent: 'center',
 		top: 90,
-		left: 125,
-
 		backgroundColor: colors.lightBackground,
 		borderRadius: 80,
 		width: 150,

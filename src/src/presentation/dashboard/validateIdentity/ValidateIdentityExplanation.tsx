@@ -13,6 +13,7 @@ import {
 	ValidateIdentityExplanationHeader,
 	ValidateIdentityExplanationHeaderProps
 } from "./ValidateIdentityExplanationHeader";
+import { ScrollView } from "react-native-gesture-handler";
 
 export interface ValidateIdentityExplanationProps {
 	header: ValidateIdentityExplanationHeaderProps;
@@ -26,17 +27,19 @@ export interface ValidateIdentityExplanationProps {
 export default class ValidateIdentityExplanation extends React.Component<ValidateIdentityExplanationProps> {
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View {...this.props.viewProps} style={[styles.body, this.props.viewProps?.style]}>
-						<ValidateIdentityExplanationHeader {...this.props.header} />
-						{this.renderDescription()}
-						<Image style={styles.image} source={this.props.image} />
-						{this.renderImageAndButton()}
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<ScrollView>
+				<Fragment>
+					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+					<SafeAreaView style={commonStyles.view.area}>
+						<View {...this.props.viewProps} style={[styles.body, this.props.viewProps?.style]}>
+							<ValidateIdentityExplanationHeader {...this.props.header} />
+							{this.renderDescription()}
+							<Image style={styles.image} source={this.props.image} />
+							{this.renderImageAndButton()}
+						</View>
+					</SafeAreaView>
+				</Fragment>
+			</ScrollView>
 		);
 	}
 
