@@ -15,7 +15,6 @@ interface ValidateDniArguments {
 
 const validateDniComponent = buildComponentServiceCall(async (args: ValidateDniArguments) => {
 	const response = convertError(await args.api.validateDniWithSemillas(args.did, args.data));
-
 	if (isRight(response)) {
 		return right(response.right);
 	}
