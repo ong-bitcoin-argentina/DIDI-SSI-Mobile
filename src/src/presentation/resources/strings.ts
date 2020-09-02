@@ -347,7 +347,7 @@ export default {
 				}
 			},
 			third: {
-				title: "El Beneficio fue solicitado con éxito!",
+				title: "¡El beneficio fue solicitado con éxito!",
 				needCoordinate: "¿Necesitás coordinar tu turno?",
 				willBeContacted: "Serás contactado a la brevedad.",
 				whatsappMessage: "¡Hola! Pertenezco al programa Semillas y quisiera solicitar un turno.",
@@ -357,7 +357,7 @@ export default {
 		shareMessage: `${appName} quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.`,
 		call: "Llamar",
 		whatsApp: "WhatsApp",
-		callLater: "Llamaré luego",
+		accept: "Ok",
 		errorShareData: "Ocurrió un error al compartir tus datos",
 		validate: {
 			shouldDo: "Debes completar la validación de Identidad para acceder a los beneficios de Semillas.",
