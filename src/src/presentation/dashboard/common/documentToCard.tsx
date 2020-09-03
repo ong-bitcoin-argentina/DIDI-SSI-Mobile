@@ -127,7 +127,8 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		const styleType = credentialState(document, context);
 		const style = credentialStyles[styleType];
 
-		return (
+		return styleType != "obsolete" ? 
+		(
 			<CredentialCard
 				icon=""
 				layout={document.preview?.cardLayout}
@@ -143,7 +144,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				{children}
 				{this.renderTypeMessage(styleType)}
 			</CredentialCard>
-		);
+		) : null;
 	}
 
 	private renderTypeMessage(type: CredentialState): JSX.Element | undefined {
