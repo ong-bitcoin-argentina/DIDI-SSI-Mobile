@@ -116,6 +116,11 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 			: CredentialDocument.extractAllDataPairs(document);
 		const specialType = document.specialFlag?.type;
 		if (specialType) {
+			const special = context.specialCredentials[specialType];
+			//If it's a obsolete card then exclude from list
+			if (special?.jwt !== document.jwt) {
+				return null;
+			}
 			const dictionary: { title: string; [name: string]: string | undefined } = strings.specialCredentials[specialType];
 			title = dictionary.title;
 			data = data.map(({ label, value }) => ({
@@ -127,8 +132,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		const styleType = credentialState(document, context);
 		const style = credentialStyles[styleType];
 
-		return styleType != "obsolete" ? 
-		(
+		return  (
 			<CredentialCard
 				icon=""
 				layout={document.preview?.cardLayout}
@@ -144,7 +148,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				{children}
 				{this.renderTypeMessage(styleType)}
 			</CredentialCard>
-		) : null;
+		);
 	}
 
 	private renderTypeMessage(type: CredentialState): JSX.Element | undefined {
