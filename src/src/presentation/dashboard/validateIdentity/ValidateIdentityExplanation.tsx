@@ -27,7 +27,7 @@ export interface ValidateIdentityExplanationProps {
 export default class ValidateIdentityExplanation extends React.Component<ValidateIdentityExplanationProps> {
 	render() {
 		return (
-			<ScrollView>
+			<ScrollView contentContainerStyle={{ flexGrow: 1 }} scrollEnabled>
 				<Fragment>
 					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 					<SafeAreaView style={commonStyles.view.area}>
