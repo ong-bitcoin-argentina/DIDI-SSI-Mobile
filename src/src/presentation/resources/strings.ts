@@ -662,7 +662,7 @@ export default {
 		Semillas: {
 			title: "semillas",
 			keys: {
-				cert: "CERTIFICADO O CURSO",
+				cert: "CREDENCIAL",
 				relationship: "Relacion con Titular",
 				name: "NOMBRE",
 				lastName: "APELLIDO",
