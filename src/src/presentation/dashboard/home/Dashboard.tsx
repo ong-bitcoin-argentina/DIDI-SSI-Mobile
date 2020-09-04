@@ -73,7 +73,10 @@ class DashboardScreen extends NavigationEnabledComponent<
 		dynamicLinks().getInitialLink().then( ( link:DynamicLink ) => {
 			if (link != undefined){
 				if (link.url.match(/login/)){
-					Linking.openURL(`https://aidi.page.link/bAmq`);
+					const { address } = this.props.did;
+					const url = `https://aidi.page.link/bAmq?did=did:ethr${address}`;
+					console.log("dynamicLink", url);
+					Linking.openURL(url);
 				}
 			}
 		});

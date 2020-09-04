@@ -11,27 +11,80 @@ import DidiButton from "../../util/DidiButton";
 import colors from "../../resources/colors";
 import { DidiText } from "../../util/DidiText";
 import RondasLogo from "../../resources/images/rondasSplash.svg";
+import { ActiveDid } from "../../../store/reducers/didReducer";
+import { didiConnect } from "../../../store/store";
+import { RNUportHDSigner, getSignerForHDPath } from 'react-native-uport-signer'
+import { Credentials } from 'uport-credentials'
+import { AuthModal } from "../common/AuthModal";
+
+
 export type RoundsScreenProps = {};
-export type RoundsScreenState = {};
+export type RoundsScreenState = {
+	showModal: boolean;
+};
 export interface RoundsScreenNavigation {
 	DashboardHome: DashboardScreenProps;
 }
 const { Small } = DidiText.Explanation;
 
-export class RoundsScreen extends NavigationEnabledComponent<
-	RoundsScreenProps,
+interface RoundsScreenStateProps {
+	did: ActiveDid;
+}
+const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
+	RoundsScreenProps & RoundsScreenStateProps,
 	RoundsScreenState,
 	RoundsScreenNavigation
 > {
+
+	constructor(props:RoundsScreenProps & RoundsScreenStateProps ){
+		super(props);
+		this.state = {
+			showModal: false
+		};
+	}
+
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<RoundsScreenNavigation, "DashboardHome">(
 		strings.tabNames.rounds,
 		"DashboardHome",
 		{}
 	);
 
+	showAuthModal = async () => {
+		this.setState({ showModal: true });
+	}
+
+	goRonda = async () => {
+		const { address } = this.props.did;
 	
-	goToRonda = () => {
-		Linking.openURL(`https://aidi.page.link/bAmq`);
+		const credentialsParams = {}
+		credentialsParams.signer = getSignerForHDPath(address)
+		credentialsParams.did = `did:ethr:${address}`
+		
+		const cred = new Credentials(credentialsParams)
+		
+		cred.createVerification({
+			sub: address, //Address of receiver of the verification
+			claim: { name: 'Ronda'}
+		}).then(verification => {
+			const url = `https://aidi.page.link/?link=https://aidironda.com/loginSuccess?did=${address}?token=${verification}&apn=com.aidironda`;
+			console.log("goRonda", url);
+			this.setState({ showModal: false });
+			Linking.openURL(url);
+		})
+	}
+
+	permissionDenied = async () => {
+		// const url = `https://aidi.page.link/?link=https://aidironda.com/loginDenied&apn=com.aidironda`;
+		// console.log("permissionDenied", url);
+		this.setState({ showModal: false });
+		// Linking.openURL(url);
+	}
+
+	showConfirmation = () => {
+		if (!this.state) return null;
+		const { showModal } = this.state;
+		console.log("showConfirmation",showModal);
+		return this.state.showModal ? <AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.goRonda} /> : null;
 	}
 
 	render() {
@@ -46,14 +99,24 @@ export class RoundsScreen extends NavigationEnabledComponent<
 				<Small style={styles.modalText}>{shortDescription}</Small>
 				<View style={{ marginBottom: 15 }}>
 					<DidiButton
-						onPress={this.goToRonda}
+						onPress={this.showAuthModal}
 						title="Ver Rondas"
 					/>
+					{this.showConfirmation()}
 				</View>
 			</DidiScreen>
 		);
 	}
 }
+
+const connect = didiConnect(
+	RoundsScreen,
+	(state): RoundsScreenStateProps => ({
+		did: state.did.activeDid,
+	})
+);
+
+export { connect as RoundsScreen };
 
 const styles = StyleSheet.create({
 	body: {
