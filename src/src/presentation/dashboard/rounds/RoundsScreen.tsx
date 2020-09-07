@@ -66,7 +66,7 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 			sub: address, //Address of receiver of the verification
 			claim: { name: 'Ronda'}
 		}).then(verification => {
-			const url = `https://aidi.page.link/?link=https://aidironda.com/loginSuccess?did=${address}?token=${verification}&apn=com.aidironda`;
+			const url = `https://aidi.page.link/?link=https://aidironda.com/loginSuccess?token=${verification}&apn=com.aidironda`;
 			console.log("goRonda", url);
 			this.setState({ showModal: false });
 			Linking.openURL(url);

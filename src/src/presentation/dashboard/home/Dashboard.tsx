@@ -27,6 +27,9 @@ import HomeHeader from "./HomeHeader";
 import { IncompleteIdentityCard } from "./IncompleteIdentityCard";
 import { NotificationScreenProps } from "./NotificationScreen";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
+import { RNUportHDSigner, getSignerForHDPath } from 'react-native-uport-signer'
+import { Credentials } from 'uport-credentials'
+import { AuthModal } from "../common/AuthModal";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -44,6 +47,7 @@ type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateP
 
 interface DashboardScreenState {
 	previewActivities: boolean;
+	showModal: boolean;
 }
 
 export interface DashboardScreenNavigation {
@@ -64,8 +68,43 @@ class DashboardScreen extends NavigationEnabledComponent<
 	constructor(props: DashboardScreenInternalProps) {
 		super(props);
 		this.state = {
-			previewActivities: true
+			previewActivities: true,
+			showModal: false,
 		};
+	}
+
+	permissionDenied = async () => {
+		const url = `https://aidi.page.link/?link=https://aidironda.com/loginDenied&apn=com.aidironda`;
+		console.log("permissionDenied", url);
+		this.setState({ showModal: false });
+		Linking.openURL(url);
+	}
+	
+	permissionGranted = async () => {
+		const { address } = this.props.did;
+	
+		const credentialsParams = {}
+		credentialsParams.signer = getSignerForHDPath(address)
+		credentialsParams.did = `did:ethr:${address}`
+		
+		const cred = new Credentials(credentialsParams)
+		
+		cred.createVerification({
+			sub: address, //Address of receiver of the verification
+			claim: { name: 'Ronda'}
+		}).then(verification => {
+			const url = `https://aidi.page.link/?link=https://aidironda.com/loginSuccess?token=${verification}&apn=com.aidironda`;
+			console.log("goRonda", url);
+			this.setState({ showModal: false });
+			Linking.openURL(url);
+		})
+	}
+
+	showAuthModal = () => {
+		if (!this.state) return null;
+		const { showModal } = this.state;
+		console.log("showConfirmation",showModal);
+		return this.state.showModal ? <AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.permissionGranted} /> : null;
 	}
 
 	componentDidMount() {
@@ -73,10 +112,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		dynamicLinks().getInitialLink().then( ( link:DynamicLink ) => {
 			if (link != undefined){
 				if (link.url.match(/login/)){
-					const { address } = this.props.did;
-					const url = `https://aidi.page.link/bAmq?did=did:ethr${address}`;
-					console.log("dynamicLink", url);
-					Linking.openURL(url);
+					this.setState({ showModal: true });
 				}
 			}
 		});
@@ -131,6 +167,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						renderItem={item => this.renderCard(item.item, item.index)}
 						ListHeaderComponent={
 							<Fragment>
+								{this.showAuthModal()}
 								<HomeHeader
 									onPersonPress={() => this.navigate("UserData", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
