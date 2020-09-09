@@ -15,6 +15,7 @@ const colors = {
 	lightError: "#F5BAD1",
 
 	success: "#6ECC62",
+	lime: "#73d742",
 
 	primary: "#417FD7",
 	primaryLight: "#ACC6EB",
