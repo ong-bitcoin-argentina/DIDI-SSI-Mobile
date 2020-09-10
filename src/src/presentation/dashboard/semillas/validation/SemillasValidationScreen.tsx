@@ -75,10 +75,10 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 		const { email, phoneNumber } = this.props;
 		const data = {
 			dni,
-			phoneNumber,
+			phone: phoneNumber,
 			email,
 			name,
-			lastname
+			lastName: lastname
 		};
 		this.props.semillasValidationStart(data);
 		this.toggleModal();

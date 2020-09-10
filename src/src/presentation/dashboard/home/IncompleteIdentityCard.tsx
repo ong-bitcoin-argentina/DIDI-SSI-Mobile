@@ -92,7 +92,8 @@ export { connected as IncompleteIdentityCard };
 
 const styles = StyleSheet.create({
 	button: {
-		width: 130,
+		alignContent: 'center',
+		alignSelf: 'flex-start',
 		height: 36,
 		backgroundColor: colors.error,
 		marginTop: 16

@@ -21,7 +21,7 @@ import { PrestadorModel } from "../../../model/Prestador";
 const { Small, Tiny } = DidiText.Explanation;
 
 const { needCoordinate, title, whatsappError, whatsappMessage, willBeContacted } = strings.semillas.steps.third;
-const { call, whatsApp, callLater, detailBarTitle } = strings.semillas;
+const { call, whatsApp, accept, detailBarTitle } = strings.semillas;
 
 export type RequestFinishedProps = {};
 export type RequestFinishedState = {
@@ -97,13 +97,8 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 								<Prestador style={styles.prestador} item={activePrestador} active={false} onPress={() => {}} />
 							)}
 						</View>
-
-						{!haveContact ? (
-							<Tiny style={styles.description}>{willBeContacted}</Tiny>
-						) : (
-							<Tiny style={styles.description}>{needCoordinate}</Tiny>
-						)}
-
+					</View>
+					<View style={styles.buttonsView}>
 						{customEmail ? (
 							<View style={{ marginTop: 10 }}>
 								<DidiButton
@@ -116,11 +111,11 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 						) : (
 							<View>
 								<View style={styles.buttons}>
-									{activePrestador?.phone && this.renderPhone()}
-									{activePrestador?.whatsappNumber && this.renderWhatsapp()}
+									{!!activePrestador?.phone && this.renderPhone()}
+									{!!activePrestador?.whatsappNumber && this.renderWhatsapp()}
 								</View>
 								<DidiButton
-									title={callLater}
+									title={accept}
 									onPress={() => {
 										this.navigate("DashboardHome", {});
 									}}
@@ -155,5 +150,8 @@ const styles = StyleSheet.create({
 	prestadorContainer: {
 		flex: 1,
 		marginVertical: 6
-	}
+	},
+	buttonsView: {
+		marginVertical: 50
+	  }
 });

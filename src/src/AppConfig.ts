@@ -13,12 +13,7 @@ const defaultServiceSettings: ServiceSettings = {
 	trustGraphUri: Config.URL_MOURO,
 	ethrDidUri: Config.URL_ETHR_DID,
 	ethrDelegateUri: Config.URL_ETHR_DELEGATOR,
-	didiUserServer: Config.URL_DIDI_SERVER,
-	semillasServerUri: Config.URL_SEMILLAS,
-	semillasLogin: {
-		user: Config.SEMILLAS_USERNAME,
-		password: Config.SEMILLAS_PASSWORD
-	}
+	didiUserServer: Config.URL_DIDI_SERVER
 };
 
 export const AppConfig: AppConfig = {
@@ -29,5 +24,6 @@ export const AppConfig: AppConfig = {
 export const VERSION = Config.VERSION;
 export const PRIVATE_KEY_SEED_PASSWORD = Config.PRIVATE_KEY_SEED_PASSWORD;
 export const NOTIFICATION_SENDER_ID = Config.NOTIFICATION_SENDER_ID;
+export const ENV_CODE = Config.ENV_CODE;
 export const LATEST_FEATURE = Config.LATEST_FEATURE === "true";
 export const QA = Config.QA === "true";
