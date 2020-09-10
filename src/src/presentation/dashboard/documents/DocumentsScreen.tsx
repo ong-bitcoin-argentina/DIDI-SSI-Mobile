@@ -14,6 +14,7 @@ import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
 
 import { DocumentDetailProps } from "./DocumentDetail";
+import dynamicLinks from "@react-native-firebase/dynamic-links";
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenStateProps {
@@ -30,6 +31,18 @@ export type DocumentsScreenNavigation = {
 };
 
 class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternalProps, {}, DocumentsScreenNavigation> {
+
+	componentDidMount() {
+		dynamicLinks().getInitialLink().then( ( link:DynamicLink ) => {
+			if (link != undefined){
+				console.log("link", link);
+				if (link.url.match(/credentials/)){
+					console.log("DocumentsScreen showCredentials");
+				}
+			}
+		});
+	}
+
 	render() {
 		const did = this.props.did;
 		return (

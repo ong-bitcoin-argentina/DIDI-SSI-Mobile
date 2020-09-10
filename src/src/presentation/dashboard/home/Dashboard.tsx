@@ -30,6 +30,7 @@ import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { RNUportHDSigner, getSignerForHDPath } from 'react-native-uport-signer'
 import { Credentials } from 'uport-credentials'
 import { AuthModal } from "../common/AuthModal";
+import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -55,6 +56,7 @@ export interface DashboardScreenNavigation {
 	UserData: UserDataProps;
 	NotificationScreen: NotificationScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
+	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
 }
 
@@ -88,7 +90,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		credentialsParams.did = `did:ethr:${address}`
 		
 		const cred = new Credentials(credentialsParams)
-		
+		// https://aidi.page.link/?link=https://aidironda.com/loginSuccess?token=1234&apn=com.aidironda
 		cred.createVerification({
 			sub: address, //Address of receiver of the verification
 			claim: { name: 'Ronda'}
@@ -103,7 +105,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 	showAuthModal = () => {
 		if (!this.state) return null;
 		const { showModal } = this.state;
-		console.log("showConfirmation",showModal);
 		return this.state.showModal ? <AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.permissionGranted} /> : null;
 	}
 
@@ -111,8 +112,13 @@ class DashboardScreen extends NavigationEnabledComponent<
 		this.props.login();
 		dynamicLinks().getInitialLink().then( ( link:DynamicLink ) => {
 			if (link != undefined){
+				console.log("link", link);
 				if (link.url.match(/login/)){
 					this.setState({ showModal: true });
+				}
+				if (link.url.match(/credentials/)){
+					console.log("showCredentials");
+					this.navigate("DashboardDocuments", { });
 				}
 			}
 		});
