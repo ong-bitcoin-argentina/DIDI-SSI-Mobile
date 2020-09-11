@@ -18,11 +18,13 @@ import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/semillas/getCredentials";
 import { CredentialDocument } from "didi-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
-import DidiButton from "../../util/DidiButton";
 import commonStyles from "../../resources/commonStyles";
 import colors from "../../resources/colors";
 import { LATEST_FEATURE } from "../../../AppConfig";
-const { modal, button, util, view } = commonStyles;
+import { ValidationStates } from "./constants";
+import SemillasValidationState from "./SemillasValidationState";
+import { getSemillasValidationState } from "../../../services/semillas/getValidationState";
+const { util, view } = commonStyles;
 const { detailBarTitle, detailFirst, detailSecond, detailThird, credentialsSuccess, validate } = strings.semillas;
 
 export interface LoginScreenProps {}
@@ -32,16 +34,18 @@ interface SemillasScreenStateProps {
 	haveIdentityCredential: Boolean;
 	didRequested: Boolean;
 	credentials: CredentialDocument[];
-	semillasValidationPending: boolean;
-	semillasValidationFailure: boolean;
+	semillasValidationSuccess: boolean;
+	semillasValidationNull: boolean;
 }
 interface SemillasScreenState {
 	dni: string;
 	modalVisible: boolean;
+	semillasValidationLoading: boolean;
 }
 
 interface SemillasScreenDispatchProps {
 	getCredentials: (dni: string) => void;
+	getSemillasValidationState: () => void;
 }
 
 type SemillasScreenInternalProps = LoginScreenProps & SemillasScreenStateProps & SemillasScreenDispatchProps;
@@ -54,13 +58,13 @@ export interface SemillasScreenNavigation {
 }
 
 const serviceKey = "CreateSemillasCredentials";
+const serviceKeyState = "semillasValidationState";
 
 class SemillasScreen extends NavigationEnabledComponent<
 	SemillasScreenInternalProps,
 	SemillasScreenState,
 	SemillasScreenNavigation
 > {
-	// navigationOptions makes reference to the topbar navigation, in this case, with a left arrow which function is return to home
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		SemillasScreenNavigation,
 		"DashboardHome"
@@ -70,7 +74,8 @@ class SemillasScreen extends NavigationEnabledComponent<
 		super(props);
 		this.state = {
 			dni: "",
-			modalVisible: false
+			modalVisible: false,
+			semillasValidationLoading: false
 		};
 	}
 
@@ -88,40 +93,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 		}
 	}
 
-	renderButtonWantCredentials() {
-		const { pendingCredentials, haveIdentityCredential, didRequested } = this.props;
-		const onPressAction =
-			(haveIdentityCredential && !didRequested) || !LATEST_FEATURE ? this.onGetCredentials : this.toggleModal;
-		return (
-			<DidiServiceButton
-				onPress={onPressAction}
-				title={strings.semillas.getCredentials}
-				style={styles.button}
-				isPending={pendingCredentials}
-			/>
-		);
-	}
-
-	renderButtonBenefits() {
-		return (
-			<DidiServiceButton
-				onPress={() => this.navigate("Prestadores", {})}
-				title="Ver Beneficios"
-				style={styles.button}
-				isPending={false}
-			/>
-		);
-	}
-
-	toggleModal = () => {
-		this.setState({
-			modalVisible: !this.state.modalVisible
-		});
-	};
-
-	onCredentialsAdded = () => {
-		DataAlert.alert(strings.semillas.program, credentialsSuccess);
-	};
+	// Functional Methods
 
 	goToRenaperValidation = () => {
 		this.toggleModal();
@@ -135,12 +107,33 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	onGetCredentials = () => {
 		const { dni } = this.state;
-
 		if (!dni) {
 			DataAlert.alert(strings.semillas.program, strings.semillas.noDni);
 		} else {
 			this.showCredentialConfirmation();
 		}
+	};
+
+	onCredentialsAdded = () => {
+		DataAlert.alert(strings.semillas.program, credentialsSuccess);
+	};
+
+	onSuccessGetState = () => {
+		this.setState({ semillasValidationLoading: false, modalVisible: false });
+		DataAlert.alert("Programa Semillas", "Tu solicitud fue validada correctamente!");
+	};
+
+	onErrorGetState = () => {
+		this.setState({ semillasValidationLoading: false });
+	};
+
+	openModal = () => {
+		const { semillasValidationNull, semillasValidationSuccess } = this.props;
+		if (!semillasValidationSuccess && !semillasValidationNull) {
+			this.setState({ semillasValidationLoading: true });
+			this.props.getSemillasValidationState();
+		}
+		this.setState({ modalVisible: true });
 	};
 
 	showCredentialConfirmation = () => {
@@ -155,54 +148,51 @@ class SemillasScreen extends NavigationEnabledComponent<
 		);
 	};
 
-	renderPendingRequest = () => {
-		return (
-			<View>
-				<Small style={styles.modalText}>{validate.semillasProcessing}</Small>
-				<Small style={styles.modalText}>{validate.semillasContacting}</Small>
-				<View style={{ marginTop: 30 }}>
-					<Small style={styles.smallText}>{validate.rememberYouCan}</Small>
-					<Small onPress={this.goToRenaperValidation} style={[styles.smallText, { textDecorationLine: "underline" }]}>
-						Validar tu identidad con {strings.appName}
-					</Small>
-				</View>
-			</View>
-		);
+	toggleModal = () => {
+		this.setState({
+			modalVisible: !this.state.modalVisible
+		});
 	};
 
-	renderRequestDescription = () => {
-		const { semillasValidationFailure } = this.props;
-		return (
-			<View style={{ paddingTop: 10 }}>
-				<Small style={styles.modalText}>{validate.shouldDo}</Small>
-				<View style={{ marginBottom: 15 }}>
-					<DidiButton
-						onPress={this.goToRenaperValidation}
-						title={strings.validateIdentity.header}
-						style={[button.lightRed, styles.renaperButton]}
-					/>
-				</View>
+	// Render Methods
 
-				{!semillasValidationFailure && (
-					<View>
-						<Small style={styles.smallText}>{validate.question}</Small>
-						<Small
-							onPress={this.goToSemillasValidation}
-							style={[styles.smallText, { textDecorationLine: "underline" }]}
-						>
-							{validate.identityFromSemillas}
-						</Small>
-					</View>
-				)}
-			</View>
+	renderButtonBenefits() {
+		return (
+			<DidiServiceButton
+				onPress={() => this.navigate("Prestadores", {})}
+				title="Ver Beneficios"
+				style={styles.button}
+				isPending={false}
+			/>
 		);
-	};
+	}
+
+	renderButtonWantCredentials() {
+		const { pendingCredentials, haveIdentityCredential, semillasValidationSuccess } = this.props;
+
+		const onPressAction =
+			haveIdentityCredential || semillasValidationSuccess || !LATEST_FEATURE ? this.onGetCredentials : this.openModal;
+		return (
+			<DidiServiceButton
+				onPress={onPressAction}
+				title={strings.semillas.getCredentials}
+				style={styles.button}
+				isPending={pendingCredentials}
+			/>
+		);
+	}
 
 	render() {
-		const { semillasValidationPending, didRequested, haveIdentityCredential } = this.props;
+		const { didRequested, haveIdentityCredential, semillasValidationSuccess } = this.props;
+		const { semillasValidationLoading } = this.state;
 		return (
 			<Fragment>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
+				<ServiceObserver
+					serviceKey={serviceKeyState}
+					onSuccess={this.onSuccessGetState}
+					onError={this.onErrorGetState}
+				/>
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
@@ -214,7 +204,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 							<Small style={util.paragraphMd}>{detailSecond}</Small>
 							<Small style={util.paragraphMd}>{detailThird}</Small>
 						</View>
-						{!didRequested || !haveIdentityCredential
+						{!didRequested || (!haveIdentityCredential && !semillasValidationSuccess)
 							? this.renderButtonWantCredentials()
 							: this.renderButtonBenefits()}
 					</SafeAreaView>
@@ -226,12 +216,12 @@ class SemillasScreen extends NavigationEnabledComponent<
 					visible={this.state.modalVisible}
 					onRequestClose={this.toggleModal}
 				>
-					<View style={modal.centeredView}>
-						<View style={[modal.view]}>
-							{semillasValidationPending ? this.renderPendingRequest() : this.renderRequestDescription()}
-							<DidiButton title={strings.buttons.cancel} onPress={this.toggleModal} style={{ marginTop: 40 }} />
-						</View>
-					</View>
+					<SemillasValidationState
+						goToRenaperValidation={this.goToRenaperValidation}
+						goToSemillasValidation={this.goToSemillasValidation}
+						onCancel={this.toggleModal}
+						isLoading={semillasValidationLoading}
+					/>
 				</Modal>
 			</Fragment>
 		);
@@ -245,11 +235,12 @@ export default didiConnect(
 		credentials: state.credentials,
 		didRequested: state.did.didRequested,
 		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
-		semillasValidationPending: state.validateSemillasDni?.state === "In Progress",
-		semillasValidationFailure: state.validateSemillasDni?.state === "Failure"
+		semillasValidationSuccess: state.validateSemillasDni === ValidationStates.success,
+		semillasValidationNull: state.validateSemillasDni === null
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
-		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni))
+		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni)),
+		getSemillasValidationState: () => dispatch(getSemillasValidationState(serviceKeyState))
 	})
 );
 

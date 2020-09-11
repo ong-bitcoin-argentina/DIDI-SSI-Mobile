@@ -43,3 +43,9 @@ export default {
 	["Sueño"]: require(`${baseSembrando}-suenos.png`),
 	["Finanza"]: require(`${basePath}-finanzas-inclusivas.png`)
 };
+
+export enum ValidationStates {
+	inProgress = "IN_PROGRESS",
+	failure = "FAILURE",
+	success = "SUCCESS"
+}
