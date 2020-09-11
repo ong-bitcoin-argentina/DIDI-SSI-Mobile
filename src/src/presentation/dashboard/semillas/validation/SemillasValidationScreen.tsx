@@ -17,6 +17,7 @@ import { validateDniWithSemillas } from "../../../../services/semillas/validateD
 import { SemillasNeedsToValidateDni } from "didi-sdk";
 import { ServiceObserver } from "../../../common/ServiceObserver";
 import KeyValueText from "../../../util/KeyValueText";
+import { DidiServiceButton } from "../../../util/DidiServiceButton";
 const { Small, Normal } = DidiText.Explanation;
 const { validate } = strings.semillas;
 const { declaredDNI, nameAndLastname, phone } = strings.general;
@@ -44,6 +45,7 @@ type State = {
 	name: string;
 	lastname: string;
 	modalVisible: boolean;
+	sendingRequest: boolean;
 };
 
 class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, Navigation> {
@@ -55,7 +57,8 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 			dni: "",
 			name: "",
 			lastname: "",
-			modalVisible: false
+			modalVisible: false,
+			sendingRequest: false
 		};
 	}
 
@@ -80,19 +83,21 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 			name,
 			lastName: lastname
 		};
+		this.setState({ sendingRequest: true });
 		this.props.semillasValidationStart(data);
 		this.toggleModal();
 	};
 
 	onSuccessRequest = () => {
+		this.setState({ sendingRequest: false });
 		Alert.alert(strings.semillas.program, validate.successRequest, [
 			{ text: "OK", onPress: () => this.navigate("DashboardHome", {}) }
 		]);
 	};
 
 	render() {
-		const { border, area, text, button, input, value, description } = styles;
-		const { dni, name, lastname } = this.state;
+		const { border, area, text, button, input, description } = styles;
+		const { dni, name, lastname, sendingRequest } = this.state;
 		const { email, phoneNumber } = this.props;
 		const { modal } = commonStyles;
 		return (
@@ -115,12 +120,12 @@ class SemillasValidationScreen extends NavigationEnabledComponent<Props, State, 
 
 						<Normal style={text}>{validate.willBeContacting}</Normal>
 						<View>
-							<DidiButton
+							<DidiServiceButton
 								title={validate.DNI}
 								style={[commonStyles.button.lightGreen, button]}
-								titleStyle={{ fontSize: 14 }}
 								onPress={this.toggleModal}
 								disabled={!this.formValid()}
+								isPending={sendingRequest}
 							/>
 						</View>
 					</View>
