@@ -29,7 +29,8 @@ build/
 .gradle
 local.properties
 *.iml
-
+android/app/google-services.json
+android/gradle.properties
 # Visual Studio Code
 #
 .vscode/
@@ -45,7 +46,8 @@ buck-out/
 \.buckd/
 *.debug.keystore
 android/app/debug.keystore
-# *.keystore
+android/app/release.keystore
+*.keystore
 
 # fastlane
 #
@@ -63,3 +65,5 @@ android/app/debug.keystore
 
 # CocoaPods
 /ios/Pods/
+.env
+.env.*

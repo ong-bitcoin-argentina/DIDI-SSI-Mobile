@@ -1,28 +1,29 @@
 import { ServiceSettings } from "./model/ServiceSettings";
+import Config from "react-native-config";
 
-type AppConfig = { debug: boolean; defaultServiceSettings: ServiceSettings };
-
-const debug: boolean = true;
-
-const defaultDebugServiceSettings: ServiceSettings = {
-	sharePrefix: "http://192.168.1.6:8080/api/credential_viewer",
-	trustGraphUri: "http://192.168.1.6:3001/graphql",
-	ethrDidUri: "https://did.testnet.rsk.co:4444",
-	ethrDelegateUri: "https://did.testnet.rsk.co:4444",
-	didiUserServer: "http://192.168.1.6:3000/api/1.0/didi"
+type AppConfig = {
+	debug: boolean;
+	defaultServiceSettings: ServiceSettings;
 };
 
-const defaultStagingServiceSettings: ServiceSettings = {
-	sharePrefix: "http://192.168.2.123:8080/api/credential_viewer",
-	trustGraphUri: "http://mou.nec.com.ar/graphql",
-	ethrDidUri: "https://did.testnet.rsk.co:4444",
-	ethrDelegateUri: "https://did.testnet.rsk.co:4444",
-	didiUserServer: "http://didi.nec.com.ar:8089/api/1.0/didi"
+const debug: boolean = Config.APP_DEBUG === "true";
+
+const defaultServiceSettings: ServiceSettings = {
+	sharePrefix: Config.URL_VIEWER,
+	trustGraphUri: Config.URL_MOURO,
+	ethrDidUri: Config.URL_ETHR_DID,
+	ethrDelegateUri: Config.URL_ETHR_DELEGATOR,
+	didiUserServer: Config.URL_DIDI_SERVER
 };
 
 export const AppConfig: AppConfig = {
 	debug,
-	defaultServiceSettings: debug ? defaultDebugServiceSettings : defaultStagingServiceSettings
+	defaultServiceSettings
 };
 
-export const PRIVATE_KEY_SEED_PASSWORD = "***REMOVED***";
+export const VERSION = Config.VERSION;
+export const PRIVATE_KEY_SEED_PASSWORD = Config.PRIVATE_KEY_SEED_PASSWORD;
+export const NOTIFICATION_SENDER_ID = Config.NOTIFICATION_SENDER_ID;
+export const ENV_CODE = Config.ENV_CODE;
+export const LATEST_FEATURE = Config.LATEST_FEATURE === "true";
+export const QA = Config.QA === "true";

@@ -164,7 +164,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	NotificationScreen,
 	(state): NotificationScreenStateProps => ({
-		did: state.did,
+		did: state.did.activeDid,
 		parsedTokens: state.parsedTokens,
 		seenTokens: state.seenTokens,
 		credentialContext: extractContext(state)

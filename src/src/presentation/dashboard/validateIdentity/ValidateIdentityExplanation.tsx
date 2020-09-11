@@ -13,6 +13,7 @@ import {
 	ValidateIdentityExplanationHeader,
 	ValidateIdentityExplanationHeaderProps
 } from "./ValidateIdentityExplanationHeader";
+import { ScrollView } from "react-native-gesture-handler";
 
 export interface ValidateIdentityExplanationProps {
 	header: ValidateIdentityExplanationHeaderProps;
@@ -26,17 +27,19 @@ export interface ValidateIdentityExplanationProps {
 export default class ValidateIdentityExplanation extends React.Component<ValidateIdentityExplanationProps> {
 	render() {
 		return (
-			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={commonStyles.view.area}>
-					<View {...this.props.viewProps} style={[styles.body, this.props.viewProps?.style]}>
-						<ValidateIdentityExplanationHeader {...this.props.header} />
-						{this.renderDescription()}
-						<Image style={commonStyles.image.image} source={this.props.image} />
-						{this.renderImageAndButton()}
-					</View>
-				</SafeAreaView>
-			</Fragment>
+			<ScrollView contentContainerStyle={{ flexGrow: 1 }} scrollEnabled>
+				<Fragment>
+					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+					<SafeAreaView style={commonStyles.view.area}>
+						<View {...this.props.viewProps} style={[styles.body, this.props.viewProps?.style]}>
+							<ValidateIdentityExplanationHeader {...this.props.header} />
+							{this.renderDescription()}
+							<Image style={styles.image} source={this.props.image} />
+							{this.renderImageAndButton()}
+						</View>
+					</SafeAreaView>
+				</Fragment>
+			</ScrollView>
 		);
 	}
 
@@ -60,8 +63,8 @@ export default class ValidateIdentityExplanation extends React.Component<Validat
 const styles = StyleSheet.create({
 	body: {
 		marginHorizontal: 20,
-		marginTop: 40,
-		marginBottom: 30,
+		marginTop: 10,
+		marginBottom: 15,
 		alignSelf: "stretch",
 		alignItems: "stretch",
 		justifyContent: "space-between",
@@ -72,6 +75,8 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.backgroundSeparator
 	},
 	image: {
-		alignSelf: "center"
+		alignSelf: "center",
+		width: 166,
+		height: 144
 	}
 });

@@ -20,22 +20,22 @@ const pages: OnboardingPage[] = [
 		backgroundColor: "#8351C5",
 		backgroundTile: require("./images/onboardingTile1.png"),
 		title: "¿Qué podés hacer?",
-		body:
-			"Con Didi vas a poder armar rondas comunitarias de plata y crear tu identidad digital sin intermediarios y de manera segura."
+		body: "Vas a poder crear tu identidad digital sin intermediarios y de manera segura."
 	},
 	{
 		image: Image2,
 		backgroundColor: "#CB296E",
 		backgroundTile: require("./images/onboardingTile2.png"),
 		title: "Podés generar credenciales",
-		body: "Con Didi vas a poder acceder a todos tus credenciales de cursos y propiedades."
+		body:
+			"Vas a poder acceder a todas tus credenciales, certificando tus datos, cursos realizados, domicilios, propiedades."
 	},
 	{
 		image: Image3,
 		backgroundColor: "#6ECD55",
 		backgroundTile: require("./images/onboardingTile3.png"),
 		title: "Alcanzá tus metas de ahorro",
-		body: "Podés crear Rondas y así conseguir la plata que estabas necesitando de manera fácil y confiable."
+		body: "Podés crear Rondas y así conseguir el dinero que estabas necesitando de manera confiable."
 	}
 ];
 

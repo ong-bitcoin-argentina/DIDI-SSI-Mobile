@@ -1,12 +1,19 @@
-import colors, { Color } from "./colors";
+import colors from "./colors";
 import DidiTheme from "./DidiTheme";
+import { ENV_CODE } from "../../AppConfig";
+
+const colorThemes = {
+	UAT: colors.lime,
+	STG: colors.primaryGray,
+	PROD: colors.primary
+};
 
 const primaryTheme: DidiTheme = {
 	background: colors.background,
 	foreground: colors.text,
 	foregroundFaded: colors.textFaded,
 
-	navigation: colors.primary,
+	navigation: colorThemes[ENV_CODE] ?? colors.primaryGray,
 	darkNavigation: colors.primaryDark,
 	navigationText: colors.primaryText,
 

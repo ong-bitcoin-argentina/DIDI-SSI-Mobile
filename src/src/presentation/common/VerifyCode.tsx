@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity, StyleSheet } from "react-native";
 
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import { DidiText } from "../util/DidiText";
@@ -8,7 +8,7 @@ import DidiTextInput from "../util/DidiTextInput";
 import { Validations } from "../../model/Validations";
 import strings from "../resources/strings";
 
-import { DidiScreen } from "./DidiScreen";
+import { DidiScrollScreen } from "./DidiScreen";
 import { ServiceObserver } from "./ServiceObserver";
 
 export interface VerifyCodeProps {
@@ -20,11 +20,18 @@ export interface VerifyCodeProps {
 	isContinuePending: boolean;
 }
 
+type CustomChildrens = {
+	firstChildren?: any;
+	secondChildren?: any;
+};
+
+type VerifyCodeInternalProps = VerifyCodeProps & CustomChildrens;
+
 interface VerifyCodeState {
 	inputCode?: string;
 }
 
-export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, VerifyCodeState> {
+export class VerifyCodeComponent extends React.PureComponent<VerifyCodeInternalProps, VerifyCodeState> {
 	constructor(props: VerifyCodeProps) {
 		super(props);
 		this.state = {};
@@ -32,17 +39,21 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, Ve
 
 	render() {
 		return (
-			<DidiScreen>
-				<DidiText.Explanation.Emphasis>{this.props.description}</DidiText.Explanation.Emphasis>
+			<DidiScrollScreen>
+				<DidiText.Explanation.Emphasis style={styles.description}>
+					{this.props.description}
+				</DidiText.Explanation.Emphasis>
 
 				<DidiTextInput.VerificationCode onChangeText={text => this.setState({ inputCode: text })} />
 
-				{this.props.children}
+				{this.props.children || this.props.firstChildren}
 
 				<TouchableOpacity onPress={this.onResendCodePress}>
 					<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCodeResendSuccess} />
 					<DidiText.ResendCodeButton>{strings.accessCommon.verify.resendCode}</DidiText.ResendCodeButton>
 				</TouchableOpacity>
+
+				{this.props.secondChildren}
 
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}
@@ -50,7 +61,7 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, Ve
 					title={this.props.continueButtonText ?? strings.accessCommon.validateButtonText}
 					isPending={this.props.isContinuePending || false}
 				/>
-			</DidiScreen>
+			</DidiScrollScreen>
 		);
 	}
 
@@ -71,3 +82,9 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeProps, Ve
 }
 
 const serviceKey = "VerifyCode";
+
+const styles = StyleSheet.create({
+	description: {
+		fontSize: 14
+	}
+});

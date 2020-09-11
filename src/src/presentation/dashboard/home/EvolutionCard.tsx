@@ -32,6 +32,7 @@ export class EvolutionCard extends React.Component<EvolutionCardProps> {
 		return (
 			<CredentialCard
 				icon=""
+				preview={false}
 				decoration={
 					<AnimatedCircularProgress
 						size={64}

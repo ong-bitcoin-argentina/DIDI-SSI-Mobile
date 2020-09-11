@@ -67,7 +67,7 @@ const serviceKey = "IdentitySettings";
 const connected = didiConnect(
 	IdentitySettingsScreen,
 	(state): IdentitySettingsStateProps => ({
-		activeDid: state.did
+		activeDid: state.did.activeDid
 	}),
 	(dispatch): IdentitySettingsDispatchProps => ({
 		createAddress: () => dispatch(ensureDid(serviceKey)),

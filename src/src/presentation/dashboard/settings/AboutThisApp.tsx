@@ -1,11 +1,13 @@
 import React from "react";
-import { Text } from "react-native";
+import { Image, StyleSheet, View, ScrollView, Text } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
+import { DidiText } from "../../util/DidiText";
 import strings from "../../resources/strings";
+const { paragraphs } = strings.settings.about;
+const { Small } = DidiText.Explanation;
 
 export type AboutThisAppScreenProps = {};
 type AboutThisAppScreenState = {};
@@ -20,9 +22,43 @@ export class AboutThisAppScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<DidiScreen>
-				<Text>{strings.debug.screenInProgress}</Text>
-			</DidiScreen>
+			<ScrollView>
+				<View style={styles.view}>
+					<View style={styles.imageContainer}>
+						<Image style={styles.didiLogo} source={require("../../resources/images/logo.png")} />
+					</View>
+					{paragraphs.map((p, index) => (
+						<Text style={styles.paragraph} key={index}>
+							{p.map((item, subindex) => (
+								<Small style={item.style} key={subindex}>
+									{item.text}
+								</Small>
+							))}
+						</Text>
+					))}
+				</View>
+			</ScrollView>
 		);
 	}
 }
+
+const styles = StyleSheet.create({
+	view: {
+		paddingHorizontal: 30,
+		paddingBottom: 20
+	},
+	didiLogo: {
+		width: "50%",
+		height: 140,
+		resizeMode: "contain"
+	},
+	paragraph: {
+		textAlign: "justify",
+		marginVertical: 8
+	},
+	imageContainer: {
+		flex: 1,
+		alignItems: "center",
+		marginBottom: -10
+	}
+});

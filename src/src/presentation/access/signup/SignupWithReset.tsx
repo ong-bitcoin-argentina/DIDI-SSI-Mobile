@@ -18,9 +18,12 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
 import { SignupEnterPhoneProps } from "./SignupEnterPhone";
+import themes from "../../resources/themes";
+import { RecoveryExplanationProps } from "../recovery/RecoveryExplanation";
 
 export interface SignupWithResetNavigation {
 	SignupEnterPhone: SignupEnterPhoneProps;
+	RecoveryExplanation: RecoveryExplanationProps;
 }
 
 export type SignupWithResetProps = {};
@@ -49,15 +52,15 @@ class SignupWithResetScreen extends NavigationEnabledComponent<
 							this.replace("SignupEnterPhone", {});
 						}}
 					/>
-					<DidiButton
-						style={styles.deleteButton}
-						title={strings.signup.reset.doDelete}
-						onPress={() => {
-							this.props.resetStore();
-						}}
-					/>
-					<DidiButton onPress={() => this.goBack()} title={strings.signup.reset.cancel} />
+					<DidiButton onPress={() => this.props.resetStore()} title={strings.signup.reset.register} />
 				</View>
+				<DidiText.Explanation.Normal>{strings.signup.reset.messageRecover}</DidiText.Explanation.Normal>
+				<DidiButton
+					onPress={() => this.navigate("RecoveryExplanation", {})}
+					style={styles.transparentButton}
+					titleStyle={styles.transparentButtonText}
+					title={strings.recovery.startAccess.recoveryButton + " >"}
+				/>
 			</DidiScreen>
 		);
 	}
@@ -68,7 +71,7 @@ const serviceKey = "ResetSignup";
 const connected = didiConnect(
 	SignupWithResetScreen,
 	state => ({
-		did: state.did
+		did: state.did.activeDid
 	}),
 	dispatch => ({
 		resetStore: () => {
@@ -84,5 +87,11 @@ const styles = StyleSheet.create({
 	deleteButton: {
 		marginBottom: 32,
 		backgroundColor: colors.dangerous
+	},
+	transparentButton: {
+		backgroundColor: "transparent"
+	},
+	transparentButtonText: {
+		color: themes.foreground
 	}
 });

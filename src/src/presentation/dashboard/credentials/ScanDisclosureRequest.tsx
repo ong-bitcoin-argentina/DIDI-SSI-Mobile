@@ -132,7 +132,7 @@ export default didiConnect(
 	ScanDisclosureRequestScreen,
 	(state): ScanDisclosureRequestStateProps => {
 		return {
-			did: state.did,
+			did: state.did.activeDid,
 			identity: state.identity,
 			credentials: state.credentials,
 			knownIssuers: state.knownIssuers,

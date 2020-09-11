@@ -1,7 +1,9 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Dispatch } from "redux";
+import { ScrollView } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
+import TermsExplanation from "../../common/TermsExplanation";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { VerifyCodeComponent } from "../../common/VerifyCode";
 import { PasswordPickComponent } from "../../dashboard/common/PasswordPickComponent";
@@ -63,7 +65,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<Fragment>
+			<>
 				<ServiceObserver serviceKey={serviceKeyVerify} onSuccess={() => this.registerUser()} />
 				<ServiceObserver serviceKey={serviceKeyRegister} onSuccess={() => this.navigate("SignupConfirmed", {})} />
 
@@ -75,10 +77,10 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 					isContinueBlocked={this.state.password === null}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}
 					isContinuePending={this.props.registerUserPending || this.props.verifyEmailCodePending}
-				>
-					<PasswordPickComponent onPasswordChange={password => this.setState({ password })} />
-				</VerifyCodeComponent>
-			</Fragment>
+					firstChildren={<PasswordPickComponent onPasswordChange={password => this.setState({ password })} />}
+					secondChildren={<TermsExplanation style={{ marginVertical: 20 }} />}
+				/>
+			</>
 		);
 	}
 

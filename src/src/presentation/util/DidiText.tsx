@@ -49,8 +49,12 @@ const base: TextStyle = {
 	...color.dark
 };
 
-const styles = {
+export const styles = {
 	common: StyleSheet.create({
+		large: {
+			...base,
+			fontSize: 22
+		},
 		normal: {
 			...base
 		},
@@ -69,6 +73,10 @@ const styles = {
 		small: {
 			...base,
 			fontSize: 16
+		},
+		tiny: {
+			...base,
+			fontSize: 13
 		}
 	}),
 	validateIdentity: StyleSheet.create({
@@ -290,11 +298,14 @@ function textWith(style: TextStyle) {
 }
 
 export const DidiText = {
+	Title: textWith(styles.common.large),
+	Small: textWith(styles.common.small),
 	Explanation: {
 		Normal: textWith(styles.common.normal),
 		Emphasis: textWith(styles.common.bold),
 		Faded: textWith(styles.common.faded),
-		Small: textWith(styles.common.small)
+		Small: textWith(styles.common.small),
+		Tiny: textWith(styles.common.tiny)
 	},
 	ValidateIdentity: {
 		Normal: textWith(styles.common.small),

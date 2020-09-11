@@ -33,10 +33,9 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 	}
 
 	private canPressContinueButton(): boolean {
-		if (!Validations.isEmail(this.state.email)) {
-			return false;
-		}
-		if (this.props.isPasswordRequired && !Validations.isPassword(this.state.password)) {
+		const { email, password } = this.state;
+
+		if (!Validations.isEmail(email) || (this.props.isPasswordRequired && !password)) {
 			return false;
 		}
 		return true;
@@ -49,7 +48,7 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 
 				<Image source={this.props.contentImageSource} style={commonStyles.image.image} />
 
-				<DidiTextInput.Email onChangeText={text => this.setState({ email: text })} />
+				<DidiTextInput.Email onChangeText={text => this.setState({ email: text.toLowerCase() })} />
 
 				{this.props.isPasswordRequired ? (
 					<DidiTextInput.Password onChangeText={text => this.setState({ password: text })} descriptionType="BASIC" />

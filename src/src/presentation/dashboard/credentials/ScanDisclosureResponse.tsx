@@ -229,7 +229,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	ScanDisclosureResponseScreen,
 	(state): ScanDisclosureResponseStateProps => ({
-		activeDid: state.did,
+		activeDid: state.did.activeDid,
 		ethrDidUri: state.serviceSettings.ethrDidUri,
 		ethrDelegateUri: state.serviceSettings.ethrDelegateUri
 	})

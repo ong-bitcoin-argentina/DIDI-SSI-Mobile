@@ -14,7 +14,8 @@ import { ServiceSettings } from "../model/ServiceSettings";
 import { reloadDid } from "../services/internal/reloadDid";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
-import { ActiveDid, didReducer } from "./reducers/didReducer";
+import { DidState, didReducer } from "./reducers/didReducer";
+import { CodeState, phoneVerificationReducer} from "./reducers/phoneVerificationReducer";
 import { identityReducer } from "./reducers/identityReducer";
 import { issuerReducer, IssuerRegistry } from "./reducers/issuerReducer";
 import { pushNotificationReducer, PushState } from "./reducers/pushNotificationReducer";
@@ -26,18 +27,23 @@ import { tokenReducer } from "./reducers/tokenReducer";
 import { tokensInLastSyncReducer } from "./reducers/tokensInLastSyncReducer";
 import { validateDniReducer, ValidateDniState } from "./reducers/validateDniProgressReducer";
 import { StoreAction } from "./StoreAction";
+import { prestadoresReducer, PrestadoresRegistry } from "./reducers/prestadoresReducer";
+import { validateSemillasDniReducer, ValidateSemillasDniState } from "./reducers/validateSemillasDniReducer";
 
 export interface PersistedStoreContent {
-	did: ActiveDid;
+	did: DidState;
 	pushToken: PushState;
 	sessionFlags: DidiSession;
+	codeConfirmation: CodeState;
 	tokens: string[];
 	tokensInLastSync: string[] | null;
 	seenTokens: string[];
 	userInputIdentity: Identity;
 	serviceSettings: ServiceSettings;
 	validateDni: ValidateDniState;
+	validateSemillasDni: ValidateSemillasDniState;
 	knownIssuers: IssuerRegistry;
+	prestadores: PrestadoresRegistry;
 	recentActivity: RecentActivity[];
 }
 
@@ -45,13 +51,16 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 	did: didReducer,
 	pushToken: pushNotificationReducer,
 	sessionFlags: sessionReducer,
+	codeConfirmation: phoneVerificationReducer,
 	tokens: tokenReducer,
 	tokensInLastSync: tokensInLastSyncReducer,
 	seenTokens: seenTokenReducer,
 	userInputIdentity: identityReducer,
 	serviceSettings: serviceSettingsReducer,
 	validateDni: validateDniReducer,
+	validateSemillasDni: validateSemillasDniReducer,
 	knownIssuers: issuerReducer,
+	prestadores: prestadoresReducer,
 	recentActivity: recentActivityReducer
 });
 
@@ -59,13 +68,16 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	did: "device",
 	pushToken: "device",
 	sessionFlags: "user",
+	codeConfirmation: "user",
 	tokens: "user",
 	tokensInLastSync: "user",
 	seenTokens: "user",
 	userInputIdentity: "user",
 	serviceSettings: "device",
 	validateDni: "user",
+	validateSemillasDni: "user",
 	knownIssuers: "user",
+	prestadores: "user",
 	recentActivity: "user"
 };
 

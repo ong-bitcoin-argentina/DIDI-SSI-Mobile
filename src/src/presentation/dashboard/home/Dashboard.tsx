@@ -37,6 +37,7 @@ interface DashboardScreenStateProps {
 interface DashboardScreenDispatchProps {
 	login(): void;
 	resetDniValidation: () => void;
+	finishDniValidation: () => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -127,7 +128,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 									<IncompleteIdentityCard
 										onStartValidateId={() => this.navigate("ValidateID", {})}
 										onValidateIdSuccess={() => {
-											this.props.resetDniValidation();
+											this.props.finishDniValidation();
 										}}
 										onValidateIdFailure={() => {
 											this.props.resetDniValidation();
@@ -152,7 +153,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 export default didiConnect(
 	DashboardScreen,
 	(state): DashboardScreenStateProps => ({
-		did: state.did,
+		did: state.did.activeDid,
 		recentActivity: state.combinedRecentActivity,
 		credentials: state.credentials,
 		credentialContext: extractContext(state)
@@ -163,7 +164,8 @@ export default didiConnect(
 			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},
-		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" })
+		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
+		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } })
 	})
 );
 

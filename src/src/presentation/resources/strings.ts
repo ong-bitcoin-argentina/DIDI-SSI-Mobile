@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import { JWTParseError } from "didi-sdk";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
@@ -31,7 +32,27 @@ function formatFullDate(date: Date) {
 	return `${formatDatePart(date)}, ${formatHourPart(date)}`;
 }
 
+const appName = "ai·di";
+
+const styles = StyleSheet.create({
+	bold: {
+		fontWeight: "bold"
+	}
+});
+
 export default {
+	appName,
+	actions: {
+		copied: "Copiado"
+	},
+	buttons: {
+		accept: "Aceptar",
+		acceptAlternative: "Acepto",
+		ok: "OK",
+		cancel: "Cancelar",
+		reject: "Rechazar",
+		back: "Volver"
+	},
 	debug: {
 		menu: "Debug Menu",
 		decodeJWT: "Decodificar JWT",
@@ -60,7 +81,7 @@ export default {
 		},
 		validateIdentity: {
 			Start: {
-				title: "Validá tu DNI para completar tu Perfil DIDI.",
+				title: `Validá tu DNI para completar tu Perfil ${appName}.`,
 				subtitle: null,
 				button: "Validar DNI"
 			},
@@ -74,9 +95,13 @@ export default {
 				subtitle: "Intente nuevamente.",
 				button: "Reintentar"
 			},
+			Finished: {
+				title: null,
+				subtitle: null
+			},
 			"In Progress": {
-				title: "Validación en progreso...",
-				subtitle: "",
+				title: "Validando tus datos..., este proceso puede demorar unos minutos...",
+				subtitle: null,
 				button: null
 			}
 		},
@@ -97,6 +122,10 @@ export default {
 		barTitle: "Mi perfil",
 		personalDataLabel: "Datos personales",
 		addressDataLabel: "Domicilio Legal",
+		activeIdentity: "Identidad activa (DID)",
+		actions: {
+			copy: "Copiar DID"
+		},
 		states: {
 			approved: "Aprobado",
 			pending: "Pendiente",
@@ -133,8 +162,7 @@ export default {
 				PASSWORD_TOO_SHORT: "8 o más caracteres",
 				PASSWORD_MISSING_UPPERCASE: "Mayúsculas",
 				PASSWORD_MISSING_LOWERCASE: "Minúsculas",
-				PASSWORD_MISSING_NUMBER: "Números",
-				PASSWORD_MISSING_SPECIAL: "Símbolos"
+				PASSWORD_MISSING_NUMBER: "Números"
 			},
 			mismatch: "Las contraseñas no coinciden",
 			changePassword: "Cambiar Contraseña"
@@ -216,18 +244,20 @@ export default {
 		},
 		registrationEmailSent: {
 			message:
-				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email. Luego, ingresa una contraseña para tu cuenta."
+				"Recibirás un email para validar tu cuenta. Ingresá el código de 6 dígitos para verificar tu email. Luego, ingresa una contraseña para tu cuenta.",
+			registerDetail: `Registrándote en ${appName}, aceptás nuestros `,
+			terms: "Términos y Condiciones",
+			policies: "Políticas de Privacidad"
 		},
 		registrationValidated: {
 			message: "Tu email fue validado con éxito y tu Identidad Digital fue resguardada.",
-			buttonEnter: "Ingresar a Didi"
+			buttonEnter: `Ingresar a ${appName}`
 		},
 		reset: {
-			message:
-				"No podés tener más de una cuenta guardada en un dispositivo.\n\n" +
-				"Antes de crear otra cuenta, debés borrar la copia local de tu cuenta actual.\n\n" +
-				"Para volver a usar tu cuenta actual, tendrás que Recuperar Cuenta.",
+			message: "Este dispositivo tiene registrada otra cuenta. Para reemplazarla...",
+			messageRecover: `Si ya tenés una cuenta en ${appName} y querés recuperarla, solo tenés que importarla a este dispositivo.`,
 			cancel: "Salir sin cambios",
+			register: "Registrá una cuenta nueva",
 			doDelete: "Borrar copia local"
 		}
 	},
@@ -252,7 +282,8 @@ export default {
 				body: "Tené en cuenta que, por seguridad, solo se aceptará el último código que te enviamos."
 			}
 		},
-		passwordDescription: "Usá ocho caracteres como mínimo con una combinación de letras, números y símbolos"
+		passwordDescription:
+			"Usá ocho caracteres como mínimo con una combinación de números, letras mayúsculas y minúsculas."
 	},
 	documents: {
 		barTitle: "Mis Credenciales",
@@ -261,28 +292,146 @@ export default {
 		filterAll: "Todos",
 		filterEducation: "Educación",
 		filterLivingPlace: "Vivienda",
-		filterFinance: "Finanza",
+		filterFinance: "Finanzas",
 		filterIdentity: "Identidad",
-		filterShared: "Compartidos"
+		filterShared: "Compartidos",
+		filterBenefits: "Beneficios",
+		filterWork: "Laboral"
 	},
 	tabNames: {
 		home: "Inicio",
 		rounds: "Rondas",
 		documents: "Credenciales",
-		settings: "Configuración"
+		settings: "Configuración",
+		semillas: "Semillas"
+	},
+	semillas: {
+		barTitle: "Mis Credenciales semillas",
+		benefitCredentialActive: "Credencial de Beneficios activa",
+		detailBarTitle: "Programa Semillas",
+		validationTitle: "Validación de Identidad - Semillas",
+		getCredentials: "Quiero mis credenciales",
+		noDni: "Debes completar el proceso de validación de identidad antes de poder acceder a los Beneficios de Semillas.",
+		credentials: "Credenciales",
+		program: "Programa Semillas",
+		writeEmail: "Escribe la dirección de email de tu contacto para compartir tus credenciales de Semillas:",
+		detailFirst:
+			"Si sos parte del programa Semillas ahora podés tener tus credenciales que certifican y validan tus datos personales.",
+		detailSecond:
+			"Tus credenciales son privadas, con ellas vas a poder guardar y proteger tu información de manera segura y confiable.",
+		detailThird:
+			"Gracias a que son portables, las podés llevar con vos, acceder a ellas siempre que lo necesites y compartirlas sólo con quien vos quieras.",
+		credentialsSuccess: "Pronto vas a recibir tus credenciales de Semillas. Este proceso puede demorar unos días...",
+		credetialsPending:
+			"Tus Credenciales de Beneficios Semillas ya han sido solicitadas y se encuentran en proceso... Pronto podrás acceder a los Beneficios de Semillas!!",
+		steps: {
+			first: {
+				title: "¿A qué servicio querés acceder?",
+				email: "¿No encontrás tu servicio?",
+				writeEmail: "Mail del destinatario",
+				noCredentials:
+					"Para poder acceder a los Servicios debes tener tu Credencial de Beneficios Semillas activa"
+			},
+			second: {
+				title: "Elegí quién va a usar el beneficio:",
+				description: "Recordá que podés utilizarlo con tus familiares registrados en Semillas.",
+				detail: "Seleccioná quién lo usará",
+				modalTitle: "Estás por compartir la siguiente información",
+				labels: {
+					dni: "DNI",
+					name: "Nombre y Apellido",
+					birth: "Fecha de Nacimiento",
+					character: "Carácter",
+					mail: "Email",
+					phone: "Teléfono"
+				}
+			},
+			third: {
+				title: "¡El beneficio fue solicitado con éxito!",
+				needCoordinate: "¿Necesitás coordinar tu turno?",
+				willBeContacted: "Serás contactado a la brevedad.",
+				whatsappMessage: "¡Hola! Pertenezco al programa Semillas y quisiera solicitar un turno.",
+				whatsappError: "Ocurrió un error al abrir Whatsapp, confirme que lo tiene instalado en su dispositivo."
+			}
+		},
+		shareMessage: `${appName} quiere compartir tu código de usuario y número de DNI con Semillas para confirmar tus credenciales.`,
+		call: "Llamar",
+		whatsApp: "WhatsApp",
+		accept: "Ok",
+		errorShareData: "Ocurrió un error al compartir tus datos",
+		validate: {
+			shouldDo: "Debes completar la validación de Identidad para acceder a los beneficios de Semillas.",
+			identityFromSemillas: "Validar Identidad a través de Semillas",
+			DNI: "Validar DNI con Semillas",
+			question: "¿No lográs validar tu identidad?",
+			description: "Si estás teniendo dificultades para validar tu identidad, lo podes realizar a través de Semillas.",
+			descriptionSharing: "Estás por compartir la siguiente información con Semillas:",
+			needData: "Para ello, es necesario que completes los siguientes datos:",
+			willBeContacting: "Se van a estar contactando con vos para completar el proceso de validación.",
+			willBeContactingBrevity: "Se van a estar contactando con vos a la brevedad.",
+			semillasProcessing: "Tu solicitud de validación de identidad está siendo procesada por Semillas.",
+			semillasContacting: "En estos días se contactarán con vos para completar el proceso.",
+			rememberYouCan: "Recordá que siempre vas a poder",
+			successRequest: "La solicitud de validación de DNI se registró de manera correcta, pronto tendrás novedades."
+		}
 	},
 	settings: {
 		idLabel: "ID:",
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Cambio de Contraseña",
-		about: "Acerca de Didi",
+		about: {
+			title: `Acerca de ${appName}`,
+			paragraphs: [
+				[
+					{
+						style: styles.bold,
+						text: appName
+					},
+					{
+						style: {},
+						text:
+							" es una solución tecnológica de identidad digital descentralizada mediante modelos de Blockchain desarrollada en el marco del"
+					},
+					{
+						style: styles.bold,
+						text: " Proyecto DIDI, Identidad Digital para la inclusión."
+					}
+				],
+				[
+					{
+						style: {},
+						text: "A través de la app "
+					},
+					{
+						style: styles.bold,
+						text: appName
+					},
+					{
+						style: {},
+						text:
+							", podrás construir una identidad digital que certifique y valide datos sociales, cívicos y económicos, por medio de credenciales verificables emitidas por terceros (instituciones o individuos) con información que acredita que sos portadora o portador de ciertos atributos que tienen que ver con tu identidad."
+					}
+				],
+				[
+					{
+						style: styles.bold,
+						text: appName
+					},
+					{
+						style: {},
+						text:
+							" utiliza el protocolo de credenciales verificables de la identidad digital auto soberana (SSI) cuyos estándares fueron definidos por World Wide Web Consortium (W3C), de manera que el usuario pueda resguardar su información de forma privada asegurando los requisitos de privacidad, control, portabilidad a su vez que garantiza integridad de los datos y autenticidad de emisor."
+					}
+				]
+			]
+		},
 		endSession: "Cerrar Sesión"
 	},
 	share: {
 		title: "Compartir",
 		generating: "Generando código QR...",
 		next: "Ya compartí el código QR",
-		shareTitle: "Credencial Didi",
+		shareTitle: `Credencial ${appName}`,
 		explanation:
 			"Pedile al receptor que escanee este código QR para empezar a compartir tus credenciales.\n\nUna vez hecho esto, le aparecerá un código nuevo al receptor. Avanzá a la próxima pantalla para escanear su código."
 	},
@@ -291,24 +440,23 @@ export default {
 		explanation:
 			"¿Cómo compartirás estas credenciales?\n\nEl receptor podrá verificar que las credenciales fueron enviadas intencionalmente y desde tu cuenta",
 		direct: {
-			button: "Directo a otra App DIDI",
+			button: `Directo a otra App ${appName}`,
 			explanation: "Verificado como parte del proceso"
 		},
 		or: "o",
 		link: {
-			button: "Por enlace al visor",
-			explanation: "Recibirás un pedido de verificación"
+			button: "Compartir enlace"
 		},
-		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de DIDI:\n\n${sharedUri}`
+		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de ${appName}:\n\n${sharedUri}`
 	},
 	disclose: {
 		title: "Compartir",
 		request: {
-			explanation: "Escaneá el siguiente código QR con la App DIDI que te está compartiendo sus credenciales.",
+			explanation: `Escaneá el siguiente código QR con la App ${appName} que te está compartiendo sus credenciales.`,
 			next: "Siguiente"
 		},
 		response: {
-			explanation: "Escaneá el siguiente código QR con la App DIDI con la que estás compartiendo tus credenciales."
+			explanation: `Escaneá el siguiente código QR con la App ${appName} con la que estás compartiendo tus credenciales.`
 		}
 	},
 	services: {
@@ -323,8 +471,7 @@ export default {
 		stepTotal: "/3",
 		what: {
 			header: "¿Qué es la validación de identidad?",
-			description:
-				"Es un proceso simple mediante el cual vas a poder confirmar que vos sos quien decís ser. De esta forma, vas a poder acceder a todos los servicios de DIDI.",
+			description: `Es un proceso simple mediante el cual vas a poder confirmar que vos sos quien decís ser. De esta forma, vas a poder acceder a todos los servicios de ${appName}.`,
 			buttonText: "Siguiente"
 		},
 		howTo: {
@@ -395,7 +542,7 @@ export default {
 		},
 		submit: {
 			header: "Validación de Identidad",
-			congrats: "Se enviaran los siguientes datos a validar por ReNaPer:",
+			congrats: "Se enviarán los siguientes datos a validar por ReNaPer:",
 			reminder: "Recordá que tus datos son privados y no serán compartidos.",
 			buttonText: "OK",
 			items: {
@@ -428,6 +575,10 @@ export default {
 		lastName: {
 			description: "Apellido",
 			placeholder: ""
+		},
+		DNI: {
+			description: "DNI",
+			placeholder: "DNI sin puntos ni espacios"
 		},
 		email: {
 			description: "Email",
@@ -481,11 +632,13 @@ export default {
 	specialCredentials: {
 		PhoneNumberData: {
 			title: "Número de celular",
-			phoneNumber: ""
+			phoneNumber: "",
+			key: "PhoneNumberData"
 		},
 		EmailData: {
 			title: "Email",
-			email: ""
+			email: "",
+			key: "EmailData"
 		},
 		PersonalData: {
 			title: "Datos Personales",
@@ -505,6 +658,20 @@ export default {
 			floor: "Piso",
 			department: "Departamento",
 			municipality: "Municipalidad"
+		},
+		Semillas: {
+			title: "semillas",
+			keys: {
+				cert: "CREDENCIAL",
+				relationship: "Relacion con Titular",
+				name: "NOMBRE",
+				lastName: "APELLIDO",
+				nameBeneficiario: "Nombre Beneficiario",
+				dniBeneficiario: "Dni Beneficiario",
+				dniTitular: "Dni Titular",
+				birthDate: "Fecha de Nacimiento",
+				genre: "Genero"
+			}
 		}
 	},
 	camera: {
@@ -634,6 +801,18 @@ export default {
 			title: "Enviaste Credenciales",
 			description: `Compartiste ${title}`
 		})
+	},
+	general: {
+		cancel: "Cancelar",
+		share: "Compartir",
+		next: "Siguiente",
+		nameAndLastname: "Nombre y Apellido",
+		declaredDNI: "DNI declarado",
+		email: "eMail",
+		phone: "Celular",
+		filterBy: {
+			category: "Categoría:"
+		}
 	},
 	jwtParseError: (error: JWTParseError) => {
 		switch (error.type) {

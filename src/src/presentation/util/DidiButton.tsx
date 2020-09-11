@@ -32,7 +32,7 @@ export default class DidiButton extends React.Component<DidiButtonProps> {
 	}
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 	button: {
 		flexDirection: "row",
 		justifyContent: "center",
@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
 		height: 56,
 		marginHorizontal: 5,
 		marginVertical: 5,
-		borderRadius: 5
+		borderRadius: 5,
+		paddingHorizontal: 16
 	},
 	text: {
 		marginHorizontal: 10

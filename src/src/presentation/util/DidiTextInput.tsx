@@ -17,6 +17,7 @@ export interface DidiTextInputProps {
 
 	stateIndicator?: JSX.Element;
 	textInputProps?: TextInputProps;
+	maxLength?: number;
 }
 
 export default class DidiTextInput extends React.Component<DidiTextInputProps> {
@@ -36,7 +37,12 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 					<View style={style.stateContainer}>
 						<View style={style.inputContainer}>
 							<DidiText.InputDescription>{this.props.description}</DidiText.InputDescription>
-							<TextInput {...textInputProps} style={textInputStyle} placeholder={this.props.placeholder} />
+							<TextInput
+								{...textInputProps}
+								style={textInputStyle}
+								placeholder={this.props.placeholder}
+								maxLength={this.props.maxLength}
+							/>
 						</View>
 						{this.props.stateIndicator}
 					</View>
@@ -70,6 +76,20 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	};
 
+	static DNI = (props: { onChangeText(text: string): void }) => {
+		return (
+			<DidiTextInput
+				description={strings.textInput.DNI.description}
+				placeholder={strings.textInput.DNI.placeholder}
+				textInputProps={{
+					keyboardType: "number-pad",
+					onChangeText: props.onChangeText
+				}}
+				maxLength={8}
+			/>
+		);
+	};
+
 	static Email = (props: { onChangeText: (text: string) => void }) => {
 		return (
 			<DidiTextInput
@@ -78,6 +98,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				tagImage={require("../resources/images/email.png")}
 				textInputProps={{
 					keyboardType: "email-address",
+					autoCapitalize: 'none',
 					onChangeText: props.onChangeText
 				}}
 			/>
@@ -106,7 +127,10 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				tagImage={require("../resources/images/phone.png")}
 				textInputProps={{
 					keyboardType: "phone-pad",
-					onChangeText: props.onChangeText
+					onChangeText: props.onChangeText,
+					style: {
+						fontSize: 14
+					}
 				}}
 			/>
 		);

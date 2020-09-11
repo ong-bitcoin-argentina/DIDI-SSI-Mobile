@@ -1,5 +1,6 @@
 import React from "react";
 import { NavigationStackProp } from "react-navigation-stack";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 type NavigationProps<Props> = Props & {
 	navigation?: NavigationStackProp;
@@ -10,6 +11,11 @@ export default abstract class NavigationEnabledComponent<Props, State, Nav> exte
 	__propTypeReference?: Props;
 	// tslint:disable-next-line: variable-name
 	__navigationTypeReference?: Nav;
+
+	componentDidCatch(error: any, info: any) {
+		crashlytics().log(info.componentStack);
+		crashlytics().recordError(error);
+	}
 
 	navigation() {
 		const navProps: NavigationProps<Props> = this.props;

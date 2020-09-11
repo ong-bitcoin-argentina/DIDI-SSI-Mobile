@@ -2,6 +2,9 @@ import { StoreAction } from "../StoreAction";
 
 type ValidateDniFinalState =
 	| {
+			state: "Finished";
+	  }
+	| {
 			state: "Success";
 	  }
 	| {
@@ -34,11 +37,7 @@ interface ValidateDniReset {
 }
 export type ValidateDniAction = ValidateDniActionStart | ValidateDniCountDown | ValidateDniResolve | ValidateDniReset;
 
-export function validateDniReducer(state: ValidateDniState | undefined, action: StoreAction): ValidateDniState {
-	if (state === undefined) {
-		return null;
-	}
-
+export function validateDniReducer(state: ValidateDniState | undefined = null, action: StoreAction): ValidateDniState {
 	switch (action.type) {
 		case "VALIDATE_DNI_START":
 			return {

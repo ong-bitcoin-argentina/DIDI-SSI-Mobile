@@ -2,15 +2,19 @@ import React from "react";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
 import { AddChildren } from "../../util/ReactExtensions";
-
 import { ServiceCallState } from "../../services/ServiceStateStore";
 import { didiConnect } from "../../store/store";
-
 import { ErrorDataAlert } from "./ErrorDataAlert";
+
+import crashlytics from "@react-native-firebase/crashlytics";
+
+// TODO: checkear que se logueen errores en firebase
+const errorCodesBlacklist = ["USER_GET", "FETCH_TG_ERR"];
 
 interface ServiceObserverProps {
 	serviceKey: string;
 	onSuccess: () => void;
+	onError?: () => void;
 	keepCallChainOnExit?: boolean;
 }
 interface ServiceObserverStateProps {
@@ -23,17 +27,22 @@ type ServiceObserverInternalProps = ServiceObserverProps & ServiceObserverStateP
 
 class ServiceObserver extends React.Component<AddChildren<ServiceObserverInternalProps>> {
 	componentDidUpdate() {
-		const rq = this.props.callState[this.props.serviceKey];
+		const { dropCallChain, onError, onSuccess, serviceKey } = this.props;
+		const rq = this.props.callState[serviceKey];
 		if (rq === undefined) {
 			return;
 		}
 		switch (rq.state) {
 			case "SUCCEEDED":
-				this.props.onSuccess();
-				this.props.dropCallChain(this.props.serviceKey);
+				onSuccess();
+				dropCallChain(serviceKey);
 				return;
 			case "FAILED":
-				ErrorDataAlert.alert(rq.error, () => this.props.dropCallChain(this.props.serviceKey));
+				onError && onError();
+				crashlytics().recordError(new Error(rq.error.message));
+				if (!errorCodesBlacklist.includes(rq.error.errorCode)) {
+					ErrorDataAlert.alert(rq.error, () => dropCallChain(serviceKey));
+				}
 				return;
 			case "IN_PROGRESS":
 				return;

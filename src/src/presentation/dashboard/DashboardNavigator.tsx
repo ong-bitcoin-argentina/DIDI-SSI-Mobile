@@ -33,6 +33,7 @@ import DocumentsNavigator from "./documents/DocumentsNavigator";
 import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
+import SemillasNavigator from "./semillas/SemillasNavigator";
 import UserData from "./settings/userData/UserData";
 import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
@@ -46,7 +47,7 @@ export interface NavigatorProps extends ViewProps {
 }
 
 export default function (then: NavTree<DashboardSwitchTarget>) {
-	function screen(InnerNavigator: NavigationContainer, title: string, image: string) {
+	function screen(InnerNavigator: NavigationContainer, title: string, image: string, withFloatButton: boolean = true) {
 		class DashboardNavigator extends React.Component<NavigatorProps> {
 			static router = InnerNavigator.router;
 			render() {
@@ -54,11 +55,13 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				return (
 					<View style={{ flex: 1 }}>
 						<InnerNavigator navigation={navigation} style={[StyleSheet.absoluteFill, { zIndex: 0, elevation: 0 }]} />
-						<DashboardJumpMenu
-							navigation={navigation}
-							showJumpButton={true}
-							style={[StyleSheet.absoluteFill, { zIndex: 1, elevation: 1 }]}
-						/>
+						{withFloatButton && (
+							<DashboardJumpMenu
+								navigation={navigation}
+								showJumpButton={true}
+								style={[StyleSheet.absoluteFill, { zIndex: 1, elevation: 1 }]}
+							/>
+						)}
 					</View>
 				);
 			}
@@ -100,7 +103,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 
 	const BottomNavigator = createBottomTabNavigator(
 		{
-			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, ""),
+			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, "home"),
 			/*
 			DashboardRounds: screen(
 				NavMap.from(RoundsScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds"),
@@ -114,7 +117,13 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 					DashboardHome: dashboardPlaceholder
 				}).stackNavigator("DashboardDocuments"),
 				strings.tabNames.documents,
-				""
+				"perm_contact_calendar"
+			),
+			DashboardSemillas: screen(
+				SemillasNavigator().stackNavigator("DashboardSemillas"),
+				strings.tabNames.semillas,
+				"spa",
+				false
 			),
 			DashboardSettings: screen(
 				SettingsNavigator({
@@ -122,7 +131,8 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 					DashboardHome: dashboardPlaceholder
 				}).stackNavigator("DashboardSettings"),
 				strings.tabNames.settings,
-				""
+				"settings",
+				false
 			)
 		},
 		{
