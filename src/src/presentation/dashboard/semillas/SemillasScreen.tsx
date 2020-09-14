@@ -44,7 +44,6 @@ interface SemillasScreenStateProps {
 	didRequested: Boolean;
 	credentials: CredentialDocument[];
 	semillasValidationSuccess: boolean;
-	semillasValidationNull: boolean;
 }
 interface SemillasScreenState {
 	dni: string;
@@ -129,10 +128,6 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	onSuccessGetState = () => {
 		this.setState({ semillasValidationLoading: false });
-		// if (this.props.semillasValidationSuccess) {
-		// 	this.setState({ modalVisible: false });
-		// 	DataAlert.alert(program, validate.aprroved);
-		// }
 	};
 
 	onErrorGetState = () => {
@@ -246,8 +241,7 @@ export default didiConnect(
 		credentials: state.credentials,
 		didRequested: state.did.didRequested,
 		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
-		semillasValidationSuccess: state.validateSemillasDni === ValidationStates.success,
-		semillasValidationNull: state.validateSemillasDni === null
+		semillasValidationSuccess: state.validateSemillasDni === ValidationStates.success
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
 		getCredentials: dni => dispatch(getUserCredentials(serviceKey, dni)),

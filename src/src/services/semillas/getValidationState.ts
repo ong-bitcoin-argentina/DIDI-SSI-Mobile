@@ -24,8 +24,6 @@ export function getSemillasValidationState(serviceKey: string) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, { errorMessage: NO_DID }, did => {
 			return getValidationComponent(serviceKey, { api, did }, data => {
-				console.log("\n\n\n");
-				console.log(data.state);
 				return simpleAction(serviceKey, { type: "VALIDATE_SEMILLAS_DNI_SET", state: data.state }, () =>
 					serviceCallSuccess(serviceKey)
 				);
