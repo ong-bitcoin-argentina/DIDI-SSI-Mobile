@@ -33,16 +33,31 @@ type Props = StoreProps & InternalProps;
 class SemillasValidationState extends Component<Props, State> {
 	renderContent = () => {
 		const { validationState } = this.props;
+		const { inProgress, failure, success } = ValidationStates;
 		switch (validationState) {
-			case ValidationStates.inProgress:
+			case inProgress:
 				return this.renderPendingRequest();
-			case ValidationStates.failure:
+			case failure:
 				return this.renderFailureRequest();
-			case ValidationStates.success:
+			case success:
 				return this.renderSuccessRequest();
 			default:
 				return this.renderRequestDescription();
 		}
+	};
+
+	renderRenaperDescription = () => {
+		return (
+			<View style={{ marginTop: 30 }}>
+				<Small style={styles.smallText}>{validate.rememberYouCan}</Small>
+				<Small
+					onPress={this.props.goToRenaperValidation}
+					style={[styles.smallText, { textDecorationLine: "underline" }]}
+				>
+					Validar tu identidad con {strings.appName}
+				</Small>
+			</View>
+		);
 	};
 
 	renderFailureRequest = () => {
@@ -52,6 +67,7 @@ class SemillasValidationState extends Component<Props, State> {
 					highlight_off
 				</Icon>
 				<Small style={styles.modalText}>{validate.rejected}</Small>
+				{this.renderRenaperDescription()}
 			</View>
 		);
 	};
@@ -64,15 +80,7 @@ class SemillasValidationState extends Component<Props, State> {
 				</Icon>
 				<Small style={styles.modalText}>{validate.semillasProcessing}</Small>
 				<Small style={styles.modalText}>{validate.semillasContacting}</Small>
-				<View style={{ marginTop: 30 }}>
-					<Small style={styles.smallText}>{validate.rememberYouCan}</Small>
-					<Small
-						onPress={this.props.goToRenaperValidation}
-						style={[styles.smallText, { textDecorationLine: "underline" }]}
-					>
-						Validar tu identidad con {strings.appName}
-					</Small>
-				</View>
+				{this.renderRenaperDescription()}
 			</View>
 		);
 	};

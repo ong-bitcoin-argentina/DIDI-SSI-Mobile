@@ -3,7 +3,7 @@ import DidiTheme from "./DidiTheme";
 import { ENV_CODE } from "../../AppConfig";
 
 const colorThemes = {
-	UAT: colors.lime,
+	UAT: colors.primary,
 	STG: colors.primaryGray,
 	PROD: colors.primary
 };
