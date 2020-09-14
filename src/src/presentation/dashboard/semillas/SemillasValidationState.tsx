@@ -7,9 +7,11 @@ import strings from "../../resources/strings";
 import DidiButton from "../../util/DidiButton";
 import commonStyles from "../../resources/commonStyles";
 import colors from "../../resources/colors";
-import { DataAlert } from "../../common/DataAlert";
 
-const { Small } = DidiText.Explanation;
+const {
+	Icon,
+	Explanation: { Small }
+} = DidiText;
 const { validate } = strings.semillas;
 const { modal, button } = commonStyles;
 
@@ -36,6 +38,8 @@ class SemillasValidationState extends Component<Props, State> {
 				return this.renderPendingRequest();
 			case ValidationStates.failure:
 				return this.renderFailureRequest();
+			case ValidationStates.success:
+				return this.renderSuccessRequest();
 			default:
 				return this.renderRequestDescription();
 		}
@@ -44,9 +48,10 @@ class SemillasValidationState extends Component<Props, State> {
 	renderFailureRequest = () => {
 		return (
 			<View>
-				<Small style={styles.modalText}>
-					Tu solicitud de validación de identidad ha sido rechazada por Semillas. Por favor, contactate con tu Asesor.
-				</Small>
+				<Icon fontSize={38} color={colors.error} style={{ marginBottom: 10 }}>
+					highlight_off
+				</Icon>
+				<Small style={styles.modalText}>{validate.rejected}</Small>
 			</View>
 		);
 	};
@@ -54,6 +59,9 @@ class SemillasValidationState extends Component<Props, State> {
 	renderPendingRequest = () => {
 		return (
 			<View>
+				<Icon fontSize={38} color={colors.primary} style={{ marginBottom: 10 }}>
+					hourglass_empty
+				</Icon>
 				<Small style={styles.modalText}>{validate.semillasProcessing}</Small>
 				<Small style={styles.modalText}>{validate.semillasContacting}</Small>
 				<View style={{ marginTop: 30 }}>
@@ -65,6 +73,17 @@ class SemillasValidationState extends Component<Props, State> {
 						Validar tu identidad con {strings.appName}
 					</Small>
 				</View>
+			</View>
+		);
+	};
+
+	renderSuccessRequest = () => {
+		return (
+			<View>
+				<Icon fontSize={38} color={colors.greenSemillas} style={{ marginBottom: 10 }}>
+					done
+				</Icon>
+				<Small style={styles.modalText}>{validate.aprroved}</Small>
 			</View>
 		);
 	};
@@ -98,8 +117,15 @@ class SemillasValidationState extends Component<Props, State> {
 		return (
 			<View style={modal.centeredView}>
 				<View style={[modal.view]}>
-					{isLoading ? <ActivityIndicator size="large" color={colors.secondary} /> : this.renderContent()}
-					<DidiButton title={strings.buttons.cancel} onPress={onCancel} style={{ marginTop: 40 }} />
+					{isLoading ? (
+						<>
+							<Small style={{ marginBottom: 10 }}>{validate.gettingState}</Small>
+							<ActivityIndicator size="large" color={colors.secondary} />
+						</>
+					) : (
+						this.renderContent()
+					)}
+					<DidiButton title={strings.buttons.close} onPress={onCancel} style={{ marginTop: 40 }} />
 				</View>
 			</View>
 		);

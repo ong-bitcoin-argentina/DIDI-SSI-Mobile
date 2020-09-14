@@ -47,5 +47,6 @@ export default {
 export enum ValidationStates {
 	inProgress = "IN_PROGRESS",
 	failure = "FAILURE",
-	success = "SUCCESS"
+	success = "SUCCESS",
+	requested = "REQUESTED"
 }

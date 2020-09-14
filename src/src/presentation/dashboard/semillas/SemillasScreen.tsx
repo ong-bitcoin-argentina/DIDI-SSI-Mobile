@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View, Modal } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View, Modal, Alert } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 const { Small } = DidiText.Explanation;
@@ -25,7 +25,16 @@ import { ValidationStates } from "./constants";
 import SemillasValidationState from "./SemillasValidationState";
 import { getSemillasValidationState } from "../../../services/semillas/getValidationState";
 const { util, view } = commonStyles;
-const { detailBarTitle, detailFirst, detailSecond, detailThird, credentialsSuccess, validate } = strings.semillas;
+const {
+	detailBarTitle,
+	detailFirst,
+	detailSecond,
+	detailThird,
+	credentialsSuccess,
+	program,
+	noDni,
+	validate
+} = strings.semillas;
 
 export interface LoginScreenProps {}
 
@@ -108,19 +117,22 @@ class SemillasScreen extends NavigationEnabledComponent<
 	onGetCredentials = () => {
 		const { dni } = this.state;
 		if (!dni) {
-			DataAlert.alert(strings.semillas.program, strings.semillas.noDni);
+			DataAlert.alert(program, noDni);
 		} else {
 			this.showCredentialConfirmation();
 		}
 	};
 
 	onCredentialsAdded = () => {
-		DataAlert.alert(strings.semillas.program, credentialsSuccess);
+		DataAlert.alert(program, credentialsSuccess);
 	};
 
 	onSuccessGetState = () => {
-		this.setState({ semillasValidationLoading: false, modalVisible: false });
-		DataAlert.alert("Programa Semillas", "Tu solicitud fue validada correctamente!");
+		this.setState({ semillasValidationLoading: false });
+		// if (this.props.semillasValidationSuccess) {
+		// 	this.setState({ modalVisible: false });
+		// 	DataAlert.alert(program, validate.aprroved);
+		// }
 	};
 
 	onErrorGetState = () => {
@@ -128,8 +140,8 @@ class SemillasScreen extends NavigationEnabledComponent<
 	};
 
 	openModal = () => {
-		const { semillasValidationNull, semillasValidationSuccess } = this.props;
-		if (!semillasValidationSuccess && !semillasValidationNull) {
+		const { semillasValidationSuccess } = this.props;
+		if (!semillasValidationSuccess) {
 			this.setState({ semillasValidationLoading: true });
 			this.props.getSemillasValidationState();
 		}
@@ -168,10 +180,9 @@ class SemillasScreen extends NavigationEnabledComponent<
 	}
 
 	renderButtonWantCredentials() {
-		const { pendingCredentials, haveIdentityCredential, semillasValidationSuccess } = this.props;
+		const { pendingCredentials, haveIdentityCredential } = this.props;
 
-		const onPressAction =
-			haveIdentityCredential || semillasValidationSuccess || !LATEST_FEATURE ? this.onGetCredentials : this.openModal;
+		const onPressAction = haveIdentityCredential || !LATEST_FEATURE ? this.onGetCredentials : this.openModal;
 		return (
 			<DidiServiceButton
 				onPress={onPressAction}
@@ -204,9 +215,9 @@ class SemillasScreen extends NavigationEnabledComponent<
 							<Small style={util.paragraphMd}>{detailSecond}</Small>
 							<Small style={util.paragraphMd}>{detailThird}</Small>
 						</View>
-						{!didRequested || (!haveIdentityCredential && !semillasValidationSuccess)
-							? this.renderButtonWantCredentials()
-							: this.renderButtonBenefits()}
+						{(didRequested && haveIdentityCredential) || semillasValidationSuccess
+							? this.renderButtonBenefits()
+							: this.renderButtonWantCredentials()}
 					</SafeAreaView>
 				</ScrollView>
 

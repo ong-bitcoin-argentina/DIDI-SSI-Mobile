@@ -26,7 +26,6 @@ export function getSemillasValidationState(serviceKey: string) {
 			return getValidationComponent(serviceKey, { api, did }, data => {
 				console.log("\n\n\n");
 				console.log(data.state);
-				console.log("\n\n\n");
 				return simpleAction(serviceKey, { type: "VALIDATE_SEMILLAS_DNI_SET", state: data.state }, () =>
 					serviceCallSuccess(serviceKey)
 				);
