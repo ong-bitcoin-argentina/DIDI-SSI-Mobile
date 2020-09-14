@@ -9,7 +9,7 @@ import { ErrorDataAlert } from "./ErrorDataAlert";
 import crashlytics from "@react-native-firebase/crashlytics";
 
 // TODO: checkear que se logueen errores en firebase
-const errorCodesBlacklist = ["USER_GET", "FETCH_TG_ERR"];
+const errorCodesBlacklist = ["USER_GET", "FETCH_TG_ERR", "DID_NOT_FOUND"];
 
 interface ServiceObserverProps {
 	serviceKey: string;
