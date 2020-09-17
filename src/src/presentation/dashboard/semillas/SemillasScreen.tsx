@@ -24,6 +24,7 @@ import { LATEST_FEATURE } from "../../../AppConfig";
 import { ValidationStates } from "./constants";
 import SemillasValidationState from "./SemillasValidationState";
 import { getSemillasValidationState } from "../../../services/semillas/getValidationState";
+import { haveValidIdentity } from "../../../util/semillasHelpers";
 const { util, view } = commonStyles;
 const {
 	detailBarTitle,
@@ -44,6 +45,7 @@ interface SemillasScreenStateProps {
 	didRequested: Boolean;
 	credentials: CredentialDocument[];
 	semillasValidationSuccess: boolean;
+	haveValidSemillasIdentity: boolean;
 }
 interface SemillasScreenState {
 	dni: string;
@@ -189,8 +191,10 @@ class SemillasScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		const { didRequested, haveIdentityCredential, semillasValidationSuccess } = this.props;
+		const { didRequested, haveIdentityCredential, semillasValidationSuccess, haveValidSemillasIdentity } = this.props;
 		const { semillasValidationLoading } = this.state;
+		const mustShowBenefitsButton =
+			(didRequested && haveIdentityCredential) || semillasValidationSuccess || haveValidSemillasIdentity;
 		return (
 			<Fragment>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.onCredentialsAdded} />
@@ -210,9 +214,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 							<Small style={util.paragraphMd}>{detailSecond}</Small>
 							<Small style={util.paragraphMd}>{detailThird}</Small>
 						</View>
-						{(didRequested && haveIdentityCredential) || semillasValidationSuccess
-							? this.renderButtonBenefits()
-							: this.renderButtonWantCredentials()}
+						{mustShowBenefitsButton ? this.renderButtonBenefits() : this.renderButtonWantCredentials()}
 					</SafeAreaView>
 				</ScrollView>
 
@@ -241,6 +243,7 @@ export default didiConnect(
 		credentials: state.credentials,
 		didRequested: state.did.didRequested,
 		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
+		haveValidSemillasIdentity: haveValidIdentity(state.activeSemillasCredentials),
 		semillasValidationSuccess: state.validateSemillasDni === ValidationStates.success
 	}),
 	(dispatch): SemillasScreenDispatchProps => ({
