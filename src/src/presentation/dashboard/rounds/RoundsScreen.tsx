@@ -13,9 +13,8 @@ import { DidiText } from "../../util/DidiText";
 import RondasLogo from "../../resources/images/rondasSplash.svg";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
-import { RNUportHDSigner, getSignerForHDPath } from 'react-native-uport-signer'
-import { Credentials } from 'uport-credentials'
 import { AuthModal } from "../common/AuthModal";
+import { createToken, successfullyLogged } from "../../util/appRouter";
 
 
 export type RoundsScreenProps = {};
@@ -56,29 +55,13 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	goRonda = async () => {
 		const { address } = this.props.did;
 	
-		const credentialsParams = {}
-		credentialsParams.signer = getSignerForHDPath(address)
-		credentialsParams.did = `did:ethr:${address}`
-		
-		const cred = new Credentials(credentialsParams)
-		
-		cred.createVerification({
-			sub: address, //Address of receiver of the verification
-			claim: { name: 'Ronda'}
-		}).then(verification => {
-			const url = `https://aidi.page.link/?link=https://aidironda.com/loginSuccess?token=${verification}&apn=com.aidironda`;
-			console.log("goRonda", url);
+		createToken(address).then(async (verification:string) => {
 			this.setState({ showModal: false });
-			Linking.openURL(url);
+			await successfullyLogged(verification);
 		})
 	}
 
-	permissionDenied = async () => {
-		// const url = `https://aidi.page.link/?link=https://aidironda.com/loginDenied&apn=com.aidironda`;
-		// console.log("permissionDenied", url);
-		this.setState({ showModal: false });
-		// Linking.openURL(url);
-	}
+	permissionDenied = async () => this.setState({ showModal: false });
 
 	showConfirmation = () => {
 		if (!this.state) return null;

@@ -43,12 +43,13 @@ const StoreStatePanel = didiConnect(
 );
 
 export default class App extends React.Component {
+	
 	render() {
 		return (
 			<Provider store={store}>
 				<PersistGate persistor={persistor} loading={<SplashContent />}>
 					<PushNotificationReceiver />
-					<AppContainer />
+					<AppContainer uriPrefix={"aidi://"} enableURLHandling={false} />
 					<StoreStatePanel />
 				</PersistGate>
 			</Provider>

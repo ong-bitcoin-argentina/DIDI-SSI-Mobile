@@ -32,16 +32,6 @@ export interface StartAccessNavigation {
 export class StartAccessScreen extends NavigationEnabledComponent<StartAccessProps, {}, StartAccessNavigation> {
 	static navigationOptions = NavigationHeaderStyle.gone;
 
-	componentDidMount = () => {
-		dynamicLinks().getInitialLink().then( ( link:DynamicLink ) => {
-			if (link != undefined){
-				if (link.url.match(/login/)){
-					this.navigate("Login", {})
-				}
-			}
-		});
-	};
-
 	render() {
 		return (
 			<Fragment>

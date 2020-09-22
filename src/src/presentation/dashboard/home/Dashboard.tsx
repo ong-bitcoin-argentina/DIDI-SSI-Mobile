@@ -27,10 +27,10 @@ import HomeHeader from "./HomeHeader";
 import { IncompleteIdentityCard } from "./IncompleteIdentityCard";
 import { NotificationScreenProps } from "./NotificationScreen";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
-import { RNUportHDSigner, getSignerForHDPath } from 'react-native-uport-signer'
-import { Credentials } from 'uport-credentials'
+
 import { AuthModal } from "../common/AuthModal";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
+import { successfullyLogged, loginDenied, deepLinkHandler, dynamicLinkHandler, navigateToCredentials, askedForLogin, createToken } from "../../util/appRouter";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -76,29 +76,15 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	permissionDenied = async () => {
-		const url = `https://aidi.page.link/?link=https://aidironda.com/loginDenied&apn=com.aidironda`;
-		console.log("permissionDenied", url);
-		this.setState({ showModal: false });
-		Linking.openURL(url);
+		await loginDenied();
 	}
 	
 	permissionGranted = async () => {
 		const { address } = this.props.did;
 	
-		const credentialsParams = {}
-		credentialsParams.signer = getSignerForHDPath(address)
-		credentialsParams.did = `did:ethr:${address}`
-		
-		const cred = new Credentials(credentialsParams)
-		// https://aidi.page.link/?link=https://aidironda.com/loginSuccess?token=1234&apn=com.aidironda
-		cred.createVerification({
-			sub: address, //Address of receiver of the verification
-			claim: { name: 'Ronda'}
-		}).then(verification => {
-			const url = `https://aidi.page.link/?link=https://aidironda.com/loginSuccess?token=${verification}&apn=com.aidironda`;
-			console.log("goRonda", url);
+		createToken(address).then(async (verification:string) => {
 			this.setState({ showModal: false });
-			Linking.openURL(url);
+			await successfullyLogged(verification);
 		})
 	}
 
@@ -108,20 +94,16 @@ class DashboardScreen extends NavigationEnabledComponent<
 		return this.state.showModal ? <AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.permissionGranted} /> : null;
 	}
 
+	urlHandler = ( link: { url: string } | null | undefined ) => {
+		if (!link) return;
+		if (askedForLogin(link)) this.setState({ showModal: true });
+		if (navigateToCredentials(link)) this.navigate("DashboardDocuments", { });
+	}
+
 	componentDidMount() {
 		this.props.login();
-		dynamicLinks().getInitialLink().then( ( link:DynamicLink ) => {
-			if (link != undefined){
-				console.log("link", link);
-				if (link.url.match(/login/)){
-					this.setState({ showModal: true });
-				}
-				if (link.url.match(/credentials/)){
-					console.log("showCredentials");
-					this.navigate("DashboardDocuments", { });
-				}
-			}
-		});
+		deepLinkHandler(this.urlHandler);
+		dynamicLinkHandler(this.urlHandler);
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
