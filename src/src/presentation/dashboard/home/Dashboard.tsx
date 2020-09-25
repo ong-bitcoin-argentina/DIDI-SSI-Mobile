@@ -83,8 +83,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		const { address } = this.props.did;
 	
 		createToken(address).then(async (verification:string) => {
-			this.setState({ showModal: false });
-			await successfullyLogged(verification);
+			this.setState({ showModal: false }, () => successfullyLogged(verification));
 		})
 	}
 

@@ -2,6 +2,7 @@ import { Linking } from "react-native";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { getSignerForHDPath } from 'react-native-uport-signer'
 import { Credentials } from 'uport-credentials'
+import { DIDI_SERVER_DID } from "../../AppConfig";
 
 interface Settings {
     did?: string;
@@ -60,7 +61,7 @@ export const createToken = (address: string) => {
     const cred = new Credentials(credentialsParams)
 
     return cred.createVerification({
-        sub: address, //Address of receiver of the verification
+        sub: DIDI_SERVER_DID, //Address of receiver of the verification
         claim: { name: 'Ronda'}
     });
 }
