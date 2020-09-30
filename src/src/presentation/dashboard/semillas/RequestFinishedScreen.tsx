@@ -109,7 +109,9 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 							</View>
 						) : (
 							<View>
-								<Small style={{ marginVertical: 5 }}>{needCoordinate}</Small>
+								{(!!activePrestador?.phone || !!activePrestador?.whatsappNumber) && (
+									<Small style={{ marginVertical: 5 }}>{needCoordinate}</Small>
+								)}
 								<View style={styles.buttons}>
 									{!!activePrestador?.phone && this.renderPhone()}
 									{!!activePrestador?.whatsappNumber && this.renderWhatsapp()}
