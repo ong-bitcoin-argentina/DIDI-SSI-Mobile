@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { StatusBar, StyleSheet, View, Picker, Modal, Alert } from "react-native";
+import { StatusBar, StyleSheet, View, Picker, Modal, Alert, ScrollView } from "react-native";
 import { didiConnect } from "../../../store/store";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -171,35 +171,37 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 					<DidiServiceButton onPress={this.openModal} title={strings.general.next.toUpperCase()} isPending={false} />
 				</View>
 
-				<Modal animationType="fade" transparent={true} visible={modalVisible}>
+				<Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={this.toggleModal}>
 					<View style={modal.centeredView}>
 						<View style={[modal.view, styles.modalView]}>
-							<View style={styles.modalImage}>
-								<SemillasLogo viewBox="0 0 128 39" width={100} height={58} style={styles.logo} />
-							</View>
-							<Small style={styles.modalTitle}>{modalTitle}:</Small>
+							<ScrollView>
+								<View style={styles.modalImage}>
+									<SemillasLogo viewBox="0 0 128 39" width={100} height={58} style={styles.logo} />
+								</View>
+								<Small style={styles.modalTitle}>{modalTitle}:</Small>
 
-							<Beneficiario item={selected} email={email} phoneNumber={phoneNumber} />
+								<Beneficiario item={selected} email={email} phoneNumber={phoneNumber} />
 
-							<Small style={{ color: colors.greenSemillas, alignSelf: "flex-start" }}>
-								{strings.semillas.benefitCredentialActive}
-							</Small>
+								<Small style={{ color: colors.greenSemillas, alignSelf: "flex-start" }}>
+									{strings.semillas.benefitCredentialActive}
+								</Small>
 
-							<View style={modal.footer}>
-								<DidiServiceButton
-									onPress={this.toggleModal}
-									title={strings.general.cancel}
-									style={modal.smallButton}
-									isPending={false}
-								/>
+								<View style={modal.footer}>
+									<DidiServiceButton
+										onPress={this.toggleModal}
+										title={strings.general.cancel}
+										style={modal.smallButton}
+										isPending={false}
+									/>
 
-								<DidiServiceButton
-									onPress={this.shareData}
-									title={strings.general.share}
-									style={[modal.smallButton, { backgroundColor: colors.greenSemillas }]}
-									isPending={shareInProgress}
-								/>
-							</View>
+									<DidiServiceButton
+										onPress={this.shareData}
+										title={strings.general.share}
+										style={[modal.smallButton, { backgroundColor: colors.greenSemillas }]}
+										isPending={shareInProgress}
+									/>
+								</View>
+							</ScrollView>
 						</View>
 					</View>
 				</Modal>

@@ -110,6 +110,7 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 							</View>
 						) : (
 							<View>
+								<Small style={{ marginVertical: 5 }}>¿Necesitás coordinar un turno?</Small>
 								<View style={styles.buttons}>
 									{!!activePrestador?.phone && this.renderPhone()}
 									{!!activePrestador?.whatsappNumber && this.renderWhatsapp()}
@@ -152,6 +153,6 @@ const styles = StyleSheet.create({
 		marginVertical: 6
 	},
 	buttonsView: {
-		marginVertical: 50
-	  }
+		marginVertical: 14
+	}
 });
