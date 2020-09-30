@@ -1,10 +1,7 @@
 import { StoreAction } from "../StoreAction";
-import { ValidateDniState } from "./validateDniProgressReducer";
+import { ValidationStates } from "../../presentation/dashboard/semillas/constants";
 
-// export type ValidateSemillasDniState = ValidateDniState | { state: "In Progress" };
-export type ValidateSemillasDniState = {
-	state: "In Progress" | "Failure" | "Successful" | "Finished" | null;
-};
+export type ValidateSemillasDniState = ValidationStates | null;
 
 interface ActionStart {
 	type: "VALIDATE_SEMILLAS_DNI_START";
@@ -20,20 +17,18 @@ interface ActionReset {
 export type ValidateSemillasDniAction = ActionStart | ActionSet | ActionReset;
 
 export function validateSemillasDniReducer(
-	state: ValidateSemillasDniState = { state: null },
+	state: ValidateSemillasDniState = null,
 	action: StoreAction
 ): ValidateSemillasDniState {
 	switch (action.type) {
 		case "VALIDATE_SEMILLAS_DNI_START":
-			return {
-				state: "In Progress"
-			};
+			return ValidationStates.inProgress;
 
 		case "VALIDATE_SEMILLAS_DNI_SET":
 			return action.state;
 
 		case "VALIDATE_SEMILLAS_DNI_RESET":
-			return { state: null };
+			return null;
 
 		default:
 			return state;

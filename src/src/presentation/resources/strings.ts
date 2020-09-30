@@ -50,6 +50,7 @@ export default {
 		acceptAlternative: "Acepto",
 		ok: "OK",
 		cancel: "Cancelar",
+		close: "Cerrar",
 		reject: "Rechazar",
 		back: "Volver"
 	},
@@ -315,6 +316,7 @@ export default {
 		credentials: "Credenciales",
 		program: "Programa Semillas",
 		writeEmail: "Escribe la dirección de email de tu contacto para compartir tus credenciales de Semillas:",
+
 		detailFirst:
 			"Si sos parte del programa Semillas ahora podés tener tus credenciales que certifican y validan tus datos personales.",
 		detailSecond:
@@ -329,8 +331,7 @@ export default {
 				title: "¿A qué servicio querés acceder?",
 				email: "¿No encontrás tu servicio?",
 				writeEmail: "Mail del destinatario",
-				noCredentials:
-					"Para poder acceder a los Servicios debes tener tu Credencial de Beneficios Semillas activa"
+				noCredentials: "Para poder acceder a los Servicios debes tener tu Credencial de Beneficios Semillas activa"
 			},
 			second: {
 				title: "Elegí quién va a usar el beneficio:",
@@ -372,7 +373,11 @@ export default {
 			semillasProcessing: "Tu solicitud de validación de identidad está siendo procesada por Semillas.",
 			semillasContacting: "En estos días se contactarán con vos para completar el proceso.",
 			rememberYouCan: "Recordá que siempre vas a poder",
-			successRequest: "La solicitud de validación de DNI se registró de manera correcta, pronto tendrás novedades."
+			successRequest: "La solicitud de validación de DNI se registró de manera correcta, pronto tendrás novedades.",
+			gettingState: "Obteniendo el estado de tu validación, por favor aguarde.",
+			rejected:
+				"Tu solicitud de validación de identidad ha sido rechazada por Semillas. Por favor, contactate con tu Asesor.",
+			aprroved: "Tu solicitud fue validada correctamente!"
 		}
 	},
 	settings: {
