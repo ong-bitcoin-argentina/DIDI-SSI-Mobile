@@ -78,7 +78,6 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 								{image}
 							</DidiText.Icon>
 						</View>
-						{focused && <DidiText.TabNavigationTitle>{title}</DidiText.TabNavigationTitle>}
 					</View>
 				)
 			}
