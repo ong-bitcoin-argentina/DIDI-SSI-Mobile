@@ -21,19 +21,17 @@ export class AuthModal extends Component<AuthModalProps,AuthModalState>{
 
     render(){
         const { appName } = this.props;
+        const detail = `ai· di compartirá esta información con ${appName}: Nombre, apellido, número de celular, mail, número de identificación digital (DID) y foto de usuario.`;
         return (
             <View style={styles.centeredView}>
                 <Modal
                 animationType="slide"
                 transparent={true}
                 visible={true}
-                onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                }}
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Small>¿Estas seguro que deseas compartir tu información con {appName}?</Small>
+                            <Small>{detail}</Small>
                             <View style={styles.footer}>
                                 <DidiButton onPress={this.props.onCancel} title="Cancelar"/>
                                 <DidiButton onPress={this.props.onOk} title="Aceptar"/>

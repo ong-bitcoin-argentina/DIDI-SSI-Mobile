@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Linking } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -15,6 +15,7 @@ import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
 import { AuthModal } from "../common/AuthModal";
 import { createToken, successfullyLogged } from "../../util/appRouter";
+import { userHasRonda } from "../../../services/user/userHasRonda";
 
 
 export type RoundsScreenProps = {};
@@ -24,13 +25,19 @@ export type RoundsScreenState = {
 export interface RoundsScreenNavigation {
 	DashboardHome: DashboardScreenProps;
 }
-const { Small } = DidiText.Explanation;
+const { Small, Emphasis } = DidiText.Explanation;
 
 interface RoundsScreenStateProps {
 	did: ActiveDid;
+	hasRonda: Boolean
 }
+
+interface RoundsScreenDispatchProps {
+	setRondaAccount: (hasAccount : Boolean) => void
+}
+
 const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
-	RoundsScreenProps & RoundsScreenStateProps,
+	RoundsScreenProps & RoundsScreenStateProps & RoundsScreenDispatchProps,
 	RoundsScreenState,
 	RoundsScreenNavigation
 > {
@@ -47,6 +54,16 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 		"DashboardHome",
 		{}
 	);
+	
+	componentDidMount = async () => {
+		const { address, hasRonda } = this.props;
+		console.log("hasRonda", hasRonda)
+		if (!hasRonda){
+			const response = await userHasRonda(address);
+			const hasAccount = response._tag ? true : false;
+			this.props.setRondaAccount(hasAccount);
+		} 
+	}
 
 	showAuthModal = async () => {
 		this.setState({ showModal: true });
@@ -65,24 +82,27 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	showConfirmation = () => {
 		if (!this.state) return null;
 		const { showModal } = this.state;
-		console.log("showConfirmation",showModal);
 		return this.state.showModal ? <AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.goRonda} /> : null;
 	}
 
 	render() {
-		const title = "Empezá tu ronda";
-		const subTitle = "Invita a las personas que quieras que se sumen a tu ronda.";
-		const shortDescription = "Indica cuánto aporta cada persona de tu ronda y con qué frecuencia se harán los pagos.";
+		const { width } = Dimensions.get('window');
+		const { hasRonda } = this.props;
+		const title = hasRonda ? "Ver mis rondas" : "Accedé a Ronda";
+		const subTitle = hasRonda ? "Hacé un seguimiento de tus rondas activas y unite o creá nuevas rondas, juntas, vaquitas o pasanakus de forma fácil y segura." : "Organizá y participá de rondas, juntas, vaquitas o pasanakus de forma fácil y segura.";
+		const cta = "Ver Rondas";
+		const btnAction = hasRonda ? this.goRonda : this.showAuthModal
 		return (
 			<DidiScreen>
-				<RondasLogo />
-				<Small style={styles.modalText}>{title}</Small>
+				<View style={styles.centered}>
+					<RondasLogo/>
+				</View>
+				<Emphasis style={styles.modalText}>{title}</Emphasis>
 				<Small style={styles.modalText}>{subTitle}</Small>
-				<Small style={styles.modalText}>{shortDescription}</Small>
 				<View style={{ marginBottom: 15 }}>
 					<DidiButton
-						onPress={this.showAuthModal}
-						title="Ver Rondas"
+						onPress={btnAction}
+						title={cta}
 					/>
 					{this.showConfirmation()}
 				</View>
@@ -95,12 +115,21 @@ const connect = didiConnect(
 	RoundsScreen,
 	(state): RoundsScreenStateProps => ({
 		did: state.did.activeDid,
+		hasRonda: state.authApps.ronda,
+	}),
+	(dispatch): RoundsScreenDispatchProps => ({
+		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value:hasAccount })
 	})
+	
 );
 
 export { connect as RoundsScreen };
 
 const styles = StyleSheet.create({
+	centered: {
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 	body: {
 		width: "100%"
 	},
