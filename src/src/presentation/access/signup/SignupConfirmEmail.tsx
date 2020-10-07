@@ -26,10 +26,12 @@ export interface SignupConfirmEmailProps {
 interface SignupConfirmEmailStateProps {
 	verifyEmailCodePending: boolean;
 	registerUserPending: boolean;
+	name?: string;
+	lastname?: string;
 }
 interface SignupConfirmEmailDispatchProps {
 	verifyEmailCode(email: string, validationCode: string): void;
-	registerUser: (email: string, password: string, phoneNumber: string) => void;
+	registerUser: (email: string, password: string, phoneNumber: string, name?: string, lastname?: string) => void;
 	dispatch: Dispatch<StoreAction>;
 }
 type SignupConfirmEmailInternalProps = SignupConfirmEmailProps &
@@ -93,8 +95,9 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 	}
 
 	private registerUser() {
+		const { email, phoneNumber, name, lastname } = this.props;
 		this.setState({ didVerifyEmail: true });
-		this.props.registerUser(this.props.email, this.state.password!, this.props.phoneNumber);
+		this.props.registerUser(email, this.state.password!, phoneNumber, name, lastname);
 	}
 }
 
@@ -102,14 +105,16 @@ const connected = didiConnect(
 	SignupConfirmEmailScreen,
 	(state): SignupConfirmEmailStateProps => ({
 		verifyEmailCodePending: isPendingService(state.serviceCalls[serviceKeyVerify]),
-		registerUserPending: isPendingService(state.serviceCalls[serviceKeyRegister])
+		registerUserPending: isPendingService(state.serviceCalls[serviceKeyRegister]),
+		name: state.validatedIdentity.personalData.firstNames?.value,
+		lastname: state.validatedIdentity.personalData.lastNames?.value
 	}),
 	(dispatch): SignupConfirmEmailDispatchProps => ({
 		verifyEmailCode: (email: string, validationCode: string) =>
 			dispatch(verifyEmailCode(serviceKeyVerify, email, validationCode)),
 
-		registerUser: (email: string, password: string, phoneNumber: string) =>
-			dispatch(registerUser(serviceKeyRegister, email, password, phoneNumber)),
+		registerUser: (email: string, password: string, phoneNumber: string, name?: string, lastname?: string) =>
+			dispatch(registerUser(serviceKeyRegister, email, password, phoneNumber, name, lastname)),
 
 		dispatch
 	})
