@@ -306,6 +306,13 @@ export default {
 		settings: "Configuración",
 		semillas: "Semillas"
 	},
+	rounds: {
+		title: "Accedé a Ronda",
+		titleHasRonda: "Ver mis rondas",
+		description: "Organizá y participá de rondas, juntas, vaquitas o pasanakus de forma fácil y segura.",
+		descriptionHasRonda:
+			"Hacé un seguimiento de tus rondas activas y unite o creá nuevas rondas, juntas, vaquitas o pasanakus de forma fácil y segura."
+	},
 	semillas: {
 		barTitle: "Mis Credenciales semillas",
 		benefitCredentialActive: "Credencial de Beneficios activa",

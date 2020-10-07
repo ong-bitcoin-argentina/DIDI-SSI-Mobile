@@ -15,7 +15,7 @@ import { reloadDid } from "../services/internal/reloadDid";
 import { serviceCallReducer, ServiceCallState } from "../services/ServiceStateStore";
 
 import { DidState, didReducer } from "./reducers/didReducer";
-import { CodeState, phoneVerificationReducer} from "./reducers/phoneVerificationReducer";
+import { CodeState, phoneVerificationReducer } from "./reducers/phoneVerificationReducer";
 import { identityReducer } from "./reducers/identityReducer";
 import { issuerReducer, IssuerRegistry } from "./reducers/issuerReducer";
 import { pushNotificationReducer, PushState } from "./reducers/pushNotificationReducer";
@@ -68,7 +68,7 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 });
 
 const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user" } = {
-	did: "device",
+	did: "user",
 	pushToken: "device",
 	sessionFlags: "user",
 	codeConfirmation: "user",
