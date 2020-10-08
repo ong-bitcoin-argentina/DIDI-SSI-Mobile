@@ -60,6 +60,10 @@ export const getSemillasIdentitiesData = (credentials?: CredentialDocument[]): a
 	return getSemillasIdentitiesCredentials(credentials).map(item => item.data);
 };
 
+export const haveValidIdentity = (credentials: CredentialDocument[] = []): boolean => {
+	return !!credentials.some(isSemillasIdentityActiveCredential);
+};
+
 export const haveValidIdentityAndBenefit = (credentials: CredentialDocument[] = []): boolean => {
 	return !!(
 		credentials.some(isSemillasIdentityActiveCredential) && credentials.some(isSemillasBenefitActiveCredential)

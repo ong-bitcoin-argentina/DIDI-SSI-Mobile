@@ -81,7 +81,6 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 	render() {
 		const { header, view } = commonStyles.benefit;
 		const { activePrestador, customEmail } = this.props;
-		const { haveContact } = this.state;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -110,6 +109,9 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 							</View>
 						) : (
 							<View>
+								{(!!activePrestador?.phone || !!activePrestador?.whatsappNumber) && (
+									<Small style={{ marginVertical: 5 }}>{needCoordinate}</Small>
+								)}
 								<View style={styles.buttons}>
 									{!!activePrestador?.phone && this.renderPhone()}
 									{!!activePrestador?.whatsappNumber && this.renderWhatsapp()}
@@ -152,6 +154,6 @@ const styles = StyleSheet.create({
 		marginVertical: 6
 	},
 	buttonsView: {
-		marginVertical: 50
-	  }
+		marginVertical: 14
+	}
 });
