@@ -14,6 +14,7 @@ import { PrestadoresAction } from "./reducers/prestadoresReducer";
 import { ValidateSemillasDniAction } from "./reducers/validateSemillasDniReducer";
 import { CodeAction } from "./reducers/phoneVerificationReducer";
 import { AuthAppsAction } from "./reducers/authAppsReducer";
+import { PersistedPersonalDataAction } from "./reducers/persistedPersonalDataReducer";
 
 export type StoreAction =
 	| { type: "RESET_PERSISTED_STORE" }
@@ -31,4 +32,5 @@ export type StoreAction =
 	| PrestadoresAction
 	| PushNotificationAction
 	| CodeAction
-	| AuthAppsAction;
+	| AuthAppsAction
+	| PersistedPersonalDataAction;

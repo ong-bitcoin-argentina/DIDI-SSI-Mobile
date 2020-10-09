@@ -6,6 +6,6 @@ export interface UserHasRondaArguments {
 	address: string;
 }
 
-export async function userHasRonda(address: string): ApiResult<any> {
-	return getClient().userHasRondaAccount(address);
+export async function userHasRonda(did: EthrDID): ApiResult<any> {
+	return getClient().userHasRondaAccount(did);
 }

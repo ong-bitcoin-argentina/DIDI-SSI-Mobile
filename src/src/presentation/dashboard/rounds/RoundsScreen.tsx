@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Modal, ActivityIndicator } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -16,14 +16,26 @@ import { didiConnect } from "../../../store/store";
 import { AuthModal } from "../common/AuthModal";
 import { createToken, successfullyLogged } from "../../util/appRouter";
 import { userHasRonda } from "../../../services/user/userHasRonda";
+import { getPersonalData } from "../../../services/user/getPersonalData";
+import { ServiceObserver } from "../../common/ServiceObserver";
+import { PersistedPersonalData } from "../../../store/reducers/persistedPersonalDataReducer";
+import commonStyles from "../../resources/commonStyles";
+import DidiTextInput from "../../util/DidiTextInput";
+import { sendPersonalData } from "../../../services/user/sendPersonalData";
+import { DataAlert } from "../../common/DataAlert";
+const { modal } = commonStyles;
 
 const {
-	rounds: { description, descriptionHasRonda, title, titleHasRonda }
+	rounds: { description, descriptionHasRonda, title, titleHasRonda, completeData, dataConfirmed }
 } = strings;
 
-export type RoundsScreenProps = {};
 export type RoundsScreenState = {
 	showModal: boolean;
+	showPersonalDataModal: boolean;
+	token: string;
+	name: string;
+	lastname: string;
+	hiddenProcess: boolean;
 };
 export interface RoundsScreenNavigation {
 	DashboardHome: DashboardScreenProps;
@@ -33,21 +45,38 @@ const { Small, Emphasis } = DidiText.Explanation;
 interface RoundsScreenStateProps {
 	did: ActiveDid;
 	hasRonda: Boolean;
+	persistedPersonalData: PersistedPersonalData;
+	name?: string;
+	lastname?: string;
 }
 
 interface RoundsScreenDispatchProps {
 	setRondaAccount: (hasAccount: Boolean) => void;
+	saveName: (name: string, lastname: string) => void;
+	persistPersonalData: (name: string, lastname: string) => void;
+	getPersonalData: (token: string) => void;
+	sendPersonalData: (token: string, name: string, lastname: string) => void;
 }
 
+export type RoundsScreenProps = RoundsScreenStateProps & RoundsScreenDispatchProps;
+
+const serviceKey = "getPersonalData";
+const serviceKeySendData = "sendPersonalData";
+
 const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
-	RoundsScreenProps & RoundsScreenStateProps & RoundsScreenDispatchProps,
+	RoundsScreenProps,
 	RoundsScreenState,
 	RoundsScreenNavigation
 > {
-	constructor(props: RoundsScreenProps & RoundsScreenStateProps) {
+	constructor(props: RoundsScreenProps) {
 		super(props);
 		this.state = {
-			showModal: false
+			showModal: false,
+			showPersonalDataModal: false,
+			token: "",
+			name: "",
+			lastname: "",
+			hiddenProcess: false
 		};
 	}
 
@@ -58,12 +87,26 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	);
 
 	componentDidMount = async () => {
-		const { address, hasRonda } = this.props;
-		console.log("hasRonda", hasRonda);
+		const token = await this.getToken();
+		this.setState({ token });
+		this.handleCheckPersistedData(token);
+		const { did, hasRonda, setRondaAccount } = this.props;
 		if (!hasRonda) {
-			const response = await userHasRonda(address);
+			const response = await userHasRonda(did);
 			const hasAccount = response._tag ? true : false;
-			this.props.setRondaAccount(hasAccount);
+			setRondaAccount(hasAccount);
+		}
+	};
+
+	handleCheckPersistedData = (token: string) => {
+		if (this.props.name && this.props.lastname) {
+			const { name, lastname } = this.props.persistedPersonalData;
+			this.setState({ hiddenProcess: true });
+			if (!name && !lastname) {
+				this.props.sendPersonalData(token, this.props.name, this.props.lastname);
+			}
+		} else {
+			this.props.getPersonalData(token);
 		}
 	};
 
@@ -71,12 +114,12 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 		this.setState({ showModal: true });
 	};
 
-	goRonda = async () => {
-		const { address } = this.props.did;
+	getToken = async () => {
+		return await createToken(this.props.did);
+	};
 
-		createToken(address).then(async (verification: string) => {
-			this.setState({ showModal: false }, () => successfullyLogged(verification));
-		});
+	goRonda = async () => {
+		this.setState({ showModal: false }, () => successfullyLogged(this.state.token));
 	};
 
 	permissionDenied = async () => this.setState({ showModal: false });
@@ -87,26 +130,81 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 		return showModal ? <AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.goRonda} /> : null;
 	};
 
+	handleSuccessGetPersonalData = () => {
+		const { name, lastname } = this.props.persistedPersonalData;
+		if (name && lastname) {
+			this.props.persistPersonalData(name, lastname);
+			this.props.saveName(name, lastname);
+		} else {
+			this.toggleModal();
+		}
+	};
+
+	handleSuccessSendPersonalData = () => {
+		const { name, lastname } = this.props.persistedPersonalData;
+		this.props.saveName(name, lastname);
+		if (!this.state.hiddenProcess) {
+			DataAlert.alert("Éxito!", dataConfirmed);
+		}
+	};
+
+	toggleModal = () => {
+		this.setState({
+			showPersonalDataModal: !this.state.showPersonalDataModal
+		});
+	};
+
+	onChangeName = (name: string) => {
+		this.setState({ name });
+	};
+
+	onChangeLastname = (lastname: string) => {
+		this.setState({ lastname });
+	};
+
+	onSendPersonalData = () => {
+		const { name, lastname, token } = this.state;
+		this.props.sendPersonalData(token, name, lastname);
+		this.toggleModal();
+	};
+
 	render() {
-		const { width } = Dimensions.get("window");
 		const { hasRonda } = this.props;
 		const subTitle = hasRonda ? descriptionHasRonda : description;
 		const cta = "Ver Rondas";
 		const btnAction = hasRonda ? this.goRonda : this.showAuthModal;
 		return (
-			<ScrollView>
+			<>
+				<ServiceObserver serviceKey={serviceKey} onSuccess={this.handleSuccessGetPersonalData} />
+				<ServiceObserver serviceKey={serviceKeySendData} onSuccess={this.handleSuccessSendPersonalData} />
 				<DidiScreen>
-					<View style={[styles.centered, { marginVertical: 5 }]}>
-						<RondasLogo />
-					</View>
-					<Emphasis style={[styles.modalText, { marginBottom: 5 }]}>{hasRonda ? titleHasRonda : title}</Emphasis>
-					<Small style={[styles.modalText, { marginBottom: 8 }]}>{subTitle}</Small>
-					<View style={{ marginBottom: 15 }}>
-						<DidiButton onPress={btnAction} title={cta} />
-						{this.showConfirmation()}
-					</View>
+					<ScrollView>
+						<View style={[styles.centered, { marginVertical: 26 }]}>
+							<RondasLogo />
+						</View>
+						<Emphasis style={[styles.modalText, { marginBottom: 10 }]}>{hasRonda ? titleHasRonda : title}</Emphasis>
+						<Small style={[styles.modalText, { marginBottom: 25 }]}>{subTitle}</Small>
+						<View style={{ marginBottom: 15 }}>
+							<DidiButton onPress={btnAction} title={cta} />
+							{this.showConfirmation()}
+						</View>
+					</ScrollView>
 				</DidiScreen>
-			</ScrollView>
+
+				<Modal animationType="fade" transparent={true} visible={this.state.showPersonalDataModal}>
+					<View style={modal.centeredView}>
+						<View style={[modal.view]}>
+							<Emphasis style={[styles.modalText, { marginBottom: 20 }]}>{completeData}</Emphasis>
+							<DidiTextInput.FirstName onChangeText={this.onChangeName} />
+							<DidiTextInput.LastName onChangeText={this.onChangeLastname} />
+							<View style={styles.modalFooter}>
+								<DidiButton title={strings.buttons.close} style={{ marginTop: 30 }} onPress={this.toggleModal} />
+								<DidiButton title={strings.buttons.send} style={{ marginTop: 30 }} onPress={this.onSendPersonalData} />
+							</View>
+						</View>
+					</View>
+				</Modal>
+			</>
 		);
 	}
 };
@@ -115,10 +213,26 @@ const connect = didiConnect(
 	RoundsScreen,
 	(state): RoundsScreenStateProps => ({
 		did: state.did.activeDid,
-		hasRonda: state.authApps.ronda
+		hasRonda: state.authApps.ronda,
+		name: state.validatedIdentity.personalData.firstNames?.value,
+		lastname: state.validatedIdentity.personalData.lastNames?.value,
+		persistedPersonalData: state.persistedPersonalData
 	}),
 	(dispatch): RoundsScreenDispatchProps => ({
-		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount })
+		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
+		getPersonalData: token => dispatch(getPersonalData(serviceKey, token)),
+		sendPersonalData: (token, name, lastname) => dispatch(sendPersonalData(serviceKeySendData, token, name, lastname)),
+		persistPersonalData: (name: string, lastname: string) =>
+			dispatch({ type: "PERSISTED_PERSONAL_DATA_SET", state: { name, lastname } }),
+		saveName: (firstNames: string, lastNames: string) =>
+			dispatch({
+				type: "IDENTITY_PATCH",
+				value: {
+					personalData: { firstNames, lastNames },
+					visual: {},
+					address: {}
+				}
+			})
 	})
 );
 
@@ -166,5 +280,10 @@ const styles = StyleSheet.create({
 	modalText: {
 		fontSize: 17,
 		textAlign: "center"
+	},
+	modalFooter: {
+		flexDirection: "row",
+		width: "100%",
+		justifyContent: "space-evenly"
 	}
 });

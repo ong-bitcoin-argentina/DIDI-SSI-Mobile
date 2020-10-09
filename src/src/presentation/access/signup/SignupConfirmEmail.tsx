@@ -32,6 +32,7 @@ interface SignupConfirmEmailStateProps {
 interface SignupConfirmEmailDispatchProps {
 	verifyEmailCode(email: string, validationCode: string): void;
 	registerUser: (email: string, password: string, phoneNumber: string, name?: string, lastname?: string) => void;
+	persistPersonalData: (name: string, lastname: string) => void;
 	dispatch: Dispatch<StoreAction>;
 }
 type SignupConfirmEmailInternalProps = SignupConfirmEmailProps &
@@ -98,6 +99,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 		const { email, phoneNumber, name, lastname } = this.props;
 		this.setState({ didVerifyEmail: true });
 		this.props.registerUser(email, this.state.password!, phoneNumber, name, lastname);
+		this.props.persistPersonalData(name, lastname);
 	}
 }
 
@@ -115,6 +117,9 @@ const connected = didiConnect(
 
 		registerUser: (email: string, password: string, phoneNumber: string, name?: string, lastname?: string) =>
 			dispatch(registerUser(serviceKeyRegister, email, password, phoneNumber, name, lastname)),
+
+		persistPersonalData: (name: string, lastname: string) =>
+			dispatch({ type: "PERSISTED_PERSONAL_DATA_SET", state: { name, lastname } }),
 
 		dispatch
 	})

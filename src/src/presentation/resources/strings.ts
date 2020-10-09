@@ -52,6 +52,7 @@ export default {
 		cancel: "Cancelar",
 		close: "Cerrar",
 		reject: "Rechazar",
+		send: "Enviar",
 		back: "Volver"
 	},
 	debug: {
@@ -310,8 +311,10 @@ export default {
 		title: "Accedé a Ronda",
 		titleHasRonda: "Ver mis rondas",
 		description: "Organizá y participá de rondas, juntas, vaquitas o pasanakus de forma fácil y segura.",
+		completeData: "Por favor, complatá tus datos para acceder a ronda.",
 		descriptionHasRonda:
-			"Hacé un seguimiento de tus rondas activas y unite o creá nuevas rondas, juntas, vaquitas o pasanakus de forma fácil y segura."
+			"Hacé un seguimiento de tus rondas activas y unite o creá nuevas rondas, juntas, vaquitas o pasanakus de forma fácil y segura.",
+		dataConfirmed: "Tu datos fueron guardados de forma correcta, podes seguir usando la aplicación."
 	},
 	semillas: {
 		barTitle: "Mis Credenciales semillas",

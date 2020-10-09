@@ -30,6 +30,7 @@ import { StoreAction } from "./StoreAction";
 import { prestadoresReducer, PrestadoresRegistry } from "./reducers/prestadoresReducer";
 import { validateSemillasDniReducer, ValidateSemillasDniState } from "./reducers/validateSemillasDniReducer";
 import { authAppsReducer, AuthAppsState } from "./reducers/authAppsReducer";
+import { persistedPersonalDataReducer, PersistedPersonalData } from "./reducers/persistedPersonalDataReducer";
 
 export interface PersistedStoreContent {
 	did: DidState;
@@ -47,6 +48,7 @@ export interface PersistedStoreContent {
 	prestadores: PrestadoresRegistry;
 	recentActivity: RecentActivity[];
 	authApps: AuthAppsState;
+	persistedPersonalData: PersistedPersonalData;
 }
 
 const persistedStoreContentReducer = combineReducers<PersistedStoreContent, StoreAction>({
@@ -64,7 +66,8 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 	knownIssuers: issuerReducer,
 	prestadores: prestadoresReducer,
 	recentActivity: recentActivityReducer,
-	authApps: authAppsReducer
+	authApps: authAppsReducer,
+	persistedPersonalData: persistedPersonalDataReducer
 });
 
 const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user" } = {
@@ -82,7 +85,8 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	knownIssuers: "user",
 	prestadores: "user",
 	recentActivity: "user",
-	authApps: "user"
+	authApps: "user",
+	persistedPersonalData: "user"
 };
 
 function deletionReducer(state: PersistedStoreContent | undefined, action: StoreAction): PersistedStoreContent {
