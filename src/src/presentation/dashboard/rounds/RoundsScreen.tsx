@@ -119,7 +119,9 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	};
 
 	goRonda = async () => {
-		this.setState({ showModal: false }, () => successfullyLogged(this.state.token));
+		this.getToken().then(verification => {
+			this.setState({ showModal: false }, () => successfullyLogged(verification));
+		});
 	};
 
 	permissionDenied = async () => this.setState({ showModal: false });

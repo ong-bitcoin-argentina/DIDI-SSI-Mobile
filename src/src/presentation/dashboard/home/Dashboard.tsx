@@ -30,7 +30,15 @@ import dynamicLinks from "@react-native-firebase/dynamic-links";
 
 import { AuthModal } from "../common/AuthModal";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
-import { successfullyLogged, loginDenied, deepLinkHandler, dynamicLinkHandler, navigateToCredentials, askedForLogin, createToken } from "../../util/appRouter";
+import {
+	successfullyLogged,
+	loginDenied,
+	deepLinkHandler,
+	dynamicLinkHandler,
+	navigateToCredentials,
+	askedForLogin,
+	createToken
+} from "../../util/appRouter";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -71,33 +79,35 @@ class DashboardScreen extends NavigationEnabledComponent<
 		super(props);
 		this.state = {
 			previewActivities: true,
-			showModal: false,
+			showModal: false
 		};
 	}
 
 	permissionDenied = async () => {
 		await loginDenied();
-	}
-	
+	};
+
 	permissionGranted = async () => {
-		const { address } = this.props.did;
-	
-		createToken(address).then(async (verification:string) => {
+		const { did } = this.props;
+
+		createToken(did).then(async (verification: string) => {
 			this.setState({ showModal: false }, () => successfullyLogged(verification));
-		})
-	}
+		});
+	};
 
 	showAuthModal = () => {
 		if (!this.state) return null;
 		const { showModal } = this.state;
-		return this.state.showModal ? <AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.permissionGranted} /> : null;
-	}
+		return this.state.showModal ? (
+			<AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.permissionGranted} />
+		) : null;
+	};
 
-	urlHandler = ( link: { url: string } | null | undefined ) => {
+	urlHandler = (link: { url: string } | null | undefined) => {
 		if (!link) return;
 		if (askedForLogin(link)) this.setState({ showModal: true });
-		if (navigateToCredentials(link)) this.navigate("DashboardDocuments", { });
-	}
+		if (navigateToCredentials(link)) this.navigate("DashboardDocuments", {});
+	};
 
 	componentDidMount() {
 		this.props.login();

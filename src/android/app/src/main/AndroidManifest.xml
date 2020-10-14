@@ -35,9 +35,11 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="aidi" />
-            <data android:host="login" />
-            <data android:host="credentials/ronda" />
+            <data android:scheme="aidi" android:host="login" />
+            <data android:scheme="aidi" android:host="credentials" />
+            <data android:path="" />
+            <data android:path="/" />
+            <data android:path="/ronda" />
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
