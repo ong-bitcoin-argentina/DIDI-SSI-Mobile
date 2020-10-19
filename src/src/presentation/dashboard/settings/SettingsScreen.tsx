@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import RNRestart from "react-native-restart";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
@@ -69,6 +70,11 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 		return AppConfig.debug ? debug : base;
 	}
 
+	private logout() {
+		this.props.logout();
+		RNRestart.Restart();
+	}
+
 	renderCartouche() {
 		return (
 			<TouchableOpacity onPress={() => this.navigate("UserData", {})}>
@@ -130,11 +136,6 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 				</SafeAreaView>
 			</Fragment>
 		);
-	}
-
-	private logout() {
-		this.props.logout();
-		this.navigate("Access", {});
 	}
 }
 

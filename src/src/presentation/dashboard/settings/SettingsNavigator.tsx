@@ -21,7 +21,7 @@ export interface SettingsNavigatorNavigation {
 	DashboardHome: DashboardScreenProps;
 }
 
-export default function(then: NavTree<SettingsNavigatorNavigation>) {
+export default function (then: NavTree<SettingsNavigatorNavigation>) {
 	return NavMap.from(SettingsScreen, {
 		UserData: NavMap.from(UserDataScreen, {
 			ChangePhoneEnterPhone: NavMap.from(ChangePhoneEnterScreen, {

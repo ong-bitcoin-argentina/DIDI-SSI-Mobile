@@ -43,7 +43,6 @@ export const openApp = async (args: { dynamicLink: string; deppLink: string }) =
 };
 
 export const deepLinkHandler = (myHandler: (link: Link) => void) => {
-	console.log("deepLinkHandler");
 	Linking.getInitialURL().then(myHandler);
 	Linking.addEventListener("url", myHandler);
 	return () => {
@@ -52,7 +51,6 @@ export const deepLinkHandler = (myHandler: (link: Link) => void) => {
 };
 
 export const dynamicLinkHandler = (myHandler: (link: Link) => void) => {
-	console.log("dynamicLinkHandler");
 	dynamicLinks().getInitialLink().then(myHandler);
 	const unsubscribe = dynamicLinks().onLink(myHandler);
 	return () => unsubscribe();
