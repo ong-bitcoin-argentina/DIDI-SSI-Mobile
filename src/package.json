@@ -8,7 +8,7 @@
 		"lint": "tslint --project tsconfig.json",
 		"android": "ENVFILE=.env.staging react-native run-android --variant=DevDebug",
 		"ios": "react-native run-ios",
-		"build": "cd android && ENVFILE=.env.production && ./gradlew assembleRelease",
+		"build": "cd android && ENVFILE=.env.production && ./gradlew assembleProdRelease",
 		"build:stage": "cd android && ENVFILE=.env.staging && ./gradlew assembleStagingRelease",
 		"build:uat": "cd android && ENVFILE=.env.uat && ./gradlew assembleUatRelease",
 		"debugBuild": "cd android && ./gradlew assembleDebug",

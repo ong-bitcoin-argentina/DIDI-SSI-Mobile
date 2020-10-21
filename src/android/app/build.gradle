@@ -4,7 +4,7 @@ import com.android.build.OutputFile
 project.ext.envConfigFiles = [
     debug: ".env.staging",
     staging: ".env.staging",
-    release: ".env.production",
+    prod: ".env.production",
     uat: ".env.uat",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -154,6 +154,9 @@ android {
             resValue "string", "build_config_package", "com.aidi"
         }
         uat {
+            resValue "string", "build_config_package", "com.aidi"
+        }
+        prod {
             resValue "string", "build_config_package", "com.aidi"
         }
     }
