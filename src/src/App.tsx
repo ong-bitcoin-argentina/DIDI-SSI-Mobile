@@ -11,6 +11,7 @@ import { SplashContent } from "./presentation/SplashContent";
 import { PushNotificationReceiver } from "./services/PushNotificationObserver";
 import { persistor, store } from "./store/normalizedStore";
 import { didiConnect, StoreContent } from "./store/store";
+import { initializeDeepLinking, removeDeepLinkListener } from "./presentation/util/appRouter";
 
 YellowBox.ignoreWarnings([
 	"Warning: componentWillReceiveProps has been renamed, and is not recommended for use.", // External error in SafeArea
@@ -43,12 +44,20 @@ const StoreStatePanel = didiConnect(
 );
 
 export default class App extends React.Component {
+	componentDidMount() {
+		initializeDeepLinking();
+	}
+
+	componentWillUnmount() {
+		removeDeepLinkListener();
+	}
+
 	render() {
 		return (
 			<Provider store={store}>
 				<PersistGate persistor={persistor} loading={<SplashContent />}>
 					<PushNotificationReceiver />
-					<AppContainer uriPrefix={"aidi://"} enableURLHandling={false} />
+					<AppContainer />
 					<StoreStatePanel />
 				</PersistGate>
 			</Provider>

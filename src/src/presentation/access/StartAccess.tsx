@@ -18,8 +18,19 @@ import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 import { SignupWithResetProps } from "./signup/SignupWithReset";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
+import { didiConnect } from "../../store/store";
+import { PendingLinkingState } from "../../store/reducers/pendingLinkingReducer";
+import { deepLinkHandler, dynamicLinkHandler, askedForLogin, navigateToCredentials, links } from "../util/appRouter";
 
 export type StartAccessProps = {};
+
+type StartAccessDispatchProps = {
+	savePendingLinking: (state: PendingLinkingState) => void;
+};
+
+type StartAccessInternalProps = StartAccessProps & StartAccessDispatchProps;
+
+type StartAccessState = {};
 
 export interface StartAccessNavigation {
 	Login: LoginScreenProps;
@@ -29,8 +40,24 @@ export interface StartAccessNavigation {
 	AccessSettings: AccessSettingsProps;
 }
 
-export class StartAccessScreen extends NavigationEnabledComponent<StartAccessProps, {}, StartAccessNavigation> {
+class StartAccessScreen extends NavigationEnabledComponent<
+	StartAccessInternalProps,
+	StartAccessState,
+	StartAccessNavigation
+> {
 	static navigationOptions = NavigationHeaderStyle.gone;
+
+	componentDidMount() {
+		deepLinkHandler(this.urlHandler);
+		dynamicLinkHandler(this.urlHandler);
+	}
+
+	urlHandler = (link?: { url: string } | null) => {
+		if (this.props.navigation.isFocused) {
+			if (!link) return;
+			this.props.savePendingLinking(link.url);
+		}
+	};
 
 	render() {
 		return (
@@ -88,3 +115,13 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.secondary
 	}
 });
+
+const connected = didiConnect(
+	StartAccessScreen,
+	state => ({}),
+	(dispatch): any => ({
+		savePendingLinking: (state: PendingLinkingState) => dispatch({ type: "PENDING_LINKING_SET", state })
+	})
+);
+
+export { connected as StartAccessScreen };

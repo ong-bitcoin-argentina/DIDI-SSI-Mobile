@@ -31,6 +31,7 @@ import { prestadoresReducer, PrestadoresRegistry } from "./reducers/prestadoresR
 import { validateSemillasDniReducer, ValidateSemillasDniState } from "./reducers/validateSemillasDniReducer";
 import { authAppsReducer, AuthAppsState } from "./reducers/authAppsReducer";
 import { persistedPersonalDataReducer, PersistedPersonalData } from "./reducers/persistedPersonalDataReducer";
+import { pendingLinkingReducer, PendingLinkingState } from "./reducers/pendingLinkingReducer";
 
 export interface PersistedStoreContent {
 	did: DidState;
@@ -49,6 +50,7 @@ export interface PersistedStoreContent {
 	recentActivity: RecentActivity[];
 	authApps: AuthAppsState;
 	persistedPersonalData: PersistedPersonalData;
+	pendingLinking: PendingLinkingState;
 }
 
 const persistedStoreContentReducer = combineReducers<PersistedStoreContent, StoreAction>({
@@ -67,7 +69,8 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 	prestadores: prestadoresReducer,
 	recentActivity: recentActivityReducer,
 	authApps: authAppsReducer,
-	persistedPersonalData: persistedPersonalDataReducer
+	persistedPersonalData: persistedPersonalDataReducer,
+	pendingLinking: pendingLinkingReducer
 });
 
 const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user" } = {
@@ -86,7 +89,8 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	prestadores: "user",
 	recentActivity: "user",
 	authApps: "user",
-	persistedPersonalData: "user"
+	persistedPersonalData: "user",
+	pendingLinking: "device"
 };
 
 function deletionReducer(state: PersistedStoreContent | undefined, action: StoreAction): PersistedStoreContent {
