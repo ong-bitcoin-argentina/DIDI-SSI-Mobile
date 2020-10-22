@@ -4,6 +4,7 @@ import { getSignerForHDPath } from "react-native-uport-signer";
 import { Credentials } from "uport-credentials";
 import { DIDI_SERVER_DID } from "../../AppConfig";
 import { EthrDID } from "didi-sdk";
+import DeepLinking from "react-native-deep-linking";
 
 interface Settings {
 	did?: string;
@@ -18,6 +19,11 @@ const getDidAddress = (did: EthrDID) => {
 	const cleanDid = did.did().split(":");
 	return cleanDid[cleanDid.length - 1];
 };
+
+export enum links {
+	login = "aidi://login",
+	credentials = `aidi://credentials/ronda`
+}
 
 export const successfullyLogged = async (token: string) => {
 	const params = {
@@ -58,6 +64,27 @@ export const dynamicLinkHandler = (myHandler: (link: Link) => void) => {
 
 export const askedForLogin = (link: Link) => link.url.match(/login/);
 export const navigateToCredentials = (link: Link) => link.url.match(/credentials/);
+
+export const initializeDeepLinking = () => {
+	DeepLinking.addScheme("aidi://");
+	Linking.addEventListener("url", handleUrl);
+	DeepLinking.addRoute("/login");
+	const url = Linking.getInitialURL()
+		.then(url => url && Linking.openURL(url))
+		.catch(err => console.error("An error occurred", err));
+};
+
+export const removeDeepLinkListener = () => {
+	Linking.removeEventListener("url", handleUrl);
+};
+
+export const handleUrl = ({ url }) => {
+	Linking.canOpenURL(url).then(supported => {
+		if (supported) {
+			DeepLinking.evaluateUrl(url);
+		}
+	});
+};
 
 export const createToken = (did: EthrDID) => {
 	const credentialsParams: Settings = {};

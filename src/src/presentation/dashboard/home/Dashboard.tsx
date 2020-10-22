@@ -39,6 +39,7 @@ import {
 	askedForLogin,
 	createToken
 } from "../../util/appRouter";
+import { PendingLinkingState } from "../../../store/reducers/pendingLinkingReducer";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -46,11 +47,13 @@ interface DashboardScreenStateProps {
 	credentials: CredentialDocument[];
 	recentActivity: RecentActivity[];
 	credentialContext: DocumentCredentialCardContext;
+	pendingLinking: PendingLinkingState;
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
 	resetDniValidation: () => void;
 	finishDniValidation: () => void;
+	resetPendingLinking: () => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -97,7 +100,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	showAuthModal = () => {
 		if (!this.state) return null;
-		const { showModal } = this.state;
 		return this.state.showModal ? (
 			<AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.permissionGranted} />
 		) : null;
@@ -110,9 +112,14 @@ class DashboardScreen extends NavigationEnabledComponent<
 	};
 
 	componentDidMount() {
+		const { pendingLinking } = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
+		if (pendingLinking) {
+			this.urlHandler({ url: pendingLinking });
+			this.props.resetPendingLinking();
+		}
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
@@ -201,7 +208,8 @@ export default didiConnect(
 		did: state.did.activeDid,
 		recentActivity: state.combinedRecentActivity,
 		credentials: state.credentials,
-		credentialContext: extractContext(state)
+		credentialContext: extractContext(state),
+		pendingLinking: state.pendingLinking
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
@@ -210,6 +218,7 @@ export default didiConnect(
 			dispatch(getAllIssuerNames());
 		},
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
+		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
 		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } })
 	})
 );
