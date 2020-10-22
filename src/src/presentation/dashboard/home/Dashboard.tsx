@@ -87,12 +87,13 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	permissionDenied = async () => {
+		this.setState({ showModal: false });
 		await loginDenied();
 	};
 
 	permissionGranted = async () => {
 		const { did } = this.props;
-
+		this.setState({ showModal: false });
 		createToken(did).then(async (verification: string) => {
 			this.setState({ showModal: false }, () => successfullyLogged(verification));
 		});
