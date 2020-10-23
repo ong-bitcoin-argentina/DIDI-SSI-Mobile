@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { didiConnect } from "../../../store/store";
 import { ValidationStates } from "./constants";
 import { DidiText } from "../../util/DidiText";
@@ -123,17 +123,19 @@ class SemillasValidationState extends Component<Props, State> {
 		const { onCancel, isLoading } = this.props;
 
 		return (
-			<View style={modal.centeredView}>
-				<View style={[modal.view]}>
-					{isLoading ? (
-						<>
-							<Small style={{ marginBottom: 10 }}>{validate.gettingState}</Small>
-							<ActivityIndicator size="large" color={colors.secondary} />
-						</>
-					) : (
-						this.renderContent()
-					)}
-					<DidiButton title={strings.buttons.close} onPress={onCancel} style={{ marginTop: 40 }} />
+			<View style={[modal.centeredView]}>
+				<View style={[modal.view, { maxHeight: 500 }]}>
+					<ScrollView contentContainerStyle={{ alignItems: "center" }}>
+						{isLoading ? (
+							<>
+								<Small style={{ marginBottom: 10 }}>{validate.gettingState}</Small>
+								<ActivityIndicator size="large" color={colors.secondary} />
+							</>
+						) : (
+							this.renderContent()
+						)}
+						<DidiButton title={strings.buttons.close} onPress={onCancel} style={{ marginTop: 40 }} />
+					</ScrollView>
 				</View>
 			</View>
 		);
