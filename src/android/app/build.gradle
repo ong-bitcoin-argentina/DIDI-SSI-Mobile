@@ -141,7 +141,6 @@ android {
         versionCode project.env.get("VERSIONCODE").toInteger()
         versionName project.env.get("VERSION")
         missingDimensionStrategy 'react-native-camera', 'general'
-        archivesBaseName = "${project.env.get("ENV_CODE")}_aidi_${versionName}_v${versionCode}"
     }
 
     flavorDimensions "default"
@@ -207,6 +206,9 @@ android {
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
 
+        }
+        variant.outputs.all {
+            outputFileName = "${project.env.get("ENV_CODE")}_ronda_${versionName}_v${versionCode}.apk"
         }
     }
 
