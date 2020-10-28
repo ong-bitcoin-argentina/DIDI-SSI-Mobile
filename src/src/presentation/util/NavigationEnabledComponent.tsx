@@ -1,6 +1,7 @@
 import React from "react";
 import { NavigationStackProp } from "react-navigation-stack";
 import crashlytics from "@react-native-firebase/crashlytics";
+import analytics from '@react-native-firebase/analytics';
 
 type NavigationProps<Props> = Props & {
 	navigation?: NavigationStackProp;
@@ -24,6 +25,10 @@ export default abstract class NavigationEnabledComponent<Props, State, Nav> exte
 
 	navigate<Target extends Extract<keyof Nav, string>>(target: Target, props: Nav[Target], onComplete?: () => void) {
 		const nav = this.navigation();
+		analytics().logScreenView({
+			screen_name: target,
+			screen_class: target,
+		})
 		if (nav) {
 			onBlur(nav, onComplete);
 			nav.navigate(target, props);
