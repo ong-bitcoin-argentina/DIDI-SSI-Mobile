@@ -1,3 +1,4 @@
+import 'text-encoding-polyfill';
 import React from "react";
 import { ScrollView, Text, YellowBox } from "react-native";
 import { createAppContainer } from "react-navigation";
