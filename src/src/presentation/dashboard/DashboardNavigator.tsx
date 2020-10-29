@@ -74,7 +74,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				tabBarIcon: ({ focused, tintColor }: { focused: boolean; tintColor: string }) => (
 					<View style={{ alignItems: "center" }}>
 						<View style={{ width: 24, height: 24 }}>
-							<DidiText.Icon color={tintColor} fontSize={24}>
+							<DidiText.Icon color={tintColor} fontSize={40}>
 								{image}
 							</DidiText.Icon>
 						</View>
