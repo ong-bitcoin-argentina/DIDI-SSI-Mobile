@@ -10,7 +10,6 @@ import { DashboardScreenProps } from "../home/Dashboard";
 import DidiButton from "../../util/DidiButton";
 import colors from "../../resources/colors";
 import { DidiText } from "../../util/DidiText";
-import RondasLogo from "../../resources/images/rondasSplash.svg";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
 import { AuthModal } from "../common/AuthModal";
@@ -20,6 +19,7 @@ import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import { PersistedPersonalData } from "../../../store/reducers/persistedPersonalDataReducer";
 import commonStyles from "../../resources/commonStyles";
+import RondaLogo from "../../resources/images/ronda.svg";
 import DidiTextInput from "../../util/DidiTextInput";
 import { sendPersonalData } from "../../../services/user/sendPersonalData";
 import { DataAlert } from "../../common/DataAlert";
@@ -126,12 +126,6 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 
 	permissionDenied = async () => this.setState({ showModal: false });
 
-	showConfirmation = () => {
-		if (!this.state) return null;
-		const { showModal } = this.state;
-		return showModal ? <AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.goRonda} /> : null;
-	};
-
 	handleSuccessGetPersonalData = () => {
 		const { name, lastname } = this.props.persistedPersonalData;
 		if (name && lastname) {
@@ -173,7 +167,7 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	render() {
 		const { hasRonda } = this.props;
 		const subTitle = hasRonda ? descriptionHasRonda : description;
-		const cta = "Ver Rondas";
+		const cta = hasRonda ? "Ver Rondas" : "Acceder";
 		const btnAction = hasRonda ? this.goRonda : this.showAuthModal;
 		return (
 			<>
@@ -181,14 +175,13 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 				<ServiceObserver serviceKey={serviceKeySendData} onSuccess={this.handleSuccessSendPersonalData} />
 				<DidiScreen>
 					<ScrollView>
-						<View style={[styles.centered, { marginVertical: 26 }]}>
-							<RondasLogo />
+						<View style={[styles.centered, { marginVertical: 38 }]}>
+							<RondaLogo />
 						</View>
-						<Emphasis style={[styles.modalText, { marginBottom: 10 }]}>{hasRonda ? titleHasRonda : title}</Emphasis>
-						<Small style={[styles.modalText, { marginBottom: 25 }]}>{subTitle}</Small>
+						<Emphasis style={[styles.title, { marginBottom: 20 }]}>{hasRonda ? titleHasRonda : title}</Emphasis>
+						<Small style={[styles.modalText, { marginBottom: 35 }]}>{subTitle}</Small>
 						<View style={{ marginBottom: 15 }}>
 							<DidiButton onPress={btnAction} title={cta} />
-							{this.showConfirmation()}
 						</View>
 					</ScrollView>
 				</DidiScreen>
@@ -206,6 +199,13 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 						</View>
 					</View>
 				</Modal>
+
+				<AuthModal
+					appName="Ronda"
+					onCancel={this.permissionDenied}
+					onOk={this.goRonda}
+					visible={this.state.showModal}
+				/>
 			</>
 		);
 	}
@@ -281,6 +281,10 @@ const styles = StyleSheet.create({
 	},
 	modalText: {
 		fontSize: 17,
+		textAlign: "center"
+	},
+	title: {
+		fontSize: 22,
 		textAlign: "center"
 	},
 	modalFooter: {
