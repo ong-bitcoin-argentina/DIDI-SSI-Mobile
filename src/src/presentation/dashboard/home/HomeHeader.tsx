@@ -91,7 +91,7 @@ export default didiConnect(
 
 const styles = StyleSheet.create({
 	root: {
-		backgroundColor: themes.navigation,
+		backgroundColor: themes.header,
 		flexDirection: "row"
 	},
 	identityContainer: {
