@@ -13,7 +13,7 @@ import themes from "../resources/themes";
 function defaultStyle(theme: DidiTheme): NavigationStackOptions {
 	return {
 		headerStyle: {
-			backgroundColor: theme.navigation
+			backgroundColor: theme.header
 		},
 		headerTintColor: theme.navigationText,
 		headerTitleStyle: styleToUse.navigationHeader
@@ -34,7 +34,7 @@ type NavigationFunction = (args: {
 export type NavigationOptions = NavigationFunction | NavigationStackOptions;
 
 const MaterialHeaderButton = (props: HeaderButtonProps) => (
-	<HeaderButton {...props} iconSize={23} color={themes.navigationIconActive} />
+	<HeaderButton {...props} iconSize={23} color={themes.headerText} />
 );
 
 const styles = {
@@ -95,7 +95,7 @@ const styles = {
 				...defaultStyle(themes.primaryTheme),
 				title,
 				headerLeft: (
-					<HeaderBackButton tintColor={themes.navigationText} onPress={() => navigation.navigate(target, props)} />
+					<HeaderBackButton tintColor={themes.headerText} onPress={() => navigation.navigate(target, props)} />
 				)
 			};
 		};

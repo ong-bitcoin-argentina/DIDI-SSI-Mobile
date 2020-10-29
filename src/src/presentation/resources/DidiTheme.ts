@@ -5,6 +5,7 @@ export default interface DidiTheme {
 	foreground: Color;
 	foregroundFaded: Color;
 
+	header: Color;
 	navigation: Color;
 	darkNavigation: Color;
 	navigationText: Color;
@@ -15,6 +16,7 @@ export default interface DidiTheme {
 	buttonDisabled: Color;
 	buttonDisabledText: Color;
 
+	headerText: Color;
 	navigationIconActive: Color;
 	navigationIconInactive: Color;
 }
