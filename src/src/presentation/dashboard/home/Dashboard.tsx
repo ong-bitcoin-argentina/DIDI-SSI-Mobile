@@ -87,23 +87,17 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	permissionDenied = async () => {
-		await loginDenied();
 		this.setState({ showModal: false });
+		await loginDenied();
 	};
 
 	permissionGranted = async () => {
 		const { did } = this.props;
 
 		createToken(did).then(async (verification: string) => {
-			this.setState({ showModal: false }, () => successfullyLogged(verification));
+			this.setState({ showModal: false });
+			successfullyLogged(verification);
 		});
-	};
-
-	showAuthModal = () => {
-		if (!this.state) return null;
-		return this.state.showModal ? (
-			<AuthModal appName="Ronda" onCancel={this.permissionDenied} onOk={this.permissionGranted} />
-		) : null;
 	};
 
 	urlHandler = (link: { url: string } | null | undefined) => {
@@ -172,7 +166,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 						renderItem={item => this.renderCard(item.item, item.index)}
 						ListHeaderComponent={
 							<Fragment>
-								{this.showAuthModal()}
 								<HomeHeader
 									onPersonPress={() => this.navigate("UserData", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
@@ -198,6 +191,12 @@ class DashboardScreen extends NavigationEnabledComponent<
 						}
 					/>
 				</SafeAreaView>
+				<AuthModal
+					appName="Ronda"
+					onCancel={this.permissionDenied}
+					onOk={this.permissionGranted}
+					visible={this.state.showModal}
+				/>
 			</Fragment>
 		);
 	}
