@@ -205,7 +205,9 @@ android {
                 output.versionCodeOverride =
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
-
+            variant.outputs.all {
+                outputFileName = "${project.env.get("ENV_CODE")}_aidi_${versionName}_v${versionCode}.apk"
+            }
         }
         variant.outputs.all {
             outputFileName = "${project.env.get("ENV_CODE")}_ronda_${versionName}_v${versionCode}.apk"
