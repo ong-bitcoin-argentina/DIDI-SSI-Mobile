@@ -109,6 +109,11 @@ export default {
 			height: 36,
 			backgroundColor: colors.greenSemillas,
 			paddingHorizontal: 20
+		},
+		inverted: {
+			backgroundColor: colors.white,
+			borderColor: colors.primaryLight,
+			borderWidth: 1
 		}
 	}),
 	util: StyleSheet.create({
@@ -119,6 +124,16 @@ export default {
 		paragraphMd: {
 			marginVertical: 11,
 			fontSize: 18
+		},
+		shadow: {
+			shadowColor: "#000",
+			shadowOffset: {
+				width: 0,
+				height: 0
+			},
+			shadowOpacity: 0.25,
+			shadowRadius: 3.84,
+			elevation: 14
 		}
 	})
 };

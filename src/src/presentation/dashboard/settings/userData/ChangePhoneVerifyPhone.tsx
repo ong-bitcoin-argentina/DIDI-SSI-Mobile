@@ -9,14 +9,14 @@ import { changePhoneNumber } from "../../../../services/user/changePhoneNumber";
 import { sendSmsValidator } from "../../../../services/user/sendSmsValidator";
 import strings from "../../../resources/strings";
 
-import { UserDataProps } from "./UserData";
+import { EditProfileProps } from "../userMenu/EditProfile";
 
 export interface ChangePhoneVerifyScreenProps {
 	newPhoneNumber: string;
 	password: string;
 }
 export interface ChangePhoneVerifyScreenNavigation {
-	UserData: UserDataProps;
+	EditProfile: EditProfileProps;
 }
 
 export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
@@ -42,6 +42,6 @@ export class ChangePhoneVerifyScreen extends NavigationEnabledComponent<
 
 	private onSuccess() {
 		Alert.alert(strings.services.changePhoneSuccess);
-		this.navigate("UserData", {});
+		this.navigate("EditProfile", {});
 	}
 }

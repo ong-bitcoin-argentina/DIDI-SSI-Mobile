@@ -12,8 +12,6 @@ import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelec
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
-import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
-import OpenPersonDetail from "../../resources/images/openPersonDetail.svg";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
@@ -23,9 +21,11 @@ import { ChangePasswordProps } from "./ChangePassword";
 import { IdentitySettingsProps } from "./identity/IdentitySettings";
 import { JWTDecoderScanScreenProps } from "./JWTDecoderScanScreen";
 import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
-import { UserDataProps } from "./userData/UserData";
 import Option from "./Option";
 import Divider from "../common/Divider";
+import { EditProfileProps } from "./userMenu/EditProfile";
+import { ChangeEmailEnterEmailProps } from "./userData/ChangeEmailEnterEmail";
+import { ChangePhoneEnterScreenProps } from "./userData/ChangePhoneEnterPhone";
 
 export type SettingsScreenProps = {};
 interface SettingsScreenStateProps {
@@ -39,12 +39,15 @@ type SettingsScreenInternalProps = SettingsScreenProps & SettingsScreenStateProp
 export interface SettingsScreenNavigation {
 	Access: StartAccessProps;
 	DashboardHome: DashboardScreenProps;
-	UserData: UserDataProps;
+	EditProfile: EditProfileProps;
 	IdentitySettings: IdentitySettingsProps;
 	ChangePassword: ChangePasswordProps;
 	AboutThisAppScreen: AboutThisAppScreenProps;
+	AboutRonda: AboutThisAppScreenProps;
 	ServiceSettings: ServiceSettingsScreenProps;
 	JWTDecoderScreen: JWTDecoderScanScreenProps;
+	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
+	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
 }
 
 interface SettingsButton {
@@ -92,20 +95,28 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={styles.area}>
 					<ScrollView contentContainerStyle={styles.container}>
-						<Option onPress={() => this.navigateTo("ChangePassword")} label={settings.editProfile} icon="person" />
-						<Option onPress={() => this.navigateTo("ChangePassword")} label={settings.changeEmail} icon="email" />
+						<Option onPress={() => this.navigateTo("EditProfile")} label={settings.editProfile} icon="person" />
+
 						<Option
-							onPress={() => this.navigateTo("ChangePassword")}
+							onPress={() => this.navigateTo("ChangeEmailEnterEmail")}
+							label={settings.changeEmail}
+							icon="email"
+						/>
+
+						<Option
+							onPress={() => this.navigateTo("ChangePhoneEnterPhone")}
 							label={settings.changePhone}
 							icon="phone_iphone"
 						/>
+
 						<Option onPress={() => this.navigateTo("ChangePassword")} label={settings.changePassword} icon="lock" />
 
 						<Divider />
 
 						<Option onPress={() => this.navigateTo("AboutThisAppScreen")} label={settings.aboutAidi} icon="info" />
+
 						<Option
-							onPress={() => this.navigateTo("AboutThisAppScreen")}
+							onPress={() => this.navigateTo("AboutRonda")}
 							label={settings.aboutRonda}
 							icon="filter_tilt_shift"
 						/>

@@ -4,11 +4,13 @@ import colors from "../../resources/colors";
 
 type Props = {
 	style?: ViewStyle;
+	color?: string;
 };
 
 export default class Divider extends PureComponent<Props> {
 	render() {
-		return <View style={[styles.divider, this.props.style]}></View>;
+		const { style, color } = this.props;
+		return <View style={[styles.divider, { backgroundColor: color ?? colors.darkGray }, style]}></View>;
 	}
 }
 

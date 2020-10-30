@@ -10,20 +10,19 @@ export interface DidiButtonProps extends TouchableOpacityProps {
 	title: string;
 	titleStyle?: StyleProp<TextStyle>;
 	theme?: DidiTheme;
+	small?: boolean;
 }
 
 export default class DidiButton extends React.Component<DidiButtonProps> {
 	public render() {
-		const theme = this.props.theme ? this.props.theme : themes.primaryTheme;
+		const { small } = this.props;
+		const theme = this.props.theme ?? themes.primaryTheme;
 		const currentButtonColor = {
 			backgroundColor: this.props.disabled ? theme.buttonDisabled : theme.button
 		};
+		const buttonStyles = [styles.button, currentButtonColor, small ? styles.small : {}, this.props.style];
 		return (
-			<TouchableOpacity
-				accessibilityRole="button"
-				{...this.props}
-				style={[styles.button, currentButtonColor, this.props.style]}
-			>
+			<TouchableOpacity accessibilityRole="button" {...this.props} style={buttonStyles}>
 				<DidiText.Button disabled={this.props.disabled || false} style={this.props.titleStyle}>
 					{this.props.title}
 				</DidiText.Button>
@@ -41,6 +40,10 @@ export const styles = StyleSheet.create({
 		marginHorizontal: 5,
 		marginVertical: 5,
 		borderRadius: 5,
+		paddingHorizontal: 16
+	},
+	small: {
+		height: 40,
 		paddingHorizontal: 16
 	},
 	text: {

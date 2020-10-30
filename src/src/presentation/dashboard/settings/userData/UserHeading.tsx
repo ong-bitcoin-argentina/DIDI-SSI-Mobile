@@ -4,6 +4,7 @@ import { Image, StyleSheet, TouchableOpacity, View, ViewProps } from "react-nati
 import { DidiText } from "../../../util/DidiText";
 
 import colors from "../../../resources/colors";
+import commonStyles from "../../../resources/commonStyles";
 
 interface UserHeadingProps extends ViewProps {
 	user: string | undefined;
@@ -20,74 +21,63 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 	render() {
 		const onImageEditTap = this.props.onImageEditTap;
 		return (
-			<View>
-				<View style={styles.backgroundImageContainer}>
+			<View style={styles.container}>
+				<View style={[styles.imageContainer, commonStyles.util.shadow]}>
 					<Image
-						style={styles.backgroundImage}
-						source={require("../../../resources/images/defaultBackgroundImage.jpg")}
-					/>
-				</View>
-
-				<View style={styles.identityImageContainer}>
-					<Image
-						style={styles.identityImage}
+						style={styles.image}
 						source={
 							this.props.profileImage !== undefined
 								? { uri: `data:${this.props.profileImage.mimetype};base64,${this.props.profileImage.data}` }
 								: require("../../../resources/images/logo-space.png")
 						}
 					/>
+					{onImageEditTap && (
+						<TouchableOpacity style={styles.cameraIconContainer} onPress={onImageEditTap}>
+							<DidiText.Icon color={colors.primary} fontSize={20}>
+								
+							</DidiText.Icon>
+						</TouchableOpacity>
+					)}
 				</View>
-
-				{onImageEditTap && (
-					<TouchableOpacity style={styles.cameraIconContainer} onPress={onImageEditTap}>
-						<DidiText.Icon fontSize={20}></DidiText.Icon>
-					</TouchableOpacity>
-				)}
-
-				<DidiText.UserData.HeaderName style={styles.userLabel}>{this.props.user}</DidiText.UserData.HeaderName>
+				<DidiText.UserData.HeaderName style={styles.userLabel}>@{this.props.user}</DidiText.UserData.HeaderName>
 			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	backgroundImage: {
-		width: "auto",
-		height: 200
+	container: {
+		backgroundColor: colors.primary,
+		paddingTop: 32,
+		paddingBottom: 20
 	},
-	backgroundImageContainer: {},
-	identityImageContainer: {
-		position: "absolute",
-		alignSelf: 'center',
-		justifyContent: 'center',
-		top: 90,
+	imageContainer: {
+		alignSelf: "center",
+		justifyContent: "center",
 		backgroundColor: colors.lightBackground,
-		borderRadius: 80,
-		width: 150,
-		height: 150
+		borderRadius: 80
 	},
 	cameraIconContainer: {
 		position: "absolute",
-		top: 170,
-		right: 20,
+		bottom: 0,
+		right: 0,
 		width: 40,
 		height: 40,
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: colors.primary,
-		borderRadius: 20
+		backgroundColor: colors.white,
+		borderRadius: 20,
+		...commonStyles.util.shadow
 	},
 	userLabel: {
-		marginTop: 40
+		marginTop: 26,
+		fontSize: 25,
+		color: colors.white
 	},
-	identityImage: {
-		margin: 5,
-
-		width: 140,
-		height: 140,
-		borderRadius: 70,
-
+	image: {
+		width: 154,
+		height: 154,
+		borderRadius: 90,
 		backgroundColor: colors.darkBackground,
 		borderColor: "#FFF",
 		borderWidth: 2

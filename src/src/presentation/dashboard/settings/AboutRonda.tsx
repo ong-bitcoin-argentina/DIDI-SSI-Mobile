@@ -3,31 +3,32 @@ import { Image, StyleSheet, View, ScrollView, Text } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
+import RondaLogo from "../../resources/images/ronda-horizontal.svg";
 
 import { DidiText } from "../../util/DidiText";
 import strings from "../../resources/strings";
-const { paragraphs } = strings.settings.about;
+const { aboutRondaParagraphs } = strings.settings;
 const { Small } = DidiText.Explanation;
 
-export type AboutThisAppScreenProps = {};
-type AboutThisAppScreenState = {};
-export type AboutThisAppScreenNavigation = {};
+export type AboutRondaScreenProps = {};
+type AboutRondaScreenState = {};
+export type AboutRondaScreenNavigation = {};
 
-export class AboutThisAppScreen extends NavigationEnabledComponent<
-	AboutThisAppScreenProps,
-	AboutThisAppScreenState,
-	AboutThisAppScreenNavigation
+export class AboutRondaScreen extends NavigationEnabledComponent<
+	AboutRondaScreenProps,
+	AboutRondaScreenState,
+	AboutRondaScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Acerca de ai·di");
+	static navigationOptions = NavigationHeaderStyle.withTitle("Acerca de Ronda");
 
 	render() {
 		return (
 			<ScrollView>
 				<View style={styles.view}>
 					<View style={styles.imageContainer}>
-						<Image style={styles.didiLogo} source={require("../../resources/images/logo.png")} />
+						<RondaLogo />
 					</View>
-					{paragraphs.map((p, index) => (
+					{aboutRondaParagraphs.map((p, index) => (
 						<Text style={styles.paragraph} key={index}>
 							{p.map((item, subindex) => (
 								<Small style={item.style} key={subindex}>
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
 	imageContainer: {
 		flex: 1,
 		alignItems: "center",
-		marginBottom: -10
+		marginTop: 40,
+		marginBottom: 32
 	}
 });
