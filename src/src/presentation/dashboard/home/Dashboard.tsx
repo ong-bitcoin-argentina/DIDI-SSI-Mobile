@@ -40,6 +40,7 @@ import {
 } from "../../util/appRouter";
 import { PendingLinkingState } from "../../../store/reducers/pendingLinkingReducer";
 import { EditProfileProps } from "../settings/userMenu/EditProfile";
+import { userHasRonda } from "../../../services/user/userHasRonda";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -55,6 +56,7 @@ interface DashboardScreenDispatchProps {
 	resetDniValidation: () => void;
 	finishDniValidation: () => void;
 	resetPendingLinking: () => void;
+	setRondaAccount: (hasAccount: Boolean) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -97,8 +99,18 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 		createToken(did).then(async (verification: string) => {
 			this.setState({ showModal: false });
+			this.handleSuccessRondaLinking();
 			successfullyLogged(verification);
 		});
+	};
+
+	handleSuccessRondaLinking = async () => {
+		const { did, hasRonda, setRondaAccount } = this.props;
+		if (!hasRonda) {
+			const response = await userHasRonda(did);
+			const hasAccount = response._tag ? true : false;
+			setRondaAccount(hasAccount);
+		}
 	};
 
 	urlHandler = (link: { url: string } | null | undefined) => {
@@ -223,7 +235,8 @@ export default didiConnect(
 		},
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
-		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } })
+		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),
+		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount })
 	})
 );
 
