@@ -24,6 +24,7 @@ const colors = {
 	primaryDark: "#205196",
 	primaryText: "#FFFFFF",
 	primaryGray: "#8c9aad",
+	darkGray: "#646464",
 
 	border: {
 		light: "#f0f0f0"
