@@ -90,7 +90,7 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	recentActivity: "user",
 	authApps: "user",
 	persistedPersonalData: "user",
-	pendingLinking: "device"
+	pendingLinking: "user"
 };
 
 function deletionReducer(state: PersistedStoreContent | undefined, action: StoreAction): PersistedStoreContent {

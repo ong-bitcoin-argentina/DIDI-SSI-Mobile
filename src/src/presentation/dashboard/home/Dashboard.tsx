@@ -18,7 +18,6 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DocumentDetailProps } from "../documents/DocumentDetail";
-import { UserDataProps } from "../settings/userData/UserData";
 import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
 
 import DidiActivity from "./DidiActivity";
@@ -40,6 +39,7 @@ import {
 	createToken
 } from "../../util/appRouter";
 import { PendingLinkingState } from "../../../store/reducers/pendingLinkingReducer";
+import { EditProfileProps } from "../settings/userMenu/EditProfile";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -64,7 +64,7 @@ interface DashboardScreenState {
 
 export interface DashboardScreenNavigation {
 	ValidateID: ValidateIdentityExplainWhatProps;
-	UserData: UserDataProps;
+	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
@@ -167,7 +167,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						ListHeaderComponent={
 							<Fragment>
 								<HomeHeader
-									onPersonPress={() => this.navigate("UserData", {})}
+									onPersonPress={() => this.navigate("EditProfile", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
 								/>
 								<View style={{ paddingHorizontal: 20, paddingTop: 8 }}>

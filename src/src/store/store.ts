@@ -9,7 +9,12 @@ import { RecentActivity } from "../model/RecentActivity";
 import { ServiceCallState } from "../services/ServiceStateStore";
 
 import { NormalizedStoreContent, PersistedStoreContent } from "./normalizedStore";
-import { combinedIdentitySelector, identitySelector, ValidatedIdentity } from "./selector/combinedIdentitySelector";
+import {
+	combinedIdentitySelector,
+	identitySelector,
+	ValidatedIdentity,
+	personalDataApprovedSelector
+} from "./selector/combinedIdentitySelector";
 import { combinedRecentActivitySelector } from "./selector/combinedRecentActivitySelector";
 import {
 	activeSpecialCredentialsSelector,
@@ -34,6 +39,7 @@ export interface StoreContent extends PersistedStoreContent {
 
 	identity: Identity;
 	validatedIdentity: ValidatedIdentity;
+	isPersonalDataApproved: boolean;
 	combinedRecentActivity: RecentActivity[];
 }
 
@@ -53,6 +59,7 @@ export function denormalizeStore(store: NormalizedStoreContent): StoreContent {
 
 		identity: identitySelector(store),
 		validatedIdentity: combinedIdentitySelector(store),
+		isPersonalDataApproved: personalDataApprovedSelector(store),
 		combinedRecentActivity: combinedRecentActivitySelector(store)
 	};
 }

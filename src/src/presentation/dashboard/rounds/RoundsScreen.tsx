@@ -90,6 +90,9 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 		const token = await this.getToken();
 		this.setState({ token });
 		this.handleCheckPersistedData(token);
+	};
+
+	handleSuccessRondaLinking = async () => {
 		const { did, hasRonda, setRondaAccount } = this.props;
 		if (!hasRonda) {
 			const response = await userHasRonda(did);
@@ -120,7 +123,10 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 
 	goRonda = async () => {
 		this.getToken().then(verification => {
-			this.setState({ showModal: false }, () => successfullyLogged(verification));
+			this.setState({ showModal: false }, () => {
+				successfullyLogged(verification);
+				this.handleSuccessRondaLinking();
+			});
 		});
 	};
 

@@ -8,15 +8,14 @@ import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent
 import { changeEmail } from "../../../../services/user/changeEmail";
 import { sendMailValidator } from "../../../../services/user/sendMailValidator";
 import strings from "../../../resources/strings";
-
-import { UserDataProps } from "./UserData";
+import { EditProfileProps } from "../userMenu/EditProfile";
 
 export interface ChangeEmailVerifyScreenProps {
 	newEmail: string;
 	password: string;
 }
 export interface ChangeEmailVerifyScreenNavigation {
-	UserData: UserDataProps;
+	EditProfile: EditProfileProps;
 }
 
 export class ChangeEmailVerifyScreen extends NavigationEnabledComponent<
@@ -42,6 +41,6 @@ export class ChangeEmailVerifyScreen extends NavigationEnabledComponent<
 
 	private onSuccess() {
 		Alert.alert(strings.services.changeEmailSuccess);
-		this.navigate("UserData", {});
+		this.navigate("EditProfile", {});
 	}
 }

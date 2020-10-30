@@ -1,6 +1,6 @@
-import { Identity } from "didi-sdk";
+import { Identity, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
-import { ScrollView, StatusBar, StyleSheet, TextInputProps, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard } from "react-native";
 import { readFile } from "react-native-fs";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
@@ -17,12 +17,18 @@ import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
+import Checkmark from "../../../resources/images/checkmark.svg";
 import { addressDataStructure, personalDataStructure } from "../userData/ProfileInputDescription";
 import { UserHeadingComponent } from "../userData/UserHeading";
+import { DidiText } from "../../../util/DidiText";
+import commonStyles from "../../../resources/commonStyles";
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
+	did: EthrDID | null;
 	identity: ValidatedIdentity;
+	isPersonalDataApproved: boolean;
+	isAddressApproved: boolean;
 }
 interface EditProfileDispatchProps {
 	saveIdentity: (state: Identity) => void;
@@ -35,6 +41,8 @@ interface EditProfileState {
 }
 
 export interface EditProfileNavigation {}
+
+const { Small, Emphasis } = DidiText.Explanation;
 
 class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileInternalProps,
@@ -145,38 +153,32 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 	private renderEditView() {
 		return (
-			<ScrollView>
+			<ScrollView style={{ backgroundColor: colors.lighterBackground }} contentContainerStyle={{ paddingBottom: 20 }}>
 				<UserHeadingComponent
 					user={this.props.identity.id}
 					profileImage={this.state.identity.image ?? this.props.identity.image}
 					onImageEditTap={() => this.setState({ cameraActive: true })}
 				/>
 
-				<DropdownMenu
-					headerContainerStyle={{ backgroundColor: colors.primary }}
-					headerTextStyle={{ color: colors.primaryText }}
-					style={styles.personalDataDropdown}
-					label={personalDataStructure.name}
-				>
+				<DropdownMenu label={personalDataStructure.name} approved={this.props.isPersonalDataApproved}>
 					{this.renderPersonInputs()}
 				</DropdownMenu>
 
-				<DropdownMenu
-					headerContainerStyle={{ backgroundColor: colors.primary }}
-					headerTextStyle={{ color: colors.primaryText }}
-					style={styles.personalDataDropdown}
-					label={addressDataStructure.name}
-				>
+				<DropdownMenu label={addressDataStructure.name} approved={this.props.isAddressApproved}>
 					{this.renderAddressInputs()}
 				</DropdownMenu>
 
-				<DidiButton
-					onPress={() => {
-						this.editProfile();
-					}}
-					disabled={!this.canPressContinueButton()}
-					title={strings.userData.editProfile.saveChanges}
-				/>
+				<View style={styles.didSection}>
+					<Emphasis style={{ color: colors.textLight }}>Identidad activa - DID:</Emphasis>
+					<Small>{this.props.did?.did()}</Small>
+					<DidiButton
+						title="Copiar DID"
+						style={[commonStyles.button.inverted, styles.copyButton]}
+						titleStyle={{ color: colors.primary }}
+						small
+						onPress={() => Clipboard.setString(this.props.did?.did() || "")}
+					/>
+				</View>
 			</ScrollView>
 		);
 	}
@@ -224,7 +226,10 @@ class EditProfileScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	EditProfileScreen,
 	(state): EditProfileStateProps => ({
-		identity: state.validatedIdentity
+		did: state.did.activeDid,
+		identity: state.validatedIdentity,
+		isPersonalDataApproved: state.isPersonalDataApproved,
+		isAddressApproved: state.validatedIdentity?.address?.state === ValidationState.Approved
 	}),
 	(dispatch): EditProfileDispatchProps => ({
 		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity })
@@ -248,15 +253,18 @@ const styles = StyleSheet.create({
 	button: {
 		marginBottom: 30
 	},
-	personalDataDropdown: {
-		marginTop: 20,
-		marginHorizontal: 10,
-		borderRadius: 10,
-		overflow: "hidden",
-		backgroundColor: colors.darkBackground
-	},
 	dropdownContents: {
 		padding: 16,
-		backgroundColor: colors.darkBackground
+		paddingHorizontal: 20,
+		backgroundColor: colors.white
+	},
+	copyButton: {
+		borderRadius: 40,
+		marginTop: 10
+	},
+	didSection: {
+		paddingVertical: 22,
+		paddingHorizontal: 28,
+		alignItems: "center"
 	}
 });

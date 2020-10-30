@@ -34,10 +34,11 @@ import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
-import UserData from "./settings/userData/UserData";
 import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 import { RoundsScreen } from "./rounds/RoundsScreen";
+import { EditProfileScreen } from "./settings/userMenu/EditProfile";
+import DocumentsScreen from "./documents/DocumentsScreen";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -91,8 +92,9 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			DocumentDetail: NavMap.placeholder(DocumentDetailScreen)
 		}),
 		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
+		DashboardDocuments: NavMap.from(DocumentsScreen, {}),
 		ValidateID: NavMap.placeholder(ValidateIdentityExplainWhatScreen),
-		UserData: NavMap.placeholder(UserData),
+		EditProfile: NavMap.placeholder(EditProfileScreen),
 		__DashboardSettings: SettingsNavigator({
 			...then,
 			DashboardHome: dashboardPlaceholder

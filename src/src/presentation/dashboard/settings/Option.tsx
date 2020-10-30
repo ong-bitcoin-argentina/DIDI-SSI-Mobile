@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableHighlight, View, StyleSheet, Text, StyleProp, ViewStyle } from "react-native";
+import { TouchableHighlight, View, StyleSheet, Text, StyleProp, ViewStyle, TouchableOpacity } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 
@@ -16,8 +16,8 @@ class Option extends Component<Props, State> {
 	render() {
 		const { onPress, icon, label, style } = this.props;
 		return (
-			<TouchableHighlight style={[styles.row, style]} onPress={onPress} underlayColor={colors.lightBackground}>
-				<View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+			<TouchableOpacity style={[styles.row, style]} onPress={onPress}>
+				<View style={styles.innerView}>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
 						<DidiText.Icon style={styles.leftIcon} fontSize={22}>
 							{icon}
@@ -28,7 +28,7 @@ class Option extends Component<Props, State> {
 						chevron_right
 					</DidiText.Icon>
 				</View>
-			</TouchableHighlight>
+			</TouchableOpacity>
 		);
 	}
 }
@@ -38,12 +38,17 @@ const styles = StyleSheet.create({
 		color: colors.darkGray,
 		marginRight: 14
 	},
+	innerView: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center"
+	},
 	rightIcon: {
 		color: colors.darkGray
 	},
 	row: {
 		marginBottom: 8,
-		paddingVertical: 18,
+		paddingVertical: 15,
 		paddingHorizontal: 8
 	},
 	text: {

@@ -139,7 +139,7 @@ export default {
 			rejected: "Rechazado"
 		},
 		editProfile: {
-			barTitle: "Editar Perfil",
+			barTitle: "Mi Perfil",
 			saveChanges: "Guardar Cambios",
 
 			firstNameMessage: "Nombre(s)",
@@ -450,6 +450,41 @@ export default {
 				]
 			]
 		},
+		aboutRondaParagraphs: [
+			[
+				{
+					style: styles.bold,
+					text: "Ronda"
+				},
+				{
+					style: {},
+					text:
+						" es una aplicación de Proyecto DIDI creada para jugar rondas, vaquitas, juntas o pasanakus de forma rápida, fácil y segura."
+				}
+			],
+			[
+				{
+					style: {},
+					text:
+						"Podés crear rondas con quién vos quieras, por el monto y el tiempo que elijan y hacer un seguimiento de cada ronda, los turnos y días de pago."
+				}
+			],
+			[
+				{
+					style: {},
+					text:
+						"Además tu participación queda registrada en la app a través de credenciales que validan tu capacidad de pago y tu reputación de buen pagador o pagadora. Al utilizar la tecnología "
+				},
+				{
+					style: styles.bold,
+					text: "blockchain"
+				},
+				{
+					style: {},
+					text: ", todos los datos y registros almacenados son privados y seguros."
+				}
+			]
+		],
 		endSession: "Cerrar Sesión"
 	},
 	share: {
