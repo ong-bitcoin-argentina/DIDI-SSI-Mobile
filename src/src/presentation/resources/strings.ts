@@ -398,7 +398,12 @@ export default {
 	settings: {
 		idLabel: "ID:",
 		identityBackup: "Copia de Seguridad",
-		changePassword: "Cambio de Contraseña",
+		changePassword: "Contraseña",
+		editProfile: "Editar Perfil",
+		changePhone: "Cambiar Teléfono",
+		changeEmail: "Cambiar E-mail",
+		aboutAidi: "Acerca de ai·di",
+		aboutRonda: "Acerca de Ronda",
 		about: {
 			title: `Acerca de ${appName}`,
 			paragraphs: [
