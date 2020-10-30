@@ -121,6 +121,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 								onChangeText,
 								...this.textInputPropsFor(struct.keyboardType, id?.state, id?.value)
 							}}
+							editable={false}
 						/>
 					);
 				})}
@@ -144,6 +145,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 								onChangeText: text => this.setIdentityMerging({ address: { [key]: text } }),
 								...this.textInputPropsFor(struct.keyboardType, state, value)
 							}}
+							editable={false}
 						/>
 					);
 				})}

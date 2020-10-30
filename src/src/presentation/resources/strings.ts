@@ -114,7 +114,9 @@ export default {
 		authModal: {
 			detail: (targetApp: string) =>
 				`${appName} compartirá esta información con ${targetApp}: Nombre, apellido, número de celular, mail, número de identificación digital (DID) y foto de usuario.`,
-			title: `Permitir acceso desde ${appName}`
+			title: `Permitir acceso desde ${appName}`,
+			titleHas: "Acceso validado por",
+			connecting: "Conectándote a Ronda..."
 		}
 	},
 	dashboardJump: {

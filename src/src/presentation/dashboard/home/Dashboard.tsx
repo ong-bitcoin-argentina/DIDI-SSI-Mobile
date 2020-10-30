@@ -48,6 +48,7 @@ interface DashboardScreenStateProps {
 	recentActivity: RecentActivity[];
 	credentialContext: DocumentCredentialCardContext;
 	pendingLinking: PendingLinkingState;
+	hasRonda: Boolean;
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
@@ -196,6 +197,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 					onCancel={this.permissionDenied}
 					onOk={this.permissionGranted}
 					visible={this.state.showModal}
+					alreadyHave={this.props.hasRonda}
+					automatic
 				/>
 			</Fragment>
 		);
@@ -209,7 +212,8 @@ export default didiConnect(
 		recentActivity: state.combinedRecentActivity,
 		credentials: state.credentials,
 		credentialContext: extractContext(state),
-		pendingLinking: state.pendingLinking
+		pendingLinking: state.pendingLinking,
+		hasRonda: state.authApps.ronda
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
