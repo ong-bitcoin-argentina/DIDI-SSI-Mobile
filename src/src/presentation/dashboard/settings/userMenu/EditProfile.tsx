@@ -1,6 +1,6 @@
 import { Identity, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
-import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard, ToastAndroid } from "react-native";
 import { readFile } from "react-native-fs";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
@@ -17,7 +17,6 @@ import { didiConnect } from "../../../../store/store";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
-import Checkmark from "../../../resources/images/checkmark.svg";
 import { addressDataStructure, personalDataStructure } from "../userData/ProfileInputDescription";
 import { UserHeadingComponent } from "../userData/UserHeading";
 import { DidiText } from "../../../util/DidiText";
@@ -107,51 +106,56 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 					const id =
 						key === "cellPhone" || key === "email" ? this.props.identity[key] : this.props.identity.personalData[key];
-					const onChangeText = (text: string) =>
-						key === "cellPhone" || key === "email"
-							? this.setIdentityMerging({ [key]: text })
-							: this.setIdentityMerging({ personalData: { [key]: text } });
 
-					return (
-						<DidiTextInput
-							key={key}
-							description={struct.name}
-							placeholder=""
-							textInputProps={{
-								onChangeText,
-								...this.textInputPropsFor(struct.keyboardType, id?.state, id?.value)
-							}}
-							editable={false}
-						/>
-					);
+					// keep commented code in case of requested that data would be editable
+					// const onChangeText = (text: string) =>
+					// 	key === "cellPhone" || key === "email"
+					// 		? this.setIdentityMerging({ [key]: text })
+					// 		: this.setIdentityMerging({ personalData: { [key]: text } });
+
+					return this.renderKeyValue(key, struct.name, id?.value);
+					// return (
+					// 	<DidiTextInput
+					// 		key={key}
+					// 		description={struct.name}
+					// 		placeholder=""
+					// 		textInputProps={{
+					// 			onChangeText,
+					// 			...this.textInputPropsFor(struct.keyboardType, id?.state, id?.value)
+					// 		}}
+					// 		editable={false}
+					// 	/>
+					// );
 				})}
+			</View>
+		);
+	}
+
+	renderKeyValue(key: any, label: string, value?: string | null) {
+		return (
+			<View style={styles.keyValueContainer} key={key}>
+				<Small style={{ color: colors.textLight, fontSize: 13 }}>{label}</Small>
+				<Small style={{ textAlign: "left" }}>{value ? value : "N/A"}</Small>
 			</View>
 		);
 	}
 
 	private renderAddressInputs() {
-		const state = this.props.identity.address.state;
 		return (
 			<View style={styles.dropdownContents}>
 				{addressDataStructure.order.map(key => {
 					const struct = addressDataStructure.structure[key];
 					const value = this.props.identity.address.value[key];
-					return (
-						<DidiTextInput
-							key={key}
-							description={struct.name}
-							placeholder=""
-							textInputProps={{
-								onChangeText: text => this.setIdentityMerging({ address: { [key]: text } }),
-								...this.textInputPropsFor(struct.keyboardType, state, value)
-							}}
-							editable={false}
-						/>
-					);
+					return this.renderKeyValue(key, struct.name, value);
 				})}
 			</View>
 		);
 	}
+
+	handleCopyDid = () => {
+		Clipboard.setString(this.props.did?.did() || "");
+		ToastAndroid.show("Copiado", ToastAndroid.SHORT);
+	};
 
 	private renderEditView() {
 		return (
@@ -177,8 +181,8 @@ class EditProfileScreen extends NavigationEnabledComponent<
 						title="Copiar DID"
 						style={[commonStyles.button.inverted, styles.copyButton]}
 						titleStyle={{ color: colors.primary }}
+						onPress={this.handleCopyDid}
 						small
-						onPress={() => Clipboard.setString(this.props.did?.did() || "")}
 					/>
 				</View>
 			</ScrollView>
@@ -258,7 +262,8 @@ const styles = StyleSheet.create({
 	dropdownContents: {
 		padding: 16,
 		paddingHorizontal: 20,
-		backgroundColor: colors.white
+		backgroundColor: colors.white,
+		alignItems: "flex-start"
 	},
 	copyButton: {
 		borderRadius: 40,
@@ -268,5 +273,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 22,
 		paddingHorizontal: 28,
 		alignItems: "center"
+	},
+	keyValueContainer: {
+		alignItems: "flex-start",
+		marginBottom: 18
 	}
 });
