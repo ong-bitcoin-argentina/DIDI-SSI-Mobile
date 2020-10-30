@@ -4,7 +4,7 @@ import com.android.build.OutputFile
 project.ext.envConfigFiles = [
     debug: ".env.staging",
     staging: ".env.staging",
-    release: ".env.production",
+    prod: ".env.production",
     uat: ".env.uat",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -141,7 +141,6 @@ android {
         versionCode project.env.get("VERSIONCODE").toInteger()
         versionName project.env.get("VERSION")
         missingDimensionStrategy 'react-native-camera', 'general'
-        archivesBaseName = "${project.env.get("ENV_CODE")}_aidi_${versionName}_v${versionCode}"
     }
 
     flavorDimensions "default"
@@ -154,6 +153,9 @@ android {
             resValue "string", "build_config_package", "com.aidi"
         }
         uat {
+            resValue "string", "build_config_package", "com.aidi"
+        }
+        prod {
             resValue "string", "build_config_package", "com.aidi"
         }
     }
@@ -203,7 +205,9 @@ android {
                 output.versionCodeOverride =
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
-
+            variant.outputs.all {
+                outputFileName = "${project.env.get("ENV_CODE")}_aidi_${versionName}_v${versionCode}.apk"
+            }
         }
     }
 
