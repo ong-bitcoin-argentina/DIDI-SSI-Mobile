@@ -18,6 +18,7 @@ export interface DidiTextInputProps {
 	stateIndicator?: JSX.Element;
 	textInputProps?: TextInputProps;
 	maxLength?: number;
+	editable?: boolean;
 }
 
 export default class DidiTextInput extends React.Component<DidiTextInputProps> {
@@ -29,6 +30,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		const textInputStyle = this.props.textInputProps
 			? [style.textInput, this.props.textInputProps.style]
 			: style.textInput;
+		const isEditable = this.props.editable === false ? false : true;
 
 		return (
 			<View {...this.props.viewProps} style={rootStyle}>
@@ -42,6 +44,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 								style={textInputStyle}
 								placeholder={this.props.placeholder}
 								maxLength={this.props.maxLength}
+								editable={isEditable}
 							/>
 						</View>
 						{this.props.stateIndicator}
@@ -98,7 +101,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				tagImage={require("../resources/images/email.png")}
 				textInputProps={{
 					keyboardType: "email-address",
-					autoCapitalize: 'none',
+					autoCapitalize: "none",
 					onChangeText: props.onChangeText
 				}}
 			/>
