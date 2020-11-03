@@ -226,7 +226,7 @@ export default didiConnect(
 		credentials: state.credentials,
 		credentialContext: extractContext(state),
 		pendingLinking: state.pendingLinking,
-		hasRonda: state.authApps.ronda
+		hasRonda: state.authApps.ronda,
 		validCredentials: state.validCredentials
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
