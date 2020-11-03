@@ -14,6 +14,7 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
 import CredentialCard from "./CredentialCard";
+import { CredentialStates } from "../../../model/Credential";
 
 export interface DocumentCredentialCardContext {
 	activeDid: ActiveDid;
@@ -33,26 +34,29 @@ export function extractContext(storeState: StoreContent): DocumentCredentialCard
 
 export type CredentialState = "share" | "identity" | "revoked" | "obsolete" | "normal";
 
-export function credentialState(document: CredentialDocument, context: DocumentCredentialCardContext): CredentialState {
+export function credentialState(
+	document: CredentialDocument,
+	context: DocumentCredentialCardContext
+): CredentialStates {
 	const specialType = document.specialFlag?.type;
 	const activeDid = context.activeDid;
 	const lastSync = context.lastTokenSync;
 
 	if (activeDid && activeDid.did && activeDid.did() !== document.subject.did()) {
-		return "share";
+		return CredentialStates.share;
 	} else if (specialType) {
 		const special = context.specialCredentials[specialType];
 		if (special === undefined) {
-			return "identity";
+			return CredentialStates.identity;
 		} else if (special.jwt !== document.jwt) {
-			return "obsolete";
+			return CredentialStates.obsolete;
 		} else {
-			return "identity";
+			return CredentialStates.identity;
 		}
 	} else if (lastSync && !lastSync.includes(document.jwt)) {
-		return "revoked";
+		return CredentialStates.revoked;
 	} else {
-		return "normal";
+		return CredentialStates.normal;
 	}
 }
 
@@ -132,7 +136,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		const styleType = credentialState(document, context);
 		const style = credentialStyles[styleType];
 
-		return  (
+		return (
 			<CredentialCard
 				icon=""
 				layout={document.preview?.cardLayout}
@@ -153,22 +157,22 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 
 	private renderTypeMessage(type: CredentialState): JSX.Element | undefined {
 		switch (type) {
-			case "normal":
-			case "identity":
+			case CredentialStates.normal:
+			case CredentialStates.identity:
 				return undefined;
-			case "revoked":
+			case CredentialStates.revoked:
 				return (
 					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
 						{strings.credentialCard.revoked}
 					</DidiText.Card.Warning>
 				);
-			case "obsolete":
+			case CredentialStates.obsolete:
 				return (
 					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
 						{strings.credentialCard.replaced}
 					</DidiText.Card.Warning>
 				);
-			case "share":
+			case CredentialStates.share:
 				return (
 					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
 						{strings.credentialCard.shared}
