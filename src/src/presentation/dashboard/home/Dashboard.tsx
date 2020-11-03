@@ -31,6 +31,7 @@ export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	did: ActiveDid;
 	credentials: CredentialDocument[];
+	validCredentials: CredentialDocument[];
 	recentActivity: RecentActivity[];
 	credentialContext: DocumentCredentialCardContext;
 }
@@ -115,7 +116,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 				<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
 					<FlatList
 						style={styles.body}
-						data={this.props.credentials}
+						data={this.props.validCredentials}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item, item.index)}
 						ListHeaderComponent={
@@ -156,6 +157,7 @@ export default didiConnect(
 		did: state.did.activeDid,
 		recentActivity: state.combinedRecentActivity,
 		credentials: state.credentials,
+		validCredentials: state.validCredentials,
 		credentialContext: extractContext(state)
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
