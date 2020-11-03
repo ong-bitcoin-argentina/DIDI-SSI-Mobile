@@ -19,7 +19,7 @@ export type DocumentsScreenProps = {};
 interface DocumentsScreenStateProps {
 	filter: (doc: CredentialDocument, did: EthrDID) => boolean;
 	did: ActiveDid;
-	credentials: CredentialDocument[];
+	validCredentials: CredentialDocument[];
 	credentialContext: DocumentCredentialCardContext;
 }
 type DocumentsScreenInternalProps = DocumentsScreenProps & DocumentsScreenStateProps;
@@ -31,7 +31,7 @@ export type DocumentsScreenNavigation = {
 
 class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternalProps, {}, DocumentsScreenNavigation> {
 	render() {
-		const did = this.props.did;
+		const { did, filter, validCredentials } = this.props;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -42,7 +42,7 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 						<FlatList
 							style={styles.body}
 							contentContainerStyle={styles.scrollContent}
-							data={this.props.credentials.filter(doc => this.props.filter(doc, did))}
+							data={validCredentials.filter(doc => filter(doc, did))}
 							keyExtractor={(_, index) => index.toString()}
 							renderItem={item => this.renderCard(item.item, item.index)}
 							ListEmptyComponent={this.renderEmpty()}
@@ -84,7 +84,7 @@ export default function (filter: (type: CredentialDocument, did: EthrDID) => boo
 		(state): DocumentsScreenStateProps => ({
 			filter,
 			did: state.did.activeDid,
-			credentials: state.credentials,
+			validCredentials: state.validCredentials,
 			credentialContext: extractContext(state)
 		})
 	);
