@@ -157,7 +157,8 @@ export default {
 			departmentMessage: "Departamento",
 			floorMessage: "Piso",
 			neighborhoodMessage: "Barrio",
-			postCodeMessage: "Código Postal"
+			postCodeMessage: "Código Postal",
+			configuration: "Configuración"
 		},
 		changePassword: {
 			barTitle: "Cambio de Contraseña",
@@ -354,7 +355,8 @@ export default {
 				title: "Elegí quién va a usar el beneficio:",
 				description: "Recordá que podés utilizarlo con tus familiares registrados en Semillas.",
 				detail: "Seleccioná quién lo usará",
-				modalTitle: "Estás por compartir la siguiente información",
+				modalTitle: (prestador: string) =>
+					`Estás por compartir la siguiente información con Prestador ${prestador} y con Semillas`,
 				labels: {
 					dni: "DNI",
 					name: "Nombre y Apellido",
@@ -402,6 +404,7 @@ export default {
 		identityBackup: "Copia de Seguridad",
 		changePassword: "Contraseña",
 		editProfile: "Editar Perfil",
+		myProfile: "Mi Perfil",
 		changePhone: "Cambiar Teléfono",
 		changeEmail: "Cambiar E-mail",
 		aboutAidi: "Acerca de ai·di",

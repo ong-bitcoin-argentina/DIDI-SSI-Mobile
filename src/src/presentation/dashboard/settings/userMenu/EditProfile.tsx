@@ -21,6 +21,7 @@ import { addressDataStructure, personalDataStructure } from "../userData/Profile
 import { UserHeadingComponent } from "../userData/UserHeading";
 import { DidiText } from "../../../util/DidiText";
 import commonStyles from "../../../resources/commonStyles";
+import { SettingsScreenProps } from "../SettingsScreen";
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
@@ -39,7 +40,9 @@ interface EditProfileState {
 	cameraActive: boolean;
 }
 
-export interface EditProfileNavigation {}
+export interface EditProfileNavigation {
+	Settings: SettingsScreenProps;
+}
 
 const { Small, Emphasis } = DidiText.Explanation;
 
@@ -48,7 +51,17 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileState,
 	EditProfileNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.editProfile.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions<EditProfileNavigation>(
+		strings.userData.editProfile.barTitle,
+		[
+			{
+				actionTitle: strings.userData.editProfile.configuration,
+				onPress: navigation => {
+					navigation.navigate("Settings", {});
+				}
+			}
+		]
+	);
 
 	constructor(props: EditProfileInternalProps) {
 		super(props);

@@ -32,10 +32,12 @@ const {
 export type RoundsScreenState = {
 	showModal: boolean;
 	showPersonalDataModal: boolean;
+	loadingPersonalData: boolean;
 	token: string;
 	name: string;
 	lastname: string;
 	hiddenProcess: boolean;
+	focusListener: any;
 };
 export interface RoundsScreenNavigation {
 	DashboardHome: DashboardScreenProps;
@@ -46,6 +48,7 @@ interface RoundsScreenStateProps {
 	did: ActiveDid;
 	hasRonda: Boolean;
 	persistedPersonalData: PersistedPersonalData;
+	havePersistedPersonalData: Boolean;
 	name?: string;
 	lastname?: string;
 }
@@ -73,10 +76,12 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 		this.state = {
 			showModal: false,
 			showPersonalDataModal: false,
+			loadingPersonalData: false,
 			token: "",
 			name: "",
 			lastname: "",
-			hiddenProcess: false
+			hiddenProcess: false,
+			focusListener: null
 		};
 	}
 
@@ -90,6 +95,12 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 		const token = await this.getToken();
 		this.setState({ token });
 		this.handleCheckPersistedData(token);
+		const focusListener = this.props.navigation.addListener("didFocus", () => this.handleCheckPersistedData(token));
+		this.setState({ focusListener });
+	};
+
+	componentWillUnmount = () => {
+		this.state.focusListener.remove();
 	};
 
 	handleSuccessRondaLinking = async () => {
@@ -103,14 +114,19 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 
 	handleCheckPersistedData = (token: string) => {
 		if (this.props.name && this.props.lastname) {
-			const { name, lastname } = this.props.persistedPersonalData;
+			const { havePersistedPersonalData } = this.props;
 			this.setState({ hiddenProcess: true });
-			if (!name && !lastname) {
+			if (!havePersistedPersonalData) {
 				this.props.sendPersonalData(token, this.props.name, this.props.lastname);
 			}
 		} else {
-			this.props.getPersonalData(token);
+			this.getPersonalDataWrapper(token);
 		}
+	};
+
+	getPersonalDataWrapper = (token: string) => {
+		this.setState({ loadingPersonalData: true });
+		this.props.getPersonalData(token);
 	};
 
 	showAuthModal = async () => {
@@ -134,16 +150,18 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 
 	handleSuccessGetPersonalData = () => {
 		const { name, lastname } = this.props.persistedPersonalData;
+		this.setState({ loadingPersonalData: false });
 		if (name && lastname) {
 			this.props.persistPersonalData(name, lastname);
 			this.props.saveName(name, lastname);
 		} else {
-			this.toggleModal();
 		}
+		this.toggleModal();
 	};
 
 	handleSuccessSendPersonalData = () => {
 		const { name, lastname } = this.props.persistedPersonalData;
+		this.setState({ loadingPersonalData: false });
 		this.props.saveName(name, lastname);
 		if (!this.state.hiddenProcess) {
 			DataAlert.alert("Éxito!", dataConfirmed);
@@ -154,6 +172,11 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 		this.setState({
 			showPersonalDataModal: !this.state.showPersonalDataModal
 		});
+	};
+
+	handleClosePersonalModal = () => {
+		this.toggleModal();
+		this.navigate("DashboardHome", {});
 	};
 
 	onChangeName = (name: string) => {
@@ -171,7 +194,7 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	};
 
 	render() {
-		const { hasRonda } = this.props;
+		const { hasRonda, havePersistedPersonalData } = this.props;
 		const subTitle = hasRonda ? descriptionHasRonda : description;
 		const cta = hasRonda ? "Ver Rondas" : "Acceder";
 		const btnAction = hasRonda ? this.goRonda : this.showAuthModal;
@@ -187,7 +210,12 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 						<Emphasis style={[styles.title, { marginBottom: 20 }]}>{hasRonda ? titleHasRonda : title}</Emphasis>
 						<Small style={[styles.modalText, { marginBottom: 35 }]}>{subTitle}</Small>
 						<View style={{ marginBottom: 15 }}>
-							<DidiButton onPress={btnAction} title={cta} />
+							<DidiButton
+								onPress={btnAction}
+								title={cta}
+								disabled={!havePersistedPersonalData}
+								loading={this.state.loadingPersonalData}
+							/>
 						</View>
 					</ScrollView>
 				</DidiScreen>
@@ -199,7 +227,11 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 							<DidiTextInput.FirstName onChangeText={this.onChangeName} />
 							<DidiTextInput.LastName onChangeText={this.onChangeLastname} />
 							<View style={styles.modalFooter}>
-								<DidiButton title={strings.buttons.close} style={{ marginTop: 30 }} onPress={this.toggleModal} />
+								<DidiButton
+									title={strings.buttons.close}
+									style={{ marginTop: 30 }}
+									onPress={this.handleClosePersonalModal}
+								/>
 								<DidiButton title={strings.buttons.send} style={{ marginTop: 30 }} onPress={this.onSendPersonalData} />
 							</View>
 						</View>
@@ -224,7 +256,8 @@ const connect = didiConnect(
 		hasRonda: state.authApps.ronda,
 		name: state.validatedIdentity.personalData.firstNames?.value,
 		lastname: state.validatedIdentity.personalData.lastNames?.value,
-		persistedPersonalData: state.persistedPersonalData
+		persistedPersonalData: state.persistedPersonalData,
+		havePersistedPersonalData: !!(state.persistedPersonalData.name && state.persistedPersonalData.lastname)
 	}),
 	(dispatch): RoundsScreenDispatchProps => ({
 		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),

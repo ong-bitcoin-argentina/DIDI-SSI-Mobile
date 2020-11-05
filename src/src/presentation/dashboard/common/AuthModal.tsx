@@ -11,8 +11,8 @@ const { Small } = DidiText.Explanation;
 export type AuthModalProps = {
 	appName: string;
 	visible: boolean;
-	alreadyHave: Boolean;
-	automatic: Boolean;
+	alreadyHave?: Boolean;
+	automatic?: Boolean;
 	onCancel: () => void;
 	onOk: () => void;
 };
