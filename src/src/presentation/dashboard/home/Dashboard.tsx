@@ -126,8 +126,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
 		if (pendingLinking) {
-			this.urlHandler({ url: pendingLinking });
 			this.props.resetPendingLinking();
+			this.urlHandler({ url: pendingLinking });
 		}
 	}
 

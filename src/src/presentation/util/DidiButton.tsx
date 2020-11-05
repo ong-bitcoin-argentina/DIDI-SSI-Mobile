@@ -1,16 +1,26 @@
 import React, { Fragment } from "react";
-import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import {
+	StyleProp,
+	StyleSheet,
+	Text,
+	TextStyle,
+	TouchableOpacity,
+	TouchableOpacityProps,
+	ActivityIndicator
+} from "react-native";
 
 import DidiTheme from "../resources/DidiTheme";
 import themes from "../resources/themes";
 
 import { DidiText } from "./DidiText";
+import colors from "../resources/colors";
 
 export interface DidiButtonProps extends TouchableOpacityProps {
 	title: string;
 	titleStyle?: StyleProp<TextStyle>;
 	theme?: DidiTheme;
 	small?: boolean;
+	loading?: boolean;
 }
 
 export default class DidiButton extends React.Component<DidiButtonProps> {
@@ -23,9 +33,13 @@ export default class DidiButton extends React.Component<DidiButtonProps> {
 		const buttonStyles = [styles.button, currentButtonColor, small ? styles.small : {}, this.props.style];
 		return (
 			<TouchableOpacity accessibilityRole="button" {...this.props} style={buttonStyles}>
-				<DidiText.Button disabled={this.props.disabled || false} style={this.props.titleStyle}>
-					{this.props.title}
-				</DidiText.Button>
+				{this.props.loading ? (
+					<ActivityIndicator color={colors.white} />
+				) : (
+					<DidiText.Button disabled={this.props.disabled || false} style={this.props.titleStyle}>
+						{this.props.title}
+					</DidiText.Button>
+				)}
 			</TouchableOpacity>
 		);
 	}

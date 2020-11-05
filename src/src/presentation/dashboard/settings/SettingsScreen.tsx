@@ -37,7 +37,7 @@ interface SettingsScreenDispatchProps {
 type SettingsScreenInternalProps = SettingsScreenProps & SettingsScreenStateProps & SettingsScreenDispatchProps;
 
 export interface SettingsScreenNavigation {
-	Access: StartAccessProps;
+	// Access: StartAccessProps;
 	DashboardHome: DashboardScreenProps;
 	EditProfile: EditProfileProps;
 	IdentitySettings: IdentitySettingsProps;
@@ -58,10 +58,7 @@ interface SettingsButton {
 const { settings } = strings;
 
 class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalProps, {}, SettingsScreenNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
-		SettingsScreenNavigation,
-		"DashboardHome"
-	>(strings.tabNames.settings, "DashboardHome", {});
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.tabNames.settings);
 
 	buttons(): SettingsButton[] {
 		const base = [
@@ -95,7 +92,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={styles.area}>
 					<ScrollView contentContainerStyle={styles.container}>
-						<Option onPress={() => this.navigateTo("EditProfile")} label={settings.editProfile} icon="person" />
+						<Option onPress={() => this.navigateTo("EditProfile")} label={settings.myProfile} icon="person" />
 
 						<Option
 							onPress={() => this.navigateTo("ChangeEmailEnterEmail")}
