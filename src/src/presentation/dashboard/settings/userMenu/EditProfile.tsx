@@ -5,7 +5,6 @@ import { readFile } from "react-native-fs";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
-import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { DidiCamera } from "../../common/DidiCamera";
@@ -51,16 +50,10 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileState,
 	EditProfileNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonActions<EditProfileNavigation>(
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButton<EditProfileNavigation, "Settings">(
 		strings.userData.editProfile.barTitle,
-		[
-			{
-				actionTitle: strings.userData.editProfile.configuration,
-				onPress: navigation => {
-					navigation.navigate("Settings", {});
-				}
-			}
-		]
+		"settings",
+		"Settings"
 	);
 
 	constructor(props: EditProfileInternalProps) {

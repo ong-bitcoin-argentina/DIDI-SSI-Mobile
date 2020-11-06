@@ -196,29 +196,27 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	render() {
 		const { hasRonda, havePersistedPersonalData } = this.props;
 		const subTitle = hasRonda ? descriptionHasRonda : description;
-		const cta = hasRonda ? "Ver Rondas" : "Acceder";
+		const cta = hasRonda ? "Ver ronda" : "Acceder";
 		const btnAction = hasRonda ? this.goRonda : this.showAuthModal;
 		return (
 			<>
 				<ServiceObserver serviceKey={serviceKey} onSuccess={this.handleSuccessGetPersonalData} />
 				<ServiceObserver serviceKey={serviceKeySendData} onSuccess={this.handleSuccessSendPersonalData} />
-				<DidiScreen>
-					<ScrollView>
-						<View style={[styles.centered, { marginVertical: 38 }]}>
-							<RondaLogo />
-						</View>
-						<Emphasis style={[styles.title, { marginBottom: 20 }]}>{hasRonda ? titleHasRonda : title}</Emphasis>
-						<Small style={[styles.modalText, { marginBottom: 35 }]}>{subTitle}</Small>
-						<View style={{ marginBottom: 15 }}>
-							<DidiButton
-								onPress={btnAction}
-								title={cta}
-								disabled={!havePersistedPersonalData}
-								loading={this.state.loadingPersonalData}
-							/>
-						</View>
-					</ScrollView>
-				</DidiScreen>
+
+				<ScrollView contentContainerStyle={[commonStyles.view.scrollCentered, { paddingHorizontal: 34 }]}>
+					<View style={[styles.centered, { marginBottom: 38 }]}>
+						<RondaLogo />
+					</View>
+					<Emphasis style={[styles.title, { marginBottom: 20 }]}>{hasRonda ? titleHasRonda : title}</Emphasis>
+					<Small style={[styles.modalText, { marginBottom: 35 }]}>{subTitle}</Small>
+					<DidiButton
+						onPress={btnAction}
+						title={cta}
+						disabled={!havePersistedPersonalData}
+						loading={this.state.loadingPersonalData}
+						style={{ paddingHorizontal: 60 }}
+					/>
+				</ScrollView>
 
 				<Modal animationType="fade" transparent={true} visible={this.state.showPersonalDataModal}>
 					<View style={modal.centeredView}>
