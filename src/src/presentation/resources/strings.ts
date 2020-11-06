@@ -337,7 +337,8 @@ export default {
 				title: "Elegí quién va a usar el beneficio:",
 				description: "Recordá que podés utilizarlo con tus familiares registrados en Semillas.",
 				detail: "Seleccioná quién lo usará",
-				modalTitle: "Estás por compartir la siguiente información",
+				modalTitle: (prestador: string) =>
+					`Estás por compartir la siguiente información con Prestador ${prestador} y con Semillas`,
 				labels: {
 					dni: "DNI",
 					name: "Nombre y Apellido",

@@ -139,7 +139,8 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 		const { header, view } = commonStyles.benefit;
 		const { modal } = commonStyles;
 		const { selected, selectedValue, modalVisible, shareInProgress } = this.state;
-		const { email, phoneNumber, identitiesData } = this.props;
+		const { email, phoneNumber, identitiesData, activePrestador, customEmail } = this.props;
+		const prestadorName = customEmail ? customEmail : activePrestador?.name;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -178,7 +179,7 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 								<View style={styles.modalImage}>
 									<SemillasLogo viewBox="0 0 128 39" width={100} height={58} style={styles.logo} />
 								</View>
-								<Small style={styles.modalTitle}>{modalTitle}:</Small>
+								<Small style={styles.modalTitle}>{modalTitle(prestadorName)}:</Small>
 
 								<Beneficiario item={selected} email={email} phoneNumber={phoneNumber} />
 
