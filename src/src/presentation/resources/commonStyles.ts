@@ -27,6 +27,12 @@ export default {
 			justifyContent: "space-between",
 			paddingHorizontal: "10%",
 			paddingVertical: 30
+		},
+		scrollCentered: {
+			paddingHorizontal: 20,
+			flexGrow: 1,
+			justifyContent: "center",
+			alignItems: "center"
 		}
 	}),
 	benefit: StyleSheet.create({

@@ -1,10 +1,11 @@
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import { HeaderButton, HeaderButtonProps, HeaderButtons, Item } from "react-navigation-header-buttons";
 import { defaultOnOverflowMenuPress } from "react-navigation-header-buttons/src/overflowMenuPressHandlers";
 import { HeaderBackButton, NavigationStackOptions } from "react-navigation-stack";
 
-import { styleToUse } from "../util/DidiText";
+import { styleToUse, DidiText } from "../util/DidiText";
 
 import DidiTheme from "../resources/DidiTheme";
 import VerticalMore from "../resources/images/verticalMore.svg";
@@ -80,6 +81,24 @@ const styles = {
 							);
 						})}
 					</HeaderButtons>
+				)
+			};
+		};
+	},
+
+	withTitleAndRightButton<Navigation, K extends keyof Navigation>(
+		title: string,
+		icon: string,
+		target: K
+	): NavigationOptions {
+		return ({ navigation }) => {
+			return {
+				...defaultStyle(themes.primaryTheme),
+				title,
+				headerRight: (
+					<TouchableOpacity style={{ paddingHorizontal: 16 }} onPress={() => navigation.navigate(target, {})}>
+						<DidiText.Icon fontSize={22}>{icon}</DidiText.Icon>
+					</TouchableOpacity>
 				)
 			};
 		};

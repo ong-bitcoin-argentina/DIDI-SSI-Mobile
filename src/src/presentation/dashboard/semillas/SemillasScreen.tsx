@@ -206,16 +206,16 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
-				<ScrollView>
-					<SafeAreaView style={{ ...view.area, ...styles.scrollContent }}>
-						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
-						<View style={{ paddingHorizontal: 15 }}>
-							<Small style={util.paragraphMd}>{detailFirst}</Small>
-							<Small style={util.paragraphMd}>{detailSecond}</Small>
-							<Small style={util.paragraphMd}>{detailThird}</Small>
-						</View>
+				<ScrollView contentContainerStyle={commonStyles.view.scrollCentered}>
+					<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
+					<View style={{ marginBottom: 18 }}>
+						<Small style={util.paragraphMd}>{detailFirst}</Small>
+						<Small style={util.paragraphMd}>{detailSecond}</Small>
+						<Small style={util.paragraphMd}>{detailThird}</Small>
+					</View>
+					<View style={{ marginBottom: 20 }}>
 						{mustShowBenefitsButton ? this.renderButtonBenefits() : this.renderButtonWantCredentials()}
-					</SafeAreaView>
+					</View>
 				</ScrollView>
 
 				<Modal
@@ -256,10 +256,6 @@ const styles = StyleSheet.create({
 	body: {
 		width: "100%"
 	},
-	scrollContent: {
-		backgroundColor: "white",
-		paddingVertical: 8
-	},
 	warningMessage: {
 		fontSize: 18,
 		marginTop: 20
@@ -269,8 +265,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 26
 	},
 	button: {
-		marginTop: 30,
-		paddingHorizontal: 20
+		paddingHorizontal: 30
 	},
 	buttonText: {
 		fontSize: 16
@@ -278,7 +273,7 @@ const styles = StyleSheet.create({
 	logo: {
 		height: 50,
 		width: 50,
-		marginVertical: 25
+		marginVertical: 10
 	},
 	hidden: {
 		display: "none"

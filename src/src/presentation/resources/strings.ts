@@ -310,13 +310,13 @@ export default {
 	},
 	tabNames: {
 		home: "Inicio",
-		rounds: "Rondas",
+		rounds: "ronda",
 		documents: "Credenciales",
 		settings: "Configuración",
 		semillas: "Semillas"
 	},
 	rounds: {
-		title: "Accedé a Ronda",
+		title: "Accedé a ronda",
 		titleHasRonda: "Ver mis rondas",
 		description: "Organizá y participá de rondas, juntas, vaquitas o pasanakus de forma fácil y segura.",
 		completeData: "Por favor, complatá tus datos para acceder a ronda.",
@@ -408,7 +408,7 @@ export default {
 		changePhone: "Cambiar Teléfono",
 		changeEmail: "Cambiar E-mail",
 		aboutAidi: "Acerca de ai·di",
-		aboutRonda: "Acerca de Ronda",
+		aboutRonda: "Acerca de ronda",
 		about: {
 			title: `Acerca de ${appName}`,
 			paragraphs: [
@@ -459,7 +459,7 @@ export default {
 			[
 				{
 					style: styles.bold,
-					text: "Ronda"
+					text: "ronda"
 				},
 				{
 					style: {},

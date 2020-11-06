@@ -19,7 +19,7 @@ export class AboutRondaScreen extends NavigationEnabledComponent<
 	AboutRondaScreenState,
 	AboutRondaScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Acerca de Ronda");
+	static navigationOptions = NavigationHeaderStyle.withTitle("Acerca de ronda");
 
 	render() {
 		return (
