@@ -17,7 +17,7 @@ import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
 import { addressDataStructure, personalDataStructure } from "../userData/ProfileInputDescription";
-import { UserHeadingComponent } from "../userData/UserHeading";
+import { UserHeading } from "../userData/UserHeading";
 import { DidiText } from "../../../util/DidiText";
 import commonStyles from "../../../resources/commonStyles";
 import { SettingsScreenProps } from "../SettingsScreen";
@@ -166,11 +166,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	private renderEditView() {
 		return (
 			<ScrollView style={{ backgroundColor: colors.lighterBackground }} contentContainerStyle={{ paddingBottom: 20 }}>
-				<UserHeadingComponent
-					user={this.props.identity.id}
-					profileImage={this.state.identity.image ?? this.props.identity.image}
-					onImageEditTap={() => this.setState({ cameraActive: true })}
-				/>
+				<UserHeading user={this.props.identity.id} onImageEditTap={() => this.setState({ cameraActive: true })} />
 
 				<DropdownMenu label={personalDataStructure.name} approved={this.props.isPersonalDataApproved}>
 					{this.renderPersonInputs()}
@@ -227,6 +223,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		const data = await readFile(pic.uri, "base64");
 		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		this.setState({ cameraActive: false });
+		this.editProfile();
 	}
 
 	private editProfile() {
