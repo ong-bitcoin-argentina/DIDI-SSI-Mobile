@@ -47,3 +47,5 @@ Expected output (for both) is on `/src/android/app/build/outputs/apk/staging/rel
 Para el correcto funcionamiento de la aplicación, se debe hacer una modificacion de entorno sobre el DIDI-SDK.
 
 Para esto (una vez realizado _**npm install**_), dirigirse al directorio **_node_modules/didi-sdk/src/crypto/Encription.ts_** y modificar la constante **HASH_SALT** con el valor de **PRIVATE_KEY_SEED_PASSWORD** ubicado en el archivo .env inicialmente configurado.
+
+Para más información, ver la [documentación](https://docs.didi.org.ar)
