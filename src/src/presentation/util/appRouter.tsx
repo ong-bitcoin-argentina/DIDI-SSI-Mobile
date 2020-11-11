@@ -5,6 +5,7 @@ import { Credentials } from "uport-credentials";
 import { DIDI_SERVER_DID } from "../../AppConfig";
 import { EthrDID } from "didi-sdk";
 import DeepLinking from "react-native-deep-linking";
+import { NavigationActions } from "react-navigation";
 
 interface Settings {
 	did?: string;
@@ -62,13 +63,14 @@ export const dynamicLinkHandler = (myHandler: (link: Link) => void) => {
 	return () => unsubscribe();
 };
 
-export const askedForLogin = (link: Link) => link.url.match(/login/);
-export const navigateToCredentials = (link: Link) => link.url.match(/credentials/);
+export const askedForLogin = (link: Link) => link?.url?.match(/login/);
+export const navigateToCredentials = (link: Link) => link?.url?.match(/credentials/);
 
 export const initializeDeepLinking = () => {
 	DeepLinking.addScheme("aidi://");
 	Linking.addEventListener("url", handleUrl);
 	DeepLinking.addRoute("/login");
+	DeepLinking.addRoute("/credentials");
 	const url = Linking.getInitialURL()
 		.then(url => url && Linking.openURL(url))
 		.catch(err => console.error("An error occurred", err));
@@ -84,6 +86,16 @@ export const handleUrl = ({ url }) => {
 			DeepLinking.evaluateUrl(url);
 		}
 	});
+};
+
+export const handleCredentialDeepLink = (navigation: any) => {
+	const navigateAction = NavigationActions.navigate({
+		routeName: "DashboardDocuments",
+		action: NavigationActions.navigate({
+			routeName: "DocumentsFinance"
+		})
+	});
+	navigation.dispatch(navigateAction);
 };
 
 export const createToken = (did: EthrDID) => {

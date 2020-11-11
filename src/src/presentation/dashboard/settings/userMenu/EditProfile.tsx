@@ -164,6 +164,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	};
 
 	private renderEditView() {
+		const { did } = this.props;
 		return (
 			<ScrollView style={{ backgroundColor: colors.lighterBackground }} contentContainerStyle={{ paddingBottom: 20 }}>
 				<UserHeading user={this.props.identity.id} onImageEditTap={() => this.setState({ cameraActive: true })} />
@@ -178,7 +179,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 				<View style={styles.didSection}>
 					<Emphasis style={{ color: colors.textLight }}>Identidad activa - DID:</Emphasis>
-					<Small>{this.props.did?.did()}</Small>
+					<Small>{did && did.did ? did.did() : ""}</Small>
 					<DidiButton
 						title="Copiar DID"
 						style={[commonStyles.button.inverted, styles.copyButton]}

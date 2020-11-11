@@ -17,7 +17,7 @@ type UserHeadingGlobalProps = {
 
 type UserHeadingProps = UserHeadingInternalProps & UserHeadingGlobalProps;
 
-export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
+class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
 	render() {
 		const { onImageEditTap, identity } = this.props;
 		return (

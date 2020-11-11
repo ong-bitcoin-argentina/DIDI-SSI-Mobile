@@ -92,7 +92,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			DocumentDetail: NavMap.placeholder(DocumentDetailScreen)
 		}),
 		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
-		DashboardDocuments: NavMap.from(DocumentsScreen, {}),
+		DashboardDocuments: NavMap.placeholder(DocumentsScreen),
 		ValidateID: NavMap.placeholder(ValidateIdentityExplainWhatScreen),
 		EditProfile: NavMap.placeholder(EditProfileScreen),
 		__DashboardSettings: SettingsNavigator({
