@@ -22,7 +22,9 @@ import { didiConnect } from "../../store/store";
 import { PendingLinkingState } from "../../store/reducers/pendingLinkingReducer";
 import { deepLinkHandler, dynamicLinkHandler, askedForLogin, navigateToCredentials, links } from "../util/appRouter";
 
-export type StartAccessProps = {};
+export type StartAccessProps = {
+	pendingLinking: PendingLinkingState;
+};
 
 type StartAccessDispatchProps = {
 	savePendingLinking: (state: PendingLinkingState) => void;
@@ -53,8 +55,7 @@ class StartAccessScreen extends NavigationEnabledComponent<
 	}
 
 	urlHandler = (link?: { url: string } | null) => {
-		if (this.props.navigation.isFocused) {
-			if (!link) return;
+		if (link && !this.props.pendingLinking) {
 			this.props.savePendingLinking(link.url);
 		}
 	};
@@ -118,7 +119,9 @@ const styles = StyleSheet.create({
 
 const connected = didiConnect(
 	StartAccessScreen,
-	state => ({}),
+	state => ({
+		pendingLinking: state.pendingLinking
+	}),
 	(dispatch): any => ({
 		savePendingLinking: (state: PendingLinkingState) => dispatch({ type: "PENDING_LINKING_SET", state })
 	})
