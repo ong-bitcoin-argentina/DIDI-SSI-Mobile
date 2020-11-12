@@ -16,7 +16,7 @@ import { EditProfileProps } from "../userMenu/EditProfile";
 import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
 import { addressDataStructure, personalDataStructure } from "./ProfileInputDescription";
-import { UserHeadingComponent } from "./UserHeading";
+import { UserHeading } from "./UserHeading";
 import { KeyDisplayComponent } from "../identity/KeyDisplayComponent";
 import { ActiveDid } from "../../../../store/reducers/didReducer";
 import { KeyAddress } from "react-native-uport-signer";
@@ -83,7 +83,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 	render() {
 		return (
 			<ScrollView>
-				<UserHeadingComponent user={this.props.identity.id} profileImage={this.props.identity.image} />
+				<UserHeading user={this.props.identity.id} />
 
 				<View>
 					{this.renderPersonalData()}

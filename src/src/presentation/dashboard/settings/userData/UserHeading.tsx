@@ -1,33 +1,33 @@
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View, ViewProps } from "react-native";
-
 import { DidiText } from "../../../util/DidiText";
-
 import colors from "../../../resources/colors";
 import commonStyles from "../../../resources/commonStyles";
+import { didiConnect } from "../../../../store/store";
+import { ValidatedIdentity } from "../../../../store/selector/combinedIdentitySelector";
 
-interface UserHeadingProps extends ViewProps {
+interface UserHeadingInternalProps extends ViewProps {
 	user: string | undefined;
-	profileImage:
-		| {
-				mimetype: string;
-				data: string;
-		  }
-		| undefined;
 	onImageEditTap?: () => void;
 }
 
-export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
+type UserHeadingGlobalProps = {
+	identity: ValidatedIdentity;
+};
+
+type UserHeadingProps = UserHeadingInternalProps & UserHeadingGlobalProps;
+
+class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
 	render() {
-		const onImageEditTap = this.props.onImageEditTap;
+		const { onImageEditTap, identity } = this.props;
 		return (
 			<View style={styles.container}>
 				<View style={[styles.imageContainer, commonStyles.util.shadow]}>
 					<Image
 						style={styles.image}
 						source={
-							this.props.profileImage !== undefined
-								? { uri: `data:${this.props.profileImage.mimetype};base64,${this.props.profileImage.data}` }
+							identity && identity.image
+								? { uri: `data:${identity.image.mimetype};base64,${identity.image.data}` }
 								: require("../../../resources/images/logo-space.png")
 						}
 					/>
@@ -44,6 +44,16 @@ export class UserHeadingComponent extends React.Component<UserHeadingProps, {}, 
 		);
 	}
 }
+
+const connected = didiConnect(
+	UserHeadingComponent,
+	(state): UserHeadingGlobalProps => ({
+		identity: state.validatedIdentity
+	}),
+	dispatch => ({})
+);
+
+export { connected as UserHeading };
 
 const styles = StyleSheet.create({
 	container: {

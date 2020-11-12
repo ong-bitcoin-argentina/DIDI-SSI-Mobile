@@ -36,11 +36,13 @@ import {
 	dynamicLinkHandler,
 	navigateToCredentials,
 	askedForLogin,
-	createToken
+	createToken,
+	handleCredentialDeepLink
 } from "../../util/appRouter";
 import { PendingLinkingState } from "../../../store/reducers/pendingLinkingReducer";
 import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
+import { NavigationActions } from "react-navigation";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -117,7 +119,9 @@ class DashboardScreen extends NavigationEnabledComponent<
 	urlHandler = (link: { url: string } | null | undefined) => {
 		if (!link) return;
 		if (askedForLogin(link)) this.setState({ showModal: true });
-		if (navigateToCredentials(link)) this.navigate("DashboardDocuments", {});
+		if (navigateToCredentials(link)) {
+			handleCredentialDeepLink(this.props.navigation);
+		}
 	};
 
 	componentDidMount() {
@@ -178,6 +182,9 @@ class DashboardScreen extends NavigationEnabledComponent<
 						data={this.props.validCredentials}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item, item.index)}
+						maxToRenderPerBatch={5}
+						updateCellsBatchingPeriod={30}
+						windowSize={6}
 						ListHeaderComponent={
 							<Fragment>
 								<HomeHeader
