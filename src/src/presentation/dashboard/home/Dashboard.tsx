@@ -214,7 +214,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 					/>
 				</SafeAreaView>
 				<AuthModal
-					appName="Ronda"
+					appName="ronda"
 					onCancel={this.permissionDenied}
 					onOk={this.permissionGranted}
 					visible={this.state.showModal}

@@ -237,7 +237,7 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 				</Modal>
 
 				<AuthModal
-					appName="Ronda"
+					appName="ronda"
 					onCancel={this.permissionDenied}
 					onOk={this.goRonda}
 					visible={this.state.showModal}
