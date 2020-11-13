@@ -117,10 +117,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 	};
 
 	urlHandler = (link: { url: string } | null | undefined) => {
-		if (!link) return;
-		if (askedForLogin(link)) this.setState({ showModal: true });
-		if (navigateToCredentials(link)) {
-			handleCredentialDeepLink(this.props.navigation);
+		if (link && link.url) {
+			if (askedForLogin(link)) this.setState({ showModal: true });
+			if (navigateToCredentials(link)) {
+				handleCredentialDeepLink(this.props.navigation);
+			}
 		}
 	};
 
