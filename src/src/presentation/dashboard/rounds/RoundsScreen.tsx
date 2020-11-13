@@ -113,11 +113,11 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	};
 
 	handleCheckPersistedData = (token: string) => {
-		if (this.props.name && this.props.lastname) {
-			const { havePersistedPersonalData } = this.props;
+		const { name, lastname, havePersistedPersonalData } = this.props;
+		if (name && lastname) {
 			this.setState({ hiddenProcess: true });
 			if (!havePersistedPersonalData) {
-				this.props.sendPersonalData(token, this.props.name, this.props.lastname);
+				this.props.sendPersonalData(token, name, lastname);
 			}
 		} else {
 			this.getPersonalDataWrapper(token);
@@ -149,14 +149,14 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	permissionDenied = async () => this.setState({ showModal: false });
 
 	handleSuccessGetPersonalData = () => {
-		const { name, lastname } = this.props.persistedPersonalData;
+		const { havePersistedPersonalData } = this.props;
 		this.setState({ loadingPersonalData: false });
-		if (name && lastname) {
-			this.props.persistPersonalData(name, lastname);
+		if (havePersistedPersonalData) {
+			const { name, lastname } = this.props.persistedPersonalData;
 			this.props.saveName(name, lastname);
 		} else {
+			this.toggleModal();
 		}
-		this.toggleModal();
 	};
 
 	handleSuccessSendPersonalData = () => {
@@ -252,8 +252,8 @@ const connect = didiConnect(
 	(state): RoundsScreenStateProps => ({
 		did: state.did.activeDid,
 		hasRonda: state.authApps.ronda,
-		name: state.validatedIdentity.personalData.firstNames?.value,
-		lastname: state.validatedIdentity.personalData.lastNames?.value,
+		name: state.userInputIdentity.personalData.firstNames ?? state.validatedIdentity.personalData.firstNames?.value,
+		lastname: state.userInputIdentity.personalData.lastNames ?? state.validatedIdentity.personalData.lastNames?.value,
 		persistedPersonalData: state.persistedPersonalData,
 		havePersistedPersonalData: !!(state.persistedPersonalData.name && state.persistedPersonalData.lastname)
 	}),
