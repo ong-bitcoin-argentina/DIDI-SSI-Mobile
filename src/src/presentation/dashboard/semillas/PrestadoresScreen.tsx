@@ -30,6 +30,7 @@ import { semillasCategoriesFilters, categories } from "./constants";
 import colors from "../../resources/colors";
 import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
+import CustomPicker from "../../common/CustomPicker";
 const { header, view } = commonStyles.benefit;
 const { steps, writeEmail, program } = strings.semillas;
 const { email, title, noCredentials } = steps.first;
@@ -194,23 +195,17 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 					<Small style={[header]} adjustsFontSizeToFit>
 						{title}
 					</Small>
-					<View style={styles.filter}>
-						<View style={{ flex: 1 }}>
-							<Small style={styles.pickerLabel}>{strings.general.filterBy.category}</Small>
-						</View>
-						<View style={{ flex: 2 }}>
-							<Picker
-								selectedValue={categoryFilter}
-								style={{ height: "100%" }}
-								onValueChange={this.handleFilterChange}
-								mode="dialog"
-							>
-								{semillasCategoriesFilters.map(item => (
-									<Picker.Item label={item.label} value={item.value} key={item.value} />
-								))}
-							</Picker>
-						</View>
-					</View>
+
+					<CustomPicker
+						selectedValue={categoryFilter}
+						prefix={strings.general.filterBy.category}
+						onValueChange={this.handleFilterChange}
+						style={{ flex: 1.3 }}
+					>
+						{semillasCategoriesFilters.map(item => (
+							<Picker.Item label={item.label} value={item.value} key={item.value} />
+						))}
+					</CustomPicker>
 
 					<View style={{ flex: 8 }}>{loading ? this.renderLoading() : this.renderList()}</View>
 
@@ -273,22 +268,6 @@ export default didiConnect(
 const styles = StyleSheet.create({
 	header: {
 		flex: 1
-	},
-	pickerLabel: {
-		textAlign: "right",
-		fontSize: 16,
-		marginRight: 6
-	},
-	filter: {
-		marginTop: 6,
-		marginBottom: 14,
-		flex: 1,
-		flexDirection: "row",
-		alignItems: "center",
-		borderWidth: 1,
-		borderColor: colors.border.light,
-		borderRadius: 10,
-		paddingVertical: 4
 	},
 	emailDescription: {
 		marginTop: 10,
