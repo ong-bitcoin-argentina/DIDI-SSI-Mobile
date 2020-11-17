@@ -19,6 +19,7 @@ import {
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 import { CredentialDocument, ClaimData } from "didi-sdk";
 import { RequestFinishedProps } from "./RequestFinishedScreen";
+import CustomPicker from "../../common/CustomPicker";
 import colors from "../../resources/colors";
 import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
@@ -150,22 +151,11 @@ class BeneficiarioScreen extends NavigationEnabledComponent<
 						{title}
 					</Small>
 
-					<View style={styles.pickerContainer}>
-						<Picker
-							selectedValue={selectedValue}
-							itemStyle={{ textAlign: "center" }}
-							onValueChange={this.handleChangePicker}
-							mode="dialog"
-						>
-							{identitiesData.map((credentialData, index) => (
-								<Picker.Item
-									label={getFullName(credentialData)}
-									value={getDniBeneficiario(credentialData)}
-									key={index}
-								/>
-							))}
-						</Picker>
-					</View>
+					<CustomPicker selectedValue={selectedValue} onValueChange={this.handleChangePicker} style={{ flex: 0.25 }}>
+						{identitiesData.map((credentialData, index) => (
+							<Picker.Item label={getFullName(credentialData)} value={getDniBeneficiario(credentialData)} key={index} />
+						))}
+					</CustomPicker>
 
 					<Tiny style={styles.description}>{description}</Tiny>
 
@@ -225,15 +215,6 @@ export default didiConnect(
 );
 
 const styles = StyleSheet.create({
-	pickerContainer: {
-		paddingVertical: 2,
-		paddingHorizontal: 16,
-		borderWidth: 1,
-		borderColor: colors.border.light,
-		borderRadius: 6,
-		marginTop: 20,
-		marginBottom: 20
-	},
 	textStyle: {
 		color: colors.label.text,
 		fontWeight: "bold",
