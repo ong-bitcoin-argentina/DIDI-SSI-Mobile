@@ -15,6 +15,7 @@ import strings from "../../resources/strings";
 
 import CredentialCard from "./CredentialCard";
 import { CredentialStates } from "../../../model/Credential";
+import { getBlockchain } from "../../../util/utilHelpers";
 
 export interface DocumentCredentialCardContext {
 	activeDid: ActiveDid;
@@ -95,20 +96,24 @@ const credentialStyles: Record<CredentialState, CredentialStyle> = {
 };
 
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
-	private issuerText(did: EthrDID): string {
+	private issuerText(did: EthrDID): string[] {
 		const issuerData = this.props.context.knownIssuers[did.did()];
 		const issuerName = issuerData
 			? issuerData.name === null
 				? strings.credentialCard.emitter.unknown
 				: strings.credentialCard.emitter.known(issuerData.name)
 			: strings.credentialCard.emitter.loading;
-		return this.props.preview ? issuerName : `${issuerName}\n${strings.credentialCard.emitter.id + did.keyAddress()}`;
+		const emmitterId = `${strings.credentialCard.emitter.id}: ${did.keyAddress()}`;
+		const verificationBlockchain = `${strings.credentialCard.verificationBlockchain}: ${getBlockchain(
+			this.props.document.issuer
+		)}`;
+		return this.props.preview ? [issuerName] : [issuerName, emmitterId, verificationBlockchain];
 	}
 
 	render() {
 		const { document, context, preview, children } = this.props;
 
-		const issuerText = this.issuerText(CredentialDocument.displayedIssuer(document));
+		const issuerTexts = this.issuerText(CredentialDocument.displayedIssuer(document));
 
 		const category = document.issuedAt
 			? strings.credentialCard.formatDate(new Date(document.issuedAt * 1000))
@@ -142,7 +147,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				layout={document.preview?.cardLayout}
 				category={category}
 				title={title}
-				subTitle={issuerText}
+				subTitles={issuerTexts}
 				data={data}
 				columns={preview ? CredentialDocument.numberOfColumns(document) : 1}
 				color={style.color}
