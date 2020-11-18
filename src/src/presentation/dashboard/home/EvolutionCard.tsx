@@ -51,7 +51,7 @@ export class EvolutionCard extends React.Component<EvolutionCardProps> {
 				}
 				category={str.category}
 				title={str.title}
-				subTitle={dateText}
+				subTitles={[dateText]}
 				color={colors.primary}
 				data={[{ label: str.validationIntro, value: "" }, ...data]}
 				columns={1}

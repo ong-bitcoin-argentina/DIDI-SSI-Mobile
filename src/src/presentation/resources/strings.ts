@@ -607,12 +607,13 @@ export default {
 	},
 	credentialCard: {
 		emitter: {
-			id: "ID Emisor: ",
+			id: "ID Emisor",
 			unknown: "Emisor desconocido",
 			known: (name: string) => `Emisor: ${name}`,
 			loading: "Cargando..."
 		},
 		valueNotAvailable: "N/A",
+		verificationBlockchain: "Blockchain de Verificación",
 		shared: "Credencial compartida con vos",
 		revoked: "Credencial revocada",
 		replaced: "Credencial no vigente por existir reemplazo",
