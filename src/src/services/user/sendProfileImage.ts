@@ -21,7 +21,7 @@ const sendProfileImageComponent = buildComponentServiceCall(async (args: Argumen
 	return left(response.left);
 });
 
-export function sendPersonalData(serviceKey: string, image: any) {
+export function sendProfileImage(serviceKey: string, image: any) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, { errorMessage: NO_DID }, did => {
 			return sendProfileImageComponent(serviceKey, { api, did, image }, data => {

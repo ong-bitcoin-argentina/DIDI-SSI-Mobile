@@ -22,6 +22,7 @@ import { UserHeading } from "../userData/UserHeading";
 import { DidiText } from "../../../util/DidiText";
 import commonStyles from "../../../resources/commonStyles";
 import { SettingsScreenProps } from "../SettingsScreen";
+import {sendProfileImage} from '../../../../services/user/sendProfileImage';
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
@@ -32,6 +33,7 @@ interface EditProfileStateProps {
 }
 interface EditProfileDispatchProps {
 	saveIdentity: (state: Identity) => void;
+	sendProfileImage: (image: any) => void;
 }
 type EditProfileInternalProps = EditProfileProps & EditProfileStateProps & EditProfileDispatchProps;
 
@@ -45,6 +47,7 @@ export interface EditProfileNavigation {
 }
 
 const { Small, Emphasis } = DidiText.Explanation;
+const serviceKeySendProfileImage = "sendProfileImage";
 
 class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileInternalProps,
@@ -215,6 +218,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<Fragment>
+				{/* <ServiceObserver serviceKey={serviceKeySendData} onSuccess={this.handleSuccessSendPersonalData} /> */}
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				{this.state.cameraActive ? this.renderCameraView() : this.renderEditView()}
 			</Fragment>
@@ -229,10 +233,12 @@ class EditProfileScreen extends NavigationEnabledComponent<
 			// response.name is the name of the new image with the extension
 			// response.size is the size of the new image
 		// })
-		console.log(resizedImageUrl);
+		// console.log(resizedImageUrl);
+		const img = await readFile(pic.uri);
+		// const respuesta = this.props.sendProfileImage(img);
+		console.log(img);
 
-
-		const data = await readFile(resizedImageUrl.uri, "base64");
+		const data = await readFile(pic.uri, "base64");
 		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		this.setState({ cameraActive: false });
 		this.editProfile();
@@ -253,7 +259,8 @@ const connected = didiConnect(
 		isAddressApproved: state.validatedIdentity?.address?.state === ValidationState.Approved
 	}),
 	(dispatch): EditProfileDispatchProps => ({
-		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity })
+		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity }),
+		sendProfileImage: (image: any) => dispatch(sendProfileImage(serviceKeySendProfileImage, image))
 	})
 );
 
