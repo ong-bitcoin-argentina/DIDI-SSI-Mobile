@@ -20,6 +20,7 @@ import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import Prestador from "./Prestador";
+import CustomPicker from "../../common/CustomPicker";
 import { PrestadorModel } from "../../../model/Prestador";
 import { BeneficiarioProps } from "./BeneficiarioScreen";
 import { Validations } from "../../../model/Validations";

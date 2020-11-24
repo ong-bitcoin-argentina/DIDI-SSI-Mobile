@@ -12,7 +12,7 @@ import DidiCardBody, { DidiCardBodyProps } from "./DidiCardBody";
 export interface CredentialCardProps extends DidiCardBodyProps {
 	category: string;
 	title: string;
-	subTitle: string;
+	subTitles: string[];
 	data?: ClaimDataPairs;
 	columns?: 1 | 2 | 3;
 	layout?: DocumentLayout;
@@ -26,14 +26,16 @@ interface DataRow {
 
 export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	private renderTitle(color: string) {
-		const { preview, title, category, subTitle } = this.props;
+		const { preview, title, category, subTitles } = this.props;
 		return (
 			<View style={styles.headerData}>
 				{(!this.hasLayout() || !preview) && (
 					<DidiText.Card.Category style={{ color }}>{category}</DidiText.Card.Category>
 				)}
 				<DidiText.Card.Title style={{ color }}>{title}</DidiText.Card.Title>
-				<DidiText.Card.Subtitle style={{ color: `${color}${colors.subtitleAlpha}` }}>{subTitle}</DidiText.Card.Subtitle>
+				{subTitles.map(text => (
+					<DidiText.Card.Subtitle style={{ color: `${color}${colors.subtitleAlpha}` }}>{text}</DidiText.Card.Subtitle>
+				))}
 			</View>
 		);
 	}

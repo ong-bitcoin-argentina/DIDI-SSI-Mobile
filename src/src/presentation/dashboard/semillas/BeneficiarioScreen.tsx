@@ -19,6 +19,7 @@ import {
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
 import { CredentialDocument, ClaimData } from "didi-sdk";
 import { RequestFinishedProps } from "./RequestFinishedScreen";
+import CustomPicker from "../../common/CustomPicker";
 import colors from "../../resources/colors";
 import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";

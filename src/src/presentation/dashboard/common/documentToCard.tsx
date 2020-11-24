@@ -15,6 +15,7 @@ import strings from "../../resources/strings";
 
 import CredentialCard from "./CredentialCard";
 import { CredentialStates } from "../../../model/Credential";
+import { getBlockchain } from "../../../util/utilHelpers";
 
 export interface DocumentCredentialCardContext {
 	activeDid: ActiveDid;
@@ -94,25 +95,29 @@ const credentialStyles: Record<CredentialState, CredentialStyle> = {
 	}
 };
 
+const { credentialCard } = strings;
+const { emitter } = credentialCard;
+
 export class DocumentCredentialCard extends React.Component<DocumentCredentialCardProps> {
-	private issuerText(did: EthrDID): string {
-		const issuerData = this.props.context.knownIssuers[did.did()];
+	private issuerText(did: EthrDID): string[] {
+		const { document, context, preview } = this.props;
+		const issuerData = context.knownIssuers[did.did()];
 		const issuerName = issuerData
 			? issuerData.name === null
-				? strings.credentialCard.emitter.unknown
-				: strings.credentialCard.emitter.known(issuerData.name)
-			: strings.credentialCard.emitter.loading;
-		return this.props.preview ? issuerName : `${issuerName}\n${strings.credentialCard.emitter.id + did.keyAddress()}`;
+				? emitter.unknown
+				: emitter.known(issuerData.name)
+			: emitter.loading;
+		const emmitterId = `${emitter.id}: ${did.keyAddress()}`;
+		const verificationBlockchain = `${credentialCard.verificationBlockchain}: ${getBlockchain(document.issuer)}`;
+		return preview ? [issuerName] : [issuerName, emmitterId, verificationBlockchain];
 	}
 
 	render() {
 		const { document, context, preview, children } = this.props;
 
-		const issuerText = this.issuerText(CredentialDocument.displayedIssuer(document));
+		const issuerTexts = this.issuerText(CredentialDocument.displayedIssuer(document));
 
-		const category = document.issuedAt
-			? strings.credentialCard.formatDate(new Date(document.issuedAt * 1000))
-			: "Credencial";
+		const category = document.issuedAt ? credentialCard.formatDate(new Date(document.issuedAt * 1000)) : "Credencial";
 
 		let title = document.title;
 		let data = preview
@@ -142,7 +147,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				layout={document.preview?.cardLayout}
 				category={category}
 				title={title}
-				subTitle={issuerText}
+				subTitles={issuerTexts}
 				data={data}
 				columns={preview ? CredentialDocument.numberOfColumns(document) : 1}
 				color={style.color}
