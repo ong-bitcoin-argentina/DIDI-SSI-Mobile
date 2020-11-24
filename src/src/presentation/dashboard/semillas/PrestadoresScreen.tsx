@@ -31,7 +31,7 @@ import { semillasCategoriesFilters, categories } from "./constants";
 import colors from "../../resources/colors";
 import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
-import CustomPicker from "../../common/CustomPicker";
+
 const { header, view } = commonStyles.benefit;
 const { steps, writeEmail, program } = strings.semillas;
 const { email, title, noCredentials } = steps.first;

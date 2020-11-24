@@ -25,7 +25,6 @@ import { PrestadorModel } from "../../../model/Prestador";
 import { getEmail, getPhoneNumber } from "../../../util/specialCredentialsHelpers";
 import { getClient } from "../../../services/internal/withDidiServerClient";
 import SemillasLogo from "../../resources/images/sem-logo.svg";
-import CustomPicker from "../../common/CustomPicker";
 
 const { title, description, modalTitle } = strings.semillas.steps.second;
 const { keys } = strings.specialCredentials.Semillas;
