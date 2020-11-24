@@ -1,7 +1,8 @@
 import { Identity, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard, ToastAndroid } from "react-native";
-import { readFile } from "react-native-fs";
+import { readFile, DocumentDirectoryPath } from "react-native-fs";
+import ImageResizer from 'react-native-image-resizer';
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
@@ -221,7 +222,17 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	}
 
 	private async onPictureTaken(pic: { uri: string }) {
-		const data = await readFile(pic.uri, "base64");
+		const resizedImageUrl = await ImageResizer.createResizedImage(pic.uri, 300, 300, 'JPEG', 80, 0, DocumentDirectoryPath)
+		// .then(response => {
+			// response.uri is the URI of the new image that can now be displayed, uploaded...
+			// response.path is the path of the new image
+			// response.name is the name of the new image with the extension
+			// response.size is the size of the new image
+		// })
+		console.log(resizedImageUrl);
+
+
+		const data = await readFile(resizedImageUrl.uri, "base64");
 		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		this.setState({ cameraActive: false });
 		this.editProfile();
