@@ -11,20 +11,21 @@ interface Arguments {
 	api: DidiServerApiClient;
 	did: EthrDID;
 	image: any;
+	token: string;
 }
 
 const sendProfileImageComponent = buildComponentServiceCall(async (args: Arguments) => {
-	const response = convertError(await args.api.sendProfileImage(args.did, args.image));
+	const response = convertError(await args.api.sendProfileImage(args.did, args.image, args.token));
 	if (isRight(response)) {
 		return right(response.right);
 	}
 	return left(response.left);
 });
 
-export function sendProfileImage(serviceKey: string, image: any) {
+export function sendProfileImage(serviceKey: string, token: string, image: any) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, { errorMessage: NO_DID }, did => {
-			return sendProfileImageComponent(serviceKey, { api, did, image }, data => {
+			return sendProfileImageComponent(serviceKey, { api, did, token, image }, data => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});
