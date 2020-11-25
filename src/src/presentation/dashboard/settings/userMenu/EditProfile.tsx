@@ -24,6 +24,7 @@ import commonStyles from "../../../resources/commonStyles";
 import { SettingsScreenProps } from "../SettingsScreen";
 import {sendProfileImage} from '../../../../services/user/sendProfileImage';
 import {createToken} from '../../../util/appRouter';
+import RNFetchBlob from 'rn-fetch-blob';
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
@@ -242,11 +243,11 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		const token = await this.getToken();
 		const fileExists = await exists(resizedImageUrl.path);
 		if (token && fileExists) {
-			const img = await readFile(resizedImageUrl.uri, "base64");
+			// console.log(RNFetchBlob.wrap(resizedImageUrl.path));
 
-			const respuesta = this.props.sendProfileImage(token, img);
+			const respuesta = this.props.sendProfileImage(token, {uri: resizedImageUrl.uri, name: resizedImageUrl.name, type: 'image/jpeg'});
 		}
-		
+
 		const data = await readFile(pic.uri, "base64");
 		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		this.setState({ cameraActive: false });
