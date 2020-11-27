@@ -1,7 +1,7 @@
 import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View, Linking } from "react-native";
-
+import { downloadFile, DocumentDirectoryPath, exists, readFile } from "react-native-fs";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -43,6 +43,7 @@ import { PendingLinkingState } from "../../../store/reducers/pendingLinkingReduc
 import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { NavigationActions } from "react-navigation";
+import { getPersonalData} from '../../../services/user/getPersonalData';
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -53,6 +54,8 @@ interface DashboardScreenStateProps {
 	credentialContext: DocumentCredentialCardContext;
 	pendingLinking: PendingLinkingState;
 	hasRonda: Boolean;
+	imageUrl: string;
+	imageId: string;
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
@@ -60,12 +63,15 @@ interface DashboardScreenDispatchProps {
 	finishDniValidation: () => void;
 	resetPendingLinking: () => void;
 	setRondaAccount: (hasAccount: Boolean) => void;
+	getPersonalData: (token: string) => void;
+	saveProfileImage: (image : any) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
 interface DashboardScreenState {
 	previewActivities: boolean;
 	showModal: boolean;
+	loadImage: boolean;
 }
 
 export interface DashboardScreenNavigation {
@@ -88,7 +94,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 		super(props);
 		this.state = {
 			previewActivities: true,
-			showModal: false
+			showModal: false,
+			loadImage: false,
 		};
 	}
 
@@ -173,6 +180,39 @@ class DashboardScreen extends NavigationEnabledComponent<
 		);
 	}
 
+	async shouldComponentUpdate(nextProps, nextState) {
+		if (this.props.did != nextProps.did){
+			const token = await createToken(nextProps.did);
+			const response = this.props.getPersonalData(token);
+		}
+		
+		if (nextProps.imageUrl != "" && !this.state.loadImage && !nextState.loadImage){
+			this.setState({
+				loadImage: true
+			})
+
+			console.log('shouldComponentUpdate', nextProps.imageUrl);
+			const imgPath = DocumentDirectoryPath + '/' + nextProps.imageId + '.jpeg';
+			const response  = await downloadFile({
+				fromUrl: nextProps.imageUrl,          
+  				toFile: imgPath,
+			});
+			
+			if (exists(imgPath)){
+				// console.log(imgPath);
+				const img = await readFile(imgPath, "base64");
+				// console.log(img);
+				this.props.saveProfileImage({ image: { mimetype: "image/jpeg", img } });
+				console.log('EXISTEEEE');
+				
+			}else{
+				console.log('NO EXISTEEEE', DocumentDirectoryPath + '/' + nextProps.imageId);
+			}
+		}
+
+		return false;
+	}
+
 	render() {
 		return (
 			<Fragment>
@@ -235,7 +275,9 @@ export default didiConnect(
 		credentialContext: extractContext(state),
 		pendingLinking: state.pendingLinking,
 		hasRonda: state.authApps.ronda,
-		validCredentials: state.validCredentials
+		validCredentials: state.validCredentials,
+		imageUrl: state.persistedPersonalData.imageUrl,
+		imageId: state.persistedPersonalData.imageId,
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
@@ -246,7 +288,15 @@ export default didiConnect(
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
 		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),
-		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount })
+		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
+		getPersonalData: (token : string) => dispatch(getPersonalData('getPersonalData', token)),
+		saveProfileImage: (image: any) =>
+			{
+				console.log('saveProfileImage');
+				dispatch({
+				type: "IDENTITY_PATCH",
+				value: image
+			})}
 	})
 );
 

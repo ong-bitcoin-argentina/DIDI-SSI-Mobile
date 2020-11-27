@@ -233,18 +233,10 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 	private async onPictureTaken(pic: { uri: string }) {
 		const resizedImageUrl = await ImageResizer.createResizedImage(pic.uri, 300, 300, 'JPEG', 80, 0, DocumentDirectoryPath)
-		// .then(response => {
-			// response.uri is the URI of the new image that can now be displayed, uploaded...
-			// response.path is the path of the new image
-			// response.name is the name of the new image with the extension
-			// response.size is the size of the new image
-		// })
 		
 		const token = await this.getToken();
 		const fileExists = await exists(resizedImageUrl.path);
 		if (token && fileExists) {
-			// console.log(RNFetchBlob.wrap(resizedImageUrl.path));
-
 			const respuesta = this.props.sendProfileImage(token, {uri: resizedImageUrl.uri, name: resizedImageUrl.name, type: 'image/jpeg'});
 		}
 

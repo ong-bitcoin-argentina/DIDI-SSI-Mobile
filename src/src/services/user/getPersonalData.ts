@@ -25,9 +25,8 @@ export function getPersonalData(serviceKey: string, token: string) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, { errorMessage: NO_DID }, did => {
 			return getPersonalDataComponent(serviceKey, { api, did, token }, data => {
-				const { name, lastname } = data;
-				console.log({ data });
-				return simpleAction(serviceKey, { type: "PERSISTED_PERSONAL_DATA_SET", state: { name, lastname } }, () =>
+				const { name, lastname, imageUrl, imageId } = data;
+				return simpleAction(serviceKey, { type: "PERSISTED_PERSONAL_DATA_SET", state: { name, lastname, imageUrl, imageId } }, () =>
 					serviceCallSuccess(serviceKey)
 				);
 			});
