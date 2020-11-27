@@ -16,6 +16,7 @@ import { getState } from "../internal/getState";
 import { withExistingDid } from "../internal/withExistingDid";
 import { ServiceCallAction } from "../ServiceStateStore";
 import { getAllIssuerNames } from "../user/getIssuerNames";
+import { AppConfig } from "../../AppConfig";
 
 interface RecoverTokensArguments {
 	activeDid: ActiveDid;
@@ -38,6 +39,7 @@ async function doRecoverTokens(args: RecoverTokensArguments) {
 				delegation: {
 					ethrUri: args.ethrDelegateUri
 				},
+				providerConfig: AppConfig.defaultServiceSettings.providerConfig,
 				audience: args.activeDid ?? undefined
 			});
 			return isRight(parsed) ? token : undefined;

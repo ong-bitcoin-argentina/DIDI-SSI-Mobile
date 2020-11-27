@@ -17,6 +17,7 @@ import themes from "../../resources/themes";
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
 import { ShowDisclosureRequestProps } from "./ShowDisclosureRequest";
+import { AppConfig } from "../../../AppConfig";
 
 export type ScanCredentialProps = {};
 interface ScanCredentialStateProps {
@@ -103,6 +104,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 			identityResolver: {
 				ethrUri: this.props.ethrDidUri
 			},
+			providerConfig: AppConfig.defaultServiceSettings.providerConfig,
 			delegation: {
 				ethrUri: this.props.ethrDelegateUri
 			},
