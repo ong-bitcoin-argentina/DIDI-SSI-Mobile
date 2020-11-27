@@ -43,8 +43,8 @@ import { PendingLinkingState } from "../../../store/reducers/pendingLinkingReduc
 import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { NavigationActions } from "react-navigation";
-import { getPersonalData} from '../../../services/user/getPersonalData';
-import {ValidatedIdentity} from '../../../store/selector/combinedIdentitySelector';
+import { getPersonalData } from "../../../services/user/getPersonalData";
+import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -66,7 +66,7 @@ interface DashboardScreenDispatchProps {
 	resetPendingLinking: () => void;
 	setRondaAccount: (hasAccount: Boolean) => void;
 	getPersonalData: (token: string) => void;
-	saveProfileImage: (image : any) => void;
+	saveProfileImage: (image: any) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -193,42 +193,45 @@ class DashboardScreen extends NavigationEnabledComponent<
 		this.setState({ identity: Identity.merge(identity, this.state.identity) });
 	}
 
+	private async runGetPersonalData() {
+		this.setState({
+			checkedPersonalData: true
+		});
+		const token = await createToken(this.props.did);
+		const response = this.props.getPersonalData(token);
+	}
+
+	private async runGetImageProfile(nextProps) {
+		this.setState({
+			loadImage: true
+		});
+		const imgPath = DocumentDirectoryPath + "/" + nextProps.imageId + ".jpeg";
+
+		const response = await downloadFile({
+			fromUrl: nextProps.imageUrl,
+			toFile: imgPath
+		});
+
+		const data = await readFile(imgPath, "base64");
+		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
+		this.props.saveProfileImage(this.state.identity);
+	}
+
 	async shouldComponentUpdate(nextProps, nextState) {
-		if ((this.props.did != nextProps.did || this.props.did != null) 
-			&& !this.state.checkedPersonalData 
-			&& !nextState.checkedPersonalData){
-			this.setState({
-				checkedPersonalData: true
-			})
-			console.log('RECUPERANDO DATOS DEL USUARIO');
-			const token = await createToken(nextProps.did);
-			const response = this.props.getPersonalData(token);
+		if (this.props.did != null && !this.state.checkedPersonalData && !nextState.checkedPersonalData) {
+			this.runGetPersonalData();
 		}
-		
-		if (this.props.imageUrl != "" 
-			&& this.props.identity.personalData && Object.keys(this.props.identity.personalData) > 0 
-			&& !this.state.loadImage && !nextState.loadImage){
-			console.log('LA IMAGEN CAMBIÓ Y NO FUE CARGADA');
-			this.setState({
-				loadImage: true
-			})
-			const imgPath = DocumentDirectoryPath + '/' + nextProps.imageId + '.jpeg';
-			console.log(nextProps.imageUrl);
-			// if (!exists(imgPath)){
-				console.log('DESCARGANDO...');
-				const response  = await downloadFile({
-					fromUrl: nextProps.imageUrl,          
-					  toFile: imgPath,
-				});
-			// }else{
-				// console.log('LA IMAGEN YA EXISTE EN EL DISPOSITIVO');
-			// }
-			
-			const data = await readFile(imgPath, "base64");
-			this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
-			this.props.saveProfileImage(this.state.identity);
-		}else{
-			console.log('LA IMAGEN SIGUE IGUAL', this.props.identity);
+
+		const personalDataLength = Object.keys(this.props.identity.personalData).length;
+
+		if (
+			this.props.imageUrl != "" &&
+			this.props.identity.personalData &&
+			personalDataLength > 0 &&
+			!this.state.loadImage &&
+			!nextState.loadImage
+		) {
+			this.runGetImageProfile(nextProps);
 		}
 
 		return false;
@@ -299,7 +302,7 @@ export default didiConnect(
 		validCredentials: state.validCredentials,
 		imageUrl: state.persistedPersonalData.imageUrl,
 		imageId: state.persistedPersonalData.imageId,
-		identity: state.validatedIdentity,
+		identity: state.validatedIdentity
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
@@ -311,13 +314,13 @@ export default didiConnect(
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
 		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),
 		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
-		getPersonalData: (token : string) => dispatch(getPersonalData('getPersonalData', token)),
-		saveProfileImage: (identity: Identity) =>
-			{
-				dispatch({
+		getPersonalData: (token: string) => dispatch(getPersonalData("getPersonalData", token)),
+		saveProfileImage: (identity: Identity) => {
+			dispatch({
 				type: "IDENTITY_PATCH",
 				value: identity
-			})}
+			});
+		}
 	})
 );
 
