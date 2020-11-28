@@ -190,7 +190,9 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	private setIdentityMerging(identity: Partial<Identity>) {
-		this.setState({ identity: Identity.merge(identity, this.state.identity) });
+		this.setState({ identity: Identity.merge(identity, this.state.identity) }, () => {
+			this.props.saveProfileImage(this.state.identity);
+		});
 	}
 
 	private async runGetPersonalData() {
@@ -198,23 +200,22 @@ class DashboardScreen extends NavigationEnabledComponent<
 			checkedPersonalData: true
 		});
 		const token = await createToken(this.props.did);
-		const response = this.props.getPersonalData(token);
+		this.props.getPersonalData(token);
 	}
 
-	private async runGetImageProfile(nextProps) {
+	private async runGetImageProfile() {
 		this.setState({
 			loadImage: true
 		});
-		const imgPath = DocumentDirectoryPath + "/" + nextProps.imageId + ".jpeg";
+		const imgPath = DocumentDirectoryPath + "/" + this.props.imageId + ".jpeg";
 
-		const response = await downloadFile({
-			fromUrl: nextProps.imageUrl,
+		const response = downloadFile({
+			fromUrl: this.props.imageUrl,
 			toFile: imgPath
+		}).promise.then(async result => {
+			const data = await readFile(imgPath, "base64");
+			this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		});
-
-		const data = await readFile(imgPath, "base64");
-		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
-		this.props.saveProfileImage(this.state.identity);
 	}
 
 	async shouldComponentUpdate(nextProps, nextState) {
@@ -222,16 +223,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 			this.runGetPersonalData();
 		}
 
-		const personalDataLength = Object.keys(this.props.identity.personalData).length;
-
-		if (
-			this.props.imageUrl != "" &&
-			this.props.identity.personalData &&
-			personalDataLength > 0 &&
-			!this.state.loadImage &&
-			!nextState.loadImage
-		) {
-			this.runGetImageProfile(nextProps);
+		if (this.props.imageUrl != "" && this.props.identity.id && !this.state.loadImage && !nextState.loadImage) {
+			this.runGetImageProfile();
 		}
 
 		return false;
