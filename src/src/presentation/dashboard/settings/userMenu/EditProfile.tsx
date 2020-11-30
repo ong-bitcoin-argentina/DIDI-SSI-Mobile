@@ -2,7 +2,7 @@ import { Identity, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard, ToastAndroid } from "react-native";
 import { readFile, DocumentDirectoryPath, exists } from "react-native-fs";
-import ImageResizer from 'react-native-image-resizer';
+import ImageResizer from "react-native-image-resizer";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
@@ -22,9 +22,9 @@ import { UserHeading } from "../userData/UserHeading";
 import { DidiText } from "../../../util/DidiText";
 import commonStyles from "../../../resources/commonStyles";
 import { SettingsScreenProps } from "../SettingsScreen";
-import {sendProfileImage} from '../../../../services/user/sendProfileImage';
-import {createToken} from '../../../util/appRouter';
-import RNFetchBlob from 'rn-fetch-blob';
+import { sendProfileImage } from "../../../../services/user/sendProfileImage";
+import { createToken } from "../../../util/appRouter";
+import RNFetchBlob from "rn-fetch-blob";
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
@@ -220,7 +220,6 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	render() {
 		return (
 			<Fragment>
-				{/* <ServiceObserver serviceKey={serviceKeySendData} onSuccess={this.handleSuccessSendPersonalData} /> */}
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				{this.state.cameraActive ? this.renderCameraView() : this.renderEditView()}
 			</Fragment>
@@ -232,12 +231,24 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	};
 
 	private async onPictureTaken(pic: { uri: string }) {
-		const resizedImageUrl = await ImageResizer.createResizedImage(pic.uri, 300, 300, 'JPEG', 80, 0, DocumentDirectoryPath)
-		
+		const resizedImageUrl = await ImageResizer.createResizedImage(
+			pic.uri,
+			300,
+			300,
+			"JPEG",
+			80,
+			0,
+			DocumentDirectoryPath
+		);
+
 		const token = await this.getToken();
 		const fileExists = await exists(resizedImageUrl.path);
 		if (token && fileExists) {
-			const respuesta = this.props.sendProfileImage(token, {uri: resizedImageUrl.uri, name: resizedImageUrl.name, type: 'image/jpeg'});
+			const respuesta = this.props.sendProfileImage(token, {
+				uri: resizedImageUrl.uri,
+				name: resizedImageUrl.name,
+				type: "image/jpeg"
+			});
 		}
 
 		const data = await readFile(pic.uri, "base64");
