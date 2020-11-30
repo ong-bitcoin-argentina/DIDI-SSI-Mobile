@@ -207,7 +207,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 		this.setState({
 			loadImage: true
 		});
-		const imgPath = DocumentDirectoryPath + "/" + this.props.imageId + ".jpeg";
+
+		const imgPath = `${DocumentDirectoryPath}/${this.props.imageId}.jpeg`;
 
 		const response = downloadFile({
 			fromUrl: this.props.imageUrl,
@@ -219,11 +220,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	async shouldComponentUpdate(nextProps, nextState) {
-		if (this.props.did != null && !this.state.checkedPersonalData && !nextState.checkedPersonalData) {
+		if (this.props.did && !this.state.checkedPersonalData && !nextState.checkedPersonalData) {
 			this.runGetPersonalData();
 		}
 
-		if (this.props.imageUrl != "" && !this.state.loadImage && !nextState.loadImage) {
+		if (this.props.imageUrl && !this.state.loadImage && !nextState.loadImage) {
 			this.runGetImageProfile();
 		}
 
