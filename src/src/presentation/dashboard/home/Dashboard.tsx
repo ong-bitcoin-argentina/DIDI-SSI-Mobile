@@ -223,7 +223,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			this.runGetPersonalData();
 		}
 
-		if (this.props.imageUrl != "" && this.props.identity.id && !this.state.loadImage && !nextState.loadImage) {
+		if (this.props.imageUrl != "" && !this.state.loadImage && !nextState.loadImage) {
 			this.runGetImageProfile();
 		}
 
