@@ -3,6 +3,8 @@ import { StoreAction } from "../StoreAction";
 export type PersistedPersonalData = {
 	name?: string;
 	lastname?: string;
+	imageUrl?: string;
+	imageId?: string;
 };
 
 export interface PersistedPersonalDataAction {
@@ -12,7 +14,9 @@ export interface PersistedPersonalDataAction {
 
 const initial = {
 	name: "",
-	lastname: ""
+	lastname: "",
+	imageUrl: "",
+	imageId: "",
 };
 
 export function persistedPersonalDataReducer(

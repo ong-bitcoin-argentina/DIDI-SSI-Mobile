@@ -10,25 +10,23 @@ const { NO_DID } = serviceErrors.login;
 interface Arguments {
 	api: DidiServerApiClient;
 	did: EthrDID;
+	image: any;
 	token: string;
 }
 
-const getPersonalDataComponent = buildComponentServiceCall(async (args: Arguments) => {
-	const response = convertError(await args.api.getPersonalData(args.did, args.token));
+const sendProfileImageComponent = buildComponentServiceCall(async (args: Arguments) => {
+	const response = convertError(await args.api.sendProfileImage(args.did, args.image, args.token));
 	if (isRight(response)) {
 		return right(response.right);
 	}
 	return left(response.left);
 });
 
-export function getPersonalData(serviceKey: string, token: string) {
+export function sendProfileImage(serviceKey: string, token: string, image: any) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, { errorMessage: NO_DID }, did => {
-			return getPersonalDataComponent(serviceKey, { api, did, token }, data => {
-				const { name, lastname, imageUrl, imageId } = data;
-				return simpleAction(serviceKey, { type: "PERSISTED_PERSONAL_DATA_SET", state: { name, lastname, imageUrl, imageId } }, () =>
-					serviceCallSuccess(serviceKey)
-				);
+			return sendProfileImageComponent(serviceKey, { api, did, token, image }, data => {
+				return serviceCallSuccess(serviceKey);
 			});
 		});
 	});
