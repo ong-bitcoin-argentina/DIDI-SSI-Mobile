@@ -15,8 +15,8 @@ export interface PersistedPersonalDataAction {
 const initial = {
 	name: "",
 	lastname: "",
-	imageUrl: "",
-	imageId: "",
+	imageUrl: null,
+	imageId: null,
 };
 
 export function persistedPersonalDataReducer(
