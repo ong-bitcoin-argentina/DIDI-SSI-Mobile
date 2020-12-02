@@ -96,12 +96,6 @@ const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 	},
 	{
 		...actionCommon,
-		icon: iconFrom(""),
-		text: strings.dashboardJump.identity,
-		name: "UserData"
-	},
-	{
-		...actionCommon,
 		icon: iconFrom(""),
 		text: strings.dashboardJump.editProfile,
 		name: "EditProfile"
