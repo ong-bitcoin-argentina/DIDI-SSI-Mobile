@@ -16,6 +16,7 @@ import { getCredentials } from "../../../uPort/getCredentials";
 import strings from "../../resources/strings";
 
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
+import { savePresentation } from "../../../services/user/savePresentation";
 
 export interface ShareExplanationProps {
 	documents: CredentialDocument[];
@@ -25,6 +26,7 @@ interface ShareExplanationStateProps {
 }
 interface ShareExplanationDispatchProps {
 	recordLinkShare: (documents: CredentialDocument[]) => void;
+	savePresentation: (jwts: string) => void;
 }
 type ShareExplanationInternalProps = ShareExplanationProps & ShareExplanationStateProps & ShareExplanationDispatchProps;
 
@@ -57,10 +59,14 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 	}
 
 	private shareLink(documents: CredentialDocument[]) {
-		const jwt = documents.map(doc => doc.jwt).join(",");
+		// const jwt = documents.map(doc => doc.jwt).join(",");
+		const jwt = documents.map(doc => doc.jwt);
+		const jwtString = JSON.stringify(jwt);
+		const response = this.props.savePresentation(jwtString);
+		console.log(jwtString);
 		Share.share({
 			title: strings.shareExplanation.title,
-			message: strings.shareExplanation.shareMessage(`${this.props.sharePrefix}/${jwt}`)
+			message: strings.shareExplanation.shareMessage(`${this.props.sharePrefix}/${jwt.join(",")}`)
 		});
 		this.props.recordLinkShare(documents);
 	}
@@ -76,7 +82,8 @@ const connected = didiConnect(
 			dispatch({
 				type: "RECENT_ACTIVITY_ADD",
 				value: RecentActivity.from("SHARE", documents)
-			})
+			}),
+		savePresentation: (jwts: string) => dispatch(savePresentation("savePresentation", jwts))
 	})
 );
 
