@@ -7,6 +7,7 @@ export interface PushNotificationContent {
 	message: string;
 	foreground: boolean;
 	userInteraction: boolean;
+	smallIcon: string;
 }
 
 export type PushState = {

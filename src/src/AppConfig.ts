@@ -11,8 +11,32 @@ const debug: boolean = Config.APP_DEBUG === "true";
 const defaultServiceSettings: ServiceSettings = {
 	sharePrefix: Config.URL_VIEWER,
 	trustGraphUri: Config.URL_MOURO,
-	ethrDidUri: Config.URL_ETHR_DID,
-	ethrDelegateUri: Config.URL_ETHR_DELEGATOR,
+	ethrDidUri: Config.BLOCKCHAIN_URL_MAIN,
+	ethrDelegateUri: Config.BLOCKCHAIN_URL_MAIN,
+	providerConfig: {
+		networks: [
+			{
+				name: "mainnet",
+				rpcUrl: Config.BLOCKCHAIN_URL_MAIN,
+				registry: Config.BLOCKCHAIN_CONTRACT_MAIN
+			},
+			{
+				name: "lacchain",
+				rpcUrl: Config.BLOCKCHAIN_URL_LAC,
+				registry: Config.BLOCKCHAIN_CONTRACT_LAC
+			},
+			{
+				name: "bfa",
+				rpcUrl: Config.BLOCKCHAIN_URL_BFA,
+				registry: Config.BLOCKCHAIN_CONTRACT_BFA
+			},
+			{
+				name: "rsk",
+				rpcUrl: Config.BLOCKCHAIN_URL_RSK,
+				registry: Config.BLOCKCHAIN_CONTRACT_RSK
+			}
+		]
+	},
 	didiUserServer: Config.URL_DIDI_SERVER
 };
 

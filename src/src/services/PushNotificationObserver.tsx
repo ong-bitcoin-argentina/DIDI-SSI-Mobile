@@ -87,13 +87,15 @@ export const PushNotificationReceiver = didiConnect(
 								title: notification.notification.title,
 								message: notification.notification.body,
 								foreground: notification.foreground,
-								userInteraction: notification.userInteraction
+								userInteraction: notification.userInteraction,
+								smallIcon: "@drawable/ic_notification"
 						  }
 						: {
 								title: notification.title,
 								message: notification.message,
 								foreground: notification.foreground,
-								userInteraction: notification.userInteraction
+								userInteraction: notification.userInteraction,
+								smallIcon: "@drawable/ic_notification",
 						  };
 
 					switch ((notification as any).notificationType) {

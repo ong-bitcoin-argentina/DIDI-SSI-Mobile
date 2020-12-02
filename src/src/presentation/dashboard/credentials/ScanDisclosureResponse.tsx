@@ -17,6 +17,7 @@ import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
+import { AppConfig } from "../../../AppConfig";
 
 export interface ScanDisclosureResponseProps {
 	request: string;
@@ -162,6 +163,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 			identityResolver: {
 				ethrUri: this.props.ethrDidUri
 			},
+			providerConfig: AppConfig.defaultServiceSettings.providerConfig,
 			delegation: {
 				ethrUri: this.props.ethrDelegateUri
 			},
@@ -195,6 +197,7 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 				identityResolver: {
 					ethrUri: this.props.ethrDidUri
 				},
+				providerConfig: AppConfig.defaultServiceSettings.providerConfig,
 				delegation: {
 					ethrUri: this.props.ethrDelegateUri
 				},
