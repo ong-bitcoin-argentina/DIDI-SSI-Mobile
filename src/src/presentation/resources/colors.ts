@@ -47,7 +47,9 @@ const colors = {
 
 	shadow: "rgba(0,0,0,.4)",
 
-	subtitleAlpha: "A0"
+	subtitleAlpha: "A0",
+
+	yellow: "#ffbd10",
 };
 
 export default colors;

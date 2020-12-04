@@ -344,6 +344,10 @@ export default {
 		credentialsSuccess: "Pronto vas a recibir tus credenciales de Semillas. Este proceso puede demorar unos días...",
 		credetialsPending:
 			"Tus Credenciales de Beneficios Semillas ya han sido solicitadas y se encuentran en proceso... Pronto podrás acceder a los Beneficios de Semillas!!",
+		noSemillaIdentity: {
+			first: "Parece que aún no tenés tus credenciales de Identidad Semillas.",
+			second: "Recordá que si las solicitaste recientemente, esto puede demorar hasta 5 (cinco) días. Ante cualquier consulta, contactate con tu asesor/a.",
+		},
 		steps: {
 			first: {
 				title: "¿A qué servicio querés acceder?",
