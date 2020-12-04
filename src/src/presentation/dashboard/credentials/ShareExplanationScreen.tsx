@@ -1,4 +1,4 @@
-import { CredentialDocument, SelectiveDisclosureProposal } from "didi-sdk";
+import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
 import { Dimensions, Image, Share, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
@@ -26,7 +26,6 @@ interface ShareExplanationStateProps {
 }
 interface ShareExplanationDispatchProps {
 	recordLinkShare: (documents: CredentialDocument[]) => void;
-	savePresentation: (jwts: string) => void;
 }
 type ShareExplanationInternalProps = ShareExplanationProps & ShareExplanationStateProps & ShareExplanationDispatchProps;
 
@@ -58,12 +57,13 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private shareLink(documents: CredentialDocument[]) {
-		// const jwt = documents.map(doc => doc.jwt).join(",");
+	private async shareLink(documents: CredentialDocument[]) {
 		const jwt = documents.map(doc => doc.jwt);
-		const jwtString = JSON.stringify(jwt);
-		const response = this.props.savePresentation(jwtString);
-		console.log(jwtString);
+		// const jwtString = JSON.stringify(jwt);
+		// console.log(jwtString);
+		const response = await savePresentation(jwt);
+		console.log(response);
+
 		Share.share({
 			title: strings.shareExplanation.title,
 			message: strings.shareExplanation.shareMessage(`${this.props.sharePrefix}/${jwt.join(",")}`)
@@ -82,8 +82,7 @@ const connected = didiConnect(
 			dispatch({
 				type: "RECENT_ACTIVITY_ADD",
 				value: RecentActivity.from("SHARE", documents)
-			}),
-		savePresentation: (jwts: string) => dispatch(savePresentation("savePresentation", jwts))
+			})
 	})
 );
 
