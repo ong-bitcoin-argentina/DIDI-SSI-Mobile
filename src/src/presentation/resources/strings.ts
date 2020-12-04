@@ -125,7 +125,7 @@ export default {
 		createRound: "Armar Ronda",
 		documents: "Ver Credenciales",
 		identity: "Ver ID",
-		editProfile: "Editar Perfil"
+		editProfile: "Mi Perfil"
 	},
 	userData: {
 		barTitle: "Mi perfil",

@@ -1,7 +1,8 @@
 import { Identity, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard, ToastAndroid } from "react-native";
-import { readFile } from "react-native-fs";
+import { readFile, DocumentDirectoryPath, exists } from "react-native-fs";
+import ImageResizer from "react-native-image-resizer";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
@@ -21,6 +22,9 @@ import { UserHeading } from "../userData/UserHeading";
 import { DidiText } from "../../../util/DidiText";
 import commonStyles from "../../../resources/commonStyles";
 import { SettingsScreenProps } from "../SettingsScreen";
+import { sendProfileImage } from "../../../../services/user/sendProfileImage";
+import { createToken } from "../../../util/appRouter";
+import RNFetchBlob from "rn-fetch-blob";
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
@@ -31,6 +35,7 @@ interface EditProfileStateProps {
 }
 interface EditProfileDispatchProps {
 	saveIdentity: (state: Identity) => void;
+	sendProfileImage: (token: string, image: any) => void;
 }
 type EditProfileInternalProps = EditProfileProps & EditProfileStateProps & EditProfileDispatchProps;
 
@@ -44,6 +49,7 @@ export interface EditProfileNavigation {
 }
 
 const { Small, Emphasis } = DidiText.Explanation;
+const serviceKeySendProfileImage = "sendProfileImage";
 
 class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileInternalProps,
@@ -220,7 +226,31 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		);
 	}
 
+	getToken = async () => {
+		return this.props.did ? await createToken(this.props.did) : null;
+	};
+
 	private async onPictureTaken(pic: { uri: string }) {
+		const resizedImageUrl = await ImageResizer.createResizedImage(
+			pic.uri,
+			300,
+			300,
+			"JPEG",
+			80,
+			0,
+			DocumentDirectoryPath
+		);
+
+		const token = await this.getToken();
+		const fileExists = await exists(resizedImageUrl.path);
+		if (token && fileExists) {
+			const respuesta = this.props.sendProfileImage(token, {
+				uri: resizedImageUrl.uri,
+				name: resizedImageUrl.name,
+				type: "image/jpeg"
+			});
+		}
+
 		const data = await readFile(pic.uri, "base64");
 		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		this.setState({ cameraActive: false });
@@ -242,7 +272,8 @@ const connected = didiConnect(
 		isAddressApproved: state.validatedIdentity?.address?.state === ValidationState.Approved
 	}),
 	(dispatch): EditProfileDispatchProps => ({
-		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity })
+		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity }),
+		sendProfileImage: (token, image) => dispatch(sendProfileImage(serviceKeySendProfileImage, token, image))
 	})
 );
 
