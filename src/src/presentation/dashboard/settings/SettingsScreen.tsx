@@ -33,6 +33,7 @@ interface SettingsScreenStateProps {
 }
 interface SettingsScreenDispatchProps {
 	logout(): void;
+	resetPendingLinking(): void;
 }
 type SettingsScreenInternalProps = SettingsScreenProps & SettingsScreenStateProps & SettingsScreenDispatchProps;
 
@@ -78,6 +79,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 	}
 
 	private logout() {
+		this.props.resetPendingLinking();
 		this.props.logout();
 		RNRestart.Restart();
 	}
@@ -132,7 +134,8 @@ export default didiConnect(
 	SettingsScreen,
 	(state): SettingsScreenStateProps => ({ person: state.validatedIdentity }),
 	(dispatch): SettingsScreenDispatchProps => ({
-		logout: () => dispatch({ type: "SESSION_LOGOUT" })
+		logout: () => dispatch({ type: "SESSION_LOGOUT" }),
+		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" })
 	})
 );
 
