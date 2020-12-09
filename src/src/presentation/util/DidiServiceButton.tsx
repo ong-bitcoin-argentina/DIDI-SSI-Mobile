@@ -24,7 +24,7 @@ export class DidiServiceButton extends React.Component<DidiServiceButtonProps> {
 				style={[styles.button, currentButtonColor, this.props.style]}
 			>
 				{this.props.isPending ? (
-					<ActivityIndicator size="large" color={colors.secondary} />
+					<ActivityIndicator size="large" color={colors.white} />
 				) : (
 					<DidiText.Button disabled={this.props.disabled || false}>{this.props.title}</DidiText.Button>
 				)}
