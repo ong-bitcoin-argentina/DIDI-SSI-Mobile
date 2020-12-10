@@ -1,7 +1,6 @@
 import { CredentialDocument } from "didi-sdk";
-import React, { Fragment } from "react";
-import { Dimensions, Image, Share, View } from "react-native";
-import QRCode from "react-native-qrcode-svg";
+import React from "react";
+import { Image, Share, View } from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -12,7 +11,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { RecentActivity } from "../../../model/RecentActivity";
 import { didiConnect } from "../../../store/store";
-import { getCredentials } from "../../../uPort/getCredentials";
 import strings from "../../resources/strings";
 
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
@@ -22,7 +20,7 @@ export interface ShareExplanationProps {
 	documents: CredentialDocument[];
 }
 interface ShareExplanationStateProps {
-	sharePrefix: string;
+	baseURL: string;
 }
 interface ShareExplanationDispatchProps {
 	recordLinkShare: (documents: CredentialDocument[]) => void;
@@ -59,14 +57,13 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 
 	private async shareLink(documents: CredentialDocument[]) {
 		const jwt = documents.map(doc => doc.jwt);
-		// const jwtString = JSON.stringify(jwt);
-		// console.log(jwtString);
-		const response = await savePresentation(jwt);
-		console.log(response);
+		const jwtString = JSON.stringify(jwt);
+
+		const idPresentation = await savePresentation(jwtString);
 
 		Share.share({
 			title: strings.shareExplanation.title,
-			message: strings.shareExplanation.shareMessage(`${this.props.sharePrefix}/${jwt.join(",")}`)
+			message: strings.shareExplanation.shareMessage(`${this.props.baseURL}/presentation/${idPresentation}`)
 		});
 		this.props.recordLinkShare(documents);
 	}
@@ -75,7 +72,7 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	ShareExplanationScreen,
 	(state): ShareExplanationStateProps => ({
-		sharePrefix: state.serviceSettings.sharePrefix
+		baseURL: state.serviceSettings.didiUserServer
 	}),
 	(dispatch): ShareExplanationDispatchProps => ({
 		recordLinkShare: (documents: CredentialDocument[]) =>
