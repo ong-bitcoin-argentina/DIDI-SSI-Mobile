@@ -20,7 +20,7 @@ export interface ShareExplanationProps {
 	documents: CredentialDocument[];
 }
 interface ShareExplanationStateProps {
-	baseURL: string;
+	viewerApiUrl: string;
 }
 interface ShareExplanationDispatchProps {
 	recordLinkShare: (documents: CredentialDocument[]) => void;
@@ -60,10 +60,11 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 		const jwtString = JSON.stringify(jwt);
 
 		const idPresentation = await savePresentation(jwtString);
+		const shareUrl = `${this.props.viewerApiUrl}/presentation/${idPresentation}`;
 
 		Share.share({
 			title: strings.shareExplanation.title,
-			message: strings.shareExplanation.shareMessage(`${this.props.baseURL}/presentation/${idPresentation}`)
+			message: strings.shareExplanation.shareMessage(shareUrl)
 		});
 		this.props.recordLinkShare(documents);
 	}
@@ -72,7 +73,7 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	ShareExplanationScreen,
 	(state): ShareExplanationStateProps => ({
-		baseURL: state.serviceSettings.didiUserServer
+		viewerApiUrl: state.serviceSettings.viewerApiUrl
 	}),
 	(dispatch): ShareExplanationDispatchProps => ({
 		recordLinkShare: (documents: CredentialDocument[]) =>
