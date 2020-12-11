@@ -48,6 +48,10 @@ type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
 	ScanDisclosureRequestStateProps &
 	ScanDisclosureRequestDispatchProps;
 
+type ScanDisclosureRequestState = {
+	loading: boolean;
+};
+
 export interface ScanDisclosureRequestNavigation {
 	ScanCredential: ScanCredentialProps;
 	ShowDisclosureResponse: ShowDisclosureResponseProps;
@@ -57,10 +61,17 @@ const serviceKey = "ScanDisclosureRequest";
 
 class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	ScanDisclosureRequestInternalProps,
-	{},
+	ScanDisclosureRequestState,
 	ScanDisclosureRequestNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.scanCredential.barTitle);
+
+	constructor(props: ScanDisclosureRequestInternalProps) {
+		super(props);
+		this.state = {
+			loading: false
+		};
+	}
 
 	componentDidMount() {
 		this.props.storeRequest(this.props.request);
@@ -75,16 +86,13 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 					context={{ knownIssuers: this.props.knownIssuers }}
 				/>
 				<ServiceObserver serviceKey="ScanDisclosureRequest" onSuccess={() => this.onSuccess()} />
-				<DidiServiceButton
-					onPress={() => this.answerRequest()}
-					title="Enviar datos"
-					isPending={this.props.sendDisclosureResponsePending}
-				/>
+				<DidiServiceButton onPress={() => this.answerRequest()} title="Enviar datos" isPending={this.state.loading} />
 			</DidiScreen>
 		);
 	}
 
 	private async answerRequest() {
+		this.setState({ loading: true });
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
 			this.props.did!,
 			this.props.request,
@@ -119,6 +127,8 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		} catch (signerError) {
 			console.warn(signerError);
 			ErrorDataAlert.alert(serviceErrors.disclosure.SIGNING_ERR);
+		} finally {
+			this.setState({ loading: false });
 		}
 	}
 

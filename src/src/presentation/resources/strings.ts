@@ -53,6 +53,7 @@ export default {
 		close: "Cerrar",
 		reject: "Rechazar",
 		send: "Enviar",
+		ready: "Listo",
 		back: "Volver"
 	},
 	debug: {
@@ -346,7 +347,8 @@ export default {
 			"Tus Credenciales de Beneficios Semillas ya han sido solicitadas y se encuentran en proceso... Pronto podrás acceder a los Beneficios de Semillas!!",
 		noSemillaIdentity: {
 			first: "Parece que aún no tenés tus credenciales de Identidad Semillas.",
-			second: "Recordá que si las solicitaste recientemente, esto puede demorar hasta 5 (cinco) días. Ante cualquier consulta, contactate con tu asesor/a.",
+			second:
+				"Recordá que si las solicitaste recientemente, esto puede demorar hasta 5 (cinco) días. Ante cualquier consulta, contactate con tu asesor/a."
 		},
 		steps: {
 			first: {
@@ -512,7 +514,7 @@ export default {
 			button: `Directo a otra App ${appName}`,
 			explanation: "Verificado como parte del proceso"
 		},
-		or: "o",
+		or: "ó",
 		link: {
 			button: "Compartir enlace"
 		},
@@ -525,7 +527,8 @@ export default {
 			next: "Siguiente"
 		},
 		response: {
-			explanation: `Escaneá el siguiente código QR con la App ${appName} con la que estás compartiendo tus credenciales.`
+			explanation: `Escaneá el siguiente código QR con la App ${appName} con la que estás compartiendo tus credenciales.`,
+			error: `Ocurrió un error al compartir tus credenciales, por favor, regresá a la pantalla anterior para volver a intentarlo.`
 		}
 	},
 	services: {
