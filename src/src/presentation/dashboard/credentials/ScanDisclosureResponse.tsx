@@ -18,6 +18,8 @@ import themes from "../../resources/themes";
 
 import { ScanCredentialToAddProps } from "./ScanCredentialToAdd";
 import { AppConfig } from "../../../AppConfig";
+import { getShareRequest } from "../../../services/user/getShareRequest";
+import { createToken } from "../../util/appRouter";
 
 export interface ScanDisclosureResponseProps {
 	request: string;
@@ -84,67 +86,26 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 		if (this.state.scanPaused) {
 			return;
 		}
-		this.setState({ scanPaused: true });
+		this.setState({ scanPaused: true, isVerifying: true });
+		Vibration.vibrate(400, false);
 
-		const matched = content.match("^_(\\d+)/(\\d+)_:(.*)$");
-		if (matched?.length !== 4) {
-			this.showAlert(strings.scanDisclosureResponse.wrongFormat);
-			return;
-		}
-		const [_, currentIndexString, maxIndexString, tokenPart] = matched;
-		const currentIndex = Number(currentIndexString);
-		const maxIndex = Number(maxIndexString);
-
-		if (this.state.collected === undefined) {
-			if (currentIndex !== 0) {
-				this.showAlert(strings.scanDisclosureResponse.wrongStart);
-				return;
-			}
-			this.setState({
-				scanPaused: false,
-				collected: {
-					accumulatedToken: tokenPart,
-					currentIndex,
-					maxIndex
-				}
-			});
-			return;
-		}
-
-		if (this.state.collected.maxIndex !== maxIndex) {
-			this.showAlert(strings.scanDisclosureResponse.wrongMaxIndex);
-			return;
-		} else if (this.state.collected.currentIndex === currentIndex) {
-			// This can happen if the user waits to switch until the code is recognized
-			this.setState({ scanPaused: false });
-			return;
-		} else if (this.state.collected.currentIndex + 1 !== currentIndex) {
-			this.showAlert(
-				strings.scanDisclosureResponse.wrongIndex(currentIndex + 1, this.state.collected.currentIndex + 2)
-			);
-			return;
-		}
-		const nextCollected = {
-			accumulatedToken: this.state.collected.accumulatedToken + tokenPart,
-			currentIndex,
-			maxIndex
-		};
-		if (nextCollected.currentIndex >= nextCollected.maxIndex) {
-			this.onCompleteQR(nextCollected.accumulatedToken);
-		} else {
-			this.setState({ scanPaused: false, collected: nextCollected });
-		}
+		this.onCompleteQR(content);
 	}
 
-	private async onCompleteQR(content: string) {
+	private async onCompleteQR(idShareRequest: string) {
+		const token = await createToken(this.props.activeDid);
+		const response = await getShareRequest(token, idShareRequest);
+
 		const tokenPart = "[-_=a-zA-Z0-9]+";
-		const matches = content.match(new RegExp(`${tokenPart}\\.${tokenPart}\\.${tokenPart}`, "g")) || [];
+		const matches = response.match(new RegExp(`${tokenPart}\\.${tokenPart}\\.${tokenPart}`, "g")) || [];
+
 		if (matches.length === 0) {
 			this.showAlert(strings.camera.noCredentials.title, strings.camera.noCredentials.message);
 			this.setState({ collected: undefined });
 			return;
 		}
 		const parseResults = matches.map(unverifiedParseJWT);
+
 		const { left: errors, right: successfulParses } = array.separate(parseResults);
 
 		if (successfulParses.length === 0) {
