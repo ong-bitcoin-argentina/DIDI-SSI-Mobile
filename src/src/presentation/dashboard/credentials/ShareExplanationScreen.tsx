@@ -1,20 +1,22 @@
+
 import { CredentialDocument } from "didi-sdk";
 import React from "react";
 import { Image, Share, View } from "react-native";
+import { DidiScrollScreen } from "../../common/DidiScreen";
 
-import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-
 import { RecentActivity } from "../../../model/RecentActivity";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
-
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
 import { savePresentation } from "../../../services/user/savePresentation";
+
+const { Normal, Small } = DidiText.Explanation;
+const { shareExplanation } = strings;
 
 export interface ShareExplanationProps {
 	documents: CredentialDocument[];
@@ -40,18 +42,19 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<DidiScreen style={{ width: "90%" }}>
-				<DidiText.Explanation.Normal>{strings.shareExplanation.explanation}</DidiText.Explanation.Normal>
+			<DidiScrollScreen>
+				<Normal>{shareExplanation.explanation}</Normal>
 
 				<Image style={commonStyles.image.image} source={require("../../resources/images/login.png")} />
 
 				<View>
-					<DidiButton
-						title={strings.shareExplanation.link.button}
-						onPress={() => this.shareLink(this.props.documents)}
-					/>
+					<DidiButton title={shareExplanation.direct.button} onPress={() => this.shareDirect(this.props.documents)} />
+					<Small>{shareExplanation.direct.explanation}</Small>
+
+					<Normal style={{ marginTop: 18 }}>{shareExplanation.or}</Normal>
+					<DidiButton title={shareExplanation.link.button} onPress={() => this.shareLink(this.props.documents)} />
 				</View>
-			</DidiScreen>
+			</DidiScrollScreen>
 		);
 	}
 
@@ -67,6 +70,10 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 			message: strings.shareExplanation.shareMessage(shareUrl)
 		});
 		this.props.recordLinkShare(documents);
+	}
+
+	private shareDirect(documents: CredentialDocument[]) {
+		this.navigate("ShareSpecificCredential", { documents });
 	}
 }
 
