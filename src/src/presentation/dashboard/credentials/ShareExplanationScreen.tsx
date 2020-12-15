@@ -1,7 +1,9 @@
-import { CredentialDocument, SelectiveDisclosureProposal } from "didi-sdk";
+
+import { CredentialDocument } from "didi-sdk";
 import React from "react";
 import { Image, Share, View } from "react-native";
 import { DidiScrollScreen } from "../../common/DidiScreen";
+
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";
@@ -11,6 +13,7 @@ import { RecentActivity } from "../../../model/RecentActivity";
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 import { ShareSpecificCredentialProps } from "./ShareSpecificCredential";
+import { savePresentation } from "../../../services/user/savePresentation";
 
 const { Normal, Small } = DidiText.Explanation;
 const { shareExplanation } = strings;
@@ -19,7 +22,7 @@ export interface ShareExplanationProps {
 	documents: CredentialDocument[];
 }
 interface ShareExplanationStateProps {
-	sharePrefix: string;
+	viewerApiUrl: string;
 }
 interface ShareExplanationDispatchProps {
 	recordLinkShare: (documents: CredentialDocument[]) => void;
@@ -55,11 +58,16 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private shareLink(documents: CredentialDocument[]) {
-		const jwt = documents.map(doc => doc.jwt).join(",");
+	private async shareLink(documents: CredentialDocument[]) {
+		const jwt = documents.map(doc => doc.jwt);
+		const jwtString = JSON.stringify(jwt);
+
+		const idPresentation = await savePresentation(jwtString);
+		const shareUrl = `${this.props.viewerApiUrl}/presentation/${idPresentation}`;
+
 		Share.share({
 			title: strings.shareExplanation.title,
-			message: strings.shareExplanation.shareMessage(`${this.props.sharePrefix}/${jwt}`)
+			message: strings.shareExplanation.shareMessage(shareUrl)
 		});
 		this.props.recordLinkShare(documents);
 	}
@@ -72,7 +80,7 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	ShareExplanationScreen,
 	(state): ShareExplanationStateProps => ({
-		sharePrefix: state.serviceSettings.sharePrefix
+		viewerApiUrl: state.serviceSettings.viewerApiUrl
 	}),
 	(dispatch): ShareExplanationDispatchProps => ({
 		recordLinkShare: (documents: CredentialDocument[]) =>
