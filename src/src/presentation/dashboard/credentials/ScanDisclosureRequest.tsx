@@ -84,6 +84,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 					style={{ marginHorizontal: 20 }}
 					request={this.props.request}
 					context={{ knownIssuers: this.props.knownIssuers }}
+					activeDid={this.props.did}
 				/>
 				<ServiceObserver serviceKey="ScanDisclosureRequest" onSuccess={() => this.onSuccess()} />
 				<DidiServiceButton onPress={() => this.answerRequest()} title="Enviar datos" isPending={this.state.loading} />

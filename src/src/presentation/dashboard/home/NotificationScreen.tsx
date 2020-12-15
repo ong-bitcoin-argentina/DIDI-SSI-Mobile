@@ -137,7 +137,12 @@ class NotificationScreen extends NavigationEnabledComponent<
 		const now = Math.floor(Date.now() / 1000);
 		const isActive = request.expireAt ? now < request.expireAt : true;
 		return (
-			<RequestCard key={request.jwt} request={request} context={this.props.credentialContext}>
+			<RequestCard
+				key={request.jwt}
+				request={request}
+				context={this.props.credentialContext}
+				activeDid={this.props.did}
+			>
 				<View style={{ marginTop: 10 }}>
 					{isActive ? (
 						<DidiButton
