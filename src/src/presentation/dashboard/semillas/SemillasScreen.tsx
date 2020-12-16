@@ -123,7 +123,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	onGetCredentials = () => {
 		const { dni } = this.state;
 		if (!dni) {
-			DataAlert.alert(program, noDni);
+			this.toggleModalNoCredential();
 		} else {
 			this.showCredentialConfirmation();
 		}
