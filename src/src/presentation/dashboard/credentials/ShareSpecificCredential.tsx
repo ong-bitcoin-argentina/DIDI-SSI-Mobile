@@ -65,7 +65,10 @@ export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 						<View style={{ marginVertical: 10 }}>
 							<QRCode size={0.8 * Dimensions.get("window").width} value={this.state.token} />
 						</View>
-						<DidiButton title={strings.share.next} onPress={() => this.navigate("ScanCredential", {})} />
+						<DidiButton
+							title={strings.share.next}
+							onPress={() => this.navigate("ScanCredential", { documents: this.props.documents })}
+						/>
 					</Fragment>
 				) : (
 					<DidiText.Explanation.Normal>{strings.share.generating}</DidiText.Explanation.Normal>
