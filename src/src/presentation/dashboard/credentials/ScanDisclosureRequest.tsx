@@ -28,6 +28,7 @@ import { ShowDisclosureResponseProps } from "./ShowDisclosureResponse";
 
 export interface ScanDisclosureRequestProps {
 	request: SelectiveDisclosureRequest;
+	documents: CredentialDocument[];
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
@@ -118,12 +119,12 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 			if (this.props.request.callback) {
 				this.props.sendResponse({ callback: this.props.request.callback, token: responseToken });
-				this.props.recordCallback(this.props.credentials);
+				this.props.recordCallback(this.props.documents);
 			} else {
 				this.navigate("ShowDisclosureResponse", {
 					responseToken
 				});
-				this.props.recordShare(this.props.credentials);
+				this.props.recordShare(this.props.documents);
 			}
 		} catch (signerError) {
 			console.warn(signerError);
