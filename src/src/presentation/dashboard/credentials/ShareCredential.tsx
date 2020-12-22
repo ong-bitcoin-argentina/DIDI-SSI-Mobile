@@ -24,6 +24,7 @@ import themes from "../../resources/themes";
 
 import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
+import Divider from "../common/Divider";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
@@ -67,6 +68,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 						data={this.props.credentials}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item)}
+						ItemSeparatorComponent={() => <Divider />}
 						ListEmptyComponent={
 							<View style={commonStyles.view.body}>
 								<DidiText.Explanation.Normal>

@@ -1,7 +1,6 @@
 import { CredentialDocument, EthrDID } from "didi-sdk";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { State } from "react-native-gesture-handler";
 
 import { assertUnreachable } from "../../../util/assertUnreachable";
 import { DidiText } from "../../util/DidiText";
@@ -150,41 +149,41 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				subTitles={issuerTexts}
 				data={data}
 				columns={preview ? CredentialDocument.numberOfColumns(document) : 1}
+				secondChildren={document.preview?.cardLayout && this.renderTypeMessage(styleType)}
 				color={style.color}
 				hollow={style.hollow}
 				preview={preview}
 			>
 				{children}
-				{this.renderTypeMessage(styleType)}
+				{!document.preview?.cardLayout && this.renderTypeMessage(styleType)}
 			</CredentialCard>
 		);
 	}
 
 	private renderTypeMessage(type: CredentialState): JSX.Element | undefined {
+		const { revoked, replaced, shared } = strings.credentialCard;
+		const { Warning } = DidiText.Card;
+		const marginTop = this.props.document.preview?.cardLayout ? 0 : 10;
 		switch (type) {
 			case CredentialStates.normal:
 			case CredentialStates.identity:
 				return undefined;
 			case CredentialStates.revoked:
-				return (
-					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
-						{strings.credentialCard.revoked}
-					</DidiText.Card.Warning>
-				);
+				return <Warning style={styles.sharedInfo}>{revoked}</Warning>;
 			case CredentialStates.obsolete:
-				return (
-					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
-						{strings.credentialCard.replaced}
-					</DidiText.Card.Warning>
-				);
+				return <Warning style={styles.sharedInfo}>{replaced}</Warning>;
 			case CredentialStates.share:
-				return (
-					<DidiText.Card.Warning style={{ color: "#FFF", marginTop: 10 }}>
-						{strings.credentialCard.shared}
-					</DidiText.Card.Warning>
-				);
+				return <Warning style={[styles.sharedInfo, { marginTop }]}>{shared}</Warning>;
+
 			default:
 				assertUnreachable(type);
 		}
 	}
 }
+
+const styles = StyleSheet.create({
+	sharedInfo: {
+		color: colors.white,
+		marginTop: 10
+	}
+});

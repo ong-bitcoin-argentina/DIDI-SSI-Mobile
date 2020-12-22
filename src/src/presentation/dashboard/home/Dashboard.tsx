@@ -26,6 +26,7 @@ import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
 import { IncompleteIdentityCard } from "./IncompleteIdentityCard";
 import { NotificationScreenProps } from "./NotificationScreen";
+import Divider from "../common/Divider";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -119,6 +120,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						data={this.props.validCredentials}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item, item.index)}
+						ItemSeparatorComponent={() => <Divider />}
 						ListHeaderComponent={
 							<Fragment>
 								<HomeHeader
