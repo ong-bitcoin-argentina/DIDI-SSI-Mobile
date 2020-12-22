@@ -14,6 +14,7 @@ import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
 
 import { DocumentDetailProps } from "./DocumentDetail";
+import Divider from "../common/Divider";
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenStateProps {
@@ -45,6 +46,7 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 							data={validCredentials.filter(doc => filter(doc, did))}
 							keyExtractor={(_, index) => index.toString()}
 							renderItem={item => this.renderCard(item.item, item.index)}
+							ItemSeparatorComponent={() => <Divider />}
 							ListEmptyComponent={this.renderEmpty()}
 						/>
 					)}
