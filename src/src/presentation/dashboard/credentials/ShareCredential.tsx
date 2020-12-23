@@ -57,7 +57,10 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		const credentialsToShare = this.props.credentials.filter(credential => credential.category !== "identity");
+		const credentialsToShare = this.props.credentials.filter(
+			credential => credential.category !== "identity" || !credential.specialFlag
+		);
+
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
