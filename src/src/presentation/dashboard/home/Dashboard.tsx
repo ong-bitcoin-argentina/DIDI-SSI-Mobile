@@ -25,8 +25,6 @@ import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
 import { IncompleteIdentityCard } from "./IncompleteIdentityCard";
 import { NotificationScreenProps } from "./NotificationScreen";
-import dynamicLinks from "@react-native-firebase/dynamic-links";
-
 import { AuthModal } from "../common/AuthModal";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import {
@@ -42,9 +40,9 @@ import {
 import { PendingLinkingState } from "../../../store/reducers/pendingLinkingReducer";
 import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
-import { NavigationActions } from "react-navigation";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
+import Divider from "../common/Divider";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -244,6 +242,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						maxToRenderPerBatch={5}
 						updateCellsBatchingPeriod={30}
 						windowSize={6}
+						ItemSeparatorComponent={() => <Divider color="transparent" height={8} />}
 						ListHeaderComponent={
 							<Fragment>
 								<HomeHeader

@@ -5,18 +5,21 @@ import colors from "../../resources/colors";
 type Props = {
 	style?: ViewStyle;
 	color?: string;
+	height?: number;
 };
 
 export default class Divider extends PureComponent<Props> {
 	render() {
-		const { style, color } = this.props;
-		return <View style={[styles.divider, { backgroundColor: color ?? colors.darkGray }, style]}></View>;
+		const { style, color, height } = this.props;
+		const backgroundColor = color ?? colors.darkGray;
+		const finalHeight = height ? height : 1;
+		const finalStyle = [styles.divider, { backgroundColor, height: finalHeight }, style];
+		return <View style={finalStyle}></View>;
 	}
 }
 
 const styles = StyleSheet.create({
 	divider: {
-		height: 1,
 		backgroundColor: colors.darkGray,
 		marginVertical: 8
 	}

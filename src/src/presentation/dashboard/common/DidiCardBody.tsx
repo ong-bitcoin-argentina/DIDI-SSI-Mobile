@@ -10,24 +10,28 @@ export interface DidiCardBodyProps extends ViewProps {
 	hollow?: boolean;
 	decoration?: JSX.Element;
 	backgroundUrl?: string;
+	secondChildren?: JSX.Element;
 }
 
 export default class DidiCardBody extends Component<DidiCardBodyProps> {
 	render() {
-		const { backgroundUrl, decoration, hollow, color, icon, children, style } = this.props;
+		const { backgroundUrl, decoration, hollow, color, icon, children, secondChildren, style } = this.props;
 		const bodyStyle = hollow
-			? { borderColor: color, backgroundColor: "#FFF", borderWidth: 2 }
+			? { borderColor: color, backgroundColor: colors.white, borderWidth: 2 }
 			: { backgroundColor: color };
 
 		const content = (
 			<React.Fragment>
-				<View style={styles.headerContainer}>
-					<View style={styles.headerIconContainer}>
-						<DidiText.Icon fontSize={30} color={hollow ? color : undefined}>
-							{icon}
-						</DidiText.Icon>
+				<View>
+					<View style={styles.headerContainer}>
+						<View style={styles.headerIconContainer}>
+							<DidiText.Icon fontSize={30} color={hollow ? color : undefined}>
+								{icon}
+							</DidiText.Icon>
+						</View>
+						<View style={styles.textContainer}>{children}</View>
 					</View>
-					<View style={styles.textContainer}>{children}</View>
+					{secondChildren ? <View style={styles.specialSharedCard}>{secondChildren}</View> : null}
 				</View>
 				{decoration && <View style={styles.imageContainer}>{decoration}</View>}
 			</React.Fragment>
@@ -68,6 +72,15 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start",
 		flexGrow: 1
 	},
+	specialSharedCard: {
+		backgroundColor: colors.darkText,
+		paddingHorizontal: 5,
+		marginTop: 17,
+		borderBottomLeftRadius: 10,
+		borderBottomRightRadius: 10,
+		width: "100%",
+		alignItems: "center"
+	},
 	textContainer: {
 		flex: 1,
 		flexDirection: "column",
@@ -78,7 +91,6 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		flex: 0,
 		minHeight: 180,
-		marginVertical: 8,
 		width: "auto"
 	},
 
