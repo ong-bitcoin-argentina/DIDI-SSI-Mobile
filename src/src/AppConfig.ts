@@ -10,6 +10,7 @@ const debug: boolean = Config.APP_DEBUG === "true";
 
 const defaultServiceSettings: ServiceSettings = {
 	sharePrefix: Config.URL_VIEWER,
+	viewerApiUrl: Config.URL_VIEWER_API,
 	trustGraphUri: Config.URL_MOURO,
 	ethrDidUri: Config.BLOCKCHAIN_URL_MAIN,
 	ethrDelegateUri: Config.BLOCKCHAIN_URL_MAIN,

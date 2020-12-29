@@ -1,9 +1,9 @@
 import { CredentialDocument, SelectiveDisclosureProposal } from "didi-sdk";
 import React, { Fragment } from "react";
-import { Dimensions, Share } from "react-native";
+import { Dimensions, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
-import { DidiScreen } from "../../common/DidiScreen";
+import { DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
@@ -58,17 +58,22 @@ export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 
 	render() {
 		return (
-			<DidiScreen style={{ width: "90%" }}>
+			<DidiScrollScreen>
 				{this.state.token ? (
 					<Fragment>
 						<DidiText.Explanation.Normal>{strings.share.explanation}</DidiText.Explanation.Normal>
-						<QRCode size={0.9 * Dimensions.get("window").width} value={this.state.token} />
-						<DidiButton title={strings.share.next} onPress={() => this.navigate("ScanCredential", {})} />
+						<View style={{ marginVertical: 10 }}>
+							<QRCode size={0.8 * Dimensions.get("window").width} value={this.state.token} />
+						</View>
+						<DidiButton
+							title={strings.share.next}
+							onPress={() => this.navigate("ScanCredential", { documents: this.props.documents })}
+						/>
 					</Fragment>
 				) : (
 					<DidiText.Explanation.Normal>{strings.share.generating}</DidiText.Explanation.Normal>
 				)}
-			</DidiScreen>
+			</DidiScrollScreen>
 		);
 	}
 }

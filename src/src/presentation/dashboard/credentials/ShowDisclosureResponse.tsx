@@ -1,28 +1,47 @@
 import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View, ActivityIndicator } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
-import { DidiScreen } from "../../common/DidiScreen";
+import { DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import strings from "../../resources/strings";
+import { didiConnect } from "../../../store/store";
+import { saveShareRequest } from "../../../services/user/saveShareRequest";
+import { createToken } from "../../util/appRouter";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 
-const MAX_CHARS_PER_QR = 400;
+enum RequestStatus {
+	loading = "loading",
+	error = "error",
+	success = "success"
+}
 
-export interface ShowDisclosureResponseProps {
+interface InternalProps {
 	responseToken: string;
 }
-
-interface ShowDisclosureResponseState {
-	index: number;
+interface StateProps {
+	did: ActiveDid;
 }
+
+interface InternalState {
+	index: number;
+	requestStatus: RequestStatus;
+	qrCode: string | null;
+}
+
+const { Normal } = DidiText.Explanation;
+
+export type ShowDisclosureResponseProps = InternalProps & StateProps;
+
+export type ShowDisclosureResponseState = InternalState;
 
 export type ShowDisclosureResponseNavigation = {};
 
-export class ShowDisclosureResponseScreen extends NavigationEnabledComponent<
+class ShowDisclosureResponseScreen extends NavigationEnabledComponent<
 	ShowDisclosureResponseProps,
 	ShowDisclosureResponseState,
 	ShowDisclosureResponseNavigation
@@ -32,48 +51,85 @@ export class ShowDisclosureResponseScreen extends NavigationEnabledComponent<
 	constructor(props: ShowDisclosureResponseProps) {
 		super(props);
 		this.state = {
-			index: 0
+			index: 0,
+			requestStatus: RequestStatus.loading,
+			qrCode: null
 		};
 	}
 
-	render() {
-		const qrSegment =
-			`_${this.state.index}/${this.maxIndex()}_:` +
-			this.props.responseToken.slice(this.state.index * MAX_CHARS_PER_QR, (this.state.index + 1) * MAX_CHARS_PER_QR);
+	async componentDidMount() {
+		const userJWT = await this.getToken();
+		this.handleSaveShareRequest(userJWT);
+	}
+
+	getToken = async () => {
+		return await createToken(this.props.did);
+	};
+
+	handleSaveShareRequest = async (userJWT: string) => {
+		console.log("handleSaveShareRequest");
+		const { responseToken } = this.props;
+		try {
+			const result = await saveShareRequest(userJWT, responseToken);
+			console.log(result);
+			this.setState({ requestStatus: RequestStatus.success, qrCode: result.data });
+		} catch (error) {
+			this.setState({ requestStatus: RequestStatus.error });
+		}
+	};
+
+	renderSuccess = () => {
 		return (
-			<DidiScreen style={{ width: "90%" }}>
-				<DidiText.Explanation.Normal>{strings.disclose.response.explanation}</DidiText.Explanation.Normal>
-				<QRCode size={0.9 * Dimensions.get("window").width} value={qrSegment} />
-				<View style={{ flexDirection: "row" }}>
-					<DidiButton title="<" style={styles.arrowButton} onPress={() => this.changePosition(-1)} />
-					<DidiText.Explanation.Normal style={styles.arrowText}>
-						{this.state.index + 1}/{this.maxIndex() + 1}
-					</DidiText.Explanation.Normal>
-					<DidiButton title=">" style={styles.arrowButton} onPress={() => this.changePosition(+1)} />
-				</View>
-				<DidiButton title="Listo" disabled={this.state.index !== this.maxIndex()} onPress={() => this.goToRoot()} />
-			</DidiScreen>
+			<View style={{ alignItems: "center" }}>
+				<Normal style={{ marginBottom: 30 }}>{strings.disclose.response.explanation}</Normal>
+				{!!this.state.qrCode && <QRCode size={0.75 * Dimensions.get("window").width} value={this.state.qrCode} />}
+				<DidiButton style={styles.readyButton} title={strings.buttons.ready} onPress={() => this.goToRoot()} />
+			</View>
 		);
-	}
+	};
 
-	private maxIndex() {
-		return Math.ceil(this.props.responseToken.length / MAX_CHARS_PER_QR) - 1;
-	}
+	renderError = () => {
+		return (
+			<>
+				<Normal>{strings.disclose.response.error}</Normal>
+				<DidiButton title={strings.buttons.back} onPress={() => this.goBack()} />
+			</>
+		);
+	};
 
-	private changePosition(delta: number) {
-		const freeNext = this.state.index + delta;
-		const clampedNext = Math.max(0, Math.min(freeNext, this.maxIndex()));
+	renderContent = () => {
+		switch (this.state.requestStatus) {
+			case RequestStatus.loading:
+				return <ActivityIndicator size="large" />;
+			case RequestStatus.error:
+				return this.renderError();
+			case RequestStatus.success:
+				return this.renderSuccess();
+		}
+	};
 
-		this.setState({ index: clampedNext });
+	render() {
+		return <DidiScrollScreen contentContainerStyle={styles.container}>{this.renderContent()}</DidiScrollScreen>;
 	}
 }
 
 const styles = StyleSheet.create({
-	arrowButton: {
-		width: 80
+	container: {
+		width: "100%",
+		paddingHorizontal: 10
 	},
-	arrowText: {
-		textAlignVertical: "center",
-		flex: 1
+	readyButton: {
+		marginTop: 50,
+		marginBottom: 20,
+		paddingHorizontal: 80
 	}
 });
+
+const connected = didiConnect(
+	ShowDisclosureResponseScreen,
+	(state): StateProps => ({
+		did: state.did.activeDid
+	})
+);
+
+export { connected as ShowDisclosureResponseScreen };

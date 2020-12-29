@@ -1,4 +1,4 @@
-import { parseJWT, unverifiedParseJWT } from "didi-sdk";
+import { parseJWT, unverifiedParseJWT, CredentialDocument } from "didi-sdk";
 import { array } from "fp-ts/lib/Array";
 import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";
@@ -19,7 +19,9 @@ import { ScanDisclosureRequestProps } from "./ScanDisclosureRequest";
 import { ShowDisclosureRequestProps } from "./ShowDisclosureRequest";
 import { AppConfig } from "../../../AppConfig";
 
-export type ScanCredentialProps = {};
+export type ScanCredentialProps = {
+	documents: CredentialDocument[];
+};
 interface ScanCredentialStateProps {
 	activeDid: ActiveDid;
 	ethrDidUri: string;
@@ -123,8 +125,11 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 				case "SelectiveDisclosureRequest":
 					this.replace("ScanDisclosureRequest", {
 						request: parse.right,
+						documents: this.props.documents,
 						onGoBack: screen => {
-							screen.replace("ScanCredential", {});
+							screen.replace("ScanCredential", {
+								documents: this.props.documents
+							});
 						}
 					});
 					break;
