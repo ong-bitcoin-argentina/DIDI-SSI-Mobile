@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, TextStyle } from "react-native";
+import { Text, StyleSheet, TextStyle, Dimensions } from "react-native";
 import { DidiText } from "./DidiText";
 import colors from "../resources/colors";
 const { Small } = DidiText.Explanation;
+const widthScreen = Dimensions.get("screen").width;
 
 type Props = {
 	name: string;
@@ -24,7 +25,7 @@ export default class KeyValueText extends Component<Props> {
 
 const value = {
 	marginTop: 4,
-	fontSize: 17,
+	fontSize: widthScreen < 360 ? 15 : 17,
 	color: colors.darkText
 };
 
