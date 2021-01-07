@@ -68,7 +68,6 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 						data={this.props.credentials}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item)}
-						ItemSeparatorComponent={() => <Divider />}
 						ListEmptyComponent={
 							<View style={commonStyles.view.body}>
 								<DidiText.Explanation.Normal>
@@ -103,11 +102,9 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		return (
 			<TouchableOpacity
 				style={{
+					...commonStyles.util.credentialCard,
 					borderRadius: 10,
-					backgroundColor: isSelected ? colors.primary : colors.background,
-					marginHorizontal: 10,
-					paddingHorizontal: 10,
-					marginVertical: 2
+					backgroundColor: isSelected ? colors.primary : colors.background
 				}}
 				onPress={() => this.doSelect(document)}
 			>

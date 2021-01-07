@@ -46,7 +46,6 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 							data={validCredentials.filter(doc => filter(doc, did))}
 							keyExtractor={(_, index) => index.toString()}
 							renderItem={item => this.renderCard(item.item, item.index)}
-							ItemSeparatorComponent={() => <Divider />}
 							ListEmptyComponent={this.renderEmpty()}
 						/>
 					)}
@@ -67,6 +66,7 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 		return (
 			<TouchableOpacity
 				key={index}
+				style={commonStyles.util.credentialCard}
 				onPress={() =>
 					this.navigate("DocumentDetail", {
 						document,
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
 		width: "100%"
 	},
 	scrollContent: {
-		paddingHorizontal: 20,
 		paddingVertical: 8
 	}
 });

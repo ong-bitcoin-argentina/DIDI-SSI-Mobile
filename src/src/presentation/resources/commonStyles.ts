@@ -119,6 +119,12 @@ export default {
 		paragraphMd: {
 			marginVertical: 11,
 			fontSize: 18
+		},
+		credentialCard: {
+			marginVertical: 4,
+			marginHorizontal: 4,
+			paddingHorizontal: 10,
+			paddingVertical: 8
 		}
 	})
 };

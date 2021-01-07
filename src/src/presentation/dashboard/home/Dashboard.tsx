@@ -77,7 +77,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		return (
 			<TouchableOpacity
 				key={`RG_${index}`}
-				style={{ marginHorizontal: 20 }}
+				style={commonStyles.util.credentialCard}
 				onPress={() =>
 					this.navigate("DashDocumentDetail", {
 						document,
@@ -120,22 +120,17 @@ class DashboardScreen extends NavigationEnabledComponent<
 						data={this.props.validCredentials}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item, item.index)}
-						ItemSeparatorComponent={() => <Divider />}
 						ListHeaderComponent={
 							<Fragment>
 								<HomeHeader
 									onPersonPress={() => this.navigate("UserData", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
 								/>
-								<View style={{ paddingHorizontal: 20, paddingTop: 8 }}>
+								<View style={styles.headerCredentials}>
 									<IncompleteIdentityCard
 										onStartValidateId={() => this.navigate("ValidateID", {})}
-										onValidateIdSuccess={() => {
-											this.props.finishDniValidation();
-										}}
-										onValidateIdFailure={() => {
-											this.props.resetDniValidation();
-										}}
+										onValidateIdSuccess={() => this.props.finishDniValidation()}
+										onValidateIdFailure={() => this.props.resetDniValidation()}
 									/>
 									<EvolutionCard credentials={this.props.credentials} />
 								</View>
@@ -195,5 +190,10 @@ const styles = StyleSheet.create({
 	activities: {
 		backgroundColor: "#FFF",
 		marginBottom: 2
+	},
+	headerCredentials: {
+		marginTop: 20,
+		marginBottom: 10,
+		paddingHorizontal: 14
 	}
 });
