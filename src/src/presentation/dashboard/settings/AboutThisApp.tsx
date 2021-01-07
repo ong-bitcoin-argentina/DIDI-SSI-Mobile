@@ -6,6 +6,7 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { DidiText } from "../../util/DidiText";
 import strings from "../../resources/strings";
+import { VERSION } from "../../../AppConfig";
 const { paragraphs } = strings.settings.about;
 const { Small } = DidiText.Explanation;
 
@@ -36,6 +37,7 @@ export class AboutThisAppScreen extends NavigationEnabledComponent<
 							))}
 						</Text>
 					))}
+					<Text style={styles.paragraph}>{`versión: ${VERSION}`}</Text>
 				</View>
 			</ScrollView>
 		);
