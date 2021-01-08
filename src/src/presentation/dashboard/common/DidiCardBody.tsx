@@ -40,7 +40,7 @@ export default class DidiCardBody extends Component<DidiCardBodyProps> {
 		const dimensions = Dimensions.get("window");
 		const imageSize = {
 			height: Math.round((dimensions.width * 9) / 16),
-			width: dimensions.width - 40,
+			width: "100%",
 			backgroundColor: colors.background,
 			marginVertical: 0
 		};
@@ -75,10 +75,10 @@ const styles = StyleSheet.create({
 	specialSharedCard: {
 		backgroundColor: colors.darkText,
 		paddingHorizontal: 5,
-		marginTop: 17,
 		borderBottomLeftRadius: 10,
 		borderBottomRightRadius: 10,
 		width: "100%",
+		height: 22,
 		alignItems: "center"
 	},
 	textContainer: {

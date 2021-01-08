@@ -140,6 +140,12 @@ export default {
 			shadowOpacity: 0.25,
 			shadowRadius: 3.84,
 			elevation: 14
+		},
+		credentialCard: {
+			marginVertical: 4,
+			marginHorizontal: 4,
+			paddingHorizontal: 10,
+			paddingVertical: 8
 		}
 	})
 };

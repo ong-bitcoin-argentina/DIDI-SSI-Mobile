@@ -138,7 +138,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 						<View style={styles.imageContainer}>
 							<CardBackground width="100%" height="100%" style={styles.image} />
 						</View>
-						<DidiText.Explanation.Emphasis>{page.title}</DidiText.Explanation.Emphasis>
+						<DidiText.Explanation.Emphasis style={styles.cardTitle}>{page.title}</DidiText.Explanation.Emphasis>
 						<DidiText.Explanation.Normal>{page.body}</DidiText.Explanation.Normal>
 					</View>
 				</View>
@@ -214,6 +214,8 @@ const styles = StyleSheet.create({
 		marginHorizontal: 20,
 		justifyContent: "flex-end"
 	},
+
+	// CARD
 	cardArea: {
 		flex: 4,
 		marginHorizontal: 20
@@ -227,12 +229,27 @@ const styles = StyleSheet.create({
 		elevation: 5
 	},
 	cardContainer: {
-		padding: 20,
+		padding: 30,
+		paddingBottom: 32,
 		alignSelf: "stretch",
 		alignItems: "stretch",
 		justifyContent: "space-evenly",
 		flex: 1
 	},
+	cardTitle: {
+		marginTop: 20,
+		marginBottom: 10,
+		fontSize: 20
+	},
+	imageContainer: {
+		flexGrow: 1,
+		flexShrink: 1
+	},
+	image: {
+		alignSelf: "center"
+	},
+	// FIN CARD
+
 	closeContainer: {
 		flexDirection: "row",
 		alignItems: "center",
@@ -245,13 +262,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginHorizontal: 20,
 		justifyContent: "center"
-	},
-	imageContainer: {
-		flexGrow: 1,
-		flexShrink: 1
-	},
-	image: {
-		alignSelf: "center"
 	},
 	backgroundImage: {
 		width: "100%",

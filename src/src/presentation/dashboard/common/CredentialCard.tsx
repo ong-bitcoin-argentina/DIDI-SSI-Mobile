@@ -8,10 +8,12 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
 import DidiCardBody, { DidiCardBodyProps } from "./DidiCardBody";
+import { CredentialStates } from "../../../model/Credential";
 
 export interface CredentialCardProps extends DidiCardBodyProps {
 	category: string;
 	title: string;
+	credentialState?: CredentialStates;
 	subTitles: string[];
 	data?: ClaimDataPairs;
 	columns?: 1 | 2 | 3;
@@ -118,15 +120,17 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 	render() {
-		const { hollow, color, layout, icon, preview } = this.props;
+		const { hollow, color, layout, icon, preview, credentialState } = this.props;
 		const cardColor = hollow ? color : colors.lightBackground;
 		const style = layout?.style == "dark" && preview ? colors.darkText : cardColor;
+		const isRevoked = credentialState === CredentialStates.revoked;
+		const haveBackgroundImage = preview && layout && !isRevoked;
 
 		return (
 			<DidiCardBody
 				{...this.props}
 				icon={this.hasLayout() ? "" : icon}
-				backgroundUrl={preview ? layout?.backgroundImage : undefined}
+				backgroundUrl={haveBackgroundImage ? layout?.backgroundImage : undefined}
 			>
 				{this.renderTitle(style)}
 				{this.renderKeyValuePairs(style)}
