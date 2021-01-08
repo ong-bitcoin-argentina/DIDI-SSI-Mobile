@@ -153,6 +153,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				color={style.color}
 				hollow={style.hollow}
 				preview={preview}
+				credentialState={styleType}
 			>
 				{children}
 				{!document.preview?.cardLayout && this.renderTypeMessage(styleType)}
@@ -183,7 +184,6 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 
 const styles = StyleSheet.create({
 	sharedInfo: {
-		color: colors.white,
-		marginTop: 10
+		color: colors.white
 	}
 });
