@@ -1,5 +1,5 @@
 import React from "react";
-import { BackHandler, Image, NativeEventSubscription, TouchableOpacity, View } from "react-native";
+import { BackHandler, Image, NativeEventSubscription, TouchableOpacity, View, ScrollView } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -71,23 +71,25 @@ export class ValidateIdentityTakePhoto extends React.Component<
 			case "confirmation":
 				const uri = this.state.uri;
 				return (
-					<View style={commonStyles.view.area}>
-						<View style={commonStyles.view.body}>
-							<ValidateIdentityExplanationHeader {...this.props.header} />
-							<DidiText.ValidateIdentity.Normal>{this.props.confirmation}</DidiText.ValidateIdentity.Normal>
-							<Image
-								style={{
-									resizeMode: "contain",
-									aspectRatio: this.props.photoWidth / this.props.photoHeight,
-									maxWidth: "100%"
-								}}
-								source={{ uri: this.state.uri }}
-							/>
-							<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uri)}>
-								<Checkmark width="100%" height="100%" />
-							</TouchableOpacity>
+					<ScrollView>
+						<View style={commonStyles.view.area}>
+							<View style={commonStyles.view.body}>
+								<ValidateIdentityExplanationHeader {...this.props.header} />
+								<DidiText.ValidateIdentity.Normal>{this.props.confirmation}</DidiText.ValidateIdentity.Normal>
+								<Image
+									style={{
+										resizeMode: "contain",
+										aspectRatio: this.props.photoWidth / this.props.photoHeight,
+										maxWidth: "100%"
+									}}
+									source={{ uri: this.state.uri }}
+								/>
+								<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uri)}>
+									<Checkmark width="100%" height="100%" />
+								</TouchableOpacity>
+							</View>
 						</View>
-					</View>
+					</ScrollView>
 				);
 		}
 	}
