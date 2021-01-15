@@ -2,7 +2,7 @@ import React from "react";
 import { Image, Text, View } from "react-native";
 
 import { delayed } from "../../../services/common/delayed";
-import { DidiScreen } from "../../common/DidiScreen";
+import { DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";
 import commonStyles from "../../resources/commonStyles";
@@ -47,7 +47,7 @@ class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<ValidateId
 		const documentDataKeys = ["dni", "gender", "firstNames", "lastNames", "birthDate", "tramitId"] as const;
 
 		return (
-			<DidiScreen>
+			<DidiScrollScreen>
 				<DidiText.ValidateIdentity.Congrats>
 					{strings.validateIdentity.submit.congrats}
 				</DidiText.ValidateIdentity.Congrats>
@@ -78,7 +78,7 @@ class ValidateIdentitySubmitScreen extends NavigationEnabledComponent<ValidateId
 					}
 					isPending={this.props.validateIdentityPending}
 				/>
-			</DidiScreen>
+			</DidiScrollScreen>
 		);
 	}
 }
