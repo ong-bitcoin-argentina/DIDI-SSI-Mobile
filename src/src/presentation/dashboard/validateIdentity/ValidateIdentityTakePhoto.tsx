@@ -5,7 +5,7 @@ import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import { cameraButtonStyle } from "../common/DidiCamera";
 import { DidiReticleCamera, DidiReticleCameraProps } from "../common/DidiReticleCamera";
-
+import colors from "../../resources/colors";
 import Checkmark from "../../resources/images/cameraCheckmark.svg";
 
 import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
@@ -71,7 +71,7 @@ export class ValidateIdentityTakePhoto extends React.Component<
 			case "confirmation":
 				const uri = this.state.uri;
 				return (
-					<ScrollView>
+					<ScrollView style={{ flexGrow: 1, backgroundColor: colors.background }}>
 						<View style={commonStyles.view.area}>
 							<View style={commonStyles.view.body}>
 								<ValidateIdentityExplanationHeader {...this.props.header} />
