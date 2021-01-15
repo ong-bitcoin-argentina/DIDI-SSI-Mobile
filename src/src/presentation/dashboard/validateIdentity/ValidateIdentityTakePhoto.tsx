@@ -1,5 +1,13 @@
 import React from "react";
-import { BackHandler, Image, NativeEventSubscription, TouchableOpacity, View, ScrollView } from "react-native";
+import {
+	BackHandler,
+	Image,
+	NativeEventSubscription,
+	TouchableOpacity,
+	View,
+	ScrollView,
+	StyleSheet
+} from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -71,7 +79,7 @@ export class ValidateIdentityTakePhoto extends React.Component<
 			case "confirmation":
 				const uri = this.state.uri;
 				return (
-					<ScrollView style={{ flexGrow: 1, backgroundColor: colors.background }}>
+					<ScrollView style={styles.scrollView}>
 						<View style={commonStyles.view.area}>
 							<View style={commonStyles.view.body}>
 								<ValidateIdentityExplanationHeader {...this.props.header} />
@@ -104,3 +112,10 @@ export class ValidateIdentityTakePhoto extends React.Component<
 		});
 	}
 }
+
+const styles = StyleSheet.create({
+	scrollView: {
+		flexGrow: 1,
+		backgroundColor: colors.background
+	}
+});
