@@ -377,7 +377,7 @@ export default {
 			successRequest: "La solicitud de validación de DNI se registró de manera correcta, pronto tendrás novedades.",
 			gettingState: "Obteniendo el estado de tu validación, por favor aguarde.",
 			rejected:
-				"Tu solicitud de validación de identidad ha sido rechazada por Semillas. Por favor, contactate con tu Asesor.",
+				"Tu solicitud de validación de identidad ha sido rechazada por Semillas. Por favor, contactate con tu asesor/a.",
 			aprroved: "Tu solicitud fue validada correctamente!"
 		}
 	},
