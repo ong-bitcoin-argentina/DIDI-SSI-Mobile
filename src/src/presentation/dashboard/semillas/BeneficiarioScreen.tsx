@@ -37,7 +37,6 @@ export type BeneficiarioProps = {
 };
 
 interface BeneficiarioScreenStateProps {
-	// activeSemillasCredentials?: CredentialDocument[];
 	benefitCredential: CredentialDocument;
 	email: string;
 	identitiesCredentials: CredentialDocument[];

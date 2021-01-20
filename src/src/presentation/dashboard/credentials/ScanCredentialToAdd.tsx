@@ -58,7 +58,7 @@ class ScanCredentialToAddScreen extends NavigationEnabledComponent<
 						/>
 					);
 				})}
-				{this.props.credentials.every(doc => this.props.existingTokens.includes(doc.jwt))
+				{this.props.credentials.some(doc => this.props.existingTokens.includes(doc.jwt))
 					? this.renderExisting()
 					: this.renderNew()}
 			</DidiScrollScreen>

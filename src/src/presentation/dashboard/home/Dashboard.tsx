@@ -253,6 +253,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 										onStartValidateId={() => this.navigate("ValidateID", {})}
 										onValidateIdSuccess={() => this.props.finishDniValidation()}
 										onValidateIdFailure={() => this.props.resetDniValidation()}
+										style={{ marginBottom: styles.headerCredentials.marginBottom }}
 									/>
 									<EvolutionCard credentials={this.props.credentials} />
 								</View>

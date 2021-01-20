@@ -1,6 +1,6 @@
 import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
-import { Alert, FlatList, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, SafeAreaView, StatusBar, TouchableOpacity, View } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -24,7 +24,7 @@ import themes from "../../resources/themes";
 
 import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
-import Divider from "../common/Divider";
+import { CredentialStates } from "../../../model/Credential";
 
 export type ShareCredentialProps = {};
 interface ShareCredentialInternalProps extends ShareCredentialProps {
@@ -119,12 +119,12 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 
 	private contextAllowsShare(document: CredentialDocument): boolean {
 		switch (credentialState(document, this.props.credentialContext)) {
-			case "normal":
-			case "identity":
+			case CredentialStates.normal:
+			case CredentialStates.identity:
 				return true;
-			case "obsolete":
-			case "revoked":
-			case "share":
+			case CredentialStates.obsolete:
+			case CredentialStates.revoked:
+			case CredentialStates.share:
 				return false;
 		}
 	}

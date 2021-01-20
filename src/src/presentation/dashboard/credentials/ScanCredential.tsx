@@ -72,9 +72,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	private async onScanQR(content: string) {
-		if (this.state.scanPaused) {
-			return;
-		}
+		if (this.state.scanPaused) return;
 		this.setState({ scanPaused: true });
 
 		const segmentedCredentialMatch = content.match("^_(\\d+)/(\\d+)_:(.*)$");

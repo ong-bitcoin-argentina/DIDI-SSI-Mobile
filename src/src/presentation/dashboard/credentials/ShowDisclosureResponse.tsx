@@ -67,7 +67,6 @@ class ShowDisclosureResponseScreen extends NavigationEnabledComponent<
 	};
 
 	handleSaveShareRequest = async (userJWT: string) => {
-		console.log("handleSaveShareRequest");
 		const { responseToken } = this.props;
 		try {
 			const result = await saveShareRequest(userJWT, responseToken);
