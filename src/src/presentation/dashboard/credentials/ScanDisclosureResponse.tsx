@@ -12,7 +12,6 @@ import { DidiCamera } from "../common/DidiCamera";
 
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
-import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 

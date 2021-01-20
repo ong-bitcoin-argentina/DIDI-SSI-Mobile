@@ -1,6 +1,6 @@
 import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
-import { FlatList, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, TouchableOpacity, View } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
