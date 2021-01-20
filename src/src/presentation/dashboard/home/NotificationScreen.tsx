@@ -91,7 +91,7 @@ class NotificationScreen extends NavigationEnabledComponent<
 						data={toShow}
 						keyExtractor={req => req.jwt}
 						renderItem={item => this.renderItem(item.item)}
-						ItemSeparatorComponent={() => <Divider color={colors.white} />}
+						ItemSeparatorComponent={() => <Divider color={colors.transparent} />}
 						ListHeaderComponent={
 							<DidiButton
 								title={this.state.showExpired ? strings.notifications.hideExpired : strings.notifications.showExpired}

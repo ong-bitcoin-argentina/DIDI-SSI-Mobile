@@ -29,7 +29,7 @@ export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDet
 					<FlatList
 						style={styles.body}
 						contentContainerStyle={styles.scrollContent}
-						ItemSeparatorComponent={() => <Divider color={colors.white} />}
+						ItemSeparatorComponent={() => <Divider color={colors.transparent} />}
 						data={docList}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item, item.index)}
