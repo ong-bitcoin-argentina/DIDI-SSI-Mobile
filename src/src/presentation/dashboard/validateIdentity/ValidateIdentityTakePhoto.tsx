@@ -1,11 +1,19 @@
 import React from "react";
-import { BackHandler, Image, NativeEventSubscription, TouchableOpacity, View } from "react-native";
+import {
+	BackHandler,
+	Image,
+	NativeEventSubscription,
+	TouchableOpacity,
+	View,
+	ScrollView,
+	StyleSheet
+} from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import { cameraButtonStyle } from "../common/DidiCamera";
 import { DidiReticleCamera, DidiReticleCameraProps } from "../common/DidiReticleCamera";
-
+import colors from "../../resources/colors";
 import Checkmark from "../../resources/images/cameraCheckmark.svg";
 
 import ValidateIdentityExplanation, { ValidateIdentityExplanationProps } from "./ValidateIdentityExplanation";
@@ -71,23 +79,25 @@ export class ValidateIdentityTakePhoto extends React.Component<
 			case "confirmation":
 				const uri = this.state.uri;
 				return (
-					<View style={commonStyles.view.area}>
-						<View style={commonStyles.view.body}>
-							<ValidateIdentityExplanationHeader {...this.props.header} />
-							<DidiText.ValidateIdentity.Normal>{this.props.confirmation}</DidiText.ValidateIdentity.Normal>
-							<Image
-								style={{
-									resizeMode: "contain",
-									aspectRatio: this.props.photoWidth / this.props.photoHeight,
-									maxWidth: "100%"
-								}}
-								source={{ uri: this.state.uri }}
-							/>
-							<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uri)}>
-								<Checkmark width="100%" height="100%" />
-							</TouchableOpacity>
+					<ScrollView style={styles.scrollView}>
+						<View style={commonStyles.view.area}>
+							<View style={commonStyles.view.body}>
+								<ValidateIdentityExplanationHeader {...this.props.header} />
+								<DidiText.ValidateIdentity.Normal>{this.props.confirmation}</DidiText.ValidateIdentity.Normal>
+								<Image
+									style={{
+										resizeMode: "contain",
+										aspectRatio: this.props.photoWidth / this.props.photoHeight,
+										maxWidth: "100%"
+									}}
+									source={{ uri: this.state.uri }}
+								/>
+								<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uri)}>
+									<Checkmark width="100%" height="100%" />
+								</TouchableOpacity>
+							</View>
 						</View>
-					</View>
+					</ScrollView>
 				);
 		}
 	}
@@ -102,3 +112,10 @@ export class ValidateIdentityTakePhoto extends React.Component<
 		});
 	}
 }
+
+const styles = StyleSheet.create({
+	scrollView: {
+		flexGrow: 1,
+		backgroundColor: colors.background
+	}
+});

@@ -20,7 +20,7 @@ const pages: OnboardingPage[] = [
 		backgroundColor: "#8351C5",
 		backgroundTile: require("./images/onboardingTile1.png"),
 		title: "¿Qué podés hacer?",
-		body: "Vas a poder crear tu identidad digital sin intermediarios y de manera segura."
+		body: "Podés crear tu identidad digital sin intermediarios y de manera segura."
 	},
 	{
 		image: Image2,
@@ -28,7 +28,7 @@ const pages: OnboardingPage[] = [
 		backgroundTile: require("./images/onboardingTile2.png"),
 		title: "Podés generar credenciales",
 		body:
-			"Vas a poder acceder a todas tus credenciales, certificando tus datos, cursos realizados, domicilios, propiedades."
+			"Podés acceder a todas tus credenciales, certificando tus datos, cursos realizados, domicilios, propiedades."
 	},
 	{
 		image: Image3,
