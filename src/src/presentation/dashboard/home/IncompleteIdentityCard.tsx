@@ -11,6 +11,7 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
 export interface IncompleteIdentityCardProps {
+	style: any;
 	onStartValidateId: () => void;
 	onValidateIdSuccess: () => void;
 	onValidateIdFailure: () => void;
@@ -63,13 +64,13 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 	}
 
 	render() {
-		const { isIdentityCredentialPresent, validateDniState } = this.props;
+		const { isIdentityCredentialPresent, validateDniState, style } = this.props;
 		// Only with "Finished" check it works, but some users still have the old configuration and this must be considered
 		if ((isIdentityCredentialPresent && validateDniState === null) || validateDniState?.state === "Finished") {
 			return null;
 		} else {
 			return (
-				<DidiCardBody icon="" color={colors.error} hollow={true} style={{ minHeight: undefined }}>
+				<DidiCardBody icon="" color={colors.error} hollow={true} style={{ minHeight: undefined, ...style }}>
 					{this.renderMessages()}
 					{this.renderAction()}
 				</DidiCardBody>
@@ -92,8 +93,8 @@ export { connected as IncompleteIdentityCard };
 
 const styles = StyleSheet.create({
 	button: {
-		alignContent: 'center',
-		alignSelf: 'flex-start',
+		alignContent: "center",
+		alignSelf: "flex-start",
 		height: 36,
 		backgroundColor: colors.error,
 		marginTop: 16
