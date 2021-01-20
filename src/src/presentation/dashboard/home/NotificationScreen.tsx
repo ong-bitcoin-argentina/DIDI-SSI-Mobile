@@ -19,7 +19,7 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest";
-import { DocumentDetailProps, DocumentDetailScreen } from "../documents/DocumentDetail";
+import { DocumentDetailProps } from "../documents/DocumentDetail";
 import Divider from "../common/Divider";
 
 export type NotificationScreenProps = {};
