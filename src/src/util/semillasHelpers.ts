@@ -20,7 +20,7 @@ const isActiveCredential = (credential: CredentialDocument): boolean => {
 	return !credential.expireAt || credential.expireAt > Date.now();
 };
 
-const isSemillasIdentityActiveCredential = (credential: CredentialDocument, context: any): boolean => {
+export const isSemillasIdentityActiveCredential = (credential: CredentialDocument, context: any): boolean => {
 	return (
 		credential &&
 		isSemillasIdentityCredential(credential) &&
@@ -29,7 +29,7 @@ const isSemillasIdentityActiveCredential = (credential: CredentialDocument, cont
 	);
 };
 
-const isSemillasBenefitActiveCredential = (credential: CredentialDocument): boolean => {
+export const isSemillasBenefitActiveCredential = (credential: CredentialDocument): boolean => {
 	return credential && isSemillasBenefitCrendential(credential) && isActiveCredential(credential);
 };
 

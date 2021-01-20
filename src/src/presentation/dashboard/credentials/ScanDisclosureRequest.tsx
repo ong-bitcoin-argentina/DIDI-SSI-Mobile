@@ -98,7 +98,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
 			this.props.did!,
 			this.props.request,
-			this.props.credentials,
+			this.props.documents,
 			this.props.identity
 		);
 
@@ -121,9 +121,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 				this.props.sendResponse({ callback: this.props.request.callback, token: responseToken });
 				this.props.recordCallback(this.props.documents);
 			} else {
-				this.navigate("ShowDisclosureResponse", {
-					responseToken
-				});
+				this.navigate("ShowDisclosureResponse", { responseToken });
 				this.props.recordShare(this.props.documents);
 			}
 		} catch (signerError) {

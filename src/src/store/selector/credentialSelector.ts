@@ -6,7 +6,7 @@ import TypedArray from "../../util/TypedArray";
 
 import { parsedTokenSelector } from "./parsedTokenSelector";
 import { credentialState } from "../../presentation/dashboard/common/documentToCard";
-import { blacklistedCredentialStates } from "../../model/Credential";
+import { blacklistedCredentialStates, CredentialStates } from "../../model/Credential";
 
 const allCredentialSelector = createSelector(parsedTokenSelector, tokens =>
 	TypedArray.flatMap(tokens, (tk): CredentialDocument | null => (tk.type === "CredentialDocument" ? tk : null))
@@ -82,7 +82,8 @@ export const activeSemillasCredentialsSelector = createSelector(
 	allSemillasCredentialsSelector,
 	contextSelector,
 	(credentials, context) => {
-		return credentials.filter(cred => !blacklistedCredentialStates.includes(credentialState(cred, context)));
+		const blacklistedAndShared = [...blacklistedCredentialStates, CredentialStates.share];
+		return credentials.filter(cred => !blacklistedAndShared.includes(credentialState(cred, context)));
 	}
 );
 

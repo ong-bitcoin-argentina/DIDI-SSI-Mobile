@@ -228,18 +228,14 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 
 								<View style={modal.footer}>
 									<DidiServiceButton
-										onPress={() => {
-											this.setState({ modalVisible: !modalVisible });
-										}}
+										onPress={() => this.setState({ modalVisible: !modalVisible })}
 										title={strings.general.cancel}
 										style={modal.smallButton}
 										isPending={false}
 									/>
 
 									<DidiServiceButton
-										onPress={() => {
-											this.handleConfirmCustomEmail();
-										}}
+										onPress={this.handleConfirmCustomEmail}
 										title={strings.general.next}
 										style={modal.smallButton}
 										isPending={false}
