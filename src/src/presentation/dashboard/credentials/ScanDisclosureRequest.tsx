@@ -65,7 +65,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	ScanDisclosureRequestState,
 	ScanDisclosureRequestNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.scanCredential.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.scanCredential.barTitle);
 
 	constructor(props: ScanDisclosureRequestInternalProps) {
 		super(props);
@@ -82,7 +82,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		return (
 			<DidiScreen style={styles.body}>
 				<RequestCard
-					style={{ marginHorizontal: 20 }}
+					style={{ marginBottom: 20 }}
 					request={this.props.request}
 					context={{ knownIssuers: this.props.knownIssuers }}
 					activeDid={this.props.did}
@@ -170,7 +170,8 @@ export default didiConnect(
 const styles = StyleSheet.create({
 	body: {
 		width: "100%",
-		justifyContent: "flex-start"
+		justifyContent: "flex-start",
+		padding: 20
 	},
 	button: {
 		width: "80%",

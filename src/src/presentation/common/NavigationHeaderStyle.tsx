@@ -104,6 +104,20 @@ const styles = {
 		};
 	},
 
+	withTitleAndRightButtonClose(title: string): NavigationOptions {
+		return ({ navigation }) => {
+			return {
+				...defaultStyle(themes.primaryTheme),
+				title,
+				headerRight: (
+					<TouchableOpacity style={{ paddingHorizontal: 16 }} onPress={() => navigation.navigate("DashboardHome", {})}>
+						<DidiText.Icon fontSize={22}>close</DidiText.Icon>
+					</TouchableOpacity>
+				)
+			};
+		};
+	},
+
 	withTitleAndFakeBackButton<Navigation, K extends keyof Navigation>(
 		title: string,
 		target: K,

@@ -34,7 +34,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	ShareMicroCredentialState,
 	ShareMicroCredentialNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose("Compartir");
 
 	constructor(props: ShareMicroCredentialProps) {
 		super(props);

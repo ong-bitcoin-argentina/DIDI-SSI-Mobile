@@ -20,6 +20,7 @@ import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest";
 import { DocumentDetailProps, DocumentDetailScreen } from "../documents/DocumentDetail";
+import Divider from "../common/Divider";
 
 export type NotificationScreenProps = {};
 interface NotificationScreenStateProps {
@@ -90,10 +91,12 @@ class NotificationScreen extends NavigationEnabledComponent<
 						data={toShow}
 						keyExtractor={req => req.jwt}
 						renderItem={item => this.renderItem(item.item)}
+						ItemSeparatorComponent={() => <Divider color={colors.white} />}
 						ListHeaderComponent={
 							<DidiButton
 								title={this.state.showExpired ? strings.notifications.hideExpired : strings.notifications.showExpired}
 								onPress={() => this.setState({ showExpired: !this.state.showExpired })}
+								style={{ marginBottom: 10 }}
 							/>
 						}
 						ListEmptyComponent={

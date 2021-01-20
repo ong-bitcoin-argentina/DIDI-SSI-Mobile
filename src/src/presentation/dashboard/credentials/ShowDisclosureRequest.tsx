@@ -31,7 +31,7 @@ export class ShowDisclosureRequestScreen extends NavigationEnabledComponent<
 	ShowDisclosureRequestState,
 	ShowDisclosureRequestNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.share.title);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.share.title);
 
 	constructor(props: ShowDisclosureRequestProps) {
 		super(props);

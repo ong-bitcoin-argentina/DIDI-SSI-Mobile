@@ -40,7 +40,7 @@ export class ShareSpecificCredentialScreen extends NavigationEnabledComponent<
 	ShareSpecificCredentialState,
 	ShareSpecificCredentialNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.share.title);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.share.title);
 
 	constructor(props: ShareSpecificCredentialInternalProps) {
 		super(props);

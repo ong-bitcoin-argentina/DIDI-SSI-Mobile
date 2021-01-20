@@ -9,6 +9,8 @@ import { DocumentCredentialCard, DocumentCredentialCardContext } from "../common
 
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
+import Divider from "../common/Divider";
+import colors from "../../resources/colors";
 
 export interface DocumentDetailProps {
 	document: CredentialDocument;
@@ -27,6 +29,7 @@ export class DocumentDetailScreen extends NavigationEnabledComponent<DocumentDet
 					<FlatList
 						style={styles.body}
 						contentContainerStyle={styles.scrollContent}
+						ItemSeparatorComponent={() => <Divider color={colors.white} />}
 						data={docList}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item, item.index)}
