@@ -88,9 +88,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 				style={{
 					borderRadius: 10,
 					backgroundColor: isSelected ? colors.primary : colors.background,
-					marginHorizontal: 10,
-					paddingHorizontal: 10,
-					marginVertical: 2
+					...commonStyles.util.credentialCard
 				}}
 				onPress={() => this.doSelect(document)}
 			>
