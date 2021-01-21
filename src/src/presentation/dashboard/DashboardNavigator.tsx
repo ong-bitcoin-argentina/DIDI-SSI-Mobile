@@ -1,12 +1,6 @@
 import React from "react";
 import { StyleSheet, View, ViewProps } from "react-native";
-import {
-	NavigationActions,
-	NavigationContainer,
-	NavigationScreenProp,
-	NavigationState,
-	StackActions
-} from "react-navigation";
+import { NavigationContainer, NavigationScreenProp, NavigationState, StackActions } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";

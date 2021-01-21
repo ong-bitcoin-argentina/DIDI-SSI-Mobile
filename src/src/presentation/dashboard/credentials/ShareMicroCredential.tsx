@@ -1,6 +1,6 @@
 import { CredentialDocument } from "didi-sdk";
 import React, { Fragment } from "react";
-import { FlatList, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, TouchableOpacity, View } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -34,7 +34,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 	ShareMicroCredentialState,
 	ShareMicroCredentialNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose("Compartir");
 
 	constructor(props: ShareMicroCredentialProps) {
 		super(props);
@@ -88,9 +88,7 @@ export class ShareMicroCredentialScreen extends NavigationEnabledComponent<
 				style={{
 					borderRadius: 10,
 					backgroundColor: isSelected ? colors.primary : colors.background,
-					marginHorizontal: 10,
-					paddingHorizontal: 10,
-					marginVertical: 2
+					...commonStyles.util.credentialCard
 				}}
 				onPress={() => this.doSelect(document)}
 			>

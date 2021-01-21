@@ -44,7 +44,7 @@ class ScanCredentialScreen extends NavigationEnabledComponent<
 	ScanCredentialState,
 	ScanCredentialNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.scanCredential.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.scanCredential.barTitle);
 
 	constructor(props: ScanCredentialInternalProps) {
 		super(props);

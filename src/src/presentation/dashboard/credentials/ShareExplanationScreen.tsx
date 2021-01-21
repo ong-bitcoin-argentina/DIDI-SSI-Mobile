@@ -1,4 +1,3 @@
-
 import { CredentialDocument } from "didi-sdk";
 import React from "react";
 import { Image, Share, View } from "react-native";
@@ -38,7 +37,7 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 	{},
 	ShareExplanationNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.shareExplanation.title);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.shareExplanation.title);
 
 	render() {
 		return (

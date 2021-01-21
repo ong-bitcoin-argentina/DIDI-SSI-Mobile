@@ -48,7 +48,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 	ShareCredentialState,
 	ShareCredentialNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.share.title);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.share.title);
 
 	constructor(props: ShareCredentialInternalProps) {
 		super(props);

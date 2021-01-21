@@ -46,7 +46,7 @@ class ShowDisclosureResponseScreen extends NavigationEnabledComponent<
 	ShowDisclosureResponseState,
 	ShowDisclosureResponseNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.disclose.title);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.disclose.title);
 
 	constructor(props: ShowDisclosureResponseProps) {
 		super(props);
