@@ -81,7 +81,7 @@ const connected = didiConnect(
 	}),
 	(dispatch): ChangeEmailEnterEmailDispatchProps => ({
 		sendMailValidator: (newEmail: string, password: string) =>
-			dispatch(sendMailValidator(serviceKey, newEmail, password))
+			dispatch(sendMailValidator(serviceKey, newEmail, password, true))
 	})
 );
 

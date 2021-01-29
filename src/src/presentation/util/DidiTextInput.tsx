@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { Image, ImageSourcePropType, StyleSheet, Text, TextInput, TextInputProps, View, ViewProps } from "react-native";
+import React from "react";
+import { Image, ImageSourcePropType, StyleSheet, TextInput, TextInputProps, View, ViewProps } from "react-native";
 
 import DidiTheme from "../resources/DidiTheme";
 import strings from "../resources/strings";
@@ -20,9 +20,13 @@ export interface DidiTextInputProps {
 	maxLength?: number;
 }
 
+type BaseProps = {
+	onChangeText: (text: string, valid?: boolean) => void;
+};
+
 export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 	public render() {
-		const theme = this.props.theme ? this.props.theme : themes.primaryTheme;
+		const theme = this.props.theme || themes.primaryTheme;
 		const style = styles(theme);
 		const rootStyle = this.props.viewProps ? [style.root, this.props.viewProps.style] : style.root;
 		const textInputProps = this.props.textInputProps || {};
@@ -52,7 +56,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	}
 
-	static FirstName = (props: { onChangeText(text: string): void }) => {
+	static FirstName = (props: BaseProps) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.firstName.description}
@@ -64,7 +68,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	};
 
-	static LastName = (props: { onChangeText(text: string): void }) => {
+	static LastName = (props: BaseProps) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.lastName.description}
@@ -76,7 +80,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	};
 
-	static DNI = (props: { onChangeText(text: string): void }) => {
+	static DNI = (props: BaseProps) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.DNI.description}
@@ -90,7 +94,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	};
 
-	static Email = (props: { onChangeText: (text: string) => void }) => {
+	static Email = (props: BaseProps) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.email.description}
@@ -98,14 +102,14 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				tagImage={require("../resources/images/email.png")}
 				textInputProps={{
 					keyboardType: "email-address",
-					autoCapitalize: 'none',
-					onChangeText: props.onChangeText
+					autoCapitalize: "none",
+					onChangeText: text => props.onChangeText(text)
 				}}
 			/>
 		);
 	};
 
-	static VerificationCode = (props: { onChangeText(text: string): void }) => {
+	static VerificationCode = (props: BaseProps) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.verificationCode.description}
@@ -119,15 +123,16 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	};
 
-	static PhoneNumber = (props: { onChangeText: (text: string) => void }) => {
+	static PhoneNumber = (props: BaseProps) => {
 		return (
 			<DidiTextInput
 				description={strings.textInput.cellPhoneNumber.description}
 				placeholder={strings.textInput.cellPhoneNumber.placeholder}
 				tagImage={require("../resources/images/phone.png")}
+				maxLength={10}
 				textInputProps={{
 					keyboardType: "phone-pad",
-					onChangeText: props.onChangeText,
+					onChangeText: text => props.onChangeText(text),
 					style: {
 						fontSize: 14
 					}
