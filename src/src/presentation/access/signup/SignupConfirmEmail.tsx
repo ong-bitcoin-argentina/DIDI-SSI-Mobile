@@ -1,6 +1,5 @@
 import React from "react";
 import { Dispatch } from "redux";
-import { ScrollView } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import TermsExplanation from "../../common/TermsExplanation";
@@ -75,7 +74,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 				<VerifyCodeComponent
 					description={strings.signup.registrationEmailSent.message}
 					onResendCodePress={serviceKey => {
-						this.props.dispatch(sendMailValidator(serviceKey, this.props.email, null));
+						this.props.dispatch(sendMailValidator(serviceKey, this.props.email, null, true));
 					}}
 					isContinueBlocked={this.state.password === null}
 					onPressContinueButton={inputCode => this.onPressContinueButton(inputCode)}

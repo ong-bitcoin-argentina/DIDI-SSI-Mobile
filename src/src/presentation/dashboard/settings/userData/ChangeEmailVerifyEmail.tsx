@@ -34,7 +34,7 @@ export class ChangeEmailVerifyScreen extends NavigationEnabledComponent<
 					changeEmail(serviceKey, this.props.password, this.props.newEmail, validationCode)
 				}
 				onServiceSuccess={() => this.onSuccess()}
-				onResendCodePress={serviceKey => sendMailValidator(serviceKey, this.props.newEmail, this.props.password)}
+				onResendCodePress={serviceKey => sendMailValidator(serviceKey, this.props.newEmail, this.props.password, true)}
 			/>
 		);
 	}

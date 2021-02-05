@@ -74,7 +74,7 @@ const connected = didiConnect(
 		requestEmailCodePending: isPendingService(state.serviceCalls[serviceKey])
 	}),
 	(dispatch): SignupEnterEmailDispatchProps => ({
-		requestEmailCode: (email: string) => dispatch(sendMailValidator(serviceKey, email, null))
+		requestEmailCode: (email: string) => dispatch(sendMailValidator(serviceKey, email, null, true))
 	})
 );
 
