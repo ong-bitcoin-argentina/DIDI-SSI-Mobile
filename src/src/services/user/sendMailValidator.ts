@@ -9,6 +9,7 @@ import { withExistingDid } from "../internal/withExistingDid";
 export interface SendMailValidatorArguments {
 	api: DidiServerApiClient;
 	email: string;
+	unique: boolean;
 	idCheck?: {
 		did: EthrDID;
 		password: string;
@@ -16,18 +17,18 @@ export interface SendMailValidatorArguments {
 }
 
 const sendMailValidatorComponent = buildComponentServiceCall(async (args: SendMailValidatorArguments) =>
-	convertError(await args.api.sendMailValidator(args.email, args.idCheck))
+	convertError(await args.api.sendMailValidator(args.email, args.idCheck, args.unique))
 );
 
-export function sendMailValidator(serviceKey: string, email: string, password: string | null) {
+export function sendMailValidator(serviceKey: string, email: string, password: string | null, unique: boolean = false) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		if (password === null) {
-			return sendMailValidatorComponent(serviceKey, { api, email }, () => {
+			return sendMailValidatorComponent(serviceKey, { api, email, unique }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		} else {
 			return withExistingDid(serviceKey, {}, did => {
-				return sendMailValidatorComponent(serviceKey, { api, email, idCheck: { did, password } }, () => {
+				return sendMailValidatorComponent(serviceKey, { api, email, idCheck: { did, password }, unique }, () => {
 					return serviceCallSuccess(serviceKey);
 				});
 			});

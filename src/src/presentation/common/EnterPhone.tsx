@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { Alert, Image, ImageSourcePropType, StyleSheet, View } from "react-native";
+import React from "react";
+import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
 
 import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
@@ -62,7 +62,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 					</View>
 				</View>
 
-				<DidiTextInput.PhoneNumber onChangeText={text => this.setState({ inputPhoneNumber: text })} />
+				<DidiTextInput.PhoneNumber onChangeText={inputPhoneNumber => this.setState({ inputPhoneNumber })} />
 
 				{this.props.isPasswordRequired && (
 					<DidiTextInput.Password

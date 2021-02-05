@@ -14,6 +14,10 @@ function matchesRegex(regex: string | RegExp): (code?: string) => boolean {
 	};
 }
 
+function hasLength(length: number): (code?: string) => boolean {
+	return code => !!code && code.length === length;
+}
+
 function hasMinLength(length: number): (code?: string) => boolean {
 	return code => {
 		if (code) {
@@ -53,13 +57,13 @@ export const Validations = {
 
 	isDNI: hasLengthBetween(7, 8),
 
-	isPhoneNumber: isNumber,
+	// Phone numbers in Argentina has exact length of 10
+	// More info: https://es.wikipedia.org/wiki/N%C3%BAmeros_telef%C3%B3nicos_en_Argentina
+	isPhoneNumber: (value: string) => isNumber(value) && hasLength(10)(value),
 
 	isNationality: hasMinLength(1),
 
-	isEmail: matchesRegex(
-		"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-	),
+	isEmail: matchesRegex(/^[\w\d.!#$%&'*+/=?^_`{|}~-]+@[\w\d-]+\.+[\w\d-]+$/),
 
 	validatePassword: (password?: string): PasswordValidationErrors[] => {
 		const checks = {
