@@ -61,6 +61,7 @@ export function credentialState(
 }
 
 interface DocumentCredentialCardProps {
+	style?: any;
 	preview: boolean;
 	document: CredentialDocument;
 	context: DocumentCredentialCardContext;
@@ -154,6 +155,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				hollow={style.hollow}
 				preview={preview}
 				credentialState={styleType}
+				style={this.props.style}
 			>
 				{children}
 				{!document.preview?.cardLayout && this.renderTypeMessage(styleType)}

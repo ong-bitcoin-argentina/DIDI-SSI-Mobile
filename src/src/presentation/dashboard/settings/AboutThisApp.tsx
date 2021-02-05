@@ -19,7 +19,7 @@ export class AboutThisAppScreen extends NavigationEnabledComponent<
 	AboutThisAppScreenState,
 	AboutThisAppScreenNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Acerca de Didi");
+	static navigationOptions = NavigationHeaderStyle.withTitle("Acerca de ai·di");
 
 	render() {
 		return (

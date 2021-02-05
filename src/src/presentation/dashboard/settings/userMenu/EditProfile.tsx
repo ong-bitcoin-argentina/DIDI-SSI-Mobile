@@ -1,11 +1,11 @@
-import { Identity } from "didi-sdk";
+import { Identity, EthrDID } from "didi-sdk";
 import React, { Fragment } from "react";
-import { ScrollView, StatusBar, StyleSheet, TextInputProps, View } from "react-native";
-import { readFile } from "react-native-fs";
+import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard, ToastAndroid } from "react-native";
+import { readFile, DocumentDirectoryPath, exists } from "react-native-fs";
+import ImageResizer from "react-native-image-resizer";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiButton from "../../../util/DidiButton";
-import DidiTextInput from "../../../util/DidiTextInput";
 import DropdownMenu from "../../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import { DidiCamera } from "../../common/DidiCamera";
@@ -18,14 +18,24 @@ import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import themes from "../../../resources/themes";
 import { addressDataStructure, personalDataStructure } from "../userData/ProfileInputDescription";
-import { UserHeadingComponent } from "../userData/UserHeading";
+import { UserHeading } from "../userData/UserHeading";
+import { DidiText } from "../../../util/DidiText";
+import commonStyles from "../../../resources/commonStyles";
+import { SettingsScreenProps } from "../SettingsScreen";
+import { sendProfileImage } from "../../../../services/user/sendProfileImage";
+import { createToken } from "../../../util/appRouter";
+import RNFetchBlob from "rn-fetch-blob";
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
+	did: EthrDID | null;
 	identity: ValidatedIdentity;
+	isPersonalDataApproved: boolean;
+	isAddressApproved: boolean;
 }
 interface EditProfileDispatchProps {
 	saveIdentity: (state: Identity) => void;
+	sendProfileImage: (token: string, image: any) => void;
 }
 type EditProfileInternalProps = EditProfileProps & EditProfileStateProps & EditProfileDispatchProps;
 
@@ -34,14 +44,23 @@ interface EditProfileState {
 	cameraActive: boolean;
 }
 
-export interface EditProfileNavigation {}
+export interface EditProfileNavigation {
+	Settings: SettingsScreenProps;
+}
+
+const { Small, Emphasis } = DidiText.Explanation;
+const serviceKeySendProfileImage = "sendProfileImage";
 
 class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileInternalProps,
 	EditProfileState,
 	EditProfileNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.userData.editProfile.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButton<EditProfileNavigation, "Settings">(
+		strings.userData.editProfile.barTitle,
+		"settings",
+		"Settings"
+	);
 
 	constructor(props: EditProfileInternalProps) {
 		super(props);
@@ -99,84 +118,82 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 					const id =
 						key === "cellPhone" || key === "email" ? this.props.identity[key] : this.props.identity.personalData[key];
-					const onChangeText = (text: string) =>
-						key === "cellPhone" || key === "email"
-							? this.setIdentityMerging({ [key]: text })
-							: this.setIdentityMerging({ personalData: { [key]: text } });
 
-					return (
-						<DidiTextInput
-							key={key}
-							description={struct.name}
-							placeholder=""
-							textInputProps={{
-								onChangeText,
-								...this.textInputPropsFor(struct.keyboardType, id?.state, id?.value)
-							}}
-						/>
-					);
+					// keep commented code in case of requested that data would be editable
+					// const onChangeText = (text: string) =>
+					// 	key === "cellPhone" || key === "email"
+					// 		? this.setIdentityMerging({ [key]: text })
+					// 		: this.setIdentityMerging({ personalData: { [key]: text } });
+
+					return this.renderKeyValue(key, struct.name, id?.value);
+					// return (
+					// 	<DidiTextInput
+					// 		key={key}
+					// 		description={struct.name}
+					// 		placeholder=""
+					// 		textInputProps={{
+					// 			onChangeText,
+					// 			...this.textInputPropsFor(struct.keyboardType, id?.state, id?.value)
+					// 		}}
+					// 		editable={false}
+					// 	/>
+					// );
 				})}
+			</View>
+		);
+	}
+
+	renderKeyValue(key: any, label: string, value?: string | null) {
+		return (
+			<View style={styles.keyValueContainer} key={key}>
+				<Small style={{ color: colors.textLight, fontSize: 13 }}>{label}</Small>
+				<Small style={{ textAlign: "left" }}>{value ? value : "N/A"}</Small>
 			</View>
 		);
 	}
 
 	private renderAddressInputs() {
-		const state = this.props.identity.address.state;
 		return (
 			<View style={styles.dropdownContents}>
 				{addressDataStructure.order.map(key => {
 					const struct = addressDataStructure.structure[key];
 					const value = this.props.identity.address.value[key];
-					return (
-						<DidiTextInput
-							key={key}
-							description={struct.name}
-							placeholder=""
-							textInputProps={{
-								onChangeText: text => this.setIdentityMerging({ address: { [key]: text } }),
-								...this.textInputPropsFor(struct.keyboardType, state, value)
-							}}
-						/>
-					);
+					return this.renderKeyValue(key, struct.name, value);
 				})}
 			</View>
 		);
 	}
 
-	private renderEditView() {
-		return (
-			<ScrollView>
-				<UserHeadingComponent
-					user={this.props.identity.id}
-					profileImage={this.state.identity.image ?? this.props.identity.image}
-					onImageEditTap={() => this.setState({ cameraActive: true })}
-				/>
+	handleCopyDid = () => {
+		Clipboard.setString(this.props.did?.did() || "");
+		ToastAndroid.show("Copiado", ToastAndroid.SHORT);
+	};
 
-				<DropdownMenu
-					headerContainerStyle={{ backgroundColor: colors.primary }}
-					headerTextStyle={{ color: colors.primaryText }}
-					style={styles.personalDataDropdown}
-					label={personalDataStructure.name}
-				>
+	private renderEditView() {
+		const { did } = this.props;
+		return (
+			<ScrollView style={{ backgroundColor: colors.lighterBackground }} contentContainerStyle={{ paddingBottom: 20 }}>
+				<UserHeading user={this.props.identity.id} onImageEditTap={() => this.setState({ cameraActive: true })} />
+
+				<DropdownMenu label={personalDataStructure.name} approved={this.props.isPersonalDataApproved}>
 					{this.renderPersonInputs()}
 				</DropdownMenu>
 
-				<DropdownMenu
-					headerContainerStyle={{ backgroundColor: colors.primary }}
-					headerTextStyle={{ color: colors.primaryText }}
-					style={styles.personalDataDropdown}
-					label={addressDataStructure.name}
-				>
+				<DropdownMenu label={addressDataStructure.name} approved={this.props.isAddressApproved}>
 					{this.renderAddressInputs()}
 				</DropdownMenu>
 
-				<DidiButton
-					onPress={() => {
-						this.editProfile();
-					}}
-					disabled={!this.canPressContinueButton()}
-					title={strings.userData.editProfile.saveChanges}
-				/>
+				<View style={styles.didSection}>
+					<Emphasis style={{ color: colors.textLight }}>Identidad activa - DID:</Emphasis>
+					<Small>{did && did.did ? did.did() : ""}</Small>
+					<DidiButton
+						title="Copiar DID"
+						style={[commonStyles.button.inverted, styles.copyButton]}
+						titleStyle={{ color: colors.primary }}
+						onPress={this.handleCopyDid}
+						small
+					/>
+				</View>
 			</ScrollView>
 		);
 	}
@@ -209,10 +226,35 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		);
 	}
 
+	getToken = async () => {
+		return this.props.did ? await createToken(this.props.did) : null;
+	};
+
 	private async onPictureTaken(pic: { uri: string }) {
+		const resizedImageUrl = await ImageResizer.createResizedImage(
+			pic.uri,
+			300,
+			300,
+			"JPEG",
+			80,
+			0,
+			DocumentDirectoryPath
+		);
+
+		const token = await this.getToken();
+		const fileExists = await exists(resizedImageUrl.path);
+		if (token && fileExists) {
+			const respuesta = this.props.sendProfileImage(token, {
+				uri: resizedImageUrl.uri,
+				name: resizedImageUrl.name,
+				type: "image/jpeg"
+			});
+		}
+
 		const data = await readFile(pic.uri, "base64");
 		this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		this.setState({ cameraActive: false });
+		this.editProfile();
 	}
 
 	private editProfile() {
@@ -224,10 +266,14 @@ class EditProfileScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	EditProfileScreen,
 	(state): EditProfileStateProps => ({
-		identity: state.validatedIdentity
+		did: state.did.activeDid,
+		identity: state.validatedIdentity,
+		isPersonalDataApproved: state.isPersonalDataApproved,
+		isAddressApproved: state.validatedIdentity?.address?.state === ValidationState.Approved
 	}),
 	(dispatch): EditProfileDispatchProps => ({
-		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity })
+		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity }),
+		sendProfileImage: (token, image) => dispatch(sendProfileImage(serviceKeySendProfileImage, token, image))
 	})
 );
 
@@ -248,15 +294,23 @@ const styles = StyleSheet.create({
 	button: {
 		marginBottom: 30
 	},
-	personalDataDropdown: {
-		marginTop: 20,
-		marginHorizontal: 10,
-		borderRadius: 10,
-		overflow: "hidden",
-		backgroundColor: colors.darkBackground
-	},
 	dropdownContents: {
 		padding: 16,
-		backgroundColor: colors.darkBackground
+		paddingHorizontal: 20,
+		backgroundColor: colors.white,
+		alignItems: "flex-start"
+	},
+	copyButton: {
+		borderRadius: 40,
+		marginTop: 10
+	},
+	didSection: {
+		paddingVertical: 22,
+		paddingHorizontal: 28,
+		alignItems: "center"
+	},
+	keyValueContainer: {
+		alignItems: "flex-start",
+		marginBottom: 18
 	}
 });

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View, Modal, Alert } from "react-native";
-
+import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View, Modal, Text } from "react-native";
+import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 const { Small } = DidiText.Explanation;
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -25,7 +25,10 @@ import { ValidationStates } from "./constants";
 import SemillasValidationState from "./SemillasValidationState";
 import { getSemillasValidationState } from "../../../services/semillas/getValidationState";
 import { haveValidIdentity } from "../../../util/semillasHelpers";
-const { util, view } = commonStyles;
+
+const { Icon } = DidiText;
+const { util, modal, button } = commonStyles;
+
 const {
 	detailBarTitle,
 	detailFirst,
@@ -34,7 +37,7 @@ const {
 	credentialsSuccess,
 	program,
 	noDni,
-	validate
+	noSemillaIdentity
 } = strings.semillas;
 
 export interface LoginScreenProps {}
@@ -51,6 +54,7 @@ interface SemillasScreenState {
 	dni: string;
 	modalVisible: boolean;
 	semillasValidationLoading: boolean;
+	modalNoCredentialVisible: boolean;
 }
 
 interface SemillasScreenDispatchProps {
@@ -85,7 +89,8 @@ class SemillasScreen extends NavigationEnabledComponent<
 		this.state = {
 			dni: "",
 			modalVisible: false,
-			semillasValidationLoading: false
+			semillasValidationLoading: false,
+			modalNoCredentialVisible: false
 		};
 	}
 
@@ -118,7 +123,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 	onGetCredentials = () => {
 		const { dni } = this.state;
 		if (!dni) {
-			DataAlert.alert(program, noDni);
+			this.toggleModalNoCredential();
 		} else {
 			this.showCredentialConfirmation();
 		}
@@ -163,12 +168,27 @@ class SemillasScreen extends NavigationEnabledComponent<
 		});
 	};
 
+	toggleModalNoCredential = () => {
+		this.setState({
+			modalNoCredentialVisible: !this.state.modalNoCredentialVisible
+		});
+	};
+
+	proccessPressOnGoToBenefits = () => {
+		const { haveValidSemillasIdentity } = this.props;
+		if (haveValidSemillasIdentity) {
+			this.navigate("Prestadores", {});
+		} else {
+			this.toggleModalNoCredential();
+		}
+	};
+
 	// Render Methods
 
 	renderButtonBenefits() {
 		return (
 			<DidiServiceButton
-				onPress={() => this.navigate("Prestadores", {})}
+				onPress={this.proccessPressOnGoToBenefits}
 				title="Ver Beneficios"
 				style={styles.button}
 				isPending={false}
@@ -192,6 +212,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	render() {
 		const { didRequested, haveIdentityCredential, semillasValidationSuccess, haveValidSemillasIdentity } = this.props;
+
 		const { semillasValidationLoading } = this.state;
 		const mustShowBenefitsButton =
 			(didRequested && haveIdentityCredential) || semillasValidationSuccess || haveValidSemillasIdentity;
@@ -206,16 +227,16 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
-				<ScrollView>
-					<SafeAreaView style={{ ...view.area, ...styles.scrollContent }}>
-						<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
-						<View style={{ paddingHorizontal: 15 }}>
-							<Small style={util.paragraphMd}>{detailFirst}</Small>
-							<Small style={util.paragraphMd}>{detailSecond}</Small>
-							<Small style={util.paragraphMd}>{detailThird}</Small>
-						</View>
+				<ScrollView contentContainerStyle={commonStyles.view.scrollCentered}>
+					<SemillasLogo viewBox="0 0 128 39" width={192} height={58} style={styles.logo} />
+					<View style={{ marginBottom: 18 }}>
+						<Small style={util.paragraphMd}>{detailFirst}</Small>
+						<Small style={util.paragraphMd}>{detailSecond}</Small>
+						<Small style={util.paragraphMd}>{detailThird}</Small>
+					</View>
+					<View style={{ marginBottom: 20 }}>
 						{mustShowBenefitsButton ? this.renderButtonBenefits() : this.renderButtonWantCredentials()}
-					</SafeAreaView>
+					</View>
 				</ScrollView>
 
 				<Modal
@@ -230,6 +251,27 @@ class SemillasScreen extends NavigationEnabledComponent<
 						onCancel={this.toggleModal}
 						isLoading={semillasValidationLoading}
 					/>
+				</Modal>
+				<Modal
+					animationType="fade"
+					visible={this.state.modalNoCredentialVisible}
+					onRequestClose={this.toggleModal}
+					transparent={true}
+				>
+					<View style={[modal.centeredView]}>
+						<View style={[modal.view, { maxHeight: 500 }]}>
+							<Icon fontSize={66} color={colors.yellow} style={{ marginBottom: 18 }}>
+								warning
+							</Icon>
+							<Text style={styles.modalText}>{noSemillaIdentity.first}</Text>
+							<Text style={{ ...styles.modalText, marginTop: 8 }}>{noSemillaIdentity.second}</Text>
+							<DidiButton
+								title={strings.buttons.close}
+								onPress={this.toggleModalNoCredential}
+								style={{ marginTop: 40 }}
+							/>
+						</View>
+					</View>
 				</Modal>
 			</Fragment>
 		);
@@ -256,10 +298,6 @@ const styles = StyleSheet.create({
 	body: {
 		width: "100%"
 	},
-	scrollContent: {
-		backgroundColor: "white",
-		paddingVertical: 8
-	},
 	warningMessage: {
 		fontSize: 18,
 		marginTop: 20
@@ -269,8 +307,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 26
 	},
 	button: {
-		marginTop: 30,
-		paddingHorizontal: 20
+		paddingHorizontal: 30
 	},
 	buttonText: {
 		fontSize: 16
@@ -278,7 +315,7 @@ const styles = StyleSheet.create({
 	logo: {
 		height: 50,
 		width: 50,
-		marginVertical: 25
+		marginVertical: 10
 	},
 	hidden: {
 		display: "none"

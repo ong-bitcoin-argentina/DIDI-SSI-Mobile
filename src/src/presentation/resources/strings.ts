@@ -52,6 +52,8 @@ export default {
 		cancel: "Cancelar",
 		close: "Cerrar",
 		reject: "Rechazar",
+		send: "Enviar",
+		ready: "Listo",
 		back: "Volver"
 	},
 	debug: {
@@ -109,6 +111,13 @@ export default {
 		recentActivities: {
 			label: "Actividades recientes",
 			loadMore: "Cargar más"
+		},
+		authModal: {
+			detail: (targetApp: string) =>
+				`${appName} compartirá esta información con ${targetApp}: Nombre, apellido, número de celular, mail, número de identificación digital (DID) y foto de usuario.`,
+			title: `Permitir acceso desde ${appName}`,
+			titleHas: "Acceso validado por",
+			connecting: "Conectándote a ronda..."
 		}
 	},
 	dashboardJump: {
@@ -117,7 +126,7 @@ export default {
 		createRound: "Armar Ronda",
 		documents: "Ver Credenciales",
 		identity: "Ver ID",
-		editProfile: "Editar Perfil"
+		editProfile: "Mi Perfil"
 	},
 	userData: {
 		barTitle: "Mi perfil",
@@ -133,7 +142,7 @@ export default {
 			rejected: "Rechazado"
 		},
 		editProfile: {
-			barTitle: "Editar Perfil",
+			barTitle: "Mi Perfil",
 			saveChanges: "Guardar Cambios",
 
 			firstNameMessage: "Nombre(s)",
@@ -149,7 +158,8 @@ export default {
 			departmentMessage: "Departamento",
 			floorMessage: "Piso",
 			neighborhoodMessage: "Barrio",
-			postCodeMessage: "Código Postal"
+			postCodeMessage: "Código Postal",
+			configuration: "Configuración"
 		},
 		changePassword: {
 			barTitle: "Cambio de Contraseña",
@@ -301,10 +311,19 @@ export default {
 	},
 	tabNames: {
 		home: "Inicio",
-		rounds: "Rondas",
+		rounds: "ronda",
 		documents: "Credenciales",
 		settings: "Configuración",
 		semillas: "Semillas"
+	},
+	rounds: {
+		title: "Accedé a ronda",
+		titleHasRonda: "Ver mis rondas",
+		description: "Organizá y participá de rondas, juntas, vaquitas o pasanakus de forma fácil y segura.",
+		completeData: "Por favor, completá tus datos para acceder a ronda.",
+		descriptionHasRonda:
+			"Hacé un seguimiento de tus rondas activas y unite o creá nuevas rondas, juntas, vaquitas o pasanakus de forma fácil y segura.",
+		dataConfirmed: "Tu datos fueron guardados de forma correcta, podes seguir usando la aplicación."
 	},
 	semillas: {
 		barTitle: "Mis Credenciales semillas",
@@ -326,6 +345,11 @@ export default {
 		credentialsSuccess: "Pronto vas a recibir tus credenciales de Semillas. Este proceso puede demorar unos días...",
 		credetialsPending:
 			"Tus Credenciales de Beneficios Semillas ya han sido solicitadas y se encuentran en proceso... Pronto podrás acceder a los Beneficios de Semillas!!",
+		noSemillaIdentity: {
+			first: "Parece que aún no tenés tus credenciales de Identidad Semillas.",
+			second:
+				"Recordá que si las solicitaste recientemente, esto puede demorar hasta 5 (cinco) días. Ante cualquier consulta, contactate con tu asesor/a."
+		},
 		steps: {
 			first: {
 				title: "¿A qué servicio querés acceder?",
@@ -384,7 +408,13 @@ export default {
 	settings: {
 		idLabel: "ID:",
 		identityBackup: "Copia de Seguridad",
-		changePassword: "Cambio de Contraseña",
+		changePassword: "Contraseña",
+		editProfile: "Editar Perfil",
+		myProfile: "Mi Perfil",
+		changePhone: "Cambiar Teléfono",
+		changeEmail: "Cambiar E-mail",
+		aboutAidi: "Acerca de ai·di",
+		aboutRonda: "Acerca de ronda",
 		about: {
 			title: `Acerca de ${appName}`,
 			paragraphs: [
@@ -431,6 +461,41 @@ export default {
 				]
 			]
 		},
+		aboutRondaParagraphs: [
+			[
+				{
+					style: styles.bold,
+					text: "ronda"
+				},
+				{
+					style: {},
+					text:
+						" es una aplicación de Proyecto DIDI creada para jugar rondas, vaquitas, juntas o pasanakus de forma rápida, fácil y segura."
+				}
+			],
+			[
+				{
+					style: {},
+					text:
+						"Podés crear rondas con quién vos quieras, por el monto y el tiempo que elijan y hacer un seguimiento de cada ronda, los turnos y días de pago."
+				}
+			],
+			[
+				{
+					style: {},
+					text:
+						"Además tu participación queda registrada en la app a través de credenciales que validan tu capacidad de pago y tu reputación de buen pagador o pagadora. Al utilizar la tecnología "
+				},
+				{
+					style: styles.bold,
+					text: "blockchain"
+				},
+				{
+					style: {},
+					text: ", todos los datos y registros almacenados son privados y seguros."
+				}
+			]
+		],
 		endSession: "Cerrar Sesión"
 	},
 	share: {
@@ -449,7 +514,7 @@ export default {
 			button: `Directo a otra App ${appName}`,
 			explanation: "Verificado como parte del proceso"
 		},
-		or: "o",
+		or: "ó",
 		link: {
 			button: "Compartir enlace"
 		},
@@ -462,7 +527,8 @@ export default {
 			next: "Siguiente"
 		},
 		response: {
-			explanation: `Escaneá el siguiente código QR con la App ${appName} con la que estás compartiendo tus credenciales.`
+			explanation: `Escaneá el siguiente código QR con la App ${appName} con la que estás compartiendo tus credenciales.`,
+			error: `Ocurrió un error al compartir tus credenciales, por favor, regresá a la pantalla anterior para volver a intentarlo.`
 		}
 	},
 	services: {

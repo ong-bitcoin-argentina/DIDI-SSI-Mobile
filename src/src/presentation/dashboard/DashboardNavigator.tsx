@@ -1,12 +1,6 @@
 import React from "react";
 import { StyleSheet, View, ViewProps } from "react-native";
-import {
-	NavigationActions,
-	NavigationContainer,
-	NavigationScreenProp,
-	NavigationState,
-	StackActions
-} from "react-navigation";
+import { NavigationContainer, NavigationScreenProp, NavigationState, StackActions } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
@@ -34,9 +28,11 @@ import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
-import UserData from "./settings/userData/UserData";
 import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
+import { RoundsScreen } from "./rounds/RoundsScreen";
+import { EditProfileScreen } from "./settings/userMenu/EditProfile";
+import DocumentsScreen from "./documents/DocumentsScreen";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -90,8 +86,9 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			DocumentDetail: NavMap.placeholder(DocumentDetailScreen)
 		}),
 		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
+		DashboardDocuments: NavMap.placeholder(DocumentsScreen),
 		ValidateID: NavMap.placeholder(ValidateIdentityExplainWhatScreen),
-		UserData: NavMap.placeholder(UserData),
+		EditProfile: NavMap.placeholder(EditProfileScreen),
 		__DashboardSettings: SettingsNavigator({
 			...then,
 			DashboardHome: dashboardPlaceholder
@@ -101,13 +98,12 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	const BottomNavigator = createBottomTabNavigator(
 		{
 			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, "home"),
-			/*
 			DashboardRounds: screen(
 				NavMap.from(RoundsScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
-				""
+				"",
+				false
 			),
-			*/
 			DashboardDocuments: screen(
 				DocumentsNavigator({
 					...then,
@@ -128,7 +124,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 					DashboardHome: dashboardPlaceholder
 				}).stackNavigator("DashboardSettings"),
 				strings.tabNames.settings,
-				"settings",
+				"person",
 				false
 			)
 		},

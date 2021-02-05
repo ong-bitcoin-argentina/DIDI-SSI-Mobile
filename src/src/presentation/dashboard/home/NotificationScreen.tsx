@@ -19,7 +19,8 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ScanDisclosureRequestProps } from "../credentials/ScanDisclosureRequest";
-import { DocumentDetailProps, DocumentDetailScreen } from "../documents/DocumentDetail";
+import { DocumentDetailProps } from "../documents/DocumentDetail";
+import Divider from "../common/Divider";
 
 export type NotificationScreenProps = {};
 interface NotificationScreenStateProps {
@@ -90,10 +91,12 @@ class NotificationScreen extends NavigationEnabledComponent<
 						data={toShow}
 						keyExtractor={req => req.jwt}
 						renderItem={item => this.renderItem(item.item)}
+						ItemSeparatorComponent={() => <Divider color={colors.transparent} />}
 						ListHeaderComponent={
 							<DidiButton
 								title={this.state.showExpired ? strings.notifications.hideExpired : strings.notifications.showExpired}
 								onPress={() => this.setState({ showExpired: !this.state.showExpired })}
+								style={{ marginBottom: 10 }}
 							/>
 						}
 						ListEmptyComponent={
@@ -137,7 +140,12 @@ class NotificationScreen extends NavigationEnabledComponent<
 		const now = Math.floor(Date.now() / 1000);
 		const isActive = request.expireAt ? now < request.expireAt : true;
 		return (
-			<RequestCard key={request.jwt} request={request} context={this.props.credentialContext}>
+			<RequestCard
+				key={request.jwt}
+				request={request}
+				context={this.props.credentialContext}
+				activeDid={this.props.did}
+			>
 				<View style={{ marginTop: 10 }}>
 					{isActive ? (
 						<DidiButton

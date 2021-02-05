@@ -3,6 +3,7 @@ export type Color = string;
 const colors = {
 	background: "#F5F5F5",
 	lightBackground: "#FFFFFF",
+	lighterBackground: "#F2F2F2",
 	white: "#FFFFFF",
 	darkBackground: "#EEEEEE",
 	backgroundSeparator: "#C3C3C3",
@@ -16,6 +17,7 @@ const colors = {
 	lightError: "#F5BAD1",
 
 	success: "#6ECC62",
+	successLight: "#c0e4bb",
 	lime: "#73d742",
 
 	primary: "#417FD7",
@@ -24,6 +26,7 @@ const colors = {
 	primaryDark: "#205196",
 	primaryText: "#FFFFFF",
 	primaryGray: "#8c9aad",
+	darkGray: "#646464",
 
 	border: {
 		light: "#f0f0f0"
@@ -44,7 +47,10 @@ const colors = {
 
 	shadow: "rgba(0,0,0,.4)",
 
-	subtitleAlpha: "A0"
+	subtitleAlpha: "A0",
+
+	yellow: "#ffbd10",
+	transparent: "transparent"
 };
 
 export default colors;

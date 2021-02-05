@@ -35,8 +35,10 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 					<DidiText.Card.Category style={{ color }}>{category}</DidiText.Card.Category>
 				)}
 				<DidiText.Card.Title style={{ color }}>{title}</DidiText.Card.Title>
-				{subTitles.map(text => (
-					<DidiText.Card.Subtitle style={{ color: `${color}${colors.subtitleAlpha}` }}>{text}</DidiText.Card.Subtitle>
+				{subTitles.map((text, index) => (
+					<DidiText.Card.Subtitle key={index} style={{ color: `${color}${colors.subtitleAlpha}` }}>
+						{text}
+					</DidiText.Card.Subtitle>
 				))}
 			</View>
 		);

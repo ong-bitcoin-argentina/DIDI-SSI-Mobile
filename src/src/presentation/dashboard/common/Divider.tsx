@@ -1,16 +1,26 @@
-import React, { Component } from "react";
-import { View, ViewStyle } from "react-native";
+import React, { PureComponent } from "react";
+import { StyleSheet, View, ViewStyle } from "react-native";
+import colors from "../../resources/colors";
 
 type Props = {
 	style?: ViewStyle;
+	color?: string;
 	height?: number;
 };
 
-export class Divider extends Component<Props> {
+export default class Divider extends PureComponent<Props> {
 	render() {
-		const { height } = this.props;
-		return <View style={{ height: height || 12, ...this.props.style }}></View>;
+		const { style, color, height } = this.props;
+		const backgroundColor = color ?? colors.darkGray;
+		const finalHeight = height ? height : 1;
+		const finalStyle = [styles.divider, { backgroundColor, height: finalHeight }, style];
+		return <View style={finalStyle}></View>;
 	}
 }
 
-export default Divider;
+const styles = StyleSheet.create({
+	divider: {
+		backgroundColor: colors.darkGray,
+		marginVertical: 8
+	}
+});

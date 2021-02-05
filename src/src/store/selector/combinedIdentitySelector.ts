@@ -124,3 +124,16 @@ export const identitySelector = createSelector(
 		personalData: TypedObject.mapValues(validatedIdentity.personalData, value => value?.value)
 	})
 );
+
+export const personalDataApprovedSelector = createSelector(combinedIdentitySelector, (validatedIdentity): boolean => {
+	switch (true) {
+		case validatedIdentity.cellPhone?.state !== ValidationState.Approved:
+			return false;
+		case validatedIdentity.email?.state !== ValidationState.Approved:
+			return false;
+		case validatedIdentity.personalData.document?.state !== ValidationState.Approved:
+			return false;
+		default:
+			return true;
+	}
+});

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, TouchableOpacity, View, ViewStyle, Picker } from "react-native";
+import { StyleSheet, TouchableOpacity, View, ViewStyle, Picker, Dimensions } from "react-native";
 import { DidiText } from "../util/DidiText";
 import colors from "../resources/colors";
 const { Icon } = DidiText;
 const { Small } = DidiText.Explanation;
+const widthScreen = Dimensions.get("screen").width;
 
 type CustomPickerProps = {
 	style?: ViewStyle;
@@ -23,7 +24,9 @@ export default class CustomPicker extends Component<CustomPickerProps, CustomPic
 					<View style={styles.pickerContainer}>
 						{!!prefix && (
 							<View style={{ flex: 1 }}>
-								<Small style={styles.pickerLabel}>{prefix}</Small>
+								<Small style={styles.pickerLabel} adjustsFontSizeToFit>
+									{prefix}
+								</Small>
 							</View>
 						)}
 						<View style={styles.selectorContainer}>
@@ -44,7 +47,7 @@ export default class CustomPicker extends Component<CustomPickerProps, CustomPic
 const styles = StyleSheet.create({
 	pickerLabel: {
 		textAlign: "right",
-		fontSize: 16,
+		fontSize: widthScreen < 360 ? 14 : 16,
 		marginRight: 6
 	},
 	container: {

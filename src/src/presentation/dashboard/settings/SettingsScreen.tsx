@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
+import RNRestart from "react-native-restart";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import DidiButton from "../../util/DidiButton";
@@ -11,8 +12,6 @@ import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelec
 import { didiConnect } from "../../../store/store";
 import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
-import ChevronBlueRight from "../../resources/images/chevronBlueRight.svg";
-import OpenPersonDetail from "../../resources/images/openPersonDetail.svg";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
@@ -22,7 +21,11 @@ import { ChangePasswordProps } from "./ChangePassword";
 import { IdentitySettingsProps } from "./identity/IdentitySettings";
 import { JWTDecoderScanScreenProps } from "./JWTDecoderScanScreen";
 import { ServiceSettingsScreenProps } from "./ServiceSettingsScreen";
-import { UserDataProps } from "./userData/UserData";
+import Option from "./Option";
+import Divider from "../common/Divider";
+import { EditProfileProps } from "./userMenu/EditProfile";
+import { ChangeEmailEnterEmailProps } from "./userData/ChangeEmailEnterEmail";
+import { ChangePhoneEnterScreenProps } from "./userData/ChangePhoneEnterPhone";
 
 export type SettingsScreenProps = {};
 interface SettingsScreenStateProps {
@@ -30,18 +33,22 @@ interface SettingsScreenStateProps {
 }
 interface SettingsScreenDispatchProps {
 	logout(): void;
+	resetPendingLinking(): void;
 }
 type SettingsScreenInternalProps = SettingsScreenProps & SettingsScreenStateProps & SettingsScreenDispatchProps;
 
 export interface SettingsScreenNavigation {
-	Access: StartAccessProps;
+	// Access: StartAccessProps;
 	DashboardHome: DashboardScreenProps;
-	UserData: UserDataProps;
+	EditProfile: EditProfileProps;
 	IdentitySettings: IdentitySettingsProps;
 	ChangePassword: ChangePasswordProps;
 	AboutThisAppScreen: AboutThisAppScreenProps;
+	AboutRonda: AboutThisAppScreenProps;
 	ServiceSettings: ServiceSettingsScreenProps;
 	JWTDecoderScreen: JWTDecoderScanScreenProps;
+	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
+	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
 }
 
 interface SettingsButton {
@@ -49,14 +56,16 @@ interface SettingsButton {
 	action: () => void;
 }
 
+const { settings } = strings;
+
 class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalProps, {}, SettingsScreenNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
-		SettingsScreenNavigation,
-		"DashboardHome"
-	>(strings.tabNames.settings, "DashboardHome", {});
+	static navigationOptions = NavigationHeaderStyle.withTitle(strings.tabNames.settings);
 
 	buttons(): SettingsButton[] {
 		const base = [
+			{ name: strings.settings.editProfile, action: () => this.navigate("ChangePassword", {}) },
+			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
+			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.about.title, action: () => this.navigate("AboutThisAppScreen", {}) }
 		];
@@ -69,72 +78,55 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 		return AppConfig.debug ? debug : base;
 	}
 
-	renderCartouche() {
-		return (
-			<TouchableOpacity onPress={() => this.navigate("UserData", {})}>
-				<View style={styles.identityCartouche}>
-					<View style={{ flexDirection: "row", alignItems: "center" }}>
-						<Image
-							style={styles.identityImage}
-							source={
-								this.props.person.image !== undefined
-									? { uri: `data:${this.props.person.image.mimetype};base64,${this.props.person.image.data}` }
-									: require("../../resources/images/logo-space.png")
-							}
-						/>
-						<View style={styles.identityIdContainer}>
-							<DidiText.Settings.Name>{this.props.person.name}</DidiText.Settings.Name>
-							<View style={{ marginTop: 3, flexDirection: "row" }}>
-								<DidiText.Settings.IdLabel>{strings.settings.idLabel + " "}</DidiText.Settings.IdLabel>
-								<DidiText.Settings.IdContent>{this.props.person.id}</DidiText.Settings.IdContent>
-							</View>
-						</View>
-						<OpenPersonDetail width="24" height="18" style={{ marginHorizontal: 10 }} />
-					</View>
-				</View>
-			</TouchableOpacity>
-		);
+	private logout() {
+		this.props.resetPendingLinking();
+		this.props.logout();
+		RNRestart.Restart();
 	}
 
-	renderButton(button: SettingsButton, index: number) {
-		return (
-			<View key={index}>
-				<TouchableOpacity onPress={button.action} style={{ marginTop: 10, flexDirection: "row" }}>
-					<View style={styles.buttonSpacer} />
-					<DidiText.Settings.Button style={styles.buttonText}>{button.name}</DidiText.Settings.Button>
-					<View style={styles.buttonChevron}>
-						<ChevronBlueRight />
-					</View>
-				</TouchableOpacity>
-				<View style={styles.buttonUnderline} />
-			</View>
-		);
-	}
+	navigateTo = (route: keyof SettingsScreenNavigation) => {
+		this.navigate(route, {});
+	};
 
 	render() {
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={styles.area}>
-					<View style={styles.identityContainer}>{this.renderCartouche()}</View>
-					<View style={styles.buttonContainer}>
-						{this.buttons().map((button, index) => this.renderButton(button, index))}
-						<View style={styles.logoutButtonContainer}>
-							<DidiButton
-								style={styles.logoutButton}
-								title={strings.settings.endSession}
-								onPress={() => this.logout()}
-							/>
-						</View>
-					</View>
+					<ScrollView contentContainerStyle={styles.container}>
+						<Option onPress={() => this.navigateTo("EditProfile")} label={settings.myProfile} icon="person" />
+
+						<Option
+							onPress={() => this.navigateTo("ChangeEmailEnterEmail")}
+							label={settings.changeEmail}
+							icon="email"
+						/>
+
+						<Option
+							onPress={() => this.navigateTo("ChangePhoneEnterPhone")}
+							label={settings.changePhone}
+							icon="phone_iphone"
+						/>
+
+						<Option onPress={() => this.navigateTo("ChangePassword")} label={settings.changePassword} icon="lock" />
+
+						<Divider />
+
+						<Option onPress={() => this.navigateTo("AboutThisAppScreen")} label={settings.aboutAidi} icon="info" />
+
+						<Option
+							onPress={() => this.navigateTo("AboutRonda")}
+							label={settings.aboutRonda}
+							icon="filter_tilt_shift"
+						/>
+
+						<Divider />
+
+						<Option onPress={() => this.logout()} label={settings.endSession} icon="exit_to_app" />
+					</ScrollView>
 				</SafeAreaView>
 			</Fragment>
 		);
-	}
-
-	private logout() {
-		this.props.logout();
-		this.navigate("Access", {});
 	}
 }
 
@@ -142,7 +134,8 @@ export default didiConnect(
 	SettingsScreen,
 	(state): SettingsScreenStateProps => ({ person: state.validatedIdentity }),
 	(dispatch): SettingsScreenDispatchProps => ({
-		logout: () => dispatch({ type: "SESSION_LOGOUT" })
+		logout: () => dispatch({ type: "SESSION_LOGOUT" }),
+		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" })
 	})
 );
 
@@ -173,6 +166,11 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		backgroundColor: colors.lightBackground
 	},
+	borderedAtTop: {
+		borderTopColor: colors.darkGray,
+		borderTopWidth: 1,
+		paddingTop: 26
+	},
 	identityImage: {
 		marginRight: 10,
 
@@ -188,9 +186,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: "column"
 	},
-	buttonContainer: {
-		flex: 1,
-		backgroundColor: colors.lightBackground
+	container: {
+		paddingTop: 20,
+		paddingHorizontal: 26
+		// backgroundColor: colors.lightBackground
 	},
 	buttonSpacer: {
 		flex: 1

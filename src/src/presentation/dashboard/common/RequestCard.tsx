@@ -15,21 +15,13 @@ export interface RequestCardProps extends ViewProps {
 	context: {
 		knownIssuers: IssuerRegistry;
 	};
+	activeDid: EthrDID;
 }
 
 export class RequestCard extends Component<RequestCardProps, {}> {
-	private issuerName(did: EthrDID): string {
-		const issuerData = this.props.context.knownIssuers[did.did()];
-		return issuerData
-			? issuerData.name === null
-				? strings.credentialRequestCard.unknown
-				: issuerData.name
-			: strings.credentialRequestCard.loading;
-	}
-
 	render() {
 		const did = SelectiveDisclosureRequest.displayedIssuer(this.props.request);
-		const issuerName = this.issuerName(did);
+
 		const endDate = this.props.request.expireAt
 			? strings.credentialRequestCard.formatEndDate(new Date(this.props.request.expireAt * 1000))
 			: undefined;
@@ -38,7 +30,7 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 				<View>
 					<Text>
 						<DidiText.Card.Key>{strings.credentialRequestCard.from}: </DidiText.Card.Key>
-						<DidiText.Card.Value>{issuerName}</DidiText.Card.Value>
+						<DidiText.Card.Value>{this.props.activeDid.keyAddress()}</DidiText.Card.Value>
 					</Text>
 
 					<Text style={{ marginVertical: 2 }}>

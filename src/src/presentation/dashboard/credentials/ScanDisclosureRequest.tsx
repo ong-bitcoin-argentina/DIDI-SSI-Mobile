@@ -28,6 +28,7 @@ import { ShowDisclosureResponseProps } from "./ShowDisclosureResponse";
 
 export interface ScanDisclosureRequestProps {
 	request: SelectiveDisclosureRequest;
+	documents: CredentialDocument[];
 	onGoBack(screen: ScanDisclosureRequestScreen): void;
 }
 interface ScanDisclosureRequestStateProps {
@@ -48,6 +49,10 @@ type ScanDisclosureRequestInternalProps = ScanDisclosureRequestProps &
 	ScanDisclosureRequestStateProps &
 	ScanDisclosureRequestDispatchProps;
 
+type ScanDisclosureRequestState = {
+	loading: boolean;
+};
+
 export interface ScanDisclosureRequestNavigation {
 	ScanCredential: ScanCredentialProps;
 	ShowDisclosureResponse: ShowDisclosureResponseProps;
@@ -57,10 +62,17 @@ const serviceKey = "ScanDisclosureRequest";
 
 class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	ScanDisclosureRequestInternalProps,
-	{},
+	ScanDisclosureRequestState,
 	ScanDisclosureRequestNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.scanCredential.barTitle);
+	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.scanCredential.barTitle);
+
+	constructor(props: ScanDisclosureRequestInternalProps) {
+		super(props);
+		this.state = {
+			loading: false
+		};
+	}
 
 	componentDidMount() {
 		this.props.storeRequest(this.props.request);
@@ -70,25 +82,23 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 		return (
 			<DidiScreen style={styles.body}>
 				<RequestCard
-					style={{ marginHorizontal: 20 }}
+					style={{ marginBottom: 20 }}
 					request={this.props.request}
 					context={{ knownIssuers: this.props.knownIssuers }}
+					activeDid={this.props.did}
 				/>
 				<ServiceObserver serviceKey="ScanDisclosureRequest" onSuccess={() => this.onSuccess()} />
-				<DidiServiceButton
-					onPress={() => this.answerRequest()}
-					title="Enviar datos"
-					isPending={this.props.sendDisclosureResponsePending}
-				/>
+				<DidiServiceButton onPress={() => this.answerRequest()} title="Enviar datos" isPending={this.state.loading} />
 			</DidiScreen>
 		);
 	}
 
 	private async answerRequest() {
+		this.setState({ loading: true });
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
 			this.props.did!,
 			this.props.request,
-			this.props.credentials,
+			this.props.documents,
 			this.props.identity
 		);
 
@@ -109,16 +119,16 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 
 			if (this.props.request.callback) {
 				this.props.sendResponse({ callback: this.props.request.callback, token: responseToken });
-				this.props.recordCallback(this.props.credentials);
+				this.props.recordCallback(this.props.documents);
 			} else {
-				this.navigate("ShowDisclosureResponse", {
-					responseToken
-				});
-				this.props.recordShare(this.props.credentials);
+				this.navigate("ShowDisclosureResponse", { responseToken });
+				this.props.recordShare(this.props.documents);
 			}
 		} catch (signerError) {
 			console.warn(signerError);
 			ErrorDataAlert.alert(serviceErrors.disclosure.SIGNING_ERR);
+		} finally {
+			this.setState({ loading: false });
 		}
 	}
 
@@ -160,7 +170,8 @@ export default didiConnect(
 const styles = StyleSheet.create({
 	body: {
 		width: "100%",
-		justifyContent: "flex-start"
+		justifyContent: "flex-start",
+		padding: 20
 	},
 	button: {
 		width: "80%",

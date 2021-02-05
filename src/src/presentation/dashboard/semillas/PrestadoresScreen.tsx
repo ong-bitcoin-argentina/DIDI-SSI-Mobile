@@ -1,5 +1,15 @@
 import React, { Fragment } from "react";
-import { StatusBar, FlatList, View, Modal, Alert, Picker, StyleSheet, ActivityIndicator } from "react-native";
+import {
+	StatusBar,
+	FlatList,
+	View,
+	Modal,
+	Alert,
+	Picker,
+	StyleSheet,
+	ActivityIndicator,
+	ScrollView
+} from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 import DidiTextInput from "../../util/DidiTextInput";
@@ -21,6 +31,7 @@ import { semillasCategoriesFilters, categories } from "./constants";
 import colors from "../../resources/colors";
 import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
+
 const { header, view } = commonStyles.benefit;
 const { steps, writeEmail, program } = strings.semillas;
 const { email, title, noCredentials } = steps.first;
@@ -210,29 +221,27 @@ class PrestadoresScreen extends NavigationEnabledComponent<
 
 				<Modal animationType="fade" transparent visible={modalVisible}>
 					<View style={modal.centeredView}>
-						<View style={[modal.view, { height: 250 }]}>
-							<Normal style={styles.emailDescription}>{writeEmail}</Normal>
-							<DidiTextInput.Email onChangeText={customEmail => this.handleChangeCustomEmail(customEmail)} />
+						<View style={[modal.view, { maxHeight: 400, minHeight: 300 }]}>
+							<ScrollView>
+								<Normal style={styles.emailDescription}>{writeEmail}</Normal>
+								<DidiTextInput.Email onChangeText={customEmail => this.handleChangeCustomEmail(customEmail)} />
 
-							<View style={modal.footer}>
-								<DidiServiceButton
-									onPress={() => {
-										this.setState({ modalVisible: !modalVisible });
-									}}
-									title={strings.general.cancel}
-									style={modal.smallButton}
-									isPending={false}
-								/>
+								<View style={modal.footer}>
+									<DidiServiceButton
+										onPress={() => this.setState({ modalVisible: !modalVisible })}
+										title={strings.general.cancel}
+										style={modal.smallButton}
+										isPending={false}
+									/>
 
-								<DidiServiceButton
-									onPress={() => {
-										this.handleConfirmCustomEmail();
-									}}
-									title={strings.general.next}
-									style={modal.smallButton}
-									isPending={false}
-								/>
-							</View>
+									<DidiServiceButton
+										onPress={this.handleConfirmCustomEmail}
+										title={strings.general.next}
+										style={modal.smallButton}
+										isPending={false}
+									/>
+								</View>
+							</ScrollView>
 						</View>
 					</View>
 				</Modal>

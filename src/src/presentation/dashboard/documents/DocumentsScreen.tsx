@@ -23,12 +23,13 @@ interface DocumentsScreenStateProps {
 	validCredentials: CredentialDocument[];
 	credentialContext: DocumentCredentialCardContext;
 }
-type DocumentsScreenInternalProps = DocumentsScreenProps & DocumentsScreenStateProps;
 
 export type DocumentsScreenNavigation = {
 	DashboardHome: DashboardScreenProps;
 	DocumentDetail: DocumentDetailProps;
 };
+
+type DocumentsScreenInternalProps = DocumentsScreenProps & DocumentsScreenStateProps;
 
 class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternalProps, {}, DocumentsScreenNavigation> {
 	render() {
@@ -37,7 +38,7 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={commonStyles.view.area}>
-					{did === null ? (
+					{!did?.did ? (
 						this.renderEmpty()
 					) : (
 						<FlatList
@@ -47,6 +48,9 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 							keyExtractor={(_, index) => index.toString()}
 							renderItem={item => this.renderCard(item.item, item.index)}
 							ListEmptyComponent={this.renderEmpty()}
+							maxToRenderPerBatch={5}
+							updateCellsBatchingPeriod={30}
+							windowSize={6}
 						/>
 					)}
 				</SafeAreaView>
