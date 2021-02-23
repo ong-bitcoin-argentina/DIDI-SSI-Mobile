@@ -58,10 +58,6 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		const credentialsToShare = this.props.credentials.filter(
-			credential => credential.category !== "identity" || !credential.specialFlag
-		);
-
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -69,7 +65,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 					<FlatList
 						style={{ width: "100%" }}
 						contentContainerStyle={{ paddingVertical: 8 }}
-						data={credentialsToShare}
+						data={this.props.credentials}
 						keyExtractor={(_, index) => index.toString()}
 						renderItem={item => this.renderCard(item.item)}
 						ListEmptyComponent={

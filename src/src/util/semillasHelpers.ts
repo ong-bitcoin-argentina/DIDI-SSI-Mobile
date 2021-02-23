@@ -9,11 +9,11 @@ const isIdentityCrendential = (credential: any): boolean => {
 };
 
 const isSemillasIdentityCredential = (credential: CredentialDocument): boolean => {
-	return isSemillasCrendential(credential) && isIdentityCrendential(credential);
+	return isSemillasCredential(credential) && isIdentityCrendential(credential);
 };
 
 const isSemillasBenefitCrendential = (credential: CredentialDocument): boolean => {
-	return !!(isSemillasCrendential(credential) && credential.category?.includes("benefit"));
+	return !!(isSemillasCredential(credential) && credential.category?.includes("benefit"));
 };
 
 const isActiveCredential = (credential: CredentialDocument): boolean => {
@@ -33,7 +33,7 @@ export const isSemillasBenefitActiveCredential = (credential: CredentialDocument
 	return credential && isSemillasBenefitCrendential(credential) && isActiveCredential(credential);
 };
 
-export const isSemillasCrendential = (credential: any): boolean => {
+export const isSemillasCredential = (credential: any): boolean => {
 	return credential.title.toLowerCase().includes(Semillas.title);
 };
 
