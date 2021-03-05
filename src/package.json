@@ -80,6 +80,8 @@
 		"@types/react-redux": "^7.1.5",
 		"@types/react-test-renderer": "^16.9.1",
 		"babel-jest": "^24.9.0",
+		"commitizen": "^4.2.3",
+		"cz-jira-smart-commit": "^3.0.0",
 		"jest": "^24.9.0",
 		"metro-react-native-babel-preset": "^0.57.0",
 		"react-native-svg-transformer": "^0.14.3",
