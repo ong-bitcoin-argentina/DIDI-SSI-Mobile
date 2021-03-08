@@ -1,10 +1,8 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, ScrollView, View, Modal, Text } from "react-native";
+import { StatusBar, StyleSheet, ScrollView, View, Modal, Text } from "react-native";
 import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
-const { Small } = DidiText.Explanation;
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-
 import { didiConnect } from "../../../store/store";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -26,8 +24,9 @@ import SemillasValidationState from "./SemillasValidationState";
 import { getSemillasValidationState } from "../../../services/semillas/getValidationState";
 import { haveValidIdentity } from "../../../util/semillasHelpers";
 
+const { Small } = DidiText.Explanation;
 const { Icon } = DidiText;
-const { util, modal, button } = commonStyles;
+const { util, modal } = commonStyles;
 
 const {
 	detailBarTitle,
@@ -36,7 +35,6 @@ const {
 	detailThird,
 	credentialsSuccess,
 	program,
-	noDni,
 	noSemillaIdentity
 } = strings.semillas;
 

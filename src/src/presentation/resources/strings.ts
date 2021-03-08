@@ -387,6 +387,7 @@ export default {
 		errorShareData: "Ocurrió un error al compartir tus datos",
 		validate: {
 			shouldDo: "Debes completar la validación de Identidad para acceder a los beneficios de Semillas.",
+			renaperFailed: "Lo lamentamos. Su identidad no ha sido validada.",
 			identityFromSemillas: "Validar Identidad a través de Semillas",
 			DNI: "Validar DNI con Semillas",
 			question: "¿No lográs validar tu identidad?",
@@ -633,6 +634,7 @@ export default {
 			buttonText: "OK"
 		},
 		failure: {
+			retryButton: "Reintentar",
 			header: "Validación de Identidad",
 			congrats: "Su identidad no ha sido validada. Por favor, vuelva a intentar.",
 			reminder: "Recuerda que tus datos son privados y no serán compartidos.",

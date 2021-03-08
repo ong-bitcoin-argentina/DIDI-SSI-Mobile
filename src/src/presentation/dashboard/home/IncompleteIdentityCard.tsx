@@ -9,6 +9,7 @@ import { ValidateDniState } from "../../../store/reducers/validateDniProgressRed
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
+import { RenaperValidationStates } from "../semillas/constants";
 
 export interface IncompleteIdentityCardProps {
 	style: any;
@@ -50,15 +51,15 @@ class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInter
 		switch (state?.state) {
 			case undefined:
 				return this.renderButton(strings.dashboard.validateIdentity.Start.button, this.props.onStartValidateId);
-			case "Failure":
+			case RenaperValidationStates.failure:
 				return this.renderButton(strings.dashboard.validateIdentity.Failure.button, () => {
 					this.props.onValidateIdFailure();
 					this.props.onStartValidateId();
 				});
-			case "Success":
+			case RenaperValidationStates.success:
 				return this.renderButton(strings.dashboard.validateIdentity.Success.button, this.props.onValidateIdSuccess);
-			case "In Progress":
-			case "Finished":
+			case RenaperValidationStates.inProgress:
+			case RenaperValidationStates.finished:
 				return undefined;
 		}
 	}
