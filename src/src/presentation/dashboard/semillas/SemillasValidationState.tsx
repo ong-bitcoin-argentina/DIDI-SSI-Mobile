@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { didiConnect } from "../../../store/store";
-import { ValidationStates } from "./constants";
+import { RenaperValidationStates, ValidationStates } from "./constants";
 import { DidiText } from "../../util/DidiText";
 import strings from "../../resources/strings";
 import DidiButton from "../../util/DidiButton";
@@ -12,11 +12,14 @@ const {
 	Icon,
 	Explanation: { Small }
 } = DidiText;
-const { validate } = strings.semillas;
+const { semillas, dashboard } = strings;
+const { validate } = semillas;
+const { validateIdentity } = dashboard;
 const { modal, button } = commonStyles;
 
 interface StoreProps {
 	validationState: ValidationStates | null;
+	validateDniFailed: boolean;
 }
 
 interface State {}
@@ -97,14 +100,14 @@ class SemillasValidationState extends Component<Props, State> {
 	};
 
 	renderRequestDescription = () => {
-		const { goToRenaperValidation, goToSemillasValidation } = this.props;
+		const { goToRenaperValidation, goToSemillasValidation, validateDniFailed } = this.props;
 		return (
 			<View style={{ paddingTop: 10 }}>
-				<Small style={styles.modalText}>{validate.shouldDo}</Small>
+				<Small style={styles.modalText}>{validateDniFailed ? validateIdentity.Failure.title : validate.shouldDo}</Small>
 				<View style={{ marginBottom: 15 }}>
 					<DidiButton
 						onPress={goToRenaperValidation}
-						title={strings.validateIdentity.header}
+						title={validateDniFailed ? validateIdentity.Failure.button : strings.validateIdentity.header}
 						style={[button.lightRed, styles.renaperButton]}
 					/>
 				</View>
@@ -145,7 +148,8 @@ class SemillasValidationState extends Component<Props, State> {
 export default didiConnect(
 	SemillasValidationState,
 	(state): StoreProps => ({
-		validationState: state.validateSemillasDni
+		validationState: state.validateSemillasDni,
+		validateDniFailed: state.validateDni?.state === RenaperValidationStates.failure
 	})
 );
 

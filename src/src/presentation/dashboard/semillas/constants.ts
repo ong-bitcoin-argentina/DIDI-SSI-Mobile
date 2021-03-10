@@ -44,6 +44,13 @@ export default {
 	["Finanza"]: require(`${basePath}-finanzas-inclusivas.png`)
 };
 
+export enum RenaperValidationStates {
+	inProgress = "In Progress",
+	failure = "Failure",
+	success = "Success",
+	finished = "Finished"
+}
+
 export enum ValidationStates {
 	inProgress = "IN_PROGRESS",
 	failure = "FAILURE",
