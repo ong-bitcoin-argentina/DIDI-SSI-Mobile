@@ -28,7 +28,7 @@ export enum links {
 
 export const successfullyLogged = async (token: string) => {
 	const params = {
-		dynamicLink: `https://aidi.page.link/?link=https://aidironda.com/loginSuccess?token=${token}&apn=com.aidironda`,
+		dynamicLink: `https://nextdidi.page.link/?link=https://aidironda.com/loginSuccess?token=${token}&apn=com.aidironda2`,
 		deppLink: `ronda://loginSuccess?token=${token}`
 	};
 	await openApp(params);
@@ -36,7 +36,7 @@ export const successfullyLogged = async (token: string) => {
 
 export const loginDenied = async () => {
 	const params = {
-		dynamicLink: `https://aidi.page.link/?link=https://aidironda.com/loginDenied&apn=com.aidironda`,
+		dynamicLink: `https://nextdidi.page.link/?link=https://aidironda.com/loginDenied&apn=com.aidironda2`,
 		deppLink: `ronda://loginDenied`
 	};
 	await openApp(params);
