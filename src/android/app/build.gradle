@@ -2,10 +2,12 @@ apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
 project.ext.envConfigFiles = [
-    debug: ".env.staging",
-    staging: ".env.staging",
-    prod: ".env.production",
-    uat: ".env.uat",
+    debug: ".env.next",
+    next: ".env.next",
+    alpha: ".env.alpha",
+    beta: ".env.beta",
+    /*prod: ".env.production",
+    uat: ".env.uat",*/
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
@@ -149,13 +151,13 @@ android {
         dev {
             resValue "string", "build_config_package", "com.aidi"
         }
-        staging {
+        next {
             resValue "string", "build_config_package", "com.aidi"
         }
-        uat {
+        beta {
             resValue "string", "build_config_package", "com.aidi"
         }
-        prod {
+        alpha {
             resValue "string", "build_config_package", "com.aidi"
         }
     }
