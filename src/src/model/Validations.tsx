@@ -63,7 +63,7 @@ export const Validations = {
 
 	isNationality: hasMinLength(1),
 
-	isEmail: matchesRegex(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/),
+	isEmail: matchesRegex(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/),
 
 	validatePassword: (password?: string): PasswordValidationErrors[] => {
 		const checks = {
