@@ -2,11 +2,10 @@ import { Linking } from "react-native";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { getSignerForHDPath } from "react-native-uport-signer";
 import { Credentials } from "uport-credentials";
-import { DIDI_SERVER_DID } from "../../AppConfig";
+import { DIDI_SERVER_DID, URL_DOMAIN, URL_SERVICE_LOGINSUCCESS, URL_SERVICE_LOGINDENIED, URL_APP } from "../../AppConfig";
 import { EthrDID } from "didi-sdk";
 import DeepLinking from "react-native-deep-linking";
 import { NavigationActions } from "react-navigation";
-
 interface Settings {
 	did?: string;
 	signer?: any;
@@ -28,7 +27,7 @@ export enum links {
 
 export const successfullyLogged = async (token: string) => {
 	const params = {
-		dynamicLink: `https://nextdidi.page.link/?link=https://aidironda.com/loginSuccess?token=${token}&apn=com.aidironda2`,
+		dynamicLink: `${URL_DOMAIN}?link=${URL_SERVICE_LOGINSUCCESS}?token=${token}&apn=${URL_APP}`,
 		deppLink: `ronda://loginSuccess?token=${token}`
 	};
 	await openApp(params);
@@ -36,7 +35,7 @@ export const successfullyLogged = async (token: string) => {
 
 export const loginDenied = async () => {
 	const params = {
-		dynamicLink: `https://nextdidi.page.link/?link=https://aidironda.com/loginDenied&apn=com.aidironda2`,
+		dynamicLink: `${URL_DOMAIN}?link=${URL_SERVICE_LOGINDENIED}&apn=${URL_APP}`,
 		deppLink: `ronda://loginDenied`
 	};
 	await openApp(params);

@@ -53,3 +53,7 @@ export const ENV_CODE = Config.ENV_CODE;
 export const DIDI_SERVER_DID = Config.DIDI_SERVER_DID;
 export const LATEST_FEATURE = Config.LATEST_FEATURE === "true";
 export const QA = Config.QA === "true";
+export const URL_DOMAIN = Config.URL_DOMAIN;
+export const URL_SERVICE_LOGINSUCCESS = Config.URL_SERVICE_LOGINSUCCESS;
+export const URL_SERVICE_LOGINDENIED = Config.URL_SERVICE_LOGINDENIED;
+export const URL_APP = Config.URL_APP;
