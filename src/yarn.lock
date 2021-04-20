@@ -3006,8 +3006,9 @@
   "resolved" "https://registry.npmjs.org/did-resolver/-/did-resolver-1.0.0.tgz"
   "version" "1.0.0"
 
-"didi-sdk@git+ssh://git@github.com/ong-bitcoin-argentina/DIDI-SSI-app_sdk.git#develop":
-  "resolved" "git+ssh://git@github.com/ong-bitcoin-argentina/DIDI-SSI-app_sdk.git#7bbda69101d86fce0a22fb17d37ca918cceeac90"
+"didi-sdk@git+ssh://git@github.com/ong-bitcoin-argentina/DIDI-SSI-App_sdk.git#develop":
+  "resolved" "git+ssh://git@github.com/ong-bitcoin-argentina/DIDI-SSI-App_sdk.git#15529db19e0c6de1a7fa989d1f808e594473db5e"
+  "version" "0.0.1"
   dependencies:
     "aes-js" "^3.1.2"
     "apollo-boost" "^0.4.7"
