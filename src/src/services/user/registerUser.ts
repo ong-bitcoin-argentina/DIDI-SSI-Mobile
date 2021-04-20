@@ -3,7 +3,6 @@ import { DidiServerApiClient, EthrDID } from "didi-sdk";
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 
-import { PRIVATE_KEY_SEED_PASSWORD } from "../../AppConfig";
 import { getPrivateKeySeed } from "../internal/getPrivateKeySeed";
 import { getState } from "../internal/getState";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
