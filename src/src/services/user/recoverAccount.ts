@@ -10,7 +10,6 @@ import {
 } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 
-import { PRIVATE_KEY_SEED_PASSWORD } from "../../AppConfig";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { getState } from "../internal/getState";
 import { importDid } from "../internal/uportSigner";
@@ -26,7 +25,7 @@ export interface RecoverAccountArguments {
 
 const recoverAccountComponent = buildComponentServiceCall(async (args: RecoverAccountArguments) => {
 	const response = convertError(
-		await args.api.recoverAccount(args.email, args.password, PRIVATE_KEY_SEED_PASSWORD, args.firebaseId)
+		await args.api.recoverAccount(args.email, args.password, args.firebaseId)
 	);
 	if (isLeft(response)) {
 		return response;

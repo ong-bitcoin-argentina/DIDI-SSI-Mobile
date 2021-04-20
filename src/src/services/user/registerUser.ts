@@ -17,14 +17,14 @@ export interface RegisterUserArguments {
 		phoneNumber: string;
 		password: string;
 		privateKeySeed: string;
-		name?: string;
-		lastname?: string;
+		name: string;
+		lastname: string;
 	};
 	firebaseId: string | undefined;
 }
 
 const registerUserComponent = buildComponentServiceCall(async (args: RegisterUserArguments) =>
-	convertError(await args.api.registerUser(args.did, PRIVATE_KEY_SEED_PASSWORD, args.data, args.firebaseId))
+	convertError(await args.api.registerUser(args.did, args.data, args.firebaseId))
 );
 
 export function registerUser(
@@ -32,8 +32,8 @@ export function registerUser(
 	email: string,
 	password: string,
 	phoneNumber: string,
-	name?: string,
-	lastname?: string
+	name: string = '',
+	lastname: string = ''
 ) {
 	return getState(serviceKey, {}, store => {
 		const firebaseId = store.pushToken.token ?? undefined;
