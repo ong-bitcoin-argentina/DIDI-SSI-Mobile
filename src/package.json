@@ -13,8 +13,8 @@
 		"windows:build": "cd android && set ENVFILE=.env.alpha && gradlew assembleAlphaRelease",
 		"build:next": "cd android && ENVFILE=.env.next && ./gradlew assembleNextRelease",
 		"windows:build:next": "cd android && set ENVFILE=.env.next && gradlew assembleNextRelease",
-		"build:beta": "cd android && ENVFILE=.env.beta && ./gradlew assembleBetaRelease",
-		"windows:build:beta": "cd android && set ENVFILE=.env.beta && gradlew assembleBetaRelease",
+		"build:qa": "cd android && ENVFILE=.env.qa && ./gradlew assembleQaRelease",
+		"windows:build:qa": "cd android && set ENVFILE=.env.qa && gradlew assembleQaRelease",
 		"debugBuild": "cd android && ./gradlew assembleDebug",
 		"deploy": "curl -F 'versionNumber=0.0.x' -F 'versionComment=Automatic Build'  -F 'userFile=@./android/app/build/outputs/apk/release/app-release.apk'   https://appscloud.creativecore.com.ar/delivery/edit/sendForm.php?app=nec-didi"
 	},
