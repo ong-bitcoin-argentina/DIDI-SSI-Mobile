@@ -5,7 +5,7 @@ project.ext.envConfigFiles = [
     debug: ".env.next",
     next: ".env.next",
     alpha: ".env.alpha",
-    beta: ".env.beta",
+    qa: ".env.qa",
     /*prod: ".env.production",
     uat: ".env.uat",*/
 ]
@@ -154,7 +154,7 @@ android {
         next {
             resValue "string", "build_config_package", "com.aidi"
         }
-        beta {
+        qa {
             resValue "string", "build_config_package", "com.aidi"
         }
         alpha {
@@ -227,7 +227,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
-    implementation platform('com.google.firebase:firebase-bom:26.6.0')
+    implementation platform('com.google.firebase:firebase-bom:28.0.0')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
     if (enableHermes) {

@@ -43,7 +43,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 				<View style={styles.countryContainer}>
 					<View style={{ flex: 1 }}>
 						{country && (
-							<View style={{ flexDirection: "row", justifyContent: "center" }}>
+							<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
 								{country.image && <Image style={styles.countryImage} source={country.image} />}
 								<DidiText.Explanation.Normal>{country.name}</DidiText.Explanation.Normal>
 							</View>

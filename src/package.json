@@ -6,7 +6,7 @@
 		"start": "react-native start",
 		"test": "jest",
 		"lint": "tslint --project tsconfig.json",
-		"android": "ENVFILE=.env.next react-native run-android --variant=DevDebug",
+		"android": "ENVFILE=.env.qa react-native run-android --variant=DevDebug",
 		"windows:android": "set ENVFILE=.env.next react-native run-android --variant=DevDebug",
 		"ios": "react-native run-ios",
 		"build": "cd android && ENVFILE=.env.alpha && ./gradlew assembleAlphaRelease",
