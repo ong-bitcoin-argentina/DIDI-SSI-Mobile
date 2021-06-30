@@ -132,7 +132,7 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 				description={strings.textInput.cellPhoneNumber.description}
 				placeholder={strings.textInput.cellPhoneNumber.placeholder}
 				tagImage={require("../resources/images/phone.png")}
-				maxLength={10}
+				maxLength={13}
 				textInputProps={{
 					keyboardType: "phone-pad",
 					onChangeText: text => props.onChangeText(text),

@@ -4,7 +4,6 @@ interface Country {
 	name: string;
 	prefix: string;
 	countryCode?: string;
-	length?: number;
 	image?: ImageSourcePropType;
 }
 
@@ -13,14 +12,12 @@ export const countries: Country[] = [
 		name: "Argentina",
 		prefix: "54",
 		countryCode: "AR",
-		length: 10,
 		image: require("./images/countries/argentina.png")
 	},
 	{
 		name: "Bolivia",
 		prefix: "591",
 		countryCode: "BO",
-		length: 8,
 		image: require("./images/countries/bolivia.png")
 	},
 	{
