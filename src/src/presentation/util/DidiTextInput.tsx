@@ -22,7 +22,7 @@ export interface DidiTextInputProps {
 }
 
 type BaseProps = {
-	onChangeText: (text: string, valid?: boolean, length?: number) => void;
+	onChangeText: (text: string, valid?: boolean) => void;
 };
 
 export default class DidiTextInput extends React.Component<DidiTextInputProps> {
