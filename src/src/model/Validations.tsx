@@ -1,4 +1,5 @@
 import TypedObject from "../util/TypedObject";
+import { countries } from "../presentation/resources/countries";
 
 function matchesRegex(regex: string | RegExp): (code?: string) => boolean {
 	return code => {
@@ -34,6 +35,18 @@ function hasLengthBetween(min: number, max: number): (code?: string) => boolean 
 	};
 }
 
+function isValidPhone(countryCode: string): (code?: string) => boolean {
+	const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+	return code => {
+		if (code) {
+			const number = phoneUtil.parseAndKeepRawInput(code, countryCode);
+			return phoneUtil.isValidNumberForRegion(number, countryCode);
+		} else {
+			return false;
+		}
+	};
+}
+
 const isNumber = matchesRegex("^[0-9]*$");
 
 export enum PasswordValidationErrors {
@@ -59,7 +72,8 @@ export const Validations = {
 
 	// Phone numbers in Argentina has exact length of 10
 	// More info: https://es.wikipedia.org/wiki/N%C3%BAmeros_telef%C3%B3nicos_en_Argentina
-	isPhoneNumber: (value: string) => isNumber(value) && hasLength(10)(value),
+	isPhoneNumber: (value: string, countryCode: string, length: number) => isNumber(value) && hasLength(length)(value)
+	 	&& isValidPhone(countryCode)(value),
 
 	isNationality: hasMinLength(1),
 

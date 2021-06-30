@@ -27,6 +27,7 @@
 		"@react-native-firebase/functions": "7.4.9",
 		"didi-sdk": "git+ssh://git@github.com/ong-bitcoin-argentina/DIDI-SSI-App_sdk.git#develop",
 		"fp-ts": "^2.4.0",
+		"google-libphonenumber": "^3.2.21",
 		"jwt-decode": "^2.2.0",
 		"react": "16.12.0",
 		"react-native": "0.63.4",

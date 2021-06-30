@@ -75,7 +75,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 				<DidiServiceButton
 					isPending={this.props.isContinuePending || false}
-					disabled={!this.canPressContinueButton()}
+					disabled={!this.canPressContinueButton(country || countries[0])}
 					onPress={() => this.onPressContinueButton()}
 					title={strings.accessCommon.validateButtonText}
 				/>
@@ -83,9 +83,9 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		);
 	}
 
-	private canPressContinueButton(): boolean {
+	private canPressContinueButton(country: any): boolean {
 		return (
-			Validations.isPhoneNumber(this.state.inputPhoneNumber) &&
+			Validations.isPhoneNumber(this.state.inputPhoneNumber, country.countryCode, country.length) &&
 			(!this.props.isPasswordRequired || Validations.isPassword(this.state.inputPassword))
 		);
 	}
