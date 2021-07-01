@@ -30,6 +30,9 @@ build/
 local.properties
 *.iml
 *google-services.json
+*google-services-next.json
+*google-services-qa.json
+*google-services-prd.json
 android/gradle.properties
 # Visual Studio Code
 #

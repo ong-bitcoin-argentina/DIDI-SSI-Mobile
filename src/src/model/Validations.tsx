@@ -14,10 +14,6 @@ function matchesRegex(regex: string | RegExp): (code?: string) => boolean {
 	};
 }
 
-function hasLength(length: number): (code?: string) => boolean {
-	return code => !!code && code.length === length;
-}
-
 function hasMinLength(length: number): (code?: string) => boolean {
 	return code => {
 		if (code) {
@@ -31,6 +27,20 @@ function hasMinLength(length: number): (code?: string) => boolean {
 function hasLengthBetween(min: number, max: number): (code?: string) => boolean {
 	return code => {
 		return !!code && code.length >= min && code.length <= max;
+	};
+}
+
+function isValidPhone(countryCode: string): (code?: string) => boolean {
+	const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+	return code => {
+		if (!code) return false;
+			try { 
+				const number = phoneUtil.parseAndKeepRawInput(code, countryCode);
+				return phoneUtil.isValidNumberForRegion(number, countryCode);
+			} catch (e) {
+				console.log("El numero de teléfono es invalido sobre el standard E.164");
+				return false;
+			}
 	};
 }
 
@@ -59,7 +69,7 @@ export const Validations = {
 
 	// Phone numbers in Argentina has exact length of 10
 	// More info: https://es.wikipedia.org/wiki/N%C3%BAmeros_telef%C3%B3nicos_en_Argentina
-	isPhoneNumber: (value: string) => isNumber(value) && hasLength(10)(value),
+	isPhoneNumber: (value: string, countryCode: string) => isNumber(value) && isValidPhone(countryCode)(value),
 
 	isNationality: hasMinLength(1),
 

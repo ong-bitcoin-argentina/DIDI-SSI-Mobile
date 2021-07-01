@@ -43,7 +43,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 				<View style={styles.countryContainer}>
 					<View style={{ flex: 1 }}>
 						{country && (
-							<View style={{ flexDirection: "row", justifyContent: "center" }}>
+							<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
 								{country.image && <Image style={styles.countryImage} source={country.image} />}
 								<DidiText.Explanation.Normal>{country.name}</DidiText.Explanation.Normal>
 							</View>
@@ -75,7 +75,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 				<DidiServiceButton
 					isPending={this.props.isContinuePending || false}
-					disabled={!this.canPressContinueButton()}
+					disabled={!this.canPressContinueButton(country || countries[0])}
 					onPress={() => this.onPressContinueButton()}
 					title={strings.accessCommon.validateButtonText}
 				/>
@@ -83,9 +83,9 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		);
 	}
 
-	private canPressContinueButton(): boolean {
+	private canPressContinueButton(country: any): boolean {
 		return (
-			Validations.isPhoneNumber(this.state.inputPhoneNumber) &&
+			Validations.isPhoneNumber(this.state.inputPhoneNumber, country.countryCode) &&
 			(!this.props.isPasswordRequired || Validations.isPassword(this.state.inputPassword))
 		);
 	}
