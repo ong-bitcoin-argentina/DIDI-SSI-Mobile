@@ -51,15 +51,15 @@ export const countries: Country[] = [
 		image: require("./images/countries/argentina.png")
 	},
 	{
-		name: "Guinea Francesa",
+		name: "Guayana Francesa",
 		prefix: "594",
-		countryCode: "GN",
+		countryCode: "GF",
 		image: require("./images/countries/francia.png")
 	},
 	{
 		name: "Guyana",
 		prefix: "592",
-		countryCode: "GF",
+		countryCode: "GY",
 		image: require("./images/countries/guyana.png")
 	},
 	{

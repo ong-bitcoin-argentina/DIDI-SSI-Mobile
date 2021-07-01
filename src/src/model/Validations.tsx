@@ -1,5 +1,4 @@
 import TypedObject from "../util/TypedObject";
-import { countries } from "../presentation/resources/countries";
 
 function matchesRegex(regex: string | RegExp): (code?: string) => boolean {
 	return code => {
@@ -13,10 +12,6 @@ function matchesRegex(regex: string | RegExp): (code?: string) => boolean {
 			return false;
 		}
 	};
-}
-
-function hasLength(length: number): (code?: string) => boolean {
-	return code => !!code && code.length === length;
 }
 
 function hasMinLength(length: number): (code?: string) => boolean {
