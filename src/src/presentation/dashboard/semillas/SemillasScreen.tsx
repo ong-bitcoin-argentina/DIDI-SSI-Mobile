@@ -38,12 +38,10 @@ const {
 	noSemillaIdentity
 } = strings.semillas;
 
-export interface LoginScreenProps {}
-
 interface SemillasScreenStateProps {
 	pendingCredentials: boolean;
-	haveIdentityCredential: Boolean;
-	didRequested: Boolean;
+	haveIdentityCredential: boolean;
+	didRequested: boolean;
 	credentials: CredentialDocument[];
 	semillasValidationSuccess: boolean;
 	haveValidSemillasIdentity: boolean;
@@ -60,7 +58,7 @@ interface SemillasScreenDispatchProps {
 	getSemillasValidationState: () => void;
 }
 
-type SemillasScreenInternalProps = LoginScreenProps & SemillasScreenStateProps & SemillasScreenDispatchProps;
+type SemillasScreenInternalProps = SemillasScreenStateProps & SemillasScreenDispatchProps;
 
 export interface SemillasScreenNavigation {
 	DashboardHome: DashboardScreenProps;

@@ -6,7 +6,7 @@ import { didiConnect } from "../../../store/store";
 import { getPhoneNumber, getEmail } from "../../../util/specialCredentialsHelpers";
 import strings from "../../resources/strings";
 import KeyValueText from "../../util/KeyValueText";
-const { nameBeneficiario, birthDate, dniBeneficiario, relationship, cert } = strings.specialCredentials.Semillas.keys;
+const { nameBeneficiario, birthDate, dniBeneficiario, relationship } = strings.specialCredentials.Semillas.keys;
 const { name, phone, dni, birth, character, mail } = strings.semillas.steps.second.labels;
 
 type BeneficiarioGlobalProps = {

@@ -1,7 +1,7 @@
 import { StoreAction } from "../StoreAction";
 
 export interface CodeState {
-    code: String
+    code: string
 }
 
 interface SetCode {

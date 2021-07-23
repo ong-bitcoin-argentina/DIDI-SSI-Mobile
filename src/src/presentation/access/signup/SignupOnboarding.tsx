@@ -7,7 +7,6 @@ import {
 	ScrollView,
 	StatusBar,
 	StyleSheet,
-	Text,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
 	View
@@ -73,7 +72,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 				>
 					{[
 						...onboardingPages.map((page, index) => this.renderPage(page, index)),
-						this.renderSkipPage(onboardingPages.length)
+						this.renderSkipPage()
 					]}
 				</ScrollView>
 				{this.renderOverlay()}
@@ -125,7 +124,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private renderSkipPage(index: number) {
+	private renderSkipPage() {
 		return <View key={onboardingPages.length} style={{ width: Dimensions.get("window").width }} />;
 	}
 

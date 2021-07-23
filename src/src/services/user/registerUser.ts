@@ -31,8 +31,8 @@ export function registerUser(
 	email: string,
 	password: string,
 	phoneNumber: string,
-	name: string = '',
-	lastname: string = ''
+	name = '',
+	lastname = ''
 ) {
 	return getState(serviceKey, {}, store => {
 		const firebaseId = store.pushToken.token ?? undefined;

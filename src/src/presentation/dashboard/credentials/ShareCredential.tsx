@@ -26,7 +26,7 @@ import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
 import { CredentialStates } from "../../../model/Credential";
 
-export type ShareCredentialProps = {};
+export type ShareCredentialProps = Record<string, unknown>;
 interface ShareCredentialInternalProps extends ShareCredentialProps {
 	credentialContext: DocumentCredentialCardContext;
 	did: ActiveDid;

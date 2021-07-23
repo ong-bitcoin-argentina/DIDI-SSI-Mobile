@@ -1,8 +1,6 @@
 import { LayoutRectangle } from "react-native";
 import { Face } from "react-native-camera";
 
-import TypedObject from "../../../util/TypedObject";
-
 import { LivenessGesture } from "./LivenessGesture";
 
 type SupportedGestures = LivenessGesture.TURN_LEFT | LivenessGesture.TURN_RIGHT;

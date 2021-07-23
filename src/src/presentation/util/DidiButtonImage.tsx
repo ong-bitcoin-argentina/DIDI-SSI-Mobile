@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import DidiButton, { DidiButtonProps, styles as didiButtonStyles } from "./DidiButton";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { DidiButtonProps, styles as didiButtonStyles } from "./DidiButton";
 import { DidiText } from "./DidiText";
-import { Text } from "react-native-svg";
 import themes from "../resources/themes";
 
 export interface DidiButtonImageProps extends DidiButtonProps {

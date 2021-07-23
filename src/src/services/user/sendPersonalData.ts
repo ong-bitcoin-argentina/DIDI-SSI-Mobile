@@ -26,7 +26,7 @@ const sendPersonalDataComponent = buildComponentServiceCall(async (args: Argumen
 export function sendPersonalData(serviceKey: string, token: string, name: string, lastname: string) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, { errorMessage: NO_DID }, did => {
-			return sendPersonalDataComponent(serviceKey, { api, did, token, name, lastname }, data => {
+			return sendPersonalDataComponent(serviceKey, { api, did, token, name, lastname }, () => {
 				return simpleAction(serviceKey, { type: "PERSISTED_PERSONAL_DATA_SET", state: { name, lastname } }, () =>
 					serviceCallSuccess(serviceKey)
 				);

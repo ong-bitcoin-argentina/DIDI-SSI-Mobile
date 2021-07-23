@@ -24,11 +24,8 @@ interface IncompleteIdentityCardStateProps {
 	validateDniState: ValidateDniState;
 }
 
-interface IncompleteIdentityCardDispatchProps {}
-
 type IncompleteIdentityCardInternalProps = IncompleteIdentityCardProps &
-	IncompleteIdentityCardStateProps &
-	IncompleteIdentityCardDispatchProps;
+	IncompleteIdentityCardStateProps;
 
 class IncompleteIdentityCard extends React.Component<IncompleteIdentityCardInternalProps> {
 	private renderButton(title: string, onPress: () => void) {

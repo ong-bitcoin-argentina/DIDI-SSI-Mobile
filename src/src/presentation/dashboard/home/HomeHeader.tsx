@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import PushNotification from "react-native-push-notification";
 
 import { DidiText } from "../../util/DidiText";

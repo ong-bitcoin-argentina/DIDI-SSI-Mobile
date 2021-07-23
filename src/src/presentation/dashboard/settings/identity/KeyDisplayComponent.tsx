@@ -1,9 +1,8 @@
 import React from "react";
-import { Alert, Clipboard, Text, ToastAndroid, View, ViewProps } from "react-native";
+import { Alert, Clipboard, ToastAndroid, View, ViewProps } from "react-native";
 import { KeyAddress, RNUportHDSigner } from "react-native-uport-signer";
 
 import DidiButton from "../../../util/DidiButton";
-import { DidiText } from "../../../util/DidiText";
 
 export interface KeyDisplayProps extends ViewProps {
 	seed: KeyAddress;
@@ -31,7 +30,7 @@ export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDis
 					<DidiButton
 						style={{ backgroundColor: "red" }}
 						title="Eliminar Identidad"
-						onPress={() => this.deleteSeed(seed)}
+						onPress={() => this.deleteSeed()}
 					/>
 				) : (
 					<DidiButton title="Eliminar Identidad" onPress={() => this.setState({ deleteIdentityOnNextTap: true })} />
@@ -53,7 +52,7 @@ export class KeyDisplayComponent extends React.Component<KeyDisplayProps, KeyDis
 		});
 	}
 
-	private deleteSeed(seed: KeyAddress) {
+	private deleteSeed() {
 		this.props.deleteSeed();
 		this.setState({ deleteIdentityOnNextTap: false });
 	}

@@ -8,9 +8,7 @@ type NavigationProps<Props> = Props & {
 };
 
 export default abstract class NavigationEnabledComponent<Props, State, Nav> extends React.Component<Props, State> {
-	// tslint:disable-next-line: variable-name
 	__propTypeReference?: Props;
-	// tslint:disable-next-line: variable-name
 	__navigationTypeReference?: Nav;
 
 	componentDidCatch(error: any, info: any) {

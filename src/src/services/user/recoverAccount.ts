@@ -1,6 +1,5 @@
-import { DidiServerApiClient, EthrDID } from "didi-sdk";
-import { isLeft, isRight, left, right } from "fp-ts/lib/Either";
-import { RNUportHDSigner } from "react-native-uport-signer";
+import { DidiServerApiClient } from "didi-sdk";
+import { isLeft, left, right } from "fp-ts/lib/Either";
 
 import {
 	buildComponentServiceCall,
@@ -44,7 +43,7 @@ export function recoverAccount(serviceKey: string, email: string, password: stri
 		const firebaseId = store.pushToken.token ?? undefined;
 		return withDidiServerClient(serviceKey, {}, api => {
 			return recoverAccountComponent(serviceKey, { api, email, password, firebaseId }, phrase => {
-				return importDid(serviceKey, phrase, activeDid => {
+				return importDid(serviceKey, phrase, () => {
 					return simpleAction(serviceKey, { type: "RESET_PERSISTED_STORE" }, () => {
 						return parallelAction(serviceKey, [
 							recoverTokens(tokens => simpleAction(serviceKey, { type: "SEEN_TOKEN_ADD", content: tokens })),

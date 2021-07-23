@@ -8,7 +8,7 @@ import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { ActiveDid } from "../../store/reducers/didReducer";
 import { StoreAction } from "../../store/StoreAction";
 
-async function doReloadDid(args: {}): Promise<Either<ErrorData, ActiveDid>> {
+async function doReloadDid(): Promise<Either<ErrorData, ActiveDid>> {
 	try {
 		const addresses = await RNUportHDSigner.listSeedAddresses();
 		const addressToUse = addresses.length === 0 ? null : EthrDID.fromKeyAddress(addresses[0]);

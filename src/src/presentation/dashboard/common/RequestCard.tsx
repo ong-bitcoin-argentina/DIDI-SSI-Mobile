@@ -39,11 +39,11 @@ export class RequestCard extends Component<RequestCardProps, {}> {
 					</Text>
 
 					<DidiText.Card.Key>{strings.credentialRequestCard.requests + ": "}</DidiText.Card.Key>
-					{Object.entries(this.props.request.verifiedClaims).map(([field, rq], index) => {
+					{Object.entries(this.props.request.verifiedClaims).map(([field], index) => {
 						const title = strings.credentialRequestCard.formatField(field);
 						return <DidiText.Card.Key key={index}>{`    - ${title}`}</DidiText.Card.Key>;
 					})}
-					{Object.entries(this.props.request.ownClaims).map(([field, rq], index) => {
+					{Object.entries(this.props.request.ownClaims).map(([field], index) => {
 						const title = strings.credentialRequestCard.formatField(field);
 						return <DidiText.Card.Key key={index}>{`    - ${title}`}</DidiText.Card.Key>;
 					})}

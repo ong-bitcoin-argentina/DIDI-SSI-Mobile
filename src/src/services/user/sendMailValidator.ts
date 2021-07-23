@@ -20,7 +20,7 @@ const sendMailValidatorComponent = buildComponentServiceCall(async (args: SendMa
 	convertError(await args.api.sendMailValidator(args.email, args.idCheck, args.unique))
 );
 
-export function sendMailValidator(serviceKey: string, email: string, password: string | null, unique: boolean = false) {
+export function sendMailValidator(serviceKey: string, email: string, password: string | null, unique = false) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		if (password === null) {
 			return sendMailValidatorComponent(serviceKey, { api, email, unique }, () => {

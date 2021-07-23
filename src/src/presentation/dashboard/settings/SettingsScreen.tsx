@@ -1,16 +1,13 @@
 import React, { Fragment } from "react";
-import { Image, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, ScrollView } from "react-native";
 import RNRestart from "react-native-restart";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import DidiButton from "../../util/DidiButton";
-import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import { AppConfig } from "../../../AppConfig";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
-import { StartAccessProps } from "../../access/StartAccess";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";

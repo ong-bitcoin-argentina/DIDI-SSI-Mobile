@@ -12,14 +12,14 @@ export function seenTokenReducer(state: string[] | undefined, action: StoreActio
 	}
 
 	switch (action.type) {
-		case "SEEN_TOKEN_ADD":
+		case "SEEN_TOKEN_ADD": {
 			const toAdd = action.content.filter(doc => !state.includes(doc));
 			if (toAdd.length === 0) {
 				return state;
 			} else {
 				return [...toAdd, ...state];
 			}
-
+		}
 		default:
 			return state;
 	}

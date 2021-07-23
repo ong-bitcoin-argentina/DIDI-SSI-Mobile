@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { StyleSheet, Linking } from "react-native";
+import { StyleSheet } from "react-native";
 import { RNUportHDSigner } from "react-native-uport-signer";
 
 import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
@@ -13,14 +13,12 @@ import themes from "../resources/themes";
 import { SplashContent } from "../SplashContent";
 
 import { AccessSettingsProps } from "./AccessSettings";
-import { LoginScreenProps } from "./login/LoginScreen";
 import { RecoveryExplanationProps } from "./recovery/RecoveryExplanation";
 import { SignupOnboardingProps } from "./signup/SignupOnboarding";
 import { SignupWithResetProps } from "./signup/SignupWithReset";
-import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { didiConnect } from "../../store/store";
 import { PendingLinkingState } from "../../store/reducers/pendingLinkingReducer";
-import { deepLinkHandler, dynamicLinkHandler, askedForLogin, navigateToCredentials, links } from "../util/appRouter";
+import { deepLinkHandler, dynamicLinkHandler } from "../util/appRouter";
 
 export type StartAccessProps = {
 	pendingLinking: PendingLinkingState;
@@ -35,7 +33,7 @@ type StartAccessInternalProps = StartAccessProps & StartAccessDispatchProps;
 type StartAccessState = {};
 
 export interface StartAccessNavigation {
-	Login: LoginScreenProps;
+	Login: {};
 	SignupOnboarding: SignupOnboardingProps;
 	SignupWithReset: SignupWithResetProps;
 	RecoveryExplanation: RecoveryExplanationProps;

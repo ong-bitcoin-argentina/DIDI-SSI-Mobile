@@ -13,7 +13,7 @@ import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { ActiveDid } from "../../store/reducers/didReducer";
 import { ServiceCallAction } from "../ServiceStateStore";
 
-async function doEnsureSeed(args: {}): Promise<Either<ErrorData, EthrDID>> {
+async function doEnsureSeed(): Promise<Either<ErrorData, EthrDID>> {
 	try {
 		const seeds = await RNUportHDSigner.listSeedAddresses();
 		if (seeds.length > 0) {
@@ -27,7 +27,7 @@ async function doEnsureSeed(args: {}): Promise<Either<ErrorData, EthrDID>> {
 	}
 }
 
-async function doDeleteSeed(args: {}): Promise<Either<ErrorData, null>> {
+async function doDeleteSeed(): Promise<Either<ErrorData, null>> {
 	try {
 		const seeds = await RNUportHDSigner.listSeedAddresses();
 		await Promise.all(seeds.map(seed => RNUportHDSigner.deleteSeed(seed)));
@@ -44,7 +44,7 @@ async function doImportSeed(args: { phrase: string }): Promise<Either<ErrorData,
 			return left(serviceErrors.did.PARSE_MNEMONIC);
 		}
 
-		const deleteResult = await doDeleteSeed({});
+		const deleteResult = await doDeleteSeed();
 		if (isLeft(deleteResult)) {
 			return deleteResult;
 		}

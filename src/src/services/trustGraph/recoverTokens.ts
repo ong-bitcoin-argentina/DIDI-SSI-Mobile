@@ -62,7 +62,7 @@ export function recoverTokens(then?: (tokens: string[]) => ServiceCallAction) {
 		const { trustGraphUri, ethrDidUri, ethrDelegateUri } = store.serviceSettings;
 		const activeDid = store.did.activeDid;
 		// TODO: Combine this and part of TrustGraphClient creation into getSigner
-		return withExistingDid(serviceKey, {}, didData => {
+		return withExistingDid(serviceKey, {}, () => {
 			return recoverTokensComponent(serviceKey, { activeDid, trustGraphUri, ethrDidUri, ethrDelegateUri }, tokens => {
 				return simpleAction(serviceKey, { type: "TOKEN_SYNC", content: tokens }, () => {
 					return parallelAction(serviceKey, [

@@ -3,21 +3,21 @@ import { StoreAction } from "../StoreAction";
 type ValidateDniFinalState =
 	| {
 			state: "Finished";
-	  }
+		}
 	| {
 			state: "Success";
-	  }
+		}
 	| {
 			state: "Failure";
 			message?: string;
-	  };
+		};
 
 export type ValidateDniState =
 	| {
 			state: "In Progress";
 			operationId: string;
 			remainingAttempts: number;
-	  }
+		}
 	| ValidateDniFinalState
 	| null;
 

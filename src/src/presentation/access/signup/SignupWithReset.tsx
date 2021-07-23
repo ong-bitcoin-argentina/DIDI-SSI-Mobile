@@ -1,8 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { RNUportHDSigner } from "react-native-uport-signer";
 
-import { serviceCallSuccess } from "../../../services/common/componentServiceCall";
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { ServiceObserver } from "../../common/ServiceObserver";

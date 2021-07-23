@@ -1,7 +1,6 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, Modal, ActivityIndicator } from "react-native";
+import { StyleSheet, View, ScrollView, Modal } from "react-native";
 
-import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
@@ -46,15 +45,15 @@ const { Small, Emphasis } = DidiText.Explanation;
 
 interface RoundsScreenStateProps {
 	did: ActiveDid;
-	hasRonda: Boolean;
+	hasRonda: boolean;
 	persistedPersonalData: PersistedPersonalData;
-	havePersistedPersonalData: Boolean;
+	havePersistedPersonalData: boolean;
 	name?: string;
 	lastname?: string;
 }
 
 interface RoundsScreenDispatchProps {
-	setRondaAccount: (hasAccount: Boolean) => void;
+	setRondaAccount: (hasAccount: boolean) => void;
 	saveName: (name: string, lastname: string) => void;
 	persistPersonalData: (name: string, lastname: string) => void;
 	getPersonalData: (token: string) => void;
@@ -258,7 +257,7 @@ const connect = didiConnect(
 		havePersistedPersonalData: !!(state.persistedPersonalData.name && state.persistedPersonalData.lastname)
 	}),
 	(dispatch): RoundsScreenDispatchProps => ({
-		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
+		setRondaAccount: (hasAccount: boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
 		getPersonalData: token => dispatch(getPersonalData(serviceKey, token)),
 		sendPersonalData: (token, name, lastname) => dispatch(sendPersonalData(serviceKeySendData, token, name, lastname)),
 		persistPersonalData: (name: string, lastname: string) =>

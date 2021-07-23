@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View, ViewProps, Clipboard, ToastAndroid } from "react-native";
+import { ScrollView, StyleSheet, View, ViewProps, Clipboard, ToastAndroid } from "react-native";
 
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import DidiTextInput from "../../../util/DidiTextInput";
@@ -17,7 +17,6 @@ import { ChangeEmailEnterEmailProps } from "./ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./ChangePhoneEnterPhone";
 import { addressDataStructure, personalDataStructure } from "./ProfileInputDescription";
 import { UserHeading } from "./UserHeading";
-import { KeyDisplayComponent } from "../identity/KeyDisplayComponent";
 import { ActiveDid } from "../../../../store/reducers/didReducer";
 import { KeyAddress } from "react-native-uport-signer";
 import { DidiText } from "../../../util/DidiText";

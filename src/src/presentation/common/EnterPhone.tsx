@@ -7,7 +7,7 @@ import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
 
 import { Validations } from "../../model/Validations";
-import { countries } from "../resources/countries";
+import { countries, Country } from "../resources/countries";
 import strings from "../resources/strings";
 
 import { DidiScreen } from "./DidiScreen";
@@ -83,7 +83,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		);
 	}
 
-	private canPressContinueButton(country: any): boolean {
+	private canPressContinueButton(country: Country): boolean {
 		return (
 			Validations.isPhoneNumber(this.state.inputPhoneNumber, country.countryCode) &&
 			(!this.props.isPasswordRequired || Validations.isPassword(this.state.inputPassword))
@@ -92,7 +92,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 	private onPressContinueButton() {
 		const countryPrefix = this.state.inputCountryCode ?? countries[0].prefix;
-		const phoneNumber = `+${countryPrefix}${this.state.inputPhoneNumber!}`;
+		const phoneNumber = `+${countryPrefix}${this.state.inputPhoneNumber}`;
 		this.props.onPressContinueButton(phoneNumber, this.state.inputPassword || null);
 	}
 }

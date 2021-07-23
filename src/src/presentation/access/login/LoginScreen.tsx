@@ -11,14 +11,13 @@ import { DashboardScreenProps } from "../../dashboard/home/Dashboard";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
 
-export interface LoginScreenProps {}
 interface LoginScreenStateProps {
 	loginPending: boolean;
 }
 interface LoginScreenDispatchProps {
 	login: (email: string, password: string) => void;
 }
-type LoginScreenInternalProps = LoginScreenProps & LoginScreenStateProps & LoginScreenDispatchProps;
+type LoginScreenInternalProps = LoginScreenStateProps & LoginScreenDispatchProps;
 
 interface LoginScreenState {
 	email: string;
@@ -46,7 +45,7 @@ class LoginScreen extends NavigationEnabledComponent<
 					contentImageSource={require("../../resources/images/login.png")}
 					buttonTitle={strings.login.buttonText}
 					isPasswordRequired={true}
-					onPressContinueButton={(email, password) => this.props.login(email, password!)}
+					onPressContinueButton={(email, password) => this.props.login(email, password)}
 					isContinuePending={this.props.loginPending}
 				/>
 			</ServiceObserver>

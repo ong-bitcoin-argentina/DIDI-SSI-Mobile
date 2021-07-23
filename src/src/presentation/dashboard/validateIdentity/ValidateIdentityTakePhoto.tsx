@@ -76,7 +76,7 @@ export class ValidateIdentityTakePhoto extends React.Component<
 				);
 			case "camera":
 				return <DidiReticleCamera {...this.props} onPictureCropped={pic => this.onPictureTaken(pic)} />;
-			case "confirmation":
+			case "confirmation": {
 				const uri = this.state.uri;
 				return (
 					<ScrollView style={styles.scrollView}>
@@ -99,6 +99,7 @@ export class ValidateIdentityTakePhoto extends React.Component<
 						</View>
 					</ScrollView>
 				);
+			}
 		}
 	}
 

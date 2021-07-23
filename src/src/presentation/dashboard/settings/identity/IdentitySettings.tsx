@@ -1,7 +1,4 @@
 import React, { Fragment } from "react";
-import { RNUportHDSigner } from "react-native-uport-signer";
-
-import { serviceCallSuccess } from "../../../../services/common/componentServiceCall";
 import { DidiScreen } from "../../../common/DidiScreen";
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableHighlight, View, StyleSheet, Text, StyleProp, ViewStyle, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, ViewStyle, TouchableOpacity } from "react-native";
 import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 

@@ -1,4 +1,7 @@
 import TypedObject from "../util/TypedObject";
+import { PhoneNumberUtil } from "google-libphonenumber";
+
+const phoneUtil = PhoneNumberUtil.getInstance();
 
 function matchesRegex(regex: string | RegExp): (code?: string) => boolean {
 	return code => {
@@ -31,7 +34,6 @@ function hasLengthBetween(min: number, max: number): (code?: string) => boolean 
 }
 
 function isValidPhone(countryCode: string): (code?: string) => boolean {
-	const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 	return code => {
 		if (!code) return false;
 			try { 
@@ -73,7 +75,7 @@ export const Validations = {
 
 	isNationality: hasMinLength(1),
 
-	isEmail: matchesRegex(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/),
+	isEmail: matchesRegex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/),
 
 	validatePassword: (password?: string): PasswordValidationErrors[] => {
 		const checks = {

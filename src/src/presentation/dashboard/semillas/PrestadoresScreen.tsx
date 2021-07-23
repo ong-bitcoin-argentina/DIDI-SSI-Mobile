@@ -28,7 +28,6 @@ import commonStyles from "../../resources/commonStyles";
 import { didiConnect } from "../../../store/store";
 import { getSemillasPrestadores } from "../../../services/semillas/getPrestadores";
 import { semillasCategoriesFilters, categories } from "./constants";
-import colors from "../../resources/colors";
 import { haveValidIdentityAndBenefit } from "../../../util/semillasHelpers";
 import { haveEmailAndPhone } from "../../../util/specialCredentialsHelpers";
 

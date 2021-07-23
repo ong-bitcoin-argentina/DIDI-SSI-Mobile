@@ -892,12 +892,14 @@ export default {
 	jwtParseError: (error: JWTParseError) => {
 		switch (error.type) {
 			case "AFTER_EXP":
-				const displayTimestamp = (ts: number) => formatFullDate(new Date(ts * 1000));
-				return {
-					errorCode: `TOKEN_AFTER_EXP`,
-					title: "Credencial Vencida",
-					message: `Hora actual: ${displayTimestamp(error.current)}\n\nVencimiento: ${displayTimestamp(error.expected)}`
-				};
+				{
+					const displayTimestamp = (ts: number) => formatFullDate(new Date(ts * 1000));
+					return {
+						errorCode: `TOKEN_AFTER_EXP`,
+						title: "Credencial Vencida",
+						message: `Hora actual: ${displayTimestamp(error.current)}\n\nVencimiento: ${displayTimestamp(error.expected)}`
+					};
+				}
 			case "BEFORE_IAT":
 				return {
 					errorCode: `TOKEN_BEFORE_IAT`,
