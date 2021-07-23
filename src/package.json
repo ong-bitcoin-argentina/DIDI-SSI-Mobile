@@ -6,7 +6,6 @@
 		"start": "react-native start",
 		"test": "jest",
 		"lint": "eslint --ext .js --ext .ts --ext .tsx src/",
-		"lint1": "eslint --fix --ext .js --ext .ts --ext .tsx src/presentation/access/forgotPassword/ForgotPasswordEmailSent.tsx",
 		"lint:fix": "eslint --fix --ext .js --ext .ts --ext .tsx ./src/",
 		"android": "ENVFILE=.env.qa react-native run-android --variant=DevDebug",
 		"windows:android": "set ENVFILE=.env.next react-native run-android --variant=DevDebug",

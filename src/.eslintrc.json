@@ -30,17 +30,5 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-empty-interface": "off"
-        // [
-        //     "error",
-        //     {
-        //       "types": {
-        //         // No deberia usarse el objeto vacio como tipo
-        //         "{}": {
-        //           "message": "Use object instead",
-        //           "fixWith": "usar esto"
-        //         }
-        //       }
-        //     }
-        // ]
     }
 }
