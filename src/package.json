@@ -25,7 +25,7 @@
 		"@react-native-firebase/crashlytics": "8.4.11",
 		"@react-native-firebase/dynamic-links": "^7.5.10",
 		"@react-native-firebase/functions": "7.4.9",
-		"didi-sdk": "git+ssh://git@github.com/ong-bitcoin-argentina/DIDI-SSI-App_sdk.git#develop",
+		"didi-sdk": "git+https://github.com/ong-bitcoin-argentina/DIDI-SSI-App_sdk.git#develop",
 		"fp-ts": "^2.4.0",
 		"google-libphonenumber": "^3.2.21",
 		"jwt-decode": "^2.2.0",

@@ -16,6 +16,7 @@ import { CodeAction } from "./reducers/phoneVerificationReducer";
 import { AuthAppsAction } from "./reducers/authAppsReducer";
 import { PersistedPersonalDataAction } from "./reducers/persistedPersonalDataReducer";
 import { PendingLinkingAction } from "./reducers/pendingLinkingReducer";
+import { IssuersAction } from "./reducers/persistedIssuersDataReducer";
 
 export type StoreAction =
 	| { type: "RESET_PERSISTED_STORE" }
@@ -35,4 +36,5 @@ export type StoreAction =
 	| CodeAction
 	| AuthAppsAction
 	| PersistedPersonalDataAction
-	| PendingLinkingAction;
+	| PendingLinkingAction
+	| IssuersAction;
