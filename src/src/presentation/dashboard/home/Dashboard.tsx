@@ -43,7 +43,7 @@ import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { Image } from "react-native";
-import { countries } from "../../resources/countries";
+import DidiButton from "../../util/DidiButton";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -58,10 +58,11 @@ interface DashboardScreenStateProps {
 	imageId: string;
 	identity: ValidatedIdentity;
 	issuersNames: IssuerDescriptor[];
+	totalPages: number;
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
-	getAllIssuerData: () => void;
+	getAllIssuerData: (limit:number, count:number) => void;
 	resetDniValidation: () => void;
 	finishDniValidation: () => void;
 	resetPendingLinking: () => void;
@@ -78,6 +79,9 @@ interface DashboardScreenState {
 	checkedPersonalData: boolean;
 	identity: Identity;
 	issuersNames: IssuerDescriptor[];
+	issuerImg: any;
+	limit: number;
+	page: number;
 }
 
 export interface DashboardScreenNavigation {
@@ -108,6 +112,9 @@ class DashboardScreen extends NavigationEnabledComponent<
 				personalData: {}
 			},
 			issuersNames: [],
+			issuerImg: null,
+			limit: 4,
+			page: 1,
 		};
 	}
 
@@ -173,14 +180,18 @@ class DashboardScreen extends NavigationEnabledComponent<
 		);
 	}
 
-	private renderItem(item: { did: EthrDID; name: string; description?: string; imageUrl?: string }, index: number) {
+	private renderItem(item: { did: EthrDID; name: string | null; description?: string; imageUrl?: string; imageId?: string; image?: string }, index: number) {
 		return (
 			<View style={{ justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
 				<View style={styles.listIssuers}>
-					{item.imageUrl
-						? <DidiText.Explanation.Normal>{item.imageUrl}</DidiText.Explanation.Normal>
-						: <View>{countries[0].image && <Image style={styles.countryImage} source={countries[0].image} />}</View>
-					}
+					<Image
+						style={styles.countryImage}
+						source={
+							item.image
+								? { uri: `${item.image}` }
+								: require("../../resources/images/logo-space.png")
+						}
+					/>
 					<DidiText.Explanation.Emphasis>{item.name}</DidiText.Explanation.Emphasis>
 				</View>
 				{item.description && (
@@ -231,7 +242,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 		});
 
 		const imgPath = `${DocumentDirectoryPath}/${this.props.imageId}.jpeg`;
-
 		const response = downloadFile({
 			fromUrl: this.props.imageUrl,
 			toFile: imgPath
@@ -252,6 +262,17 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 		return false;
 	}
+
+	private async nextPage() {
+		await this.setState({ page: this.state.page + 1 });
+		this.props.getAllIssuerData(this.state.limit, this.state.page);
+	}
+
+	private async previewPage() {
+		await this.setState({ page: this.state.page - 1 });
+		this.props.getAllIssuerData(this.state.limit, this.state.page);
+	}
+
 
 	render() {
 		return (
@@ -294,6 +315,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 										renderItem={item => this.renderItem(item.item, item.index)}
 										keyExtractor={(_, index) => index.toString()}
 									/>
+									<DidiButton disabled={this.state.page === 1} title="Preview" onPress={() => this.previewPage()} />
+									<DidiButton disabled={this.props.totalPages <= this.state.page} title="Next" onPress={() => this.nextPage()} />
 								</DropdownMenu>
 							</Fragment>
 						}
@@ -325,7 +348,8 @@ export default didiConnect(
 		imageUrl: state.persistedPersonalData.imageUrl,
 		imageId: state.persistedPersonalData.imageId,
 		identity: state.validatedIdentity,
-		issuersNames: state.issuersNames
+		issuersNames: state.issuersNames.issuersList,
+		totalPages: state.issuersNames.totalPages
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
@@ -333,7 +357,7 @@ export default didiConnect(
 			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},
-		getAllIssuerData: () => dispatch(getAllIssuerData("getAllIssuerData")),
+		getAllIssuerData: (limit, page) => dispatch(getAllIssuerData("getAllIssuerData", limit , page)),
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
 		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),

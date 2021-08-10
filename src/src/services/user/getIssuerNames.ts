@@ -76,6 +76,6 @@ function getIssuersNames(serviceKey: string, limit: number, page: number, next: 
 	});
 }
 
-export function getAllIssuerData(serviceKey: string) {
-	return getIssuersNames(serviceKey, 4, 1, () => serviceCallSuccess(serviceKey));
+export function getAllIssuerData(serviceKey: string, limit: number = 4, page: number = 1) {
+	return getIssuersNames(serviceKey, limit, page, () => serviceCallSuccess(serviceKey));
 }
