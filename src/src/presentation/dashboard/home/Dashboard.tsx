@@ -1,7 +1,7 @@
-import { CredentialDocument, EthrDID, Identity, IssuerDescriptor } from "didi-sdk";
+import { CredentialDocument, Identity } from "didi-sdk";
 import React, { Fragment } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View, Linking } from "react-native";
-import { downloadFile, DocumentDirectoryPath, exists, readFile } from "react-native-fs";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { downloadFile, DocumentDirectoryPath, readFile } from "react-native-fs";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -11,7 +11,7 @@ import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext }
 
 import { RecentActivity } from "../../../model/RecentActivity";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
-import { getAllIssuerNames, getAllIssuerData } from "../../../services/user/getIssuerNames";
+import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
@@ -42,8 +42,6 @@ import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
-import { Image } from "react-native";
-import DidiButton from "../../util/DidiButton";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -57,12 +55,9 @@ interface DashboardScreenStateProps {
 	imageUrl: string;
 	imageId: string;
 	identity: ValidatedIdentity;
-	issuersNames: IssuerDescriptor[];
-	totalPages: number;
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
-	getAllIssuerData: (limit:number, count:number) => void;
 	resetDniValidation: () => void;
 	finishDniValidation: () => void;
 	resetPendingLinking: () => void;
@@ -78,10 +73,6 @@ interface DashboardScreenState {
 	loadImage: boolean;
 	checkedPersonalData: boolean;
 	identity: Identity;
-	issuersNames: IssuerDescriptor[];
-	issuerImg: any;
-	limit: number;
-	page: number;
 }
 
 export interface DashboardScreenNavigation {
@@ -111,10 +102,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 				address: {},
 				personalData: {}
 			},
-			issuersNames: [],
-			issuerImg: null,
-			limit: 4,
-			page: 1,
 		};
 	}
 
@@ -154,7 +141,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 	componentDidMount() {
 		const { pendingLinking } = this.props;
 		this.props.login();
-		this.props.getAllIssuerData();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
 		if (pendingLinking) {
@@ -179,28 +165,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 			</TouchableOpacity>
 		);
 	}
-
-	private renderItem(item: { did: EthrDID; name: string | null; description?: string; imageUrl?: string; imageId?: string; image?: string }, index: number) {
-		return (
-			<View style={{ justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
-				<View style={styles.listIssuers}>
-					<Image
-						style={styles.countryImage}
-						source={
-							item.image
-								? { uri: `${item.image}` }
-								: require("../../resources/images/logo-space.png")
-						}
-					/>
-					<DidiText.Explanation.Emphasis>{item.name}</DidiText.Explanation.Emphasis>
-				</View>
-				{item.description && (
-					<DidiText.Explanation.Normal>{item.description}</DidiText.Explanation.Normal>
-				)}
-			</View>
-		);
-	}
-
 
 	private renderRecentActivities() {
 		const activities = this.state.previewActivities ? this.props.recentActivity.slice(0, 5) : this.props.recentActivity;
@@ -263,17 +227,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 		return false;
 	}
 
-	private async nextPage() {
-		await this.setState({ page: this.state.page + 1 });
-		this.props.getAllIssuerData(this.state.limit, this.state.page);
-	}
-
-	private async previewPage() {
-		await this.setState({ page: this.state.page - 1 });
-		this.props.getAllIssuerData(this.state.limit, this.state.page);
-	}
-
-
 	render() {
 		return (
 			<Fragment>
@@ -309,15 +262,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 								<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 									{this.renderRecentActivities()}
 								</DropdownMenu>
-								<DropdownMenu style={styles.dropdown} label={strings.dashboard.issuers.label}>
-									<FlatList
-										data={this.props.issuersNames}
-										renderItem={item => this.renderItem(item.item, item.index)}
-										keyExtractor={(_, index) => index.toString()}
-									/>
-									<DidiButton disabled={this.state.page === 1} title="Preview" onPress={() => this.previewPage()} />
-									<DidiButton disabled={this.props.totalPages <= this.state.page} title="Next" onPress={() => this.nextPage()} />
-								</DropdownMenu>
 							</Fragment>
 						}
 					/>
@@ -348,8 +292,6 @@ export default didiConnect(
 		imageUrl: state.persistedPersonalData.imageUrl,
 		imageId: state.persistedPersonalData.imageId,
 		identity: state.validatedIdentity,
-		issuersNames: state.issuersNames.issuersList,
-		totalPages: state.issuersNames.totalPages
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
@@ -357,7 +299,6 @@ export default didiConnect(
 			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},
-		getAllIssuerData: (limit, page) => dispatch(getAllIssuerData("getAllIssuerData", limit , page)),
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
 		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),
@@ -400,16 +341,4 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		paddingHorizontal: 14
 	},
-	listIssuers: {
-		flexDirection: "row",
-		justifyContent: "space-around",
-		alignItems: "center",
-		// marginBottom: 20,
-		// alignSelf: "stretch",
-	},
-	countryImage: {
-		width: 30,
-		height: 30,
-		marginRight: 10
-	}
 });

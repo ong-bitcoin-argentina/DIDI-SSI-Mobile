@@ -318,7 +318,8 @@ export default {
 		rounds: "ronda",
 		documents: "Credenciales",
 		settings: "Configuración",
-		semillas: "Semillas"
+		semillas: "Semillas",
+		issuers: "Lista de Issuers"
 	},
 	rounds: {
 		title: "Accedé a ronda",

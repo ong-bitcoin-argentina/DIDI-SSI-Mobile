@@ -33,6 +33,7 @@ import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNaviga
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
+import { IssuersScreen } from "./issuers/IssuersScreen";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -111,6 +112,12 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				}).stackNavigator("DashboardDocuments"),
 				strings.tabNames.documents,
 				"perm_contact_calendar"
+			),
+			DashboardIssuers: screen(
+				NavMap.from(IssuersScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds1"),
+				strings.tabNames.rounds,
+				"assignment_returned",
+				false
 			),
 			DashboardSemillas: screen(
 				SemillasNavigator().stackNavigator("DashboardSemillas"),

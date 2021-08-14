@@ -1,5 +1,5 @@
-import { IssuersDescriptor } from "didi-sdk/src/model/IssuerDescriptor";
-import { DocumentDirectoryPath, readFile } from "react-native-fs";
+import { IssuerDescriptor, IssuersDescriptor } from "didi-sdk/src/model/IssuerDescriptor";
+import { DocumentDirectoryPath, downloadFile, readFile } from "react-native-fs";
 import { StoreAction } from "../StoreAction";
 
 interface IssuersActionRegister {
@@ -24,16 +24,20 @@ export function persistedIssuersDataReducer(state: IssuersRegistry = initialValu
 				totalPages: action.content.totalPages,
 			}
 			action.content.issuersList.forEach(async descriptor => {
-				if (descriptor.imageId) {
+				if (descriptor.imageId && descriptor.imageUrl) {
 					const imgPath = `${DocumentDirectoryPath}/${descriptor.imageId}.jpeg`;
-					console.log("imgPath: ", imgPath)
-					const dataImg = await readFile(imgPath, "base64");
-					const img = `data:image/jpeg;base64,${imgPath}`
-					let issuerData = {
-						...descriptor,
-						image: img,
-					};
-					issuersData.issuersList.push(issuerData);
+					const response = downloadFile({
+						fromUrl: descriptor.imageUrl,
+						toFile: imgPath
+					}).promise.then(async result => {
+						const dataImg = await readFile(imgPath, "base64");
+						const img = `data:image/jpeg;base64,${dataImg}`
+						let issuerData = {
+							...descriptor,
+							image: img,
+						};
+						issuersData.issuersList.push(issuerData);
+					});
 				} else {
 					issuersData.issuersList.push(descriptor);
 				}
