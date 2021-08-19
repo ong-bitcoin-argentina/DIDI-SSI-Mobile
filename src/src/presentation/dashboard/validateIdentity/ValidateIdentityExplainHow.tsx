@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import { DidiText } from "../../util/DidiText";

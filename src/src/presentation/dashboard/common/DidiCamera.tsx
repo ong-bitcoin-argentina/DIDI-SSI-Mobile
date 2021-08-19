@@ -56,7 +56,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 
 	private camera: RNCamera | null = null;
 
-	static cameraButton(onPress: (event: GestureResponderEvent) => void, disabled: boolean = false) {
+	static cameraButton(onPress: (event: GestureResponderEvent) => void, disabled = false) {
 		return (
 			<TouchableOpacity
 				disabled={disabled}
@@ -103,7 +103,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 							faceDetectionMode: RNCamera.Constants.FaceDetection.Mode.fast,
 							faceDetectionLandmarks: RNCamera.Constants.FaceDetection.Landmarks.all,
 							onFacesDetected: res => onFacesDetected(res.faces)
-					  }
+					}
 					: undefined)}
 				onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
 				notAuthorizedView={

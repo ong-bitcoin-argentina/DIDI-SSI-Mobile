@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Alert, TouchableOpacity, View } from "react-native";
 
 import TypedObject from "../../../util/TypedObject";
 import { DidiText } from "../../util/DidiText";

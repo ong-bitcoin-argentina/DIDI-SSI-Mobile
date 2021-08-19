@@ -1,5 +1,5 @@
 import React, { Fragment, ReactElement } from "react";
-import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, Text, View, ViewProps } from "react-native";
+import { Image, ImageSourcePropType, SafeAreaView, StatusBar, StyleSheet, View, ViewProps } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import DidiButton from "../../util/DidiButton";

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ViewProps } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 

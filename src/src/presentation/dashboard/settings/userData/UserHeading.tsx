@@ -50,7 +50,6 @@ const connected = didiConnect(
 	(state): UserHeadingGlobalProps => ({
 		identity: state.validatedIdentity
 	}),
-	dispatch => ({})
 );
 
 export { connected as UserHeading };

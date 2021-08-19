@@ -1,10 +1,9 @@
 import React, { Fragment } from "react";
-import { StatusBar, StyleSheet, View, Picker, Linking, Alert } from "react-native";
+import { StatusBar, StyleSheet, View, Linking, Alert } from "react-native";
 
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-// import semillasImagesSources from './imagesSources';
 
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -18,9 +17,9 @@ import { DashboardScreenProps } from "../home/Dashboard";
 import { ScrollView } from "react-native-gesture-handler";
 import { PrestadorModel } from "../../../model/Prestador";
 
-const { Small, Tiny } = DidiText.Explanation;
+const { Small } = DidiText.Explanation;
 
-const { needCoordinate, title, whatsappError, whatsappMessage, willBeContacted } = strings.semillas.steps.third;
+const { needCoordinate, title, whatsappError, whatsappMessage } = strings.semillas.steps.third;
 const { call, whatsApp, accept, detailBarTitle } = strings.semillas;
 
 export type RequestFinishedProps = {};

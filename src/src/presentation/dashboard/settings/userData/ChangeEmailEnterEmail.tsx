@@ -57,7 +57,7 @@ class ChangeEmailEnterEmailScreen extends NavigationEnabledComponent<
 					contentImageSource={require("../../../resources/images/emailRecover.png")}
 					buttonTitle={strings.accessCommon.validateButtonText}
 					isPasswordRequired={true}
-					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password!)}
+					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password)}
 					isContinuePending={this.props.sendMailValidatorPending}
 				/>
 			</ServiceObserver>

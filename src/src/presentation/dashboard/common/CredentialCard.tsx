@@ -1,6 +1,6 @@
 import { ClaimDataPairs, DocumentLayout } from "didi-sdk";
 import React, { Component, Fragment } from "react";
-import { StyleSheet, Text, TextStyle, View, ViewStyle, ImageBackground } from "react-native";
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
 

@@ -16,20 +16,20 @@ export interface EnterEmailProps {
 	buttonTitle: string;
 
 	isPasswordRequired: true | false;
-	onPressContinueButton: (email: string, password: string | null) => void;
+	onPressContinueButton: (email: string, password: string) => void;
 	isContinuePending: boolean;
 }
 
 interface EnterEmailState {
 	email: string;
-	password?: string;
+	password: string;
 	passwordCopy?: string;
 }
 
 export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProps>, EnterEmailState> {
 	constructor(props: EnterEmailProps) {
 		super(props);
-		this.state = { email: "" };
+		this.state = { email: "", password: "" };
 	}
 
 	private canPressContinueButton(): boolean {
@@ -64,7 +64,7 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 					onPress={() =>
 						this.props.onPressContinueButton(
 							this.state.email,
-							this.state.password === undefined ? null : this.state.password
+							this.state.password
 						)
 					}
 					isPending={this.props.isContinuePending}

@@ -1,7 +1,7 @@
 import { CredentialDocument, Identity } from "didi-sdk";
 import React, { Fragment } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View, Linking } from "react-native";
-import { downloadFile, DocumentDirectoryPath, exists, readFile } from "react-native-fs";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { downloadFile, DocumentDirectoryPath, readFile } from "react-native-fs";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -42,7 +42,6 @@ import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
-import Divider from "../common/Divider";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -52,7 +51,7 @@ interface DashboardScreenStateProps {
 	recentActivity: RecentActivity[];
 	credentialContext: DocumentCredentialCardContext;
 	pendingLinking: PendingLinkingState;
-	hasRonda: Boolean;
+	hasRonda: boolean;
 	imageUrl: string;
 	imageId: string;
 	identity: ValidatedIdentity;
@@ -62,7 +61,7 @@ interface DashboardScreenDispatchProps {
 	resetDniValidation: () => void;
 	finishDniValidation: () => void;
 	resetPendingLinking: () => void;
-	setRondaAccount: (hasAccount: Boolean) => void;
+	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
 	saveProfileImage: (image: any) => void;
 }
@@ -217,7 +216,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		});
 	}
 
-	async shouldComponentUpdate(nextProps, nextState) {
+	async shouldComponentUpdate(nextState) {
 		if (this.props.did && !this.state.checkedPersonalData && !nextState.checkedPersonalData) {
 			this.runGetPersonalData();
 		}

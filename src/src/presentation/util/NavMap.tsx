@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NavigationContainer } from "react-navigation";
 import { withMappedNavigationParams } from "react-navigation-props-mapper";
 import { createStackNavigator } from "react-navigation-stack";

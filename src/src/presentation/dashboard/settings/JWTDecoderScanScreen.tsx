@@ -1,6 +1,6 @@
 import JwtDecode from "jwt-decode";
 import React, { Fragment } from "react";
-import { Alert, StatusBar, StyleSheet, View } from "react-native";
+import { Alert, StatusBar } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";

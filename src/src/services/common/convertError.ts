@@ -16,6 +16,7 @@ export function convertError<A>(from: Either<CommonServiceRequestError, A>): Eit
 		case "JSON_ERROR":
 			return left(serviceErrors.common.JSON_ERR);
 		case "DECODE_ERROR":
+			// eslint-disable-next-line no-case-declarations
 			const message = DecodeErrorReporter.extractIoError(from.left.error).join("\n\n");
 			return left(serviceErrors.common.DECODE_ERR(message));
 		case "SERVER_ERROR":

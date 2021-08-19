@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, View, ViewProps } from "react-native";
+import { View, ViewProps } from "react-native";
 
-import commonStyles from "../../../resources/commonStyles";
 import DidiButton from "../../../util/DidiButton";
 import { DidiText } from "../../../util/DidiText";
 

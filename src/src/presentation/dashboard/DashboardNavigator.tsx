@@ -43,7 +43,7 @@ export interface NavigatorProps extends ViewProps {
 }
 
 export default function (then: NavTree<DashboardSwitchTarget>) {
-	function screen(InnerNavigator: NavigationContainer, title: string, image: string, withFloatButton: boolean = true) {
+	function screen(InnerNavigator: NavigationContainer, title: string, image: string, withFloatButton = true) {
 		class DashboardNavigator extends React.Component<NavigatorProps> {
 			static router = InnerNavigator.router;
 			render() {
@@ -67,7 +67,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			screen: DashboardNavigator,
 			navigationOptions: {
 				title,
-				tabBarIcon: ({ focused, tintColor }: { focused: boolean; tintColor: string }) => (
+				tabBarIcon: ({ tintColor }: { tintColor: string }) => (
 					<View style={{ alignItems: "center" }}>
 						<DidiText.Icon color={tintColor} fontSize={24}>
 							{image}

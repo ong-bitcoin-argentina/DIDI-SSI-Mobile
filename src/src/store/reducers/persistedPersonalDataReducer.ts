@@ -1,10 +1,10 @@
 import { StoreAction } from "../StoreAction";
 
 export type PersistedPersonalData = {
-	name?: string;
-	lastname?: string;
-	imageUrl?: string;
-	imageId?: string;
+	name: string;
+	lastname: string;
+	imageUrl: string;
+	imageId: string;
 };
 
 export interface PersistedPersonalDataAction {

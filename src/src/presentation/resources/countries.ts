@@ -1,6 +1,6 @@
 import { ImageSourcePropType } from "react-native";
 
-interface Country {
+export interface Country {
 	name: string;
 	prefix: string;
 	countryCode: string;

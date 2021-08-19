@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewProps, ViewStyle } from "react-native";
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewProps, ViewStyle } from "react-native";
 
 import ChevronGrayDown from "../resources/images/chevronGrayDown.svg";
 import ChevronGrayUp from "../resources/images/chevronGrayUp.svg";

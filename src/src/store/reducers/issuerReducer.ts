@@ -16,7 +16,7 @@ export function issuerReducer(state: IssuerRegistry | undefined, action: StoreAc
 	}
 
 	switch (action.type) {
-		case "ISSUER_REGISTER":
+		case "ISSUER_REGISTER": {
 			let register = state;
 			action.content.forEach(descriptor => {
 				register = {
@@ -25,7 +25,7 @@ export function issuerReducer(state: IssuerRegistry | undefined, action: StoreAc
 				};
 			});
 			return register;
-
+		}
 		default:
 			return state;
 	}

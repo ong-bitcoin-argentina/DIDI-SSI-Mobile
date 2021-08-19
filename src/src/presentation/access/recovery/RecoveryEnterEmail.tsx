@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { EnterEmailScreen } from "../../common/EnterEmail";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -53,7 +53,7 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 					contentImageSource={require("../../resources/images/emailRecover.png")}
 					buttonTitle={strings.accessCommon.recoverButtonText}
 					isPasswordRequired={true}
-					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password!)}
+					onPressContinueButton={(email, password) => this.onPressContinueButton(email, password)}
 					isContinuePending={this.props.recoverAccountPending}
 				>
 					<TouchableOpacity onPress={() => this.navigate("ForgotPasswordEnterEmail", {})} style={styles.forgotPassword}>

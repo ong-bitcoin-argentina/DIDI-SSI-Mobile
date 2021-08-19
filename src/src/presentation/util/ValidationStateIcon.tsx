@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, ViewProps } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 import { SvgProps } from "react-native-svg";
 
 import { ValidationState } from "../../store/selector/combinedIdentitySelector";

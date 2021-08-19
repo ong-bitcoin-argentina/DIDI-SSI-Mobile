@@ -1,12 +1,12 @@
 import { StoreAction } from "../StoreAction";
 
 export interface AuthAppsState {
-    ronda: Boolean;
+    ronda: boolean;
 }
 
 interface SetRondaAccount {
     type: "SET_RONDA_ACCOUNT";
-    value: Boolean
+    value: boolean
 }
 
 export type AuthAppsAction = SetRondaAccount;

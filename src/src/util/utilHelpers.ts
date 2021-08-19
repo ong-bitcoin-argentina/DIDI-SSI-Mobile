@@ -6,7 +6,7 @@ enum blockchains {
 	BFA = "BFA"
 }
 
-const insensitiveIncludes = (str1: string = "", str2: string = ""): boolean => {
+const insensitiveIncludes = (str1 = "", str2 = ""): boolean => {
 	return str1.toLowerCase().includes(str2.toLowerCase());
 };
 

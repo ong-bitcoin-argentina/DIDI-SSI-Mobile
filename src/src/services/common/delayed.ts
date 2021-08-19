@@ -12,7 +12,7 @@ async function doDelay(args: {
 	const seconds = minutes * 60 + (args.seconds ?? 0);
 	const milliseconds = seconds * 1000 + (args.milliseconds ?? 0);
 
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		setTimeout(() => resolve(right({})), milliseconds);
 	});
 }

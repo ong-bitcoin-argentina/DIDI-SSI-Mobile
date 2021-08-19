@@ -13,7 +13,7 @@ import { ChangeEmailEnterEmailScreen } from "./userData/ChangeEmailEnterEmail";
 import { ChangeEmailVerifyScreen } from "./userData/ChangeEmailVerifyEmail";
 import { ChangePhoneEnterScreen } from "./userData/ChangePhoneEnterPhone";
 import { ChangePhoneVerifyScreen } from "./userData/ChangePhoneVerifyPhone";
-import { EditProfileScreen, EditProfileProps } from "./userMenu/EditProfile";
+import { EditProfileScreen } from "./userMenu/EditProfile";
 import { AboutRondaScreen } from "./AboutRonda";
 
 export interface SettingsNavigatorNavigation {

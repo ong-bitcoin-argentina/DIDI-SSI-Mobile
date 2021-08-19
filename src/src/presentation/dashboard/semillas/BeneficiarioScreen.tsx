@@ -32,7 +32,7 @@ const { keys } = strings.specialCredentials.Semillas;
 const { Small, Tiny } = DidiText.Explanation;
 
 export type BeneficiarioProps = {
-	activePrestador?: PrestadorModel;
+	activePrestador: PrestadorModel;
 	customEmail?: string;
 };
 

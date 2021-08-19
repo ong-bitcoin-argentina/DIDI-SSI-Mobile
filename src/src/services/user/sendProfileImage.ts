@@ -1,6 +1,6 @@
 import { DidiServerApiClient, EthrDID } from "didi-sdk";
 import { right, isRight, left } from "fp-ts/lib/Either";
-import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
+import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
@@ -25,7 +25,7 @@ const sendProfileImageComponent = buildComponentServiceCall(async (args: Argumen
 export function sendProfileImage(serviceKey: string, token: string, image: any) {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return withExistingDid(serviceKey, { errorMessage: NO_DID }, did => {
-			return sendProfileImageComponent(serviceKey, { api, did, token, image }, data => {
+			return sendProfileImageComponent(serviceKey, { api, did, token, image }, () => {
 				return serviceCallSuccess(serviceKey);
 			});
 		});

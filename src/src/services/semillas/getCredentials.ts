@@ -7,8 +7,6 @@ import { convertError } from "../common/convertError";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
 
-export interface UserCredentialsArguments {}
-
 interface GetCredentialsArguments {
 	api: DidiServerApiClient;
 	dni: string;

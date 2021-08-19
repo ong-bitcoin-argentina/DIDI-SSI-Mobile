@@ -1,8 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
 	StyleProp,
 	StyleSheet,
-	Text,
 	TextStyle,
 	TouchableOpacity,
 	TouchableOpacityProps,

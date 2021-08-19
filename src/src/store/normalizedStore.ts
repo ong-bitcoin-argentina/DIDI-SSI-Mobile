@@ -1,6 +1,6 @@
 import { Identity } from "didi-sdk";
 import { AnyAction, combineReducers, createStore, Store } from "redux";
-import { combineReducers as combineLoopReducers, install as installReduxLoop, liftState, Loop } from "redux-loop";
+import { combineReducers as combineLoopReducers, install as installReduxLoop } from "redux-loop";
 import { persistReducer, persistStore, StateReconciler } from "redux-persist";
 import FilesystemStorage from "redux-persist-filesystem-storage";
 import { PersistPartial } from "redux-persist/es/persistReducer";

@@ -1,4 +1,4 @@
-import React, { Fragment, ReactElement } from "react";
+import React, { Fragment } from "react";
 import { StyleSheet, Text } from "react-native";
 
 import { DidiText } from "../../util/DidiText";
