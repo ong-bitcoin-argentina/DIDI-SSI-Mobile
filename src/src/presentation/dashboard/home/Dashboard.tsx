@@ -88,7 +88,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenInternalProps,
 	DashboardScreenState,
 	DashboardScreenNavigation
-> {
+	> {
 	static navigationOptions = NavigationHeaderStyle.gone;
 
 	constructor(props: DashboardScreenInternalProps) {
@@ -101,7 +101,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			identity: {
 				address: {},
 				personalData: {}
-			}
+			},
 		};
 	}
 
@@ -206,7 +206,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 		});
 
 		const imgPath = `${DocumentDirectoryPath}/${this.props.imageId}.jpeg`;
-
 		const response = downloadFile({
 			fromUrl: this.props.imageUrl,
 			toFile: imgPath
@@ -259,9 +258,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 							</Fragment>
 						}
 						ListFooterComponent={
-							<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
-								{this.renderRecentActivities()}
-							</DropdownMenu>
+							<Fragment>
+								<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
+									{this.renderRecentActivities()}
+								</DropdownMenu>
+							</Fragment>
 						}
 					/>
 				</SafeAreaView>
@@ -290,7 +291,7 @@ export default didiConnect(
 		validCredentials: state.validCredentials,
 		imageUrl: state.persistedPersonalData.imageUrl,
 		imageId: state.persistedPersonalData.imageId,
-		identity: state.validatedIdentity
+		identity: state.validatedIdentity,
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
@@ -339,5 +340,5 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		marginBottom: 10,
 		paddingHorizontal: 14
-	}
+	},
 });
