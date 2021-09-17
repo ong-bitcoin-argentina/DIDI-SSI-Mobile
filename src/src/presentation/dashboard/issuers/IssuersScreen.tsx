@@ -51,9 +51,14 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
         this.state = {
             issuersNames: [],
             issuerImg: null,
-            limit: 7,
+            limit: 3,
             page: 1,
         };
+    }
+
+    componentDidMount() {
+        const {limit, page} = this.state;
+        this.props.getAllIssuerData(limit, page);
     }
 
     static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<IssuerScreenNavigation, "DashboardHome">(
@@ -62,15 +67,15 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
         {}
     );
 
-    private renderItem(item: { did: EthrDID; name: string | null; description?: string; imageUrl?: string; imageId?: string; image?: string }, index: number) {
+    private renderItem(item: { did: EthrDID; name: string | null; description?: string; imageUrl?: string; expireOn?: Date }, index: number) {
         return (
             <View style={styles.listIssuers}>
                 <View style={styles.title}>
                     <Image
                         style={styles.image}
                         source={
-                            item.image
-                                ? { uri: `${item.image}` }
+                            item.imageUrl
+                                ? { uri: `${item.imageUrl}` }
                                 : require("../../resources/images/logo-space.png")
                         }
                     />
@@ -86,12 +91,16 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
     }
 
     private async nextPage() {
-        await this.setState({ page: this.state.page + 1 });
+        this.setState((state) => {
+            return {page: state.page + 1};
+        });
         this.props.getAllIssuerData(this.state.limit, this.state.page);
     }
 
     private async previewPage() {
-        await this.setState({ page: this.state.page - 1 });
+        this.setState((state) => {
+            return {page: state.page - 1};
+        });
         this.props.getAllIssuerData(this.state.limit, this.state.page);
     }
 
@@ -160,9 +169,9 @@ const styles = StyleSheet.create({
     },
     listIssuers: {
         // alignItems: "flex-start",
-        marginBottom: 20,
+        marginBottom: 7,
         borderWidth: 2,
-        borderRadius: 5,
+        borderRadius: 10,
         borderColor: "#24CDD2",
     },
     image: {

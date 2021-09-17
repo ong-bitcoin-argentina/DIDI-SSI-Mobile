@@ -18,31 +18,16 @@ export type IssuersRegistry = IssuersDescriptor;
 
 export function persistedIssuersDataReducer(state: IssuersRegistry = initialValue, action: StoreAction): IssuersRegistry {
 	switch (action.type) {
-		case "ISSUERS_DATA":
-			let issuersData = {
+		case "ISSUERS_DATA": {
+			const issuersData = {
 				issuersList: [] as any,
 				totalPages: action.content.totalPages,
 			}
 			action.content.issuersList.forEach(async descriptor => {
-				if (descriptor.imageId && descriptor.imageUrl) {
-					const imgPath = `${DocumentDirectoryPath}/${descriptor.imageId}.jpeg`;
-					const response = downloadFile({
-						fromUrl: descriptor.imageUrl,
-						toFile: imgPath
-					}).promise.then(async result => {
-						const dataImg = await readFile(imgPath, "base64");
-						const img = `data:image/jpeg;base64,${dataImg}`
-						let issuerData = {
-							...descriptor,
-							image: img,
-						};
-						issuersData.issuersList.push(issuerData);
-					});
-				} else {
-					issuersData.issuersList.push(descriptor);
-				}
+				issuersData.issuersList.push(descriptor);
 			});
 			return issuersData;
+		}
 		default:
 			return state ?? [];
 	}

@@ -114,8 +114,8 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				"perm_contact_calendar"
 			),
 			DashboardIssuers: screen(
-				NavMap.from(IssuersScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds1"),
-				strings.tabNames.rounds,
+				NavMap.from(IssuersScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardIssuers"),
+				strings.tabNames.issuers,
 				"assignment_returned",
 				false
 			),
