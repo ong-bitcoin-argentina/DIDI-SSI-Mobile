@@ -38,9 +38,6 @@ interface IssuerScreenDispatchProps {
 
 export type IssuerScreenProps = IssuerScreenStateProps & IssuerScreenDispatchProps;
 
-const serviceKey = "getPersonalData";
-const serviceKeySendData = "sendPersonalData";
-
 const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
     IssuerScreenProps,
     IssuerScreenState,
@@ -51,7 +48,7 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
         this.state = {
             issuersNames: [],
             issuerImg: null,
-            limit: 3,
+            limit: 7,
             page: 1,
         };
     }
@@ -67,7 +64,7 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
         {}
     );
 
-    private renderItem(item: { did: EthrDID; name: string | null; description?: string; imageUrl?: string; expireOn?: Date }, index: number) {
+    private renderItem(item: { did: EthrDID; name: string | null; description?: string; imageUrl?: string; expireOn?: Date }) {
         return (
             <View style={styles.listIssuers}>
                 <View style={styles.title}>
@@ -113,12 +110,12 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
                         contentContainerStyle={styles.scrollContent}
                         ItemSeparatorComponent={() => <Divider color={colors.transparent} />}
                         data={this.props.issuersNames}
-                        renderItem={item => this.renderItem(item.item, item.index)}
+                        renderItem={item => this.renderItem(item.item)}
                         keyExtractor={(_, index) => index.toString()}
                     />
                     <View style={styles.buttons}>
-                        <DidiButton style={{ width: 110, marginRight: 50 }} disabled={this.state.page === 1} title="Preview" onPress={() => this.previewPage()} />
-                        <DidiButton style={{ width: 110 }} disabled={this.props.totalPages <= this.state.page} title="Next" onPress={() => this.nextPage()} />
+                        <DidiButton style={[styles.button, styles.buttonMargin]} disabled={this.state.page === 1} title="Preview" onPress={() => this.previewPage()} />
+                        <DidiButton style={styles.button} disabled={this.props.totalPages <= this.state.page} title="Next" onPress={() => this.nextPage()} />
                     </View>
                 </SafeAreaView>
             </>
@@ -161,14 +158,18 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 5,
         flexDirection: "row",
-        // justifyContent: "space-between",
+    },
+    button: {
+        width: 110
+    },
+    buttonMargin: {
+        marginRight: 50
     },
     scrollContent: {
         paddingHorizontal: 20,
         paddingVertical: 35,
     },
     listIssuers: {
-        // alignItems: "flex-start",
         marginBottom: 7,
         borderWidth: 2,
         borderRadius: 10,
