@@ -32,6 +32,7 @@ import { validateSemillasDniReducer, ValidateSemillasDniState } from "./reducers
 import { authAppsReducer, AuthAppsState } from "./reducers/authAppsReducer";
 import { persistedPersonalDataReducer, PersistedPersonalData } from "./reducers/persistedPersonalDataReducer";
 import { pendingLinkingReducer, PendingLinkingState } from "./reducers/pendingLinkingReducer";
+import { IssuersRegistry, persistedIssuersDataReducer } from "./reducers/persistedIssuersDataReducer";
 
 export interface PersistedStoreContent {
 	did: DidState;
@@ -51,6 +52,7 @@ export interface PersistedStoreContent {
 	authApps: AuthAppsState;
 	persistedPersonalData: PersistedPersonalData;
 	pendingLinking: PendingLinkingState;
+	issuersNames: IssuersRegistry;
 }
 
 const persistedStoreContentReducer = combineReducers<PersistedStoreContent, StoreAction>({
@@ -70,7 +72,8 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 	recentActivity: recentActivityReducer,
 	authApps: authAppsReducer,
 	persistedPersonalData: persistedPersonalDataReducer,
-	pendingLinking: pendingLinkingReducer
+	pendingLinking: pendingLinkingReducer,
+	issuersNames: persistedIssuersDataReducer
 });
 
 const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user" } = {
@@ -90,7 +93,8 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	recentActivity: "user",
 	authApps: "user",
 	persistedPersonalData: "user",
-	pendingLinking: "device"
+	pendingLinking: "device",
+	issuersNames: "user"
 };
 
 function deletionReducer(state: PersistedStoreContent | undefined, action: StoreAction): PersistedStoreContent {
