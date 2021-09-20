@@ -1,5 +1,4 @@
-import { IssuerDescriptor, IssuersDescriptor } from "didi-sdk/src/model/IssuerDescriptor";
-import { DocumentDirectoryPath, downloadFile, readFile } from "react-native-fs";
+import { IssuersDescriptor } from "didi-sdk/src/model/IssuerDescriptor";
 import { StoreAction } from "../StoreAction";
 
 interface IssuersActionRegister {
