@@ -7,9 +7,11 @@ import strings from "../../resources/strings";
 
 import { ValidateIdentityExplainHowProps } from "./ValidateIdentityExplainHow";
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
+import { DashboardScreenProps } from "../home/Dashboard";
 
 export interface ValidateIdentityExplainWhatNavigation {
 	ValidateIdentityHow: ValidateIdentityExplainHowProps;
+	DashboardHome: DashboardScreenProps;
 }
 export type ValidateIdentityExplainWhatProps = {};
 type ValidateIdentityExplainWhatState = {};
@@ -19,7 +21,12 @@ export class ValidateIdentityExplainWhatScreen extends NavigationEnabledComponen
 	ValidateIdentityExplainWhatState,
 	ValidateIdentityExplainWhatNavigation
 > {
-	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
+
+	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<ValidateIdentityExplainWhatNavigation, "DashboardHome">(
+        strings.validateIdentity.header,
+        "DashboardHome",
+        {}
+    );
 
 	render() {
 		return (
