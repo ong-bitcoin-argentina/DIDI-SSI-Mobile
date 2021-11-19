@@ -1,4 +1,4 @@
-import { ErrorData } from "didi-sdk";
+import { ErrorData } from "@proyecto-didi/app-sdk";
 import { Either, isLeft } from "fp-ts/lib/Either";
 import { Cmd } from "redux-loop";
 

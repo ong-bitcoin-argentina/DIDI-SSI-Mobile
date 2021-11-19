@@ -1,4 +1,4 @@
-import { EthrDID, DidiServerApiClient, SemillasNeedsToValidateDni } from "didi-sdk";
+import { EthrDID, DidiServerApiClient, SemillasNeedsToValidateDni } from "@proyecto-didi/app-sdk";
 import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { left, right, isRight } from "fp-ts/lib/Either";

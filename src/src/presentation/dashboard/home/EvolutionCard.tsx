@@ -1,4 +1,4 @@
-import { CredentialDocument, SpecialCredentialFlag } from "didi-sdk";
+import { CredentialDocument, SpecialCredentialFlag } from "@proyecto-didi/app-sdk";
 import React from "react";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 

@@ -1,4 +1,4 @@
-import { ErrorData } from "didi-sdk";
+import { ErrorData } from "@proyecto-didi/app-sdk";
 import { Alert } from "react-native";
 
 export const ErrorDataAlert = {

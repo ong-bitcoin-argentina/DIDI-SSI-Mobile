@@ -1,4 +1,4 @@
-import { DidiServerApiClient } from "didi-sdk";
+import { DidiServerApiClient } from "@proyecto-didi/app-sdk";
 
 import { buildComponentServiceCall } from "../common/componentServiceCall";
 import { convertError } from "../common/convertError";

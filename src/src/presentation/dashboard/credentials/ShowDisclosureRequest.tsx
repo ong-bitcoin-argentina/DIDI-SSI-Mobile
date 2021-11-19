@@ -1,4 +1,4 @@
-import { SelectiveDisclosureProposal, SelectiveDisclosureRequest } from "didi-sdk";
+import { SelectiveDisclosureProposal, SelectiveDisclosureRequest } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { Dimensions } from "react-native";
 import QRCode from "react-native-qrcode-svg";

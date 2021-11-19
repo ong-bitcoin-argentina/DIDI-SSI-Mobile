@@ -1,4 +1,4 @@
-import { DidiServerApiClient, EthrDID } from "didi-sdk";
+import { DidiServerApiClient, EthrDID } from "@proyecto-didi/app-sdk";
 import { readFile } from "react-native-fs";
 
 import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";

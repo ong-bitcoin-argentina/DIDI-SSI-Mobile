@@ -1,4 +1,4 @@
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument } from "@proyecto-didi/app-sdk";
 import strings from "../presentation/resources/strings";
 const { Semillas } = strings.specialCredentials;
 const { keys } = Semillas;

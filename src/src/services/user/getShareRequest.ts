@@ -1,4 +1,4 @@
-import { ApiResult } from "didi-sdk";
+import { ApiResult } from "@proyecto-didi/app-sdk";
 import { getClient } from "../internal/withDidiServerClient";
 
 export interface GetShareRequestArguments {

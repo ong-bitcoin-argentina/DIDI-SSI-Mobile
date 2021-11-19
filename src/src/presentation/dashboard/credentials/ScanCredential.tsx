@@ -1,4 +1,4 @@
-import { parseJWT, unverifiedParseJWT, CredentialDocument } from "didi-sdk";
+import { parseJWT, unverifiedParseJWT, CredentialDocument } from "@proyecto-didi/app-sdk";
 import { array } from "fp-ts/lib/Array";
 import { isLeft } from "fp-ts/lib/Either";
 import React, { Fragment } from "react";

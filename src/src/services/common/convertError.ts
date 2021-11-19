@@ -1,4 +1,4 @@
-import { CommonServiceRequestError, DecodeErrorReporter, ErrorData } from "didi-sdk";
+import { CommonServiceRequestError, DecodeErrorReporter, ErrorData } from "@proyecto-didi/app-sdk";
 import { Either, isRight, left } from "fp-ts/lib/Either";
 
 import { assertUnreachable } from "../../util/assertUnreachable";

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { JWTParseError } from "didi-sdk";
+import { JWTParseError } from "@proyecto-didi/app-sdk";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
 

@@ -1,4 +1,4 @@
-import { DidiServerApiClient } from "didi-sdk";
+import { DidiServerApiClient } from "@proyecto-didi/app-sdk";
 import { right, isRight, left } from "fp-ts/lib/Either";
 
 import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";

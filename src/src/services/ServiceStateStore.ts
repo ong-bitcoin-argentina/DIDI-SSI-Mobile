@@ -1,4 +1,4 @@
-import { ErrorData } from "didi-sdk";
+import { ErrorData } from "@proyecto-didi/app-sdk";
 import { Action } from "redux";
 import { CmdType, liftState, Loop, loop } from "redux-loop";
 

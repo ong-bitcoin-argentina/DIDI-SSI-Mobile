@@ -1,8 +1,8 @@
-import { EthrDID } from "didi-sdk";
+import { EthrDID } from "@proyecto-didi/app-sdk";
 import { buildComponentServiceCall, serviceCallSuccess, simpleAction } from "../common/componentServiceCall";
 import { serviceErrors } from "../../presentation/resources/serviceErrors";
 import { left, right, isRight } from "fp-ts/lib/Either";
-import { DidiServerApiClient } from "didi-sdk";
+import { DidiServerApiClient } from "@proyecto-didi/app-sdk";
 import { convertError } from "../common/convertError";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";

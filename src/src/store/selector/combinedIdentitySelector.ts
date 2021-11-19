@@ -1,4 +1,4 @@
-import { Identity, LegalAddress, PersonalIdentityData } from "didi-sdk";
+import { Identity, LegalAddress, PersonalIdentityData } from "@proyecto-didi/app-sdk";
 import { createSelector } from "reselect";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
