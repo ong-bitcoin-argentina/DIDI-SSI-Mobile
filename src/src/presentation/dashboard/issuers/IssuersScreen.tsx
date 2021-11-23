@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, FlatList, Image, SafeAreaView, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
+import { StyleSheet, View, FlatList, Image, SafeAreaView, TouchableOpacity, ActivityIndicator } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -14,6 +14,7 @@ import { IssuerDescriptor } from "@proyecto-didi/app-sdk/src/model/IssuerDescrip
 import commonStyles from "../../resources/commonStyles";
 import Divider from "../common/Divider";
 import colors from "../../resources/colors";
+import WarningModal from "../../common/WarningModal";
 
 export type IssuerScreenState = {
     issuersNames: IssuerDescriptor[];
@@ -37,9 +38,6 @@ interface IssuerScreenDispatchProps {
     getAllIssuerData: (limit: number, count: number) => void;
 }
 
-const { Small } = DidiText.Explanation;
-const { Icon } = DidiText;
-
 export type IssuerScreenProps = IssuerScreenStateProps & IssuerScreenDispatchProps;
 
 const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
@@ -58,6 +56,8 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
             message: '',
             loading: false,
         };
+
+        this.toggleModal = this.toggleModal.bind(this);
     }
 
     componentDidMount() {
@@ -66,7 +66,9 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
     }
 
     toggleModal() {
-        this.setState({ modalVisible: !this.state.modalVisible});
+        this.setState((state) => ({ 
+            modalVisible: !state.modalVisible
+        }));
     }
 
     static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<IssuerScreenNavigation, "DashboardHome">(
@@ -75,13 +77,6 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
         {}
     );
 
-    onPress() {
-        this.setState({ 
-            modalVisible: !this.state.modalVisible,
-
-        })
-    }
-
     openModal(item: IssuerDescriptor) {
         this.toggleModal();
         const { name, shareRequest } = item;
@@ -89,36 +84,6 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
             ? 'Funcionalidad en desarrrollo.'
             : `El emisor "${name}" aún no tiene presentaciones.`;
         this.setState({ message })
-    }
-    
-    modal() {
-        const { modal } = commonStyles;
-        return (
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={this.state.modalVisible}
-                onRequestClose={() => this.toggleModal()}
-            >
-                <View style={modal.centeredView}>
-                    <View style={[modal.view, styles.modalView]}>
-                        <View style={{}}>
-                            <Icon fontSize={66} color={colors.yellow} style={{ marginBottom: 18 }}>
-                                warning
-                            </Icon>
-                            <Small style={styles.descriptionModal}>{this.state.message}</Small>
-                        </View>
-                        <View style={modal.footer}>
-                            <DidiButton 
-                                style={modal.smallButton} 
-                                title="Cerrar"
-                                onPress={() => this.toggleModal()} 
-                                />
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-        )
     }
 
     private renderItem(item: IssuerDescriptor) {
@@ -187,7 +152,11 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
                         keyExtractor={(_, index) => index.toString()}
                         refreshing={this.state.loading}
                     />}
-                {this.modal()}
+                <WarningModal 
+                    message={this.state.message}
+                    modalVisible={this.state.modalVisible}
+                    toggleModal={this.toggleModal}
+                />
                 <View style={styles.buttons}>
                     <DidiButton 
                         style={[styles.button, styles.buttonMargin]} 
