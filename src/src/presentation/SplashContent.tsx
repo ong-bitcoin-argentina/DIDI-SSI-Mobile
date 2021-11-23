@@ -7,28 +7,7 @@ import Background from "./resources/images/startAccessBackground.svg";
 import themes from "./resources/themes";
 import { DidiText } from "./util/DidiText";
 import colors from "./resources/colors";
-import { VERSION, ENV_CODE } from "../AppConfig";
-
-export const ShowVersion = () => {
-
-	const getShowVersion = (): boolean => {
-		if (ENV_CODE === 'QA' || ENV_CODE === 'PROD') {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	return (
-		<>
-			{getShowVersion() && (
-				<View style={{ marginTop: 40 }}>
-					<DidiText.Explanation.Small style={styles.version}>{VERSION}</DidiText.Explanation.Small>
-				</View>
-			)}
-		</>
-	)
-}
+import { VERSION } from "../AppConfig";
 export class SplashContent extends React.Component<AddChildren<{}>> {
 
 	render() {
@@ -42,7 +21,9 @@ export class SplashContent extends React.Component<AddChildren<{}>> {
 					<View style={styles.imageContainer}>
 						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
 					</View>
-					<ShowVersion />
+					<View style={{ marginTop: 40 }}>
+						<DidiText.Explanation.Small style={styles.version}>{VERSION}</DidiText.Explanation.Small>
+					</View>
 					<View style={styles.buttonContainer}>{this.props.children}</View>
 				</SafeAreaView>
 			</Fragment>
