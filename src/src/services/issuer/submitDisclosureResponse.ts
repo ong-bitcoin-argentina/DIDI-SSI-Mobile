@@ -1,4 +1,4 @@
-import { SelectiveDisclosureResponse } from "didi-sdk";
+import { SelectiveDisclosureResponse } from "@proyecto-didi/app-sdk";
 import { left, right } from "fp-ts/lib/Either";
 
 import { buildComponentServiceCall, serviceCallSuccess } from "../common/componentServiceCall";

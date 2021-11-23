@@ -1,4 +1,4 @@
-import { CredentialDocument, SelectiveDisclosureRequest } from "didi-sdk";
+import { CredentialDocument, SelectiveDisclosureRequest } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";

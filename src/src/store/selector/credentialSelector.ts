@@ -1,4 +1,4 @@
-import { CredentialDocument, SpecialCredentialFlag } from "didi-sdk";
+import { CredentialDocument, SpecialCredentialFlag } from "@proyecto-didi/app-sdk";
 import { createSelector } from "reselect";
 import { isSemillasCredential } from "../../util/semillasHelpers";
 

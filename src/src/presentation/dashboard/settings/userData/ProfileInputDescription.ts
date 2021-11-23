@@ -1,4 +1,4 @@
-import { LegalAddress, PersonalIdentityData } from "didi-sdk";
+import { LegalAddress, PersonalIdentityData } from "@proyecto-didi/app-sdk";
 
 import strings from "../../../resources/strings";
 

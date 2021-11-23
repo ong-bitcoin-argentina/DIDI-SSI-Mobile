@@ -1,4 +1,4 @@
-import { ProviderConfig } from "didi-sdk";
+import { ProviderConfig } from "@proyecto-didi/app-sdk";
 
 export interface ServiceSettings {
 	sharePrefix: string;

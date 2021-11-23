@@ -3,7 +3,7 @@ import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { getSignerForHDPath } from "react-native-uport-signer";
 import { Credentials } from "uport-credentials";
 import { DIDI_SERVER_DID, URL_DOMAIN, URL_SERVICE_LOGINSUCCESS, URL_SERVICE_LOGINDENIED, URL_APP } from "../../AppConfig";
-import { EthrDID } from "didi-sdk";
+import { EthrDID } from "@proyecto-didi/app-sdk";
 import DeepLinking from "react-native-deep-linking";
 import { NavigationActions } from "react-navigation";
 interface Settings {

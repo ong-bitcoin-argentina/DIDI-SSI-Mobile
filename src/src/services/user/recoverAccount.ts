@@ -1,4 +1,4 @@
-import { DidiServerApiClient } from "didi-sdk";
+import { DidiServerApiClient } from "@proyecto-didi/app-sdk";
 import { isLeft, left, right } from "fp-ts/lib/Either";
 
 import {

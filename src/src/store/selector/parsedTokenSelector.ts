@@ -1,4 +1,4 @@
-import { unverifiedParseJWT } from "didi-sdk";
+import { unverifiedParseJWT } from "@proyecto-didi/app-sdk";
 import { array } from "fp-ts/lib/Array";
 import { createSelector } from "reselect";
 

@@ -1,4 +1,4 @@
-import { ErrorData, EthrDID } from "didi-sdk";
+import { ErrorData, EthrDID } from "@proyecto-didi/app-sdk";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { RNUportHDSigner } from "react-native-uport-signer";
 

@@ -1,4 +1,4 @@
-import { Identity } from "didi-sdk";
+import { Identity } from "@proyecto-didi/app-sdk";
 
 import { StoreAction } from "../StoreAction";
 

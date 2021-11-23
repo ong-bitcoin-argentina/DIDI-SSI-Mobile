@@ -1,4 +1,4 @@
-import { IssuersDescriptor } from "didi-sdk/src/model/IssuerDescriptor";
+import { IssuersDescriptor } from "@proyecto-didi/app-sdk/src/model/IssuerDescriptor";
 import { StoreAction } from "../StoreAction";
 
 interface IssuersActionRegister {
@@ -25,9 +25,9 @@ export function persistedIssuersDataReducer(state: IssuersRegistry = initialValu
 			action.content.issuersList.forEach(async descriptor => {
 				issuersData.issuersList.push(descriptor);
 			});
-			return issuersData;
+			return {...state, ...issuersData};
 		}
 		default:
-			return state ?? [];
+			return state;
 	}
 }

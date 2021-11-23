@@ -1,4 +1,4 @@
-import { DidiDocument, DidiServerApiClient, EthrDID } from "didi-sdk";
+import { DidiDocument, DidiServerApiClient, EthrDID } from "@proyecto-didi/app-sdk";
 import { array } from "fp-ts/lib/Array";
 import { left, right, isRight } from "fp-ts/lib/Either";
 

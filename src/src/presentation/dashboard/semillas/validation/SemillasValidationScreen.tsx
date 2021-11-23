@@ -14,7 +14,7 @@ import { DashboardScreenProps } from "../../home/Dashboard";
 import { didiConnect } from "../../../../store/store";
 import { getEmail, getPhoneNumber } from "../../../../util/specialCredentialsHelpers";
 import { validateDniWithSemillas } from "../../../../services/semillas/validateDni";
-import { SemillasNeedsToValidateDni } from "didi-sdk";
+import { SemillasNeedsToValidateDni } from "@proyecto-didi/app-sdk";
 import { ServiceObserver } from "../../../common/ServiceObserver";
 import KeyValueText from "../../../util/KeyValueText";
 import { DidiServiceButton } from "../../../util/DidiServiceButton";

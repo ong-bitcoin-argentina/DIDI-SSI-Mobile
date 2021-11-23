@@ -1,4 +1,4 @@
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument } from "@proyecto-didi/app-sdk";
 import React from "react";
 import { Image, Share, View } from "react-native";
 import { DidiScrollScreen } from "../../common/DidiScreen";

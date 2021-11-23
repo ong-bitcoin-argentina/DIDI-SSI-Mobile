@@ -1,4 +1,4 @@
-import { CredentialDocument, EthrDID } from "didi-sdk";
+import { CredentialDocument, EthrDID } from "@proyecto-didi/app-sdk";
 import React from "react";
 import { StyleSheet } from "react-native";
 
