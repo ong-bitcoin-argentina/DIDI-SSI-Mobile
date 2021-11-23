@@ -1,4 +1,4 @@
-import { EthrDID } from "didi-sdk";
+import { EthrDID } from "@proyecto-didi/app-sdk";
 
 enum blockchains {
 	LACCHAIN = "LACCHAIN",

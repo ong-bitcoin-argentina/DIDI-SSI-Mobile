@@ -1,4 +1,4 @@
-import { ApiResult, DidiServerApiClient, EthrDID } from "didi-sdk";
+import { ApiResult, DidiServerApiClient, EthrDID } from "@proyecto-didi/app-sdk";
 import { getClient } from "../internal/withDidiServerClient";
 
 export interface UserHasRondaArguments {

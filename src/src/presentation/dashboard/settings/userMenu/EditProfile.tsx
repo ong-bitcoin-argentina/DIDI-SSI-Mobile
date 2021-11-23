@@ -1,4 +1,4 @@
-import { Identity, EthrDID } from "didi-sdk";
+import { Identity, EthrDID } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard, ToastAndroid } from "react-native";
 import { readFile, DocumentDirectoryPath, exists } from "react-native-fs";

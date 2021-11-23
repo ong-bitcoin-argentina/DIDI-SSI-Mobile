@@ -1,4 +1,4 @@
-import { IssuersDescriptor } from "didi-sdk/src/model/IssuerDescriptor";
+import { IssuersDescriptor } from "@proyecto-didi/app-sdk/src/model/IssuerDescriptor";
 import { StoreAction } from "../StoreAction";
 
 interface IssuersActionRegister {

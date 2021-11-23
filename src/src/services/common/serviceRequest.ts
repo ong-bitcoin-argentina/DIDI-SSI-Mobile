@@ -1,4 +1,4 @@
-import { JSONObject } from "didi-sdk/src/util/JSON";
+import { JSONObject } from "@proyecto-didi/app-sdk/src/util/JSON";
 
 export function serviceRequest<T>(url: string, params: JSONObject, headers: JSONObject = {}): Promise<T> {
 	return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-import { CredentialDocument, DocumentFilterType, EthrDID } from "didi-sdk";
+import { CredentialDocument, DocumentFilterType, EthrDID } from "@proyecto-didi/app-sdk";
 import React from "react";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 

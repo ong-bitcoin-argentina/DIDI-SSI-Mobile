@@ -14,7 +14,7 @@ import { ServiceObserver } from "../../common/ServiceObserver";
 import { DataAlert } from "../../common/DataAlert";
 import { isPendingService } from "../../../services/ServiceStateStore";
 import { getUserCredentials } from "../../../services/semillas/getCredentials";
-import { CredentialDocument } from "didi-sdk";
+import { CredentialDocument } from "@proyecto-didi/app-sdk";
 import { PrestadoresProps } from "./PrestadoresScreen";
 import commonStyles from "../../resources/commonStyles";
 import colors from "../../resources/colors";

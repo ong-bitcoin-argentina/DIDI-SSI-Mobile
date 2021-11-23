@@ -1,4 +1,4 @@
-import { CredentialDocument, Identity, SelectiveDisclosureRequest } from "didi-sdk";
+import { CredentialDocument, Identity, SelectiveDisclosureRequest } from "@proyecto-didi/app-sdk";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";

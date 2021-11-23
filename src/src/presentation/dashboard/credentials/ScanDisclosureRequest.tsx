@@ -1,4 +1,4 @@
-import { CredentialDocument, Identity, SelectiveDisclosureRequest, SelectiveDisclosureResponse } from "didi-sdk";
+import { CredentialDocument, Identity, SelectiveDisclosureRequest, SelectiveDisclosureResponse } from "@proyecto-didi/app-sdk";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 

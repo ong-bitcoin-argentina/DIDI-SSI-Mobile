@@ -1,4 +1,4 @@
-import { CredentialDocument, EthrDID } from "didi-sdk";
+import { CredentialDocument, EthrDID } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
 

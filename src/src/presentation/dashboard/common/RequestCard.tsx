@@ -1,4 +1,4 @@
-import { EthrDID, SelectiveDisclosureRequest } from "didi-sdk";
+import { EthrDID, SelectiveDisclosureRequest } from "@proyecto-didi/app-sdk";
 import React, { Component } from "react";
 import { Text, View, ViewProps } from "react-native";
 

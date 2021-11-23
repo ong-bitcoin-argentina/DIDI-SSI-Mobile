@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, FlatList, Image, SafeAreaView } from "react-native";
+import { StyleSheet, View, FlatList, Image, SafeAreaView, TouchableOpacity, ActivityIndicator } from "react-native";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -10,19 +10,21 @@ import DidiButton from "../../util/DidiButton";
 import { DidiText } from "../../util/DidiText";
 import { didiConnect } from "../../../store/store";
 import { getAllIssuerData } from "../../../services/user/getIssuerNames";
-import { IssuerDescriptor } from "didi-sdk/src/model/IssuerDescriptor";
-import { EthrDID } from "didi-sdk";
+import { IssuerDescriptor } from "@proyecto-didi/app-sdk/src/model/IssuerDescriptor";
 import commonStyles from "../../resources/commonStyles";
 import Divider from "../common/Divider";
 import colors from "../../resources/colors";
+import WarningModal from "../../common/WarningModal";
 
 export type IssuerScreenState = {
     issuersNames: IssuerDescriptor[];
     issuerImg: any;
     limit: number;
     page: number;
+    modalVisible: boolean;
+    loading: boolean;
+    message: string;
 };
-
 export interface IssuerScreenNavigation {
     DashboardHome: DashboardScreenProps;
 }
@@ -48,14 +50,25 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
         this.state = {
             issuersNames: [],
             issuerImg: null,
-            limit: 7,
+            limit: 4,
             page: 1,
+            modalVisible: false,
+            message: '',
+            loading: false,
         };
+
+        this.toggleModal = this.toggleModal.bind(this);
     }
 
     componentDidMount() {
         const {limit, page} = this.state;
         this.props.getAllIssuerData(limit, page);
+    }
+
+    toggleModal() {
+        this.setState((state) => ({ 
+            modalVisible: !state.modalVisible
+        }));
     }
 
     static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<IssuerScreenNavigation, "DashboardHome">(
@@ -64,61 +77,101 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
         {}
     );
 
-    private renderItem(item: { did: EthrDID; name: string | null; description?: string; imageUrl?: string; expireOn?: Date }) {
+    openModal(item: IssuerDescriptor) {
+        this.toggleModal();
+        const { name, shareRequest } = item;
+        const message = shareRequest
+            ? 'Funcionalidad en desarrrollo.'
+            : `El emisor "${name}" aún no tiene presentaciones.`;
+        this.setState({ message })
+    }
+
+    private renderItem(item: IssuerDescriptor) {
+        const { name, imageUrl, description } = item;
         return (
-            <View style={styles.listIssuers}>
-                <View style={styles.title}>
-                    <Image
-                        style={styles.image}
-                        source={
-                            item.imageUrl
-                                ? { uri: `${item.imageUrl}` }
+            <TouchableOpacity onPress={() => this.openModal(item)} >
+                <View style={styles.listIssuers}>
+                    <View style={styles.title}>
+                        <Image
+                            style={styles.image}
+                            source={
+                                imageUrl
+                                ? { uri: `${imageUrl}` }
                                 : require("../../resources/images/logo-space.png")
-                        }
-                    />
-                    <DidiText.Explanation.Emphasis>{item.name}</DidiText.Explanation.Emphasis>
-                </View>
-                {item.description && (
-                    <View style={styles.description}>
-                        <DidiText.Explanation.Normal>{item.description}</DidiText.Explanation.Normal>
+                            }
+                            />
+                        <DidiText.Explanation.Emphasis>{name}</DidiText.Explanation.Emphasis>
                     </View>
-                )}
-            </View>
+                    {description && (
+                        <View style={styles.description}>
+                            <DidiText.Explanation.Normal>{description}</DidiText.Explanation.Normal>
+                        </View>
+                    )}
+                </View>
+            </TouchableOpacity>
         );
     }
-
+    
     private async nextPage() {
-        this.setState((state) => {
-            return {page: state.page + 1};
-        });
-        this.props.getAllIssuerData(this.state.limit, this.state.page);
+        await this.setState((state) => ({
+            page: state.page + 1,
+            loading: !state.loading,
+        }));
+        await this.props.getAllIssuerData(this.state.limit, this.state.page);
+        this.setState({ loading: !this.state.loading })
     }
-
+            
     private async previewPage() {
-        this.setState((state) => {
-            return {page: state.page - 1};
-        });
-        this.props.getAllIssuerData(this.state.limit, this.state.page);
+        await this.setState((state) => ({
+            page: state.page - 1,
+            loading: !state.loading,
+        }));
+        await this.props.getAllIssuerData(this.state.limit, this.state.page);
+        this.setState({ loading: !this.state.loading })
     }
-
+    
+    renderLoading() {
+        return (
+            <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator size="large" color="#24CDD2" />
+            </View>
+        )
+    }
+    
     render() {
         return (
-            <>
-                <SafeAreaView style={commonStyles.view.area}>
+            <SafeAreaView style={commonStyles.view.area}>
+                {this.state.loading ?   
+                    this.renderLoading() 
+                : 
                     <FlatList
                         style={styles.body}
-                        contentContainerStyle={styles.scrollContent}
                         ItemSeparatorComponent={() => <Divider color={colors.transparent} />}
                         data={this.props.issuersNames}
                         renderItem={item => this.renderItem(item.item)}
                         keyExtractor={(_, index) => index.toString()}
+                        refreshing={this.state.loading}
+                    />}
+                <WarningModal 
+                    message={this.state.message}
+                    modalVisible={this.state.modalVisible}
+                    toggleModal={this.toggleModal}
+                />
+                <View style={styles.buttons}>
+                    <DidiButton 
+                        style={[styles.button, styles.buttonMargin]} 
+                        disabled={this.state.page === 1} 
+                        title="Prev" 
+                        onPress={() => this.previewPage()
+                    } />
+                    <DidiButton 
+                        style={styles.button} 
+                        disabled={this.props.totalPages <= this.state.page} 
+                        title="Sig"
+                        onPress={() => this.nextPage()} 
                     />
-                    <View style={styles.buttons}>
-                        <DidiButton style={[styles.button, styles.buttonMargin]} disabled={this.state.page === 1} title="Preview" onPress={() => this.previewPage()} />
-                        <DidiButton style={styles.button} disabled={this.props.totalPages <= this.state.page} title="Next" onPress={() => this.nextPage()} />
-                    </View>
-                </SafeAreaView>
-            </>
+                </View>
+            </SafeAreaView>
         );
     }
 };
@@ -138,7 +191,9 @@ export { connect as IssuersScreen };
 
 const styles = StyleSheet.create({
     body: {
-        width: "100%"
+        width: "100%",
+        paddingHorizontal: 20,
+        paddingVertical: 35,
     },
     title: {
         flexDirection: "row",
@@ -166,8 +221,7 @@ const styles = StyleSheet.create({
         marginRight: 50
     },
     scrollContent: {
-        paddingHorizontal: 20,
-        paddingVertical: 35,
+
     },
     listIssuers: {
         marginBottom: 7,
@@ -179,5 +233,21 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         marginRight: 10
-    }
+    },
+    descriptionModal: {
+		textAlign: "left",
+		marginVertical: 10
+	},
+    modalView: {
+		alignItems: "flex-start"
+	},
+    container: {
+        flex: 1,
+        justifyContent: "center"
+      },
+      horizontal: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10
+      }
 });

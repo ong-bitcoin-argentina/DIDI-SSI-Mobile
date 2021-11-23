@@ -1,4 +1,4 @@
-import { ErrorData } from "didi-sdk";
+import { ErrorData } from "@proyecto-didi/app-sdk";
 
 function error(errorCode: string, message: string): ErrorData {
 	return { errorCode, message };

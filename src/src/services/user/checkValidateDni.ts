@@ -1,4 +1,4 @@
-import { DidiServerApiClient, EthrDID, ValidateDniResponseData } from "didi-sdk";
+import { DidiServerApiClient, EthrDID, ValidateDniResponseData } from "@proyecto-didi/app-sdk";
 import { Either, isRight, right } from "fp-ts/lib/Either";
 
 import {

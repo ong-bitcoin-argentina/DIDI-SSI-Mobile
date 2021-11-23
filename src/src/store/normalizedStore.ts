@@ -1,4 +1,4 @@
-import { Identity } from "didi-sdk";
+import { Identity } from "@proyecto-didi/app-sdk";
 import { AnyAction, combineReducers, createStore, Store } from "redux";
 import { combineReducers as combineLoopReducers, install as installReduxLoop } from "redux-loop";
 import { persistReducer, persistStore, StateReconciler } from "redux-persist";

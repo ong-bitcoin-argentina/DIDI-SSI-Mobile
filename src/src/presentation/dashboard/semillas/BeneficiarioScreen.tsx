@@ -17,7 +17,7 @@ import {
 	getSemillasIdentitiesCredentials
 } from "../../../util/semillasHelpers";
 import { SemillasIdentityModel } from "../../../model/SemillasIdentity";
-import { CredentialDocument, ClaimData } from "didi-sdk";
+import { CredentialDocument, ClaimData } from "@proyecto-didi/app-sdk";
 import { RequestFinishedProps } from "./RequestFinishedScreen";
 import CustomPicker from "../../common/CustomPicker";
 import colors from "../../resources/colors";

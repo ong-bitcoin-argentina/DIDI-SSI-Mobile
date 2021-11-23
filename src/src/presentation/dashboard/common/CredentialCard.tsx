@@ -1,4 +1,4 @@
-import { ClaimDataPairs, DocumentLayout } from "didi-sdk";
+import { ClaimDataPairs, DocumentLayout } from "@proyecto-didi/app-sdk";
 import React, { Component, Fragment } from "react";
 import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 

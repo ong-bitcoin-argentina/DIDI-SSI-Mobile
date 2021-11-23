@@ -1,4 +1,4 @@
-import { parseJWT, TrustGraphClient } from "didi-sdk";
+import { parseJWT, TrustGraphClient } from "@proyecto-didi/app-sdk";
 import { isRight, left, right } from "fp-ts/lib/Either";
 
 import TypedArray from "../../util/TypedArray";

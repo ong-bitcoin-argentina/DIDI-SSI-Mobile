@@ -1,4 +1,4 @@
-import { IssuerDescriptor } from "didi-sdk";
+import { IssuerDescriptor } from "@proyecto-didi/app-sdk";
 
 import { StoreAction } from "../StoreAction";
 
