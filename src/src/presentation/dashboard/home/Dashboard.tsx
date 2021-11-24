@@ -258,11 +258,9 @@ class DashboardScreen extends NavigationEnabledComponent<
 							</Fragment>
 						}
 						ListFooterComponent={
-							<Fragment>
-								<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
-									{this.renderRecentActivities()}
-								</DropdownMenu>
-							</Fragment>
+							<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
+								{this.renderRecentActivities()}
+							</DropdownMenu>
 						}
 					/>
 				</SafeAreaView>

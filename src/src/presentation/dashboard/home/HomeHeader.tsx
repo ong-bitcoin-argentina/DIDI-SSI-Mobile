@@ -11,6 +11,7 @@ import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
+import { ActiveDid } from "../../../store/reducers/didReducer";
 
 export interface HomeHeaderProps {
 	onPersonPress: () => void;
@@ -18,6 +19,7 @@ export interface HomeHeaderProps {
 }
 
 interface HomeHeaderStateProps {
+	did: ActiveDid;
 	person: ValidatedIdentity;
 	isLoadingCredentials: boolean;
 	newTokensAvailable: boolean;
@@ -61,6 +63,11 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 					<View>
 						<DidiText.DashboardHeader.Hello>{strings.dashboard.helloMessage}</DidiText.DashboardHeader.Hello>
 						<DidiText.DashboardHeader.Name>{this.props.person.id}</DidiText.DashboardHeader.Name>
+						<DidiText.DashboardHeader.Hello>{
+							this.props.did ? 
+								this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4) 
+						: 'Falta el did'}
+							</DidiText.DashboardHeader.Hello>
 					</View>
 				</TouchableOpacity>
 				<View style={styles.activityIndicatorContainer}>
@@ -79,6 +86,7 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 export default didiConnect(
 	HomeHeader,
 	(state): HomeHeaderStateProps => ({
+		did: state.did.activeDid,
 		person: state.validatedIdentity,
 		isLoadingCredentials: state.serviceCalls[recoverTokensServiceKey]?.state === "IN_PROGRESS",
 		newTokensAvailable: state.newTokensAvailable
