@@ -19,8 +19,13 @@ import { SignupWithResetProps } from "./signup/SignupWithReset";
 import { didiConnect } from "../../store/store";
 import { PendingLinkingState } from "../../store/reducers/pendingLinkingReducer";
 import { deepLinkHandler, dynamicLinkHandler } from "../util/appRouter";
+import { ActiveDid } from "../../store/reducers/didReducer";
+import { DidiText } from "../util/DidiText";
+
+const { Title } = DidiText;
 
 export type StartAccessProps = {
+	did: ActiveDid;
 	pendingLinking: PendingLinkingState;
 };
 
@@ -62,11 +67,17 @@ class StartAccessScreen extends NavigationEnabledComponent<
 		return (
 			<Fragment>
 				<SplashContent>
-					<DidiButton
-						onPress={() => this.navigate("Login", {})}
-						style={styles.secondaryButton}
-						title={strings.recovery.startAccess.loginButton}
-					/>
+					<Title>{this.props.did ? 
+						`DID: ${this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4)}` 
+						: 'Crear o recuperar cuenta'}
+					</Title>
+					{this.props.did ? 
+						<DidiButton
+							onPress={() => this.navigate("Login", {})}
+							style={styles.secondaryButton}
+							title={strings.recovery.startAccess.loginButton}
+							/>
+					: null}
 					<DidiButton
 						onPress={this.goToSignup}
 						style={styles.primaryButton}
@@ -74,10 +85,10 @@ class StartAccessScreen extends NavigationEnabledComponent<
 					/>
 					<DidiButton
 						onPress={() => this.navigate("RecoveryExplanation", {})}
-						style={styles.transparentButton}
-						titleStyle={styles.transparentButtonText}
-						title={strings.recovery.startAccess.recoveryButton + " >"}
-					/>
+						style={this.props.did ? styles.transparentButton : styles.primaryButton}
+						titleStyle={this.props.did ? styles.transparentButtonText : null}
+						title={strings.recovery.startAccess.recoveryButton}
+						/>
 				</SplashContent>
 				{AppConfig.debug && (
 					<DidiButton
@@ -118,6 +129,7 @@ const styles = StyleSheet.create({
 const connected = didiConnect(
 	StartAccessScreen,
 	state => ({
+		did: state.did.activeDid,
 		pendingLinking: state.pendingLinking
 	}),
 	(dispatch): any => ({
