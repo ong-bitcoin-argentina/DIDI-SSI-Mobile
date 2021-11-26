@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { Image, SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import React, { Fragment, version } from "react";
+import { Image, SafeAreaView, StatusBar, StyleSheet, View, Modal } from 'react-native';
 
 import { AddChildren } from "../util/ReactExtensions";
 
@@ -8,7 +8,33 @@ import themes from "./resources/themes";
 import { DidiText } from "./util/DidiText";
 import colors from "./resources/colors";
 import { VERSION } from "../AppConfig";
-export class SplashContent extends React.Component<AddChildren<{}>> {
+import WarningModal from "./common/WarningModal";
+
+
+interface SplashContentState {
+	modalVisible: boolean;
+}
+
+//ejemplo de variable global
+const respuesta = {
+	aidiVersion: '1.5.0'
+}
+export class SplashContent extends React.Component<{}, SplashContentState, AddChildren<{}>> {
+
+	constructor(props: any) {
+		super(props);
+		this.state = {
+			modalVisible: true,
+		}
+		this.toggleModal = this.toggleModal.bind(this);
+	}
+
+	toggleModal() {
+		this.setState({
+			modalVisible: !this.state.modalVisible
+		})
+	}
+
 
 	render() {
 		return (
@@ -22,6 +48,12 @@ export class SplashContent extends React.Component<AddChildren<{}>> {
 						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
 					</View>
 					<View style={{ marginTop: 40 }}>
+						{respuesta.aidiVersion !== VERSION ? <WarningModal
+							message={"Actualiza la nueva version de aidi"}
+							modalVisible={this.state.modalVisible}
+							toggleModal={this.toggleModal}
+						/> :
+							null}
 						<DidiText.Explanation.Small style={styles.version}>{VERSION}</DidiText.Explanation.Small>
 					</View>
 					<View style={styles.buttonContainer}>{this.props.children}</View>
@@ -30,6 +62,7 @@ export class SplashContent extends React.Component<AddChildren<{}>> {
 		);
 	}
 }
+
 
 const styles = StyleSheet.create({
 	area: {
