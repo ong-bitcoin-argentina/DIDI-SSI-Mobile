@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { SafeAreaView, StatusBar, StyleSheet, ScrollView } from "react-native";
-import RNRestart from "react-native-restart";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -36,6 +35,7 @@ type SettingsScreenInternalProps = SettingsScreenProps & SettingsScreenStateProp
 
 export interface SettingsScreenNavigation {
 	// Access: StartAccessProps;
+	Login: {};
 	DashboardHome: DashboardScreenProps;
 	EditProfile: EditProfileProps;
 	IdentitySettings: IdentitySettingsProps;
@@ -78,13 +78,12 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 	private logout() {
 		this.props.resetPendingLinking();
 		this.props.logout();
-		RNRestart.Restart();
+		this.navigate("Login", {});
 	}
 
 	navigateTo = (route: keyof SettingsScreenNavigation) => {
 		this.navigate(route, {});
 	};
-
 	render() {
 		return (
 			<Fragment>
