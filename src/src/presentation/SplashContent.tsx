@@ -9,22 +9,21 @@ import { DidiText } from "./util/DidiText";
 import colors from "./resources/colors";
 import { VERSION } from "../AppConfig";
 import WarningModal from "./common/WarningModal";
+import { getAidiVersion } from "../services/internal/getVersion";
 
 
 interface SplashContentState {
 	modalVisible: boolean;
+	aidiVersion: string;
 }
 
-//ejemplo de variable global
-const respuesta = {
-	aidiVersion: '1.5.0'
-}
 export class SplashContent extends React.Component<{}, SplashContentState, AddChildren<{}>> {
 
 	constructor(props: any) {
 		super(props);
 		this.state = {
 			modalVisible: true,
+			aidiVersion: VERSION,
 		}
 		this.toggleModal = this.toggleModal.bind(this);
 	}
@@ -32,6 +31,12 @@ export class SplashContent extends React.Component<{}, SplashContentState, AddCh
 	toggleModal() {
 		this.setState({
 			modalVisible: !this.state.modalVisible
+		})
+	}
+
+	async componentDidMount() {
+		this.setState({
+			aidiVersion: `${await getAidiVersion()}`,
 		})
 	}
 
@@ -48,8 +53,8 @@ export class SplashContent extends React.Component<{}, SplashContentState, AddCh
 						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
 					</View>
 					<View style={{ marginTop: 40 }}>
-						{respuesta.aidiVersion !== VERSION ? <WarningModal
-							message={"Actualiza la nueva version de aidi"}
+						{this.state.aidiVersion !== VERSION ? <WarningModal
+							message={"Actualiza la nueva version"}
 							modalVisible={this.state.modalVisible}
 							toggleModal={this.toggleModal}
 						/> :
