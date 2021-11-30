@@ -8,7 +8,7 @@ import themes from "./resources/themes";
 import { DidiText } from "./util/DidiText";
 import colors from "./resources/colors";
 import { VERSION } from "../AppConfig";
-import WarningModal from "./common/WarningModal";
+import WarningModalVersion from "./common/WarningModalVersion";
 import { getAidiVersion } from "../services/internal/getVersion";
 
 
@@ -22,26 +22,26 @@ export class SplashContent extends React.Component<{}, SplashContentState, AddCh
 	constructor(props: any) {
 		super(props);
 		this.state = {
-			modalVisible: true,
+			modalVisible: false,
 			aidiVersion: VERSION,
 		}
-		this.toggleModal = this.toggleModal.bind(this);
 	}
 
-	toggleModal() {
-		this.setState({
-			modalVisible: !this.state.modalVisible
-		})
-	}
+
 
 	async componentDidMount() {
+		const aidiVersion = `${await getAidiVersion()}`;
+		const modalVisible = aidiVersion.valueOf() !== VERSION.valueOf();
 		this.setState({
-			aidiVersion: `${await getAidiVersion()}`,
+			aidiVersion,
+			modalVisible,
 		})
 	}
 
 
 	render() {
+		const { modalVisible } = this.state;
+		const { children } = this.props;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -53,15 +53,14 @@ export class SplashContent extends React.Component<{}, SplashContentState, AddCh
 						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
 					</View>
 					<View style={{ marginTop: 40 }}>
-						{this.state.aidiVersion !== VERSION ? <WarningModal
-							message={"Actualiza la nueva version"}
-							modalVisible={this.state.modalVisible}
-							toggleModal={this.toggleModal}
+						{modalVisible ? <WarningModalVersion
+							message={"Hay una nueva versión de ai·di! Por favor actualizá la app desde Playstore para evitar inconvenientes"}
+							modalVisible={modalVisible}
 						/> :
 							null}
 						<DidiText.Explanation.Small style={styles.version}>{VERSION}</DidiText.Explanation.Small>
 					</View>
-					<View style={styles.buttonContainer}>{this.props.children}</View>
+					<View style={styles.buttonContainer}>{children}</View>
 				</SafeAreaView>
 			</Fragment>
 		);
