@@ -17,23 +17,25 @@ export default class WarningModalVersion extends Component<WarningModalProps, { 
     constructor(props: WarningModalProps) {
         super(props);
         this.state = {
-            modalVisibleState: props.modalVisible,
+            modalVisibleState: this.props.modalVisible,
         }
     }
 
     toggleModal() {
-        this.setState({
+        this.setState(() => ({
             modalVisibleState: !this.props.modalVisible,
-        })
+        }));
     }
+
 
     render() {
         const { modal } = commonStyles;
+        const { modalVisibleState } = this.state;
         return (
             <Modal
                 animationType="fade"
                 transparent={true}
-                visible={this.state.modalVisibleState}
+                visible={modalVisibleState}
                 onRequestClose={() => this.toggleModal()}
             >
                 <View style={modal.centeredView}>
