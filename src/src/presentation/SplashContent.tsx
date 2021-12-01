@@ -1,8 +1,6 @@
-import React, { Fragment, version } from "react";
-import { Image, SafeAreaView, StatusBar, StyleSheet, View, Modal } from 'react-native';
-
+import React, { Fragment } from "react";
+import { Image, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import { AddChildren } from "../util/ReactExtensions";
-
 import Background from "./resources/images/startAccessBackground.svg";
 import themes from "./resources/themes";
 import { DidiText } from "./util/DidiText";
