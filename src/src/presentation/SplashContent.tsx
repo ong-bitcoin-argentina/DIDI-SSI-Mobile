@@ -26,7 +26,7 @@ export class SplashContent extends React.Component<{}, SplashContentState, AddCh
 
 
 	async componentDidMount() {
-		const aidiVersion = `${await getAidiVersion()}`;
+		const aidiVersion = await getAidiVersion();
 		const modalVisible = aidiVersion.valueOf() !== VERSION.valueOf();
 		this.setState(() => ({
 			modalVisible: modalVisible,

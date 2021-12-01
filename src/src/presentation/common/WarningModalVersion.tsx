@@ -22,8 +22,8 @@ export default class WarningModalVersion extends Component<WarningModalProps, { 
     }
 
     toggleModal() {
-        this.setState(() => ({
-            modalVisibleState: !this.props.modalVisible,
+        this.setState((state) => ({
+            modalVisibleState: !state.modalVisibleState,
         }));
     }
 
