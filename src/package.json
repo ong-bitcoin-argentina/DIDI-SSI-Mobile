@@ -20,7 +20,7 @@
 		"deploy": "curl -F 'versionNumber=0.0.x' -F 'versionComment=Automatic Build'  -F 'userFile=@./android/app/build/outputs/apk/release/app-release.apk'   https://appscloud.creativecore.com.ar/delivery/edit/sendForm.php?app=nec-didi"
 	},
 	"dependencies": {
-		"@proyecto-didi/app-sdk": "^0.0.1",
+		"@proyecto-didi/app-sdk": "^0.0.2",
 		"@react-native-community/image-editor": "^2.2.0",
 		"@react-native-firebase/analytics": "7.6.8",
 		"@react-native-firebase/app": "8.4.6",

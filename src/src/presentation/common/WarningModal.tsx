@@ -14,34 +14,34 @@ type WarningModalProps = {
   toggleModal: any
 }
 
-export default class TermsExplanation extends Component<WarningModalProps> {
+export default class WarningModal extends Component<WarningModalProps> {
   render() {
     const { modal } = commonStyles;
     return (
-        <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.props.modalVisible}
-            onRequestClose={() => this.props.toggleModal()}
-        >
-            <View style={modal.centeredView}>
-                <View style={[modal.view, styles.modalView]}>
-                    <View style={{}}>
-                        <Icon fontSize={66} color={colors.yellow} style={{ marginBottom: 18 }}>
-                            warning
-                        </Icon>
-                        <Small style={styles.descriptionModal}>{this.props.message}</Small>
-                    </View>
-                    <View style={modal.footer}>
-                        <DidiButton 
-                            style={modal.smallButton} 
-                            title="Cerrar"
-                            onPress={() => this.props.toggleModal()} 
-                        />
-                    </View>
-                </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={this.props.modalVisible}
+        onRequestClose={() => this.props.toggleModal()}
+      >
+        <View style={modal.centeredView}>
+          <View style={[modal.view, styles.modalView]}>
+            <View style={{}}>
+              <Icon fontSize={66} color={colors.yellow} style={{ marginBottom: 18 }}>
+                warning
+              </Icon>
+              <Small style={styles.descriptionModal}>{this.props.message}</Small>
             </View>
-        </Modal>
+            <View style={modal.footer}>
+              <DidiButton
+                style={modal.smallButton}
+                title="Cerrar"
+                onPress={() => this.props.toggleModal()}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     )
   }
 }
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginVertical: 10
   },
-    modalView: {
+  modalView: {
     alignItems: "flex-start"
   },
 });
