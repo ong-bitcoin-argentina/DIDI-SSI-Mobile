@@ -1,47 +1,23 @@
-import React, { Fragment, version } from "react";
-import { Image, SafeAreaView, StatusBar, StyleSheet, View, Modal } from 'react-native';
-
+import React, { Fragment } from "react";
+import { Image, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import { AddChildren } from "../util/ReactExtensions";
-
 import Background from "./resources/images/startAccessBackground.svg";
 import themes from "./resources/themes";
 import { DidiText } from "./util/DidiText";
 import colors from "./resources/colors";
 import { VERSION } from "../AppConfig";
-import WarningModal from "./common/WarningModal";
-import { getAidiVersion } from "../services/internal/getVersion";
-
+import WarningModalVersion from "./common/WarningModalVersion";
 
 interface SplashContentState {
 	modalVisible: boolean;
-	aidiVersion: string;
 }
 
 export class SplashContent extends React.Component<{}, SplashContentState, AddChildren<{}>> {
 
-	constructor(props: any) {
-		super(props);
-		this.state = {
-			modalVisible: true,
-			aidiVersion: VERSION,
-		}
-		this.toggleModal = this.toggleModal.bind(this);
-	}
-
-	toggleModal() {
-		this.setState({
-			modalVisible: !this.state.modalVisible
-		})
-	}
-
-	async componentDidMount() {
-		this.setState({
-			aidiVersion: `${await getAidiVersion()}`,
-		})
-	}
 
 
 	render() {
+		const { children } = this.props;
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
@@ -53,15 +29,12 @@ export class SplashContent extends React.Component<{}, SplashContentState, AddCh
 						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
 					</View>
 					<View style={{ marginTop: 40 }}>
-						{this.state.aidiVersion !== VERSION ? <WarningModal
-							message={"Actualiza la nueva version"}
-							modalVisible={this.state.modalVisible}
-							toggleModal={this.toggleModal}
-						/> :
-							null}
+							<WarningModalVersion
+								message={"Hay una nueva versión de ai·di! Por favor actualizá desde Playstore "}
+							/> 
 						<DidiText.Explanation.Small style={styles.version}>{VERSION}</DidiText.Explanation.Small>
 					</View>
-					<View style={styles.buttonContainer}>{this.props.children}</View>
+					<View style={styles.buttonContainer}>{children}</View>
 				</SafeAreaView>
 			</Fragment>
 		);
