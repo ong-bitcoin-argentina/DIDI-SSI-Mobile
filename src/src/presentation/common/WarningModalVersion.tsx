@@ -4,12 +4,13 @@ import { DidiText } from "../util/DidiText";
 import DidiButton from "../util/DidiButton";
 import commonStyles from "../resources/commonStyles";
 import colors from "../resources/colors";
+import { VERSION } from "../../AppConfig";
+import { getAidiVersion } from "../../services/internal/getVersion";
 const { Small } = DidiText.Explanation;
 const { Icon } = DidiText;
 
 type WarningModalProps = {
     message: string
-    modalVisible: boolean
 }
 
 export default class WarningModalVersion extends Component<WarningModalProps, { modalVisibleState: boolean }> {
@@ -17,7 +18,7 @@ export default class WarningModalVersion extends Component<WarningModalProps, { 
     constructor(props: WarningModalProps) {
         super(props);
         this.state = {
-            modalVisibleState: this.props.modalVisible,
+            modalVisibleState: false,
         }
     }
 
@@ -25,6 +26,14 @@ export default class WarningModalVersion extends Component<WarningModalProps, { 
         this.setState((state) => ({
             modalVisibleState: !state.modalVisibleState,
         }));
+    }
+    
+    async componentDidMount(){
+		const aidiVersion = await getAidiVersion();
+		const modalVisible = aidiVersion.valueOf() !== VERSION.valueOf();
+        this.setState({
+            modalVisibleState: modalVisible,
+        });
     }
 
 

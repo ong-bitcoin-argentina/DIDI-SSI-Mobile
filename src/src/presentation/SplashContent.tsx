@@ -7,8 +7,6 @@ import { DidiText } from "./util/DidiText";
 import colors from "./resources/colors";
 import { VERSION } from "../AppConfig";
 import WarningModalVersion from "./common/WarningModalVersion";
-import { getAidiVersion } from "../services/internal/getVersion";
-
 
 interface SplashContentState {
 	modalVisible: boolean;
@@ -16,26 +14,9 @@ interface SplashContentState {
 
 export class SplashContent extends React.Component<{}, SplashContentState, AddChildren<{}>> {
 
-	constructor(props: any) {
-		super(props);
-		this.state = {
-			modalVisible: false,
-		}
-	}
-
-
-
-	async componentDidMount() {
-		const aidiVersion = await getAidiVersion();
-		const modalVisible = aidiVersion.valueOf() !== VERSION.valueOf();
-		this.setState(() => ({
-			modalVisible: modalVisible,
-		}));
-	}
 
 
 	render() {
-		const { modalVisible } = this.state;
 		const { children } = this.props;
 		return (
 			<Fragment>
@@ -48,13 +29,9 @@ export class SplashContent extends React.Component<{}, SplashContentState, AddCh
 						<Image style={styles.didiLogo} source={require("./resources/images/logo.png")} />
 					</View>
 					<View style={{ marginTop: 40 }}>
-						{modalVisible ?
 							<WarningModalVersion
-								message={"Hay una nueva versión de ai·di! Por favor actualizá la app desde Playstore para evitar inconvenientes"}
-								modalVisible={modalVisible}
-							/> :
-							null
-						}
+								message={"Hay una nueva versión de ai·di! Por favor actualizá desde Playstore "}
+							/> 
 						<DidiText.Explanation.Small style={styles.version}>{VERSION}</DidiText.Explanation.Small>
 					</View>
 					<View style={styles.buttonContainer}>{children}</View>
