@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View } from "react-native";
+import { Image, View , Alert} from "react-native";
 
 import { DidiScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -26,6 +26,7 @@ type SignupEnterNameInternalProps = SignupEnterNameProps & SignupEnterNameDispat
 interface SignupEnterNameState {
 	firstName: string;
 	lastName: string;
+	alertVisible:boolean;
 }
 
 export interface SignupEnterNameNavigation {
@@ -43,17 +44,13 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 		super(props);
 		this.state = {
 			firstName: "",
-			lastName: ""
+			lastName: "",
+			alertVisible: false,
 		};
 	}
 
 	private canPressContinueButton(): boolean {
-		let result = this.specialCharacter();
-		if (result) {
 			return Validations.isName(this.state.firstName) && Validations.isName(this.state.lastName);
-		} else {
-			return false;
-		}
 	}
 	private specialCharacter(): boolean {
 		let correctedFirstName = false;
@@ -82,6 +79,19 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 			return false;
 		}
 	}
+	
+
+	//show the alert if the validation fails
+	showAlert= ()=>{
+		Alert.alert(
+			'Error',
+			'Los Campos no tienen que contener caracteres especiales',
+			[{
+				text:'OK'
+			}]
+		)
+	}
+
 	render() {
 		return (
 			<DidiScreen>
@@ -98,8 +108,12 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 				<DidiButton
 					disabled={!this.canPressContinueButton()}
 					onPress={() => {
+						if(!this.specialCharacter()){
+							this.showAlert();
+						} else{
 						this.props.saveName(this.state.firstName, this.state.lastName);
 						this.navigate("SignupEnterEmail", { phoneNumber: this.props.phoneNumber });
+						}
 					}}
 					title={strings.signup.enterName.next}
 				/>
