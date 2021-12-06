@@ -1,14 +1,7 @@
 import React, { Fragment } from "react";
-import {
-	Alert,
-	GestureResponderEvent,
-	LayoutRectangle,
-	StyleSheet,
-	TouchableOpacity,
-	View
-} from "react-native";
+import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
-
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { DidiText } from "../../util/DidiText";
 
 import colors from "../../resources/colors";
@@ -64,7 +57,11 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	}
 
 	private camera: RNCamera | null = null;
-	static cameraButtonReversible(onPress: (event: GestureResponderEvent) => void, disabled = false, onPressReversible: ()=> void) {
+	static cameraButtonReversible(
+		onPress: (event: GestureResponderEvent) => void,
+		disabled = false,
+		onPressReversible: () => void
+	) {
 		return (
 			<View>
 				<TouchableOpacity
@@ -110,7 +107,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 						}}
 					>
 						<DidiText.Icon fontSize={33} color={disabled ? themes.buttonDisabledText : undefined}>
-							
+							<Icon name="camera-retake" size={33} />
 						</DidiText.Icon>
 					</View>
 				</TouchableOpacity>
@@ -138,12 +135,12 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 			<Fragment>
 				{cameraReversible ? (
 					<>
-						<View style={styles.cameraContainer}>{this.renderCamera( 'back')}</View>
+						<View style={styles.cameraContainer}>{this.renderCamera("back")}</View>
 						<View style={styles.cameraButtonContainer}>{this.renderPictureButton()}</View>
 					</>
 				) : (
 					<>
-						<View style={styles.cameraContainer}>{this.renderCamera('front')}</View>
+						<View style={styles.cameraContainer}>{this.renderCamera("front")}</View>
 						<View style={styles.cameraButtonContainer}>{this.renderPictureButton()}</View>
 					</>
 				)}
@@ -161,7 +158,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 				style={[styles.preview, { aspectRatio: this.state.ratio.height / this.state.ratio.width }]}
 				ref={ref => (this.camera = ref)}
 				captureAudio={false}
-				type={RNCamera.Constants.Type[types|| "back"]}
+				type={RNCamera.Constants.Type[types || "back"]}
 				// type={RNCamera.Constants.Type[this.props.cameraLocation || "back"]}
 				flashMode={RNCamera.Constants.FlashMode[this.props.cameraFlash || "auto"]}
 				androidCameraPermissionOptions={{
@@ -204,7 +201,6 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	}
 
 	private renderPictureButton() {
-		
 		if (!this.state.cameraAvailable) {
 			return null;
 		}
@@ -221,7 +217,11 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		if (typeof disabled === "object") {
 			return DidiCamera.cameraButton(() => Alert.alert(disabled.title, disabled.text));
 		} else {
-			return DidiCamera.cameraButtonReversible(() => this.takePicture(), disabled ,()=> this.setCameraReversible());
+			return DidiCamera.cameraButtonReversible(
+				() => this.takePicture(),
+				disabled,
+				() => this.setCameraReversible()
+			);
 		}
 	}
 
@@ -253,8 +253,8 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		return data;
 	}
 	async setCameraReversible() {
-		this.setState((state)=>({
-			cameraReversible: !state.cameraReversible,
+		this.setState(state => ({
+			cameraReversible: !state.cameraReversible
 		}));
 	}
 }
