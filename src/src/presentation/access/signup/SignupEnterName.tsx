@@ -53,31 +53,10 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 			return Validations.isName(this.state.firstName) && Validations.isName(this.state.lastName);
 	}
 	private specialCharacter(): boolean {
-		let correctedFirstName = false;
-		let correctedLastName = false;
-		let lowerFirstName = this.state.firstName.toLowerCase();
-		let upperFirstName = this.state.firstName.toUpperCase();
-		let correctedTextFirstName = "";
-		for (let i = 0; i < lowerFirstName.length; ++i) {
-			if (lowerFirstName[i] != upperFirstName[i] || lowerFirstName[i].trim() === "") correctedTextFirstName += this.state.firstName[i];
-		}
-		if (correctedTextFirstName === this.state.firstName) {
-			correctedFirstName = true;
-		}
-		let lowerLastName = this.state.lastName.toLowerCase();
-		let upperLastName = this.state.lastName.toUpperCase();
-		let correctedTextLastName = "";
-		for (let i = 0; i < lowerLastName.length; ++i) {
-			if (lowerLastName[i] != upperLastName[i] || lowerLastName[i].trim() === "") correctedTextLastName += this.state.lastName[i];
-		}
-		if (correctedTextLastName === this.state.lastName) {
-			correctedLastName = true;
-		}
-		if (correctedFirstName === true && correctedLastName === true) {
-			return true;
-		} else {
-			return false;
-		}
+		const regExp = /^(?:[A-Za-z])+$/; 
+		const correctedFirstName = regExp.test(this.state.firstName); 
+		const correctedLastName = regExp.test(this.state.lastName);
+		return correctedFirstName && correctedLastName;
 	}
 	
 
