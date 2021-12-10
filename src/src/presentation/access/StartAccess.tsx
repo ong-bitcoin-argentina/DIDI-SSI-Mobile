@@ -21,7 +21,6 @@ import { PendingLinkingState } from "../../store/reducers/pendingLinkingReducer"
 import { deepLinkHandler, dynamicLinkHandler } from "../util/appRouter";
 import { ActiveDid } from "../../store/reducers/didReducer";
 import { DidiText } from "../util/DidiText";
-import { store } from '../../store/normalizedStore';
 
 const { Title } = DidiText;
 
@@ -69,7 +68,7 @@ class StartAccessScreen extends NavigationEnabledComponent<
 			<Fragment>
 				<SplashContent>
 					<Title>{this.props.did ? 
-						`DID: ${store.getState().persisted.did.activeDid.address.slice(0,6) + '...' + store.getState().persisted.did.activeDid.address.slice(-4)}` 
+						`DID: ${this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4)}` 
 						: 'Crear o recuperar cuenta'}
 					</Title>
 					{this.props.did ? 

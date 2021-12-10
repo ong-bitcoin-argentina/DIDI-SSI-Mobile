@@ -2,7 +2,7 @@ import { EthrDID } from "@proyecto-didi/app-sdk";
 
 import { StoreAction } from "../StoreAction";
 
-export type ActiveDid = EthrDID | null | string;
+export type ActiveDid = EthrDID | null;
 
 export interface DidState {
 	activeDid: ActiveDid;

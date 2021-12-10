@@ -12,7 +12,6 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ActiveDid } from "../../../store/reducers/didReducer";
-import { store } from '../../../store/normalizedStore';
 
 export interface HomeHeaderProps {
 	onPersonPress: () => void;
@@ -66,7 +65,7 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 						<DidiText.DashboardHeader.Name>{this.props.person.id}</DidiText.DashboardHeader.Name>
 						<DidiText.DashboardHeader.Hello>{
 							this.props.did ? 
-							store.getState().persisted.did.activeDid.address.slice(0,6) + '...' + store.getState().persisted.did.activeDid.address.slice(-4) 
+								this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4) 
 						: 'Falta el did'}
 							</DidiText.DashboardHeader.Hello>
 					</View>

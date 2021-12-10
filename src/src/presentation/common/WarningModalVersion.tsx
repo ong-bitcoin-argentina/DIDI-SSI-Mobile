@@ -31,12 +31,9 @@ export default class WarningModalVersion extends Component<WarningModalProps, { 
     async componentDidMount(){
 		const aidiVersion = await getAidiVersion();
 		const modalVisible = aidiVersion.valueOf() !== VERSION.valueOf();
-        if(modalVisible){
-            this.setState({
-                modalVisibleState: modalVisible,
-            });
-        }
-        
+        this.setState({
+            modalVisibleState: modalVisible,
+        });
     }
 
 
