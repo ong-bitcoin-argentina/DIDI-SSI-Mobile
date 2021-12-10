@@ -151,6 +151,8 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	private renderCamera(types?: "front" | "back" | undefined) {
 		const onCameraLayout = this.props.onCameraLayout;
 		const onFacesDetected = this.props.onFacesDetected;
+		if(this.props.explanation === 'Escaneá un código QR')types='back';
+		if(this.props.cameraLandscape)types='back';
 		return (
 			<RNCamera
 				onLayout={onCameraLayout && (event => onCameraLayout(event.nativeEvent.layout))}
