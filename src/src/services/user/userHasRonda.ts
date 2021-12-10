@@ -1,4 +1,4 @@
-import { ApiResult, DidiServerApiClient, EthrDID } from "@proyecto-didi/app-sdk";
+import { ApiResult, DidiServerApiClient } from "@proyecto-didi/app-sdk";
 import { ActiveDid } from "../../store/reducers/didReducer";
 import { getClient } from "../internal/withDidiServerClient";
 
@@ -8,6 +8,6 @@ export interface UserHasRondaArguments {
 }
 
 export async function userHasRonda(did: ActiveDid): ApiResult<any> {
-	// @ts-expect-error did puede serEthrDID or null. Esperamos que sea EthrDID. TODO: Review
+	// @ts-expect-error did puede ser EthrDID or null. Esperamos que sea EthrDID. TODO: Review
 	return getClient().userHasRondaAccount(did);
 }
