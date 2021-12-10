@@ -93,9 +93,13 @@ class ScanDisclosureResponseScreen extends NavigationEnabledComponent<
 
 	private async onCompleteQR(idShareRequest: string) {
 		const token = await createToken(this.props.activeDid);
+		if(!token) {
+			return;
+		}
 		const response = await getShareRequest(token, idShareRequest);
 
 		const tokenPart = "[-_=a-zA-Z0-9]+";
+		// @ts-expect-error respooonse is a string, or should be. TODO: Review
 		const matches = response.match(new RegExp(`${tokenPart}\\.${tokenPart}\\.${tokenPart}`, "g")) || [];
 
 		if (matches.length === 0) {

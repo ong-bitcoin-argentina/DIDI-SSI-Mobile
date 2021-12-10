@@ -226,7 +226,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 	}
 
 	getToken = async () => {
-		return this.props.did ? await createToken(this.props.did) : null;
+		return this.props.did && this.props.did.did ? await createToken(this.props.did) : null;
 	};
 
 	private async onPictureTaken(pic: { uri: string }) {
