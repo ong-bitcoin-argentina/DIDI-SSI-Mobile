@@ -38,6 +38,8 @@ export default class DashboardJumpMenu extends NavigationEnabledComponent<
 	DashboardJumpNavigation
 > {
 	render() {
+		console.log('BOTON FLOTANTE AMARILLO');
+		
 		if (!this.props.showJumpButton) {
 			return;
 		}

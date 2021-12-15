@@ -33,8 +33,9 @@ export const PushNotificationObserver = didiConnect(
 				this.props.didHandleReceivedPush(this.props.pendingPush);
 			}
 		}
-
 		render() {
+			console.log('PushNotificationObserver ---------------->');
+			console.log(this.props);
 			return this.props.children || null;
 		}
 	},
@@ -61,12 +62,12 @@ type PushNotificationObject = {
 				title: string;
 			};
 			notificationType?: string;
-      }
+	  }
 	| {
 			notification?: never;
 			title: string;
 			message: string;
-		}
+	  }
 );
 
 const serviceKey = "PushNotificationObserver";
@@ -89,14 +90,14 @@ export const PushNotificationReceiver = didiConnect(
 								foreground: notification.foreground,
 								userInteraction: notification.userInteraction,
 								smallIcon: "@drawable/ic_notification"
-							}
+						  }
 						: {
 								title: notification.title,
 								message: notification.message,
 								foreground: notification.foreground,
 								userInteraction: notification.userInteraction,
-								smallIcon: "@drawable/ic_notification",
-							};
+								smallIcon: "@drawable/ic_notification"
+						  };
 
 					switch ((notification as any).notificationType) {
 						case "VALIDATION_REQ":

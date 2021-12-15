@@ -15,6 +15,7 @@ function normalizeRecoveryParam(v: number): 0 | 1 {
 }
 
 export async function getCredentials() {
+	console.log('getCredentials');
 	const addresses = await RNUportHDSigner.listSeedAddresses();
 	const addressToUse = addresses.length === 0 ? (await RNUportHDSigner.createSeed("simple")).address : addresses[0];
 

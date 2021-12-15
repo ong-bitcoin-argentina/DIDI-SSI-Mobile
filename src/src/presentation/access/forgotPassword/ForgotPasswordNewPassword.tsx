@@ -46,11 +46,13 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
+		console.log('ForgotPasswordNewPasswordScreen');
+		console.log(this.props);
 		return (
 			<VerifyCodeWrapper
 				description={strings.recovery.passwordChange.messageHead}
 				contentImageSource={require("../../resources/images/recoverPassword.png")}
-				serviceButtonText={strings.accessCommon.recoverButtonText}
+				serviceButtonText={strings.accessCommon.recoverButtonText+'FFFFFFFFFFFF'}
 				isServiceBlocked={this.state.password === null}
 				serviceCall={(serviceKey, validationCode) =>
 					recoverPassword(serviceKey, this.props.email, validationCode, this.state.password!)

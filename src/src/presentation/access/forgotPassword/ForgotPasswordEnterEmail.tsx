@@ -48,6 +48,10 @@ class ForgotPasswordEnterEmailScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
+
+		console.log('ForgotPasswordEnterEmailScreen -> BOTON PARA RECUPERAR CUENTA');
+		console.log(serviceKey);
+		
 		return (
 			<ServiceObserver
 				serviceKey={serviceKey}

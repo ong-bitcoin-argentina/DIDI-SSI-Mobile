@@ -36,6 +36,9 @@ const serviceKey = "VerifyCodeWrapper";
 
 class VerifyCodeWrapper extends React.Component<VerifyCodeWrapperInternalProps> {
 	render() {
+		console.log('VerifyCodeComponent');
+		console.log(this.props);
+		
 		return (
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.props.onServiceSuccess()}>
 				<VerifyCodeComponent
