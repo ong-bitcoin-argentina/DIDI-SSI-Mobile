@@ -37,8 +37,6 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 	}
 
 	render() {
-		console.log('RENDER RENDER REDNER');
-		console.log(this.props);
 		return (
 			<View style={styles.root}>
 				<PushNotificationObserver

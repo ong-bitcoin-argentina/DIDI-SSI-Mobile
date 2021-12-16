@@ -46,9 +46,6 @@ class RecoveryEnterEmailScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.recovery.barTitle);
 
 	render() {
-		console.log('RecoveryEnterEmailScreen');
-		console.log(this.props);
-		console.log('RecoveryEnterEmailScreen');
 		return (
 			<ServiceObserver serviceKey={serviceKey} onSuccess={() => this.advance()}>
 				<EnterEmailScreen

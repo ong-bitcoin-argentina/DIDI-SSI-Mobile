@@ -29,12 +29,6 @@ class ServiceObserver extends React.Component<AddChildren<ServiceObserverInterna
 	componentDidUpdate() {
 		const { dropCallChain, onError, onSuccess, serviceKey } = this.props;
 		const rq = this.props.callState[serviceKey];
-		console.log('Component ----------------------------->> START');
-		console.log(dropCallChain);
-		console.log(onError);
-		console.log(onSuccess);
-		console.log(serviceKey);
-		console.log('componentDidUpdate -------------------------->>>>FIN');
 		if (rq === undefined) {
 			return;
 		}
@@ -58,8 +52,6 @@ class ServiceObserver extends React.Component<AddChildren<ServiceObserverInterna
 	}
 
 	componentWillUnmount() {
-		console.log('componentWillUnmount CERRANDO COMPONENTE');
-		
 		if (!this.props.keepCallChainOnExit) {
 			this.props.dropCallChain(this.props.serviceKey);
 		}
@@ -67,9 +59,6 @@ class ServiceObserver extends React.Component<AddChildren<ServiceObserverInterna
 
 	render() {
 		return this.props.children || null;
-		// console.log('serviceObserver');
-		// console.log(this.props.children);
-		// return ((this.props.children)?this.props.children: null)
 	}
 }
 

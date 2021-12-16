@@ -18,8 +18,6 @@ export class SplashContent extends React.Component<{}, SplashContentState, AddCh
 
 	render() {
 		const { children } = this.props;
-		console.log('SplashContent');
-		console.log(children);
 		return (
 			<Fragment>
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />

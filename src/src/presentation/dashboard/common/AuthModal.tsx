@@ -81,8 +81,6 @@ export class AuthModal extends Component<AuthModalProps, AuthModalState> {
 
 	render() {
 		const { visible, onCancel, alreadyHave, automatic } = this.props;
-		console.log('AuthModal');
-		
 		return (
 			<Modal
 				animationType="slide"

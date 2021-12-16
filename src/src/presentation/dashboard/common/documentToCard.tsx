@@ -114,10 +114,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 
 	render() {
 		const { document, context, preview, children } = this.props;
-		console.log('DocumentCredentialCards');
-		console.log( document, context, preview, children   );
-		
-		
+
 		const issuerTexts = this.issuerText(CredentialDocument.displayedIssuer(document));
 
 		const category = document.issuedAt ? credentialCard.formatDate(new Date(document.issuedAt * 1000)) : "Credencial";

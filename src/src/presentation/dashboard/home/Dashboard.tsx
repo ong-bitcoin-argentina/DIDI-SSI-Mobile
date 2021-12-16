@@ -1,6 +1,6 @@
 import { CredentialDocument, Identity } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
-import { FlatList, ImageBackgroundBase, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import { downloadFile, DocumentDirectoryPath, readFile } from "react-native-fs";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
@@ -153,15 +153,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
-		/**
-		 * credenciales del home 
-		 * DashDocumentDetail ----> Exit 
-		 */
-		console.log('credentialContexts');
-		console.log(this.props.credentialContext);
-		console.log(document);
-		
-		
 		return (
 			<TouchableOpacity
 				key={`RG_${index}`}
@@ -243,27 +234,9 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		console.log('holaaaaaa----> Dashboard');
-		console.log(this.props);
-		/**Nota:
-		 * 	statusBar cambia el color e la barra de arriba verificar  backgroundColor={themes.darkNavigation}
-		 *  SafeAreaView es un componente de react native , renderiza el contenido anidado , aplica relleno automatico 
-		 *  		para aplicar parte de la vista que no esta cubierto , por barras de navegación
-		 * 			barra de pestana , barras de herramienta , y otras vistas anteriores (PARA IOS) 
-		 * FlatList:son lista pero avanzadas..
-		 *			ImageBackgroundBase, card , botones , el etc , cualquier cosa que pueda ser iterable
-		 *	        Parámetro: data ('tipo de data') que pueda iterar -> objeto o array
-		 *     
-		 * 		EvolutionCard:
-		 *  
-		 */
-		console.log('FlatList');
-		console.log(this.props.validCredentials);
-		
-		
 		return (
 			<Fragment>
-				<StatusBar backgroundColor='black' barStyle="light-content" /> 
+				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 				<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
 					<FlatList
 						style={styles.body}
@@ -295,7 +268,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 								{this.renderRecentActivities()}
 							</DropdownMenu>
 						}
-					/> 
+					/>
 				</SafeAreaView>
 				<AuthModal
 					appName="ronda"
