@@ -5,13 +5,16 @@ import PushNotification from "react-native-push-notification";
 import { DidiText } from "../../util/DidiText";
 
 import { PushNotificationObserver } from "../../../services/PushNotificationObserver";
-import { recoverTokens, recoverTokensServiceKey } from "../../../services/trustGraph/recoverTokens";
+import { recoverTokens, recoverTokensServiceKey } from '../../../services/trustGraph/recoverTokens';
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { createToken } from '../../util/appRouter';
+import { getPerson } from '../../../services/user/getPersonalData';
+import { EthrDID } from '@proyecto-didi/app-sdk';
 
 export interface HomeHeaderProps {
 	onPersonPress: () => void;
@@ -23,6 +26,7 @@ interface HomeHeaderStateProps {
 	person: ValidatedIdentity;
 	isLoadingCredentials: boolean;
 	newTokensAvailable: boolean;
+	getPersonal: (token: string) => void;
 }
 
 interface HomeHeaderDispatchProps {
@@ -30,13 +34,54 @@ interface HomeHeaderDispatchProps {
 	resetPrestadores: () => void;
 }
 
-class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps & HomeHeaderDispatchProps> {
+type HomeProps = HomeHeaderProps & HomeHeaderStateProps & HomeHeaderDispatchProps;
+interface HomeState{
+	name: string,
+	did: string,
+	lastname: string,
+	fullName: string,
+}
+
+class HomeHeader extends React.Component<HomeProps,HomeState> {
+	
+	constructor(props: HomeProps) {
+		super(props);
+		this.state = {
+			name:'',
+			lastname: '',
+			did:'',
+			fullName:'',
+		};
+	}
+	private async runGetPersonalData() {
+		const token = await createToken(this.props.did);
+	    console.log('BIUSUEDA');
+		console.log(token);
+		if(token){
+			const result = await getPerson(this.props.did as EthrDID ,token);
+			console.log(result);
+			
+			const {did, name, lastname} = result;
+			const fullName= `${name} ${lastname}`;
+			this.setState({name,lastname,did, fullName});
+		}
+		if(!token){
+			return 'No se encontro';
+		}
+	}
+
+	
 	componentDidMount() {
+		this.runGetPersonalData();			
 		this.props.recoverTokens();
 		this.props.resetPrestadores();
 	}
 
+
+
+
 	render() {
+	
 		return (
 			<View style={styles.root}>
 				<PushNotificationObserver
@@ -62,11 +107,11 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 					/>
 					<View>
 						<DidiText.DashboardHeader.Hello>{strings.dashboard.helloMessage}</DidiText.DashboardHeader.Hello>
-						<DidiText.DashboardHeader.Name>{this.props.person.id}</DidiText.DashboardHeader.Name>
+						<DidiText.DashboardHeader.Name>{(this.props.person.id)?this.props.person.id:this.state.name+' '+this.state.lastname}</DidiText.DashboardHeader.Name>
 						<DidiText.DashboardHeader.Hello>{
 							this.props.did && this.props.did.did ? 
 								this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4) 
-						: 'Falta el did'}
+						: this.state.did}
 							</DidiText.DashboardHeader.Hello>
 					</View>
 				</TouchableOpacity>

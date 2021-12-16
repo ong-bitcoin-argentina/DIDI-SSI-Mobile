@@ -9,6 +9,12 @@ import { ValidatedIdentity } from "../../../../store/selector/combinedIdentitySe
 interface UserHeadingInternalProps extends ViewProps {
 	user: string | undefined;
 	onImageEditTap?: () => void;
+	userHelp?: {			
+			name:string,
+			lastname: string,
+			did:string,
+			fullName:string,
+	}
 }
 
 type UserHeadingGlobalProps = {
@@ -17,9 +23,15 @@ type UserHeadingGlobalProps = {
 
 type UserHeadingProps = UserHeadingInternalProps & UserHeadingGlobalProps;
 
+
+
 class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
+
+	
+	
 	render() {
 		const { onImageEditTap, identity } = this.props;
+		const {fullName}= this.props.userHelp;
 		return (
 			<View style={styles.container}>
 				<View style={[styles.imageContainer, commonStyles.util.shadow]}>
@@ -39,7 +51,7 @@ class UserHeadingComponent extends React.Component<UserHeadingProps, {}, {}> {
 						</TouchableOpacity>
 					)}
 				</View>
-				<DidiText.UserData.HeaderName style={styles.userLabel}>@{this.props.user}</DidiText.UserData.HeaderName>
+				<DidiText.UserData.HeaderName style={styles.userLabel}>@{this.props.user?this.props.user:fullName}</DidiText.UserData.HeaderName>
 			</View>
 		);
 	}

@@ -24,6 +24,7 @@ import commonStyles from "../../../resources/commonStyles";
 import { SettingsScreenProps } from "../SettingsScreen";
 import { sendProfileImage } from "../../../../services/user/sendProfileImage";
 import { createToken } from "../../../util/appRouter";
+import { getPerson } from '../../../../services/user/getPersonalData';
 
 export type EditProfileProps = {};
 interface EditProfileStateProps {
@@ -36,11 +37,19 @@ interface EditProfileDispatchProps {
 	saveIdentity: (state: Identity) => void;
 	sendProfileImage: (token: string, image: any) => void;
 }
-type EditProfileInternalProps = EditProfileProps & EditProfileStateProps & EditProfileDispatchProps;
+type EditProfileInternalProps = EditProfileProps & EditProfileStateProps & EditProfileDispatchProps ;
 
 interface EditProfileState {
 	identity: Identity;
 	cameraActive: boolean;
+}
+interface EditProfile{
+	person:{			
+		name:string,
+		lastname: string,
+		did:string,
+		fullName:string,
+	}
 }
 
 export interface EditProfileNavigation {
@@ -52,7 +61,7 @@ const serviceKeySendProfileImage = "sendProfileImage";
 
 class EditProfileScreen extends NavigationEnabledComponent<
 	EditProfileInternalProps,
-	EditProfileState,
+	EditProfileState&EditProfile,
 	EditProfileNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButton<EditProfileNavigation, "Settings">(
@@ -67,7 +76,13 @@ class EditProfileScreen extends NavigationEnabledComponent<
 			cameraActive: false,
 			identity: {
 				address: {},
-				personalData: {}
+				personalData: {},
+			},
+			person:{            
+				name:'',
+				lastname: '',
+				did:'',
+				fullName:'',
 			}
 		};
 	}
@@ -123,8 +138,14 @@ class EditProfileScreen extends NavigationEnabledComponent<
 					// 	key === "cellPhone" || key === "email"
 					// 		? this.setIdentityMerging({ [key]: text })
 					// 		: this.setIdentityMerging({ personalData: { [key]: text } });
-
-					return this.renderKeyValue(key, struct.name, id?.value);
+					let value = id?.value;
+					if(key==='lastNames' && value ===undefined){
+						value = this.state.person.lastname
+					}
+					if(key==='firstNames' && value ===undefined){
+						value = this.state.person.name
+					}
+					return this.renderKeyValue(key, struct.name, value);
 					// return (
 					// 	<DidiTextInput
 					// 		key={key}
@@ -168,11 +189,35 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		ToastAndroid.show("Copiado", ToastAndroid.SHORT);
 	};
 
+	private async runGetPersonalData() {
+		const token = await this.getToken();
+		if(token){
+			const result = await getPerson(this.props.did as EthrDID ,token);
+			console.log(result);
+			
+			const {did, name, lastname} = result;
+			const fullName= `${name} ${lastname}`;
+			this.setState({person:{
+				name,
+				lastname,
+				did,
+				fullName,
+			}});
+		}
+		if(!token){
+			return 'No se encontro';
+		}
+	}
 	private renderEditView() {
 		const { did } = this.props;
+		this.runGetPersonalData();
 		return (
 			<ScrollView style={{ backgroundColor: colors.lighterBackground }} contentContainerStyle={{ paddingBottom: 20 }}>
-				<UserHeading user={this.props.identity.id} onImageEditTap={() => this.setState({ cameraActive: true })} />
+				<UserHeading 
+				user={this.props.identity.id} 
+				onImageEditTap={() => this.setState({ cameraActive: true })} 
+				userHelp={this.state.person}
+				/>
 
 				<DropdownMenu label={personalDataStructure.name} approved={this.props.isPersonalDataApproved}>
 					{this.renderPersonInputs()}

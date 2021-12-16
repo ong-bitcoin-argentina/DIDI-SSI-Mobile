@@ -17,6 +17,12 @@ interface DropdownMenuProps extends ViewProps {
 	headerInsertComponent?: JSX.Element;
 	textColor?: string;
 	approved?: boolean;
+	userHelp?: {			
+		name:string,
+		lastname: string,
+		did:string,
+		fullName:string,
+}
 }
 
 interface DropdownMenuState {
