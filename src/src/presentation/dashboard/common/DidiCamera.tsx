@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { Fragment } from "react";
 import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
@@ -52,10 +51,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 		super(props);
 		this.state = {
 			cameraAvailable: false,
-			ratio: {
-				width: defaultAspectRatio.width,
-				height: defaultAspectRatio.height,
-			},
+			ratio: defaultAspectRatio,
 			cameraReversible: false
 		};
 	}
@@ -177,7 +173,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 							faceDetectionMode: RNCamera.Constants.FaceDetection.Mode.fast,
 							faceDetectionLandmarks: RNCamera.Constants.FaceDetection.Landmarks.all,
 							onFacesDetected: res => onFacesDetected(res.faces)
-					}
+					  }
 					: undefined)}
 				onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
 				notAuthorizedView={
