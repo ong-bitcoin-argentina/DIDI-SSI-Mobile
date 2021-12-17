@@ -191,13 +191,14 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	private async onCameraReady() {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const aspectRatios = await this.camera!.getSupportedRatiosAsync();
-			aspectRatios.length === 0
-				? "4:3" // Default, should always exist
-				: aspectRatios[aspectRatios.length - 1];
-		const [width, height] = aspectRatio.split(":").map(Number);
+		const aspectRatio =
+		aspectRatios.length === 0
+			? "4:3" // Default, should always exist
+			: aspectRatios[aspectRatios.length - 1];
+	const [width, height] = aspectRatio.split(":").map(Number);
 
-		defaultAspectRatio = { width, height };
-		this.setState({ cameraAvailable: true, ratio: { width, height } });
+	defaultAspectRatio = { width, height };
+	this.setState({ cameraAvailable: true, ratio: { width, height } });
 	}
 
 	private renderPictureButton() {
