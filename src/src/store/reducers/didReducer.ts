@@ -35,9 +35,15 @@ const initialValue = {
 };
 
 export function didReducer(state: ReceivedState = initialValue, action: StoreAction): DidState {
+	let did;
+	let activeDid;
+	
 	switch (action.type) {
 		case "SET_ACTIVE_DID":
-			return { ...state, activeDid: action.value };
+			did = action.value;
+			// @ts-expect-error Algunas veces. did llega como string. TODO: Fix
+			activeDid = did?.did ? did : EthrDID.fromKeyAddress(did);		
+		return { ...state, activeDid };
 
 		case "SET_DID_DNI":
 			return { ...state, didRequested: action.value };

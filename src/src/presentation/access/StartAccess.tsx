@@ -67,7 +67,7 @@ class StartAccessScreen extends NavigationEnabledComponent<
 		return (
 			<Fragment>
 				<SplashContent>
-					<Title>{this.props.did ? 
+					<Title>{this.props.did && this.props.did.did ?
 						`DID: ${this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4)}` 
 						: 'Crear o recuperar cuenta'}
 					</Title>

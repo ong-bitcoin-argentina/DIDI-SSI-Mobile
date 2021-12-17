@@ -6,6 +6,7 @@ import { DIDI_SERVER_DID, URL_DOMAIN, URL_SERVICE_LOGINSUCCESS, URL_SERVICE_LOGI
 import { EthrDID } from "@proyecto-didi/app-sdk";
 import DeepLinking from "react-native-deep-linking";
 import { NavigationActions } from "react-navigation";
+import { ActiveDid } from "../../store/reducers/didReducer";
 interface Settings {
 	did?: string;
 	signer?: any;
@@ -97,7 +98,10 @@ export const handleCredentialDeepLink = (navigation: any) => {
 	navigation.dispatch(navigateAction);
 };
 
-export const createToken = (did: EthrDID) => {
+export const createToken = async (did: ActiveDid):Promise<string| null> => {
+	if (!did || !did.did) {
+		return null;
+	}
 	const credentialsParams: Settings = {};
 	credentialsParams.signer = getSignerForHDPath(getDidAddress(did));
 	credentialsParams.did = did.did();

@@ -92,6 +92,9 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 
 	componentDidMount = async () => {
 		const token = await this.getToken();
+		if(!token) {
+			return;
+		}
 		this.setState({ token });
 		this.handleCheckPersistedData(token);
 		const focusListener = this.props.navigation.addListener("didFocus", () => this.handleCheckPersistedData(token));
@@ -137,12 +140,13 @@ const RoundsScreen = class RoundsScreen extends NavigationEnabledComponent<
 	};
 
 	goRonda = async () => {
-		this.getToken().then(verification => {
-			this.setState({ showModal: false }, () => {
-				successfullyLogged(verification);
-				this.handleSuccessRondaLinking();
-			});
-		});
+		const verification = await this.getToken();
+		if(!verification) {
+			return;
+		}
+		this.setState({ showModal: false });
+		successfullyLogged(verification);
+		this.handleSuccessRondaLinking();
 	};
 
 	permissionDenied = async () => this.setState({ showModal: false });

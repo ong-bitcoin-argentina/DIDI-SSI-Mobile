@@ -113,11 +113,14 @@ class DashboardScreen extends NavigationEnabledComponent<
 	permissionGranted = async () => {
 		const { did } = this.props;
 
-		createToken(did).then(async (verification: string) => {
-			this.setState({ showModal: false });
-			this.handleSuccessRondaLinking();
-			successfullyLogged(verification);
-		});
+		const verification = await createToken(did)
+		if (!verification) {
+			return;
+		}
+		
+		this.setState({ showModal: false });
+		this.handleSuccessRondaLinking();
+		successfullyLogged(verification);
 	};
 
 	handleSuccessRondaLinking = async () => {
@@ -193,10 +196,13 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	private async runGetPersonalData() {
+		const token = await createToken(this.props.did);
+		if(!token){
+			return;
+		}
 		this.setState({
 			checkedPersonalData: true
 		});
-		const token = await createToken(this.props.did);
 		this.props.getPersonalData(token);
 	}
 
