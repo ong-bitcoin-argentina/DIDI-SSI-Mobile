@@ -71,7 +71,7 @@ export const initializeDeepLinking = () => {
 	Linking.addEventListener("url", handleUrl);
 	DeepLinking.addRoute("/login");
 	DeepLinking.addRoute("/credentials");
-	const url = Linking.getInitialURL()
+	Linking.getInitialURL()
 		.then(url => url && Linking.openURL(url))
 		.catch(err => console.error("An error occurred", err));
 };

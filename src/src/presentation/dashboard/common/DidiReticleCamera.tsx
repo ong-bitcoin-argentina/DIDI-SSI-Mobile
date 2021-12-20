@@ -60,14 +60,14 @@ function fitRatio(rect: LayoutRectangle, into: LayoutRectangle): number {
 
 	return Math.min(widthRatio, heightRatio);
 }
-
+type absolute = /*unresolved*/ any
 function toViewStyle(rect: LayoutRectangle) {
 	return {
 		width: rect.width,
 		height: rect.height,
 		top: rect.y,
 		left: rect.x,
-		position: "absolute" as "absolute"
+		position: "absolute" as absolute
 	};
 }
 

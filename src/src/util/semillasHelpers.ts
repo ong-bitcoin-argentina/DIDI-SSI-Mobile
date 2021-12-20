@@ -20,6 +20,7 @@ const isActiveCredential = (credential: CredentialDocument): boolean => {
 	return !credential.expireAt || credential.expireAt > Date.now();
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const isSemillasIdentityActiveCredential = (credential: CredentialDocument, context: any): boolean => {
 	return (
 		credential &&

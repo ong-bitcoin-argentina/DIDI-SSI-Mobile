@@ -64,7 +64,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 
 	renderDid() {
 		const { activeDid } = this.props;
-		const seed = activeDid.keyAddress();
+		const seed = activeDid?.keyAddress();
 		return (
 			<View style={styles.did}>
 				<DidiText.Explanation.Emphasis>{strings.userData.activeIdentity}:</DidiText.Explanation.Emphasis>
@@ -97,6 +97,8 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		return this.renderDropdown({
 			label: strings.userData.personalDataLabel,
 			data: personalDataStructure.order,
+			// displayName: 'Hello',
+			// eslint-disable-next-line react/display-name
 			renderOne: key => {
 				const struct = personalDataStructure.structure[key];
 				const data =
@@ -126,6 +128,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		return this.renderDropdown({
 			label: strings.userData.addressDataLabel,
 			data: addressDataStructure.order,
+			// eslint-disable-next-line react/display-name
 			renderOne: key => {
 				const struct = addressDataStructure.structure[key];
 				const data = this.props.identity.address.value[key];

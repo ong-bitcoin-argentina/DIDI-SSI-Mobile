@@ -96,6 +96,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	private async answerRequest() {
 		this.setState({ loading: true });
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			this.props.did!,
 			this.props.request,
 			this.props.documents,

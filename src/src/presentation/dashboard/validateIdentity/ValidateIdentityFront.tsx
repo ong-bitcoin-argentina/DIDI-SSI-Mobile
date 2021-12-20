@@ -63,6 +63,7 @@ export class ValidateIdentityFrontScreen extends NavigationEnabledComponent<
 					this.navigate(
 						"ValidateIdentityBack",
 						{
+							// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 							documentData: this.state.documentData!,
 							front: data
 						},

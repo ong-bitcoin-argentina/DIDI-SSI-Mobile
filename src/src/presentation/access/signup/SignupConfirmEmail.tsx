@@ -97,6 +97,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 	private registerUser() {
 		const { email, phoneNumber, name, lastname } = this.props;
 		this.setState({ didVerifyEmail: true });
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		this.props.registerUser(email, this.state.password!, phoneNumber, name, lastname);
 		this.props.persistPersonalData(name, lastname);
 	}

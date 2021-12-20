@@ -37,7 +37,7 @@ declare module "react-native-uport-signer" {
 			path: DerivationPath,
 			jwt: Base64EncodedJWT,
 			explanation: string
-		): Promise<ExpandedJWT>;
+		): Promise<ExpandedJWT> 
 
 		UPORT_ROOT_DERIVATION_PATH: DerivationPath;
 	}

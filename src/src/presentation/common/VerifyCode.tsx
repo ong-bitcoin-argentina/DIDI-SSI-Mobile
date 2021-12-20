@@ -57,6 +57,7 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeInternalP
 
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					onPress={() => this.props.onPressContinueButton(this.state.inputCode!)}
 					title={this.props.continueButtonText ?? strings.accessCommon.validateButtonText}
 					isPending={this.props.isContinuePending || false}

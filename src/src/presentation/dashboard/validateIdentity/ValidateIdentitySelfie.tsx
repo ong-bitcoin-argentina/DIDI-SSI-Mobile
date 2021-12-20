@@ -180,6 +180,7 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 
 			case "liveness":
 				if (livenessChecker.didPerformGesture(this.props.gesture, this.state.instructionIndex)) {
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					this.props.onPictureTaken(this.state.rawPicture!);
 				}
 				return;

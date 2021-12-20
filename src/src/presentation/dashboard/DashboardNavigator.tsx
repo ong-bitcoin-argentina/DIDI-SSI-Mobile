@@ -68,6 +68,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			screen: DashboardNavigator,
 			navigationOptions: {
 				title,
+				// eslint-disable-next-line react/display-name
 				tabBarIcon: ({ tintColor }: { tintColor: string }) => (
 					<View style={{ alignItems: "center" }}>
 						<DidiText.Icon color={tintColor} fontSize={24}>

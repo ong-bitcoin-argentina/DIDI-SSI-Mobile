@@ -29,6 +29,7 @@ export class ChangePhoneEnterScreen extends NavigationEnabledComponent<
 				password={null}
 				contentImageSource={require("../../../resources/images/loginVerify.png")}
 				onServiceSuccess={(phoneNumber, password) =>
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					this.navigate("ChangePhoneVerify", { newPhoneNumber: phoneNumber, password: password! })
 				}
 			/>

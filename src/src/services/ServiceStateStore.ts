@@ -60,9 +60,11 @@ export function serviceCallReducer(
 	switch (action.type) {
 		case "SERVICE_CALL_START":
 			return loop({ ...state, [action.serviceKey]: { state: "IN_PROGRESS", command: action.call } }, action.call);
-		case "SERVICE_CALL_DROP":
+		case "SERVICE_CALL_DROP":{
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { [action.serviceKey]: dropped, ...nextState } = state;
 			return lift(nextState);
+		}
 		case "SERVICE_CALL_SUCCESS":
 			return lift({ ...state, [action.serviceKey]: { state: "SUCCEEDED" } });
 		case "SERVICE_CALL_FAILURE":

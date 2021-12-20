@@ -292,6 +292,7 @@ export const styles = {
 };
 
 function textWith(style: TextStyle) {
+	// eslint-disable-next-line react/display-name
 	return (props: AddChildren<TextProps>) => {
 		return <Text {...props} style={[style, props.style]} />;
 	};
@@ -352,6 +353,7 @@ export const DidiText = {
 	UserData: {
 		HeaderName: textWith(styles.component.userDataHeader)
 	},
+	// eslint-disable-next-line react/display-name
 	Icon: (props: { fontSize: number; color?: string } & AddChildren<TextProps>) => {
 		return (
 			<Text
@@ -360,6 +362,7 @@ export const DidiText = {
 			/>
 		);
 	},
+	// eslint-disable-next-line react/display-name
 	Button: (props: { disabled: boolean } & AddChildren<TextProps>) => {
 		return (
 			<Text

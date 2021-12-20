@@ -69,6 +69,7 @@ export class ValidateIdentityBackScreen extends NavigationEnabledComponent<
 						"ValidateIdentitySelfie",
 						{
 							front: this.props.front,
+							// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 							documentData: (this.props.documentData ?? this.state.documentData)!,
 							back: data
 						},

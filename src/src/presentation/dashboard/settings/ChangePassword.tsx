@@ -60,6 +60,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 				<DidiServiceButton
 					title={strings.userData.changePassword.changePassword}
 					disabled={this.state.oldPassword.length === 0 || this.state.password === null}
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					onPress={() => this.props.changePassword(this.state.oldPassword, this.state.password!)}
 					isPending={this.props.changePasswordPending}
 				/>

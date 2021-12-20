@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { LayoutRectangle } from "react-native";
 import { Face } from "react-native-camera";
 

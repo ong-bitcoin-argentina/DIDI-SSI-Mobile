@@ -24,7 +24,7 @@ type ForgotPasswordNewPasswordInternalProps = ForgotPasswordNewPasswordProps &
 	ForgotPasswordNewPasswordDispatchProps;
 
 interface ForgotPasswordNewPasswordState {
-	password: string | null;
+	password?: string | null;
 }
 
 export interface ForgotPasswordNewPasswordNavigation {
@@ -44,8 +44,12 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 			password: null
 		};
 	}
-
+	
 	render() {
+		console.log('GGGGGG');
+		
+		console.log(this.state.password);
+		
 		return (
 			<VerifyCodeWrapper
 				description={strings.recovery.passwordChange.messageHead}
@@ -53,6 +57,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 				serviceButtonText={strings.accessCommon.recoverButtonText}
 				isServiceBlocked={this.state.password === null}
 				serviceCall={(serviceKey, validationCode) =>
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					recoverPassword(serviceKey, this.props.email, validationCode, this.state.password!)
 				}
 				onServiceSuccess={() => this.navigate("Dashboard", {})}

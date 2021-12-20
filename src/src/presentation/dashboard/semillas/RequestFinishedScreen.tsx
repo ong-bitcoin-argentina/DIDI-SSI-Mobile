@@ -92,7 +92,12 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 							{customEmail ? (
 								<Small>Mail: {customEmail}</Small>
 							) : (
-								<Prestador style={styles.prestador} item={activePrestador} active={false} onPress={() => {}} />
+								<Prestador 
+								style={styles.prestador} 
+								item={activePrestador as PrestadorModel} 
+								active={false}
+								onPress={() => this.renderWhatsapp()} //VERIFICAR
+								/>
 							)}
 						</View>
 					</View>

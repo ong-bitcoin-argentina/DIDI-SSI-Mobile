@@ -211,11 +211,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 			loadImage: true
 		});
 
-		const imgPath = `${DocumentDirectoryPath}/${this.props.imageId}.jpeg`;
-		const response = downloadFile({
+		const imgPath = `${DocumentDirectoryPath}/${this.props.imageId}.jpeg`;  
+		downloadFile({
 			fromUrl: this.props.imageUrl,
 			toFile: imgPath
-		}).promise.then(async result => {
+		}).promise.then(async () => {
 			const data = await readFile(imgPath, "base64");
 			this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		});

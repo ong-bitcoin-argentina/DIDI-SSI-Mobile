@@ -175,7 +175,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 							faceDetectionMode: RNCamera.Constants.FaceDetection.Mode.fast,
 							faceDetectionLandmarks: RNCamera.Constants.FaceDetection.Landmarks.all,
 							onFacesDetected: res => onFacesDetected(res.faces)
-					  }
+					}
 					: undefined)}
 				onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
 				notAuthorizedView={
@@ -191,6 +191,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	}
 
 	private async onCameraReady() {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const aspectRatios = await this.camera!.getSupportedRatiosAsync();
 		const aspectRatio =
 			aspectRatios.length === 0

@@ -21,23 +21,23 @@ YellowBox.ignoreWarnings([
 
 const AppContainer = createAppContainer(AppNavigator);
 
-const StoreStatePanel = didiConnect(
-	class extends React.PureComponent<StoreContent> {
-		render() {
-			if (true) {
-				return null;
-			}
 
-			const toShow = TypedObject.mapValues(this.props.serviceCalls, value => {
+const StoreStatePanel = didiConnect(
+	class StoreStatePanel extends React.PureComponent<StoreContent> {
+		render() {
+			const toShow: any = TypedObject.mapValues(this.props.serviceCalls, value =>{
 				if (value === undefined || value.state !== "IN_PROGRESS" || value.command.type !== "RUN") {
 					return value;
 				}
 				return { type: "RUN", name: value.command.func.name, args: value.command.args };
 			});
 			return (
-				<ScrollView style={{ minHeight: 200, maxHeight: 200 }}>
+				<>
+				{toShow? null
+				:<ScrollView style={{ minHeight: 200, maxHeight: 200 }}>
 					<Text style={{ fontSize: 8 }}>{JSON.stringify(this.props, null, 4)}</Text>
-				</ScrollView>
+				</ScrollView>}
+				</>
 			);
 		}
 	},

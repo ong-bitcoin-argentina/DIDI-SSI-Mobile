@@ -285,7 +285,7 @@ export default {
 		recoverButtonText: "Recuperar",
 		defaultPlace: "Otros",
 		enterPhone: {
-			messageHead: "Cargá tu número de celular",
+			messageHead: "",
 			countryCode: "Código de País"
 		},
 		verify: {

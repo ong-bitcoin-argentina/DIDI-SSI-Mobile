@@ -153,7 +153,6 @@ class SemillasScreen extends NavigationEnabledComponent<
 		DataAlert.alert(
 			strings.semillas.program,
 			strings.semillas.shareMessage,
-			() => {},
 			() => getCredentials(dni)
 		);
 	};
