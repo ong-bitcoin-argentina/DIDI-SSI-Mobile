@@ -28,12 +28,15 @@ import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
+import IdentityNavigator from "./validateIdentity/IdentityNavigator";
 import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
 import { IssuersScreen } from "./issuers/IssuersScreen";
+
+import Icon from "react-native-vector-icons/AntDesign";
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -44,7 +47,12 @@ export interface NavigatorProps extends ViewProps {
 }
 
 export default function (then: NavTree<DashboardSwitchTarget>) {
-	function screen(InnerNavigator: NavigationContainer, title: string, image: string, withFloatButton = true) {
+	function screen(
+		InnerNavigator: NavigationContainer,
+		title: string,
+		image: string | string[],
+		withFloatButton = true
+	) {
 		class DashboardNavigator extends React.Component<NavigatorProps> {
 			static router = InnerNavigator.router;
 			render() {
@@ -70,9 +78,13 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				title,
 				tabBarIcon: ({ tintColor }: { tintColor: string }) => (
 					<View style={{ alignItems: "center" }}>
-						<DidiText.Icon color={tintColor} fontSize={24}>
-							{image}
-						</DidiText.Icon>
+						{typeof image === "string" ? (
+							<DidiText.Icon color={tintColor} fontSize={24}>
+								{image}
+							</DidiText.Icon>
+						) : (
+							<Icon name={image[0]} size={34} color={tintColor} />
+						)}
 					</View>
 				)
 			}
@@ -123,6 +135,12 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				SemillasNavigator().stackNavigator("DashboardSemillas"),
 				strings.tabNames.semillas,
 				"spa",
+				false
+			),
+			DashboardIdentity: screen(
+				IdentityNavigator().stackNavigator("DashboardIdentity"),
+				strings.tabNames.identity,
+				["idcard"],
 				false
 			),
 			DashboardSettings: screen(
