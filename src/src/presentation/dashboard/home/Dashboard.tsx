@@ -82,6 +82,7 @@ export interface DashboardScreenNavigation {
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
+	DashboardIdentity: {};
 }
 
 class DashboardScreen extends NavigationEnabledComponent<

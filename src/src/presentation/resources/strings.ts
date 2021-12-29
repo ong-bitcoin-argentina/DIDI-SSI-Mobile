@@ -319,7 +319,8 @@ export default {
 		documents: "Credenciales",
 		settings: "Configuración",
 		semillas: "Semillas",
-		issuers: "Lista de Issuers"
+		issuers: "Lista de Issuers",
+		identity: "Validar Identidad"
 	},
 	rounds: {
 		title: "Accedé a ronda",
