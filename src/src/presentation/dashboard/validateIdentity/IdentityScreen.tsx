@@ -3,51 +3,52 @@ import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
-import { DidiText } from '../../util/DidiText';
-import { DashboardScreenProps } from '../home/Dashboard';
+import { DidiText } from "../../util/DidiText";
+import { DashboardScreenProps } from "../home/Dashboard";
 
 import strings from "../../resources/strings";
 
 export interface IdentityScreenNavigation {
-    DashboardHome: DashboardScreenProps;
+	DashboardHome: DashboardScreenProps;
 }
 
-
 export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, IdentityScreenNavigation> {
-    static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<IdentityScreenNavigation, "DashboardHome">(
-        strings.tabNames.identity,
-        "DashboardHome",
-        {}
-    );
-    
+	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
+		IdentityScreenNavigation,
+		"DashboardHome"
+	>(strings.tabNames.identity, "DashboardHome", {});
+
+	identityButtons = [
+		{
+			title: "Semillas",
+			image: require("../../resources/images/semilla.png")
+		},
+		{
+			title: "Renaper",
+			image: require("../../resources/images/renaper.png")
+		},
+		{
+			title: "VU Security",
+			image: require("../../resources/images/vu_icon_.png")
+		}
+	];
+
 	render() {
 		return (
 			<View style={styles.container}>
 				<View style={styles.body}>
-					<TouchableOpacity style={styles.title}>
-						<View style={styles.listIssuers}>
-							<View style={styles.title}>
-								<Image style={styles.image} source={require("../../resources/images/semilla.png")} />
-								<DidiText.Explanation.Emphasis>Semillas</DidiText.Explanation.Emphasis>
-							</View>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.title}>
-						<View style={styles.listIssuers}>
-							<View style={styles.title}>
-								<Image style={styles.image} source={require("../../resources/images/renaper.png")} />
-								<DidiText.Explanation.Emphasis>Renaper</DidiText.Explanation.Emphasis>
-							</View>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.title}>
-						<View style={styles.listIssuers}>
-							<View style={styles.title}>
-								<Image style={styles.image} source={require("../../resources/images/vu_icon_.png")} />
-								<DidiText.Explanation.Emphasis>VU Security</DidiText.Explanation.Emphasis>
-							</View>
-						</View>
-					</TouchableOpacity>
+					{this.identityButtons.map((identityBtn, key) => {
+						return (
+							<TouchableOpacity style={styles.title} key={key}>
+								<View style={styles.listIssuers}>
+									<View style={styles.title}>
+										<Image style={styles.image} source={identityBtn.image} />
+										<DidiText.Explanation.Emphasis>{identityBtn.title}</DidiText.Explanation.Emphasis>
+									</View>
+								</View>
+							</TouchableOpacity>
+						);
+					})}
 				</View>
 			</View>
 		);
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderRadius: 10,
 		borderColor: "#24CDD2",
-        width: "100%",
+		width: "100%"
 	},
 	image: {
 		width: 30,
