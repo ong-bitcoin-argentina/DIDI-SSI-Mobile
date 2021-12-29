@@ -64,14 +64,18 @@ class StartAccessScreen extends NavigationEnabledComponent<
 	};
 
 	render() {
+		const object = {}
+		Object.assign(object,this.props.did)
+		const nullSearch= Object.values(object)[0];
 		return (
 			<Fragment>
 				<SplashContent>
-					<Title>{this.props.did && this.props.did.did ?
+
+					<Title>{nullSearch !== null && this.props.did && this.props.did.did ?
 						`DID: ${this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4)}` 
 						: 'Crear o recuperar cuenta'}
 					</Title>
-					{this.props.did ? 
+					{nullSearch !== null &&this.props.did ? 
 						<DidiButton
 							onPress={() => this.navigate("Login", {})}
 							style={styles.secondaryButton}
