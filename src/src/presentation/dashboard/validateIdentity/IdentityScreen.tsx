@@ -33,7 +33,9 @@ export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, I
 		{
 			title: "Renaper",
 			image: require("../../resources/images/renaper.png"),
-			navigation: '/'
+			navigation: ()=>{
+				this.navigate("ValidateID", {});
+			}
 		},
 		{
 			title: "VU Security",
