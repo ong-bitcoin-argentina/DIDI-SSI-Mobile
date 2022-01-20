@@ -22,7 +22,7 @@ export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, I
 		"DashboardHome"
 	>(strings.tabNames.identity, "DashboardHome", {});
 
-	identityButtons: any  = [
+	identityButtons: ItemsBtn[]  = [
 		{
 			title: "Semillas",
 			image: require("../../resources/images/semilla.png"),
@@ -33,12 +33,16 @@ export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, I
 		{
 			title: "Renaper",
 			image: require("../../resources/images/renaper.png"),
-			navigation: '/'
+			navigation: ()=>{
+				this.navigate("ValidateID", {});
+			}
 		},
 		{
 			title: "VU Security",
 			image: require("../../resources/images/vu_icon_.png"),
-			navigation: '/'
+			navigation: ()=>{
+				console.log('colocar  -- > this.navigation');
+			}
 		}
 	];
 
