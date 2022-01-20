@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, ImageSourcePropType } from "react-native";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -11,25 +11,34 @@ import strings from "../../resources/strings";
 export interface IdentityScreenNavigation {
 	DashboardHome: DashboardScreenProps;
 }
-
+interface ItemsBtn {
+	title: string,
+	image:  ImageSourcePropType,
+	navigation: ()=>any,
+}
 export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, IdentityScreenNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		IdentityScreenNavigation,
 		"DashboardHome"
 	>(strings.tabNames.identity, "DashboardHome", {});
 
-	identityButtons = [
+	identityButtons: any  = [
 		{
 			title: "Semillas",
-			image: require("../../resources/images/semilla.png")
+			image: require("../../resources/images/semilla.png"),
+			navigation: ()=>{
+				this.navigate("ValidateSemillasID", {});
+			}
 		},
 		{
 			title: "Renaper",
-			image: require("../../resources/images/renaper.png")
+			image: require("../../resources/images/renaper.png"),
+			navigation: '/'
 		},
 		{
 			title: "VU Security",
-			image: require("../../resources/images/vu_icon_.png")
+			image: require("../../resources/images/vu_icon_.png"),
+			navigation: '/'
 		}
 	];
 
@@ -37,9 +46,13 @@ export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, I
 		return (
 			<View style={styles.container}>
 				<View style={styles.body}>
-					{this.identityButtons.map((identityBtn, key) => {
+					{this.identityButtons.map((identityBtn: ItemsBtn, key: number) => {
 						return (
-							<TouchableOpacity style={styles.title} key={key}>
+							<TouchableOpacity 
+							style={styles.title} 
+							key={key}
+							onPress={()=>identityBtn.navigation()}
+							>
 								<View style={styles.listIssuers}>
 									<View style={styles.title}>
 										<Image style={styles.image} source={identityBtn.image} />
