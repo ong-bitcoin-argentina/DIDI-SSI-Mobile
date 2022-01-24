@@ -23,7 +23,6 @@ import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateId
 import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
-import { IncompleteIdentityCard } from "./IncompleteIdentityCard";
 import { NotificationScreenProps } from "./NotificationScreen";
 import { AuthModal } from "../common/AuthModal";
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
@@ -254,12 +253,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 									onBellPress={() => this.navigate("NotificationScreen", {})}
 								/>
 								<View style={styles.headerCredentials}>
-									<IncompleteIdentityCard
-										onStartValidateId={() => this.navigate("ValidateID", {})}
-										onValidateIdSuccess={() => this.props.finishDniValidation()}
-										onValidateIdFailure={() => this.props.resetDniValidation()}
-										style={{ marginBottom: styles.headerCredentials.marginBottom }}
-									/>
 									<EvolutionCard credentials={this.props.credentials} />
 								</View>
 							</Fragment>
