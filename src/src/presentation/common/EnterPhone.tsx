@@ -39,7 +39,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 	render() {		
 		return (
-			<DidiScreen>
+			<DidiScreen >
 				<DidiText.Explanation.Emphasis>{this.props.explanation}</DidiText.Explanation.Emphasis>
 				<DidiText.InputDescription style={{textAlign:"left"}}>{strings.accessCommon.enterPhone.countryPicker}</DidiText.InputDescription>
 				<View style={styles.countryContainer}>
