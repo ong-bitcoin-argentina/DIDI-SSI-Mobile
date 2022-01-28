@@ -7,20 +7,43 @@ import { DidiText } from "../../util/DidiText";
 import { DashboardScreenProps } from "../home/Dashboard";
 
 import strings from "../../resources/strings";
+import { didiConnect } from '../../../store/store';
+import { ActiveDid } from '../../../store/reducers/didReducer';
+import { createVerificationVU } from '../../../services/vuSecurity/createVerification';
 
 export interface IdentityScreenNavigation {
 	DashboardHome: DashboardScreenProps;
+	ValidateID: {};
+	ValidateSemillasID: {};
+	
 }
 interface ItemsBtn {
 	title: string,
 	image:  ImageSourcePropType,
 	navigation: ()=>any,
 }
-export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, IdentityScreenNavigation> {
+
+interface IdentityProps {
+    did: ActiveDid,
+    name: string,
+    lastname:string,
+}
+interface IdentityScreenDispatchProps {
+	vuSecurityData : (operationId: number, userName: string) => void;
+}
+
+export type IdentityScreenProps = IdentityProps &  IdentityScreenDispatchProps;
+
+class IdentityScreen extends NavigationEnabledComponent<IdentityScreenProps, {}, IdentityScreenNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		IdentityScreenNavigation,
 		"DashboardHome"
 	>(strings.tabNames.identity, "DashboardHome", {});
+	async componentDidMount(){
+		const {did,lastname,name} = this.props;
+		const result = await createVerificationVU(did,name, lastname);
+		this.props.vuSecurityData(result.operationId,result.userName);
+	}
 
 	identityButtons: ItemsBtn[]  = [
 		{
@@ -41,7 +64,7 @@ export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, I
 			title: "VU Security",
 			image: require("../../resources/images/vu_icon_.png"),
 			navigation: ()=>{
-				console.log('colocar  -- > this.navigation');
+				this.navigate("ValidateID", {});
 			}
 		}
 	];
@@ -71,6 +94,21 @@ export default class IdentityScreen extends NavigationEnabledComponent<{}, {}, I
 		);
 	}
 }
+
+const connected = didiConnect(
+	IdentityScreen,
+	(state): IdentityProps => ({
+		did: state.did.activeDid,
+		name: state.persistedPersonalData.name,
+		lastname: state.persistedPersonalData.lastname
+}),
+(dispatch): IdentityScreenDispatchProps => ({
+	vuSecurityData : (operationId: number, userName: string) =>
+	dispatch({ type: "VU_SECURITY_DATA_SET", state: { operationId, userName } }),	
+})
+);
+
+export { connected as IdentityScreen };
 
 const styles = StyleSheet.create({
 	body: {

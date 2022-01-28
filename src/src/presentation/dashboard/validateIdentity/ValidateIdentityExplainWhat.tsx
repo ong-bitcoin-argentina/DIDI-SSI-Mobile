@@ -8,6 +8,7 @@ import strings from "../../resources/strings";
 import { ValidateIdentityExplainHowProps } from "./ValidateIdentityExplainHow";
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import { DashboardScreenProps } from "../home/Dashboard";
+import { store } from '../../../store/normalizedStore';
 
 export interface ValidateIdentityExplainWhatNavigation {
 	ValidateIdentityHow: ValidateIdentityExplainHowProps;
@@ -27,6 +28,10 @@ export class ValidateIdentityExplainWhatScreen extends NavigationEnabledComponen
         "DashboardHome",
         {}
     );
+	async componentDidMount() {
+		console.log("Verificacion de store ---- desde ValidateIdentityExplainWhat >");
+		console.log(await store.getState());
+	}
 
 	render() {
 		return (
