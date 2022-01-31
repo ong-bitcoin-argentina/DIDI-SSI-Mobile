@@ -41,6 +41,7 @@ import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
+import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -54,6 +55,8 @@ interface DashboardScreenStateProps {
 	imageUrl: string;
 	imageId: string;
 	identity: ValidatedIdentity;
+	operationId: number,
+	userName: string,
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
@@ -63,6 +66,7 @@ interface DashboardScreenDispatchProps {
 	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
 	saveProfileImage: (image: any) => void;
+	resetVuSecurity: (userName: string, operationId: number) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -88,7 +92,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenInternalProps,
 	DashboardScreenState,
 	DashboardScreenNavigation
-	> {
+> {
 	static navigationOptions = NavigationHeaderStyle.gone;
 
 	constructor(props: DashboardScreenInternalProps) {
@@ -113,11 +117,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 	permissionGranted = async () => {
 		const { did } = this.props;
 
-		const verification = await createToken(did)
+		const verification = await createToken(did);
 		if (!verification) {
 			return;
 		}
-		
+
 		this.setState({ showModal: false });
 		this.handleSuccessRondaLinking();
 		successfullyLogged(verification);
@@ -142,7 +146,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	};
 
 	componentDidMount() {
-		const { pendingLinking } = this.props;
+		const { pendingLinking, userName, operationId} = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
@@ -150,6 +154,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			this.props.resetPendingLinking();
 			this.urlHandler({ url: pendingLinking });
 		}
+		this.props.resetVuSecurity(userName,operationId);
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
@@ -197,7 +202,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 
 	private async runGetPersonalData() {
 		const token = await createToken(this.props.did);
-		if(!token){
+		if (!token) {
 			return;
 		}
 		this.setState({
@@ -290,6 +295,8 @@ export default didiConnect(
 		imageUrl: state.persistedPersonalData.imageUrl,
 		imageId: state.persistedPersonalData.imageId,
 		identity: state.validatedIdentity,
+		operationId: state.vuSecurityData.operationId,
+		userName: state.vuSecurityData.userName,
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
@@ -307,6 +314,10 @@ export default didiConnect(
 				type: "IDENTITY_PATCH",
 				value: identity
 			});
+		},
+		resetVuSecurity: (userName: string, operationId: number) => {
+			cancelVerificationVU(userName, operationId);
+			dispatch({ type: "VU_SECURITY_DATA_RESET" });
 		}
 	})
 );
