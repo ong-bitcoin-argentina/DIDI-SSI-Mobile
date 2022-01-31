@@ -5,8 +5,13 @@ export type VuSecurityData = {
 	userName: string;
 };
 
-export interface VuSecurityDataAction {
+export interface VuSecurityDataStart {
 	type: "VU_SECURITY_DATA_SET";
+	state: VuSecurityData;
+}
+
+interface VuSecurityReset {
+	type: "VU_SECURITY_DATA_RESET";
 	state: VuSecurityData;
 }
 
@@ -14,6 +19,7 @@ const initial = {
 	operationId: 0,
 	userName: ""
 };
+export type VuSecurityDataAction = VuSecurityDataStart | VuSecurityReset;
 
 export function vuSecurityDataReducer(
 	state: VuSecurityData = initial,
@@ -22,7 +28,8 @@ export function vuSecurityDataReducer(
 	switch (action.type) {
 		case "VU_SECURITY_DATA_SET":
 			return action.state;
-
+		case "VU_SECURITY_DATA_RESET":
+			return initial;
 		default:
 			return state;
 	}
