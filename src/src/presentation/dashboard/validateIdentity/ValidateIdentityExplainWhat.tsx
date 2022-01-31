@@ -28,10 +28,6 @@ export class ValidateIdentityExplainWhatScreen extends NavigationEnabledComponen
         "DashboardHome",
         {}
     );
-	async componentDidMount() {
-		console.log("Verificacion de store ---- desde ValidateIdentityExplainWhat >");
-		console.log(await store.getState());
-	}
 
 	render() {
 		return (

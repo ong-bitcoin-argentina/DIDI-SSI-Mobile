@@ -11,19 +11,19 @@ export interface Response {
 }
 
 export async function createVerificationVU(
-	didF: ActiveDid ,
+	activeDid: ActiveDid ,
     name:string,
 	lastname: string,
     deviceHash = "hash",
 	rooted = false
 	) : ApiResult<ICreateVerificationResponse> {
     const userName = `${name} ${lastname}`
-    const did = JSON.stringify(await didF?.did());
+    const did = JSON.stringify(await activeDid?.did());
 	const operativeSystem=  getSystemName();
 	const operativeSystemVersion= getSystemVersion();
 	const deviceManufacturer= await getManufacturer();
 	const deviceName = await getDeviceName();
-	const token = await createTokenAuthorization(didF);
+	const token = await createTokenAuthorization(activeDid);
 	return await VUSecurity().createVerification(
 		did.substring(1,did.length-1),
 		userName,
@@ -33,6 +33,6 @@ export async function createVerificationVU(
 		operativeSystemVersion,
 		deviceManufacturer,
 		deviceName,
-		token,
+		`${token}`,
 	);
 }

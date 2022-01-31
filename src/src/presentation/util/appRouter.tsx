@@ -125,7 +125,6 @@ export const createTokenAuthorization = async (did: ActiveDid):Promise<string|nu
 	credentialsParams.did = did.did();
 	const cred = new Credentials(credentialsParams);
 	return cred.createVerification({
-		"hola": "test",
 		"iss": did.did()
 	});
 
