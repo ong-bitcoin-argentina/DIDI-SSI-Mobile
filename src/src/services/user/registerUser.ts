@@ -7,7 +7,6 @@ import { getPrivateKeySeed } from "../internal/getPrivateKeySeed";
 import { getState } from "../internal/getState";
 import { withDidiServerClient } from "../internal/withDidiServerClient";
 import { withExistingDid } from "../internal/withExistingDid";
-import { registerUserVU } from '../vuSecurity/registerUserVU';
 
 export interface RegisterUserArguments {
 	api: DidiServerApiClient;
@@ -24,9 +23,7 @@ export interface RegisterUserArguments {
 }
 
 const registerUserComponent  = buildComponentServiceCall(async (args: RegisterUserArguments) => {
-	const result = convertError(await args.api.registerUser(args.did, args.data, args.firebaseId));
-	await registerUserVU(args.did.did(),args.data.name,args.data.lastname);
-	return result;
+	return convertError(await args.api.registerUser(args.did, args.data, args.firebaseId));
 }
 );
 
