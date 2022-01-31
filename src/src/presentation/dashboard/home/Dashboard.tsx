@@ -66,7 +66,7 @@ interface DashboardScreenDispatchProps {
 	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
 	saveProfileImage: (image: any) => void;
-	resetVuSecurity: (userName: string, operationId: number) => void;
+	resetVuSecurity: (userName: string, operationId: number, did: ActiveDid) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -146,7 +146,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	};
 
 	componentDidMount() {
-		const { pendingLinking, userName, operationId} = this.props;
+		const { pendingLinking, userName, operationId, did} = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
@@ -154,7 +154,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			this.props.resetPendingLinking();
 			this.urlHandler({ url: pendingLinking });
 		}
-		this.props.resetVuSecurity(userName,operationId);
+		this.props.resetVuSecurity(userName,operationId, did);
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
@@ -315,8 +315,8 @@ export default didiConnect(
 				value: identity
 			});
 		},
-		resetVuSecurity: (userName: string, operationId: number) => {
-			cancelVerificationVU(userName, operationId);
+		resetVuSecurity: (userName: string, operationId: number, did: ActiveDid) => {
+			cancelVerificationVU(userName, operationId, did);
 			dispatch({ type: "VU_SECURITY_DATA_RESET" });
 		}
 	})
