@@ -8,5 +8,5 @@ const VUSecurity = ():VUSecurityApiClient => ( new VUSecurityApiClient(AppConfig
 
 export async function cancelVerificationVU(userName: string,operationId: number,did: ActiveDid ) {    
     const token = await createTokenAuthorization(did);
-    return VUSecurity().cancelVerification(userName, `${operationId}`,token);
+    return VUSecurity().cancelVerification(userName, `${operationId}`,`${token}`);
 }
