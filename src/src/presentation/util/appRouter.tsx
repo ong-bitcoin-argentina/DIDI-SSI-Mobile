@@ -114,9 +114,9 @@ export const createToken = async (did: ActiveDid):Promise<string| null> => {
 
 
 
-export const createTokenAuthorization = async (did: ActiveDid):Promise<string|null> => {
+export const createTokenAuthorization = async (did: ActiveDid):Promise<string> => {
 	if (!did || !did.did) {
-		return null;
+		return 'null';
 	}	
 	const credentialsParams: Settings = {};
 	credentialsParams.signer = getSignerForHDPath(getDidAddress(did));
