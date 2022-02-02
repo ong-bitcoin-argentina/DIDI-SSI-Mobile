@@ -33,6 +33,6 @@ export async function createVerificationVU(
 		operativeSystemVersion,
 		deviceManufacturer,
 		deviceName,
-		`${token}`,
+		token,
 	);
 }

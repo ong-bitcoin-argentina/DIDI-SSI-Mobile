@@ -8,7 +8,6 @@ import strings from "../../resources/strings";
 import { ValidateIdentityExplainHowProps } from "./ValidateIdentityExplainHow";
 import ValidateIdentityExplanation from "./ValidateIdentityExplanation";
 import { DashboardScreenProps } from "../home/Dashboard";
-import { store } from '../../../store/normalizedStore';
 
 export interface ValidateIdentityExplainWhatNavigation {
 	ValidateIdentityHow: ValidateIdentityExplainHowProps;
