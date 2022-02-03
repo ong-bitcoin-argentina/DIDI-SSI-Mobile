@@ -104,7 +104,7 @@ const connected = didiConnect(
 }),
 (dispatch): IdentityScreenDispatchProps => ({
 	vuSecurityData : (operationId: number, userName: string) =>
-	dispatch({ type: "VU_SECURITY_DATA_SET", state: { operationId, userName } }),	
+	dispatch({ type: "VU_SECURITY_DATA_SET", state: {operationId:`${operationId}`, userName } }),	
 })
 );
 
