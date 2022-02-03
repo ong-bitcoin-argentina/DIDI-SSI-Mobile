@@ -55,7 +55,7 @@ interface DashboardScreenStateProps {
 	imageUrl: string;
 	imageId: string;
 	identity: ValidatedIdentity;
-	operationId: number,
+	operationId: string,
 	userName: string,
 }
 interface DashboardScreenDispatchProps {
@@ -66,7 +66,7 @@ interface DashboardScreenDispatchProps {
 	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
 	saveProfileImage: (image: any) => void;
-	resetVuSecurity: (userName: string, operationId: number, did: ActiveDid) => void;
+	resetVuSecurity: (userName: string, operationId: string, did: ActiveDid) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -315,7 +315,7 @@ export default didiConnect(
 				value: identity
 			});
 		},
-		resetVuSecurity: (userName: string, operationId: number, did: ActiveDid) => {
+		resetVuSecurity: (userName: string, operationId: string, did: ActiveDid) => {
 			cancelVerificationVU(userName, operationId, did);
 			dispatch({ type: "VU_SECURITY_DATA_RESET" });
 		}

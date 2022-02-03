@@ -1,7 +1,7 @@
 import { StoreAction } from "../StoreAction";
 
 export type VuSecurityData = {
-	operationId: number;
+	operationId: string;
 	userName: string;
 };
 
@@ -16,7 +16,7 @@ interface VuSecurityReset {
 }
 
 const initial = {
-	operationId: 0,
+	operationId: "",
 	userName: ""
 };
 export type VuSecurityDataAction = VuSecurityDataStart | VuSecurityReset;

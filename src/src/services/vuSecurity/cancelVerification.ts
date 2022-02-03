@@ -6,7 +6,8 @@ import { ActiveDid } from '../../store/reducers/didReducer';
 
 const VUSecurity = ():VUSecurityApiClient => ( new VUSecurityApiClient(AppConfig.defaultServiceSettings.urlSecurity));
 
-export async function cancelVerificationVU(userName: string,operationId: number,did: ActiveDid ) {    
+export async function cancelVerificationVU(userName: string,operationId: string, did: ActiveDid ) {    
     const token = await createTokenAuthorization(did);
-    return VUSecurity().cancelVerification(userName, `${operationId}`,`${token}`);
+    return VUSecurity().cancelVerification(userName, operationId,token);
+
 }
