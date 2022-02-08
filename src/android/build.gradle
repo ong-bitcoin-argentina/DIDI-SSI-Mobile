@@ -38,5 +38,17 @@ allprojects {
 
         maven { url "https://jitpack.io" } 
         maven { url "https://maven.google.com" } 
+
+
+        // maven { url"https://jitpack.io"}
+        maven {
+        url"https://artifactory.corp.vusecurity.com/artifactory/libs-release-local"
+        credentials {
+            username="---"
+            password="-----------"
+        }
+        }
+
+
     }
 }
