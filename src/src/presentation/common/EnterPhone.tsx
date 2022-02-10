@@ -33,7 +33,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		super(props);	
 		this.state = {
 			inputCountryCode: "AR",
-			inputCountryCallingCode: "+54"
+			inputCountryCallingCode: "+54",
 		};
 	}
 
@@ -55,7 +55,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 							withFilter={true}	
 							withCloseButton={true}							
 							translation="spa"									
-							countryCode={this.state.inputCountryCode}						
+							countryCode={this.state.inputCountryCode}
 						/>
 					    <Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}>
 						arrow_drop_down
@@ -66,7 +66,9 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 					</View>	
 
 					<View>
-					<DidiTextInput.PhoneNumber onChangeText={inputPhoneNumber => this.setState({ inputPhoneNumber })} />
+					<DidiTextInput.PhoneNumber 
+						onChangeText={inputPhoneNumber => this.setState({ inputPhoneNumber: inputPhoneNumber })} 
+					/>
 					</View>
 
 				{this.props.isPasswordRequired && (
