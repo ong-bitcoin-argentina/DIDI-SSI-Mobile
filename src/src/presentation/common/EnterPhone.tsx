@@ -44,30 +44,32 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 				<DidiText.InputDescription style={{textAlign:"left"}}>{strings.accessCommon.enterPhone.countryPicker}</DidiText.InputDescription>
 				<View style={styles.countryContainer}>
 					<View style={{alignItems: 'center', width:"90%", flexDirection:"row",marginBottom:5}}>
+
 						<CountryPicker
-							onSelect={({cca2,callingCode}) => this.setState({inputCountryCode:cca2, inputCountryCallingCode: callingCode})}
-							withEmoji={true}																																																																																																																																																											
+							onSelect={({ cca2, callingCode }) => this.setState({ inputCountryCode: cca2, inputCountryCallingCode: callingCode })}
+							withEmoji={true}
 							withCallingCode={true}
 							withFlagButton={true}
 							withCountryNameButton={true}
 							withCallingCodeButton={true}
 							withModal={true}
-							withFilter={true}	
-							withCloseButton={true}							
-							translation="spa"									
-							countryCode={this.state.inputCountryCode}						
-						/>
-					    <Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}>
+							withFilter={true}
+							withCloseButton={true}
+							translation="spa"
+							countryCode={this.state.inputCountryCode}
+							countryCodes={["AR", "BZ", "BO", "BR", "CL", "CO", "CR", "EC", "SV", "FK", "GF", "GT", "GY", "HN", "NI", "PA", "PY", "PE", "SR", "UY", "VE", "MX"]} />
+					    
+						<Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}>
 						arrow_drop_down
 					    </Icon>
 
+					</View>					
 					</View>
 					
-					</View>	
-
 					<View>
 					<DidiTextInput.PhoneNumber onChangeText={inputPhoneNumber => this.setState({ inputPhoneNumber })} />
 					</View>
+					
 
 				{this.props.isPasswordRequired && (
 					<DidiTextInput.Password
