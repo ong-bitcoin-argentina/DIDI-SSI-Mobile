@@ -1,4 +1,4 @@
-import { DrawerLayoutAndroidBase, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { JWTParseError } from "@proyecto-didi/app-sdk";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
