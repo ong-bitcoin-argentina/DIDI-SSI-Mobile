@@ -37,6 +37,7 @@
 		"react-native-config": "1.2.1",
 		"react-native-country-picker-modal": "^2.0.0",
 		"react-native-deep-linking": "2.2.0",
+    "react-native-device-info": "^7.3.0",
 		"react-native-fast-image": "8.1.5",
 		"react-native-floating-action": "^1.20.0",
 		"react-native-fs": "^2.16.6",

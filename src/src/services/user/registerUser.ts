@@ -22,8 +22,9 @@ export interface RegisterUserArguments {
 	firebaseId: string | undefined;
 }
 
-const registerUserComponent = buildComponentServiceCall(async (args: RegisterUserArguments) =>
-	convertError(await args.api.registerUser(args.did, args.data, args.firebaseId))
+const registerUserComponent  = buildComponentServiceCall(async (args: RegisterUserArguments) => {
+	return convertError(await args.api.registerUser(args.did, args.data, args.firebaseId));
+}
 );
 
 export function registerUser(

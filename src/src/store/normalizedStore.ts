@@ -33,6 +33,7 @@ import { authAppsReducer, AuthAppsState } from "./reducers/authAppsReducer";
 import { persistedPersonalDataReducer, PersistedPersonalData } from "./reducers/persistedPersonalDataReducer";
 import { pendingLinkingReducer, PendingLinkingState } from "./reducers/pendingLinkingReducer";
 import { IssuersRegistry, persistedIssuersDataReducer } from "./reducers/persistedIssuersDataReducer";
+import { VuSecurityData, vuSecurityDataReducer } from './reducers/vuSecurityDataReducer';
 
 export interface PersistedStoreContent {
 	did: DidState;
@@ -53,6 +54,7 @@ export interface PersistedStoreContent {
 	persistedPersonalData: PersistedPersonalData;
 	pendingLinking: PendingLinkingState;
 	issuersNames: IssuersRegistry;
+	vuSecurityData:VuSecurityData;
 }
 
 const persistedStoreContentReducer = combineReducers<PersistedStoreContent, StoreAction>({
@@ -73,7 +75,8 @@ const persistedStoreContentReducer = combineReducers<PersistedStoreContent, Stor
 	authApps: authAppsReducer,
 	persistedPersonalData: persistedPersonalDataReducer,
 	pendingLinking: pendingLinkingReducer,
-	issuersNames: persistedIssuersDataReducer
+	issuersNames: persistedIssuersDataReducer,
+	vuSecurityData: vuSecurityDataReducer
 });
 
 const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user" } = {
@@ -94,7 +97,8 @@ const deletionPolicy: { [name in keyof PersistedStoreContent]: "device" | "user"
 	authApps: "user",
 	persistedPersonalData: "user",
 	pendingLinking: "device",
-	issuersNames: "user"
+	issuersNames: "user",
+	vuSecurityData:"user"
 };
 
 function deletionReducer(state: PersistedStoreContent | undefined, action: StoreAction): PersistedStoreContent {

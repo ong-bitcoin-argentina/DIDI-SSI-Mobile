@@ -105,11 +105,25 @@ export const createToken = async (did: ActiveDid):Promise<string| null> => {
 	const credentialsParams: Settings = {};
 	credentialsParams.signer = getSignerForHDPath(getDidAddress(did));
 	credentialsParams.did = did.did();
-
 	const cred = new Credentials(credentialsParams);
-
 	return cred.createVerification({
 		sub: DIDI_SERVER_DID, //Address of receiver of the verification
 		claim: { name: "Ronda" }
 	});
+};
+
+
+
+export const createTokenAuthorization = async (did: ActiveDid):Promise<string> => {
+	if (!did || !did.did) {
+		return 'null';
+	}	
+	const credentialsParams: Settings = {};
+	credentialsParams.signer = getSignerForHDPath(getDidAddress(did));
+	credentialsParams.did = did.did();
+	const cred = new Credentials(credentialsParams);
+	return cred.createVerification({
+		"iss": did.did()
+	});
+
 };
