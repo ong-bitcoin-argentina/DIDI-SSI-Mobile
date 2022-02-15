@@ -28,7 +28,7 @@ import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
-import IdentityNavigator from "./validateIdentity/IdentityNavigator";
+import IdentityNavigator from "./vuIdentity/IdentityNavigator";
 import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 import { RoundsScreen } from "./rounds/RoundsScreen";
