@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
 import { DidiText } from "../../util/DidiText";
 
@@ -39,11 +39,11 @@ interface VuSecurityProps {
 	userName: string;
 	did: ActiveDid;
 }
-interface vuCameraDispatchProps {
+interface VuCameraDispatchProps {
 	vuSecurityData: (operationId: string, userName: string, vuResponseFront: string) => void;
 }
 
-export type VuDidiCameraProps = vuCameraDispatchProps & VuSecurityProps & CommonProps &
+export type VuDidiCameraProps = VuCameraDispatchProps & VuSecurityProps & CommonProps &
 	(
 		| (PictureProps & Partial<BarcodeProps & FaceProps>)
 		| (BarcodeProps & Partial<PictureProps & FaceProps>)
@@ -82,6 +82,7 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 	}
 
 	private async onCameraReady() {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const aspectRatios = await this.camera!.getSupportedRatiosAsync();
 		const aspectRatio =
 			aspectRatios.length === 0
@@ -180,7 +181,7 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 							faceDetectionMode: RNCamera.Constants.FaceDetection.Mode.fast,
 							faceDetectionLandmarks: RNCamera.Constants.FaceDetection.Landmarks.all,
 							onFacesDetected: res => onFacesDetected(res.faces)
-					  }
+					}
 					: undefined)}
 				onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
 				notAuthorizedView={
@@ -212,7 +213,7 @@ const connected = didiConnect(
 		userName: state.vuSecurityData.userName,
 		did: state.did.activeDid
 	}),
-	(dispatch): vuCameraDispatchProps => ({
+	(dispatch): VuCameraDispatchProps => ({
 		vuSecurityData: (operationId: string, userName: string, vuResponseFront: string) =>
 			dispatch({ type: "VU_SECURITY_DATA_SET", state: { operationId, userName, vuResponseFront } })
 	})
