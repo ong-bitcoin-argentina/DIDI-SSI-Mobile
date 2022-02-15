@@ -543,6 +543,20 @@ export default {
 		changePhoneSuccess: "Número de teléfono cambiado exitosamente.",
 		changeEmailSuccess: "Email cambiado exitosamente."
 	},
+	vuIdentity:{
+		header: "Validar con vu Security",
+		welcome: "Bienvenido/a",
+		howTo: {
+			header: "Comienzo de proceso de validación de su Identidad",
+			intro: "Deberá seguir el siguiente proceso:",
+			steps: [
+				"Buscá un lugar iluminado y con fondo claro",
+				"Tener tu documento a mano",
+				"Acceso a Internet o datos móviles"
+			],
+			buttonText: "Está listo/a?"
+		},
+	},
 	validateIdentity: {
 		header: "Validar Identidad",
 		welcome: "Te damos la bienvenida",
@@ -572,7 +586,8 @@ export default {
 			barcodeConfirmation: {
 				found: "Se identificó el código de barras.",
 				notFound: "No se identificó un código de barras. Si está de este lado del DNI, volvé a tomar la foto."
-			}
+			},
+			rejected: "la foto fue rechazada por favor verifique que los margen del carnet coincida, con lo que le indica la cámara",
 		},
 		explainBack: {
 			step: 2,
