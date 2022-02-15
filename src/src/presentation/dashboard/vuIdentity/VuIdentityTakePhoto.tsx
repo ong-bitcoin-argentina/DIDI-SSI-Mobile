@@ -20,6 +20,7 @@ import Cross from "../../resources/images/cross.svg";
 import { VuIdentityExplanationHeader } from "./VuIdentityExplanationHeader";
 import { didiConnect } from "../../../store/store";
 import VuIdentityExplanation, { VuIdentityExplanationProps } from './VuIdentityExplanation';
+import strings from "../../resources/strings";
 
 export type VuTakePhotoProps = {
 	image: string;
@@ -82,14 +83,24 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 			case "camera":
 				return <DidiReticleCamera {...this.props} onPictureCropped={pic => this.onPictureTaken(pic)} />;
 			case "confirmation": {
-				const uri = this.state.uri;
+				let uriResponse=""; 
+				let cameraResponse="";
+				if(this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.confirmation){
+					uriResponse = this.state.uri;
+					cameraResponse = this.props.confirmation;
+				}
+				if (this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed) {
+					uriResponse = "goBack";
+					cameraResponse = strings.vuIdentity.explainFront.rejected;
+				}
 				return (
 					<ScrollView style={styles.scrollView}>
-						{this.props.vuResponseFront === "Add front success" ? (
 							<View style={commonStyles.view.area}>
 								<View style={commonStyles.view.body}>
 									<VuIdentityExplanationHeader {...this.props.header} />
-									<DidiText.ValidateIdentity.Normal>{this.props.confirmation}</DidiText.ValidateIdentity.Normal>
+									{this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed ?
+									<Image style={styles.image} source={this.props.image} />: null}
+									<DidiText.ValidateIdentity.Normal>{cameraResponse}</DidiText.ValidateIdentity.Normal>
 									<Image
 										style={{
 											resizeMode: "contain",
@@ -98,35 +109,12 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 										}}
 										source={{ uri: this.state.uri }}
 									/>
-									<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uri)}>
-										<Checkmark width="100%" height="100%" />
+									<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uriResponse)}>
+									{this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed?
+									<Cross width="100%" height="100%" />:<Checkmark width="100%" height="100%" />}
 									</TouchableOpacity>
 								</View>
 							</View>
-						) : (
-							<View style={commonStyles.view.area}>
-								<View style={commonStyles.view.body}>
-									<VuIdentityExplanationHeader {...this.props.header} />
-									<Image style={styles.image} source={this.props.image} />
-									<DidiText.ValidateIdentity.Normal>
-										la foto fue rechazada por favor verifique que los margen del carnet coincida, con lo que le indica
-										la cámara
-									</DidiText.ValidateIdentity.Normal>
-
-									<Image
-										style={{
-											resizeMode: "contain",
-											aspectRatio: this.props.photoWidth / this.props.photoHeight,
-											maxWidth: "100%"
-										}}
-										source={{ uri: this.state.uri }}
-									/>
-									<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted('goBack')}>
-										<Cross width="100%" height="100%" />
-									</TouchableOpacity>
-								</View>
-							</View>
-						)}
 					</ScrollView>
 				);
 			}
