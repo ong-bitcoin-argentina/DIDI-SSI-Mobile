@@ -128,8 +128,6 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 	}
 
 	async takePicture(args?: { pauseAfterCapture?: boolean }) {
-		console.log('ENTRANDO A FUNCION');
-		
 		if (this.camera === null) {
 			throw new Error("Camera not available");
 		}

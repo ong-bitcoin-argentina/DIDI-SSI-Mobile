@@ -15,8 +15,7 @@ export async function addDocumentImageFront(
 	let result;
 	try {
 		const token = await createTokenAuthorization(did);
-		const r = VUSecurity().addDocumentImage(userName, operationId, side, file, token);
-		return r;
+		return VUSecurity().addDocumentImage(userName, operationId, side, file, token);
 	} catch (error) {
 		result = { message: "Hubo un error al adherir la imagen documento" };
 	}
