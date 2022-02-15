@@ -82,8 +82,10 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 	}
 
 	private async onCameraReady() {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		const aspectRatios = await this.camera!.getSupportedRatiosAsync();
+		if (!this.camera) {
+			return;
+		}
+		const aspectRatios = await this.camera.getSupportedRatiosAsync();
 		const aspectRatio =
 			aspectRatios.length === 0
 				? "4:3" // Default, should always exist
