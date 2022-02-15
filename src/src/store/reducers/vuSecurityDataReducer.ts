@@ -3,6 +3,8 @@ import { StoreAction } from "../StoreAction";
 export type VuSecurityData = {
 	operationId: string;
 	userName: string;
+	vuResponseFront?:string,
+	vuResponseBack?:string,
 };
 
 export interface VuSecurityDataStart {
@@ -17,7 +19,9 @@ interface VuSecurityReset {
 
 const initial = {
 	operationId: "",
-	userName: ""
+	userName: "",
+	vuResponseFront:"",
+	vuResponseBack:"",
 };
 export type VuSecurityDataAction = VuSecurityDataStart | VuSecurityReset;
 
