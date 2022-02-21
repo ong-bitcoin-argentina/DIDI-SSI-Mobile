@@ -7,7 +7,6 @@ import { BarcodeType, DidiCamera } from "../common/DidiCamera";
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
-import { store } from '../../../store/normalizedStore';
 import { VuIdentityTakePhoto } from './VuIdentityTakePhoto';
 import { ValidateIdentitySelfieProps } from '../validateIdentity/ValidateIdentitySelfie';
 
@@ -34,15 +33,6 @@ export class VuIdentityBackScreen extends NavigationEnabledComponent<
 		super(props);
 		this.state = {};
 	}
-
-    async componentDidMount(){
-
-        console.log(await store.getState());
-        console.log(this.state);
-        console.log(this.props);
-        
-        
-    }
 	render() {
         
 		return (

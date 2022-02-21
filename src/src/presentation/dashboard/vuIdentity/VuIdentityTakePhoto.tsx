@@ -48,8 +48,6 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 
 	componentDidMount() {
 		this.backHandler = BackHandler.addEventListener("hardwareBackPress", (): boolean => {
-			console.log(this.state.state);
-
 			switch (this.state.state) {
 				case "explanation":
 					return false;
