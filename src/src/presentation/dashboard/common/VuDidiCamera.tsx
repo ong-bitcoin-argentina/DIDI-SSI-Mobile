@@ -107,12 +107,10 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 
 		const resultDisabled = this.props.cameraButtonDisabled;
 
-		if (this.props.cameraButtonDisabled !== false) {
+		if (typeof resultDisabled == 'object') {
 			return VuDidiCamera.cameraButton(() => Alert.alert(resultDisabled.title, resultDisabled.text));
-		} 
-		if (this.props.cameraButtonDisabled === false) {
-			return VuDidiCamera.cameraButton(() => this.takePicture());
 		}
+			return VuDidiCamera.cameraButton(() => this.takePicture());	
 	}
 
 	private onBarCodeRead(content: BarcodeEvent) {
@@ -140,12 +138,12 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			fixOrientation: true
 		});
 		if (this.props.VuFront) {
-			const result = await addDocumentImageFront(this.props.userName,this.props.operationId,data.base64,this.props.did);
+			const result = await addDocumentImageFront(this.props.userName,this.props.operationId,data.base64,this.props.did);	
 			this.props.vuSecurityData(this.props.operationId, this.props.userName,result.message);
 		}
 
 		if (this.props.VuBack) {
-			console.log("INGRESANDO BACKKKKKK");
+			// [aidi] Capture back - implementacion
 		}
 
 		this.props.onPictureTaken?.(data);
