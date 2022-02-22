@@ -286,7 +286,9 @@ export default {
 		defaultPlace: "Otros",
 		enterPhone: {
 			messageHead: "Cargá tu número de celular",
-			countryCode: "Código de País"
+			countryCode: "Código de País",
+			countryPicker: "Seleccionar Código de País"
+			
 		},
 		verify: {
 			phoneMessageHead: "Ingresá el código de 6 dígitos para verificar tu celular",
@@ -670,7 +672,7 @@ export default {
 		},
 		cellPhoneNumber: {
 			description: "Número de celular",
-			placeholder: "código área + número sin 15"
+			placeholder: "Ingresá el código de área + número"
 		},
 		password: {
 			BASIC: "Contraseña",

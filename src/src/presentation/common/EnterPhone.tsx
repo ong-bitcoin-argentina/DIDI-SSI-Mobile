@@ -1,16 +1,16 @@
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
-
 import commonStyles from "../resources/commonStyles";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import { DidiText } from "../util/DidiText";
 import DidiTextInput from "../util/DidiTextInput";
-
+import CountryPicker from "react-native-country-picker-modal";
 import { Validations } from "../../model/Validations";
-import { countries, Country } from "../resources/countries";
 import strings from "../resources/strings";
-
 import { DidiScreen } from "./DidiScreen";
+
+const {Icon} = DidiText;
+
 
 export interface EnterPhoneProps {
 	explanation: string;
@@ -20,49 +20,58 @@ export interface EnterPhoneProps {
 	isContinuePending: boolean;
 }
 
-export interface EnterPhoneState {
+export interface EnterPhoneState {	
 	inputCountryCode?: string;
+	inputCountryCallingCode?: string;
 	inputPhoneNumber?: string;
 	inputPassword?: string;
 }
 
 export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, EnterPhoneState> {
+	
 	constructor(props: EnterPhoneProps) {
-		super(props);
-		this.state = {};
+		super(props);	
+		this.state = {
+			inputCountryCode: "AR",
+			inputCountryCallingCode: "+54"
+		};
 	}
 
-	render() {
-		const country = this.state.inputCountryCode
-			? countries.find(c => c.prefix === this.state.inputCountryCode)
-			: countries[0];
+	render() {		
 		return (
-			<DidiScreen>
+			<DidiScreen >
 				<DidiText.Explanation.Emphasis>{this.props.explanation}</DidiText.Explanation.Emphasis>
-
+				<DidiText.InputDescription style={{textAlign:"left"}}>{strings.accessCommon.enterPhone.countryPicker}</DidiText.InputDescription>
 				<View style={styles.countryContainer}>
-					<View style={{ flex: 1 }}>
-						{country && (
-							<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-								{country.image && <Image style={styles.countryImage} source={country.image} />}
-								<DidiText.Explanation.Normal>{country.name}</DidiText.Explanation.Normal>
-							</View>
-						)}
-					</View>
+					<View style={{alignItems: 'center', width:"90%", flexDirection:"row",marginBottom:5}}>
 
-					<View style={{ flex: 1, alignItems: "center" }}>
-						<DidiTextInput
-							viewProps={{ style: { width: 100 } }}
-							description={strings.accessCommon.enterPhone.countryCode}
-							placeholder="54"
-							textInputProps={{
-								onChangeText: inputCountryCode => this.setState({ inputCountryCode })
-							}}
-						/>
-					</View>
-				</View>
+						<CountryPicker
+							onSelect={({ cca2, callingCode }) => this.setState({ inputCountryCode: cca2, inputCountryCallingCode: callingCode })}
+							withEmoji={true}
+							withCallingCode={true}
+							withFlagButton={true}
+							withCountryNameButton={true}
+							withCallingCodeButton={true}
+							withModal={true}
+							withFilter={true}
+							withCloseButton={true}
+							translation="spa"
+							countryCode={this.state.inputCountryCode}
+							countryCodes={["AR", "BZ", "BO", "BR", "CL", "CO", "CR", "EC", "SV", "FK", "GF", "GT", "GY", "HN", "NI", "PA", "PY", "PE", "SR", "UY", "VE", "MX"]} />
+					    
+						<Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}>
+							arrow_drop_down
+					    	</Icon>
 
-				<DidiTextInput.PhoneNumber onChangeText={inputPhoneNumber => this.setState({ inputPhoneNumber })} />
+					</View>					
+					</View>
+					
+					<View>
+					<DidiTextInput.PhoneNumber 
+						onChangeText={inputPhoneNumber => this.setState({ inputPhoneNumber: inputPhoneNumber })} 
+					/>
+					</View>
+					
 
 				{this.props.isPasswordRequired && (
 					<DidiTextInput.Password
@@ -75,7 +84,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 
 				<DidiServiceButton
 					isPending={this.props.isContinuePending || false}
-					disabled={!this.canPressContinueButton(country || countries[0])}
+					disabled={!this.canPressContinueButton()}					
 					onPress={() => this.onPressContinueButton()}
 					title={strings.accessCommon.validateButtonText}
 				/>
@@ -83,16 +92,16 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		);
 	}
 
-	private canPressContinueButton(country: Country): boolean {
+	private canPressContinueButton(): boolean {
 		return (
-			Validations.isPhoneNumber(this.state.inputPhoneNumber, country.countryCode) &&
+			Validations.isPhoneNumber(this.state.inputPhoneNumber, this.state.inputCountryCode) &&
 			(!this.props.isPasswordRequired || Validations.isPassword(this.state.inputPassword))
 		);
 	}
 
 	private onPressContinueButton() {
-		const countryPrefix = this.state.inputCountryCode ?? countries[0].prefix;
-		const phoneNumber = `+${countryPrefix}${this.state.inputPhoneNumber}`;
+		const countryPrefix = this.state.inputCountryCallingCode;
+		const phoneNumber = `+${countryPrefix}${this.state.inputPhoneNumber}`;		
 		this.props.onPressContinueButton(phoneNumber, this.state.inputPassword || null);
 	}
 }
@@ -102,11 +111,10 @@ const styles = StyleSheet.create({
 		alignSelf: "stretch",
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "space-around"
-	},
-	countryImage: {
-		width: 30,
-		height: 30,
-		marginRight: 10
-	}
+		justifyContent: "flex-start", 
+		paddingHorizontal: 3,
+		borderBottomWidth: 1,
+		borderBottomColor: "#9b9b9b"
+
+	},	
 });
