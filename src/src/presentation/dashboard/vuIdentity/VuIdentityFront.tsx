@@ -68,9 +68,9 @@ export class VuIdentityFrontScreen extends NavigationEnabledComponent<
 				camera={(onLayout, reticle, onPictureTaken) => (
 					<VuDidiCamera
 						VuFront={true}
-						onCameraLayout={onLayout} //marco de captura
-						cameraLandscape={true} //primera aparicio false en camara de lantera true camara trasera /no funciona el retroseso
-						onPictureTaken={onPictureTaken} // aparecen los botones
+						onCameraLayout={onLayout}
+						cameraLandscape={true} 
+						onPictureTaken={onPictureTaken} 
 						onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
 						cameraButtonDisabled={
 							this.state.documentData === undefined ? strings.validateIdentity.explainBack.blocked : false
