@@ -126,12 +126,16 @@ export default class DidiTextInput extends React.Component<DidiTextInputProps> {
 		);
 	};
 
-	static PhoneNumber = (props: BaseProps) => {
+	static PhoneNumber = (props: {
+		onChangeText: (text: string) => void;
+		showIcon?: boolean;
+		
+	}) => {		
 		return (
 			<DidiTextInput
 				description={strings.textInput.cellPhoneNumber.description}
 				placeholder={strings.textInput.cellPhoneNumber.placeholder}
-				tagImage={require("../resources/images/phone.png")}
+				tagImage={props.showIcon && require("../resources/images/phone.png")}
 				maxLength={13}
 				textInputProps={{
 					keyboardType: "phone-pad",
