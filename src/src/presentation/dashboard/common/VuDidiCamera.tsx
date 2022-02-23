@@ -106,8 +106,7 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 		}
 
 		const resultDisabled = this.props.cameraButtonDisabled;
-
-		if (typeof resultDisabled == 'object') {
+		if (resultDisabled) {
 			return VuDidiCamera.cameraButton(() => Alert.alert(resultDisabled.title, resultDisabled.text));
 		}
 			return VuDidiCamera.cameraButton(() => this.takePicture());	
