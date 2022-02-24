@@ -15,6 +15,7 @@ export interface IdentityScreenNavigation {
 	DashboardHome: DashboardScreenProps;
 	ValidateID: {};
 	ValidateSemillasID: {};
+	VuIdentityID:{}
 	
 }
 interface ItemsBtn {
@@ -64,7 +65,7 @@ class IdentityScreen extends NavigationEnabledComponent<IdentityScreenProps, {},
 			title: "VU Security",
 			image: require("../../resources/images/vu_icon_.png"),
 			navigation: ()=>{
-				this.navigate("ValidateID", {});
+				this.navigate("VuIdentityID", {});
 			}
 		}
 	];

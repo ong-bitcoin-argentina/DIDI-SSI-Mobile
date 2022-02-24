@@ -1,3 +1,5 @@
+
+
 import { StyleSheet } from "react-native";
 import { JWTParseError } from "@proyecto-didi/app-sdk";
 
@@ -544,6 +546,36 @@ export default {
 		changePasswordSuccess: "Contraseña cambiada exitosamente.",
 		changePhoneSuccess: "Número de teléfono cambiado exitosamente.",
 		changeEmailSuccess: "Email cambiado exitosamente."
+	},
+	vuIdentity:{
+		header: "Validar con vu Security",
+		welcome: "Bienvenido/a",
+		howTo: {
+			header: "Comienzo de proceso de validación de su Identidad",
+			intro: "Deberá seguir el siguiente proceso:",
+			steps: [
+				"Buscá un lugar iluminado y con fondo claro",
+				"Tener tu documento a mano",
+				"Acceso a Internet o datos móviles"
+			],
+			buttonText: "Está listo/a?"
+		},
+		explainFront: {
+			step: 1,
+			header: "Digitalizando el DNI",
+			description:
+				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
+			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
+			barcodeConfirmation: {
+				found: "Se identificó el código de barras.",
+				notFound: "No se identificó un código de barras. Si está de este lado del DNI, volvé a tomar la foto."
+			},
+			rejected: "la foto fue rechazada por favor verifique que los margen del carnet coincida, con lo que le indica la cámara",
+			vuResponseFront:{
+				confirmation:"Add front success",
+				notConfirmed:"Hubo un error al adherir la imagen documento"
+			}
+		}
 	},
 	validateIdentity: {
 		header: "Validar Identidad",

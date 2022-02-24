@@ -1149,10 +1149,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@proyecto-didi/app-sdk@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@proyecto-didi/app-sdk/-/app-sdk-0.1.2.tgz#59a20d6653c1aedd06acdc3cafbb7ef96714bd63"
-  integrity sha512-UTevAaOlluQN+HRQiK71AH+yeFmgDDZMcOB7b0fpDF4z8OWnF46MWzcIRcN0WB2V7wwOysYG39IGiiigyI7pdw==
+"@proyecto-didi/app-sdk@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@proyecto-didi/app-sdk/-/app-sdk-0.1.4.tgz#398dd9a84819716435b180d83e34e109fe962331"
+  integrity sha512-e0drYfHiLu7El8nzUgW6XssZik+1TSmGMVmV1HodnE+CPHavKTEawjEqKO1GIOuQPBT4WTI45klwIBotZbhpjA==
   dependencies:
     aes-js "^3.1.2"
     apollo-boost "^0.4.7"
@@ -1310,11 +1310,6 @@
   integrity sha512-aTFlFZcYhkPgqq7IdktkubqaG0hVHuSEerjGkR0IwVljbkEahqKMJzTWjVH95YcgEEkPLDqYv39Ie7WYfQdndA==
   dependencies:
     invariant "^2.2.4"
-
-"@react-native-community/toolbar-android@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/toolbar-android/-/toolbar-android-0.2.1.tgz#5d021da8f6aef9412c58d5c981a62b91191af3fe"
-  integrity sha512-kq1jVuJTSnKvqiyFqHp0hNLfntZRdE16heQI2UbE7dUUI0pR7YIoBoRlnt8x5ivJJ/f6m1Dcidku9LkwtcUs6w==
 
 "@react-native-firebase/analytics@7.6.8":
   version "7.6.8"
