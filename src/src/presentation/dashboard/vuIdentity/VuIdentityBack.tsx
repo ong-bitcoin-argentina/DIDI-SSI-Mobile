@@ -2,13 +2,12 @@ import React from "react";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { BarcodeType, DidiCamera } from "../common/DidiCamera";
-
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 import { VuIdentityTakePhoto } from './VuIdentityTakePhoto';
 import { ValidateIdentitySelfieProps } from '../validateIdentity/ValidateIdentitySelfie';
+import { VuDidiCamera } from '../common/VuDidiCamera';
 
 export interface VuIdentityBackNavigation {
 	ValidateIdentitySelfie: ValidateIdentitySelfieProps;
@@ -34,58 +33,51 @@ export class VuIdentityBackScreen extends NavigationEnabledComponent<
 		this.state = {};
 	}
 	render() {
-        
+        const explainBack = strings.vuIdentity.explainBack;
 		return (
 			<VuIdentityTakePhoto
-				photoWidth={1800}
-				photoHeight={1200}
-				targetWidth={1500}
-				targetHeight={1000}
-				cameraLandscape={true}
-				header={{
-					title: strings.validateIdentity.explainBack.step,
-					header: strings.validateIdentity.explainBack.header
-				}}
-				description={strings.validateIdentity.explainBack.description}
-				confirmation={strings.validateIdentity.explainBack.confirmation}
+			photoWidth={1800}
+			photoHeight={1200}
+			targetWidth={1500}
+			targetHeight={1000}
+			cameraLandscape={true}
+			header={{
+				title: explainBack.step,
+				header: explainBack.header
+			}}
+			description={explainBack.description}
+			confirmation={`${explainBack.confirmation}`}
 				image={require("../../resources/images/validateIdentityExplainBack.png")}
 				camera={(onLayout, reticle, onPictureTaken) => (
-					<DidiCamera
+					<VuDidiCamera
+					    VuBack={true}
 						onCameraLayout={onLayout}
-						cameraLandscape={true}
-						cameraButtonDisabled={
-							(this.props.documentData ?? this.state.documentData) === undefined
-								? strings.validateIdentity.explainBack.blocked
-								: false
-						}
-						onPictureTaken={onPictureTaken}
-						onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
+						cameraLandscape={true} 
+						onPictureTaken={onPictureTaken} 
+						cameraOutputsBase64Picture={true}
 					>
 						{reticle}
-					</DidiCamera>
+					</VuDidiCamera>
 				)}
-				onPictureAccepted={(data, reset) =>
-					this.navigate(
-						"ValidateIdentitySelfie",
-						{
-							front: this.props.front,
-							documentData: (this.props.documentData ?? this.state.documentData)!,
-							back: data
-						},
-						reset
-					)
+				onPictureAccepted={(data, reset) =>{
+					if (data.uri !== 'goBack') {
+						this.navigate(
+							"VuIdentitySubmit",
+							{
+								front: this.props.front,
+								documentData: (this.props.documentData ?? this.state.documentData)!,
+								back: data
+							},
+							reset
+						)	
+					} else {
+						reset()
+					}
+				}
 				}
 			/>
 		);
 	}
 
-	private onBarcodeScanned(data: string, type: BarcodeType) {
-		if (type !== "pdf417") {
-			return;
-		}
-		const documentData = DocumentBarcodeData.fromPDF417(data);
-		if (documentData) {
-			this.setState({ documentData });
-		}
-	}
+	
 }
