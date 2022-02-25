@@ -6,7 +6,7 @@ import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
-import { addDocumentImageFront } from "../../../services/vuSecurity/addDocumentImage";
+import { addDocumentImageBack, addDocumentImageFront } from "../../../services/vuSecurity/addDocumentImage";
 import { didiConnect } from "../../../store/store";
 import { ActiveDid } from '../../../store/reducers/didReducer';
 
@@ -40,7 +40,8 @@ interface VuSecurityProps {
 	did: ActiveDid;
 }
 interface VuCameraDispatchProps {
-	vuSecurityData: (operationId: string, userName: string, vuResponseFront: string) => void;
+	vuSecurityDataFront: (operationId: string, userName: string, vuResponseFront: string) => void;
+	vuSecurityDataBack: (operationId: string, userName: string, vuResponseBack: string) => void;
 }
 
 export type VuDidiCameraProps = VuCameraDispatchProps & VuSecurityProps & CommonProps &
@@ -135,14 +136,15 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait",
 			mirrorImage: false,
 			fixOrientation: true
-		});
+		});	
 		if (this.props.VuFront) {
-			const result = await addDocumentImageFront(this.props.userName,this.props.operationId,data.base64,this.props.did);	
-			this.props.vuSecurityData(this.props.operationId, this.props.userName,result.message);
+			const result = await addDocumentImageFront(this.props.userName,this.props.operationId,data.base64,this.props.did);
+			this.props.vuSecurityDataFront(this.props.operationId, this.props.userName,result.message);
 		}
 
-		if (this.props.VuBack) {
-			// [aidi] Capture back - implementacion
+		if (this.props.VuBack) {	
+			const result = await addDocumentImageBack(this.props.userName,this.props.operationId,data.base64,this.props.did);
+			this.props.vuSecurityDataBack(this.props.operationId, this.props.userName,result.message);
 		}
 
 		this.props.onPictureTaken?.(data);
@@ -210,8 +212,12 @@ const connected = didiConnect(
 		did: state.did.activeDid
 	}),
 	(dispatch): VuCameraDispatchProps => ({
-		vuSecurityData: (operationId: string, userName: string, vuResponseFront: string) =>
-			dispatch({ type: "VU_SECURITY_DATA_SET", state: { operationId, userName, vuResponseFront } })
+		vuSecurityDataFront: (operationId: string, userName: string, vuResponseFront: string) =>{
+			dispatch({ type: "VU_SECURITY_RESPONSE_ADD_FRONT", state: { operationId, userName, vuResponseFront } })
+		},
+		vuSecurityDataBack: (operationId: string, userName: string, vuResponseBack: string) =>{
+			dispatch({ type: "VU_SECURITY_RESPONSE_ADD_BACK", state: { operationId, userName, vuResponseBack } })
+		}
 	})
 );
 
