@@ -6,7 +6,7 @@ import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
-import { addDocumentImageBack, addDocumentImageFront } from "../../../services/vuSecurity/addDocumentImage";
+import {addDocumentImage} from "../../../services/vuSecurity/addDocumentImage";
 import { didiConnect } from "../../../store/store";
 import { ActiveDid } from '../../../store/reducers/didReducer';
 
@@ -138,12 +138,12 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			fixOrientation: true
 		});	
 		if (this.props.VuFront) {
-			const result = await addDocumentImageFront(this.props.userName,this.props.operationId,data.base64,this.props.did);
+			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64,this.props.did,"front");
 			this.props.vuSecurityDataFront(this.props.operationId, this.props.userName,result.message);
 		}
 
 		if (this.props.VuBack) {	
-			const result = await addDocumentImageBack(this.props.userName,this.props.operationId,data.base64,this.props.did);
+			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64,this.props.did,"back");
 			this.props.vuSecurityDataBack(this.props.operationId, this.props.userName,result.message);
 		}
 

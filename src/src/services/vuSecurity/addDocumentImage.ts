@@ -5,30 +5,12 @@ import { ActiveDid } from "../../store/reducers/didReducer";
 
 const VUSecurity = (): VUSecurityApiClient => new VUSecurityApiClient(AppConfig.defaultServiceSettings.urlSecurity);
 
-export async function addDocumentImageFront(
+export async function addDocumentImage(
 	userName: string,
 	operationId: string,
 	file: string | undefined,
 	did: ActiveDid,
-	side = "front"
-): ApiResult<string>|{} {
-	let result;
-	try {
-		const token = await createTokenAuthorization(did);
-		return VUSecurity().addDocumentImage(userName, operationId, side, file, token);
-	} catch (error) {
-		result = { message: "Hubo un error al adherir la imagen documento" };
-	}
-	return result;
-}
-
-
-export async function addDocumentImageBack(
-	userName: string,
-	operationId: string,
-	file: string | undefined,
-	did: ActiveDid,
-	side = "back"
+	side: string
 ): ApiResult<string>|{} {
 	let result;
 	try {
