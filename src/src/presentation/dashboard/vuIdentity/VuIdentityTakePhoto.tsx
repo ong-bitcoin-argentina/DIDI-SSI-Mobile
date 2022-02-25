@@ -82,12 +82,14 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 				return <DidiReticleCamera {...this.props} onPictureCropped={pic => this.onPictureTaken(pic)} />;
 			case "confirmation": {
 				let uriResponse=""; 
-				let cameraResponse="";
-				if(this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.confirmation){
+				let cameraResponse="";	
+				if(this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.confirmation ||
+					this.props.vuResponseBack === strings.vuIdentity.explainBack.vuResponseBack.confirmation) {
 					uriResponse = this.state.uri;
 					cameraResponse = this.props.confirmation;
 				}
-				if (this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed) {
+				if (this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed ||
+					this.props.vuResponseBack === strings.vuIdentity.explainBack.vuResponseBack.notConfirmed) {
 					uriResponse = "goBack";
 					cameraResponse = strings.vuIdentity.explainFront.rejected;
 				}
@@ -108,7 +110,8 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 										source={{ uri: this.state.uri }}
 									/>
 									<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uriResponse)}>
-									{this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed?
+									{this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed||
+									this.props.vuResponseBack === strings.vuIdentity.explainBack.vuResponseBack.notConfirmed?
 									<Cross width="100%" height="100%" />:<Checkmark width="100%" height="100%" />}
 									</TouchableOpacity>
 								</View>
