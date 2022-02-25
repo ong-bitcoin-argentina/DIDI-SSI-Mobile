@@ -40,7 +40,7 @@ export class VuIdentityFrontScreen extends NavigationEnabledComponent<
 			return;
 		}
 		const documentData = DocumentBarcodeData.fromPDF417(data);
-
+		
 		if (documentData) {
 			this.setState({ documentData });
 		}
@@ -73,7 +73,7 @@ export class VuIdentityFrontScreen extends NavigationEnabledComponent<
 						onPictureTaken={onPictureTaken} 
 						onBarcodeScanned={(data, type) => this.onBarcodeScanned(data, type)}
 						cameraButtonDisabled={
-							this.state.documentData === undefined ? strings.validateIdentity.explainBack.blocked : false
+							this.state.documentData === undefined ? strings.vuIdentity.explainFront.blocked : false
 						}
 						cameraOutputsBase64Picture={true}
 					>
