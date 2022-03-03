@@ -5,12 +5,12 @@ import { ActiveDid } from "../../store/reducers/didReducer";
 
 const VUSecurity = (): VUSecurityApiClient => new VUSecurityApiClient(AppConfig.defaultServiceSettings.urlSecurity);
 
-export async function addDocumentImageFront(
+export async function addDocumentImage(
 	userName: string,
 	operationId: string,
 	file: string | undefined,
 	did: ActiveDid,
-	side = "front"
+	side: string
 ): ApiResult<string>|{} {
 	let result;
 	try {
@@ -21,3 +21,4 @@ export async function addDocumentImageFront(
 	}
 	return result;
 }
+

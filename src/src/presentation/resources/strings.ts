@@ -563,8 +563,7 @@ export default {
 		explainFront: {
 			step: 1,
 			header: "Digitalizando el DNI",
-			description:
-				"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
+			description:"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
 			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
 			barcodeConfirmation: {
 				found: "Se identificó el código de barras.",
@@ -574,8 +573,26 @@ export default {
 			vuResponseFront:{
 				confirmation:"Add front success",
 				notConfirmed:"Hubo un error al adherir la imagen documento"
+			},
+			blocked: {
+				title: "No se identificó un código de barras",
+				text: "Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto."
 			}
-		}
+		},
+		explainBack: {
+			step: 2,
+			header: "Digitalizando el DNI",
+			description: "Ahora da vuelta el DNI y sacale una foto del dorso.",
+			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
+			vuResponseBack:{
+				confirmation:"Add back success",
+				notConfirmed:"Hubo un error al adherir la imagen documento"
+			},
+			blocked: {
+				title: "Surgio un inconveniente al agregar la Foto.",
+				text: "Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto anterior."
+			},
+		},
 	},
 	validateIdentity: {
 		header: "Validar Identidad",
@@ -613,11 +630,6 @@ export default {
 			header: "Digitalizando el DNI",
 			description: "Ahora da vuelta el DNI y sacale una foto del dorso.",
 			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
-			blocked: {
-				title: "No se identificó un código de barras",
-				text:
-					"Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto anterior."
-			}
 		},
 		explainSelfie: {
 			step: 3,

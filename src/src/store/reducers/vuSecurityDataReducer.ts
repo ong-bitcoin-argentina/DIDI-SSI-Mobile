@@ -17,13 +17,24 @@ interface VuSecurityReset {
 	state: VuSecurityData;
 }
 
+
+interface VuSecurityResponseBack{
+	type: "VU_SECURITY_RESPONSE_ADD_BACK";
+	state: VuSecurityData;
+}
+
+interface VuSecurityResponseFront{
+	type: "VU_SECURITY_RESPONSE_ADD_FRONT";
+	state: VuSecurityData;
+}
+
 const initial = {
 	operationId: "",
 	userName: "",
 	vuResponseFront:"",
 	vuResponseBack:"",
 };
-export type VuSecurityDataAction = VuSecurityDataStart | VuSecurityReset;
+export type VuSecurityDataAction = VuSecurityDataStart | VuSecurityReset | VuSecurityResponseBack| VuSecurityResponseFront;
 
 export function vuSecurityDataReducer(
 	state: VuSecurityData = initial,
@@ -32,6 +43,10 @@ export function vuSecurityDataReducer(
 	switch (action.type) {
 		case "VU_SECURITY_DATA_SET":
 			return action.state;
+		case "VU_SECURITY_RESPONSE_ADD_FRONT":
+			return { ...state,vuResponseBack: "",vuResponseFront: action.state.vuResponseFront };
+		case "VU_SECURITY_RESPONSE_ADD_BACK":
+			return { ...state,vuResponseFront:"", vuResponseBack: action.state.vuResponseBack };
 		case "VU_SECURITY_DATA_RESET":
 			return initial;
 		default:
