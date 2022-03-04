@@ -50,12 +50,12 @@ export class VuIdentitySubmitScreen extends NavigationEnabledComponent<IVuIdenti
 			<View style={styles.contentBtn}>
 			<TouchableOpacity  style={styles.button} onPress={()=>this.onAgree()}>
 					<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-						Aceptar
+						Finalizar
 					</DidiText.Button>
 			</TouchableOpacity>
 			<TouchableOpacity  style={styles.button} onPress={()=>this.onReset()}>
 					<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-						Reinicio
+						Reiniciar
 					</DidiText.Button>
 			</TouchableOpacity>
 			</View>
