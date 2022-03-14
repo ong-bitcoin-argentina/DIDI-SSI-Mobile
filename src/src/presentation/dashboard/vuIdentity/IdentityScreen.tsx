@@ -43,7 +43,7 @@ class IdentityScreen extends NavigationEnabledComponent<IdentityScreenProps, {},
 	async componentDidMount(){
 		const {did,lastname,name} = this.props;
 		const result = await createVerificationVU(did,name, lastname);
-		this.props.vuSecurityData(result.operationId,result.userName);
+		this.props.vuSecurityData(result.data.operationId,result.data.userName);
 	}
 
 	identityButtons: ItemsBtn[]  = [
