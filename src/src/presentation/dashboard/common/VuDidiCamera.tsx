@@ -138,10 +138,7 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			fixOrientation: true
 		});	
 		if (this.props.VuFront) {
-			console.log('ANTES ');
-			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"front");		
-			console.log('DESPUES');
-			console.log(result);
+			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"front");
 			this.props.vuSecurityDataFront(this.props.operationId, this.props.userName,result.status);
 		}
 

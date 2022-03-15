@@ -13,16 +13,17 @@ export async function addDocumentImage(
 	did: ActiveDid,
 	side: string
 ): Promise<IReturnImage> {
+	// let result;
 	try {
 		const token = await createTokenAuthorization(did);
-		return VUSecurity().addDocumentImage(userName, operationId, side, file, token);
+		return await VUSecurity().addDocumentImage(userName, operationId, side, file, token);
 	} catch (e) {
-		console.log('ERORORORORO');
-		
 		return { 
 			status: "camera-error",
-			message: "Hubo un error al adherir la imagen documento"
+			errorCode: "ADD_IMAGE",
+			message: `${e}`,
 		};
 	}
+	// return result;
 }
 
