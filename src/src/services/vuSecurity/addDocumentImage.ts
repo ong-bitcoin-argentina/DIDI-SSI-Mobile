@@ -13,7 +13,6 @@ export async function addDocumentImage(
 	did: ActiveDid,
 	side: string
 ): Promise<IReturnImage> {
-	// let result;
 	try {
 		const token = await createTokenAuthorization(did);
 		return await VUSecurity().addDocumentImage(userName, operationId, side, file, token);
@@ -24,6 +23,5 @@ export async function addDocumentImage(
 			message: `${e}`,
 		};
 	}
-	// return result;
 }
 
