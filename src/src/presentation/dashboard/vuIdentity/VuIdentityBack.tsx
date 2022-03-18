@@ -62,7 +62,7 @@ export class VuIdentityBackScreen extends NavigationEnabledComponent<
 				onPictureAccepted={(data, reset) =>{
 					if (data.uri !== 'goBack') {
 						this.navigate(
-							"VuIdentitySubmit",
+							"VuIdentitySelfie",
 							{
 								front: this.props.front,
 								documentData: (this.props.documentData ?? this.state.documentData)!,
