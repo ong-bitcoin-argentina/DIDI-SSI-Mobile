@@ -106,7 +106,7 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			);
 		}
 
-		const resultDisabled = this.props.cameraButtonDisabled;
+		const resultDisabled = this.props.cameraButtonDisabled as {title: string, text: string} ;
 		if (resultDisabled) {
 			return VuDidiCamera.cameraButton(() => Alert.alert(resultDisabled.title, resultDisabled.text));
 		}
@@ -138,13 +138,15 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			fixOrientation: true
 		});	
 		if (this.props.VuFront) {
-			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64,this.props.did,"front");
-			this.props.vuSecurityDataFront(this.props.operationId, this.props.userName,result.message);
+			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"front");
+			this.props.vuSecurityDataFront(this.props.operationId, this.props.userName,result.status);
 		}
 
-		if (this.props.VuBack) {	
-			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64,this.props.did,"back");
-			this.props.vuSecurityDataBack(this.props.operationId, this.props.userName,result.message);
+		if (this.props.VuBack) {
+			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"back");
+			
+			
+			this.props.vuSecurityDataBack(this.props.operationId, this.props.userName,result.status);
 		}
 
 		this.props.onPictureTaken?.(data);

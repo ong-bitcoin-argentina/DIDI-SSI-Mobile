@@ -1,8 +1,9 @@
-import { ApiResult, ICreateVerificationResponse, VUSecurityApiClient } from "@proyecto-didi/app-sdk";
+import { VUSecurityApiClient } from "@proyecto-didi/app-sdk";
 import { AppConfig } from "../../AppConfig";
 import { ActiveDid } from '../../store/reducers/didReducer';
 import { getManufacturer, getSystemName, getSystemVersion, getDeviceName } from 'react-native-device-info';
 import { createTokenAuthorization } from '../../presentation/util/appRouter';
+import { IReturnCreate } from '../../model/VuCreateVerification';
 const VUSecurity = (): VUSecurityApiClient => new VUSecurityApiClient(AppConfig.defaultServiceSettings.urlSecurity);
 export interface Response {
     operationId: number;
@@ -11,12 +12,12 @@ export interface Response {
 }
 
 export async function createVerificationVU(
-	activeDid: ActiveDid ,
+	activeDid: ActiveDid,
     name:string,
 	lastname: string,
     deviceHash = "hash",
 	rooted = false
-	) : ApiResult<ICreateVerificationResponse> {
+	) : Promise<IReturnCreate> {
     const userName = `${name} ${lastname}`
     const did = JSON.stringify(await activeDid?.did());
 	const operativeSystem=  getSystemName();

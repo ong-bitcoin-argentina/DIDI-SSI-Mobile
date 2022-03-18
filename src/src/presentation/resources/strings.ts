@@ -571,8 +571,8 @@ export default {
 			},
 			rejected: "la foto fue rechazada por favor verifique que los margen del carnet coincida, con lo que le indica la cámara",
 			vuResponseFront:{
-				confirmation:"Add front success",
-				notConfirmed:"Hubo un error al adherir la imagen documento"
+				confirmation:"success",
+				notConfirmed:"camera-error"
 			},
 			blocked: {
 				title: "No se identificó un código de barras",
@@ -585,8 +585,8 @@ export default {
 			description: "Ahora da vuelta el DNI y sacale una foto del dorso.",
 			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
 			vuResponseBack:{
-				confirmation:"Add back success",
-				notConfirmed:"Hubo un error al adherir la imagen documento"
+				confirmation:"success",
+				notConfirmed:"camera-error"
 			},
 			blocked: {
 				title: "Surgio un inconveniente al agregar la Foto.",
