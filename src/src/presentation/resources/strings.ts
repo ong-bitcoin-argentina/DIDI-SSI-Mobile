@@ -593,6 +593,40 @@ export default {
 				text: "Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto anterior."
 			},
 		},
+		explainSelfie: {
+			step: 3,
+			header: "Foto Selfie y Prueba de Vida",
+			description: (gesture: LivenessGesture) => {
+				const common =
+					"Buscá una pared clara, con buena luz y parate delante. Centrate en el recuadro, y cuando te lo pida, ";
+				switch (gesture) {
+					case LivenessGesture.TURN_LEFT:
+					case LivenessGesture.TURN_RIGHT:
+						return common + "mirá al hombro que te indica la pantalla.";
+					case LivenessGesture.SMILE:
+						return common + "sonreí.";
+					case LivenessGesture.WINK_LEFT:
+					case LivenessGesture.WINK_RIGHT:
+						return common + "guiñá el ojo que te indica la pantalla.";
+				}
+			},
+			gestureExplanation: (gesture: LivenessGesture) => {
+				switch (gesture) {
+					case LivenessGesture.SMILE:
+						return "Sonreí";
+					case LivenessGesture.TURN_LEFT:
+						return "Mirá a tu hombro izquierdo";
+					case LivenessGesture.TURN_RIGHT:
+						return "Mirá a tu hombro derecho";
+					case LivenessGesture.WINK_LEFT:
+						return "Guiñá tu ojo izquierdo";
+					case LivenessGesture.WINK_RIGHT:
+						return "Guiñá tu ojo derecho";
+				}
+			},
+			confirmation: "Asegurate de que tu cara sea claramente visible y no esté cubierta.",
+			cameraExplanation: "Enfocá tu cara"
+		},
 	},
 	validateIdentity: {
 		header: "Validar Identidad",
