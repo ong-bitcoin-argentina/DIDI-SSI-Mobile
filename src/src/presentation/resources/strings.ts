@@ -682,7 +682,7 @@ export default {
 						return common + "guiñá el ojo que te indica la pantalla.";
 				}
 			},
-			gestureExplanation: (gesture: LivenessGesture) => {
+			gestureExplanation(gesture: LivenessGesture){
 				switch (gesture) {
 					case LivenessGesture.SMILE:
 						return "Sonreí";

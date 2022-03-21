@@ -1,6 +1,6 @@
 import React from "react";
 import { LayoutRectangle, Vibration, View } from "react-native";
-import { Face, TakePictureResponse } from "react-native-camera";
+import { Face, TakePictureResponse, RNCamera } from 'react-native-camera';
 
 import { assertUnreachable } from "../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -14,6 +14,7 @@ import { LivenessGesture } from "../validateIdentity/LivenessGesture";
 import { ValidateIdentityTakePhoto } from "../validateIdentity/ValidateIdentityTakePhoto";
 import { VuDidiSelfieCamera } from '../common/VuDidiSelfieCamera';
 import { IVuIdentitySubmitScreenProps } from './VuIdentitySubmitScreen';
+import { didiConnect } from '../../../store/store';
 
 export interface VuIdentitySelfieNavigation {
 	ValidateIdentitySubmit: IVuIdentitySubmitScreenProps;
@@ -22,13 +23,14 @@ export interface VuIdentitySelfieProps {
 	documentData: DocumentBarcodeData;
 	front: { uri: string };
 	back: { uri: string };
+	randomNumber: number;
 }
 
 interface VuIdentitySelfieState {
 	gesture: LivenessGesture;
 }
 
-export class VuIdentitySelfieScreen extends NavigationEnabledComponent<
+class VuIdentitySelfieScreen extends NavigationEnabledComponent<
 	VuIdentitySelfieProps,
 	VuIdentitySelfieState,
 	VuIdentitySelfieNavigation
@@ -36,16 +38,12 @@ export class VuIdentitySelfieScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
 
 	constructor(props: VuIdentitySelfieProps) {
-		super(props);
-
-		function getRandom<A>(array: [A, ...A[]]): A {
-			return array[Math.floor(Math.random() * array.length)];
-		}
+		super(props);		
 		this.state = {
-			gesture: getRandom(LivenessChecker.supportedGestures)
+			gesture: this.getRandom(LivenessChecker.supportedGestures)
 		};
 	}
-
+	getRandom<A>(array: [A, ...A[]]): A { return array[this.props.randomNumber % array.length]}
 	render() {
 		return (
 			<ValidateIdentityTakePhoto
@@ -87,6 +85,17 @@ export class VuIdentitySelfieScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+
+const connected = didiConnect(
+	VuIdentitySelfieScreen,
+	(state): {randomNumber: number} => ({
+		randomNumber: parseInt(state.vuSecurityData.operationId),
+	})
+);
+
+export { connected as VuIdentitySelfieScreen };
+
 
 interface SelfieCameraProps {
 	onCameraLayout: (layout: LayoutRectangle) => void;
