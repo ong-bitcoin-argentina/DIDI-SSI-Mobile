@@ -148,7 +148,7 @@ export class VuDidiSelfieCamera extends React.Component<VuDidiSelfieCameraProps,
 				faceDetectionClassifications = {RNCamera.Constants.FaceDetection.Classifications.all}
 				faceDetectionMode= {RNCamera.Constants.FaceDetection.Mode.fast}
 				faceDetectionLandmarks={RNCamera.Constants.FaceDetection.Landmarks.all}
-				onFacesDetected= {res => this.props.onFacesDetected(res.faces)}
+				onFacesDetected= {res => this.props.onFacesDetected!(res.faces)}
 				notAuthorizedView={
 					<DidiText.CameraExplanation style={styles.notAuthorized}>
 						{strings.camera.notAuthorized}

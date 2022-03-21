@@ -1,6 +1,6 @@
 import React from "react";
 import { LayoutRectangle, Vibration, View } from "react-native";
-import { Face, TakePictureResponse, RNCamera } from 'react-native-camera';
+import { Face, TakePictureResponse} from 'react-native-camera';
 
 import { assertUnreachable } from "../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
