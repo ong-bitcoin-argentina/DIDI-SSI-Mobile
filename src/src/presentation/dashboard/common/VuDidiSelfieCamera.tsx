@@ -29,7 +29,7 @@ interface BarcodeProps {
 }
 interface FaceProps {
 	explanation: string;
-	onFacesDetected?: ((response: Face[]) => void | undefined) | undefined
+	onFacesDetected: ((response: Face[]) => void | undefined) | undefined
 
 	
 }
