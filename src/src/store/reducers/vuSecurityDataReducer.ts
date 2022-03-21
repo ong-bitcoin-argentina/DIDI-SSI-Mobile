@@ -55,8 +55,6 @@ export function vuSecurityDataReducer(
 		case "VU_SECURITY_RESPONSE_ADD_BACK":
 			return { ...state, vuResponseBack: action.state.vuResponseBack };
 		case "VU_SECURITY_RESPONSE_ADD_SELFIE":
-			console.log('EN VISTA');
-			console.log(action.state.vuResponseSelfie);
 			return {...state,vuResponseSelfie: action.state.vuResponseSelfie };
 		case "VU_SECURITY_DATA_RESET":
 			return initial;

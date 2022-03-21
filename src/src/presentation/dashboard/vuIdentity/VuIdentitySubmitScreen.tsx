@@ -52,13 +52,11 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 	}
 
 	onAgree = function(){
-		console.log('Agree');
 		// VUS-166 [aidi] End operation implementacion
 		this.navigate("DashboardHome", {});
 	}
 
 	onReset = function(){
-		console.log('Reset');
 		// VUS-166 [aidi] End operation implementacion	
 		this.navigate("VuIdentityID", {});
 	}
