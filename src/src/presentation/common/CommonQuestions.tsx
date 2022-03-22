@@ -27,7 +27,7 @@ export class CommonQuestionsScreen extends NavigationEnabledComponent<null,{},nu
 								<Icon name="down" size={20}  />
 							</CollapseHeader>
 							<CollapseBody key={index} >
-								{ questions[key].map((question, index) => {
+								{ questions[key].map((question, Index) => {
 									return(
 										<Collapse style={{ paddingHorizontal: 10}}>
 											<CollapseHeader style={[styles.titlesCard]}>
