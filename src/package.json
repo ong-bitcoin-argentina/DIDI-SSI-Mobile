@@ -11,7 +11,7 @@
 		"windows:android": "set ENVFILE=.env.next react-native run-android --variant=DevDebug",
 		"ios": "react-native run-ios",
 		"build": "cd android && ENVFILE=.env.alpha && ./gradlew assembleAlphaRelease",
-		"windows:build": "cd android && set ENVFILE=.alpha && gradlew assembleAlphaRelease",
+		"windows:build": "cd android && set ENVFILE=.env.alpha && gradlew assembleAlphaRelease",
 		"build:next": "cd android && ENVFILE=.env.next && ./gradlew assembleNextRelease",
 		"windows:build:next": "cd android && set ENVFILE=.env.next && gradlew assembleNextRelease",
 		"build:qa": "cd android && ENVFILE=.env.qa && ./gradlew assembleQaRelease",
