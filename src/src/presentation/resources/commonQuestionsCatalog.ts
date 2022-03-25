@@ -221,7 +221,7 @@ export default {
             ' Se puede utilizar la barra para filtrar por categorías según la necesidad. Las categorías fueron establecidas por Semillas, son las mismas que se usan para ' +
             ' categorizar sus créditos. ' +
             ' Una vez seleccionado el prestador que se requiere, se va a consultar por quién va a usar el beneficio. Puede ser para el titular o para alguien del grupo ' +
-            ' familiar declarado en Semillas. Presionar Siguiente para mostrar la información que va a compartir la app. '
+            ' familiar declarado en Semillas. Presionar Siguiente para mostrar la información que va a compartir la app. ' +
             ' Al poner Compartir, se envía un correo electrónico con esa información. Este correo tiene como objetivo anticipar a la empresa o entidad que un usuario/a ' + 
             ' de Semillas quiere comunicarse y utilizar sus servicios. No reserva el turno, comparte la información para que cuando el usuario/a se comunique, el prestador ' +
             ' ya tenga la información necesaria para brindarle el servicio. Para finalizar, se abren las opciones de comunicación establecidas por el prestador. ' +
