@@ -1,6 +1,6 @@
 import React from "react";
 import { LayoutRectangle, Vibration, View } from "react-native";
-import { Face, TakePictureResponse} from 'react-native-camera';
+import { Face, TakePictureResponse } from "react-native-camera";
 
 import { assertUnreachable } from "../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -11,16 +11,18 @@ import strings from "../../resources/strings";
 
 import { LivenessChecker } from "../validateIdentity/LivenessChecker";
 import { LivenessGesture } from "../validateIdentity/LivenessGesture";
-import { ValidateIdentityTakePhoto } from "../validateIdentity/ValidateIdentityTakePhoto";
-import { VuDidiSelfieCamera } from '../common/VuDidiSelfieCamera';
-import { IVuIdentitySubmitScreenProps } from './VuIdentitySubmitScreen';
-import { didiConnect } from '../../../store/store';
+import { VuDidiSelfieCamera } from "../common/VuDidiSelfieCamera";
+import { IVuIdentitySubmitScreenProps } from "./VuIdentitySubmitScreen";
+import { didiConnect } from "../../../store/store";
+import { VuIdentityTakePhoto } from "./VuIdentityTakePhoto";
+import { IReturnGetInformation } from "../../../model/VuGetInformation";
 
 export interface VuIdentitySelfieNavigation {
 	ValidateIdentitySubmit: IVuIdentitySubmitScreenProps;
 }
 export interface VuIdentitySelfieProps {
 	documentData: DocumentBarcodeData;
+	documentDataVU: IReturnGetInformation;
 	front: { uri: string };
 	back: { uri: string };
 	randomNumber: number;
@@ -46,7 +48,8 @@ class VuIdentitySelfieScreen extends NavigationEnabledComponent<
 	getRandom<A>(array: [A, ...A[]]): A { return array[this.props.randomNumber % array.length]}
 	render() {
 		return (
-			<ValidateIdentityTakePhoto
+			<VuIdentityTakePhoto
+				getVuSecuritydata={true}
 				photoWidth={600}
 				photoHeight={720}
 				targetWidth={600}
@@ -73,10 +76,11 @@ class VuIdentitySelfieScreen extends NavigationEnabledComponent<
 				)}
 				onPictureAccepted={(data, reset) => {
 					this.navigate(
-						'VuIdentitySubmit',
+						"VuIdentitySubmit",
 						{
 							...this.props,
-							selfie: data
+							selfie: data.uri,
+							documentDataVu: data.documentData
 						},
 						reset
 					);
@@ -86,7 +90,6 @@ class VuIdentitySelfieScreen extends NavigationEnabledComponent<
 	}
 }
 
-
 const connected = didiConnect(
 	VuIdentitySelfieScreen,
 	(state): {randomNumber: number} => ({
@@ -95,7 +98,6 @@ const connected = didiConnect(
 );
 
 export { connected as VuIdentitySelfieScreen };
-
 
 interface SelfieCameraProps {
 	onCameraLayout: (layout: LayoutRectangle) => void;

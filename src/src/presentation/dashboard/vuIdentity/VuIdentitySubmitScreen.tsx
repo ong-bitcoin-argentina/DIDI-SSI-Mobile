@@ -10,12 +10,25 @@ import { didiConnect } from '../../../store/store';
 import { ActiveDid } from '../../../store/reducers/didReducer';
 import { readFile } from 'react-native-fs';
 import { addDocumentImage } from '../../../services/vuSecurity/addDocumentImage';
+import { IReturnGetInformation } from '../../../model/VuGetInformation';
 
+
+interface IDocumentData {
+    birthDate:        string;
+    dni:              string;
+    documentSpecimen: string;
+    firstNames:       string;
+    gender:           string;
+    issuanceDate:     string;
+    lastNames:        string;
+    tramitId:         string;
+}
 
 
 export interface IVuIdentitySubmitScreenProps {
 	buttonAction: () => void,
-	documentData: any,
+	documentData: IDocumentData,
+	documentDataVu: IReturnGetInformation,
 	front: { uri: string },
 	back: { uri: string },
 	selfie: { uri: string },
@@ -51,30 +64,43 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 		}
 	}
 
-	onAgree = function(){
+	onAgree = ()=>{
 		// VUS-166 [aidi] End operation implementacion
 		this.navigate("DashboardHome", {});
 	}
 
-	onReset = function(){
+	onReset=()=>{
 		// VUS-166 [aidi] End operation implementacion	
 		this.navigate("VuIdentityID", {});
 	}
 
 
+	dataCorrection = (documentDataVu : IReturnGetInformation): IDocumentData =>{
+		return {
+			birthDate: documentDataVu.data.barcode.data.birthDate, 
+			dni: documentDataVu.data.barcode.data.number, 
+			documentSpecimen: documentDataVu.data.barcode.data.copy, 
+			firstNames: documentDataVu.data.ocr.names, 
+			gender: documentDataVu.data.barcode.data.gender, 
+			issuanceDate: documentDataVu.data.barcode.data.issueDate, 
+			lastNames: documentDataVu.data.ocr.lastNames, 
+			tramitId: documentDataVu.data.barcode.data.order
+		}
+	}
+
 	render() {
 		const documentDataKeys = ["dni", "gender", "firstNames", "lastNames", "birthDate", "tramitId"] as const;
-		const documentData = this.props.documentData;
+		const documentData = this.dataCorrection(this.props.documentDataVu);
 		return (
 			<DidiScrollScreen style={{paddingVertical:2}}>
 				<View>
 				<DidiText.ValidateIdentity.Title style={styles.title}>INFORMACION</DidiText.ValidateIdentity.Title>
 				<DidiText.ValidateIdentity.Normal style={styles.descriptionHeader}> 
 				Estos son los datos que van a conformar su credencial de DNI.</DidiText.ValidateIdentity.Normal>
-					{documentDataKeys.map(key => (
+					{documentDataKeys.map((key, index) => (
 						<>
-						<View key={key}>
-						<Text style={styles.itemTxt} >{strings.validateIdentity.submit.items[key]}</Text>
+						<View key={index}>
+						<Text style={styles.itemTxt} >{strings.vuIdentity.submit.items[key]}</Text>
 						<Text style={styles.resultItemTxt}>{documentData[key]}</Text>
 						</View>
 						
