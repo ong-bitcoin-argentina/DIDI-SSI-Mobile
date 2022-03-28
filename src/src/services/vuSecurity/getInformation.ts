@@ -9,5 +9,5 @@ const VUSecurity = ():VUSecurityApiClient => ( new VUSecurityApiClient(AppConfig
 
 export async function getInformation(userName: string,operationId: string, did: ActiveDid ): Promise<IReturnGetInformation> {    
     const token = await createTokenAuthorization(did);
-    return await VUSecurity().getInformation(userName, operationId,token);
+    return VUSecurity().getInformation(userName, operationId,token);
 }
