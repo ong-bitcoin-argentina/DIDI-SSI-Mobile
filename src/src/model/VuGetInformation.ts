@@ -50,13 +50,5 @@ interface Ocr {
 
 interface Extra {
     additional: string;
-    mrz:        Mrz;
-}
-
-interface Mrz {
-    ExpiryDate:     Date;
-    Gender:         string;
-    DocumentNumber: string;
-    FullName:       string;
-    BirthDate:      Date;
+    mrz:        string;
 }
