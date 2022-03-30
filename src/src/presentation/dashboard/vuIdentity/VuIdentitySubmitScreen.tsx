@@ -75,7 +75,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 	}
 
 
-	dataCorrection = (documentDataVu : IReturnGetInformation): IDocumentData =>{
+	mapGetInfomationResponse = (documentDataVu : IReturnGetInformation): IDocumentData =>{
 		return {
 			birthDate: documentDataVu.data.barcode.data.birthDate, 
 			dni: documentDataVu.data.barcode.data.number, 
@@ -90,7 +90,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 
 	render() {
 		const documentDataKeys = ["dni", "gender", "firstNames", "lastNames", "birthDate", "tramitId"] as const;
-		const documentData = this.dataCorrection(this.props.documentDataVu);
+		const documentData = this.mapGetInfomationResponse(this.props.documentDataVu);
 		return (
 			<DidiScrollScreen style={{paddingVertical:2}}>
 				<View>

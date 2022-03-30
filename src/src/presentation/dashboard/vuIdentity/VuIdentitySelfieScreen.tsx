@@ -79,7 +79,9 @@ class VuIdentitySelfieScreen extends NavigationEnabledComponent<
 						"VuIdentitySubmit",
 						{
 							...this.props,
-							selfie: data.uri,
+							selfie: {
+								uri:data.uri,
+							},
 							documentDataVu: data.documentData
 						},
 						reset
