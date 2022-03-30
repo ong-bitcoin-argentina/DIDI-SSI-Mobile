@@ -629,7 +629,7 @@ export default {
 		},
 		submit: {
 			header: "Validación de Identidad",
-			congrats: "Se enviarán los siguientes datos a validar por VU Security",
+			congrats: "Se enviarán los siguientes datos a validar por ReNaPer:",
 			reminder: "Recordá que tus datos son privados y no serán compartidos.",
 			buttonText: "OK",
 			items: {
@@ -643,14 +643,14 @@ export default {
 		},
 		success: {
 			header: "Validación de Identidad",
-			congrats: "¡Felicitaciones! Tu identidad ha sido validada.",
-			reminder: "Recordá que tus datos son privados y no serán compartidos.",
+			congrats: "¡Felicitaciones! Su identidad ha sido validada.",
+			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
 			buttonText: "OK"
 		},
 		failure: {
 			retryButton: "Reintentar",
 			header: "Validación de Identidad",
-			congrats: "Tu identidad no ha sido validada. Por favor, vuelva a intentar.",
+			congrats: "Su identidad no ha sido validada. Por favor, vuelva a intentar.",
 			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
 			buttonText: "OK"
 		}
