@@ -150,7 +150,7 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 		);
 	}
 
-	componentDidUpdate(prevProps: SelfieCameraProps, prevState: SelfieCameraState) {
+	componentDidUpdate(_prevProps: SelfieCameraProps, prevState: SelfieCameraState) {
 		if (this.state.state !== "capture" && prevState.state !== this.state.state) {
 			Vibration.vibrate(400, false);
 		}
