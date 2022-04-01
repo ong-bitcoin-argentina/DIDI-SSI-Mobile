@@ -1149,10 +1149,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@proyecto-didi/app-sdk@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@proyecto-didi/app-sdk/-/app-sdk-0.1.5.tgz#e8e74de18ef8e3fb34e3f06bf8aeab034a0812fb"
-  integrity sha512-wqGln2mErHdl/jbRgIZ0J3xGstK/hReAeMMSMCf3olYdSLp3t7bq0Tpkft6php0d/2/57RSmWcU9zd9L0uP9Iw==
+"@proyecto-didi/app-sdk@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@proyecto-didi/app-sdk/-/app-sdk-0.1.6.tgz#a01eda47ab9a4155b40f9a88b61790cc8067adb7"
+  integrity sha512-x7w0E8/tofD4Tza9okZHQIGU4z9/dd7OHrXDGvZUCkCptoAeqnVEyK0+dCnCy60tLI4dmBXFaL8HfzLYL5yw7A==
   dependencies:
     aes-js "^3.1.2"
     apollo-boost "^0.4.7"

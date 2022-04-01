@@ -625,8 +625,35 @@ export default {
 				}
 			},
 			confirmation: "Asegurate de que tu cara sea claramente visible y no esté cubierta.",
-			cameraExplanation: "Enfocá tu cara"
+			cameraExplanation: "Enfocá tu cara",
 		},
+		submit: {
+			header: "Validación de Identidad",
+			congrats: "Se enviarán los siguientes datos a validar por VU Security",
+			reminder: "Recordá que tus datos son privados y no serán compartidos.",
+			buttonText: "OK",
+			items: {
+				dni: "DNI",
+				gender: "Género",
+				firstNames: "Nombre(s)",
+				lastNames: "Apellido(s)",
+				birthDate: "Fecha de Nacimiento",
+				tramitId: "Número de tramite"
+			}
+		},
+		success: {
+			header: "Validación de Identidad",
+			congrats: "¡Felicitaciones! Tu identidad ha sido validada.",
+			reminder: "Recordá que tus datos son privados y no serán compartidos.",
+			buttonText: "OK"
+		},
+		failure: {
+			retryButton: "Reintentar",
+			header: "Validación de Identidad",
+			congrats: "Tu identidad no ha sido validada. Por favor, vuelva a intentar.",
+			reminder: "Recuerda que tus datos son privados y no serán compartidos.",
+			buttonText: "OK"
+		}
 	},
 	validateIdentity: {
 		header: "Validar Identidad",

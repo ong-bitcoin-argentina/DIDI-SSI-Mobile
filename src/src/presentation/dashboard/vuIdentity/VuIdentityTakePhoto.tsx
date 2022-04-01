@@ -21,19 +21,28 @@ import { VuIdentityExplanationHeader } from "./VuIdentityExplanationHeader";
 import { didiConnect } from "../../../store/store";
 import VuIdentityExplanation, { VuIdentityExplanationProps } from './VuIdentityExplanation';
 import strings from "../../resources/strings";
+import { getInformation } from '../../../services/vuSecurity/getInformation';
+import { ActiveDid } from '../../../store/reducers/didReducer';
+import { IReturnGetInformation } from '../../../model/VuGetInformation';
 
 export type VuTakePhotoProps = {
+	getVuSecuritydata: boolean;
 	image: string;
 	confirmation: string;
-	onPictureAccepted: (response: { uri: string }, reset: () => void) => void;
+	onPictureAccepted: (response: { uri: string ,documentData?: IReturnGetInformation}, reset: () => void) => void;
 } & Omit<DidiReticleCameraProps, "onPictureCropped"> &
 	Omit<VuIdentityExplanationProps, "buttonText" | "buttonAction">;
 
 interface VuSecurityProps {
+	operationId: string;
+	userName: string;
+	did: ActiveDid;
 	vuResponseFront?: string;
 	vuResponseBack?: string;
 }
-export type VuIdentityTakePhotoState = { state: "explanation" | "camera" } | { state: "confirmation"; uri: string };
+export type VuIdentityTakePhotoState = 
+{ state: "explanation" | "camera", documentData?: IReturnGetInformation } |
+{ state: "confirmation"; uri: string, documentData?:IReturnGetInformation };
 
 type VuIdentityTakePhotoProps = VuTakePhotoProps & VuSecurityProps;
 class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuIdentityTakePhotoState> {
@@ -42,11 +51,11 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 	constructor(props: VuIdentityTakePhotoProps) {
 		super(props);
 		this.state = {
-			state: "explanation"
+			state: "explanation",
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.backHandler = BackHandler.addEventListener("hardwareBackPress", (): boolean => {
 			switch (this.state.state) {
 				case "explanation":
@@ -59,6 +68,11 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 					return true;
 			}
 		});
+
+		if (this.props.getVuSecuritydata) {
+			const documentData =await getInformation(this.props.userName, this.props.operationId, this.props.did);
+			this.setState({documentData})
+		}		
 	}
 
 	componentWillUnmount() {
@@ -109,7 +123,7 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 										}}
 										source={{ uri: this.state.uri }}
 									/>
-									<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uriResponse)}>
+									<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uriResponse, this.state.documentData!)}>
 									{this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed||
 									this.props.vuResponseBack === strings.vuIdentity.explainBack.vuResponseBack.notConfirmed?
 									<Cross width="100%" height="100%" />:<Checkmark width="100%" height="100%" />}
@@ -126,16 +140,18 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 		this.setState({ state: "confirmation", uri: data.uri });
 	}
 
-	private onPictureAccepted(uri: string) {
-		this.props.onPictureAccepted({ uri }, () => {
+	private onPictureAccepted(uri: string , documentData: any) {
+		this.props.onPictureAccepted({ uri , documentData}, () => {
 			this.setState({ state: "explanation" });
 		});
 	}
 }
-
 const connected = didiConnect(
 	VuIdentityTakePhoto,
 	(state): VuSecurityProps => ({
+		userName: state.vuSecurityData.userName, 
+		operationId: state.vuSecurityData.operationId, 
+		did: state.did.activeDid,
 		vuResponseFront: state.vuSecurityData.vuResponseFront,
 		vuResponseBack: state.vuSecurityData.vuResponseBack
 	})
