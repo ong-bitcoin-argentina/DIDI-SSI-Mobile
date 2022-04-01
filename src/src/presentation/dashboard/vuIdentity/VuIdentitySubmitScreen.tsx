@@ -11,6 +11,10 @@ import { ActiveDid } from '../../../store/reducers/didReducer';
 import { readFile } from 'react-native-fs';
 import { addDocumentImage } from '../../../services/vuSecurity/addDocumentImage';
 import { IReturnGetInformation } from '../../../model/VuGetInformation';
+import { cancelVerificationVU } from '../../../services/vuSecurity/cancelVerification';
+import { DataAlert } from '../../common/DataAlert';
+import { finishOperation } from '../../../services/vuSecurity/finishOperation';
+import { createVerificationVU } from '../../../services/vuSecurity/createVerification';
 
 
 interface IDocumentData {
@@ -37,12 +41,19 @@ interface VuSubmitStateProps {
 	operationId: string,
 	userName: string,
 	did: ActiveDid,
+	vuResponseFront: string,
+	vuResponseBack: string,
+	vuResponseSelfie: string,
+	name: string,
+	lastname: string
 }
 interface VuSubmitDispatchProps {
 	vuSecurityDataSelfie: (operationId: string, userName: string, vuResponseSelfie: string) => void;
+	vuSecurityDataCreateVerification:(operationId: number, userName: string) => void;
 }
 interface VuIdentitySubmitState {
-	possibleError: string
+	possibleError: string,
+	checkFlag: string
 }
 type VuIdentitySubmitProps = IVuIdentitySubmitScreenProps&VuSubmitStateProps&VuSubmitDispatchProps;
 class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmitProps, VuIdentitySubmitState, {}> {
@@ -52,6 +63,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 		super(props);
 		this.state = {
 			possibleError: "success",
+			checkFlag: "" 
 		};
 	}
 
@@ -62,16 +74,32 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 			this.props.vuSecurityDataSelfie(this.props.operationId,this.props.userName,result.status);
 			this.setState({ possibleError: result.status });
 		}
+		if (this.props.vuResponseBack == 'success' && this.props.vuResponseFront == 'success' && this.props.vuResponseSelfie == 'success') {
+			const resultFinish = await finishOperation(this.props.userName, this.props.operationId, this.props.did);
+			this.setState({ checkFlag: resultFinish.status });
+			if (resultFinish.status !== 'success') {
+				await cancelVerificationVU(this.props.userName, this.props.operationId, this.props.did);
+				const resultcreation = await createVerificationVU(this.props.did,this.props.name,this.props.lastname);
+				this.props.vuSecurityDataCreateVerification(resultcreation.data.operationId,resultcreation.data.userName);
+			}
+		}
 	}
 
 	onAgree = ()=>{
-		// VUS-166 [aidi] End operation implementacion
-		this.navigate("DashboardHome", {});
+		if(this.state.checkFlag){
+			DataAlert.alert(strings.vuIdentity.success.congrats,strings.vuIdentity.success.reminder);
+			this.navigate("DashboardHome", {});
+		} else  {
+			DataAlert.alert(strings.vuIdentity.failure.retryButton,strings.vuIdentity.failure.congrats);		
+		}
 	}
 
-	onReset=()=>{
-		// VUS-166 [aidi] End operation implementacion	
-		this.navigate("VuIdentityID", {});
+	goToSelfieScreen = ()=>{
+		this.navigate("VuIdentitySelfie", {});
+	}
+
+	onReset= async () =>{
+		this.navigate("DashboardIdentity", {});
 	}
 
 
@@ -106,14 +134,14 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 						
 						</>
 					))}
-				</View>	
+				</View> 
 
 			<View style={styles.contentBtn}>
 			{this.state.possibleError === "success"?
 				<>
 					<TouchableOpacity  style={styles.button} onPress={()=>this.onAgree()}>
 							<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-								Finalizar
+								Verificar
 							</DidiText.Button>
 					</TouchableOpacity>
 
@@ -123,7 +151,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 							</DidiText.Button>
 					</TouchableOpacity>
 				</>:
-			<TouchableOpacity  style={styles.errorBtn} onPress={()=>this.onAgree()}>
+			<TouchableOpacity  style={styles.errorBtn} onPress={()=>this.goToSelfieScreen()}>
 					<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
 						Verifica tu Selfie 
 					</DidiText.Button>
@@ -141,11 +169,18 @@ const connected = didiConnect(
 		operationId: state.vuSecurityData.operationId,
 		userName: state.vuSecurityData.userName,
 		did: state.did.activeDid,
+		vuResponseFront: state.vuSecurityData.vuResponseFront,
+		vuResponseBack: state.vuSecurityData.vuResponseBack,
+		vuResponseSelfie: state.vuSecurityData.vuResponseSelfie,
+		name: state.persistedPersonalData.name,
+		lastname: state.persistedPersonalData.lastname
 	}),
 	(dispatch): VuSubmitDispatchProps => ({
 		vuSecurityDataSelfie:(operationId: string, userName: string, vuResponseSelfie: string)=>{
 			dispatch({ type: "VU_SECURITY_RESPONSE_ADD_SELFIE", state: { operationId, userName, vuResponseSelfie } })
-		}
+		},
+		vuSecurityDataCreateVerification : (operationId: number, userName: string) =>
+		dispatch({ type: "VU_SECURITY_DATA_SET", state: {operationId:`${operationId}`, userName } }),	
 	})
 );
 
