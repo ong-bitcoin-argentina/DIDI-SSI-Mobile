@@ -76,6 +76,8 @@ export default function (then: NavTree<AccessSwitchTarget>) {
 			RecoveryExplanation: recovery(then)
 		}),
 		RecoveryExplanation: recovery(then),
-		AccessSettings: NavMap.from(AccessSettingsScreen, then)
+		AccessSettings: NavMap.from(AccessSettingsScreen, then),
+		CommonQuestions: NavMap.from(CommonQuestionsScreen, then),
+		OpenEmail: NavMap.from(OpenEmail, then),
 	});
 }
