@@ -11,10 +11,8 @@ import { ActiveDid } from '../../../store/reducers/didReducer';
 import { readFile } from 'react-native-fs';
 import { addDocumentImage } from '../../../services/vuSecurity/addDocumentImage';
 import { IReturnGetInformation } from '../../../model/VuGetInformation';
-import { cancelVerificationVU } from '../../../services/vuSecurity/cancelVerification';
 import { DataAlert } from '../../common/DataAlert';
 import { finishOperation } from '../../../services/vuSecurity/finishOperation';
-import { createVerificationVU } from '../../../services/vuSecurity/createVerification';
 
 
 interface IDocumentData {
@@ -77,11 +75,6 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 		if (this.props.vuResponseBack == 'success' && this.props.vuResponseFront == 'success' && this.props.vuResponseSelfie == 'success') {
 			const resultFinish = await finishOperation(this.props.userName, this.props.operationId, this.props.did);
 			this.setState({ checkFlag: resultFinish.status });
-			if (resultFinish.status !== 'success') {
-				await cancelVerificationVU(this.props.userName, this.props.operationId, this.props.did);
-				const resultcreation = await createVerificationVU(this.props.did,this.props.name,this.props.lastname);
-				this.props.vuSecurityDataCreateVerification(resultcreation.data.operationId,resultcreation.data.userName);
-			}
 		}
 	}
 
@@ -104,15 +97,19 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 
 
 	mapGetInfomationResponse = (documentDataVu : IReturnGetInformation): IDocumentData =>{
-		return {
-			birthDate: documentDataVu.data.barcode.data.birthDate, 
-			dni: documentDataVu.data.barcode.data.number, 
-			documentSpecimen: documentDataVu.data.barcode.data.copy, 
-			firstNames: documentDataVu.data.ocr.names, 
-			gender: documentDataVu.data.barcode.data.gender, 
-			issuanceDate: documentDataVu.data.barcode.data.issueDate, 
-			lastNames: documentDataVu.data.ocr.lastNames, 
-			tramitId: documentDataVu.data.barcode.data.order
+		try {
+			return {
+				birthDate: documentDataVu.data.barcode.data.birthDate, 
+				dni: documentDataVu.data.barcode.data.number, 
+				documentSpecimen: documentDataVu.data.barcode.data.copy, 
+				firstNames: documentDataVu.data.ocr.names, 
+				gender: documentDataVu.data.barcode.data.gender, 
+				issuanceDate: documentDataVu.data.barcode.data.issueDate, 
+				lastNames: documentDataVu.data.ocr.lastNames, 
+				tramitId: documentDataVu.data.barcode.data.order
+			}	
+		} catch (error) {
+			return this.props.documentData
 		}
 	}
 
