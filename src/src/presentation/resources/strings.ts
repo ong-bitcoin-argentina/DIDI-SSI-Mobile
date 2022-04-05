@@ -68,7 +68,7 @@ export default {
 		screenInProgress: "Pantalla en Construcción"
 	},
 	dashboard: {
-		helloMessage: "Hola",
+		helloMessage: "Hola!",
 		evolution: {
 			category: "Proceso",
 			title: "Mi Evolución",
