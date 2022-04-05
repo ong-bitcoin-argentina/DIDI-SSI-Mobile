@@ -79,7 +79,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 	}
 
 	onAgree = ()=>{
-		if(this.state.checkFlag){
+		if(this.state.checkFlag === 'success'){
 			DataAlert.alert(strings.vuIdentity.success.congrats,strings.vuIdentity.success.reminder);
 			this.navigate("DashboardHome", {});
 		} else  {
