@@ -548,8 +548,13 @@ export default {
 		changeEmailSuccess: "Email cambiado exitosamente."
 	},
 	vuIdentity:{
-		header: "Validar con vu Security",
+		header: "Validar Identidad",
 		welcome: "Bienvenido/a",
+		what: {
+			header: "¿Qué es la validación de identidad?",
+			description: `Es un proceso simple mediante el cual vas a poder confirmar que vos sos quien decís ser. De esta forma, podras acceder a todos los servicios de ${appName}.`,
+			buttonText: "Siguiente"
+		},
 		howTo: {
 			header: "Comienzo de proceso de validación de su Identidad",
 			intro: "Deberá seguir el siguiente proceso:",
