@@ -1,4 +1,4 @@
-export type IReturnCancel = IReturnError & ICancel;
+export type IReturnCancel = IReturnError | ICancel;
 
  interface ICancel {
     status: string;

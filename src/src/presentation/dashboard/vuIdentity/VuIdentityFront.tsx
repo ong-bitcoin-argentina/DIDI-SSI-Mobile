@@ -10,29 +10,46 @@ import strings from "../../resources/strings";
 import { VuIdentityBackProps } from "./VuIdentityBack";
 import { VuDidiCamera } from "../common/VuDidiCamera";
 import { VuIdentityTakePhoto } from './VuIdentityTakePhoto';
+import { didiConnect } from '../../../store/store';
+import { createVerificationVU } from '../../../services/vuSecurity/createVerification';
+import { ActiveDid } from '../../../store/reducers/didReducer';
 
 export interface VuIdentityFrontNavigation {
 	VuIdentityBack: VuIdentityBackProps;
 	VuIdentityID:{}
-}
-export interface VuIdentityFrontProps {
-	
 }
 
 interface VuIdentityFrontState {
 	documentData?: DocumentBarcodeData;
 }
 
-export class VuIdentityFrontScreen extends NavigationEnabledComponent<
+interface IdentityProps {
+    did: ActiveDid,
+    name: string,
+    lastname:string,
+}
+interface IdentityScreenDispatchProps {
+	vuSecurityData : (operationId: number, userName: string) => void;
+}
+
+
+export type VuIdentityFrontProps = IdentityProps &  IdentityScreenDispatchProps;
+class VuIdentityFrontScreen extends NavigationEnabledComponent<
 	VuIdentityFrontProps,
 	VuIdentityFrontState,
 	VuIdentityFrontNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.vuIdentity.header);
 
-	constructor(props: VuIdentityFrontProps) {
+	constructor(props: VuIdentityFrontProps ) {
 		super(props);
 		this.state = {};
+	}
+
+	async componentDidMount(){
+		const {did,lastname,name} = this.props;
+		const result = await createVerificationVU(did,name, lastname);
+		this.props.vuSecurityData(result.data.operationId,result.data.userName);
 	}
 
 	private onBarcodeScanned(data: string, type: BarcodeType) {
@@ -100,3 +117,18 @@ export class VuIdentityFrontScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+const connected = didiConnect(
+	VuIdentityFrontScreen,
+	(state): IdentityProps => ({
+		did: state.did.activeDid,
+		name: state.persistedPersonalData.name,
+		lastname: state.persistedPersonalData.lastname
+}),
+(dispatch): IdentityScreenDispatchProps => ({
+	vuSecurityData : (operationId: number, userName: string) =>
+	dispatch({ type: "VU_SECURITY_DATA_SET", state: {operationId:`${operationId}`, userName } }),	
+})
+);
+
+export { connected as VuIdentityFrontScreen };
