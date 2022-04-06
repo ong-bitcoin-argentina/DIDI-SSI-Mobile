@@ -7,6 +7,7 @@ import { DidiText } from "../../util/DidiText";
 import { DashboardScreenProps } from "../home/Dashboard";
 
 import strings from "../../resources/strings";
+import colors from '../../resources/colors';
 
 export interface IdentityScreenNavigation {
 	DashboardHome: DashboardScreenProps;
@@ -52,26 +53,29 @@ export class IdentityScreen extends NavigationEnabledComponent<{}, {}, IdentityS
 		}
 	];
 
+	navigationVuSecurity = ()=>{
+		this.navigate("VuIdentityID", {});
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
 				<View style={styles.body}>
-					{this.identityButtons.map((identityBtn: ItemsBtn, key: number) => {
-						return (
-							<TouchableOpacity 
-							style={styles.title} 
-							key={key}
-							onPress={()=>identityBtn.navigation()}
+				<DidiText.ValidateIdentity.Subtitle style={styles.header}>{"Validado por VU Security"}</DidiText.ValidateIdentity.Subtitle>
+				<DidiText.ValidateIdentity.Title style={styles.title}>{strings.vuIdentity.what.header}</DidiText.ValidateIdentity.Title>
+				<DidiText.ValidateIdentity.Normal>{strings.vuIdentity.what.description}</DidiText.ValidateIdentity.Normal>
+				<Image style={styles.imageShows} source={require("../../resources/images/validateIdentityWhat.png")} />
+					<TouchableOpacity 
+							style={styles.titlebtn} 
+							onPress={this.navigationVuSecurity}
 							>
 								<View style={styles.listIssuers}>
-									<View style={styles.title}>
-										<Image style={styles.image} source={identityBtn.image} />
-										<DidiText.Explanation.Emphasis>{identityBtn.title}</DidiText.Explanation.Emphasis>
+									<View style={styles.titlebtn}>
+										<Image style={styles.image} source={require("../../resources/images/vu_icon_.png")} />
+										<DidiText.Button disabled={false} style={styles.titleStyle}>{strings.vuIdentity.what.buttonText}</DidiText.Button>
 									</View>
 								</View>
-							</TouchableOpacity>
-						);
-					})}
+					</TouchableOpacity>
 				</View>
 			</View>
 		);
@@ -85,10 +89,18 @@ const styles = StyleSheet.create({
 		paddingVertical: 35
 	},
 	title: {
+		fontSize: 19,
+	},
+	header: {
+		paddingVertical: 5,
+		marginVertical:15,
+		backgroundColor: colors.backgroundSeparator
+	},
+	titlebtn: {
+		display: "flex",
 		flexDirection: "row",
-		alignItems: "flex-start",
-		paddingTop: 25,
-		paddingBottom: 20
+		justifyContent:"center",
+		paddingVertical: "4%"
 	},
 	description: {
 		flexDirection: "row",
@@ -109,17 +121,24 @@ const styles = StyleSheet.create({
 		marginRight: 50
 	},
 	listIssuers: {
-		marginBottom: 7,
 		borderWidth: 2,
 		borderRadius: 10,
-		borderColor: "#24CDD2",
-		width: "100%"
+		width: "100%",
+		borderColor: colors.border.light,
+		backgroundColor: colors.primary,
+	},
+	titleStyle:{
+		color:"white"
 	},
 	image: {
 		width: 30,
 		height: 30,
-		marginRight: 30,
-		marginLeft: 30
+		marginRight: '5%'
+	},
+	imageShows:{
+		alignSelf: "center",
+		width: 136,
+		height: 144,
 	},
 	container: {
 		flex: 1,
