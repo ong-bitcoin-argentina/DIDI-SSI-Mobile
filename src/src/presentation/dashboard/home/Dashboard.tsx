@@ -256,7 +256,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 								<View style={styles.headerCredentials}>
 									{this.props.credentials.length > 0 ? 
 									<IdentityVerificationCard
-										onStartValidateId={() => this.navigate("DashboardIdentity", {})}
+										onStartValidateId={() => this.navigate("VuSecurityService", {})}
 										style={{ marginBottom: styles.headerCredentials.marginBottom }}
 										credentials = {this.props.credentials}
 									/>:null}
