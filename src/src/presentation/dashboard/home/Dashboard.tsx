@@ -41,7 +41,7 @@ import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
-import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
+import { IdentityVerificationCard } from './IdentityVerificationCard';
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -55,8 +55,6 @@ interface DashboardScreenStateProps {
 	imageUrl: string;
 	imageId: string;
 	identity: ValidatedIdentity;
-	operationId: string,
-	userName: string,
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
@@ -66,7 +64,6 @@ interface DashboardScreenDispatchProps {
 	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
 	saveProfileImage: (image: any) => void;
-	resetVuSecurity: (userName: string, operationId: string, did: ActiveDid) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -85,14 +82,13 @@ export interface DashboardScreenNavigation {
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
-	DashboardIdentity: {};
 }
 
 class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenInternalProps,
 	DashboardScreenState,
 	DashboardScreenNavigation
-> {
+	> {
 	static navigationOptions = NavigationHeaderStyle.gone;
 
 	constructor(props: DashboardScreenInternalProps) {
@@ -146,7 +142,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	};
 
 	componentDidMount() {
-		const { pendingLinking, userName, operationId, did} = this.props;
+		const { pendingLinking } = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
@@ -154,10 +150,10 @@ class DashboardScreen extends NavigationEnabledComponent<
 			this.props.resetPendingLinking();
 			this.urlHandler({ url: pendingLinking });
 		}
-		this.props.resetVuSecurity(userName,operationId, did);
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
+
 		return (
 			<TouchableOpacity
 				key={`RG_${index}`}
@@ -258,6 +254,12 @@ class DashboardScreen extends NavigationEnabledComponent<
 									onBellPress={() => this.navigate("NotificationScreen", {})}
 								/>
 								<View style={styles.headerCredentials}>
+									{this.props.credentials.length > 0 ? 
+									<IdentityVerificationCard
+										onStartValidateId={() => this.navigate("DashboardIdentity", {})}
+										style={{ marginBottom: styles.headerCredentials.marginBottom }}
+										credentials = {this.props.credentials}
+									/>:null}
 									<EvolutionCard credentials={this.props.credentials} />
 								</View>
 							</Fragment>
@@ -295,8 +297,6 @@ export default didiConnect(
 		imageUrl: state.persistedPersonalData.imageUrl,
 		imageId: state.persistedPersonalData.imageId,
 		identity: state.validatedIdentity,
-		operationId: state.vuSecurityData.operationId,
-		userName: state.vuSecurityData.userName,
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
@@ -314,10 +314,6 @@ export default didiConnect(
 				type: "IDENTITY_PATCH",
 				value: identity
 			});
-		},
-		resetVuSecurity: (userName: string, operationId: string, did: ActiveDid) => {
-			cancelVerificationVU(userName, operationId, did);
-			dispatch({ type: "VU_SECURITY_DATA_RESET" });
 		}
 	})
 );
