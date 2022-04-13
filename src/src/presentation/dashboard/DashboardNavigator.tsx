@@ -28,7 +28,6 @@ import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
-import IdentityNavigator from "./vuIdentity/IdentityNavigator";
 import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
 import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 import { RoundsScreen } from "./rounds/RoundsScreen";
@@ -37,6 +36,7 @@ import DocumentsScreen from "./documents/DocumentsScreen";
 import { IssuersScreen } from "./issuers/IssuersScreen";
 
 import Icon from "react-native-vector-icons/AntDesign";
+import VuIdentityNavigator from './vuIdentity/VuIdentityNavigator';
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -137,12 +137,6 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				"spa",
 				false
 			),
-			DashboardIdentity: screen(
-				IdentityNavigator().stackNavigator("DashboardIdentity"),
-				strings.tabNames.identity,
-				["idcard"],
-				false
-			),
 			DashboardSettings: screen(
 				SettingsNavigator({
 					...then,
@@ -188,6 +182,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	}
 
 	return NavMap.from(BottomNavigatorComponent, {
+		VuSecurityService: VuIdentityNavigator,
 		ValidateID: ValidateIdentityNavigator,
 		ScanCredential: CredentialNavigator,
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
