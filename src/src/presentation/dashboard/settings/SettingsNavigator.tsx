@@ -15,6 +15,7 @@ import { ChangePhoneEnterScreen } from "./userData/ChangePhoneEnterPhone";
 import { ChangePhoneVerifyScreen } from "./userData/ChangePhoneVerifyPhone";
 import { EditProfileScreen } from "./userMenu/EditProfile";
 import { AboutRondaScreen } from "./AboutRonda";
+import { CommonQuestionsScreen } from "../../common/CommonQuestions";
 
 export interface SettingsNavigatorNavigation {
 	Access: StartAccessProps;
@@ -40,6 +41,7 @@ export default function (then: NavTree<SettingsNavigatorNavigation>) {
 			IdentitySettings: NavMap.from(IdentitySettingsScreen, {}),
 			AboutThisAppScreen: NavMap.from(AboutThisAppScreen, {}),
 			AboutRonda: NavMap.from(AboutRondaScreen, {}),
+			CommonQuestions: NavMap.from(CommonQuestionsScreen, {}),
 			ServiceSettings: NavMap.from(ServiceSettingsScreen, {}),
 			JWTDecoderScreen: NavMap.from(JWTDecoderScanScreen, {})
 		}),

@@ -426,6 +426,7 @@ export default {
 		changeEmail: "Cambiar E-mail",
 		aboutAidi: "Acerca de ai·di",
 		aboutRonda: "Acerca de ronda",
+		help: "Ayuda",
 		about: {
 			title: `Acerca de ${appName}`,
 			paragraphs: [

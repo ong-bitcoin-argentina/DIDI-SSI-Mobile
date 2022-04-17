@@ -42,8 +42,10 @@ export class EnterEmailScreen extends React.Component<AddChildren<EnterEmailProp
 	}
 
 	render() {
+		
 		return (
 			<DidiScreen>
+				<DidiText.Explanation.Emphasis>la wea fome</DidiText.Explanation.Emphasis>
 				<DidiText.Explanation.Emphasis>{this.props.description}</DidiText.Explanation.Emphasis>
 
 				<Image source={this.props.contentImageSource} style={commonStyles.image.image} />

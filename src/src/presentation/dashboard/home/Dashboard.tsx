@@ -42,6 +42,7 @@ import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
+import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -82,6 +83,7 @@ export interface DashboardScreenNavigation {
 	ValidateID: ValidateIdentityExplainWhatProps;
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
+	CommonQuestions: CommonQuestionsScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
@@ -256,6 +258,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 								<HomeHeader
 									onPersonPress={() => this.navigate("EditProfile", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
+									onMarkPress={() => this.navigate("CommonQuestions", {})}
 								/>
 								<View style={styles.headerCredentials}>
 									<EvolutionCard credentials={this.props.credentials} />

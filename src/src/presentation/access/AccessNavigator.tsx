@@ -21,6 +21,8 @@ import { SignupPhoneVerifiedScreen } from "./signup/SignupPhoneVerified";
 import { SignupVerifyPhoneScreen } from "./signup/SignupVerifyPhone";
 import { SignupWithResetScreen } from "./signup/SignupWithReset";
 import { StartAccessScreen } from "./StartAccess";
+import { CommonQuestionsScreen } from "../common/CommonQuestions";
+import { OpenEmailScreen } from "../common/OpenEmail";
 
 interface AccessSwitchTarget {
 	Dashboard: DashboardScreenProps;
@@ -78,6 +80,6 @@ export default function (then: NavTree<AccessSwitchTarget>) {
 		RecoveryExplanation: recovery(then),
 		AccessSettings: NavMap.from(AccessSettingsScreen, then),
 		CommonQuestions: NavMap.from(CommonQuestionsScreen, then),
-		OpenEmail: NavMap.from(OpenEmail, then),
+		OpenEmail: NavMap.from(OpenEmailScreen, then)
 	});
 }
