@@ -92,7 +92,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 	}
 
 	onReset= async () =>{
-		this.navigate("VuSecurityService", {});
+		this.navigate("ValidateID", {});
 	}
 
 
