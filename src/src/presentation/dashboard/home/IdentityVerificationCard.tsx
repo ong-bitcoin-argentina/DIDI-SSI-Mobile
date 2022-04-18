@@ -9,7 +9,6 @@ import strings from "../../resources/strings";
 
 export interface IdentityVerificationCardProps {
 	onStartValidateId: () => void;
-	validationStatus: boolean
 	style: any;
 	credentials: any
 }
@@ -31,7 +30,7 @@ export class IdentityVerificationCard extends React.Component<IdentityVerificati
 			const findVerified = this.props.credentials.find(function(element: any) {
 				return element.data.Credencial === strings.specialCredentials.PersonalData.title;
 			});
-			if (!findVerified) {
+			if (findVerified) {
 				this.setState({
 					cardVisibleState: true,
 				});

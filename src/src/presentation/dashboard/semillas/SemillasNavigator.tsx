@@ -6,7 +6,7 @@ import BeneficiarioScreen from "./BeneficiarioScreen";
 import { DashboardScreenProps } from "../home/Dashboard";
 import RequestFinishedScreen from "./RequestFinishedScreen";
 import SemillasValidationScreen from "./validation/SemillasValidationScreen";
-import ValidateIdentityNavigator from "../validateIdentity/ValidateIdentityNavigator";
+import VuIdentityNavigator from '../vuIdentity/VuIdentityNavigator';
 
 export interface SemillasNavigatorNavigation {
 	DashboardHome: DashboardScreenProps;
@@ -19,7 +19,7 @@ export interface SemillasNavigatorNavigation {
 export default function (then: NavTree<SemillasNavigatorNavigation>) {
 	return NavMap.from(SemillasScreen, {
 		...then,
-		ValidateID: ValidateIdentityNavigator,
+		ValidateID: VuIdentityNavigator,
 		ValidateSemillasID: NavMap.from(SemillasValidationScreen, {}),
 		Prestadores: NavMap.from(PrestadoresScreen, {
 			Beneficiario: NavMap.from(BeneficiarioScreen, {

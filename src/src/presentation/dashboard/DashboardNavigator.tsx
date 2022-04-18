@@ -28,8 +28,6 @@ import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
-import { ValidateIdentityExplainWhatScreen } from "./validateIdentity/ValidateIdentityExplainWhat";
-import ValidateIdentityNavigator from "./validateIdentity/ValidateIdentityNavigator";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
@@ -37,6 +35,7 @@ import { IssuersScreen } from "./issuers/IssuersScreen";
 
 import Icon from "react-native-vector-icons/AntDesign";
 import VuIdentityNavigator from './vuIdentity/VuIdentityNavigator';
+import { IdentityScreen } from './vuIdentity/IdentityScreen';
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -100,7 +99,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 		}),
 		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
 		DashboardDocuments: NavMap.placeholder(DocumentsScreen),
-		ValidateID: NavMap.placeholder(ValidateIdentityExplainWhatScreen),
+		ValidateID: NavMap.placeholder(IdentityScreen),
 		EditProfile: NavMap.placeholder(EditProfileScreen),
 		__DashboardSettings: SettingsNavigator({
 			...then,
@@ -182,8 +181,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	}
 
 	return NavMap.from(BottomNavigatorComponent, {
-		VuSecurityService: VuIdentityNavigator,
-		ValidateID: ValidateIdentityNavigator,
+		ValidateID: VuIdentityNavigator,
 		ScanCredential: CredentialNavigator,
 		ShareCredential: NavMap.from(ShareCredentialScreen, {
 			ShareMicroCredential: NavMap.from(ShareMicroCredentialScreen, {

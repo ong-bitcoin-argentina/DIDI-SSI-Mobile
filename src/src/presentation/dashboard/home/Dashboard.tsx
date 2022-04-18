@@ -76,12 +76,12 @@ interface DashboardScreenState {
 }
 
 export interface DashboardScreenNavigation {
-	ValidateID: ValidateIdentityExplainWhatProps;
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
+	ValidateID: {};
 }
 
 class DashboardScreen extends NavigationEnabledComponent<
@@ -256,7 +256,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 								<View style={styles.headerCredentials}>
 									{this.props.credentials.length > 0 ? 
 									<IdentityVerificationCard
-										onStartValidateId={() => this.navigate("VuSecurityService", {})}
+										onStartValidateId={() => this.navigate("ValidateID", {})}
 										style={{ marginBottom: styles.headerCredentials.marginBottom }}
 										credentials = {this.props.credentials}
 									/>:null}
