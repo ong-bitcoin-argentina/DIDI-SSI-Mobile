@@ -26,6 +26,7 @@
 		"@react-native-firebase/crashlytics": "8.4.11",
 		"@react-native-firebase/dynamic-links": "^7.5.10",
 		"@react-native-firebase/functions": "7.4.9",
+		"accordion-collapse-react-native": "^1.1.0",
 		"fp-ts": "^2.4.0",
 		"google-libphonenumber": "^3.2.21",
 		"jwt-decode": "^2.2.0",

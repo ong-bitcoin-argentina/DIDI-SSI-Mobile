@@ -424,6 +424,7 @@ export default {
 		changeEmail: "Cambiar E-mail",
 		aboutAidi: "Acerca de ai·di",
 		aboutRonda: "Acerca de ronda",
+		help: "Ayuda",
 		about: {
 			title: `Acerca de ${appName}`,
 			paragraphs: [
@@ -545,6 +546,53 @@ export default {
 		changePhoneSuccess: "Número de teléfono cambiado exitosamente.",
 		changeEmailSuccess: "Email cambiado exitosamente."
 	},
+	vuIdentity:{
+		header: "Validar con vu Security",
+		welcome: "Bienvenido/a",
+		howTo: {
+			header: "Comienzo de proceso de validación de su Identidad",
+			intro: "Deberá seguir el siguiente proceso:",
+			steps: [
+				"Buscá un lugar iluminado y con fondo claro",
+				"Tener tu documento a mano",
+				"Acceso a Internet o datos móviles"
+			],
+			buttonText: "Está listo/a?"
+		},
+		explainFront: {
+			step: 1,
+			header: "Digitalizando el DNI",
+			description:"A continuación tendremos que sacar una foto al frente de tu DNI. Cuando lo tengas a mano, hacé click en el ícono de la cámara.",
+			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
+			barcodeConfirmation: {
+				found: "Se identificó el código de barras.",
+				notFound: "No se identificó un código de barras. Si está de este lado del DNI, volvé a tomar la foto."
+			},
+			rejected: "la foto fue rechazada por favor verifique que los margen del carnet coincida, con lo que le indica la cámara",
+			vuResponseFront:{
+				confirmation:"success",
+				notConfirmed:"camera-error"
+			},
+			blocked: {
+				title: "No se identificó un código de barras",
+				text: "Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto."
+			}
+		},
+		explainBack: {
+			step: 2,
+			header: "Digitalizando el DNI",
+			description: "Ahora da vuelta el DNI y sacale una foto del dorso.",
+			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
+			vuResponseBack:{
+				confirmation:"success",
+				notConfirmed:"camera-error"
+			},
+			blocked: {
+				title: "Surgio un inconveniente al agregar la Foto.",
+				text: "Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto anterior."
+			},
+		},
+	},
 	validateIdentity: {
 		header: "Validar Identidad",
 		welcome: "Te damos la bienvenida",
@@ -581,11 +629,6 @@ export default {
 			header: "Digitalizando el DNI",
 			description: "Ahora da vuelta el DNI y sacale una foto del dorso.",
 			confirmation: "Asegurate de que el texto esté al derecho y sea claramente legible.",
-			blocked: {
-				title: "No se identificó un código de barras",
-				text:
-					"Verificá que el código de barras esté bien enfocado. Si esta en el frente del DNI, volvé a tomar la foto anterior."
-			}
 		},
 		explainSelfie: {
 			step: 3,

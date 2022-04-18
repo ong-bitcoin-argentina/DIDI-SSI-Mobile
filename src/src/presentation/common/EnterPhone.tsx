@@ -53,7 +53,6 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 							withCountryNameButton={true}
 							withCallingCodeButton={true}
 							withModal={true}
-<<<<<<< HEAD
 							withFilter={true}
 							withCloseButton={true}
 							translation="spa"
@@ -61,14 +60,6 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 							countryCodes={["AR", "BZ", "BO", "BR", "CL", "CO", "CR", "EC", "SV", "FK", "GF", "GT", "GY", "HN", "NI", "PA", "PY", "PE", "SR", "UY", "VE", "MX"]} />
 					    
 						<Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}>
-=======
-							withFilter={true}	
-							withCloseButton={true}							
-							translation="spa"									
-							countryCode={this.state.inputCountryCode}
-						/>
-					    <Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}>
->>>>>>> 1fa67ca10838f37596a5ddaf804259ff4672ba13
 						arrow_drop_down
 					    </Icon>
 
