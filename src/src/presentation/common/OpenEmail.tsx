@@ -9,7 +9,10 @@ import colors from "../resources/colors";
 const mailTo = "soporte@didi.org";
 const mailBody = "Soporte ai.di"
 
-export class OpenEmail extends NavigationEnabledComponent<null,{},null> {
+export type OpenEmailScreenProps = {};
+export type OpenEmailScreenNavigation = {};
+
+export class OpenEmailScreen extends NavigationEnabledComponent<OpenEmailScreenProps,{},OpenEmailScreenNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitle("Contáctanos");
 
 	render() {		
