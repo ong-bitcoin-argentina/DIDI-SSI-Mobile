@@ -1,8 +1,7 @@
 import React, { Fragment } from "react";
-import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View , ActivityIndicator} from "react-native";
 import { Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
 import { DidiText } from "../../util/DidiText";
-
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
@@ -56,13 +55,15 @@ let defaultAspectRatio: { width: number; height: number } = { width: 4, height: 
 
 interface VuDidiCameraState {
 	ratio: { width: number; height: number };
+	loading: boolean;
 }
 
 class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState> {
 	constructor(props: VuDidiCameraProps) {
 		super(props);
 		this.state = {
-			ratio: defaultAspectRatio
+			ratio: defaultAspectRatio,
+			loading: false
 		};
 	}
 
@@ -110,7 +111,7 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 		if (resultDisabled) {
 			return VuDidiCamera.cameraButton(() => Alert.alert(resultDisabled.title, resultDisabled.text));
 		}
-			return VuDidiCamera.cameraButton(() => this.takePicture());	
+			return <>{this.state.loading?null:VuDidiCamera.cameraButton(() => this.takePicture())}</>
 	}
 
 	private onBarCodeRead(content: BarcodeEvent) {
@@ -138,17 +139,16 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			fixOrientation: true
 		});	
 		if (this.props.VuFront) {
+			this.setState({loading:true});
 			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"front");
 			this.props.vuSecurityDataFront(this.props.operationId, this.props.userName,result.status);
 		}
 
 		if (this.props.VuBack) {
-			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"back");
-			
-			
+			this.setState({loading:true});
+			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"back");	
 			this.props.vuSecurityDataBack(this.props.operationId, this.props.userName,result.status);
 		}
-
 		this.props.onPictureTaken?.(data);
 		return data;
 	}
@@ -161,6 +161,8 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 		if (!this.props.cameraLandscape) types = "front";
 
 		return (
+			<>
+			{this.state.loading? <ActivityIndicator size="large" color='#5E49E2'/>:
 			<RNCamera
 				onLayout={onCameraLayout && (event => onCameraLayout(event.nativeEvent.layout))}
 				ratio={`${this.state.ratio.width}:${this.state.ratio.height}`}
@@ -193,6 +195,8 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			>
 				{this.props.children}
 			</RNCamera>
+			}
+			</>
 		);
 	}
 
