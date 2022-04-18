@@ -60,8 +60,8 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 							countryCodes={["AR", "BZ", "BO", "BR", "CL", "CO", "CR", "EC", "SV", "FK", "GF", "GT", "GY", "HN", "NI", "PA", "PY", "PE", "SR", "UY", "VE", "MX"]} />
 					    
 						<Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}>
-						arrow_drop_down
-					    </Icon>
+							arrow_drop_down
+					    	</Icon>
 
 					</View>					
 					</View>

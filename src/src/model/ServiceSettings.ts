@@ -8,4 +8,5 @@ export interface ServiceSettings {
 	ethrDelegateUri: string;
 	didiUserServer: string;
 	providerConfig: ProviderConfig;
+	urlSecurity: string
 }
