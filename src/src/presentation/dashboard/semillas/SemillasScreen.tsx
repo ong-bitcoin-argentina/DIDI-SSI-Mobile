@@ -108,7 +108,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	goToRenaperValidation = () => {
 		this.toggleModal();
-		this.navigate("ValidateID", {});
+		this.navigate("VuSecurityService", {});
 	};
 
 	goToSemillasValidation = () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image, ImageSourcePropType } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -11,17 +11,9 @@ import colors from '../../resources/colors';
 
 export interface IdentityScreenNavigation {
 	DashboardHome: DashboardScreenProps;
-	ValidateID: {};
-	ValidateSemillasID: {};
-	VuIdentityID:{}
+	VuIdentityHow: {};
 	
 }
-interface ItemsBtn {
-	title: string,
-	image:  ImageSourcePropType,
-	navigation: ()=>any,
-}
-
 
 export class IdentityScreen extends NavigationEnabledComponent<{}, {}, IdentityScreenNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
@@ -29,32 +21,9 @@ export class IdentityScreen extends NavigationEnabledComponent<{}, {}, IdentityS
 		"DashboardHome"
 	>(strings.tabNames.identity, "DashboardHome", {});
 
-	identityButtons: ItemsBtn[]  = [
-		{
-			title: "Semillas",
-			image: require("../../resources/images/semilla.png"),
-			navigation: ()=>{
-				this.navigate("ValidateSemillasID", {});
-			}
-		},
-		{
-			title: "Renaper",
-			image: require("../../resources/images/renaper.png"),
-			navigation: ()=>{
-				this.navigate("ValidateID", {});
-			}
-		},
-		{
-			title: "VU Security",
-			image: require("../../resources/images/vu_icon_.png"),
-			navigation: ()=>{
-				this.navigate("VuIdentityID", {});
-			}
-		}
-	];
 
 	navigationVuSecurity = ()=>{
-		this.navigate("VuIdentityID", {});
+		this.navigate("VuIdentityHow", {});
 	}
 
 	render() {
