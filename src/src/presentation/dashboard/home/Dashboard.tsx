@@ -8,7 +8,6 @@ import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
-
 import { RecentActivity } from "../../../model/RecentActivity";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
@@ -18,8 +17,6 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DocumentDetailProps } from "../documents/DocumentDetail";
-import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
-
 import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
@@ -76,12 +73,12 @@ interface DashboardScreenState {
 }
 
 export interface DashboardScreenNavigation {
-	ValidateID: ValidateIdentityExplainWhatProps;
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
+	ValidateID: {};
 }
 
 class DashboardScreen extends NavigationEnabledComponent<
@@ -256,7 +253,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 								<View style={styles.headerCredentials}>
 									{this.props.credentials.length > 0 ? 
 									<IdentityVerificationCard
-										onStartValidateId={() => this.navigate("VuSecurityService", {})}
+										onStartValidateId={() => this.navigate("ValidateID", {})}
 										style={{ marginBottom: styles.headerCredentials.marginBottom }}
 										credentials = {this.props.credentials}
 									/>:null}

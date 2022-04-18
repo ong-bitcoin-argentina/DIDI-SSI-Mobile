@@ -9,7 +9,6 @@ import strings from "../../resources/strings";
 
 export interface IdentityVerificationCardProps {
 	onStartValidateId: () => void;
-	validationStatus: boolean
 	style: any;
 	credentials: any
 }
