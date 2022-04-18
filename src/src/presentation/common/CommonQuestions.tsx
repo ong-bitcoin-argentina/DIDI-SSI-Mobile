@@ -19,7 +19,7 @@ export class CommonQuestionsScreen extends NavigationEnabledComponent<CommonQues
 		const keys = Object.keys(questions);
 		return(
 			<DidiScrollScreen style={styles.scroll}>
-			<View style={{width: "100%", height: "100%"}} >
+			<View style={{width: "100%", height: "100%"}}>
 				<DidiText.Explanation.Emphasis style={{textAlign:'left'}}>Preguntas más frecuentes</DidiText.Explanation.Emphasis>
 				<DidiText.Explanation.Normal style={{textAlign:'left', marginTop: 10, marginBottom: 10}} >Aquí respondemos algunas de las preguntas más frecuentes en el uso de ai.di.</DidiText.Explanation.Normal>
 				{ keys.map((key, index) => {				
@@ -30,7 +30,7 @@ export class CommonQuestionsScreen extends NavigationEnabledComponent<CommonQues
 								<Icon name="down" color={colors.text} size={15}  />
 							</CollapseHeader>
 							<CollapseBody key={index} >
-								{ questions[key].map((question, index) => {
+								{ questions[key].map((question, Index) => {
 									return(
 										<Collapse style={{ paddingHorizontal: 0 }}>
 											<CollapseHeader style={[styles.titlesCard]}>
@@ -98,4 +98,3 @@ const styles = StyleSheet.create({
 	}
 	
 });
-

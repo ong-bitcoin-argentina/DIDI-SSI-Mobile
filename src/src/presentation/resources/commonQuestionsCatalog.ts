@@ -71,7 +71,6 @@ export default {
             ' Al presionar OK se volverá a la pantalla de inicio de la app. ' +
             ' En un primer momento va a aparecer un cartel que dice: “Validando tus datos...”. Si la validación es exitosa, cuando se presione OK, la credencial ' +
             ' de identidad va a aparecer en nuestra billetera virtual. En caso contrario aparecerá el botón para Reintentar.'
-
         },
         {
             id: "7",
