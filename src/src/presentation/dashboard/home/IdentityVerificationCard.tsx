@@ -8,8 +8,9 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 
 export interface IdentityVerificationCardProps {
-	style: any;
 	onStartValidateId: () => void;
+	validationStatus: boolean
+	style: any;
 	credentials: any
 }
 
@@ -48,7 +49,6 @@ export class IdentityVerificationCard extends React.Component<IdentityVerificati
 				</DidiCardBody>: null}
 				</>
 			);
-		// }
 	}
 }
 
