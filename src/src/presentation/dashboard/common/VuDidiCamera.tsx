@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View , ActivityIndicator} from "react-native";
-import { Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
+import { BarCodeReadEvent, Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
 import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
@@ -153,6 +153,13 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 		return data;
 	}
 
+	onBarCode=(event: BarCodeReadEvent)=>{
+		if (this.props.onBarcodeScanned ) {
+		return this.onBarCodeRead(event) 	
+		} else {
+			return undefined
+		}
+	} 
 	private renderCamera(types?: "front" | "back" | undefined) {
 		const onCameraLayout = this.props.onCameraLayout;
 		if (this.props.explanation === "Escaneá un código QR") types = "back";
@@ -176,9 +183,7 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 					buttonPositive: "Ok",
 					buttonNegative: "Cancelar"
 				}}
-				onBarCodeRead={this.props.onBarcodeScanned ? (event): void => {
-					return this.onBarCodeRead(event);
-				} : undefined}
+				onBarCodeRead={event => this.onBarCode(event)}
 				notAuthorizedView={
 					<DidiText.CameraExplanation style={styles.notAuthorized}>
 						{strings.camera.notAuthorized}
