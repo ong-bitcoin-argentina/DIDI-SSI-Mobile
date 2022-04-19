@@ -16,7 +16,7 @@ import { ActiveDid } from '../../../store/reducers/didReducer';
 
 export interface VuIdentityFrontNavigation {
 	VuIdentityBack: VuIdentityBackProps;
-	VuSecurityService:{}
+	ValidateID:{}
 }
 
 interface VuIdentityFrontState {
@@ -99,7 +99,7 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 				)}
 				onPictureAccepted={(data, reset) =>{
 					if(data.uri=='goBack'){
-						this.navigate("VuSecurityService",{},reset
+						this.navigate("ValidateID",{},reset
 					)
 					} else{
 					this.navigate(

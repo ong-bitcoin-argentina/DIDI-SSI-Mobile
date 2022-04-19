@@ -6,20 +6,24 @@ import { DidiText } from "../../util/DidiText";
 import DidiCardBody from "../common/DidiCardBody";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
+import { didiConnect } from '../../../store/store';
+import { CredentialDocument } from '@proyecto-didi/app-sdk';
 
 export interface IdentityVerificationCardProps {
 	onStartValidateId: () => void;
 	style: any;
-	credentials: any
 }
 
 export interface IdentityVerificationCardState {
 	cardVisibleState: boolean
 }
+interface IdentityStoreCardProps {
+	credentials: CredentialDocument[];
+}
+type IdentityCardProps = IdentityStoreCardProps & IdentityVerificationCardProps;
+class IdentityVerificationCard extends React.Component<IdentityCardProps,IdentityVerificationCardState> {
 
-export class IdentityVerificationCard extends React.Component<IdentityVerificationCardProps,IdentityVerificationCardState> {
-
-	constructor(props: IdentityVerificationCardProps) {
+	constructor(props: IdentityCardProps) {
         super(props);
         this.state = {
             cardVisibleState: false,
@@ -51,7 +55,14 @@ export class IdentityVerificationCard extends React.Component<IdentityVerificati
 	}
 }
 
+const connected = didiConnect(
+	IdentityVerificationCard,
+	(state): IdentityStoreCardProps => ({
+		credentials: state.credentials,
+	})
+);
 
+export { connected as IdentityVerificationCard };
 
 const styles = StyleSheet.create({
 	button: {
