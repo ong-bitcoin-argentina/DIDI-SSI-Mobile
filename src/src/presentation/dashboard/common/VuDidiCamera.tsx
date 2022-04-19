@@ -155,7 +155,6 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 
 	private renderCamera(types?: "front" | "back" | undefined) {
 		const onCameraLayout = this.props.onCameraLayout;
-		const onFacesDetected = this.props.onFacesDetected;
 		if (this.props.explanation === "Escaneá un código QR") types = "back";
 		if (this.props.cameraLandscape) types = "back";
 		if (!this.props.cameraLandscape) types = "front";
