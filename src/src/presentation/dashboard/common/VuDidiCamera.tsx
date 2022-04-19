@@ -177,15 +177,9 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 					buttonPositive: "Ok",
 					buttonNegative: "Cancelar"
 				}}
-				{...(onFacesDetected
-					? {
-							faceDetectionClassifications: RNCamera.Constants.FaceDetection.Classifications.all,
-							faceDetectionMode: RNCamera.Constants.FaceDetection.Mode.fast,
-							faceDetectionLandmarks: RNCamera.Constants.FaceDetection.Landmarks.all,
-							onFacesDetected: res => onFacesDetected(res.faces)
-					}
-					: undefined)}
-				onBarCodeRead={this.props.onBarcodeScanned ? event => this.onBarCodeRead(event) : undefined}
+				onBarCodeRead={this.props.onBarcodeScanned ? (event): void => {
+					return this.onBarCodeRead(event);
+				} : undefined}
 				notAuthorizedView={
 					<DidiText.CameraExplanation style={styles.notAuthorized}>
 						{strings.camera.notAuthorized}
