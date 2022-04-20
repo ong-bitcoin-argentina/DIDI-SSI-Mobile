@@ -111,7 +111,9 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 		if (resultDisabled) {
 			return VuDidiCamera.cameraButton(() => Alert.alert(resultDisabled.title, resultDisabled.text));
 		}
-			return <>{this.state.loading?null:VuDidiCamera.cameraButton(() => this.takePicture())}</>
+			return <>{this.state.loading?<DidiText.CameraExplanation style={styles.loadingTxt}>
+			Verificando su Documento ...
+		</DidiText.CameraExplanation>:VuDidiCamera.cameraButton(() => this.takePicture())}</>
 	}
 
 	private onBarCodeRead(content: BarcodeEvent) {
@@ -263,6 +265,12 @@ const styles = StyleSheet.create({
 	cameraInstruction: {
 		width: "100%",
 		height: 66,
+		textAlignVertical: "center"
+	},
+	loadingTxt: {
+		fontSize: 15,
+		width: "100%",
+		height: 100,
 		textAlignVertical: "center"
 	}
 });
