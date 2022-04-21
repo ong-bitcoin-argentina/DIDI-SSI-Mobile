@@ -6,11 +6,15 @@ import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 import { VuIdentityTakePhoto } from './VuIdentityTakePhoto';
-import { ValidateIdentitySelfieProps } from '../validateIdentity/ValidateIdentitySelfie';
 import { VuDidiCamera } from '../common/VuDidiCamera';
 
 export interface VuIdentityBackNavigation {
-	ValidateIdentitySelfie: ValidateIdentitySelfieProps;
+	ValidateIdentitySelfie: {
+		documentData: DocumentBarcodeData;
+		front: { uri: string };
+		back: { uri: string };
+	},
+	VuIdentitySelfie:{}
 }
 export interface VuIdentityBackProps {
 	documentData?: DocumentBarcodeData;

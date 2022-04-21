@@ -9,8 +9,8 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
-import { LivenessChecker } from "../validateIdentity/LivenessChecker";
-import { LivenessGesture } from "../validateIdentity/LivenessGesture";
+import { LivenessChecker } from "./LivenessChecker";
+import { LivenessGesture } from "./LivenessGesture";
 import { VuDidiSelfieCamera } from "../common/VuDidiSelfieCamera";
 import { IVuIdentitySubmitScreenProps } from "./VuIdentitySubmitScreen";
 import { didiConnect } from "../../../store/store";
