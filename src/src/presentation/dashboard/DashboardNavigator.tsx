@@ -31,8 +31,9 @@ import SemillasNavigator from "./semillas/SemillasNavigator";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
-import { IssuersScreen } from "./issuers/IssuersScreen";
-
+/* don't remove these lines
+ import { IssuersScreen } from "./issuers/IssuersScreen";
+*/
 import Icon from "react-native-vector-icons/AntDesign";
 import VuIdentityNavigator from './vuIdentity/VuIdentityNavigator';
 import { IdentityScreen } from './vuIdentity/IdentityScreen';
@@ -124,12 +125,14 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				strings.tabNames.documents,
 				"perm_contact_calendar"
 			),
+			/* don't remove these lines
 			DashboardIssuers: screen(
 				NavMap.from(IssuersScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardIssuers"),
 				strings.tabNames.issuers,
 				"assignment_returned",
 				false
 			),
+			*/
 			DashboardSemillas: screen(
 				SemillasNavigator().stackNavigator("DashboardSemillas"),
 				strings.tabNames.semillas,
