@@ -7,7 +7,7 @@ import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
+import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard"; 
 
 import { RecentActivity } from "../../../model/RecentActivity";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
