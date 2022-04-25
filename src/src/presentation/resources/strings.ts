@@ -649,7 +649,7 @@ export default {
 		success: {
 			header: "Validación de Identidad",
 			congrats: "¡Felicitaciones! Tu identidad ha sido validada.",
-			reminder: "Recordá que tus datos son privados y no serán compartidos.",
+			reminder: "El proceso de emisión de su credencial se realizará en el transcurso del día. \n \nRecordá que tus datos son privados y no serán compartidos.",
 			buttonText: "OK"
 		},
 		failure: {
