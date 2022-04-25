@@ -160,7 +160,10 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 					</DidiText.Button>
 			</TouchableOpacity>}
 			</>
-			:<ActivityIndicator size="large" color='#5E49E2'/>}
+			:
+			<View style={styles.loading}>
+				<ActivityIndicator size="large" color='#5E49E2'/>
+			</View>}
 			</View>
 			</DidiScrollScreen>
 		);
@@ -242,5 +245,16 @@ const styles = StyleSheet.create({
 		display:'flex',
 		flexDirection:"row",
 		justifyContent:"center"
+	},
+	loading:{
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		height: 56,
+		width: 145,
+		marginHorizontal: 5,
+		marginVertical: 5,
+		borderRadius: 5,
 	}
+
 });
