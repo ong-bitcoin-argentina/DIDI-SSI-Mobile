@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View , ActivityIndicator} from "react-native";
 import { DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -51,6 +51,7 @@ interface VuSubmitDispatchProps {
 }
 interface VuIdentitySubmitState {
 	possibleError: string,
+	loading: boolean,
 	checkFlag: string
 }
 type VuIdentitySubmitProps = IVuIdentitySubmitScreenProps&VuSubmitStateProps&VuSubmitDispatchProps;
@@ -61,6 +62,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 		super(props);
 		this.state = {
 			possibleError: "success",
+			loading: false,
 			checkFlag: "" 
 		};
 	}
@@ -76,6 +78,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 			const resultFinish = await finishOperation(this.props.userName, this.props.operationId, this.props.did);
 			this.setState({ checkFlag: resultFinish.status });
 		}
+		this.setState({ loading: true });
 	}
 
 	onAgree = ()=>{
@@ -134,6 +137,9 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 				</View> 
 
 			<View style={styles.contentBtn}>
+
+			{this.state.loading?
+			<>
 			{this.state.possibleError === "success"?
 				<>
 					<TouchableOpacity  style={styles.button} onPress={()=>this.onAgree()}>
@@ -153,6 +159,8 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 						Verifica tu Selfie 
 					</DidiText.Button>
 			</TouchableOpacity>}
+			</>
+			:<ActivityIndicator size="large" color='#5E49E2'/>}
 			</View>
 			</DidiScrollScreen>
 		);
