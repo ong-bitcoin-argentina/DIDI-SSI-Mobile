@@ -116,6 +116,30 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 		}
 	}
 
+	CompletionValidation(): JSX.Element{
+		if (this.state.possibleError === "success") {
+			return (<>
+				<TouchableOpacity  style={styles.button} onPress={()=>this.onAgree()}>
+						<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
+							Verificar
+						</DidiText.Button>
+				</TouchableOpacity>
+
+				<TouchableOpacity  style={styles.button} onPress={()=>this.onReset()}>
+						<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
+							Reiniciar
+						</DidiText.Button>
+				</TouchableOpacity>
+			</>)
+		} else {
+			return <TouchableOpacity  style={styles.errorBtn} onPress={()=>this.goToSelfieScreen()}>
+						<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
+							Verifica tu Selfie 
+						</DidiText.Button>
+					</TouchableOpacity>
+		}
+	}
+
 	render() {
 		const documentDataKeys = ["dni", "gender", "firstNames", "lastNames", "birthDate", "tramitId"] as const;
 		const documentData = this.mapGetInfomationResponse(this.props.documentDataVu);
@@ -138,29 +162,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 
 			<View style={styles.contentBtn}>
 
-			{this.state.loading?
-			<>
-			{this.state.possibleError === "success"?
-				<>
-					<TouchableOpacity  style={styles.button} onPress={()=>this.onAgree()}>
-							<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-								Verificar
-							</DidiText.Button>
-					</TouchableOpacity>
-
-					<TouchableOpacity  style={styles.button} onPress={()=>this.onReset()}>
-							<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-								Reiniciar
-							</DidiText.Button>
-					</TouchableOpacity>
-				</>:
-			<TouchableOpacity  style={styles.errorBtn} onPress={()=>this.goToSelfieScreen()}>
-					<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-						Verifica tu Selfie 
-					</DidiText.Button>
-			</TouchableOpacity>}
-			</>
-			:
+			{this.state.loading?this.CompletionValidation():
 			<View style={styles.loading}>
 				<ActivityIndicator size="large" color='#5E49E2'/>
 			</View>}
