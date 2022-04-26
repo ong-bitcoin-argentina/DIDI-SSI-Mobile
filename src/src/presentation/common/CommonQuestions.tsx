@@ -46,7 +46,7 @@ export class CommonQuestionsScreen extends NavigationEnabledComponent<CommonQues
 						</Collapse>
 					)})					
 				}
-					{/* <Collapse onToggle={this.goToSendEmail} style={{ position: 'absolute', bottom: 0 }}>
+					<Collapse onToggle={this.goToSendEmail} style={{ position: 'absolute', bottom: 0 }}>
 						<CollapseHeader style={[styles.titlesCard, styles.border]}>
 							<View style={{flexDirection:'row', width:'90%'}}>
 								<Icon name="mail" size={20}  />							
@@ -54,14 +54,14 @@ export class CommonQuestionsScreen extends NavigationEnabledComponent<CommonQues
 							</View>
 							<Icon name="right" size={15}  />	
 						</CollapseHeader>
-					</Collapse> */}
-				</View>			
+					</Collapse>
+				</View>
 			</DidiScrollScreen>
 		)
 	}
 
 	private goToSendEmail = async () => {		
-		this.navigate("OpenEmail", {});
+		this.navigate("OpenEmail", {}); 
 	}
 }
 

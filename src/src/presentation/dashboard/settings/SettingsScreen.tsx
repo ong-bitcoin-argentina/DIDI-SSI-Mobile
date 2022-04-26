@@ -23,6 +23,7 @@ import { EditProfileProps } from "./userMenu/EditProfile";
 import { ChangeEmailEnterEmailProps } from "./userData/ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./userData/ChangePhoneEnterPhone";
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
+import { OpenEmailScreenProps } from "../../common/OpenEmail";
 
 export type SettingsScreenProps = {};
 interface SettingsScreenStateProps {
@@ -48,6 +49,7 @@ export interface SettingsScreenNavigation {
 	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
 	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
 	CommonQuestions: CommonQuestionsScreenProps;
+	OpenEmailScreenProps: OpenEmailScreenProps
 }
 
 interface SettingsButton {
