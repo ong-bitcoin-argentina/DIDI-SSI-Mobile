@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View , ActivityIndicator} from "react-native";
 import { DidiScrollScreen } from "../../common/DidiScreen";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
@@ -51,6 +51,7 @@ interface VuSubmitDispatchProps {
 }
 interface VuIdentitySubmitState {
 	possibleError: string,
+	loading: boolean,
 	checkFlag: string
 }
 type VuIdentitySubmitProps = IVuIdentitySubmitScreenProps&VuSubmitStateProps&VuSubmitDispatchProps;
@@ -61,6 +62,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 		super(props);
 		this.state = {
 			possibleError: "success",
+			loading: false,
 			checkFlag: "" 
 		};
 	}
@@ -76,6 +78,7 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 			const resultFinish = await finishOperation(this.props.userName, this.props.operationId, this.props.did);
 			this.setState({ checkFlag: resultFinish.status });
 		}
+		this.setState({ loading: true });
 	}
 
 	onAgree = ()=>{
@@ -113,6 +116,30 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 		}
 	}
 
+	CompletionValidation(): JSX.Element{
+		if (this.state.possibleError === "success") {
+			return (<>
+				<TouchableOpacity  style={styles.button} onPress={()=>this.onAgree()}>
+						<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
+							Verificar
+						</DidiText.Button>
+				</TouchableOpacity>
+
+				<TouchableOpacity  style={styles.button} onPress={()=>this.onReset()}>
+						<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
+							Reiniciar
+						</DidiText.Button>
+				</TouchableOpacity>
+			</>)
+		} else {
+			return <TouchableOpacity  style={styles.errorBtn} onPress={()=>this.goToSelfieScreen()}>
+						<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
+							Verifica tu Selfie 
+						</DidiText.Button>
+					</TouchableOpacity>
+		}
+	}
+
 	render() {
 		const documentDataKeys = ["dni", "gender", "firstNames", "lastNames", "birthDate", "tramitId"] as const;
 		const documentData = this.mapGetInfomationResponse(this.props.documentDataVu);
@@ -134,25 +161,11 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 				</View> 
 
 			<View style={styles.contentBtn}>
-			{this.state.possibleError === "success"?
-				<>
-					<TouchableOpacity  style={styles.button} onPress={()=>this.onAgree()}>
-							<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-								Verificar
-							</DidiText.Button>
-					</TouchableOpacity>
 
-					<TouchableOpacity  style={styles.button} onPress={()=>this.onReset()}>
-							<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-								Reiniciar
-							</DidiText.Button>
-					</TouchableOpacity>
-				</>:
-			<TouchableOpacity  style={styles.errorBtn} onPress={()=>this.goToSelfieScreen()}>
-					<DidiText.Button disabled={false} style={{alignSelf: "center"}}>
-						Verifica tu Selfie 
-					</DidiText.Button>
-			</TouchableOpacity>}
+			{this.state.loading?this.CompletionValidation():
+			<View style={styles.loading}>
+				<ActivityIndicator size="large" color='#5E49E2'/>
+			</View>}
 			</View>
 			</DidiScrollScreen>
 		);
@@ -234,5 +247,16 @@ const styles = StyleSheet.create({
 		display:'flex',
 		flexDirection:"row",
 		justifyContent:"center"
+	},
+	loading:{
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		height: 56,
+		width: 145,
+		marginHorizontal: 5,
+		marginVertical: 5,
+		borderRadius: 5,
 	}
+
 });
