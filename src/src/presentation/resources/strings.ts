@@ -124,6 +124,11 @@ export default {
 			connecting: "Conectándote a ronda..."
 		}
 	},
+	contact: {
+		title: "Si las preguntas frecuentes no han resuelto tu duda, envía un mensaje al correo electrónico @didi.org",
+		description: "En breve te responderemos.",
+		action: "Abir email"
+	},
 	dashboardJump: {
 		scanCredential: "Escanear Credenciales",
 		shareCredential: "Compartir",
