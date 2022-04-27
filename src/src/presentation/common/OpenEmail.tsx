@@ -6,8 +6,9 @@ import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import { DidiText } from "../util/DidiText";
 import { StyleSheet, Linking } from 'react-native';
 import colors from "../resources/colors";
+import strings from "../resources/strings";
 const mailTo = "soporte@didi.org";
-const mailBody = "Soporte ai.di"
+const mailBody = "Soporte ai.di";
 
 export type OpenEmailScreenProps = {};
 export type OpenEmailScreenNavigation = {};
@@ -19,16 +20,15 @@ export class OpenEmailScreen extends NavigationEnabledComponent<OpenEmailScreenP
 		return(
 			<DidiScreen style={{justifyContent:'flex-start', paddingVertical: 30}}>			
 				<DidiText.Explanation.Normal>
-					Si las preguntas frecuentes no han resuelto tu duda, envía un mensaje al correo electrónico
-					@didi,org
+					{strings.contact.title}
 				</DidiText.Explanation.Normal>
 				<DidiText.Explanation.Normal style={styles.marginTop30} >
-					En breve te responderemos
+					{strings.contact.description}
 				</DidiText.Explanation.Normal>
 				<DidiButton
 						onPress={this.openMail}
 						style={[styles.primaryButton, styles.marginTop80]} 
-						title="Abrir email"
+						title={strings.contact.action}
 					/>
 			</DidiScreen>
 		)
