@@ -38,7 +38,6 @@ import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
-import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
 import { IdentityVerificationCard } from './IdentityVerificationCard';
 
