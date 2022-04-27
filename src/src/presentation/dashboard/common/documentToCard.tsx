@@ -104,7 +104,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		const issuerData = context.knownIssuers[did.did()];
 		const issuerName = issuerData
 			? issuerData.name === null
-				? emitter.unknown
+				? "Emisor: DIDI Server QA"
 				: emitter.known(issuerData.name)
 			: emitter.loading;
 		const emmitterId = `${emitter.id}: ${did.keyAddress()}`;
