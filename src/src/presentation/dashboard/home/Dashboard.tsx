@@ -39,6 +39,7 @@ import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { IdentityVerificationCard } from './IdentityVerificationCard';
+import { checkValidateDniVU } from '../../../services/vuSecurity/checkValidateDni';
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -56,7 +57,7 @@ interface DashboardScreenStateProps {
 interface DashboardScreenDispatchProps {
 	login(): void;
 	resetDniValidation: () => void;
-	finishDniValidation: () => void;
+	finishDniValidation: (statusDni : string) => void;
 	resetPendingLinking: () => void;
 	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
@@ -138,8 +139,10 @@ class DashboardScreen extends NavigationEnabledComponent<
 		}
 	};
 
-	componentDidMount() {
-		const { pendingLinking } = this.props;
+	async componentDidMount() {
+		const { pendingLinking, did } = this.props;
+		const result = await checkValidateDniVU(did);
+		this.props.finishDniValidation(result.data.status);
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
@@ -297,12 +300,11 @@ export default didiConnect(
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
-			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
-		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),
+		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),
 		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
 		getPersonalData: (token: string) => dispatch(getPersonalData("getPersonalData", token)),
 		saveProfileImage: (identity: Identity) => {

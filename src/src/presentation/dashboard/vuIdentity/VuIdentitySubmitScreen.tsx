@@ -13,7 +13,7 @@ import { addDocumentImage } from '../../../services/vuSecurity/addDocumentImage'
 import { IReturnGetInformation } from '../../../model/VuGetInformation';
 import { DataAlert } from '../../common/DataAlert';
 import { finishOperation } from '../../../services/vuSecurity/finishOperation';
-
+import { checkValidateDniVU } from '../../../services/vuSecurity/checkValidateDni';
 
 interface IDocumentData {
     birthDate:        string;
@@ -46,6 +46,7 @@ interface VuSubmitStateProps {
 	lastname: string
 }
 interface VuSubmitDispatchProps {
+	finishDniValidation: (statusDni : string) => void;
 	vuSecurityDataSelfie: (operationId: string, userName: string, vuResponseSelfie: string) => void;
 	vuSecurityDataCreateVerification:(operationId: number, userName: string) => void;
 }
@@ -77,6 +78,8 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 		if (this.props.vuResponseBack == 'success' && this.props.vuResponseFront == 'success' && this.props.vuResponseSelfie == 'success') {
 			const resultFinish = await finishOperation(this.props.userName, this.props.operationId, this.props.did);
 			this.setState({ checkFlag: resultFinish.status });
+			const result = await checkValidateDniVU(this.props.did);
+			this.props.finishDniValidation(result.data.status);
 		}
 		this.setState({ loading: true });
 	}
@@ -186,11 +189,9 @@ const connected = didiConnect(
 		lastname: state.persistedPersonalData.lastname
 	}),
 	(dispatch): VuSubmitDispatchProps => ({
-		vuSecurityDataSelfie:(operationId: string, userName: string, vuResponseSelfie: string)=>{
-			dispatch({ type: "VU_SECURITY_RESPONSE_ADD_SELFIE", state: { operationId, userName, vuResponseSelfie } })
-		},
-		vuSecurityDataCreateVerification : (operationId: number, userName: string) =>
-		dispatch({ type: "VU_SECURITY_DATA_SET", state: {operationId:`${operationId}`, userName } }),	
+		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),
+		vuSecurityDataSelfie:(operationId: string, userName: string, vuResponseSelfie: string)=>dispatch({ type: "VU_SECURITY_RESPONSE_ADD_SELFIE", state: { operationId, userName, vuResponseSelfie } }),
+		vuSecurityDataCreateVerification : (operationId: number, userName: string) => dispatch({ type: "VU_SECURITY_DATA_SET", state: {operationId:`${operationId}`, userName } }),
 	})
 );
 

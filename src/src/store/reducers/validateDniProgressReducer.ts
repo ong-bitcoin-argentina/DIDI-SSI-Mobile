@@ -5,10 +5,10 @@ type ValidateDniFinalState =
 			state: "Finished";
 		}
 	| {
-			state: "Success";
+			state: "Successful";
 		}
 	| {
-			state: "Failure";
+			state: "Failed";
 			message?: string;
 		};
 
@@ -51,7 +51,7 @@ export function validateDniReducer(state: ValidateDniState | undefined = null, a
 				return state;
 			} else if (state.remainingAttempts <= 1) {
 				return {
-					state: "Failure"
+					state: "Failed"
 				};
 			}
 			return {
