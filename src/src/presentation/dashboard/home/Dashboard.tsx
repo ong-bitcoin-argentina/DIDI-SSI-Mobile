@@ -9,7 +9,6 @@ import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
 import { RecentActivity } from "../../../model/RecentActivity";
-import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";

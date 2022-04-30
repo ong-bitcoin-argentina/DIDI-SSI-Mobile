@@ -102,6 +102,12 @@ class SemillasValidationState extends Component<Props, State> {
 
 	renderRequestDescription = () => {
 		const { goToRenaperValidation, goToSemillasValidation, validateDni , validateDniFailed } = this.props;	
+		let visibleTitle ='';
+		if (validateDniFailed) {
+			visibleTitle = validateIdentity.Failed.button;
+		} else {
+			visibleTitle = strings.validateIdentity.header;
+		}
 		return (
 			<View style={{ paddingTop: 10 }}>
 				<Small style={styles.modalText}>
@@ -110,8 +116,7 @@ class SemillasValidationState extends Component<Props, State> {
 				<View style={{ marginBottom: 15 }}>
 					{!validateDni?<DidiButton
 						onPress={goToRenaperValidation}
-						title={validateDniFailed ? 
-						validateIdentity.Failed.button : strings.validateIdentity.header}
+						title={visibleTitle}
 						style={[button.lightRed, styles.renaperButton]}/>: null}
 				</View>
 
