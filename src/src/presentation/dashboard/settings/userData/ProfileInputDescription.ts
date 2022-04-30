@@ -1,10 +1,15 @@
-import { LegalAddress, PersonalIdentityData } from "@proyecto-didi/app-sdk";
-
 import strings from "../../../resources/strings";
 
 interface InputFieldDescription {
 	name: string;
 	keyboardType?: "number-pad" | "email-address" | "phone-pad";
+}
+
+export interface IPersonalInformation {
+	'Apellido(s)': string;
+    'Nacionalidad': string;
+    'Nombre(s)': string;
+    'Numero de Identidad': string;
 }
 
 export interface ProfileInputDataStructure<T extends keyof any> {
@@ -13,15 +18,15 @@ export interface ProfileInputDataStructure<T extends keyof any> {
 	structure: { [K in T]: InputFieldDescription };
 }
 
-export const personalDataStructure: ProfileInputDataStructure<keyof PersonalIdentityData | "cellPhone" | "email"> = {
+export const personalDataStructure: ProfileInputDataStructure<keyof IPersonalInformation | "cellPhone" | "email"> = {
 	name: strings.userData.personalDataLabel,
-	order: ["firstNames", "lastNames", "cellPhone", "email", "document", "nationality"],
+	order: ["Nombre(s)", "Apellido(s)", "cellPhone", "email", "Numero de Identidad", "Nacionalidad"],
 	structure: {
 		cellPhone: {
 			name: strings.userData.editProfile.cellMessage,
 			keyboardType: "phone-pad"
 		},
-		document: {
+		"Numero de Identidad": {
 			name: strings.userData.editProfile.documentMessage,
 			keyboardType: "number-pad"
 		},
@@ -29,39 +34,45 @@ export const personalDataStructure: ProfileInputDataStructure<keyof PersonalIden
 			name: strings.userData.editProfile.emailMessage,
 			keyboardType: "email-address"
 		},
-		firstNames: {
-			name: strings.userData.editProfile.firstNameMessage
+		"Nombre(s)": {
+			name: "Nombre(s)"
 		},
-		lastNames: {
+		"Apellido(s)": {
 			name: strings.userData.editProfile.lastNameMessage
 		},
-		nationality: {
+		Nacionalidad: {
 			name: strings.userData.editProfile.nationalityMessage
 		}
 	}
 };
 
-export const addressDataStructure: ProfileInputDataStructure<keyof LegalAddress> = {
+
+export interface LegalAddressUser {
+	'Ciudad/Barrio': string;
+	'Departamento/Municipalidad': string;
+	Domicilio: string;
+	País: string;
+	Provincia: string;
+}
+
+export const addressDataStructure: ProfileInputDataStructure<keyof LegalAddressUser> = {
 	name: strings.userData.addressDataLabel,
-	order: ["street", "number", "department", "floor", "neighborhood", "postCode"],
+	order: [ "País","Provincia","Ciudad/Barrio", "Departamento/Municipalidad", "Domicilio"],
 	structure: {
-		department: {
-			name: strings.userData.editProfile.departmentMessage
+		'País': {
+			name: 'País'
 		},
-		floor: {
-			name: strings.userData.editProfile.floorMessage
+		'Provincia': {
+			name: 'Provincia'
 		},
-		neighborhood: {
-			name: strings.userData.editProfile.neighborhoodMessage
+		"Ciudad/Barrio": {
+			name: 'Ciudad/Barrio'
 		},
-		number: {
-			name: strings.userData.editProfile.numberMessage
+		'Departamento/Municipalidad': {
+			name: 'Departamento/Municipalidad'
 		},
-		postCode: {
-			name: strings.userData.editProfile.postCodeMessage
+		'Domicilio': {
+			name: 'Domicilio'
 		},
-		street: {
-			name: strings.userData.editProfile.streetMessage
-		}
 	}
 };
