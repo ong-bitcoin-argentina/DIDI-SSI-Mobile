@@ -109,13 +109,31 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 		return props;
 	}
+	
+	personalInformation(){
+		try {
+			const information = this.props.credentials.find(function(element: any) {
+				return element.data.Credencial === 'Datos Personales';
+			});
+			Object.assign(information?.data,{email:this.props.identity.email?.value})
+			Object.assign(information?.data,{cellPhone:this.props.identity.cellPhone?.value})
+			return information;
+		} catch (error) {
+			return {
+				data : {
+						cellPhone: "",
+						email: "",
+						"Nombre(s)": "",
+						"Apellido(s)": "",
+						Nacionalidad: "",
+						"Numero de Identidad": ""
+					}
+			} 
+		}
+	}
 
 	private renderPersonInputs() {
-		const PersonalInformation = this.props.credentials.find(function(element: any) {
-			return element.data.Credencial === 'Datos Personales';
-		});
-		Object.assign(PersonalInformation?.data,{email:this.props.identity.email?.value})
-		Object.assign(PersonalInformation?.data,{cellPhone:this.props.identity.cellPhone?.value})
+		const PersonalInformation = this.personalInformation();
 		return (
 			<View style={styles.dropdownContents}>
 				{personalDataStructure.order.map(key => {
@@ -136,10 +154,25 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		);
 	}
 
+	addressUser(){
+		try {
+			return this.props.credentials.find(function(element: any):any {
+				return element.data.Credencial === 'Domicilio Legal';
+			});
+		} catch (error) {
+			return  {
+				data:{
+				"Ciudad/Barrio": "",
+				"Departamento/Municipalidad": "",
+				Domicilio: "",
+				País: "",
+				Provincia: "",
+			}}	
+		}
+	}
+
 	private renderAddressInputs() {
-		const LegalAddressUser = this.props.credentials.find(function(element: any) {
-			return element.data.Credencial === 'Domicilio Legal';
-		});
+		const LegalAddressUser = this.addressUser();
 		return (
 			<View style={styles.dropdownContents}>
 				{addressDataStructure.order.map(key => {

@@ -20,7 +20,7 @@ const { modal, button } = commonStyles;
 interface StoreProps {
 	validationState: ValidationStates | null;
 	validateDniFailed: boolean;
-	validateDni: any;
+	validateDni: boolean;
 }
 
 interface State {}

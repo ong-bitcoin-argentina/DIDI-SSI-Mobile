@@ -19,6 +19,7 @@ export interface IdentityVerificationCardState {
 }
 interface IdentityStoreCardProps {
 	credentials: CredentialDocument[];
+	validateDni: string | undefined;
 }
 type IdentityCardProps = IdentityStoreCardProps & IdentityVerificationCardProps;
 class IdentityVerificationCard extends React.Component<IdentityCardProps,IdentityVerificationCardState> {
@@ -45,7 +46,7 @@ class IdentityVerificationCard extends React.Component<IdentityCardProps,Identit
 		const {style } = this.props;
 			return (
 				<>
-				{this.state.cardVisibleState?
+				{this.state.cardVisibleState && this.props.validateDni !== 'Successful' ?
 				<DidiCardBody icon="" color={colors.error} hollow={true} style={{ minHeight: undefined, ...style }}>
 					<DidiText.Card.Title style={styles.titleColor}>{strings.dashboard.validateIdentity.Start.title}</DidiText.Card.Title>
                     <DidiButton style={styles.button} title={strings.dashboard.validateIdentity.Start.button} onPress={this.props.onStartValidateId} />
@@ -59,6 +60,7 @@ const connected = didiConnect(
 	IdentityVerificationCard,
 	(state): IdentityStoreCardProps => ({
 		credentials: state.credentials,
+		validateDni: state.validateDni?.state
 	})
 );
 

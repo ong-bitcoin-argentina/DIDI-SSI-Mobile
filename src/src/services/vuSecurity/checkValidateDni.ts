@@ -17,7 +17,7 @@ export async function checkValidateDniVU(did: ActiveDid): Promise<IReturnCheckVa
             errorCode: "FIND_BY_ID",
             message: `${error}`,
             data: {
-                status: "Failed",
+                status: "In Progress",
             }
         };
     }
