@@ -22,7 +22,7 @@ export interface EnterPhoneProps {
 
 export interface EnterPhoneState {	
 	inputCountryCode?: string;
-	inputCountryCallingCode?: string | undefined;
+	inputCountryCallingCode?: string;
 	inputPhoneNumber?: string;
 	inputPassword?: string;
 }
