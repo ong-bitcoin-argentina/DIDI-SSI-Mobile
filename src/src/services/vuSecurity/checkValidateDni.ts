@@ -9,8 +9,9 @@ const VUSecurity = ():VUSecurityApiClient => ( new VUSecurityApiClient(AppConfig
 
 export async function checkValidateDniVU(did: ActiveDid): Promise<IReturnCheckValidateDni> {    
     const token = await createTokenAuthorization(did);
+    const didActived = await did?.did();
     try {
-    return await VUSecurity().checkValidateDni(`${did?.did()}`,token); 
+    return await VUSecurity().checkValidateDni(didActived as string,token); 
     } catch (error) {
         return { 
             status: "error",

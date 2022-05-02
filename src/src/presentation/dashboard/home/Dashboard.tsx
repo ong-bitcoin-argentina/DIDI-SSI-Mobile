@@ -38,8 +38,6 @@ import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { IdentityVerificationCard } from './IdentityVerificationCard';
-import { checkValidateDniVU } from '../../../services/vuSecurity/checkValidateDni';
-
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	did: ActiveDid;
@@ -139,9 +137,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	};
 
 	async componentDidMount() {
-		const { pendingLinking, did } = this.props;
-		const result = await checkValidateDniVU(did);
-		this.props.finishDniValidation(result.data.status);
+		const { pendingLinking } = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
@@ -252,12 +248,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 									onPersonPress={() => this.navigate("EditProfile", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
 								/>
-								<View style={styles.headerCredentials}>
-									{this.props.credentials.length > 0 ? 
+								<View style={styles.headerCredentials}> 
 									<IdentityVerificationCard
 										onStartValidateId={() => this.navigate("ValidateID", {})}
 										style={{ marginBottom: styles.headerCredentials.marginBottom }}
-									/>:null}
+									/>
 									<EvolutionCard credentials={this.props.credentials} />
 								</View>
 							</Fragment>

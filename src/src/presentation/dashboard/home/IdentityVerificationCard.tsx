@@ -8,6 +8,8 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import { didiConnect } from '../../../store/store';
 import { CredentialDocument } from '@proyecto-didi/app-sdk';
+import { ActiveDid } from '../../../store/reducers/didReducer';
+import { checkValidateDniVU } from '../../../services/vuSecurity/checkValidateDni';
 
 export interface IdentityVerificationCardProps {
 	onStartValidateId: () => void;
@@ -18,10 +20,14 @@ export interface IdentityVerificationCardState {
 	cardVisibleState: boolean
 }
 interface IdentityStoreCardProps {
+	did: ActiveDid;
 	credentials: CredentialDocument[];
 	validateDni: string | undefined;
 }
-type IdentityCardProps = IdentityStoreCardProps & IdentityVerificationCardProps;
+interface IdentityStoreDispatchProps{
+	finishDniValidation: (statusDni : string) => void;
+}
+type IdentityCardProps = IdentityStoreCardProps & IdentityVerificationCardProps & IdentityStoreDispatchProps;
 class IdentityVerificationCard extends React.Component<IdentityCardProps,IdentityVerificationCardState> {
 
 	constructor(props: IdentityCardProps) {
@@ -31,7 +37,11 @@ class IdentityVerificationCard extends React.Component<IdentityCardProps,Identit
         }
     }
 
-	componentDidMount(){
+	async componentDidMount(){
+			if(this.props.validateDni !== 'Successful'){
+		    const result = await checkValidateDniVU(this.props.did);
+		    this.props.finishDniValidation(result.data.status);
+			}
 			const findVerified = this.props.credentials.find(function(element: any) {
 				return element.data.Credencial === strings.specialCredentials.PersonalData.title;
 			});
@@ -59,8 +69,12 @@ class IdentityVerificationCard extends React.Component<IdentityCardProps,Identit
 const connected = didiConnect(
 	IdentityVerificationCard,
 	(state): IdentityStoreCardProps => ({
+		did: state.did.activeDid,
 		credentials: state.credentials,
 		validateDni: state.validateDni?.state
+	}),
+	(dispatch): IdentityStoreDispatchProps => ({
+		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),
 	})
 );
 
