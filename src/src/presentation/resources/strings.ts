@@ -95,7 +95,7 @@ export default {
 				subtitle: "Recuerde que sus datos son privados.",
 				button: "OK"
 			},
-			Failure: {
+			Failed: {
 				title: "Lo lamentamos. Su identidad no ha sido validada.",
 				subtitle: "Intente nuevamente.",
 				button: "Reintentar"

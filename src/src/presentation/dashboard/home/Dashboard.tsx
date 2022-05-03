@@ -9,7 +9,6 @@ import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
 import { RecentActivity } from "../../../model/RecentActivity";
-import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
@@ -39,7 +38,6 @@ import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { IdentityVerificationCard } from './IdentityVerificationCard';
-
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	did: ActiveDid;
@@ -56,7 +54,7 @@ interface DashboardScreenStateProps {
 interface DashboardScreenDispatchProps {
 	login(): void;
 	resetDniValidation: () => void;
-	finishDniValidation: () => void;
+	finishDniValidation: (statusDni : string) => void;
 	resetPendingLinking: () => void;
 	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
@@ -138,7 +136,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		}
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		const { pendingLinking } = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
@@ -250,12 +248,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 									onPersonPress={() => this.navigate("EditProfile", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
 								/>
-								<View style={styles.headerCredentials}>
-									{this.props.credentials.length > 0 ? 
+								<View style={styles.headerCredentials}> 
 									<IdentityVerificationCard
 										onStartValidateId={() => this.navigate("ValidateID", {})}
 										style={{ marginBottom: styles.headerCredentials.marginBottom }}
-									/>:null}
+									/>
 									<EvolutionCard credentials={this.props.credentials} />
 								</View>
 							</Fragment>
@@ -297,12 +294,11 @@ export default didiConnect(
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
-			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
-		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),
+		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),
 		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
 		getPersonalData: (token: string) => dispatch(getPersonalData("getPersonalData", token)),
 		saveProfileImage: (identity: Identity) => {

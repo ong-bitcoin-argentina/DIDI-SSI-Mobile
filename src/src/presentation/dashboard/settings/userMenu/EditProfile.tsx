@@ -1,4 +1,4 @@
-import { Identity, EthrDID } from "@proyecto-didi/app-sdk";
+import { Identity, EthrDID, CredentialDocument } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { ScrollView, StatusBar, StyleSheet, TextInputProps, View, Clipboard, ToastAndroid } from "react-native";
 import { readFile, DocumentDirectoryPath, exists } from "react-native-fs";
@@ -31,6 +31,7 @@ interface EditProfileStateProps {
 	identity: ValidatedIdentity;
 	isPersonalDataApproved: boolean;
 	isAddressApproved: boolean;
+	credentials: CredentialDocument[];
 }
 interface EditProfileDispatchProps {
 	saveIdentity: (state: Identity) => void;
@@ -108,35 +109,37 @@ class EditProfileScreen extends NavigationEnabledComponent<
 
 		return props;
 	}
+	
+	personalInformation(){
+		try {
+			const information = this.props.credentials.find(function(element: any) {
+				return element.data.Credencial === 'Datos Personales';
+			});
+			Object.assign(information?.data,{email:this.props.identity.email?.value})
+			Object.assign(information?.data,{cellPhone:this.props.identity.cellPhone?.value})
+			return information;
+		} catch (error) {
+			return {
+				data : {
+						cellPhone: "",
+						email: "",
+						"Nombre(s)": "",
+						"Apellido(s)": "",
+						Nacionalidad: "",
+						"Numero de Identidad": ""
+					}
+			} 
+		}
+	}
 
 	private renderPersonInputs() {
+		const PersonalInformation = this.personalInformation();
 		return (
 			<View style={styles.dropdownContents}>
 				{personalDataStructure.order.map(key => {
 					const struct = personalDataStructure.structure[key];
-
-					const id =
-						key === "cellPhone" || key === "email" ? this.props.identity[key] : this.props.identity.personalData[key];
-
-					// keep commented code in case of requested that data would be editable
-					// const onChangeText = (text: string) =>
-					// 	key === "cellPhone" || key === "email"
-					// 		? this.setIdentityMerging({ [key]: text })
-					// 		: this.setIdentityMerging({ personalData: { [key]: text } });
-
-					return this.renderKeyValue(key, struct.name, id?.value);
-					// return (
-					// 	<DidiTextInput
-					// 		key={key}
-					// 		description={struct.name}
-					// 		placeholder=""
-					// 		textInputProps={{
-					// 			onChangeText,
-					// 			...this.textInputPropsFor(struct.keyboardType, id?.state, id?.value)
-					// 		}}
-					// 		editable={false}
-					// 	/>
-					// );
+					const value = PersonalInformation?.data[key];		
+					return this.renderKeyValue(key, struct.name, value);
 				})}
 			</View>
 		);
@@ -151,12 +154,30 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		);
 	}
 
+	addressUser(){
+		try {
+			return this.props.credentials.find(function(element: any):any {
+				return element.data.Credencial === 'Domicilio Legal';
+			});
+		} catch (error) {
+			return  {
+				data:{
+				"Ciudad/Barrio": "",
+				"Departamento/Municipalidad": "",
+				Domicilio: "",
+				País: "",
+				Provincia: "",
+			}}	
+		}
+	}
+
 	private renderAddressInputs() {
+		const LegalAddressUser = this.addressUser();
 		return (
 			<View style={styles.dropdownContents}>
 				{addressDataStructure.order.map(key => {
 					const struct = addressDataStructure.structure[key];
-					const value = this.props.identity.address.value[key];
+					const value = LegalAddressUser?.data[key];		
 					return this.renderKeyValue(key, struct.name, value);
 				})}
 			</View>
@@ -268,7 +289,8 @@ const connected = didiConnect(
 		did: state.did.activeDid,
 		identity: state.validatedIdentity,
 		isPersonalDataApproved: state.isPersonalDataApproved,
-		isAddressApproved: state.validatedIdentity?.address?.state === ValidationState.Approved
+		isAddressApproved: state.validatedIdentity?.address?.state === ValidationState.Approved,
+		credentials: state.credentials
 	}),
 	(dispatch): EditProfileDispatchProps => ({
 		saveIdentity: (identity: Identity) => dispatch({ type: "IDENTITY_PATCH", value: identity }),
