@@ -127,3 +127,17 @@ export const createTokenAuthorization = async (did: ActiveDid):Promise<string> =
 	});
 
 };
+
+
+
+export const tokenAuthorization = async (did: ActiveDid):Promise<string> => {
+	const {address} = did;
+	const didEthr = `did:ethr:"${address}"`
+	const credentialsParams: Settings = {};
+	credentialsParams.signer = getSignerForHDPath(address);
+	credentialsParams.did = didEthr;
+	const cred = new Credentials(credentialsParams);
+	return cred.createVerification({
+		"iss": didEthr
+	});
+};

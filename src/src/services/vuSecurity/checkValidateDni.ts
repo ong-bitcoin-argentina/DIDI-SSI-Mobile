@@ -1,17 +1,17 @@
 import { VUSecurityApiClient} from '@proyecto-didi/app-sdk';
 import { AppConfig } from '../../AppConfig';
 import { IReturnCheckValidateDni } from '../../model/VuCheckValidateDni';
-import { createTokenAuthorization } from '../../presentation/util/appRouter';
+import { tokenAuthorization } from '../../presentation/util/appRouter';
 import { ActiveDid } from '../../store/reducers/didReducer';
 
 
 const VUSecurity = ():VUSecurityApiClient => ( new VUSecurityApiClient(AppConfig.defaultServiceSettings.urlSecurity));
 
 export async function checkValidateDniVU(did: ActiveDid): Promise<IReturnCheckValidateDni> {    
-    const token = await createTokenAuthorization(did);
-    const didActived = await did?.did();
     try {
-    return await VUSecurity().checkValidateDni(didActived as string,token); 
+    const token = await tokenAuthorization(did);
+    const {address} = await did;
+    return await VUSecurity().checkValidateDni(`did:ethr:"${address}"`,token); 
     } catch (error) {
         return { 
             status: "error",
