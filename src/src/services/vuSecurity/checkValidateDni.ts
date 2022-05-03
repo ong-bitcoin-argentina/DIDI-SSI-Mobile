@@ -11,7 +11,7 @@ export async function checkValidateDniVU(did: ActiveDid): Promise<IReturnCheckVa
     try {
     const token = await tokenAuthorization(did);
     const {address} = await did;
-    return await VUSecurity().checkValidateDni(`did:ethr:"${address}"`,token); 
+    return await VUSecurity().checkValidateDni(`did:ethr:${address}`,token); 
     } catch (error) {
         return { 
             status: "error",
