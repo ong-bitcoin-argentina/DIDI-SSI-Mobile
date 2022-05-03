@@ -153,13 +153,10 @@ class VuIdentitySubmitScreen extends NavigationEnabledComponent<VuIdentitySubmit
 				<DidiText.ValidateIdentity.Normal style={styles.descriptionHeader}> 
 				Estos son los datos que van a conformar su credencial de DNI.</DidiText.ValidateIdentity.Normal>
 					{documentDataKeys.map((key, index) => (
-						<>
 						<View key={index}>
 						<Text style={styles.itemTxt} >{strings.vuIdentity.submit.items[key]}</Text>
 						<Text style={styles.resultItemTxt}>{documentData[key]}</Text>
 						</View>
-						
-						</>
 					))}
 				</View> 
 
