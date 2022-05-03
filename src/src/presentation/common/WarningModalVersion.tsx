@@ -37,7 +37,13 @@ export default class WarningModalVersion extends Component<WarningModalProps, { 
             });
         }
     }
-
+    
+    componentWillUnmount() {
+        // fix Warning: Can't perform a React state update on an unmounted component
+        this.setState = ()=>{
+            return;
+        };
+    }
 
     render() {
         const { modal } = commonStyles;
