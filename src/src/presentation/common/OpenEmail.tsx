@@ -7,8 +7,8 @@ import { DidiText } from "../util/DidiText";
 import { StyleSheet, Linking } from 'react-native';
 import colors from "../resources/colors";
 import strings from "../resources/strings";
-const mailTo = "soporte@didi.org";
-const mailBody = "Soporte ai.di";
+const mailTo = "info@didi.org.ar";
+const mailBody = "informacion";
 
 export type OpenEmailScreenProps = {};
 export type OpenEmailScreenNavigation = {};
