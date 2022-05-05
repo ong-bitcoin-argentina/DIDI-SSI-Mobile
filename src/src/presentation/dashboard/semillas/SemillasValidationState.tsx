@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { didiConnect } from "../../../store/store";
-import { RenaperValidationStates, ValidationStates } from "./constants";
+import { ValidationStates } from "./constants";
 import { DidiText } from "../../util/DidiText";
 import strings from "../../resources/strings";
 import DidiButton from "../../util/DidiButton";
@@ -20,6 +20,7 @@ const { modal, button } = commonStyles;
 interface StoreProps {
 	validationState: ValidationStates | null;
 	validateDniFailed: boolean;
+	validateDni: boolean;
 }
 
 interface State {}
@@ -100,20 +101,27 @@ class SemillasValidationState extends Component<Props, State> {
 	};
 
 	renderRequestDescription = () => {
-		const { goToRenaperValidation, goToSemillasValidation, validateDniFailed } = this.props;
+		const { goToRenaperValidation, goToSemillasValidation, validateDni , validateDniFailed } = this.props;	
+		let visibleTitle ='';
+		if (validateDniFailed) {
+			visibleTitle = validateIdentity.Failed.button;
+		} else {
+			visibleTitle = strings.validateIdentity.header;
+		}
 		return (
 			<View style={{ paddingTop: 10 }}>
-				<Small style={styles.modalText}>{validateDniFailed ? validateIdentity.Failure.title : validate.shouldDo}</Small>
+				<Small style={styles.modalText}>
+					{validateDniFailed ? 
+					validateIdentity.Failed.title : validate.shouldDo}</Small>
 				<View style={{ marginBottom: 15 }}>
-					<DidiButton
+					{!validateDni?<DidiButton
 						onPress={goToRenaperValidation}
-						title={validateDniFailed ? validateIdentity.Failure.button : strings.validateIdentity.header}
-						style={[button.lightRed, styles.renaperButton]}
-					/>
+						title={visibleTitle}
+						style={[button.lightRed, styles.renaperButton]}/>: null}
 				</View>
 
 				<View>
-					<Small style={styles.smallText}>{validate.question}</Small>
+					{!validateDni? <Small style={styles.smallText}>{validate.question}</Small>:null}
 					<Small onPress={goToSemillasValidation} style={[styles.smallText, { textDecorationLine: "underline" }]}>
 						{validate.identityFromSemillas}
 					</Small>
@@ -149,7 +157,8 @@ export default didiConnect(
 	SemillasValidationState,
 	(state): StoreProps => ({
 		validationState: state.validateSemillasDni,
-		validateDniFailed: state.validateDni?.state === RenaperValidationStates.failure
+		validateDniFailed: state.validateDni?.state === "Failed",
+		validateDni: state.validateDni?.state=="Successful"
 	})
 );
 

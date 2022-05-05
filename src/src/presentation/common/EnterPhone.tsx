@@ -33,7 +33,7 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		super(props);	
 		this.state = {
 			inputCountryCode: "AR",
-			inputCountryCallingCode: "+54"
+			inputCountryCallingCode: "54"
 		};
 	}
 

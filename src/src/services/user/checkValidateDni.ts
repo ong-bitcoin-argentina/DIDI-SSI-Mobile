@@ -53,7 +53,7 @@ export function handleDniValidationResponse(
 		case "Falied":
 			return simpleAction(
 				serviceKey,
-				{ type: "VALIDATE_DNI_RESOLVE", state: { state: "Failure", message: response.errorMessage } },
+				{ type: "VALIDATE_DNI_RESOLVE", state: { state: "Failed", message: response.errorMessage } },
 				() => {
 					return serviceCallSuccess(serviceKey);
 				}
@@ -66,7 +66,6 @@ export function checkValidateDni(): ServiceCallAction {
 	return withDidiServerClient(serviceKey, {}, api => {
 		return getState(serviceKey, {}, store => {
 			const localState = store.validateDni;
-
 			if (localState?.state !== "In Progress") {
 				return serviceCallDrop(serviceKey);
 			}
