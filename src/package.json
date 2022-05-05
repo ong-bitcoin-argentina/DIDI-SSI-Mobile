@@ -53,6 +53,7 @@
 		"react-native-screens": "^2.12.0",
 		"react-native-svg": "^9.13.6",
 		"react-native-uport-signer": "^1.6.1",
+		"react-native-user-inactivity": "^1.2.0",
 		"react-native-vector-icons": "^6.6.0",
 		"react-navigation": "^4.0.10",
 		"react-navigation-header-buttons": "^3.0.4",

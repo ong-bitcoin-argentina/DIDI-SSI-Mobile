@@ -8,6 +8,7 @@ import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
+import UserInactivity from 'react-native-user-inactivity';
 import { RecentActivity } from "../../../model/RecentActivity";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
@@ -40,6 +41,8 @@ import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelec
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
 import { IdentityVerificationCard } from './IdentityVerificationCard';
 
+const INACTIVITY_TIME_EXPIRATION = 180000; //3min
+
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	did: ActiveDid;
@@ -55,6 +58,7 @@ interface DashboardScreenStateProps {
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
+	logout(): void;
 	resetDniValidation: () => void;
 	finishDniValidation: (statusDni : string) => void;
 	resetPendingLinking: () => void;
@@ -232,50 +236,59 @@ class DashboardScreen extends NavigationEnabledComponent<
 		return false;
 	}
 
+	private async logOutByInactivity(isActive: boolean) {
+		if(!isActive) {
+			this.props.resetPendingLinking();
+			this.props.logout();
+			this.navigate("Login", {});
+		}
+	}
+
 	render() {
 		return (
 			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
-					<FlatList
-						style={styles.body}
-						data={this.props.validCredentials}
-						keyExtractor={(_, index) => index.toString()}
-						renderItem={item => this.renderCard(item.item, item.index)}
-						maxToRenderPerBatch={5}
-						updateCellsBatchingPeriod={30}
-						windowSize={6}
-						ListHeaderComponent={
-							<Fragment>
-								<HomeHeader
-									onPersonPress={() => this.navigate("EditProfile", {})}
-									onBellPress={() => this.navigate("NotificationScreen", {})}
-									onMarkPress={() => this.navigate("CommonQuestions", {})}
-								/>
-								<View style={styles.headerCredentials}> 
-									<IdentityVerificationCard
-										onStartValidateId={() => this.navigate("ValidateID", {})}
-										style={{ marginBottom: styles.headerCredentials.marginBottom }}
+				 <UserInactivity
+					timeForInactivity={INACTIVITY_TIME_EXPIRATION}					
+					onAction={isActive => { this.logOutByInactivity(isActive); }}					
+				>
+					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+					<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
+						<FlatList
+							style={styles.body}
+							data={this.props.validCredentials}
+							keyExtractor={(_, index) => index.toString()}
+							renderItem={item => this.renderCard(item.item, item.index)}
+							maxToRenderPerBatch={5}
+							updateCellsBatchingPeriod={30}
+							windowSize={6}
+							ListHeaderComponent={
+								<Fragment>
+									<HomeHeader
+										onPersonPress={() => this.navigate("EditProfile", {})}
+										onBellPress={() => this.navigate("NotificationScreen", {})}
+										onMarkPress={() => this.navigate("CommonQuestions", {})}
 									/>
-									<EvolutionCard credentials={this.props.credentials} />
-								</View>
-							</Fragment>
-						}
-						ListFooterComponent={
-							<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
-								{this.renderRecentActivities()}
-							</DropdownMenu>
-						}
+									<View style={styles.headerCredentials}>
+										<EvolutionCard credentials={this.props.credentials} />
+									</View>
+								</Fragment>
+							}
+							ListFooterComponent={
+								<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
+									{this.renderRecentActivities()}
+								</DropdownMenu>
+							}
+						/>
+					</SafeAreaView>
+					<AuthModal
+						appName="ronda"
+						onCancel={this.permissionDenied}
+						onOk={this.permissionGranted}
+						visible={this.state.showModal}
+						alreadyHave={this.props.hasRonda}
+						automatic
 					/>
-				</SafeAreaView>
-				<AuthModal
-					appName="ronda"
-					onCancel={this.permissionDenied}
-					onOk={this.permissionGranted}
-					visible={this.state.showModal}
-					alreadyHave={this.props.hasRonda}
-					automatic
-				/>
+				</UserInactivity>
 			</Fragment>
 		);
 	}
@@ -300,6 +313,7 @@ export default didiConnect(
 			dispatch({ type: "SESSION_LOGIN" });
 			dispatch(getAllIssuerNames());
 		},
+		logout: () => dispatch({ type: "SESSION_LOGOUT" }),
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
 		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),

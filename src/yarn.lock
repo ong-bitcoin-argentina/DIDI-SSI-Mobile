@@ -7447,6 +7447,13 @@ react-native-uport-signer@^1.6.1:
     buffer "^5.2.1"
     set-value "^2.0.1"
 
+react-native-user-inactivity@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-user-inactivity/-/react-native-user-inactivity-1.2.0.tgz#b0123951b89db9939eec07cffab724f7e76edcc6"
+  integrity sha512-VR+zv+cKBOSbJyHLJxvDUVluQ4OD/uW9FomAJVWrXCnSO4tYQieaAR3/5oNIfr6JXAJ/ChdJ/eyc06vHEBvlsA==
+  dependencies:
+    usetimeout-react-hook "^0.1.2"
+
 react-native-vector-icons@^6.6.0:
   version "6.6.0"
   resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-6.6.0.tgz"
@@ -9137,6 +9144,11 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npmjs.org/use/-/use-3.1.1.tgz"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+
+usetimeout-react-hook@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/usetimeout-react-hook/-/usetimeout-react-hook-0.1.2.tgz#fdeaff9b8fe2b5e5b8d29a3ef9c4054368711c03"
+  integrity sha512-uHc8QsWDznEhWkK+ygX0xWxyObRjy72685EZ5wr3/ipNsK0EYntGnbenKxLNirPKKsng+1KW5CPTAk7qQDY8VQ==
 
 utf8@^3.0.0:
   version "3.0.0"
