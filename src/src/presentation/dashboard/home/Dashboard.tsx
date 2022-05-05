@@ -7,9 +7,10 @@ import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
+import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard"; 
 import UserInactivity from 'react-native-user-inactivity';
 import { RecentActivity } from "../../../model/RecentActivity";
+import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
@@ -17,6 +18,8 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DocumentDetailProps } from "../documents/DocumentDetail";
+import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
+
 import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
@@ -38,8 +41,8 @@ import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
+import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
-import { IdentityVerificationCard } from './IdentityVerificationCard';
 
 const INACTIVITY_TIME_EXPIRATION = 180000; //3min
 
@@ -55,16 +58,19 @@ interface DashboardScreenStateProps {
 	imageUrl: string;
 	imageId: string;
 	identity: ValidatedIdentity;
+	operationId: string,
+	userName: string,
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
-	logout(): void;
+	logout():void;
 	resetDniValidation: () => void;
-	finishDniValidation: (statusDni : string) => void;
+	finishDniValidation: () => void;
 	resetPendingLinking: () => void;
 	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
 	saveProfileImage: (image: any) => void;
+	resetVuSecurity: (userName: string, operationId: string, did: ActiveDid) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -77,20 +83,21 @@ interface DashboardScreenState {
 }
 
 export interface DashboardScreenNavigation {
+	ValidateID: ValidateIdentityExplainWhatProps;
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
 	CommonQuestions: CommonQuestionsScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
-	ValidateID: {};
+	DashboardIdentity: {};
 }
 
 class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenInternalProps,
 	DashboardScreenState,
 	DashboardScreenNavigation
-	> {
+> {
 	static navigationOptions = NavigationHeaderStyle.gone;
 
 	constructor(props: DashboardScreenInternalProps) {
@@ -143,8 +150,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 		}
 	};
 
-	async componentDidMount() {
-		const { pendingLinking } = this.props;
+	componentDidMount() {
+		const { pendingLinking, userName, operationId, did} = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
@@ -152,10 +159,10 @@ class DashboardScreen extends NavigationEnabledComponent<
 			this.props.resetPendingLinking();
 			this.urlHandler({ url: pendingLinking });
 		}
+		this.props.resetVuSecurity(userName,operationId, did);
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
-
 		return (
 			<TouchableOpacity
 				key={`RG_${index}`}
@@ -245,6 +252,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
+		
 		return (
 			<Fragment>
 				 <UserInactivity
@@ -307,16 +315,19 @@ export default didiConnect(
 		imageUrl: state.persistedPersonalData.imageUrl,
 		imageId: state.persistedPersonalData.imageId,
 		identity: state.validatedIdentity,
+		operationId: state.vuSecurityData.operationId,
+		userName: state.vuSecurityData.userName,
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
+			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},
 		logout: () => dispatch({ type: "SESSION_LOGOUT" }),
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
-		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),
+		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),
 		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
 		getPersonalData: (token: string) => dispatch(getPersonalData("getPersonalData", token)),
 		saveProfileImage: (identity: Identity) => {
@@ -324,6 +335,10 @@ export default didiConnect(
 				type: "IDENTITY_PATCH",
 				value: identity
 			});
+		},
+		resetVuSecurity: (userName: string, operationId: string, did: ActiveDid) => {
+			cancelVerificationVU(userName, operationId, did);
+			dispatch({ type: "VU_SECURITY_DATA_RESET" });
 		}
 	})
 );
