@@ -16,9 +16,14 @@ export class EvolutionCard extends React.Component<EvolutionCardProps> {
 	render() {
 		const str = strings.dashboard.evolution;
 		const specialValue = (val: SpecialCredentialFlag["type"]): string => {
-			return this.props.credentials.find(sp => sp.specialFlag?.type === val)
+			if (val === 'PersonalData') {
+				return this.props.credentials.find(sp => sp.data.Credencial === strings.specialCredentials.PersonalData.title)
 				? str.validationState.yes
 				: str.validationState.no;
+			}
+				return this.props.credentials.find(sp => sp.specialFlag?.type === val)
+				? str.validationState.yes
+				: str.validationState.no;	
 		};
 		const data = [
 			{ label: str.validations.cellPhone, value: specialValue("PhoneNumberData") },

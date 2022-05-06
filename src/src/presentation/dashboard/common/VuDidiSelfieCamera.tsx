@@ -1,12 +1,10 @@
 import React, { Fragment } from "react";
-import { Alert, GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View , ActivityIndicator} from "react-native";
-import { BarCodeReadEvent, Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
+import { GestureResponderEvent, LayoutRectangle, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Face, RNCamera, RNCameraProps, TakePictureResponse } from "react-native-camera";
 import { DidiText } from "../../util/DidiText";
 import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
-import {addDocumentImage} from "../../../services/vuSecurity/addDocumentImage";
-import { didiConnect } from "../../../store/store";
 import { ActiveDid } from '../../../store/reducers/didReducer';
 
 type BarcodeEvent = Parameters<NonNullable<RNCameraProps["onBarCodeRead"]>>[0];
@@ -15,6 +13,7 @@ export type BarcodeType = BarcodeEvent["type"];
 interface CommonProps {
 	onCameraLayout?: (rect: LayoutRectangle) => void;
 	cameraLocation?: keyof typeof RNCamera.Constants.Type;
+	
 }
 interface PictureProps {
 	cameraButtonDisabled?: boolean | { title: string; text: string };
@@ -22,6 +21,7 @@ interface PictureProps {
 	cameraFlash?: keyof typeof RNCamera.Constants.FlashMode;
 	cameraOutputsBase64Picture?: boolean;
 	onPictureTaken: (response: TakePictureResponse) => void;
+	
 }
 interface BarcodeProps {
 	explanation: string;
@@ -29,11 +29,14 @@ interface BarcodeProps {
 }
 interface FaceProps {
 	explanation: string;
-	onFacesDetected: (response: Face[]) => void;
+	onFacesDetected: ((response: Face[]) => void | undefined) | undefined
+
+	
 }
 interface VuSecurityProps {
 	VuFront?: boolean;
 	VuBack?: boolean;
+	VuSelfie?: boolean;
 	operationId: string;
 	userName: string;
 	did: ActiveDid;
@@ -43,7 +46,7 @@ interface VuCameraDispatchProps {
 	vuSecurityDataBack: (operationId: string, userName: string, vuResponseBack: string) => void;
 }
 
-export type VuDidiCameraProps = VuCameraDispatchProps & VuSecurityProps & CommonProps &
+export type VuDidiSelfieCameraProps = VuCameraDispatchProps & VuSecurityProps & CommonProps &
 	(
 		| (PictureProps & Partial<BarcodeProps & FaceProps>)
 		| (BarcodeProps & Partial<PictureProps & FaceProps>)
@@ -53,17 +56,15 @@ export type VuDidiCameraProps = VuCameraDispatchProps & VuSecurityProps & Common
 // Keep last aspect ratio globally, since it won't change between instances
 let defaultAspectRatio: { width: number; height: number } = { width: 4, height: 3 };
 
-interface VuDidiCameraState {
+interface VuDidiSelfieCameraState {
 	ratio: { width: number; height: number };
-	loading: boolean;
 }
 
-class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState> {
-	constructor(props: VuDidiCameraProps) {
+export class VuDidiSelfieCamera extends React.Component<VuDidiSelfieCameraProps, VuDidiSelfieCameraState> {
+	constructor(props: VuDidiSelfieCameraProps) {
 		super(props);
 		this.state = {
-			ratio: defaultAspectRatio,
-			loading: false
+			ratio: defaultAspectRatio
 		};
 	}
 
@@ -82,7 +83,7 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			</TouchableOpacity>
 		);
 	}
-
+	
 	private async onCameraReady() {
 		if (!this.camera) {
 			return;
@@ -106,26 +107,9 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 				</DidiText.CameraExplanation>
 			);
 		}
-
-		const resultDisabled = this.props.cameraButtonDisabled as {title: string, text: string} ;
-		if (resultDisabled) {
-			return VuDidiCamera.cameraButton(() => Alert.alert(resultDisabled.title, resultDisabled.text));
-		}
-			return <>{this.state.loading?<DidiText.CameraExplanation style={styles.loadingTxt}>
-			Verificando su Documento ...
-		</DidiText.CameraExplanation>:VuDidiCamera.cameraButton(() => this.takePicture())}</>
+			return VuDidiSelfieCamera.cameraButton(() => this.takePicture());	
 	}
 
-	private onBarCodeRead(content: BarcodeEvent) {
-		if (!this.props.onBarcodeScanned) {
-			return;
-		}
-		const typeMap: { [name: string]: BarcodeType } = {
-			QR_CODE: "qr",
-			PDF_417: "pdf417"
-		};
-		this.props.onBarcodeScanned(content.data, typeMap[content.type] || content.type);
-	}
 
 	async takePicture(args?: { pauseAfterCapture?: boolean }) {
 		if (this.camera === null) {
@@ -139,45 +123,21 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			orientation: this.props.cameraLandscape ? "landscapeLeft" : "portrait",
 			mirrorImage: false,
 			fixOrientation: true
-		});	
-		if (this.props.VuFront) {
-			this.setState({loading:true});
-			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"front");
-			this.props.vuSecurityDataFront(this.props.operationId, this.props.userName,result.status);
-		}
-
-		if (this.props.VuBack) {
-			this.setState({loading:true});
-			const result = await addDocumentImage(this.props.userName,this.props.operationId,data.base64 as string ,this.props.did,"back");	
-			this.props.vuSecurityDataBack(this.props.operationId, this.props.userName,result.status);
-		}
+		});
 		this.props.onPictureTaken?.(data);
 		return data;
 	}
 
-	onBarCode=(event: BarCodeReadEvent)=>{
-		if (this.props.onBarcodeScanned ) {
-		return this.onBarCodeRead(event) 	
-		} else {
-			return undefined
-		}
-	} 
-	private renderCamera(types?: "front" | "back" | undefined) {
+	private renderCamera() {
 		const onCameraLayout = this.props.onCameraLayout;
-		if (this.props.explanation === "Escaneá un código QR") types = "back";
-		if (this.props.cameraLandscape) types = "back";
-		if (!this.props.cameraLandscape) types = "front";
-
 		return (
-			<>
-			{this.state.loading? <ActivityIndicator size="large" color='#5E49E2'/>:
 			<RNCamera
 				onLayout={onCameraLayout && (event => onCameraLayout(event.nativeEvent.layout))}
 				ratio={`${this.state.ratio.width}:${this.state.ratio.height}`}
 				style={[styles.preview, { aspectRatio: this.state.ratio.height / this.state.ratio.width }]}
 				ref={ref => (this.camera = ref)}
 				captureAudio={false}
-				type={RNCamera.Constants.Type[types || "back"]}
+				type={"front"}
 				flashMode={RNCamera.Constants.FlashMode[this.props.cameraFlash || "auto"]}
 				androidCameraPermissionOptions={{
 					title: "Permiso para acceder a la camara",
@@ -185,7 +145,10 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 					buttonPositive: "Ok",
 					buttonNegative: "Cancelar"
 				}}
-				onBarCodeRead={event => this.onBarCode(event)}
+				faceDetectionClassifications = {RNCamera.Constants.FaceDetection.Classifications.all}
+				faceDetectionMode= {RNCamera.Constants.FaceDetection.Mode.fast}
+				faceDetectionLandmarks={RNCamera.Constants.FaceDetection.Landmarks.all}
+				onFacesDetected= {res => this.props.onFacesDetected!(res.faces)}
 				notAuthorizedView={
 					<DidiText.CameraExplanation style={styles.notAuthorized}>
 						{strings.camera.notAuthorized}
@@ -195,39 +158,19 @@ class VuDidiCamera extends React.Component<VuDidiCameraProps, VuDidiCameraState>
 			>
 				{this.props.children}
 			</RNCamera>
-			}
-			</>
 		);
 	}
 
 	render() {
 		return (
 			<Fragment>
-				<View style={styles.cameraContainer}>{this.renderCamera("back")}</View>
+				<View style={styles.cameraContainer}>{this.renderCamera()}</View>
 				<View style={styles.cameraButtonContainer}>{this.renderPictureButton()}</View>
 			</Fragment>
 		);
 	}
 }
 
-const connected = didiConnect(
-	VuDidiCamera,
-	(state): VuSecurityProps => ({
-		operationId: state.vuSecurityData.operationId,
-		userName: state.vuSecurityData.userName,
-		did: state.did.activeDid
-	}),
-	(dispatch): VuCameraDispatchProps => ({
-		vuSecurityDataFront: (operationId: string, userName: string, vuResponseFront: string) =>{
-			dispatch({ type: "VU_SECURITY_RESPONSE_ADD_FRONT", state: { operationId, userName, vuResponseFront } })
-		},
-		vuSecurityDataBack: (operationId: string, userName: string, vuResponseBack: string) =>{
-			dispatch({ type: "VU_SECURITY_RESPONSE_ADD_BACK", state: { operationId, userName, vuResponseBack } })
-		}
-	})
-);
-
-export { connected as VuDidiCamera };
 
 const styles = StyleSheet.create({
 	cameraContainer: {
@@ -265,12 +208,6 @@ const styles = StyleSheet.create({
 	cameraInstruction: {
 		width: "100%",
 		height: 66,
-		textAlignVertical: "center"
-	},
-	loadingTxt: {
-		fontSize: 15,
-		width: "100%",
-		height: 100,
 		textAlignVertical: "center"
 	}
 });

@@ -5,50 +5,51 @@ import { Face, TakePictureResponse } from "react-native-camera";
 import { assertUnreachable } from "../../../util/assertUnreachable";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DidiCamera } from "../common/DidiCamera";
 
 import { DocumentBarcodeData } from "../../../model/DocumentBarcodeData";
 import strings from "../../resources/strings";
 
 import { LivenessChecker } from "./LivenessChecker";
 import { LivenessGesture } from "./LivenessGesture";
-import { ValidateIdentitySubmitProps } from "./ValidateIdentitySubmit";
-import { ValidateIdentityTakePhoto } from "./ValidateIdentityTakePhoto";
+import { VuDidiSelfieCamera } from "../common/VuDidiSelfieCamera";
+import { IVuIdentitySubmitScreenProps } from "./VuIdentitySubmitScreen";
+import { didiConnect } from "../../../store/store";
+import { VuIdentityTakePhoto } from "./VuIdentityTakePhoto";
+import { IReturnGetInformation } from "../../../model/VuGetInformation";
 
-export interface ValidateIdentitySelfieNavigation {
-	ValidateIdentitySubmit: ValidateIdentitySubmitProps;
+export interface VuIdentitySelfieNavigation {
+	ValidateIdentitySubmit: IVuIdentitySubmitScreenProps;
 }
-export interface ValidateIdentitySelfieProps {
+export interface VuIdentitySelfieProps {
 	documentData: DocumentBarcodeData;
+	documentDataVU: IReturnGetInformation;
 	front: { uri: string };
 	back: { uri: string };
+	randomNumber: number;
 }
 
-interface ValidateIdentitySelfieState {
+interface VuIdentitySelfieState {
 	gesture: LivenessGesture;
 }
 
-export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
-	ValidateIdentitySelfieProps,
-	ValidateIdentitySelfieState,
-	ValidateIdentitySelfieNavigation
+class VuIdentitySelfieScreen extends NavigationEnabledComponent<
+	VuIdentitySelfieProps,
+	VuIdentitySelfieState,
+	VuIdentitySelfieNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitle(strings.validateIdentity.header);
 
-	constructor(props: ValidateIdentitySelfieProps) {
-		super(props);
-
-		function getRandom<A>(array: [A, ...A[]]): A {
-			return array[Math.floor(Math.random() * array.length)];
-		}
+	constructor(props: VuIdentitySelfieProps) {
+		super(props);		
 		this.state = {
-			gesture: getRandom(LivenessChecker.supportedGestures)
+			gesture: this.getRandom(LivenessChecker.supportedGestures)
 		};
 	}
-
+	getRandom<A>(array: [A, ...A[]]): A { return array[this.props.randomNumber % array.length]}
 	render() {
 		return (
-			<ValidateIdentityTakePhoto
+			<VuIdentityTakePhoto
+				getVuSecuritydata={true}
 				photoWidth={600}
 				photoHeight={720}
 				targetWidth={600}
@@ -75,10 +76,13 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 				)}
 				onPictureAccepted={(data, reset) => {
 					this.navigate(
-						"ValidateIdentitySubmit",
+						"VuIdentitySubmit",
 						{
 							...this.props,
-							selfie: data
+							selfie: {
+								uri:data.uri,
+							},
+							documentDataVu: data.documentData
 						},
 						reset
 					);
@@ -87,6 +91,15 @@ export class ValidateIdentitySelfieScreen extends NavigationEnabledComponent<
 		);
 	}
 }
+
+const connected = didiConnect(
+	VuIdentitySelfieScreen,
+	(state): {randomNumber: number} => ({
+		randomNumber: parseInt(state.vuSecurityData.operationId),
+	})
+);
+
+export { connected as VuIdentitySelfieScreen };
 
 interface SelfieCameraProps {
 	onCameraLayout: (layout: LayoutRectangle) => void;
@@ -105,7 +118,7 @@ type SelfieCameraState = {
 );
 
 class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState> {
-	private camera: DidiCamera | null = null;
+	private camera: VuDidiSelfieCamera | null = null;
 
 	constructor(props: SelfieCameraProps) {
 		super(props);
@@ -118,7 +131,7 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 	render() {
 		return (
 			<View style={{ flex: 1 }}>
-				<DidiCamera
+				<VuDidiSelfieCamera
 					ref={ref => (this.camera = ref)}
 					cameraLocation="front"
 					cameraFlash="off"
@@ -132,12 +145,12 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 					}
 				>
 					{this.props.reticle}
-				</DidiCamera>
+				</VuDidiSelfieCamera>
 			</View>
 		);
 	}
 
-	componentDidUpdate(prevProps: SelfieCameraProps, prevState: SelfieCameraState) {
+	componentDidUpdate(_prevProps: SelfieCameraProps, prevState: SelfieCameraState) {
 		if (this.state.state !== "capture" && prevState.state !== this.state.state) {
 			Vibration.vibrate(400, false);
 		}

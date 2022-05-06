@@ -1,4 +1,4 @@
-export type IReturnCreate = IReturnError & IVerification;
+export type IReturnCreate = IReturnError | IVerification;
 
 
 interface IReturnError {

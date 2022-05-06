@@ -100,7 +100,7 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 		);
 
 		return rowData.map((row, i) => (
-			<View style={styles.keyValueContainer}>
+			<View key={i} style={styles.keyValueContainer}>
 				{row.data?.map((item, index) => {
 					const effectiveValue = strings.credentialCard.formatValue(item.value);
 					return (

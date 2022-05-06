@@ -9,7 +9,7 @@ const traits = (() => {
 	function entersRegions(regions: Array<{ low: number; high: number }>) {
 		return (extract: (from: Face) => number) => {
 			return (history: Face[]) => {
-				const series = history.map(extract) as number[];
+				const series = history.map(extract);
 				const remaining = regions.slice().reverse();
 				for (const value of series) {
 					const currentRegion = remaining[remaining.length - 1];
@@ -111,9 +111,7 @@ export class LivenessChecker {
 		}
 		const isOverTime = now.getTime() - this.data.lastAdded.getTime() > 2000;
 
-		if (face.faceID !== this.data.faceId) {
-			return new LivenessChecker(undefined);
-		} else if (isOverTime && this.data.wasEverOverTime) {
+		if ((face.faceID !== this.data.faceId)||(isOverTime && this.data.wasEverOverTime)) {
 			return new LivenessChecker(undefined);
 		}
 

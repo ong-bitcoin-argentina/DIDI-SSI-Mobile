@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image, ImageSourcePropType } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -7,109 +7,49 @@ import { DidiText } from "../../util/DidiText";
 import { DashboardScreenProps } from "../home/Dashboard";
 
 import strings from "../../resources/strings";
-import { didiConnect } from '../../../store/store';
-import { ActiveDid } from '../../../store/reducers/didReducer';
-import { createVerificationVU } from '../../../services/vuSecurity/createVerification';
+import colors from '../../resources/colors';
 
 export interface IdentityScreenNavigation {
 	DashboardHome: DashboardScreenProps;
-	ValidateID: {};
-	ValidateSemillasID: {};
-	VuIdentityID:{}
+	VuIdentityHow: {};
 	
 }
-interface ItemsBtn {
-	title: string,
-	image:  ImageSourcePropType,
-	navigation: ()=>any,
-}
 
-interface IdentityProps {
-    did: ActiveDid,
-    name: string,
-    lastname:string,
-}
-interface IdentityScreenDispatchProps {
-	vuSecurityData : (operationId: number, userName: string) => void;
-}
-
-export type IdentityScreenProps = IdentityProps &  IdentityScreenDispatchProps;
-
-class IdentityScreen extends NavigationEnabledComponent<IdentityScreenProps, {}, IdentityScreenNavigation> {
+export class IdentityScreen extends NavigationEnabledComponent<{}, {}, IdentityScreenNavigation> {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		IdentityScreenNavigation,
 		"DashboardHome"
 	>(strings.tabNames.identity, "DashboardHome", {});
-	async componentDidMount(){
-		const {did,lastname,name} = this.props;
-		const result = await createVerificationVU(did,name, lastname);
-		this.props.vuSecurityData(result.data.operationId,result.data.userName);
-	}
 
-	identityButtons: ItemsBtn[]  = [
-		{
-			title: "Semillas",
-			image: require("../../resources/images/semilla.png"),
-			navigation: ()=>{
-				this.navigate("ValidateSemillasID", {});
-			}
-		},
-		{
-			title: "Renaper",
-			image: require("../../resources/images/renaper.png"),
-			navigation: ()=>{
-				this.navigate("ValidateID", {});
-			}
-		},
-		{
-			title: "VU Security",
-			image: require("../../resources/images/vu_icon_.png"),
-			navigation: ()=>{
-				this.navigate("VuIdentityID", {});
-			}
-		}
-	];
+
+	navigationVuSecurity = ()=>{
+		this.navigate("VuIdentityHow", {});
+	}
 
 	render() {
 		return (
 			<View style={styles.container}>
 				<View style={styles.body}>
-					{this.identityButtons.map((identityBtn: ItemsBtn, key: number) => {
-						return (
-							<TouchableOpacity 
-							style={styles.title} 
-							key={key}
-							onPress={()=>identityBtn.navigation()}
+				<DidiText.ValidateIdentity.Subtitle style={styles.header}>{"Validado por VU Security"}</DidiText.ValidateIdentity.Subtitle>
+				<DidiText.ValidateIdentity.Title style={styles.title}>{strings.vuIdentity.what.header}</DidiText.ValidateIdentity.Title>
+				<DidiText.ValidateIdentity.Normal>{strings.vuIdentity.what.description}</DidiText.ValidateIdentity.Normal>
+				<Image style={styles.imageShows} source={require("../../resources/images/validateIdentityWhat.png")} />
+					<TouchableOpacity 
+							style={styles.titlebtn} 
+							onPress={this.navigationVuSecurity}
 							>
 								<View style={styles.listIssuers}>
-									<View style={styles.title}>
-										<Image style={styles.image} source={identityBtn.image} />
-										<DidiText.Explanation.Emphasis>{identityBtn.title}</DidiText.Explanation.Emphasis>
+									<View style={styles.titlebtn}>
+										<Image style={styles.image} source={require("../../resources/images/vu_icon_.png")} />
+										<DidiText.Button disabled={false} style={styles.titleStyle}>{strings.vuIdentity.what.buttonText}</DidiText.Button>
 									</View>
 								</View>
-							</TouchableOpacity>
-						);
-					})}
+					</TouchableOpacity>
 				</View>
 			</View>
 		);
 	}
 }
-
-const connected = didiConnect(
-	IdentityScreen,
-	(state): IdentityProps => ({
-		did: state.did.activeDid,
-		name: state.persistedPersonalData.name,
-		lastname: state.persistedPersonalData.lastname
-}),
-(dispatch): IdentityScreenDispatchProps => ({
-	vuSecurityData : (operationId: number, userName: string) =>
-	dispatch({ type: "VU_SECURITY_DATA_SET", state: {operationId:`${operationId}`, userName } }),	
-})
-);
-
-export { connected as IdentityScreen };
 
 const styles = StyleSheet.create({
 	body: {
@@ -118,10 +58,18 @@ const styles = StyleSheet.create({
 		paddingVertical: 35
 	},
 	title: {
+		fontSize: 19,
+	},
+	header: {
+		paddingVertical: 5,
+		marginVertical:15,
+		backgroundColor: colors.backgroundSeparator
+	},
+	titlebtn: {
+		display: "flex",
 		flexDirection: "row",
-		alignItems: "flex-start",
-		paddingTop: 25,
-		paddingBottom: 20
+		justifyContent:"center",
+		paddingVertical: "4%"
 	},
 	description: {
 		flexDirection: "row",
@@ -142,17 +90,24 @@ const styles = StyleSheet.create({
 		marginRight: 50
 	},
 	listIssuers: {
-		marginBottom: 7,
 		borderWidth: 2,
 		borderRadius: 10,
-		borderColor: "#24CDD2",
-		width: "100%"
+		width: "100%",
+		borderColor: colors.border.light,
+		backgroundColor: colors.primary,
+	},
+	titleStyle:{
+		color:"white"
 	},
 	image: {
 		width: 30,
 		height: 30,
-		marginRight: 30,
-		marginLeft: 30
+		marginRight: '5%'
+	},
+	imageShows:{
+		alignSelf: "center",
+		width: 136,
+		height: 144,
 	},
 	container: {
 		flex: 1,

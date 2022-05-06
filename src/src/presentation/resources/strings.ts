@@ -1,5 +1,3 @@
-
-
 import { StyleSheet } from "react-native";
 import { JWTParseError } from "@proyecto-didi/app-sdk";
 
@@ -127,9 +125,9 @@ export default {
 		}
 	},
 	contact: {
-		title: "Si las preguntas frecuentes no han resuelto tu duda, envía un mensaje al correo electrónico @didi.org",
+		title: "Si las preguntas frecuentes no han resuelto tu duda, envía un mensaje al correo electrónico info@didi.org.ar",
 		description: "En breve te responderemos.",
-		action: "Abir email"
+		action: "Abrir email"
 	},
 	dashboardJump: {
 		scanCredential: "Escanear Credenciales",
