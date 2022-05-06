@@ -44,7 +44,7 @@ import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelec
 import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
 
-const INACTIVITY_TIME_EXPIRATION = 180000; //3min
+const INACTIVITY_TIME_EXPIRATION = 30000; //3min
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
@@ -247,7 +247,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 		if(!isActive) {
 			this.props.resetPendingLinking();
 			this.props.logout();
-			this.navigate("Login", {});
+			console.log('EXPIRADO')
+			this.navigate("ExpiredAccount", {});
 		}
 	}
 
