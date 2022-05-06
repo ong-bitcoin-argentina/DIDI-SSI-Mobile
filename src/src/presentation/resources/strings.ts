@@ -3,7 +3,7 @@ import { JWTParseError } from "@proyecto-didi/app-sdk";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
 
-import { LivenessGesture } from "../dashboard/validateIdentity/LivenessGesture";
+import { LivenessGesture } from "../dashboard/vuIdentity/LivenessGesture";
 
 function formatDatePart(date: Date) {
 	const months = [
