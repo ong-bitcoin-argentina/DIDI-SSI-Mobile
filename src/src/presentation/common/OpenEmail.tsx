@@ -8,7 +8,7 @@ import { StyleSheet, Linking } from 'react-native';
 import colors from "../resources/colors";
 import strings from "../resources/strings";
 const mailTo = "info@didi.org.ar";
-const mailBody = "Información";
+const mailBody = "Escribe tu consulta";
 
 export type OpenEmailScreenProps = {};
 export type OpenEmailScreenNavigation = {};
