@@ -35,7 +35,7 @@ export class OpenEmailScreen extends NavigationEnabledComponent<OpenEmailScreenP
 	}
 
 	private openMail = async() => {
-		Linking.openURL(`mailto:${mailTo}?subject=SendMail&body=${mailBody}`); 
+		Linking.openURL(`mailto:${mailTo}?subject=SOPORTE DIDI&body=${mailBody}`); 
 	}
 }
 
