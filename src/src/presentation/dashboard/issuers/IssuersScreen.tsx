@@ -40,7 +40,7 @@ interface IssuerScreenDispatchProps {
 
 export type IssuerScreenProps = IssuerScreenStateProps & IssuerScreenDispatchProps;
 
-const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
+class IssuersScreen extends NavigationEnabledComponent<
     IssuerScreenProps,
     IssuerScreenState,
     IssuerScreenNavigation
@@ -174,9 +174,9 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
             </SafeAreaView>
         );
     }
-};
+}
 
-const connect = didiConnect(
+export default didiConnect(
     IssuersScreen,
     (state): IssuerScreenStateProps => ({
         issuersNames: state.issuersNames.issuersList,
@@ -186,8 +186,6 @@ const connect = didiConnect(
         getAllIssuerData: (limit, page) => dispatch(getAllIssuerData("getAllIssuerData", limit, page)),
     })
 );
-
-export { connect as IssuersScreen };
 
 const styles = StyleSheet.create({
     body: {
