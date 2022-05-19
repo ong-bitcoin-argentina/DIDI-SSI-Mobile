@@ -18,9 +18,9 @@ function shareRequest(): DidiServerApiClient {
 export async function getShareRequest(idShareRequest: string[]): Promise<IIssuerShareRequest[]|IReturnError>{
     try {
         const result = [];
-		for (let i = 0; i < idShareRequest.length; i++) {
-            result.push(await shareRequest().getShareRequestFromId(idShareRequest[i]))
-		}        
+        for (const iterator of idShareRequest) {
+            result.push(await shareRequest().getShareRequestFromId(iterator))
+        }
         return result;
     } catch (e) {
         return { 
