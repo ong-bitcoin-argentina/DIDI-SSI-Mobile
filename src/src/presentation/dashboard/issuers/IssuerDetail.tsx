@@ -53,10 +53,13 @@ export interface IssuerDetailProps {
 export interface IssuerDetilState {
     shareRequest: IIssuerShareRequest[] | IReturnError ;
 }
+interface IssuerDetilNavegation {
+	ShareCredential:{}
+}
 export class IssuerDetailScreen extends NavigationEnabledComponent<
 	IssuerDetailProps, 
 	IssuerDetilState, 
-	{}> {
+	IssuerDetilNavegation> {
 	static navigationOptions = NavigationHeaderStyle.withTitle('Lista de Issuers');
 	constructor(props: IssuerDetailProps) {
 		super(props);
@@ -101,7 +104,9 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 					}
 					ListFooterComponent={
 						<DidiButton
-							onPress={()=>{this.navigate("ShareCredential", {})}}
+							onPress={()=>{this.navigate("ShareCredential", {
+								shareResp:true
+							})}}
 							title={"Compartir Credenciales"}
 							style={styles.button} />}
 						/>
