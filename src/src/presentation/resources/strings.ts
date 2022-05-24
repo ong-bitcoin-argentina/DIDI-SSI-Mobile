@@ -517,6 +517,12 @@ export default {
 		explanation:
 			"Pedile al receptor que escanee este código QR para empezar a compartir tus credenciales.\n\nUna vez hecho esto, le aparecerá un código nuevo al receptor. Avanzá a la próxima pantalla para escanear su código."
 	},
+	shareResp: {
+		title: "Compartir",
+		shareTitle: `Credenciales Compartidas con Emisor`,
+		explanation:
+			"Las credenciales seleccionadas han sido compartidas con el Emisor. \n\nSi han sido las credenciales solicitadas recibirá sus credenciales en el transcurso del día. \n\nSi no recibe sus credenciales probablemente le faltó compartir las que solicita el emisor y el pedido fue rechazado."
+	},
 	shareExplanation: {
 		title: "Compartir",
 		explanation:
