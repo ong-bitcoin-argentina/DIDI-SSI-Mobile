@@ -131,7 +131,8 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 					DashboardHome: dashboardPlaceholder
 				}).stackNavigator("DashboardIssuers"),
 				strings.tabNames.issuers,
-				"assignment_returned"
+				"assignment_returned",
+				false
 			),
 			DashboardSemillas: screen(
 				SemillasNavigator().stackNavigator("DashboardSemillas"),
