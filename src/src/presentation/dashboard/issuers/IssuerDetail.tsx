@@ -132,7 +132,11 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 			case 'emailMain':
 				return 'Credencial de Email';
 			case 'mobilePhone':
-				return 'Credencial de Telefono';	
+				return 'Credencial de Telefono'; 
+			case 'livingPlace':
+				return 'Credencial de residencia';
+			case 'semillaEmprendimiento':
+				return 'Credencial de Semilla Emprendimiento';	
 			default:
 				return "Credencial nueva"
 		}
