@@ -3,10 +3,11 @@ import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { getSignerForHDPath } from "react-native-uport-signer";
 import { Credentials } from "uport-credentials";
 import { DIDI_SERVER_DID, URL_DOMAIN, URL_SERVICE_LOGINSUCCESS, URL_SERVICE_LOGINDENIED, URL_APP } from "../../AppConfig";
-import { EthrDID } from "@proyecto-didi/app-sdk";
+import { CredentialDocument, EthrDID } from "@proyecto-didi/app-sdk";
 import DeepLinking from "react-native-deep-linking";
 import { NavigationActions } from "react-navigation";
 import { ActiveDid } from "../../store/reducers/didReducer";
+import { IssuerDetilState } from '../dashboard/issuers/IssuerDetail';
 interface Settings {
 	did?: string;
 	signer?: any;
@@ -140,4 +141,38 @@ export const tokenAuthorization = async (did: ActiveDid):Promise<string> => {
 	return cred.createVerification({
 		"iss": didEthr
 	});
+};
+
+export const createSharedResponseToken = async (did: ActiveDid, shareRequest:IssuerDetilState[] , documents:CredentialDocument[]):Promise<any> => {
+	if (!did || !did.did) {
+		return 'null';
+	}
+	const jwt = documents.map(doc => doc.jwt);
+	const credentialsParams: Settings = {};
+	credentialsParams.signer = await getSignerForHDPath(getDidAddress(did));
+	credentialsParams.did = shareRequest[0].data.iss;
+	const cred = new Credentials(credentialsParams);
+
+
+	const shareReq = await cred.createVerification({
+		"iat": shareRequest[0].data.iat,
+		"type": shareRequest[0].data.type,
+		"aud": shareRequest[0].data.aud,
+		"iss": shareRequest[0].data.iss,
+		"exp": 9,
+		"req": "req",
+		"vc": [shareRequest[0].data]		
+	});
+	const credResp = new Credentials(credentialsParams);
+	const shareResponse =  await credResp.createVerification({
+		"iat": shareRequest[0].data.iat,
+		"type": shareRequest[0].data.type,
+		"aud": shareRequest[0].data.aud,
+		"iss": shareRequest[0].data.iss,
+		"exp": 9,
+		"req": shareReq,
+		"vc": jwt,
+	});
+
+	return shareResponse;
 };
