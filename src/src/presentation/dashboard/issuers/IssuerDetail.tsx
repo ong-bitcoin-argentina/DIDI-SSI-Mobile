@@ -105,7 +105,8 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 					ListFooterComponent={
 						<DidiButton
 							onPress={()=>{this.navigate("ShareCredential", {
-								shareResp:true
+								shareResp:true,
+								shareRequest:this.state.shareRequest,
 							})}}
 							title={"Compartir Credenciales"}
 							style={styles.button} />}
