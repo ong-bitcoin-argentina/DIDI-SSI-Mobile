@@ -1,13 +1,14 @@
 import { Linking } from "react-native";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { getSignerForHDPath } from "react-native-uport-signer";
-import { Credentials } from "uport-credentials";
+import { Credentials, SimpleSigner } from "uport-credentials";
 import { DIDI_SERVER_DID, URL_DOMAIN, URL_SERVICE_LOGINSUCCESS, URL_SERVICE_LOGINDENIED, URL_APP } from "../../AppConfig";
 import { CredentialDocument, EthrDID } from "@proyecto-didi/app-sdk";
 import DeepLinking from "react-native-deep-linking";
 import { NavigationActions } from "react-navigation";
 import { ActiveDid } from "../../store/reducers/didReducer";
-import { IssuerDetilState } from '../dashboard/issuers/IssuerDetail';
+import { IShareRequestData } from '../../model/ShareRequest';
+import JwtDecode from "jwt-decode";
 interface Settings {
 	did?: string;
 	signer?: any;
@@ -142,37 +143,63 @@ export const tokenAuthorization = async (did: ActiveDid):Promise<string> => {
 		"iss": didEthr
 	});
 };
+function removeBlockchainFromDid(did: string): string {
+    const didAsArray = did.split(":");
+    if (didAsArray.length === 3) return did;
+    didAsArray.splice(2, 1);
+    return didAsArray.join(":");
+  }
 
-export const createSharedResponseToken = async (did: ActiveDid, shareRequest:IssuerDetilState[] , documents:CredentialDocument[]):Promise<any> => {
+
+export const JwtDecodeDocuments = async (documents:CredentialDocument[])=>{
+	const result = [];
+	for (const doc of documents) {
+		const docJWT:any =  await JwtDecode(doc.jwt)
+		docJWT.iss = removeBlockchainFromDid(docJWT.iss);
+		docJWT.sub= removeBlockchainFromDid(docJWT.sub);
+		result.push(docJWT)
+	}
+	return result;
+}
+
+
+
+export const createSharedRequestToken = async (did: ActiveDid, shareRequests:IShareRequestData[],tokenREQ?: any ):Promise<any> => {
 	if (!did || !did.did) {
 		return 'null';
-	}
-	const jwt = documents.map(doc => doc.jwt);
+	}	
 	const credentialsParams: Settings = {};
 	credentialsParams.signer = await getSignerForHDPath(getDidAddress(did));
-	credentialsParams.did = shareRequest[0].data.iss;
+	credentialsParams.did = removeBlockchainFromDid(shareRequests[0].iss);
 	const cred = new Credentials(credentialsParams);
 
-
-	const shareReq = await cred.createVerification({
-		"iat": shareRequest[0].data.iat,
-		"type": shareRequest[0].data.type,
-		"aud": shareRequest[0].data.aud,
-		"iss": shareRequest[0].data.iss,
-		"exp": 9,
-		"req": "req",
-		"vc": [shareRequest[0].data]		
+	return await cred.createDisclosureResponse({
+		aud: shareRequests[0].aud,
+		type: shareRequests[0].type,
+		// req:,
+		vc:shareRequests
 	});
-	const credResp = new Credentials(credentialsParams);
-	const shareResponse =  await credResp.createVerification({
-		"iat": shareRequest[0].data.iat,
-		"type": shareRequest[0].data.type,
-		"aud": shareRequest[0].data.aud,
-		"iss": shareRequest[0].data.iss,
-		"exp": 9,
-		"req": shareReq,
-		"vc": jwt,
-	});
+};
 
-	return shareResponse;
+export const createSharedResponseToken = async (did: ActiveDid, shareRequests:IShareRequestData[],vcDocuments:any, token : any):Promise<any> => {
+	try {
+		if (!did || !did.did) {
+			return 'null';
+		}	
+		const credentialsParams: Settings = {};
+		credentialsParams.signer = await getSignerForHDPath(getDidAddress(did));
+		credentialsParams.did = removeBlockchainFromDid(shareRequests[0].iss);
+		const cred = new Credentials(credentialsParams);	  
+		
+		return await cred.createDisclosureResponse({
+			aud: shareRequests[0].aud,
+			type: shareRequests[0].type,
+			// req: token,   Descomentar
+			vc:vcDocuments
+		});	
+	} catch (error) {
+		console.log('EL ERROROR ES ');
+		console.log(error);		
+	}
+	
 };

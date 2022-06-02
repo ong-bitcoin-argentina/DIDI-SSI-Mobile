@@ -25,7 +25,7 @@ import themes from "../../resources/themes";
 import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
 import { CredentialStates } from "../../../model/Credential";
-import { IssuerDetilState } from '../issuers/IssuerDetail';
+import { IShareRequestData } from '../../../model/ShareRequest';
 
 export type ShareCredentialProps = Record<string, unknown>;
 interface ShareCredentialInternalProps extends ShareCredentialProps {
@@ -47,7 +47,7 @@ export interface ShareCredentialNavigation {
 
 interface shareRespCredential {
 	shareResp: boolean
-	shareRequest: IssuerDetilState[]
+	shareRequests: IShareRequestData[]
 }
 
 type ShareCredentialScreenProps = ShareCredentialInternalProps & shareRespCredential;
@@ -158,7 +158,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		if (shareResp === true) {
 			this.navigate("ShareResp", { 
 				documents,
-				shareRequest: this.props.shareRequest,
+				shareRequests: this.props.shareRequests,
 			});
 		}  else {
 			if (documents.every(doc => doc.nested.length === 0)) {

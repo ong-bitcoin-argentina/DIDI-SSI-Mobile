@@ -1,6 +1,6 @@
 import { DidiServerApiClient } from "@proyecto-didi/app-sdk";
-import { IIssuerShareRequest } from '@proyecto-didi/app-sdk/dist/src/model/ShareRequests';
 import { AppConfig, PRIVATE_KEY_SEED_PASSWORD } from "../../AppConfig";
+import { IShareRequestData } from '../../model/ShareRequest';
 
 export interface IReturnError {
     status?:    string;
@@ -15,11 +15,21 @@ function shareRequest(): DidiServerApiClient {
 	);
 }
 
-export async function getShareRequest(idShareRequest: string[]): Promise<IIssuerShareRequest[]|IReturnError>{
+
+function removeBlockchainFromDid(did: string): string {
+    const didAsArray = did.split(":");
+    if (didAsArray.length === 3) return did;
+    didAsArray.splice(2, 1);
+    return didAsArray.join(":");
+  }
+
+export async function getShareRequest(idShareRequest: string[]): Promise<IShareRequestData[]|IReturnError>{
     try {
         const result = [];
         for (const iterator of idShareRequest) {
-            result.push(await shareRequest().getShareRequestFromId(iterator))
+            const shareReq = (await shareRequest().getShareRequestFromId(iterator)).data;  
+            shareReq.iss = removeBlockchainFromDid(shareReq.iss);
+            result.push(shareReq)
         }
         return result;
     } catch (e) {
