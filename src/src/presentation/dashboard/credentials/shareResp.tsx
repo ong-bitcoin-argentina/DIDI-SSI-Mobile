@@ -7,9 +7,8 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { didiConnect } from '../../../store/store';
 import { ActiveDid } from '../../../store/reducers/didReducer';
 import { CredentialDocument } from '@proyecto-didi/app-sdk';
-import { createSharedRequestToken, createSharedResponseToken, JwtDecodeDocuments } from '../../util/appRouter';
+import { createSharedResponseToken, JwtDecodeDocuments } from '../../util/appRouter';
 import { IShareRequestData } from '../../../model/ShareRequest';
-
 interface ShareRespScreenStateProps {
 	activeDid: ActiveDid;
 }
@@ -28,13 +27,9 @@ class ShareRespScreen extends NavigationEnabledComponent<
 	async componentDidMount(){
 		const {shareRequests, documents, activeDid} = this.props;
 		const vcDocuments = await JwtDecodeDocuments(documents);
-		
-		const token = await createSharedRequestToken(activeDid,shareRequests);
-		console.log('create   SharedRequest   Token');
-		console.log(token);
-		const token2 = await createSharedResponseToken(activeDid,shareRequests,vcDocuments,token);
+		const token = await createSharedResponseToken(activeDid,shareRequests,vcDocuments);
 		console.log('create   SharedResponse   Token');
-		console.log(token2);
+		console.log(token);
 	}
 	render() {
 		return (

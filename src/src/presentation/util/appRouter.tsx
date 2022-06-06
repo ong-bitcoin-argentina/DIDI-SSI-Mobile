@@ -1,7 +1,9 @@
 import { Linking } from "react-native";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
-import { getSignerForHDPath } from "react-native-uport-signer";
-import { Credentials, SimpleSigner } from "uport-credentials";
+import { RNUportHDSigner, getSignerForHDPath } from "react-native-uport-signer";
+// import Jwt from 'jsonwebtoken';
+import { Credentials } from "uport-credentials";
+
 import { DIDI_SERVER_DID, URL_DOMAIN, URL_SERVICE_LOGINSUCCESS, URL_SERVICE_LOGINDENIED, URL_APP } from "../../AppConfig";
 import { CredentialDocument, EthrDID } from "@proyecto-didi/app-sdk";
 import DeepLinking from "react-native-deep-linking";
@@ -164,42 +166,37 @@ export const JwtDecodeDocuments = async (documents:CredentialDocument[])=>{
 
 
 
-export const createSharedRequestToken = async (did: ActiveDid, shareRequests:IShareRequestData[],tokenREQ?: any ):Promise<any> => {
-	if (!did || !did.did) {
-		return 'null';
-	}	
-	const credentialsParams: Settings = {};
-	credentialsParams.signer = await getSignerForHDPath(getDidAddress(did));
-	credentialsParams.did = removeBlockchainFromDid(shareRequests[0].iss);
-	const cred = new Credentials(credentialsParams);
-
-	return await cred.createDisclosureResponse({
-		aud: shareRequests[0].aud,
-		type: shareRequests[0].type,
-		// req:,
-		vc:shareRequests
-	});
-};
-
-export const createSharedResponseToken = async (did: ActiveDid, shareRequests:IShareRequestData[],vcDocuments:any, token : any):Promise<any> => {
+export const createSharedResponseToken = async (did: ActiveDid, shareRequests:IShareRequestData[],vcDocuments: any ):Promise<any> => {
 	try {
 		if (!did || !did.did) {
 			return 'null';
-		}	
-		const credentialsParams: Settings = {};
-		credentialsParams.signer = await getSignerForHDPath(getDidAddress(did));
-		credentialsParams.did = removeBlockchainFromDid(shareRequests[0].iss);
-		const cred = new Credentials(credentialsParams);	  
-		
+		}
+	
+		const seed = await RNUportHDSigner.createSeed('simple');
+		const credentialsParams = {}
+
+		// Get Signer function to be used by credentials, address given by RNUportHDSigner
+		credentialsParams.signer = getSignerForHDPath(seed.address)
+		// set did of the issuer
+		credentialsParams.did = `did:ethr:${seed.address}` 
+		const cred = new Credentials(credentialsParams)
+	
+		const createVerificationTOKEN =  await cred.createDisclosureRequest({
+			aud: shareRequests[0].aud,
+			type: shareRequests[0].type,
+			// req:"req",
+			vc:shareRequests
+		},5000);
+
 		return await cred.createDisclosureResponse({
 			aud: shareRequests[0].aud,
 			type: shareRequests[0].type,
-			// req: token,   Descomentar
+			req: createVerificationTOKEN,
 			vc:vcDocuments
-		});	
+		},5000);
+		
+			
 	} catch (error) {
-		console.log('EL ERROROR ES ');
-		console.log(error);		
-	}
-	
+		console.log(error);	
+	}	
 };
