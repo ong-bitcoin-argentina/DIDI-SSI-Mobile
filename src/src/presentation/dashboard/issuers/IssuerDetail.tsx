@@ -57,7 +57,7 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 	IssuerDetailProps, 
 	IssuerDetilState, 
 	{}> {
-	static navigationOptions = NavigationHeaderStyle.withTitle('Lista de Issuers');
+	static navigationOptions = NavigationHeaderStyle.withDynamicTitle('issuerName');
 	constructor(props: IssuerDetailProps) {
 		super(props);
 		this.state = {

@@ -63,7 +63,7 @@ NavigatorProps,
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
 		{},
 		"DashboardHome"
-	>("Lista De Issuers", "DashboardHome", {});
+	>("Emisores Confiables", "DashboardHome", {});
 
 	static router = IssuersScreenInnerNavigator.router;
 
