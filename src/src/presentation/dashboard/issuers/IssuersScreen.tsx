@@ -1,9 +1,7 @@
 import React from "react";
-import { StyleSheet, View, FlatList, Image, SafeAreaView, TouchableOpacity, ActivityIndicator } from "react-native";
-
+import { StyleSheet, View, FlatList, Image, SafeAreaView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-
 import strings from "../../resources/strings";
 import { DashboardScreenProps } from "../home/Dashboard";
 import DidiButton from "../../util/DidiButton";
@@ -27,8 +25,8 @@ export type IssuerScreenState = {
 };
 export interface IssuerScreenNavigation {
     DashboardHome: DashboardScreenProps;
+    IssuerDetail: {};
 }
-
 interface IssuerScreenStateProps {
     issuersNames: IssuerDescriptor[];
     totalPages: number;
@@ -39,8 +37,7 @@ interface IssuerScreenDispatchProps {
 }
 
 export type IssuerScreenProps = IssuerScreenStateProps & IssuerScreenDispatchProps;
-
-const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
+class IssuersScreen extends NavigationEnabledComponent<
     IssuerScreenProps,
     IssuerScreenState,
     IssuerScreenNavigation
@@ -79,17 +76,26 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
 
     openModal(item: IssuerDescriptor) {
         this.toggleModal();
-        const { name, shareRequest } = item;
-        const message = shareRequest
-            ? 'Funcionalidad en desarrrollo.'
-            : `El emisor "${name}" aún no tiene presentaciones.`;
-        this.setState({ message })
+        const { name} = item;
+        this.setState({ message :`El emisor "${name}" aún no tiene presentaciones.` })
+    }
+     
+    private  onPressShareRequest = (item: IssuerDescriptor)=>{
+        const { name,shareRequests } = item;
+        const sizeshareRequests = shareRequests?.length
+        if (sizeshareRequests as number> 0) {
+            return this.navigate("IssuerDetail", {
+                issuerName: name,
+                idShareRequest: shareRequests,
+            });
+        } 
+        return this.openModal(item);
     }
 
     private renderItem(item: IssuerDescriptor) {
         const { name, imageUrl, description } = item;
         return (
-            <TouchableOpacity onPress={() => this.openModal(item)} >
+            <TouchableOpacity onPress={()=>this.onPressShareRequest(item)} >
                 <View style={styles.listIssuers}>
                     <View style={styles.title}>
                         <Image
@@ -151,7 +157,8 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
                         renderItem={item => this.renderItem(item.item)}
                         keyExtractor={(_, index) => index.toString()}
                         refreshing={this.state.loading}
-                    />}
+                    />
+                }
                 <WarningModal 
                     message={this.state.message}
                     modalVisible={this.state.modalVisible}
@@ -174,9 +181,9 @@ const IssuersScreen = class IssuersScreen extends NavigationEnabledComponent<
             </SafeAreaView>
         );
     }
-};
+}
 
-const connect = didiConnect(
+export default didiConnect(
     IssuersScreen,
     (state): IssuerScreenStateProps => ({
         issuersNames: state.issuersNames.issuersList,
@@ -186,8 +193,6 @@ const connect = didiConnect(
         getAllIssuerData: (limit, page) => dispatch(getAllIssuerData("getAllIssuerData", limit, page)),
     })
 );
-
-export { connect as IssuersScreen };
 
 const styles = StyleSheet.create({
     body: {

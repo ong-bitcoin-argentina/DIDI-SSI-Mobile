@@ -31,12 +31,11 @@ import SemillasNavigator from "./semillas/SemillasNavigator";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
-/* don't remove these lines
- import { IssuersScreen } from "./issuers/IssuersScreen";
-*/
+ import IssuersScreen  from "./issuers/IssuersScreen";
 import Icon from "react-native-vector-icons/AntDesign";
 import VuIdentityNavigator from './vuIdentity/VuIdentityNavigator';
 import { IdentityScreen } from './vuIdentity/IdentityScreen';
+import issuersNavigator from './issuers/IssuersNavigator';
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -100,6 +99,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 		}),
 		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
 		DashboardDocuments: NavMap.placeholder(DocumentsScreen),
+		DashboardIssuers: NavMap.placeholder(IssuersScreen),
 		ValidateID: NavMap.placeholder(IdentityScreen),
 		EditProfile: NavMap.placeholder(EditProfileScreen),
 		__DashboardSettings: SettingsNavigator({
@@ -125,14 +125,14 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				strings.tabNames.documents,
 				"perm_contact_calendar"
 			),
-			/* don't remove these lines
 			DashboardIssuers: screen(
-				NavMap.from(IssuersScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardIssuers"),
+				issuersNavigator({
+					...then,
+					DashboardHome: dashboardPlaceholder
+				}).stackNavigator("DashboardIssuers"),
 				strings.tabNames.issuers,
-				"assignment_returned",
-				false
+				"assignment_returned"
 			),
-			*/
 			DashboardSemillas: screen(
 				SemillasNavigator().stackNavigator("DashboardSemillas"),
 				strings.tabNames.semillas,
