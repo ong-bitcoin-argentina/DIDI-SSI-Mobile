@@ -8,39 +8,11 @@ import themes from "../../resources/themes";
 import Divider from "../common/Divider";
 import colors from "../../resources/colors";
 import { getShareRequest, IReturnError } from '../../../services/issuer/getShareRequest';
-import { IIssuerShareRequest } from '@proyecto-didi/app-sdk/dist/src/model/ShareRequests';
 import { DidiText } from '../../util/DidiText';
 import DidiButton from '../../util/DidiButton';
 import strings from '../../resources/strings';
+import { IShareRequestData } from '../../../model/ShareRequest';
 
-interface DataShareRequest {
-    iat: number;
-    callback: string;
-    type: string;
-    claims: Claims;
-    aud: string;
-    iss: string;
-}
-interface Claims {
-    verifiable: Verifiable;
-}
-interface Verifiable {
-    nationalId: NationalID;
-	emailMain: {
-		issuers: Issuer[];
-        reason:   string;
-        required: boolean;
-	}
-}
-interface NationalID {
-    reason: string;
-    issuers: Issuer[];
-    required: boolean;
-}
-interface Issuer {
-    did: string;
-    url: string;
-}
 
 export interface IssuerScreenNavigation {
     miName: string;
@@ -51,7 +23,7 @@ export interface IssuerDetailProps {
 	idShareRequest: string[];
 }
 export interface IssuerDetilState {
-    shareRequest: IIssuerShareRequest[] | IReturnError ;
+    shareRequests: IShareRequestData[] | IReturnError ;
 }
 interface IssuerDetilNavegation {
 	ShareCredential:{}
@@ -64,14 +36,14 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 	constructor(props: IssuerDetailProps) {
 		super(props);
 		this.state = {
-			shareRequest: []
+			shareRequests: []
 		};
 	}
 	
 	async componentDidMount(){
 		const { idShareRequest } = this.props
-		const resultado = await getShareRequest(idShareRequest); 
-		this.setState({shareRequest: resultado})	
+		const shareRequestList = await getShareRequest(idShareRequest); 
+		this.setState({shareRequests: shareRequestList})	
 	}
 
 	render() {
@@ -94,9 +66,9 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 					style={styles.body}
 					contentContainerStyle={styles.scrollContent}
 					ItemSeparatorComponent={() => <Divider color={colors.transparent} />}
-					data={this.state.shareRequest}
+					data={this.state.shareRequests}
 					keyExtractor={(_, index) => index.toString()}
-					renderItem={item => this.renderItem(item.item.data)}
+					renderItem={item => this.renderItem(item.item)}
 					ListEmptyComponent={
 						<View style={{height:"20%"}}>
 							<ActivityIndicator size="large" color='#5E49E2'/>
@@ -105,7 +77,8 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 					ListFooterComponent={
 						<DidiButton
 							onPress={()=>{this.navigate("ShareCredential", {
-								shareResp:true
+								shareResp:true,
+								shareRequests:this.state.shareRequests,
 							})}}
 							title={"Compartir Credenciales"}
 							style={styles.button} />}
@@ -147,7 +120,7 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 		}
 	}
 
-	private renderItem(data:DataShareRequest) {
+	private renderItem(data:IShareRequestData) {
 		const description = Object.values(data.claims.verifiable);
 		const types = Object.keys(data.claims.verifiable);
 		const str = strings.dashboard.evolution;
