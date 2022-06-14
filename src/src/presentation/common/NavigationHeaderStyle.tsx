@@ -43,6 +43,16 @@ const styles = {
 		return { ...defaultStyle(themes.primaryTheme), title };
 	},
 
+	withDynamicTitle(propName: string): NavigationOptions {
+		return ({ navigation }) => {
+			const Dynamic = navigation.state.params[propName];
+			return {
+				...defaultStyle(themes.primaryTheme),
+				title: Dynamic ?? 'new',
+			};
+		};
+	},
+
 	withTitleAndRightButtonActions<Nav>(
 		title: string,
 		actions: Array<{
