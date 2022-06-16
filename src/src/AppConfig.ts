@@ -40,7 +40,7 @@ const defaultServiceSettings: ServiceSettings = {
 	},
 	didiUserServer: Config.URL_DIDI_SERVER,
 	urlSecurity: Config.URL_VU_SECURITY,
-
+	urlIssuer: Config.URL_ISSUER,
 };
 
 export const AppConfig: AppConfig = {
