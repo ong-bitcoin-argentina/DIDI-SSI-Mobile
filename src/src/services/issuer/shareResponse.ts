@@ -5,10 +5,12 @@ import { createTokenAuthorization } from '../../presentation/util/appRouter';
 import { ActiveDid } from '../../store/reducers/didReducer';
 
 
-const Issuer = ():IssuerApiClient => ( new IssuerApiClient(AppConfig.defaultServiceSettings.urlIssuer));
+function IssuerApi(): IssuerApiClient {
+    return new IssuerApiClient(AppConfig.defaultServiceSettings.urlIssuer)
+}
 
-export async function shareResponse(ActiveDid: ActiveDid, jwt: string ): Promise<IShareResp> {
-    const token = await createTokenAuthorization(ActiveDid);
-    const did = await ActiveDid?.did();
-    return await Issuer().shareResponse(did,jwt,token);
+export async function shareResponse(activeDid: ActiveDid, jwt: string ): Promise<IShareResp> {
+    const token = await createTokenAuthorization(activeDid);
+    const did = await activeDid?.did();
+    return IssuerApi().shareResponse(did,jwt,token);
 }

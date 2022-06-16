@@ -45,12 +45,12 @@ export interface ShareCredentialNavigation {
 	ShareResp:{};
 }
 
-interface shareRespCredential {
+interface ShareRespCredential {
 	shareResp: boolean
 	shareRequests: IShareRequestData[]
 }
 
-type ShareCredentialScreenProps = ShareCredentialInternalProps & shareRespCredential;
+type ShareCredentialScreenProps = ShareCredentialInternalProps & ShareRespCredential;
 class ShareCredentialScreen extends NavigationEnabledComponent<
 	ShareCredentialScreenProps,
 	ShareCredentialState,
