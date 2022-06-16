@@ -163,9 +163,14 @@ export const JwtDecodeDocuments = async (documents:CredentialDocument[])=>{
 	return result;
 }
 
-
-
-export const createSharedResponseToken = async (did: ActiveDid, shareRequests:IShareRequestData[],vcDocuments: any ):Promise<any> => {
+/**
+ * crea el token shareResponse:
+ * @param did identificacion del usuario aidi
+ * @param shareRequests listado de presentación, que el emisor necesita.
+ * @param vcDocuments listado de las credenciales seleccionadas, por usuario aidi
+ * @returns jwt
+ */
+export const createShareResponseToken = async (did: ActiveDid, shareRequests:IShareRequestData[],vcDocuments: any ):Promise<any> => {
 	try {
 		if (!did || !did.did) {
 			return 'null';
