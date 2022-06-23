@@ -1,16 +1,23 @@
 import {IssuerApiClient} from '@proyecto-didi/app-sdk';
 import { IShareResp } from '@proyecto-didi/app-sdk/dist/src/model/ShareResponse';
-import { AppConfig } from '../../AppConfig';
 import { createTokenAuthorization } from '../../presentation/util/appRouter';
 import { ActiveDid } from '../../store/reducers/didReducer';
 
 
-function IssuerApi(): IssuerApiClient {
-    return new IssuerApiClient(AppConfig.defaultServiceSettings.urlIssuer)
-}
 
-export async function shareResponse(activeDid: ActiveDid, jwt: string ): Promise<IShareResp> {
+export async function shareResponse(activeDid: ActiveDid, jwt: string , urlIssuer: string): Promise<IShareResp> {
+    try {
+    const IssuerApi = new IssuerApiClient(urlIssuer)
     const token = await createTokenAuthorization(activeDid);
     const did = await activeDid?.did();
-    return IssuerApi().shareResponse(did,jwt,token);
+    return await IssuerApi.shareResponse(did,jwt,token);   
+    } catch (error) {
+        return {
+            status:'error',
+            data: {
+              code:"TypeError",
+              message: `${error}`
+            }
+        }
+    }
 }

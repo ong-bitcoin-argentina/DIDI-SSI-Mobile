@@ -29,7 +29,7 @@ class ShareRespScreen extends NavigationEnabledComponent<
 		const {shareRequests, documents, activeDid} = this.props;
 		const vcDocuments = await JwtDecodeDocuments(documents);
 		const shareResp = await createShareResponseToken(activeDid,shareRequests,vcDocuments);
-		await shareResponse(activeDid,shareResp);
+		await shareResponse(activeDid,shareResp, shareRequests[0].callback);
 	}
 	render() {
 		return (
