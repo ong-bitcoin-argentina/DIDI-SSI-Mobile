@@ -53,7 +53,7 @@ class SignupEnterNameScreen extends NavigationEnabledComponent<
 			return Validations.isName(this.state.firstName) && Validations.isName(this.state.lastName);
 	}
 	private specialCharacter(): boolean {
-		const regExp = /^(?:[A-Za-zÀ-ÿ\u00f1\u00d1\s])+$/; 	
+		const regExp = /^(?:[A-Za-z\u00E0-\u00FC\u00f1\u00d1\s])+$/; 	
 		const correctedFirstName = regExp.test(this.state.firstName); 
 		const correctedLastName = regExp.test(this.state.lastName);	
 		return correctedFirstName && correctedLastName;
