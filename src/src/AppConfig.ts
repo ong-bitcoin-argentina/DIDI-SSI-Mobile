@@ -39,8 +39,7 @@ const defaultServiceSettings: ServiceSettings = {
 		]
 	},
 	didiUserServer: Config.URL_DIDI_SERVER,
-	urlSecurity: Config.URL_VU_SECURITY,
-
+	urlSecurity: Config.URL_VU_SECURITY
 };
 
 export const AppConfig: AppConfig = {
