@@ -324,7 +324,8 @@ export default {
 		settings: "Configuración",
 		semillas: "Semillas",
 		issuers: "Lista de Issuers",
-		identity: "Validar Identidad"
+		identity: "Validar Identidad",
+		coopsol: "Coopsol"
 	},
 	rounds: {
 		title: "Accedé a ronda",

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ViewProps } from "react-native";
+import { Image, StyleSheet, View, ViewProps } from "react-native";
 import { NavigationContainer, NavigationScreenProp, NavigationState, StackActions } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
@@ -28,13 +28,13 @@ import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
+import CoopsolNavigator from "./coopsol/CoopsolNavigator";
 import { RoundsScreen } from "./rounds/RoundsScreen";
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
 /* don't remove these lines
  import { IssuersScreen } from "./issuers/IssuersScreen";
 */
-import Icon from "react-native-vector-icons/AntDesign";
 import VuIdentityNavigator from './vuIdentity/VuIdentityNavigator';
 import { IdentityScreen } from './vuIdentity/IdentityScreen';
 
@@ -50,7 +50,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	function screen(
 		InnerNavigator: NavigationContainer,
 		title: string,
-		image: string | string[],
+		image: string | NodeRequire,
 		withFloatButton = true
 	) {
 		class DashboardNavigator extends React.Component<NavigatorProps> {
@@ -83,7 +83,9 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 								{image}
 							</DidiText.Icon>
 						) : (
-							<Icon name={image[0]} size={34} color={tintColor} />
+							<Image 
+							style={{width: 30, height: 30, marginRight: '5%'}} 
+							source={image} />
 						)}
 					</View>
 				)
@@ -137,6 +139,12 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				SemillasNavigator().stackNavigator("DashboardSemillas"),
 				strings.tabNames.semillas,
 				"spa",
+				false
+			),
+			DashboardCoopsol: screen(
+				CoopsolNavigator().stackNavigator("DashboardCoopsol"),
+				strings.tabNames.coopsol,
+				require("../resources/images/bee.png"),
 				false
 			),
 			DashboardSettings: screen(
