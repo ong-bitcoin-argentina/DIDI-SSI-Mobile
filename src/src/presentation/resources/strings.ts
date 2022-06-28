@@ -336,6 +336,41 @@ export default {
 			"Hacé un seguimiento de tus rondas activas y unite o creá nuevas rondas, juntas, vaquitas o pasanakus de forma fácil y segura.",
 		dataConfirmed: "Tu datos fueron guardados de forma correcta, podes seguir usando la aplicación."
 	},
+	coopsol:{
+		program: "Programa Coopsol",
+		detailBarTitle: "Programa Coopsol",
+		detailFirst: "Ahora podés tener tus credenciales que certifican y validan tus datos personales, financieros y productivos.",
+		detailSecond: "Las credenciales son privadas, con ellas vas a poder guardar y proteger tu información de manera segura y confiable.",
+		detailThird: "Las podes llevar con vos a donde quieras y compartirlas con quien quieras.",
+		getCredentials: "Acceder a Mis Credenciales",
+		validationTitle: "Validación de Identidad - Coopsol",
+		noCoopsolIdentity: {
+			first: "Parece que aún no tenés tus credenciales de Identidad Coopsol.",
+			second: "Recordá que si las solicitaste recientemente, esto puede demorar hasta 5 (cinco) días. Ante cualquier consulta, contactate con tu asesor/a."
+		},
+		credentialsSuccess: "Pronto vas a recibir tus credenciales de Coopsol. Este proceso puede demorar unos días...",
+		validate: {
+			successRequest: "La solicitud de validación de DNI se registró de manera correcta, pronto tendrás novedades.",
+			description: "Validación de Identidad",
+			needData: "COOPSOL",
+			willBeContacting: "Se van a estar contactando con vos para completar el proceso de validación.",
+			DNI: "Validar DNI con Coopsol",
+			identityFromCoopsol: "Validar Identidad a través de Coopsol",
+			descriptionSharing: "Se van a estar contactando con vos para completar el proceso de validación.",
+			willBeContactingBrevity: "Una vez que tengas Credencial de Identidad en tu billetera podrás solicitar credenciales de Coopsol.",
+			coopsolProcessing: "Tu solicitud de validación de identidad está siendo procesada por Coopsol.",
+			coopsolContacting: "En estos días se contactarán con vos para completar el proceso.",
+
+
+			shouldDo: "Debes completar la validación de Identidad para acceder a los beneficios de Coopsol.",
+			renaperFailed: "Lo lamentamos. Su identidad no ha sido validada.",	
+			question: "¿No lográs validar tu identidad?",
+			rememberYouCan: "Recordá que siempre vas a poder",
+			gettingState: "Obteniendo el estado de tu validación, por favor aguarde.",
+			rejected:"Tu solicitud de validación de identidad ha sido rechazada por Coopsol. Por favor, contactate con tu asesor/a.",
+			aprroved: "Tu solicitud fue validada correctamente!"
+		}
+	},
 	semillas: {
 		barTitle: "Mis Credenciales semillas",
 		benefitCredentialActive: "Credencial de Beneficios activa",
