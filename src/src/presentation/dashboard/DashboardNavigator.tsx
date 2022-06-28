@@ -144,7 +144,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			DashboardCoopsol: screen(
 				CoopsolNavigator().stackNavigator("DashboardCoopsol"),
 				strings.tabNames.coopsol,
-				require("../resources/images/bee.png"),
+				require("../resources/images/coopsolPNG.png"),
 				false
 			),
 			DashboardSettings: screen(
