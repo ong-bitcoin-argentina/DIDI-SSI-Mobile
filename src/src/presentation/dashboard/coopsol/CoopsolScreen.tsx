@@ -2,22 +2,18 @@ import { CredentialDocument } from "@proyecto-didi/app-sdk";
 import React from "react";
 import { Fragment } from "react";
 import { StatusBar, StyleSheet,ScrollView, View, Modal, Image } from "react-native";
-import { getSemillasValidationState } from "../../../services/semillas/getValidationState";
-import { isPendingService } from "../../../services/ServiceStateStore";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import CoopsolLogo from "../../resources/images/logocoopsol.svg";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import strings from "../../resources/strings";
-import { ServiceObserver } from "../../common/ServiceObserver";
 import themes from "../../resources/themes";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
-import { DataAlert } from "../../common/DataAlert";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import { LATEST_FEATURE } from "../../../AppConfig";
 import CoopsolValidationState from "./CoopsolValidationState";
+import { validateDniCoopsol } from "../../../services/coopsol/validateDni";
 
 const { Small } = DidiText.Explanation;
 const { util, modal } = commonStyles;
@@ -33,7 +29,6 @@ const {
 } = strings.coopsol;
 interface CoopsolScreenStateProps {
 	coopsolValidationSuccess: boolean,
-	pendingCredentials: boolean;
 	haveIdentityCredential: boolean;
 	didRequested: boolean;
 	credentials: CredentialDocument[];
@@ -41,7 +36,7 @@ interface CoopsolScreenStateProps {
 
 
 interface CoopsolScreenDispatchProps {
-	getCoopsolValidationState: () => void;
+	updateCoopsolStatus:(status: string | null) => void;
 }
 export interface CoopsolScreenNavigation {
 	DashboardHome: {};
@@ -54,16 +49,12 @@ interface CoopsolScreenState {
 	dni: string;
 	modalVisible: boolean;
 	coopsolValidationLoading: boolean;
-	modalNoCredentialVisible: boolean;
+	pendingCredentials: boolean;
 }
 
 
 
 type CoopsolScreenInternalProps = CoopsolScreenStateProps & CoopsolScreenDispatchProps;
-
-// variables temporales (eliminar)
-const serviceKey = "CreateSemillasCredentials";
-const serviceKeyState = "semillasValidationState";
 
 class CoopsolScreen extends NavigationEnabledComponent<
     CoopsolScreenInternalProps,
@@ -81,22 +72,31 @@ class CoopsolScreen extends NavigationEnabledComponent<
 			dni: "",
 			modalVisible: false,
 			coopsolValidationLoading: false,
-			modalNoCredentialVisible: false
+			pendingCredentials: false
 		};
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
+		this.setState((state) => ({
+			pendingCredentials:  !state.pendingCredentials, 
+		}));
 		const { credentials } = this.props;
 		// We look into the credentials to check if there's an identity credential with DNI
 		const cred = credentials.find(
-			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data.dni
+			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
 		);
-
-		if (cred && cred.data.dni) {
+	
+		if (cred && cred.data["Numero de Identidad"]) {
 			this.setState({
-				dni: cred.data.dni.toString()
+				dni: cred.data["Numero de Identidad"].toString()
 			});
+			const result = await validateDniCoopsol(cred.jwt);
+			this.props.updateCoopsolStatus(result.status);
 		}
+		this.setState((state) => ({
+			pendingCredentials:  !state.pendingCredentials, 
+		}));
+		
 	}
 
 	toggleModal = () => {
@@ -115,48 +115,28 @@ class CoopsolScreen extends NavigationEnabledComponent<
 		this.navigate("ValidateCoopsolID", {});
 	};
 
-	onCredentialsAdded = () => {
-		DataAlert.alert(program, credentialsSuccess);
-	};
-
-	onSuccessGetState = () => {
-		this.setState({ coopsolValidationLoading: false });
-	};
-
-	onErrorGetState = () => {
-		this.setState({ coopsolValidationLoading: false });
-	};
-
-
 	onGetCredentials = () => {
 		// validar con la credencial de identidad ya emitida, con un solo clicks
 	};
 
 	openModal = () => {
-		
-		const { coopsolValidationSuccess } = this.props;
-		if (!coopsolValidationSuccess) {
-			this.setState({ coopsolValidationLoading: true });
-			this.props.getCoopsolValidationState();
-		}
 		this.setState({ modalVisible: true });
 	};
 
 	// Render Methods
-	renderButtonBenefits() {
-		//funcionalidad cuando esté validada la identidad de coopsol				
+	renderButtonBenefits() {		
 		return (
 			<DidiServiceButton
 				onPress={()=>(console.log('HOLA MUNDO: renderButtonBenefits'))}
 				title="Ver Beneficios"
 				style={styles.button}
-				isPending={false}
+				isPending={this.state.pendingCredentials}
 			/>
 		);
 	}
 
 	renderButtonWantCredentials() {
-		const { pendingCredentials, haveIdentityCredential } = this.props;
+		const { haveIdentityCredential } = this.props;
 
 		const onPressAction = haveIdentityCredential || !LATEST_FEATURE ? this.onGetCredentials : this.openModal;
 		return (
@@ -164,7 +144,7 @@ class CoopsolScreen extends NavigationEnabledComponent<
 				onPress={onPressAction}
 				title={strings.coopsol.getCredentials}
 				style={styles.button}
-				isPending={pendingCredentials}
+				isPending={this.state.pendingCredentials}
 			/>
 		);
 	}
@@ -176,16 +156,6 @@ class CoopsolScreen extends NavigationEnabledComponent<
 		const mustShowBenefitsButton =  (didRequested && haveIdentityCredential) || coopsolValidationSuccess ;
 		return (
 			<Fragment>
-				<ServiceObserver 
-					serviceKey={serviceKey} 
-					onSuccess={this.onCredentialsAdded} 
-				/>
-				
-				<ServiceObserver
-					serviceKey={serviceKeyState}
-					onSuccess={this.onSuccessGetState}
-					onError={this.onErrorGetState}
-				/>
 
 				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 
@@ -223,18 +193,12 @@ export default didiConnect(
 	CoopsolScreen,
 	(state): CoopsolScreenStateProps => ({
 		coopsolValidationSuccess: state.validateCoopsolDni === 'SUCCESS',
-		pendingCredentials: isPendingService(state.serviceCalls[serviceKey]),
 		credentials: state.credentials,
 		didRequested: state.did.didRequested,
-		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined,
+		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined, // verificar
 	}),
 	(dispatch): CoopsolScreenDispatchProps => ({
-		/**
-		 * // verifica el estado de la validación coopsol
-		 * la función getSemillasValidationState ('temporal', se eliminará )
-		 * @returns 
-		 */
-		getCoopsolValidationState: () => dispatch(getSemillasValidationState(serviceKeyState)) 
+		updateCoopsolStatus: (status: string | null) => dispatch({ type: "VALIDATE_COOPSOL_DNI_SET", state: status }),	
 	})
 );
 
