@@ -1,6 +1,5 @@
 import { CredentialDocument } from "@proyecto-didi/app-sdk";
-import React from "react";
-import { Fragment } from "react";
+import React, { Fragment }  from "react";
 import { StatusBar, StyleSheet,ScrollView, View, Modal, Image } from "react-native";
 import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
@@ -16,16 +15,13 @@ import CoopsolValidationState from "./CoopsolValidationState";
 import { validateDniCoopsol } from "../../../services/coopsol/validateDni";
 
 const { Small } = DidiText.Explanation;
-const { util, modal } = commonStyles;
+const { util } = commonStyles;
 
 const {
-	credentialsSuccess,
-	program,
 	detailBarTitle,
 	detailFirst,
 	detailSecond,
 	detailThird,
-	noCoopsolIdentity
 } = strings.coopsol;
 interface CoopsolScreenStateProps {
 	coopsolValidationSuccess: boolean,
@@ -82,15 +78,15 @@ class CoopsolScreen extends NavigationEnabledComponent<
 		}));
 		const { credentials } = this.props;
 		// We look into the credentials to check if there's an identity credential with DNI
-		const cred = credentials.find(
+		const credential = credentials.find(
 			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
 		);
 	
-		if (cred && cred.data["Numero de Identidad"]) {
+		if (credential && credential.data["Numero de Identidad"]) {
 			this.setState({
-				dni: cred.data["Numero de Identidad"].toString()
+				dni: credential.data["Numero de Identidad"].toString()
 			});
-			const result = await validateDniCoopsol(cred.jwt);
+			const result = await validateDniCoopsol(credential.jwt);
 			this.props.updateCoopsolStatus(result.status);
 		}
 		this.setState((state) => ({

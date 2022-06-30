@@ -67,7 +67,6 @@ class CoopsolValidationScreen extends NavigationEnabledComponent<Props, State, N
 	};
 
 	handleValidateConfirm = () => {
-		// TODO: when endpoint is ready, make a fetch and show success or error with an Alert
 		const { dni, name, lastname } = this.state;
 		const { email, phoneNumber } = this.props;
 		const data = {
@@ -92,8 +91,7 @@ class CoopsolValidationScreen extends NavigationEnabledComponent<Props, State, N
 
 	render() {
 		const { border, area, text, button, input, description,textWillBeContacting } = styles;
-		const { dni, name, lastname, sendingRequest } = this.state;
-		const { email, phoneNumber } = this.props;
+		const {sendingRequest } = this.state;
 		const { modal } = commonStyles;
 		return (
 			<ScrollView>
