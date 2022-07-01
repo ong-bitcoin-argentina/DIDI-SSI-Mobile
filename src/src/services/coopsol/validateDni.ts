@@ -10,7 +10,7 @@ const Coopsol = (): CoopsolApiClient => new CoopsolApiClient(AppConfig.defaultSe
 
 export async function validateDniCoopsol( jwt: string): Promise<(IShareResp&{status:string})|IReturnError> {
 	try {
-		return Object.assign(await Coopsol().dniIdentity(jwt),{status:"SUCCESS"});
+		return Object.assign(await Coopsol().dniIdentity(jwt),{status:"IN_PROGRESS"});
 	} catch (e) {
 		return { 
 			status: null,

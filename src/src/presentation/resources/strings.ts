@@ -358,8 +358,10 @@ export default {
 			identityFromCoopsol: "Validar Identidad a través de Coopsol",
 			descriptionSharing: "Se van a estar contactando con vos para completar el proceso de validación.",
 			willBeContactingBrevity: "Una vez que tengas Credencial de Identidad en tu billetera podrás solicitar credenciales de Coopsol.",
-			coopsolProcessing: "Tu solicitud de validación de identidad está siendo procesada por Coopsol.",
-			coopsolContacting: "En estos días se contactarán con vos para completar el proceso.",
+			
+			coopsolProcessing: "Sus credenciales van a ser emitidas en los proximos minutos.",
+			coopsolContacting: "Recibirá una notificación cuando haya recibido las credenciales.",
+			coopsolRecommendation: "Para visualizarlas cierre y abra esta aplicación.",
 
 
 			shouldDo: "Debes completar la validación de Identidad para acceder a los beneficios de Coopsol.",
@@ -368,7 +370,7 @@ export default {
 			rememberYouCan: "Recordá que siempre vas a poder",
 			gettingState: "Obteniendo el estado de tu validación, por favor aguarde.",
 			rejected:"Tu solicitud de validación de identidad ha sido rechazada por Coopsol. Por favor, contactate con tu asesor/a.",
-			aprroved: "Tu solicitud fue validada correctamente!"
+			aprroved: "Sus credenciales emitidas pueden ser visualizadas en la sección de Credenciales que se encuentra en el menú principal. "
 		}
 	},
 	semillas: {

@@ -25,6 +25,7 @@ const {
 } = strings.coopsol;
 interface CoopsolScreenStateProps {
 	coopsolValidationSuccess: boolean,
+	coopsolValidation: string | null,
 	haveIdentityCredential: boolean;
 	didRequested: boolean;
 	credentials: CredentialDocument[];
@@ -76,7 +77,7 @@ class CoopsolScreen extends NavigationEnabledComponent<
 		this.setState((state) => ({
 			pendingCredentials:  !state.pendingCredentials, 
 		}));
-		const { credentials } = this.props;
+		const { credentials, coopsolValidation } = this.props;
 		// We look into the credentials to check if there's an identity credential with DNI
 		const credential = credentials.find(
 			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
@@ -86,8 +87,11 @@ class CoopsolScreen extends NavigationEnabledComponent<
 			this.setState({
 				dni: credential.data["Numero de Identidad"].toString()
 			});
-			const result = await validateDniCoopsol(credential.jwt);
-			this.props.updateCoopsolStatus(result.status);
+
+			if( coopsolValidation === null ){
+				const result = await validateDniCoopsol(credential.jwt);
+				this.props.updateCoopsolStatus(result.status);
+			}
 		}
 		this.setState((state) => ({
 			pendingCredentials:  !state.pendingCredentials, 
@@ -111,33 +115,14 @@ class CoopsolScreen extends NavigationEnabledComponent<
 		this.navigate("ValidateCoopsolID", {});
 	};
 
-	onGetCredentials = () => {
-		// validar con la credencial de identidad ya emitida, con un solo clicks
-	};
-
 	openModal = () => {
 		this.setState({ modalVisible: true });
 	};
 
-	// Render Methods
-	renderButtonBenefits() {		
-		return (
-			<DidiServiceButton
-				onPress={()=>(console.log('HOLA MUNDO: renderButtonBenefits'))}
-				title="Ver Beneficios"
-				style={styles.button}
-				isPending={this.state.pendingCredentials}
-			/>
-		);
-	}
-
 	renderButtonWantCredentials() {
-		const { haveIdentityCredential } = this.props;
-
-		const onPressAction = haveIdentityCredential || !LATEST_FEATURE ? this.onGetCredentials : this.openModal;
 		return (
 			<DidiServiceButton
-				onPress={onPressAction}
+				onPress={this.openModal}
 				title={strings.coopsol.getCredentials}
 				style={styles.button}
 				isPending={this.state.pendingCredentials}
@@ -146,10 +131,8 @@ class CoopsolScreen extends NavigationEnabledComponent<
 	}
 
 	render() {
-		const { didRequested, haveIdentityCredential ,coopsolValidationSuccess} = this.props;
 
 		const { coopsolValidationLoading } = this.state;
-		const mustShowBenefitsButton =  (didRequested && haveIdentityCredential) || coopsolValidationSuccess ;
 		return (
 			<Fragment>
 
@@ -163,7 +146,9 @@ class CoopsolScreen extends NavigationEnabledComponent<
 						<Small style={[util.paragraphMd,{textAlign:'left',marginVertical:'3%'}]}>{detailThird}</Small>
 					</View>
 					<View style={{ marginBottom: 20 }}>
-						{mustShowBenefitsButton ? this.renderButtonBenefits() : this.renderButtonWantCredentials()}
+						{
+						this.renderButtonWantCredentials()
+						}
 					</View>
 				</ScrollView>
  			
@@ -189,9 +174,10 @@ export default didiConnect(
 	CoopsolScreen,
 	(state): CoopsolScreenStateProps => ({
 		coopsolValidationSuccess: state.validateCoopsolDni === 'SUCCESS',
+		coopsolValidation: state.validateCoopsolDni,
 		credentials: state.credentials,
 		didRequested: state.did.didRequested,
-		haveIdentityCredential: state.credentials.find(cred => cred.specialFlag?.type === "PersonalData") !== undefined, // verificar
+		haveIdentityCredential: state.credentials.find(cred =>  cred.title === strings.specialCredentials.PersonalData.title ) !== undefined,
 	}),
 	(dispatch): CoopsolScreenDispatchProps => ({
 		updateCoopsolStatus: (status: string | null) => dispatch({ type: "VALIDATE_COOPSOL_DNI_SET", state: status }),	

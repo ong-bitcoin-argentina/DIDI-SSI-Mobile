@@ -85,7 +85,7 @@ class CoopsolValidationState extends Component<Props, State> {
 				</Icon>
 				<Small style={styles.modalText}>{validate.coopsolProcessing}</Small>
 				<Small style={styles.modalText}>{validate.coopsolContacting}</Small>
-				{this.renderRenaperDescription()}
+				<Small style={styles.modalText}>{validate.coopsolRecommendation}</Small>
 			</View>
 		);
 	};
@@ -102,7 +102,7 @@ class CoopsolValidationState extends Component<Props, State> {
 	};
 
 	renderRequestDescription = () => {
-		const { goToVuSecurityValidation, goToCoopsolValidation, validateDni , validateDniFailed } = this.props;	
+		const { goToVuSecurityValidation, validateDni , validateDniFailed } = this.props;	
 		let visibleTitle ='';
 		if (validateDniFailed) {
 			visibleTitle = validateIdentity.Failed.button;
@@ -121,12 +121,12 @@ class CoopsolValidationState extends Component<Props, State> {
 						style={[button.lightRed, styles.renaperButton]}/>: null}
 				</View>
 
-				<View>
+				 {/* <View>
 					{!validateDni? <Small style={styles.smallText}>{validate.question}</Small>:null}
 					<Small onPress={goToCoopsolValidation} style={[styles.smallText, { textDecorationLine: "underline" }]}>
 						{validate.identityFromCoopsol}
 					</Small>
-				</View>
+				</View> */}
 			</View>
 		);
 	};
@@ -145,9 +145,8 @@ class CoopsolValidationState extends Component<Props, State> {
 							</>
 						) : (
 							this.renderContent()
-							// null
 						)}
-						<DidiButton title={strings.buttons.close} onPress={onCancel} style={{ marginTop: 40 }} />
+						<DidiButton title={strings.buttons.close} onPress={onCancel} style={{ marginTop: 5 }} />
 					</ScrollView>
 				</View>
 			</View>
