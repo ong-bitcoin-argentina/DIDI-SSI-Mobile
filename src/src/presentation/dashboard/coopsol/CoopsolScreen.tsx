@@ -10,7 +10,6 @@ import themes from "../../resources/themes";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
-import { LATEST_FEATURE } from "../../../AppConfig";
 import CoopsolValidationState from "./CoopsolValidationState";
 import { validateDniCoopsol } from "../../../services/coopsol/validateDni";
 

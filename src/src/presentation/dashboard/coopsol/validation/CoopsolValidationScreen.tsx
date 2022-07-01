@@ -153,9 +153,9 @@ export default didiConnect(
 		email: getEmail(state.activeSpecialCredentials),
 		phoneNumber: getPhoneNumber(state.activeSpecialCredentials)
 	}),
-	(dispatch): DispatchProps => ({
+	/*(dispatch): DispatchProps => ({
 		coopsolValidationStart: data => console.log('dispatch(validateDniWithCoopsol(data)')
-	})
+	})*/
 );
 
 const styles = StyleSheet.create({

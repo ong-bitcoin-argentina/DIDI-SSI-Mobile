@@ -146,7 +146,7 @@ class CoopsolValidationState extends Component<Props, State> {
 						) : (
 							this.renderContent()
 						)}
-						<DidiButton title={strings.buttons.close} onPress={onCancel} style={{ marginTop: 5 }} />
+						<DidiButton title={strings.buttons.accept} onPress={onCancel} style={{ marginTop: 5 }} />
 					</ScrollView>
 				</View>
 			</View>
