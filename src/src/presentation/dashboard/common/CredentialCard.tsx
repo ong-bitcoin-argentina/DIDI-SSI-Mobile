@@ -9,6 +9,7 @@ import strings from "../../resources/strings";
 
 import DidiCardBody, { DidiCardBodyProps } from "./DidiCardBody";
 import { CredentialStates } from "../../../model/Credential";
+import { FlatList } from "react-navigation";
 
 export interface CredentialCardProps extends DidiCardBodyProps {
 	category: string;
@@ -119,21 +120,51 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 		));
 	}
 
+
+	private renderSpecialText(color: string) {	
+		return ( 
+		<View >
+		<FlatList
+		 data={this.props.data}
+		 renderItem={item => this.renderItem(item.item,color)}
+		 keyExtractor={(_, index) => index.toString()}
+		/>
+		</View>
+		)
+		
+	}
+
+    private renderItem(item : {label:string,value:string},color: string) {
+        return (
+
+		<View style={styles.dataLabelContainer}>		
+				{item.label?
+				<DidiText.Card.Value style={[styles.dataLabel, { color, textAlign: undefined }]}>
+											{item.label}
+				</DidiText.Card.Value>:null}
+				{item.value? 
+				<DidiText.Card.Key style={[styles.dataLabel, { color}]}>
+				{item.value} 
+				</DidiText.Card.Key>: null}
+		</View>
+		);
+    }
 	render() {
-		const { hollow, color, layout, icon, preview, credentialState } = this.props;
+		const { hollow, color, layout, icon, preview, credentialState, subTitles } = this.props;
 		const cardColor = hollow ? color : colors.lightBackground;
 		const style = layout?.style == "dark" && preview ? colors.darkText : cardColor;
 		const isRevoked = credentialState === CredentialStates.revoked;
 		const haveBackgroundImage = preview && layout && !isRevoked;
-
+				
 		return (
 			<DidiCardBody
 				{...this.props}
 				icon={this.hasLayout() ? "" : icon}
 				backgroundUrl={haveBackgroundImage ? layout?.backgroundImage : undefined}
+				specialText={subTitles[0].includes('Emisor: Coopsol')?this.renderSpecialText(style): null}
 			>
 				{this.renderTitle(style)}
-				{this.renderKeyValuePairs(style)}
+				{subTitles[0].includes('Emisor: Coopsol')?null:this.renderKeyValuePairs(style)}
 				{this.props.children}
 			</DidiCardBody>
 		);
@@ -151,7 +182,10 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap"
 	},
 	dataLabel: {
-		paddingRight: 5
+		marginVertical:2
+	},
+	dataLabelContainer: {
+		marginVertical:5
 	},
 	dataValue: {
 		flexGrow: 1,
