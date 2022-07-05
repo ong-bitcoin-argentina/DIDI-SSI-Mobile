@@ -40,6 +40,7 @@ const defaultServiceSettings: ServiceSettings = {
 	},
 	didiUserServer: Config.URL_DIDI_SERVER,
 	urlSecurity: Config.URL_VU_SECURITY,
+	urlCoopsol: Config.URL_COOPSOL
 
 };
 
