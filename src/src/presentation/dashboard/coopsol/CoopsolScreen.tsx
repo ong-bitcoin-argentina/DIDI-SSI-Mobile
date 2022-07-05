@@ -81,7 +81,14 @@ class CoopsolScreen extends NavigationEnabledComponent<
 		const credential = credentials.find(
 			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
 		);
-	
+				
+		const coopsolCredential = credentials.find(
+			cred => cred.title === 'Identitaria coopsol'
+		);
+
+		if(coopsolCredential){
+			this.props.updateCoopsolStatus('SUCCESS');		
+		}
 		if (credential && credential.data["Numero de Identidad"]) {
 			this.setState({
 				dni: credential.data["Numero de Identidad"].toString()
