@@ -7,6 +7,8 @@ import DidiButton from "../../util/DidiButton";
 import commonStyles from "../../resources/commonStyles";
 import colors from "../../resources/colors";
 import { ValidationStates } from "../../../store/reducers/validateCoopsolDniReducer";
+import { CredentialDocument } from "@proyecto-didi/app-sdk";
+import { validateDniCoopsol } from "../../../services/coopsol/validateDni";
 
 const {
 	Icon,
@@ -18,12 +20,15 @@ const { validateIdentity } = dashboard;
 const { modal, button } = commonStyles;
 
 interface StoreProps {
+	credentials:  CredentialDocument[];
 	validationState: ValidationStates | null;
 	validateDniFailed: boolean;
 	validateDni: boolean;
 }
 
-interface State {}
+interface State {
+	pendingCredentials: boolean
+}
 
 type InternalProps = {
 	goToVuSecurityValidation: () => void;
@@ -32,13 +37,54 @@ type InternalProps = {
 	isLoading: boolean;
 };
 
-type Props = StoreProps & InternalProps;
+interface DispatchProps {
+	updateCoopsolStatus: (status: string | null) => void;
+}
+
+type Props = StoreProps & InternalProps & DispatchProps;
 
 class CoopsolValidationState extends Component<Props, State> {
+	constructor(props: Props) {
+		super(props);
+		this.state = {
+			pendingCredentials: false
+		};
+	}
+
+	async componentDidMount(){
+
+		this.setState((state) => ({
+			pendingCredentials:  !state.pendingCredentials, 
+		}));
+		const { credentials , validationState} = this.props;
+		
+		const credential = credentials.find(
+			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
+		);
+		const coopsolCredential = credentials.find(
+			cred => cred.title === 'Identitaria coopsol'
+		);
+
+		if(coopsolCredential){
+			this.props.updateCoopsolStatus('SUCCESS');		
+		}
+
+		if (credential && credential.data["Numero de Identidad"]) {
+
+			if( validationState === null ){
+				const result = await validateDniCoopsol(credential.jwt);
+				this.props.updateCoopsolStatus(result.status);
+			}
+		}
+	
+		this.setState((state) => ({
+			pendingCredentials:  !state.pendingCredentials, 
+		}));	
+	}
+
 	renderContent = () => {
 		const { validationState } = this.props;
 		const { inProgress, failure, success } = ValidationStates;
-		
 		switch (validationState) {
 			case inProgress:
 				return this.renderPendingRequest();
@@ -138,7 +184,7 @@ class CoopsolValidationState extends Component<Props, State> {
 			<View style={[modal.centeredView]}>
 				<View style={[modal.view, { maxHeight: 500 }]}>
 					<ScrollView contentContainerStyle={{ alignItems: "center" }}>
-						{isLoading ? (
+						{this.state.pendingCredentials ? (
 							<>
 								<Small style={{ marginBottom: 10 }}>{validate.gettingState}</Small>
 								<ActivityIndicator size="large" color={colors.secondary} />
@@ -157,9 +203,13 @@ class CoopsolValidationState extends Component<Props, State> {
 export default didiConnect(
 	CoopsolValidationState,
 	(state): StoreProps => ({
+		credentials: state.credentials,
 		validationState: state.validateCoopsolDni,
 		validateDniFailed: state.validateDni?.state === "Failed",
 		validateDni: state.validateDni?.state=="Successful"
+	}),
+	(dispatch): DispatchProps => ({
+		updateCoopsolStatus: (status: string | null) => dispatch({ type: "VALIDATE_COOPSOL_DNI_SET", state: status }),
 	})
 );
 
