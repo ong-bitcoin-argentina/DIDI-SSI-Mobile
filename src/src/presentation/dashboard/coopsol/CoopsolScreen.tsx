@@ -1,7 +1,5 @@
-import { CredentialDocument } from "@proyecto-didi/app-sdk";
-import React, { Fragment }  from "react";
-import { StatusBar, StyleSheet,ScrollView, View, Modal, Image } from "react-native";
-import { didiConnect } from "../../../store/store";
+import React, { Fragment } from "react";
+import { StatusBar, StyleSheet, ScrollView, View, Modal, Image } from "react-native";
 import colors from "../../resources/colors";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
@@ -11,7 +9,6 @@ import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import CoopsolValidationState from "./CoopsolValidationState";
-import { validateDniCoopsol } from "../../../services/coopsol/validateDni";
 
 const { Small } = DidiText.Explanation;
 const { util } = commonStyles;
@@ -22,18 +19,8 @@ const {
 	detailSecond,
 	detailThird,
 } = strings.coopsol;
-interface CoopsolScreenStateProps {
-	coopsolValidationSuccess: boolean,
-	coopsolValidation: string | null,
-	haveIdentityCredential: boolean;
-	didRequested: boolean;
-	credentials: CredentialDocument[];
-}
 
 
-interface CoopsolScreenDispatchProps {
-	updateCoopsolStatus:(status: string | null) => void;
-}
 export interface CoopsolScreenNavigation {
 	DashboardHome: {};
 	Prestadores: {};
@@ -42,68 +29,27 @@ export interface CoopsolScreenNavigation {
 }
 
 interface CoopsolScreenState {
-	dni: string;
 	modalVisible: boolean;
-	coopsolValidationLoading: boolean;
-	pendingCredentials: boolean;
 }
 
 
-
-type CoopsolScreenInternalProps = CoopsolScreenStateProps & CoopsolScreenDispatchProps;
-
-class CoopsolScreen extends NavigationEnabledComponent<
-    CoopsolScreenInternalProps,
+export class CoopsolScreen extends NavigationEnabledComponent<
+	{},
 	CoopsolScreenState,
 	CoopsolScreenNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
-	CoopsolScreenNavigation,
+		CoopsolScreenNavigation,
 		"DashboardHome"
 	>(detailBarTitle, "DashboardHome", {});
-	
-	constructor(props: CoopsolScreenInternalProps) {
+
+	constructor(props: {}) {
 		super(props);
 		this.state = {
-			dni: "",
-			modalVisible: false,
-			coopsolValidationLoading: false,
-			pendingCredentials: false
+			modalVisible: false
 		};
 	}
 
-	async componentDidMount(){
-		this.setState((state) => ({
-			pendingCredentials:  !state.pendingCredentials, 
-		}));
-		const { credentials, coopsolValidation } = this.props;
-		// We look into the credentials to check if there's an identity credential with DNI
-		const credential = credentials.find(
-			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
-		);
-				
-		const coopsolCredential = credentials.find(
-			cred => cred.title === 'Identitaria coopsol'
-		);
-
-		if(coopsolCredential){
-			this.props.updateCoopsolStatus('SUCCESS');		
-		}
-		if (credential && credential.data["Numero de Identidad"]) {
-			this.setState({
-				dni: credential.data["Numero de Identidad"].toString()
-			});
-
-			if( coopsolValidation === null ){
-				const result = await validateDniCoopsol(credential.jwt);
-				this.props.updateCoopsolStatus(result.status);
-			}
-		}
-		this.setState((state) => ({
-			pendingCredentials:  !state.pendingCredentials, 
-		}));
-		
-	}
 
 	toggleModal = () => {
 		this.setState({
@@ -125,20 +71,7 @@ class CoopsolScreen extends NavigationEnabledComponent<
 		this.setState({ modalVisible: true });
 	};
 
-	renderButtonWantCredentials() {
-		return (
-			<DidiServiceButton
-				onPress={this.openModal}
-				title={strings.coopsol.getCredentials}
-				style={styles.button}
-				isPending={this.state.pendingCredentials}
-			/>
-		);
-	}
-
 	render() {
-
-		const { coopsolValidationLoading } = this.state;
 		return (
 			<Fragment>
 
@@ -147,17 +80,20 @@ class CoopsolScreen extends NavigationEnabledComponent<
 				<ScrollView contentContainerStyle={commonStyles.view.scrollCentered}>
 					<Image style={styles.logo} source={require("../../resources/images/coopsolPNG.png")} />
 					<View style={{ marginBottom: 28 }}>
-						<Small style={[util.paragraphMd,{textAlign:'left', marginVertical:'3%'}]}>{detailFirst}</Small>
-						<Small style={[util.paragraphMd,{textAlign:'left', marginVertical:'3%'}]}>{detailSecond}</Small>
-						<Small style={[util.paragraphMd,{textAlign:'left',marginVertical:'3%'}]}>{detailThird}</Small>
+						<Small style={[util.paragraphMd, { textAlign: 'left', marginVertical: '3%' }]}>{detailFirst}</Small>
+						<Small style={[util.paragraphMd, { textAlign: 'left', marginVertical: '3%' }]}>{detailSecond}</Small>
+						<Small style={[util.paragraphMd, { textAlign: 'left', marginVertical: '3%' }]}>{detailThird}</Small>
 					</View>
 					<View style={{ marginBottom: 20 }}>
-						{
-						this.renderButtonWantCredentials()
-						}
+						<DidiServiceButton
+							onPress={this.openModal}
+							title={strings.coopsol.getCredentials}
+							style={styles.button}
+							isPending={false}
+						/>
 					</View>
 				</ScrollView>
- 			
+
 				<Modal
 					animationType="fade"
 					transparent={true}
@@ -168,27 +104,13 @@ class CoopsolScreen extends NavigationEnabledComponent<
 						goToVuSecurityValidation={this.goToVuSecurityValidation}
 						goToCoopsolValidation={this.goToCoopsolValidation}
 						onCancel={this.toggleModal}
-						isLoading={coopsolValidationLoading}
+						isLoading={false}
 					/>
 				</Modal>
 			</Fragment>
 		);
 	}
 }
-
-export default didiConnect(
-	CoopsolScreen,
-	(state): CoopsolScreenStateProps => ({
-		coopsolValidationSuccess: state.validateCoopsolDni === 'SUCCESS',
-		coopsolValidation: state.validateCoopsolDni,
-		credentials: state.credentials,
-		didRequested: state.did.didRequested,
-		haveIdentityCredential: state.credentials.find(cred =>  cred.title === strings.specialCredentials.PersonalData.title ) !== undefined,
-	}),
-	(dispatch): CoopsolScreenDispatchProps => ({
-		updateCoopsolStatus: (status: string | null) => dispatch({ type: "VALIDATE_COOPSOL_DNI_SET", state: status }),	
-	})
-);
 
 
 const styles = StyleSheet.create({
