@@ -178,7 +178,7 @@ class CoopsolValidationState extends Component<Props, State> {
 	};
 
 	render() {
-		const { onCancel, isLoading } = this.props;
+		const { onCancel } = this.props;
 
 		return (
 			<View style={[modal.centeredView]}>

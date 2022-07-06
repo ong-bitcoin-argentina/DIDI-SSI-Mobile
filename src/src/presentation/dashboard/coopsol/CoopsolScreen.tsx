@@ -1,7 +1,5 @@
-import { CredentialDocument } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { StatusBar, StyleSheet, ScrollView, View, Modal, Image } from "react-native";
-import { didiConnect } from "../../../store/store";
 import colors from "../../resources/colors";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
