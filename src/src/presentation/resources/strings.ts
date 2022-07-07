@@ -595,11 +595,11 @@ export default {
 		},
 		howTo: {
 			header: "Comienzo de proceso de validación de su Identidad",
-			intro: "Deberá seguir el siguiente proceso:",
+			intro: "Asegúrate de contar con:",
 			steps: [
-				"Buscá un lugar iluminado y con fondo claro",
-				"Tener tu documento a mano",
-				"Acceso a Internet o datos móviles"
+				"Un lugar iluminado y con fondo claro",
+				"Tu DNI a mano",
+				"Acceso a internet o datos móviles"
 			],
 			buttonText: "Está listo/a?"
 		},
