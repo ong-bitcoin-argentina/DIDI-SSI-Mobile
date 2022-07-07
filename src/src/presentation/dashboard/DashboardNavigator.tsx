@@ -29,7 +29,9 @@ import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
 import CoopsolNavigator from "./coopsol/CoopsolNavigator";
+/* don't remove these lines
 import { RoundsScreen } from "./rounds/RoundsScreen";
+*/
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
 /* don't remove these lines
@@ -113,12 +115,13 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	const BottomNavigator = createBottomTabNavigator(
 		{
 			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, "home"),
+			/* don't remove these lines
 			DashboardRounds: screen(
 				NavMap.from(RoundsScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
 				"",
 				false
-			),
+			),*/
 			DashboardDocuments: screen(
 				DocumentsNavigator({
 					...then,
