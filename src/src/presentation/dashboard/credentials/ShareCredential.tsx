@@ -48,6 +48,7 @@ export interface ShareCredentialNavigation {
 interface ShareRespCredential {
 	shareResp: boolean
 	shareRequests: IShareRequestData[]
+	shareRequestId?: string
 }
 
 type ShareCredentialScreenProps = ShareCredentialInternalProps & ShareRespCredential;
@@ -159,6 +160,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 			this.navigate("ShareResp", { 
 				documents,
 				shareRequests: this.props.shareRequests,
+				shareRequestId: this.props.shareRequestId,
 			});
 		}  else {
 			if (documents.every(doc => doc.nested.length === 0)) {

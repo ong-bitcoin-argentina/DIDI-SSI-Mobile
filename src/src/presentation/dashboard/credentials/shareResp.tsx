@@ -16,7 +16,7 @@ interface ShareRespScreenStateProps {
 interface ShareRespScreenProps {
 	documents: CredentialDocument[],
 	shareRequests: IShareRequestData[],
-
+	shareRequestId: string
 }
 class ShareRespScreen extends NavigationEnabledComponent<
 	ShareRespScreenProps & ShareRespScreenStateProps,
@@ -26,10 +26,10 @@ class ShareRespScreen extends NavigationEnabledComponent<
 	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.share.title);
 
 	async componentDidMount(){
-		const {shareRequests, documents, activeDid} = this.props;
+		const {shareRequestId, shareRequests, documents, activeDid} = this.props;
 		const vcDocuments = await JwtDecodeDocuments(documents);
 		const shareResp = await createShareResponseToken(activeDid,shareRequests,vcDocuments);
-		await shareResponse(activeDid,shareResp, shareRequests[0].callback);
+		await shareResponse(activeDid, shareRequestId, shareResp, shareRequests[0].callback);	
 	}
 	render() {
 		return (

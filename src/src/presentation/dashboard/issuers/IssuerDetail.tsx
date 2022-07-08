@@ -24,6 +24,7 @@ export interface IssuerDetailProps {
 }
 export interface IssuerDetilState {
     shareRequests: IShareRequestData[] | IReturnError ;
+	shareRequestId: string
 }
 interface IssuerDetilNavegation {
 	ShareCredential:{}
@@ -36,14 +37,18 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 	constructor(props: IssuerDetailProps) {
 		super(props);
 		this.state = {
-			shareRequests: []
+			shareRequests: [],
+			shareRequestId: ""
 		};
 	}
 	
 	async componentDidMount(){
 		const { idShareRequest } = this.props
 		const shareRequestList = await getShareRequest(idShareRequest); 
-		this.setState({shareRequests: shareRequestList})	
+		this.setState({
+			shareRequests: shareRequestList,
+			shareRequestId: idShareRequest[0],
+		})	
 	}
 
 	render() {
@@ -79,6 +84,7 @@ export class IssuerDetailScreen extends NavigationEnabledComponent<
 							onPress={()=>{this.navigate("ShareCredential", {
 								shareResp:true,
 								shareRequests:this.state.shareRequests,
+								shareRequestId: this.state.shareRequestId
 							})}}
 							title={"Compartir Credenciales"}
 							style={styles.button} />}
