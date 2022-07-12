@@ -12,6 +12,7 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ActiveDid } from "../../../store/reducers/didReducer";
+import { ComponentState, UpdateWaiticon } from "../../util/UpdateWaiticon";
 
 export interface HomeHeaderProps {
 	onPersonPress: () => void;
@@ -68,10 +69,13 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 								this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4) 
 						: 'Falta el did'}
 							</DidiText.DashboardHeader.Hello>
+							{this.props.isLoadingCredentials ? 
+							<UpdateWaiticon componentState={ComponentState.Pending} /> : 
+							<UpdateWaiticon componentState={ComponentState.Approved} /> 
+							}
 					</View>
 				</TouchableOpacity>
 				<View style={styles.activityIndicatorContainer}>
-					{this.props.isLoadingCredentials ? <ActivityIndicator size="large" color={colors.secondary} /> : undefined}
 					<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
 						<DidiText.Icon color={this.props.newTokensAvailable ? colors.highlight : undefined} fontSize={24}>
 							
