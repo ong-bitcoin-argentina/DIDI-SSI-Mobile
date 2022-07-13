@@ -34,6 +34,11 @@ function formatFullDate(date: Date) {
 	return `${formatDatePart(date)}, ${formatHourPart(date)}`;
 }
 
+function specialFullData(date: Date) {
+	const pad = (n: number) => (n < 10 ? `0${n}` : n);
+	return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}  ${pad(date.getHours())}:${pad(date.getMinutes())}hrs`;
+}
+
 const appName = "ai·di";
 
 const styles = StyleSheet.create({
@@ -141,6 +146,11 @@ export default {
 		activeIdentity: "Identidad activa (DID)",
 		actions: {
 			copy: "Copiar DID"
+		},
+		formatDate: specialFullData,
+		standbyState:{
+			approved: "Actualizado",
+			pending: "Actualizando",
 		},
 		states: {
 			approved: "Aprobado",
