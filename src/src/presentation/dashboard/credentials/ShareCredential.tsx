@@ -156,8 +156,23 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 			this.setState({ selectedCredentials });
 		}
 	}
+	private shareRequestCompared(cred: string,shareRequest: string[]){
+		for (const share of shareRequest) {
+			if (
+				(cred === share) ||
+				(cred === 'Email' && share === 'emailMain') || 
+				(cred === 'Phone' && share === 'mobilePhone') ||
+				(cred === 'Domicilio Legal' && share === 'legalAddress') ||
+				(cred === 'Datos Personales' && share === 'nationalId')
+				) {		
+				return true;
+			}
+		}
+		return false;
+	}
 
-	private async credentialValidator(documents:  CredentialDocument[],shareRequests: IShareRequestData[]){
+	private async credentialValidator(documents:  CredentialDocument[],shareRequests: IShareRequestData[]):Promise<boolean | undefined>{
+		let flag = false;
 		const credentialValidator: string[] = [];
 		const ShareRequestValidator: string[] =[];
 		const vcDocuments = await JwtDecodeDocuments(documents);
@@ -171,32 +186,18 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 			})
 		})
 
-		let flag = false;
-		if (credentialValidator.length === ShareRequestValidator.length) {
-			for (const cred of credentialValidator) {
-				for (const share of ShareRequestValidator) {
-					if (
-						(cred === share) ||
-						(cred === 'Email' && share === 'emailMain') || 
-						(cred === 'Phone' && share === 'mobilePhone') ||
-						(cred === 'Domicilio Legal' && share === 'legalAddress') ||
-						(cred === 'Datos Personales' && share === 'nationalId')
-						) {
-						flag = true;
-					}
-				}
-				if (!flag) break
-			}	
+		if (credentialValidator.length !== ShareRequestValidator.length) return flag;
+		for (const cred of credentialValidator) {
+			flag =  this.shareRequestCompared(cred,ShareRequestValidator); 
+			if(!flag) return false;
 		}
-
 		return flag;
 	}
 
 	private async doShare(documents: CredentialDocument[], shareResp?: boolean ) {
 		if (shareResp === true) {
 			const {shareRequests, shareRequestId}= this.props;
-			const result = await this.credentialValidator(documents,shareRequests);
-			if (result) {
+			if (await this.credentialValidator(documents,shareRequests)) {
 				this.navigate("ShareResp", { 
 					documents,
 					shareRequests,
