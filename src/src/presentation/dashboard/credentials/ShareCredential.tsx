@@ -26,6 +26,8 @@ import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
 import { CredentialStates } from "../../../model/Credential";
 import { IShareRequestData } from '../../../model/ShareRequest';
+import { JwtDecodeDocuments } from "../../util/appRouter";
+import { DataAlert } from "../../common/DataAlert";
 
 export type ShareCredentialProps = Record<string, unknown>;
 interface ShareCredentialInternalProps extends ShareCredentialProps {
@@ -155,13 +157,67 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		}
 	}
 
-	private doShare(documents: CredentialDocument[], shareResp?: boolean ) {
+	private async credentialValidator(documents:  CredentialDocument[],shareRequests: IShareRequestData[]){
+		const credentialValidator: string[] = [];
+		const ShareRequestValidator: string[] =[];
+		const vcDocuments = await JwtDecodeDocuments(documents);
+		
+		vcDocuments.forEach((vc) => {
+		credentialValidator.push(Object.keys(vc.vc.credentialSubject)[0])
+		});
+		shareRequests.forEach((shareReq)=>{
+			Object.keys(shareReq.claims.verifiable).forEach((verifiable)=>{
+				ShareRequestValidator.push(verifiable)
+			})
+		})
+
+		let flag = false;
+		if (credentialValidator.length == ShareRequestValidator.length) {
+			for (const cred of credentialValidator) {
+				for (const share of ShareRequestValidator) {
+					if (cred === share) {
+						flag = true; 	
+					   } else {
+						   
+						   if ( cred == 'Email' && share == 'emailMain') {
+							flag = true;
+						   }
+						   if ( cred == 'Phone' && share == 'mobilePhone') {
+							flag = true;
+						   }
+						   if ( cred == 'Domicilio Legal' && share == 'legalAddress') {
+							flag = true;
+						   }
+						   if ( cred == 'Datos Personales' && share == 'nationalId') {
+							flag = true;
+						   }
+					   }
+				}
+				if (flag == false) {
+					DataAlert.alert(strings.vuIdentity.failure.retryButton,'Las credenciales seleccionada, no son las que el emisor solicita, vuelva a seleccionarla/s');		
+					break
+				}
+			}	
+		} else {
+			DataAlert.alert(strings.vuIdentity.failure.retryButton,'Envíe las credenciales que el emisor a solicitado, vuelva a seleccionarla/s');
+		}
+
+		return flag;
+	}
+
+	private async doShare(documents: CredentialDocument[], shareResp?: boolean ) {
 		if (shareResp === true) {
-			this.navigate("ShareResp", { 
-				documents,
-				shareRequests: this.props.shareRequests,
-				shareRequestId: this.props.shareRequestId,
-			});
+			const {shareRequests, shareRequestId}= this.props;
+			const result = await this.credentialValidator(documents,shareRequests);
+			if (result) {
+				this.navigate("ShareResp", { 
+					documents,
+					shareRequests,
+					shareRequestId,
+				});	
+			} else {
+				this.setState({selectedCredentials:[]})
+			}
 		}  else {
 			if (documents.every(doc => doc.nested.length === 0)) {
 				this.navigate("ShareExplanation", { documents });
