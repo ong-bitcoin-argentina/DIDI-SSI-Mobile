@@ -193,13 +193,8 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 						   }
 					   }
 				}
-				if (flag == false) {
-					DataAlert.alert(strings.vuIdentity.failure.retryButton,'Las credenciales seleccionada, no son las que el emisor solicita, vuelva a seleccionarla/s');		
-					break
-				}
+				if (!flag) break
 			}	
-		} else {
-			DataAlert.alert(strings.vuIdentity.failure.retryButton,'Envíe las credenciales que el emisor a solicitado, vuelva a seleccionarla/s');
 		}
 
 		return flag;
@@ -216,6 +211,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 					shareRequestId,
 				});	
 			} else {
+				DataAlert.alert(strings.vuIdentity.failure.retryButton,'Envíe las credenciales que el emisor a solicitado, vuelva a seleccionarla/s');
 				this.setState({selectedCredentials:[]})
 			}
 		}  else {
