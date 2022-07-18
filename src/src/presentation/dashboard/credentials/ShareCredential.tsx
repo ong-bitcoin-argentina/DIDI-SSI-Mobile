@@ -172,26 +172,18 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		})
 
 		let flag = false;
-		if (credentialValidator.length == ShareRequestValidator.length) {
+		if (credentialValidator.length === ShareRequestValidator.length) {
 			for (const cred of credentialValidator) {
 				for (const share of ShareRequestValidator) {
-					if (cred === share) {
-						flag = true; 	
-					   } else {
-						   
-						   if ( cred == 'Email' && share == 'emailMain') {
-							flag = true;
-						   }
-						   if ( cred == 'Phone' && share == 'mobilePhone') {
-							flag = true;
-						   }
-						   if ( cred == 'Domicilio Legal' && share == 'legalAddress') {
-							flag = true;
-						   }
-						   if ( cred == 'Datos Personales' && share == 'nationalId') {
-							flag = true;
-						   }
-					   }
+					if (
+						(cred === share) ||
+						(cred === 'Email' && share === 'emailMain') || 
+						(cred === 'Phone' && share === 'mobilePhone') ||
+						(cred === 'Domicilio Legal' && share === 'legalAddress') ||
+						(cred === 'Datos Personales' && share === 'nationalId')
+						) {
+						flag = true;
+					}
 				}
 				if (!flag) break
 			}	
