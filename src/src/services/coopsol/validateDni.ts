@@ -13,7 +13,7 @@ export async function validateDniCoopsol( jwt: string): Promise<(IShareResp&{sta
 		return Object.assign(await Coopsol().dniIdentity(jwt),{status:"IN_PROGRESS"});
 	} catch (e) {
 		return { 
-			status: null,
+			status: 'FAILURE',
 			errorCode: "ADD_IMAGE",
 			message: `${e}`,
 		};

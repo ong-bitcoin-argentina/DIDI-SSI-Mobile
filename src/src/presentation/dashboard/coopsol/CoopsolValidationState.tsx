@@ -52,31 +52,25 @@ class CoopsolValidationState extends Component<Props, State> {
 	}
 
 	async componentDidMount(){
-
 		this.setState((state) => ({
 			pendingCredentials:  !state.pendingCredentials, 
 		}));
 		const { credentials , validationState} = this.props;
-		
 		const credential = credentials.find(
 			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
 		);
 		const coopsolCredential = credentials.find(
 			cred => cred.title === 'Identitaria coopsol'
 		);
-
-		if(coopsolCredential){
-			this.props.updateCoopsolStatus('SUCCESS');		
-		}
-
-		if (credential && credential.data["Numero de Identidad"]) {
-
-			if( validationState === null ){
+		
+		if ((validationState === null ||  validationState === 'FAILURE') && (credential && credential.data["Numero de Identidad"])) {
 				const result = await validateDniCoopsol(credential.jwt);
 				this.props.updateCoopsolStatus(result.status);
-			}
 		}
-	
+		
+		if (validationState === 'IN_PROGRESS' && coopsolCredential) this.props.updateCoopsolStatus('SUCCESS');
+
+
 		this.setState((state) => ({
 			pendingCredentials:  !state.pendingCredentials, 
 		}));	
@@ -117,8 +111,7 @@ class CoopsolValidationState extends Component<Props, State> {
 				<Icon fontSize={38} color={colors.error} style={{ marginBottom: 10 }}>
 					highlight_off
 				</Icon>
-				<Small style={styles.modalText}>{validate.rejected}</Small>
-				{this.renderRenaperDescription()}
+				<Small style={styles.modalText}>{' El servicio de Coopsol está fuera de servicio momentáneamente. \n Envíe su solicitud al correo:\n soporte@aidi.app \n'}</Small>
 			</View>
 		);
 	};
