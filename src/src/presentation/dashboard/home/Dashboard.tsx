@@ -20,7 +20,9 @@ import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
 import { NotificationScreenProps } from "./NotificationScreen";
+/* do not delete 
 import { AuthModal } from "../common/AuthModal";
+*/
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import {
 	successfullyLogged,
