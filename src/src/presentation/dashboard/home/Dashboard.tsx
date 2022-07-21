@@ -264,6 +264,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						}
 					/>
 				</SafeAreaView>
+				{/* do not delete 
 				<AuthModal
 					appName="ronda"
 					onCancel={this.permissionDenied}
@@ -271,7 +272,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 					visible={this.state.showModal}
 					alreadyHave={this.props.hasRonda}
 					automatic
-				/>
+				/> */}
 			</Fragment>
 		);
 	}
