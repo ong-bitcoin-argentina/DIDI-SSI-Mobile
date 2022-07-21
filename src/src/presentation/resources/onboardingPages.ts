@@ -4,8 +4,9 @@ import { SvgProps } from "react-native-svg";
 import { Color } from "./colors";
 import Image1 from "./images/onboarding1.svg";
 import Image2 from "./images/onboarding2.svg";
+/*  do not delete
 import Image3 from "./images/onboarding3.svg";
-
+*/
 export interface OnboardingPage {
 	image: React.FunctionComponent<SvgProps>;
 	backgroundColor: Color;
