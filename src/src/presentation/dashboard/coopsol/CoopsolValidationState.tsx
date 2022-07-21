@@ -111,7 +111,7 @@ class CoopsolValidationState extends Component<Props, State> {
 				<Icon fontSize={38} color={colors.error} style={{ marginBottom: 10 }}>
 					highlight_off
 				</Icon>
-				<Small style={styles.modalText}>{' El servicio de Coopsol está fuera de servicio momentáneamente. \n Envíe su solicitud al correo:\n soporte@aidi.app \n'}</Small>
+				<Small style={styles.modalText}>{' El servicio de Coopsol está fuera de servicio momentáneamente. \n Envíe su solicitud al correo:\n jduttweiler@acdi.org.ar \n'}</Small>
 			</View>
 		);
 	};
