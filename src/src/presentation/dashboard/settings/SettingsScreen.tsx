@@ -22,6 +22,9 @@ import Divider from "../common/Divider";
 import { EditProfileProps } from "./userMenu/EditProfile";
 import { ChangeEmailEnterEmailProps } from "./userData/ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./userData/ChangePhoneEnterPhone";
+import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
+import { OpenEmailScreenProps } from "../../common/OpenEmail";
+import { PoliticsScreenProps } from "../../common/Politics";
 
 export type SettingsScreenProps = {};
 interface SettingsScreenStateProps {
@@ -46,6 +49,9 @@ export interface SettingsScreenNavigation {
 	JWTDecoderScreen: JWTDecoderScanScreenProps;
 	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
 	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
+	CommonQuestions: CommonQuestionsScreenProps;
+	OpenEmailScreenProps: OpenEmailScreenProps;
+	PoliticsScreenProps: PoliticsScreenProps;
 }
 
 interface SettingsButton {
@@ -64,7 +70,8 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
-			{ name: strings.settings.about.title, action: () => this.navigate("AboutThisAppScreen", {}) }
+			{ name: strings.settings.about.title, action: () => this.navigate("AboutThisAppScreen", {}) },
+			{ name: strings.settings.help, action: () => this.navigate("CommonQuestions", {}) }
 		];
 		const debug = [
 			...base,
@@ -82,6 +89,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 	}
 
 	navigateTo = (route: keyof SettingsScreenNavigation) => {
+		console.log('route ', route)
 		this.navigate(route, {});
 	};
 	render() {
@@ -117,7 +125,7 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 						/>
 
 						<Divider />
-
+						<Option onPress={() => this.navigateTo("CommonQuestions")} label={settings.help} icon="help"/>
 						<Option onPress={() => this.logout()} label={settings.endSession} icon="exit_to_app" />
 					</ScrollView>
 				</SafeAreaView>
