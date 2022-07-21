@@ -30,13 +30,14 @@ const pages: OnboardingPage[] = [
 		body:
 			"Podés acceder a todas tus credenciales, certificando tus datos, cursos realizados, domicilios, propiedades."
 	},
-	{
+	/*  do not delete
+	{ 
 		image: Image3,
 		backgroundColor: "#6ECD55",
 		backgroundTile: require("./images/onboardingTile3.png"),
 		title: "Alcanzá tus metas de ahorro",
 		body: "Podés crear Rondas y así conseguir el dinero que estabas necesitando de manera confiable."
-	}
+	}*/
 ];
 
 export default pages;
