@@ -25,6 +25,7 @@ import { CommonQuestionsScreenProps } from "../common/CommonQuestions";
 import Icon from "react-native-vector-icons/AntDesign";
 import { OpenEmailScreenProps } from "../common/OpenEmail";
 import { ExpiredAccountScreenProps  } from "../common/ExpiredAccount";
+import { PoliticsScreenProps } from "../common/Politics";
 
 const { Title } = DidiText;
 
@@ -48,6 +49,7 @@ export interface StartAccessNavigation {
 	RecoveryExplanation: RecoveryExplanationProps;
 	AccessSettings: AccessSettingsProps;
 	CommonQuestions: CommonQuestionsScreenProps;
+	Politics: PoliticsScreenProps
 	OpenEmail: OpenEmailScreenProps;
 	ExpiredAccount: ExpiredAccountScreenProps;
 }
@@ -71,7 +73,7 @@ class StartAccessScreen extends NavigationEnabledComponent<
 	};
 	
 	private goToCommonQuestions = async () => {		
-		this.navigate("CommonQuestions", {});
+		this.navigate("Politics", {});
 	}
 
 	render() {

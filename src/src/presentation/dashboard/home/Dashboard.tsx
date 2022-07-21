@@ -43,6 +43,7 @@ import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
+import { PoliticsScreenProps } from "../../common/Politics";
 
 const INACTIVITY_TIME_EXPIRATION = 30000; //3min
 
@@ -87,6 +88,7 @@ export interface DashboardScreenNavigation {
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
 	CommonQuestions: CommonQuestionsScreenProps;
+	Politics:PoliticsScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};

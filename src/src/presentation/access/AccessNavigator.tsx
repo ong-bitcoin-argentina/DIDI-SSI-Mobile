@@ -22,6 +22,7 @@ import { SignupVerifyPhoneScreen } from "./signup/SignupVerifyPhone";
 import { SignupWithResetScreen } from "./signup/SignupWithReset";
 import { StartAccessScreen } from "./StartAccess";
 import { CommonQuestionsScreen } from "../common/CommonQuestions";
+import { PoliticsScreen } from "../common/Politics";
 import { OpenEmailScreen } from "../common/OpenEmail";
 import { ExpiredAccountScreen  } from "../common/ExpiredAccount";
 
@@ -34,17 +35,19 @@ function login(then: NavTree<AccessSwitchTarget>) {
 }
 
 function signup(then: NavTree<AccessSwitchTarget>) {
-	return NavMap.from(SignupOnboardingScreen, {
-		SignupEnterPhone: NavMap.from(SignupEnterPhoneScreen, {
-			SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
-				SignupPhoneVerified: NavMap.from(SignupPhoneVerifiedScreen, {
-					SignupEnterName: NavMap.from(SignupEnterNameScreen, {
-						SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
-							SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen, {
-								SignupConfirmed: NavMap.from(SignupConfirmedScreen, then)
+	return NavMap.from(SignupOnboardingScreen, { 
+		PoliticsScreen:NavMap.from(PoliticsScreen,{
+			SignupEnterPhone: NavMap.from(SignupEnterPhoneScreen, {
+				SignupVerifyPhone: NavMap.from(SignupVerifyPhoneScreen, {
+					SignupPhoneVerified: NavMap.from(SignupPhoneVerifiedScreen, {
+						SignupEnterName: NavMap.from(SignupEnterNameScreen, {
+							SignupEnterEmail: NavMap.from(SignupEnterEmailScreen, {
+								SignupConfirmEmail: NavMap.from(SignupConfirmEmailScreen, {
+									SignupConfirmed: NavMap.from(SignupConfirmedScreen, then)
 							})
 						})
 					})
+				})
 				})
 			})
 		})
@@ -81,6 +84,7 @@ export default function (then: NavTree<AccessSwitchTarget>) {
 		RecoveryExplanation: recovery(then),
 		AccessSettings: NavMap.from(AccessSettingsScreen, then),
 		CommonQuestions: NavMap.from(CommonQuestionsScreen, then),
+		Politics: NavMap.from(PoliticsScreen, then),
 		OpenEmail: NavMap.from(OpenEmailScreen, then),
 		ExpiredAccount: NavMap.from(ExpiredAccountScreen, then)
 	});

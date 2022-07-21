@@ -8,7 +8,7 @@ import CountryPicker from "react-native-country-picker-modal";
 import { Validations } from "../../model/Validations";
 import strings from "../resources/strings";
 import { DidiScreen } from "./DidiScreen";
-
+import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 const {Icon} = DidiText;
 
 
@@ -27,8 +27,7 @@ export interface EnterPhoneState {
 	inputPassword?: string;
 }
 
-export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, EnterPhoneState> {
-	
+export class EnterPhoneScreen extends NavigationEnabledComponent<EnterPhoneProps,  EnterPhoneState,{}> {
 	constructor(props: EnterPhoneProps) {
 		super(props);	
 		this.state = {
