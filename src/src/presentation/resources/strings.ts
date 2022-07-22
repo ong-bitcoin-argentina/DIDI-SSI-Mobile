@@ -577,7 +577,7 @@ export default {
 		link: {
 			button: "Compartir enlace"
 		},
-		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de ${appName}:\n\nEl link tiene una duracion de 72 hrs. \n${sharedUri}`
+		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de ${appName}:\n\nEste link o acceso a la credencial compartida tiene una duración de 72 hrs.  Una vez pasado ese período debe compartir nuevamente la credencial para brindar acceso. \n${sharedUri}`
 	},
 	disclose: {
 		title: "Compartir",
