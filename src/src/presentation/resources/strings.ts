@@ -577,7 +577,7 @@ export default {
 		link: {
 			button: "Compartir enlace"
 		},
-		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de ${appName}:\n\n${sharedUri}`
+		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de ${appName}:\n\nEl link tiene una duracion de 72 hrs. \n${sharedUri}`
 	},
 	disclose: {
 		title: "Compartir",
