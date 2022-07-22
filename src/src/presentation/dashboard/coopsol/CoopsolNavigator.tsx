@@ -2,7 +2,7 @@ import NavMap, { NavTree } from "../../util/NavMap";
 
 import { DashboardScreenProps } from "../home/Dashboard";
 import VuIdentityNavigator from '../vuIdentity/VuIdentityNavigator';
-import {CoopsolScreen}  from "./CoopsolScreen";
+import CoopsolScreen  from "./CoopsolScreen";
 import CoopsolValidationScreen from "./validation/CoopsolValidationScreen";
 
 export interface CoopsolNavigatorNavigation {
