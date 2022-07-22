@@ -25,8 +25,7 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 		super(props);
 		this.state = {
 			firstCheck: false,
-			secondCheck: false,
-			thirdCheck: false
+			secondCheck: false
 		}
 	}
 	render() {		
@@ -67,19 +66,10 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 						<DidiText.Small style={{textAlign: 'left', marginBottom:5}}>He leído la politica de privacidad y otorgo mi consentimiento para el tratamiento de mis datos par las finalidades informadas.</DidiText.Small>
 
 					</View>
-					<View style={{flexDirection: 'row'}} >
-						<CheckBox
-						value={this.state.thirdCheck}
-						onValueChange={this.onCheck.bind(this, 'thirdCheck', this.state.thirdCheck)}
-						/>
-
-						
-						<DidiText.Small style={{textAlign: 'left'}}>Otorgo mi consentimiento para realizar transferencias de mis datos personales</DidiText.Small>
-					</View>
 				</View>
 				<DidiServiceButton
 					isPending={false}
-					disabled={(!this.state.firstCheck || !this.state.secondCheck || !this.state.thirdCheck)}					
+					disabled={(!this.state.firstCheck || !this.state.secondCheck)}					
 					onPress={() => this.navigate("SignupEnterPhone", {})}
 					title={"Siguiente"}
 				/>
