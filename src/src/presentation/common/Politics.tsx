@@ -63,7 +63,7 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 						value={this.state.secondCheck}
 						onValueChange={this.onCheck.bind(this, 'secondCheck', this.state.secondCheck)}
 						/>
-						<DidiText.Small style={{textAlign: 'left', marginBottom:5}}>He leído la politica de privacidad y otorgo mi consentimiento para el tratamiento de mis datos par las finalidades informadas.</DidiText.Small>
+						<DidiText.Small style={{textAlign: 'left', marginBottom:5}}>He leído la politica de privacidad y otorgo mi consentimiento para el tratamiento de mis datos para las finalidades informadas.</DidiText.Small>
 
 					</View>
 				</View>
