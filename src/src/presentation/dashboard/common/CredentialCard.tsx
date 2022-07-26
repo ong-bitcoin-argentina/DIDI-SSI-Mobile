@@ -121,41 +121,51 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 
-	private renderSpecialText(color: string) {	
-		return ( 
-		<View >
-		<FlatList
-		 data={this.props.data}
-		 renderItem={item => this.renderItem(item.item,color)}
-		 keyExtractor={(_, index) => index.toString()}
-		/>
-		</View>
+	private renderSpecialText(color: string) {
+		return (
+			<View >
+				<FlatList
+					data={this.props.data}
+					renderItem={item => this.renderItem(item.item, color)}
+					keyExtractor={(_, index) => index.toString()}
+				/>
+			</View>
 		)
-		
+
 	}
 
-    private renderItem(item : {label:string,value:string},color: string) {
-        return (
-
-		<View style={styles.dataLabelContainer}>		
-				{item.label?
+	showVerifiedFeature(label: string, value: string, color: string) {
+		return (
+			<>
 				<DidiText.Card.Value style={[styles.dataLabel, { color, textAlign: undefined }]}>
-											{item.label}
-				</DidiText.Card.Value>:null}
-				{item.value? 
-				<DidiText.Card.Key style={[styles.dataLabel, { color}]}>
-				{item.value} 
-				</DidiText.Card.Key>: null}
-		</View>
+					{label}
+				</DidiText.Card.Value>
+				<DidiText.Card.Key style={[styles.dataLabel, { color }]}>
+					{value}
+				</DidiText.Card.Key>
+			</>
+		)
+	}
+
+	private renderItem(item: { label: string, value: string }, color: string) {
+		const effectiveValue = strings.credentialCard.formatValue(item.value);
+		return (
+			<View>
+				{item.value && effectiveValue !== "No" ?
+					<View style={styles.dataLabelContainer}>
+						{this.showVerifiedFeature(item.label, effectiveValue, color)}
+					</View>
+					: null
+				}
+			</View>
 		);
-    }
+	}
 	render() {
 		const { hollow, color, layout, icon, preview, credentialState, subTitles } = this.props;
 		const cardColor = hollow ? color : colors.lightBackground;
 		const style = layout?.style == "dark" && preview ? colors.darkText : cardColor;
 		const isRevoked = credentialState === CredentialStates.revoked;
 		const haveBackgroundImage = preview && layout && !isRevoked;
-				
 		return (
 			<DidiCardBody
 				{...this.props}
@@ -182,10 +192,10 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap"
 	},
 	dataLabel: {
-		marginVertical:2
+		marginVertical: 2
 	},
 	dataLabelContainer: {
-		marginVertical:5
+		marginVertical: 5
 	},
 	dataValue: {
 		flexGrow: 1,
