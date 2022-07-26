@@ -1,6 +1,7 @@
 export default {
         title: "Términos, Condiciones y Política de Privacidad",
-        description: "Antes de crear tu cuenta, queremos que sepas exactamente cómo funcionan los servicios de ai.di y por qué necesitamos tus datos. Revisa nuestros Términos y Condiciones y Política de Privacidad que te ayudarán a continuar usando con tranquilidad y seguridad ai.di.",
+        description: "Antes de crear tu cuenta, queremos que sepas exactamente cómo funcionan los servicios de ai.di y por qué necesitamos tus datos. Revisa nuestros ",
+        description2: " que te ayudarán a continuar usando con tranquilidad y seguridad ai.di.",
         data:[
             {
                 title: "Responsable:",

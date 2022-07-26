@@ -7,6 +7,7 @@ import { View, CheckBox, StyleSheet } from 'react-native';
 import colors from "../resources/colors";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import PoliticsTexts from "../resources/PoliticsTexts";
+import Link from "../util/Link";
 import { SignupEnterPhoneProps } from "../access/signup/SignupEnterPhone";
 export type PoliticsScreenProps = {};
 export type PoliticsScreenNavigation = {
@@ -36,6 +37,14 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 				
 				<DidiText.Explanation.Small style={{textAlign:'left', marginBottom: 10}} >
 					{PoliticsTexts.description}
+					<Link url="http://didi.org.ar/aidi/terminos-condiciones.html" style={{textAlign:'left', fontSize: 17, color:colors.darkBlue}}>
+						{`Términos y Condiciones`}
+					</Link>
+						{` y `}
+					<Link url="https://didi.org.ar/aidi/privacidad.html" style={{textAlign:'left', fontSize: 17, color:colors.darkBlue}}>
+						{`Política de Privacidad`}
+					</Link>
+					{PoliticsTexts.description2}
 				</DidiText.Explanation.Small>
 				{
 					PoliticsTexts.data.map((politic, index) => {
