@@ -141,7 +141,7 @@ class CoopsolValidationState extends Component<Props, State> {
 	};
 
 	renderRequestDescription = () => {
-		const { goToVuSecurityValidation, goToCoopsolValidation, validateDni , validateDniFailed } = this.props;	
+		const { goToVuSecurityValidation, validateDni , validateDniFailed } = this.props;	
 		let visibleTitle ='';
 		if (validateDniFailed) {
 			visibleTitle = validateIdentity.Failed.button;
@@ -160,12 +160,12 @@ class CoopsolValidationState extends Component<Props, State> {
 						style={[button.lightRed, styles.renaperButton]}/>: null}
 				</View>
 
-				 <View>
+				 {/* <View>
 					{!validateDni? <Small style={styles.smallText}>{validate.question}</Small>:null}
 					<Small onPress={goToCoopsolValidation} style={[styles.smallText, { textDecorationLine: "underline" }]}>
 						{validate.identityFromCoopsol}
 					</Small>
-				</View> 
+				</View> */}
 			</View>
 		);
 	};
