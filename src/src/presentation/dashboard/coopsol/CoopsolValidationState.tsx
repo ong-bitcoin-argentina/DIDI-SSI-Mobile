@@ -91,20 +91,6 @@ class CoopsolValidationState extends Component<Props, State> {
 		}
 	};
 
-	renderRenaperDescription = () => {
-		return (
-			<View style={{ marginTop: 30 }}>
-				<Small style={styles.smallText}>{validate.rememberYouCan}</Small>
-				<Small
-					onPress={this.props.goToVuSecurityValidation}
-					style={[styles.smallText, { textDecorationLine: "underline" }]}
-				>
-					Validar tu identidad con {strings.appName}
-				</Small>
-			</View>
-		);
-	};
-
 	renderFailureRequest = () => {
 		return (
 			<View>
