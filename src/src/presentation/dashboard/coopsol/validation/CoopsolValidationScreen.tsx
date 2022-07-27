@@ -1,7 +1,7 @@
 import React from "react";
 import NavigationEnabledComponent from "../../../util/NavigationEnabledComponent";
 import NavigationHeaderStyle from "../../../common/NavigationHeaderStyle";
-import { View, StyleSheet, Modal } from "react-native";
+import { View, StyleSheet, Modal, Alert } from "react-native";
 import colors from "../../../resources/colors";
 import strings from "../../../resources/strings";
 import DidiButton from "../../../util/DidiButton";
@@ -14,10 +14,6 @@ import { DashboardScreenProps } from "../../home/Dashboard";
 import { didiConnect } from "../../../../store/store";
 import { getEmail, getPhoneNumber } from "../../../../util/specialCredentialsHelpers";
 import { DidiServiceButton } from "../../../util/DidiServiceButton";
-import { createTokenCoopsol } from "../../../util/appRouter";
-import { ActiveDid } from "../../../../store/reducers/didReducer";
-import { validateDniCoopsol } from "../../../../services/coopsol/validateDni";
-import { DataAlert } from "../../../common/DataAlert";
 const { Small, Normal } = DidiText.Explanation;
 const { validate } = strings.coopsol;
 const { accept } = strings.buttons;
@@ -28,11 +24,10 @@ interface Navigation {
 }
 
 interface DispatchProps {
-	updateCoopsolStatus: (status: string | null) => void;
+	coopsolValidationStart: (data: any) => void;
 }
 
 interface StateProps {
-	did: ActiveDid;
 	email: string;
 	phoneNumber: string;
 }
@@ -71,9 +66,9 @@ class CoopsolValidationScreen extends NavigationEnabledComponent<Props, State, N
 		this.setState({ modalVisible: !this.state.modalVisible });
 	};
 
-	sendToken = async () =>{
+	handleValidateConfirm = () => {
 		const { dni, name, lastname } = this.state;
-		const { did, email, phoneNumber } = this.props;
+		const { email, phoneNumber } = this.props;
 		const data = {
 			dni,
 			phone: phoneNumber,
@@ -81,21 +76,17 @@ class CoopsolValidationScreen extends NavigationEnabledComponent<Props, State, N
 			name,
 			lastName: lastname
 		};
-		const jwt = await createTokenCoopsol(did, data);
-		const result = await validateDniCoopsol(jwt);
-		this.props.updateCoopsolStatus(result.status);
-		if (result.status === 'FAILURE') {
-			DataAlert.alert(strings.vuIdentity.failure.retryButton,strings.vuIdentity.failure.congrats);
-		} else {
-		this.toggleModal();
-		}
-		
-	}
-
-	handleValidateConfirm = async () => {
 		this.setState({ sendingRequest: true });
+		this.props.coopsolValidationStart(data);
 		this.toggleModal();
 		this.navigate('DashboardHome',{});
+	};
+
+	onSuccessRequest = () => {
+		this.setState({ sendingRequest: false });
+		Alert.alert(strings.coopsol.program, validate.successRequest, [
+			{ text: "OK", onPress: () => this.navigate("DashboardHome", {}) }
+		]);
 	};
 
 	render() {
@@ -124,7 +115,7 @@ class CoopsolValidationScreen extends NavigationEnabledComponent<Props, State, N
 							<DidiServiceButton
 								title={validate.DNI}
 								style={button}
-								onPress={this.sendToken}
+								onPress={this.toggleModal}
 								disabled={!this.formValid()}
 								isPending={sendingRequest}
 							/>
@@ -159,12 +150,8 @@ class CoopsolValidationScreen extends NavigationEnabledComponent<Props, State, N
 export default didiConnect(
 	CoopsolValidationScreen,
 	state => ({
-		did: state.did.activeDid,
 		email: getEmail(state.activeSpecialCredentials),
 		phoneNumber: getPhoneNumber(state.activeSpecialCredentials)
-	}),
-	(dispatch): DispatchProps => ({
-			updateCoopsolStatus: (status: string | null) => dispatch({ type: "VALIDATE_COOPSOL_DNI_SET", state: status }),
 	})
 );
 
