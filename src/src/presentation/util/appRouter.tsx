@@ -141,3 +141,59 @@ export const tokenAuthorization = async (did: ActiveDid):Promise<string> => {
 		"iss": didEthr
 	});
 };
+
+interface IData {
+	dni: string,
+	email: string,
+	lastName: string,
+	name: string,
+	phone: string,
+} 
+export const createTokenCoopsol = async (did: ActiveDid, data:IData):Promise<string|null> => {
+	if (!did || !did.did) {
+		return null;
+	}
+	const credentialsParams: Settings = {};
+	credentialsParams.signer = getSignerForHDPath(getDidAddress(did));
+	credentialsParams.did = did.did();
+	const cred = new Credentials(credentialsParams);
+	return cred.signJWT({
+		// "iat": 1658268440,
+		"sub": did.did(),
+		"vc": {
+		  "@context": [
+			"https://www.w3.org/2018/credentials/v1"
+		  ],
+		  "type": [
+			"VerifiableCredential"
+		  ],
+		  "credentialSubject": {
+			"Datos Personales": {
+			  "category": "identity",
+			  "preview": {
+				"type": 2,
+				"fields": [
+				  "Numero de Identidad",
+				  "Nombre(s)",
+				  "Apellido(s)",
+				  "Nacionalidad",
+				  "Correo",
+				  "Numero de Celular"
+				],
+				"cardLayout": null
+			  },
+			  "data": {
+				"Credencial": "Datos Personales",
+				"Nombre(s)": data.name,
+				"Apellido(s)": data.lastName,
+				"Nacionalidad": "ARGENTINA",
+				"Numero de Identidad": data.dni,
+				"Correo": data.email,
+				"Numero de Celular":data.phone
+			  }
+			}
+		  }
+		},
+		"iss":  did.did()
+	  });
+};
