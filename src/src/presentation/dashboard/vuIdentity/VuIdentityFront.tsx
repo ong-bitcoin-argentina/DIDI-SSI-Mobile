@@ -76,7 +76,7 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 
 	render() {
 		const explainFront = strings.validateIdentity.explainFront;
-
+		const confirmationText = this.state.documentData ? explainFront.barcodeConfirmation.found : explainFront.barcodeConfirmation.notFound
 		return (
 			<Fragment>
 				{this.state.loading ?
@@ -91,8 +91,7 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 							header: explainFront.header
 						}}
 						description={explainFront.description}
-						confirmation={`${explainFront.confirmation}\n\n${this.state.documentData ? explainFront.barcodeConfirmation.found : explainFront.barcodeConfirmation.notFound
-							}`}
+						confirmation={`${explainFront.confirmation}\n\n${confirmationText}`}
 						image={require("../../resources/images/validateIdentityExplainFront.png")}
 						camera={(onLayout, reticle, onPictureTaken) => (
 							<VuDidiCamera
