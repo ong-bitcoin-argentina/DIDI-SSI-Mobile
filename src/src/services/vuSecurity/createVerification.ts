@@ -16,7 +16,7 @@ export async function createVerificationVU(
 try {
 	return await VUSecurity().createVerification(
 		did.substring(1,did.length-1),
-		`${name} ${lastname}`,
+		did.substring(1,did.length-1),
 		deviceHash,
 		rooted,
 		getSystemName(),
