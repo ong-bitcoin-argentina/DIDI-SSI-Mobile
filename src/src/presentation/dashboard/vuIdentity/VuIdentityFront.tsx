@@ -52,8 +52,6 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 	async componentDidMount() {
 		const { did } = this.props;
 		const result = await createVerificationVU(did);
-		console.log(result);
-		
 		if (result.status === "error") {
 			DataAlert.alert(strings.vuIdentity.failure.retryButton + ' Nuevamente',
 				'El Proceso para la validación de su identidad. \n\nSe encuentra fuera de servicio momentáneamente');
