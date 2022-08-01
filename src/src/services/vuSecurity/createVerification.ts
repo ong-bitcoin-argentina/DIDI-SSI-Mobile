@@ -7,8 +7,6 @@ import { IReturnCreate } from '../../model/VuCreateVerification';
 const VUSecurity = (): VUSecurityApiClient => new VUSecurityApiClient(AppConfig.defaultServiceSettings.urlSecurity);
 export async function createVerificationVU(
 	activeDid: ActiveDid,
-    name:string,
-	lastname: string,
     deviceHash = "hash",
 	rooted = false
 	) : Promise<IReturnCreate> {

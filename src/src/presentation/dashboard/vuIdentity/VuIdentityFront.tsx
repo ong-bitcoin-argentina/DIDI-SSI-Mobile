@@ -25,8 +25,6 @@ interface VuIdentityFrontState {
 
 interface IdentityProps {
     did: ActiveDid,
-    name: string,
-    lastname:string,
 }
 interface IdentityScreenDispatchProps {
 	vuSecurityData : (operationId: number, userName: string) => void;
@@ -47,8 +45,8 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 	}
 
 	async componentDidMount(){
-		const {did,lastname,name} = this.props;
-		const result = await createVerificationVU(did,name, lastname);
+		const {did} = this.props;
+		const result = await createVerificationVU(did);		
 		this.props.vuSecurityData(result.data.operationId,result.data.userName);
 	}
 
@@ -121,9 +119,7 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	VuIdentityFrontScreen,
 	(state): IdentityProps => ({
-		did: state.did.activeDid,
-		name: state.persistedPersonalData.name,
-		lastname: state.persistedPersonalData.lastname
+		did: state.did.activeDid
 }),
 (dispatch): IdentityScreenDispatchProps => ({
 	vuSecurityData : (operationId: number, userName: string) =>
