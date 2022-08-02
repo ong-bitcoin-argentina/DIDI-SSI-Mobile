@@ -118,11 +118,12 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 
 						<Option onPress={() => this.navigateTo("AboutThisAppScreen")} label={settings.aboutAidi} icon="info" />
 
+						{/*  do not delete 
 						<Option
 							onPress={() => this.navigateTo("AboutRonda")}
 							label={settings.aboutRonda}
 							icon="filter_tilt_shift"
-						/>
+						/> */}
 
 						<Divider />
 						<Option onPress={() => this.navigateTo("CommonQuestions")} label={settings.help} icon="help"/>

@@ -9,6 +9,8 @@ import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import { DidiServiceButton } from "../../util/DidiServiceButton";
 import CoopsolValidationState from "./CoopsolValidationState";
+import { didiConnect } from "../../../store/store";
+import { CredentialDocument } from "@proyecto-didi/app-sdk";
 
 const { Small } = DidiText.Explanation;
 const { util } = commonStyles;
@@ -32,9 +34,16 @@ interface CoopsolScreenState {
 	modalVisible: boolean;
 }
 
+interface StoreProps {
+	credentials:  CredentialDocument[];
+}
+interface DispatchProps {
+	updateCoopsolStatus: (status: string | null) => void;
+}
 
-export class CoopsolScreen extends NavigationEnabledComponent<
-	{},
+type Props = StoreProps & DispatchProps;
+ class CoopsolScreen extends NavigationEnabledComponent<
+ 	Props,
 	CoopsolScreenState,
 	CoopsolScreenNavigation
 > {
@@ -63,6 +72,11 @@ export class CoopsolScreen extends NavigationEnabledComponent<
 	};
 
 	goToCoopsolValidation = () => {
+		const {credentials}= this.props;
+		const coopsolCredential = credentials.find(
+			cred => cred.title === 'Identitaria coopsol'
+		);
+		if(coopsolCredential)this.props.updateCoopsolStatus('SUCCESS');
 		this.toggleModal();
 		this.navigate("ValidateCoopsolID", {});
 	};
@@ -112,6 +126,16 @@ export class CoopsolScreen extends NavigationEnabledComponent<
 	}
 }
 
+export default didiConnect(
+	CoopsolScreen,
+	(state): StoreProps => ({
+		credentials: state.credentials,
+		
+	}),
+	(dispatch): DispatchProps => ({
+		updateCoopsolStatus: (status: string | null) => dispatch({ type: "VALIDATE_COOPSOL_DNI_SET", state: status }),
+	})
+);
 
 const styles = StyleSheet.create({
 	body: {

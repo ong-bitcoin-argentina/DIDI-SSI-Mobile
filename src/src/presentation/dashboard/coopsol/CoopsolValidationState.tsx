@@ -52,31 +52,25 @@ class CoopsolValidationState extends Component<Props, State> {
 	}
 
 	async componentDidMount(){
-
 		this.setState((state) => ({
 			pendingCredentials:  !state.pendingCredentials, 
 		}));
 		const { credentials , validationState} = this.props;
-		
 		const credential = credentials.find(
 			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
 		);
 		const coopsolCredential = credentials.find(
 			cred => cred.title === 'Identitaria coopsol'
 		);
-
-		if(coopsolCredential){
-			this.props.updateCoopsolStatus('SUCCESS');		
-		}
-
-		if (credential && credential.data["Numero de Identidad"]) {
-
-			if( validationState === null ){
+		
+		if ((validationState === null ||  validationState === 'FAILURE') && (credential && credential.data["Numero de Identidad"])) {
 				const result = await validateDniCoopsol(credential.jwt);
 				this.props.updateCoopsolStatus(result.status);
-			}
 		}
-	
+		
+		if (validationState === 'IN_PROGRESS' && coopsolCredential) this.props.updateCoopsolStatus('SUCCESS');
+
+
 		this.setState((state) => ({
 			pendingCredentials:  !state.pendingCredentials, 
 		}));	
@@ -97,28 +91,13 @@ class CoopsolValidationState extends Component<Props, State> {
 		}
 	};
 
-	renderRenaperDescription = () => {
-		return (
-			<View style={{ marginTop: 30 }}>
-				<Small style={styles.smallText}>{validate.rememberYouCan}</Small>
-				<Small
-					onPress={this.props.goToVuSecurityValidation}
-					style={[styles.smallText, { textDecorationLine: "underline" }]}
-				>
-					Validar tu identidad con {strings.appName}
-				</Small>
-			</View>
-		);
-	};
-
 	renderFailureRequest = () => {
 		return (
 			<View>
 				<Icon fontSize={38} color={colors.error} style={{ marginBottom: 10 }}>
 					highlight_off
 				</Icon>
-				<Small style={styles.modalText}>{validate.rejected}</Small>
-				{this.renderRenaperDescription()}
+				<Small style={styles.modalText}>{' El servicio de Coopsol está fuera de servicio momentáneamente. \n Envíe su solicitud al correo:\n jduttweiler@acdi.org.ar \n'}</Small>
 			</View>
 		);
 	};
@@ -148,7 +127,7 @@ class CoopsolValidationState extends Component<Props, State> {
 	};
 
 	renderRequestDescription = () => {
-		const { goToVuSecurityValidation, validateDni , validateDniFailed } = this.props;	
+		const { goToVuSecurityValidation, goToCoopsolValidation, validateDni , validateDniFailed } = this.props;	
 		let visibleTitle ='';
 		if (validateDniFailed) {
 			visibleTitle = validateIdentity.Failed.button;
@@ -167,12 +146,12 @@ class CoopsolValidationState extends Component<Props, State> {
 						style={[button.lightRed, styles.renaperButton]}/>: null}
 				</View>
 
-				 {/* <View>
+				 <View>
 					{!validateDni? <Small style={styles.smallText}>{validate.question}</Small>:null}
 					<Small onPress={goToCoopsolValidation} style={[styles.smallText, { textDecorationLine: "underline" }]}>
 						{validate.identityFromCoopsol}
 					</Small>
-				</View> */}
+				</View> 
 			</View>
 		);
 	};
