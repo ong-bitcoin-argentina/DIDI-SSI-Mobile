@@ -41,9 +41,7 @@ interface VuSubmitStateProps {
 	did: ActiveDid,
 	vuResponseFront: string,
 	vuResponseBack: string,
-	vuResponseSelfie: string,
-	name: string,
-	lastname: string
+	vuResponseSelfie: string
 }
 interface VuSubmitDispatchProps {
 	finishDniValidation: (statusDni : string) => void;
@@ -182,8 +180,6 @@ const connected = didiConnect(
 		vuResponseFront: state.vuSecurityData.vuResponseFront,
 		vuResponseBack: state.vuSecurityData.vuResponseBack,
 		vuResponseSelfie: state.vuSecurityData.vuResponseSelfie,
-		name: state.persistedPersonalData.name,
-		lastname: state.persistedPersonalData.lastname
 	}),
 	(dispatch): VuSubmitDispatchProps => ({
 		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),

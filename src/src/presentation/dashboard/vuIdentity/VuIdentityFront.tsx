@@ -28,8 +28,6 @@ interface VuIdentityFrontState {
 
 interface IdentityProps {
 	did: ActiveDid,
-	name: string,
-	lastname: string,
 }
 interface IdentityScreenDispatchProps {
 	vuSecurityData: (operationId: number, userName: string) => void;
@@ -52,15 +50,15 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 	}
 
 	async componentDidMount() {
-		const { did, lastname, name } = this.props;
-		const result = await createVerificationVU(did, name, lastname);
+		const { did } = this.props;
+		const result = await createVerificationVU(did);
 		if (result.status === "error") {
-			DataAlert.alert(strings.vuIdentity.failure.retryButton+' Nuevamente',
+			DataAlert.alert(strings.vuIdentity.failure.retryButton + ' Nuevamente',
 				'El Proceso para la validación de su identidad. \n\nSe encuentra fuera de servicio momentáneamente');
 			this.navigate("DashboardHome", {});
 		} else {
 			this.props.vuSecurityData(result.data.operationId, result.data.userName);
-			this.setState({loading: true})
+			this.setState({ loading: true })
 		}
 	}
 
@@ -124,10 +122,10 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 							}
 						}
 						}
-					/> : 
+					/> :
 					<View style={styles.loading}>
-						<ActivityIndicator size="large" color='#5E49E2'/>
-				    </View>
+						<ActivityIndicator size="large" color='#5E49E2' />
+					</View>
 				}
 			</Fragment>
 		);
@@ -137,9 +135,7 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 const connected = didiConnect(
 	VuIdentityFrontScreen,
 	(state): IdentityProps => ({
-		did: state.did.activeDid,
-		name: state.persistedPersonalData.name,
-		lastname: state.persistedPersonalData.lastname
+		did: state.did.activeDid
 	}),
 	(dispatch): IdentityScreenDispatchProps => ({
 		vuSecurityData: (operationId: number, userName: string) =>
@@ -150,7 +146,7 @@ const connected = didiConnect(
 export { connected as VuIdentityFrontScreen };
 
 const styles = StyleSheet.create({
-	loading:{
+	loading: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
