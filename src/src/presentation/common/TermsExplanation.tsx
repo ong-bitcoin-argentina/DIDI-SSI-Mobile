@@ -17,7 +17,7 @@ export default class TermsExplanation extends Component<TermsProps, TermsState> 
 		return (
 			<Text style={[styles.terms, this.props.style]}>
 				<DidiText.Explanation.Small style={styles.fontSize}>{registerDetail}</DidiText.Explanation.Small>
-				<Link url="http://didi.org.ar/aidi/terminos-condiciones.html" style={styles.fontSize}>
+				<Link url="https://didi.org.ar/aidi/terminos-condiciones.html" style={styles.fontSize}>
 					{terms}
 				</Link>
 				{` y `}
