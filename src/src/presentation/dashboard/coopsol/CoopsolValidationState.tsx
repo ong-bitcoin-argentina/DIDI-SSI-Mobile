@@ -9,6 +9,7 @@ import colors from "../../resources/colors";
 import { ValidationStates } from "../../../store/reducers/validateCoopsolDniReducer";
 import { CredentialDocument } from "@proyecto-didi/app-sdk";
 import { validateDniCoopsol } from "../../../services/coopsol/validateDni";
+import { searchIssuerByName } from "../../../services/issuer/searchIssuer";
 
 const {
 	Icon,
@@ -59,18 +60,12 @@ class CoopsolValidationState extends Component<Props, State> {
 		const credential = credentials.find(
 			cred => cred.title === strings.specialCredentials.PersonalData.title && cred.data["Numero de Identidad"]
 		);
-		const coopsolCredential = credentials.find(
-			cred => cred.title === 'Identitaria coopsol'
-		);
 		
 		if ((validationState === null ||  validationState === 'FAILURE') && (credential && credential.data["Numero de Identidad"])) {
 				const result = await validateDniCoopsol(credential.jwt);
 				this.props.updateCoopsolStatus(result.status);
 		}
-		
-		if (validationState === 'IN_PROGRESS' && coopsolCredential) this.props.updateCoopsolStatus('SUCCESS');
-
-
+		if (await searchIssuerByName(this.props.credentials.map(CredentialDocument.displayedIssuer),'coopsol')) this.props.updateCoopsolStatus('SUCCESS');
 		this.setState((state) => ({
 			pendingCredentials:  !state.pendingCredentials, 
 		}));	
