@@ -25,7 +25,7 @@ import { CommonQuestionsScreen } from "../common/CommonQuestions";
 import { PoliticsScreen } from "../common/Politics";
 import { OpenEmailScreen } from "../common/OpenEmail";
 import { ExpiredAccountScreen  } from "../common/ExpiredAccount";
-
+import { ValidateIdentityScreen  } from "../common/ValidateIdentity";
 interface AccessSwitchTarget {
 	Dashboard: DashboardScreenProps;
 }
@@ -86,6 +86,7 @@ export default function (then: NavTree<AccessSwitchTarget>) {
 		CommonQuestions: NavMap.from(CommonQuestionsScreen, then),
 		Politics: NavMap.from(PoliticsScreen, then),
 		OpenEmail: NavMap.from(OpenEmailScreen, then),
-		ExpiredAccount: NavMap.from(ExpiredAccountScreen, then)
+		ExpiredAccount: NavMap.from(ExpiredAccountScreen, then),
+		ValidateIdentity: NavMap.from(ValidateIdentityScreen, then)
 	});
 }

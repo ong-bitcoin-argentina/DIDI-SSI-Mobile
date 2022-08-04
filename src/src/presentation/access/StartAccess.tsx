@@ -26,6 +26,7 @@ import Icon from "react-native-vector-icons/AntDesign";
 import { OpenEmailScreenProps } from "../common/OpenEmail";
 import { ExpiredAccountScreenProps  } from "../common/ExpiredAccount";
 import { PoliticsScreenProps } from "../common/Politics";
+import { ValidateIdentityScreenProps } from "../common/ValidateIdentity";
 
 const { Title } = DidiText;
 
@@ -49,9 +50,10 @@ export interface StartAccessNavigation {
 	RecoveryExplanation: RecoveryExplanationProps;
 	AccessSettings: AccessSettingsProps;
 	CommonQuestions: CommonQuestionsScreenProps;
-	Politics: PoliticsScreenProps
+	Politics: PoliticsScreenProps;
 	OpenEmail: OpenEmailScreenProps;
 	ExpiredAccount: ExpiredAccountScreenProps;
+	ValidateIdentity:ValidateIdentityScreenProps;
 }
 
 class StartAccessScreen extends NavigationEnabledComponent<
