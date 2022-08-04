@@ -39,6 +39,11 @@ function specialFullData(date: Date) {
 	return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}  ${pad(date.getHours())}:${pad(date.getMinutes())}hrs`;
 }
 
+function formatDate(date: Date) {
+	const pad = (n: number) => (n < 10 ? `0${n}` : n);
+	return `${pad(date.getDate())}/${pad(date.getMonth())}/${pad(date.getFullYear())}`;
+}
+
 const appName = "ai·di";
 
 const styles = StyleSheet.create({
@@ -839,10 +844,10 @@ export default {
 				false: "No"
 			};
 
-			const dateRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/;
+			const dateRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 			if (typeof value === "string" && value.match(dateRegex)) {
 				const date = new Date(value);
-				return formatDatePart(date);
+				return formatDate(date);
 			} else {
 				return map[value] ?? `${value}`;
 			}
