@@ -20,7 +20,9 @@ import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
 import { NotificationScreenProps } from "./NotificationScreen";
+/* do not delete 
 import { AuthModal } from "../common/AuthModal";
+*/
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import {
 	successfullyLogged,
@@ -264,6 +266,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						}
 					/>
 				</SafeAreaView>
+				{/* do not delete 
 				<AuthModal
 					appName="ronda"
 					onCancel={this.permissionDenied}
@@ -271,7 +274,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 					visible={this.state.showModal}
 					alreadyHave={this.props.hasRonda}
 					automatic
-				/>
+				/> */}
 			</Fragment>
 		);
 	}

@@ -11,6 +11,7 @@ export interface DidiCardBodyProps extends ViewProps {
 	decoration?: JSX.Element;
 	backgroundUrl?: string;
 	secondChildren?: JSX.Element;
+	specialText?: JSX.Element | null;
 }
 
 export default class DidiCardBody extends Component<DidiCardBodyProps> {
@@ -31,6 +32,7 @@ export default class DidiCardBody extends Component<DidiCardBodyProps> {
 						</View>
 						<View style={styles.textContainer}>{children}</View>
 					</View>
+					<View style={styles.specialTextContainer}>{this.props.specialText}</View>
 					{secondChildren ? <View style={styles.specialSharedCard}>{secondChildren}</View> : null}
 				</View>
 				{decoration && <View style={styles.imageContainer}>{decoration}</View>}
@@ -67,7 +69,8 @@ const styles = StyleSheet.create({
 	headerContainer: {
 		flexDirection: "row",
 		marginHorizontal: 25,
-		marginVertical: 25,
+		marginTop: 25,
+		marginBottom: 5,
 		alignItems: "stretch",
 		justifyContent: "flex-start",
 		flexGrow: 1
@@ -86,6 +89,12 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "space-between",
 		alignItems: "stretch"
+	},
+	specialTextContainer: {
+		display: 'flex',
+		marginBottom: 20,
+		flex: 1,
+		marginLeft: "12%",
 	},
 	bodyDefaults: {
 		borderRadius: 10,

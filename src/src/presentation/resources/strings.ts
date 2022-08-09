@@ -34,6 +34,16 @@ function formatFullDate(date: Date) {
 	return `${formatDatePart(date)}, ${formatHourPart(date)}`;
 }
 
+function specialFullData(date: Date) {
+	const pad = (n: number) => (n < 10 ? `0${n}` : n);
+	return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}  ${pad(date.getHours())}:${pad(date.getMinutes())}hrs`;
+}
+
+function formatDate(date: Date) {
+	const pad = (n: number) => (n < 10 ? `0${n}` : n);
+	return `${pad(date.getDate())}/${pad(date.getMonth())}/${pad(date.getFullYear())}`;
+}
+
 const appName = "ai·di";
 
 const styles = StyleSheet.create({
@@ -141,6 +151,11 @@ export default {
 		activeIdentity: "Identidad activa (DID)",
 		actions: {
 			copy: "Copiar DID"
+		},
+		formatDate: specialFullData,
+		standbyState:{
+			approved: "Actualizado",
+			pending: "Actualizando",
 		},
 		states: {
 			approved: "Aprobado",
@@ -324,7 +339,8 @@ export default {
 		settings: "Configuración",
 		semillas: "Semillas",
 		issuers: "Lista de Issuers",
-		identity: "Validar Identidad"
+		identity: "Validar Identidad",
+		coopsol: "Coopsol"
 	},
 	rounds: {
 		title: "Accedé a ronda",
@@ -334,6 +350,43 @@ export default {
 		descriptionHasRonda:
 			"Hacé un seguimiento de tus rondas activas y unite o creá nuevas rondas, juntas, vaquitas o pasanakus de forma fácil y segura.",
 		dataConfirmed: "Tu datos fueron guardados de forma correcta, podes seguir usando la aplicación."
+	},
+	coopsol:{
+		program: "Programa Coopsol",
+		detailBarTitle: "Programa Coopsol",
+		detailFirst: "Ahora podés tener tus credenciales que certifican y validan tus datos personales, financieros y productivos.",
+		detailSecond: "Las credenciales son privadas, con ellas vas a poder guardar y proteger tu información de manera segura y confiable.",
+		detailThird: "Las podes llevar con vos a donde quieras y compartirlas con quien quieras.",
+		getCredentials: "Acceder a Mis Credenciales",
+		validationTitle: "Validación de Identidad - Coopsol",
+		noCoopsolIdentity: {
+			first: "Parece que aún no tenés tus credenciales de Identidad Coopsol.",
+			second: "Recordá que si las solicitaste recientemente, esto puede demorar hasta 5 (cinco) días. Ante cualquier consulta, contactate con tu asesor/a."
+		},
+		credentialsSuccess: "Pronto vas a recibir tus credenciales de Coopsol. Este proceso puede demorar unos días...",
+		validate: {
+			successRequest: "La solicitud de validación de DNI se registró de manera correcta, pronto tendrás novedades.",
+			description: "Validación de Identidad",
+			needData: "COOPSOL",
+			willBeContacting: "Se van a estar contactando con vos para completar el proceso de validación.",
+			DNI: "Validar DNI con Coopsol",
+			identityFromCoopsol: "Validar Identidad a través de Coopsol",
+			descriptionSharing: "Se van a estar contactando con vos para completar el proceso de validación.",
+			willBeContactingBrevity: "Una vez que tengas Credencial de Identidad en tu billetera podrás solicitar credenciales de Coopsol.",
+			
+			coopsolProcessing: "Sus credenciales van a ser emitidas en los proximos minutos.",
+			coopsolContacting: "Recibirá una notificación cuando haya recibido las credenciales.",
+			coopsolRecommendation: "Para visualizarlas cierre y abra esta aplicación.",
+
+
+			shouldDo: "Debes completar la validación de Identidad para acceder a los beneficios de Coopsol.",
+			renaperFailed: "Lo lamentamos. Su identidad no ha sido validada.",	
+			question: "¿No lográs validar tu identidad?",
+			rememberYouCan: "Recordá que siempre vas a poder",
+			gettingState: "Obteniendo el estado de tu validación, por favor aguarde.",
+			rejected:"Tu solicitud de validación de identidad ha sido rechazada por Coopsol. Por favor, contactate con tu asesor/a.",
+			aprroved: "Sus credenciales emitidas pueden ser visualizadas en la sección de Credenciales que se encuentra en el menú principal. "
+		}
 	},
 	semillas: {
 		barTitle: "Mis Credenciales semillas",
@@ -535,7 +588,7 @@ export default {
 		link: {
 			button: "Compartir enlace"
 		},
-		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de ${appName}:\n\n${sharedUri}`
+		shareMessage: (sharedUri: string) => `Te comparto mis Credenciales desde la App de ${appName}:\n\nEste link o acceso a la credencial compartida tiene una duración de 72 hrs.  Una vez pasado ese período debe compartir nuevamente la credencial para brindar acceso. \n${sharedUri}`
 	},
 	disclose: {
 		title: "Compartir",
@@ -563,11 +616,11 @@ export default {
 		},
 		howTo: {
 			header: "Comienzo de proceso de validación de su Identidad",
-			intro: "Deberá seguir el siguiente proceso:",
+			intro: "Asegúrate de contar con:",
 			steps: [
-				"Buscá un lugar iluminado y con fondo claro",
-				"Tener tu documento a mano",
-				"Acceso a Internet o datos móviles"
+				"Un lugar iluminado y con fondo claro",
+				"Tu DNI a mano",
+				"Acceso a internet o datos móviles"
 			],
 			buttonText: "Está listo/a?"
 		},
@@ -797,10 +850,10 @@ export default {
 				false: "No"
 			};
 
-			const dateRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/;
+			const dateRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 			if (typeof value === "string" && value.match(dateRegex)) {
 				const date = new Date(value);
-				return formatDatePart(date);
+				return formatDate(date);
 			} else {
 				return map[value] ?? `${value}`;
 			}

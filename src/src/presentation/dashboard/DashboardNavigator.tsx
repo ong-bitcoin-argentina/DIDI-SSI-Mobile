@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ViewProps } from "react-native";
+import { Image, StyleSheet, View, ViewProps } from "react-native";
 import { NavigationContainer, NavigationScreenProp, NavigationState, StackActions } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
@@ -28,11 +28,15 @@ import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
+/* don't remove these lines
+import CoopsolNavigator from "./coopsol/CoopsolNavigator";
+*/
+/* don't remove these lines
 import { RoundsScreen } from "./rounds/RoundsScreen";
+*/
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
- import IssuersScreen  from "./issuers/IssuersScreen";
-import Icon from "react-native-vector-icons/AntDesign";
+import IssuersScreen  from "./issuers/IssuersScreen";
 import VuIdentityNavigator from './vuIdentity/VuIdentityNavigator';
 import { IdentityScreen } from './vuIdentity/IdentityScreen';
 import issuersNavigator from './issuers/IssuersNavigator';
@@ -49,7 +53,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	function screen(
 		InnerNavigator: NavigationContainer,
 		title: string,
-		image: string | string[],
+		image: string | string[] | NodeRequire,
 		withFloatButton = true
 	) {
 		class DashboardNavigator extends React.Component<NavigatorProps> {
@@ -82,7 +86,9 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 								{image}
 							</DidiText.Icon>
 						) : (
-							<Icon name={image[0]} size={34} color={tintColor} />
+							<Image 
+							style={{width: 30, height: 30, marginRight: '5%'}} 
+							source={image} />
 						)}
 					</View>
 				)
@@ -111,12 +117,13 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	const BottomNavigator = createBottomTabNavigator(
 		{
 			DashboardHome: screen(dashboardHome.stackNavigator("DashboardHome"), strings.tabNames.home, "home"),
+			/* don't remove these lines
 			DashboardRounds: screen(
 				NavMap.from(RoundsScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardRounds"),
 				strings.tabNames.rounds,
 				"",
 				false
-			),
+			),*/
 			DashboardDocuments: screen(
 				DocumentsNavigator({
 					...then,
@@ -140,6 +147,14 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				"spa",
 				false
 			),
+			/* don't remove these lines
+			DashboardCoopsol: screen(
+				CoopsolNavigator().stackNavigator("DashboardCoopsol"),
+				strings.tabNames.coopsol,
+				require("../resources/images/logo-gris-coopsol.png"),
+				false
+			),
+			*/
 			DashboardSettings: screen(
 				SettingsNavigator({
 					...then,
