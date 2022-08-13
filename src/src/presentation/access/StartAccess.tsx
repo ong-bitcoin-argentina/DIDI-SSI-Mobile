@@ -21,6 +21,13 @@ import { PendingLinkingState } from "../../store/reducers/pendingLinkingReducer"
 import { deepLinkHandler, dynamicLinkHandler } from "../util/appRouter";
 import { ActiveDid } from "../../store/reducers/didReducer";
 import { DidiText } from "../util/DidiText";
+import { CommonQuestionsScreenProps } from "../common/CommonQuestions";
+import Icon from "react-native-vector-icons/AntDesign";
+import { OpenEmailScreenProps } from "../common/OpenEmail";
+import { ExpiredAccountScreenProps  } from "../common/ExpiredAccount";
+import { PoliticsScreenProps } from "../common/Politics";
+import { ValidateIdentityScreenProps } from "../common/ValidateIdentity";
+import { ShareCredentialsScreenProps } from "../common/ShareCredentials";
 
 const { Title } = DidiText;
 
@@ -43,6 +50,12 @@ export interface StartAccessNavigation {
 	SignupWithReset: SignupWithResetProps;
 	RecoveryExplanation: RecoveryExplanationProps;
 	AccessSettings: AccessSettingsProps;
+	CommonQuestions: CommonQuestionsScreenProps;
+	Politics: PoliticsScreenProps;
+	OpenEmail: OpenEmailScreenProps;
+	ExpiredAccount: ExpiredAccountScreenProps;
+	ValidateIdentity:ValidateIdentityScreenProps;
+	ShareCredentials: ShareCredentialsScreenProps
 }
 
 class StartAccessScreen extends NavigationEnabledComponent<
@@ -62,6 +75,10 @@ class StartAccessScreen extends NavigationEnabledComponent<
 			this.props.savePendingLinking(link.url);
 		}
 	};
+	
+	private goToCommonQuestions = async () => {		
+		this.navigate("Politics", {});
+	}
 
 	render() {
 		const object = {}
@@ -69,8 +86,9 @@ class StartAccessScreen extends NavigationEnabledComponent<
 		const nullSearch= Object.values(object)[0];
 		return (
 			<Fragment>
+				<Icon onPress={this.goToCommonQuestions} name="questioncircle" color={colors.primaryShadow} size={30} style={styles.questionsIcon} />
 				<SplashContent>
-
+					
 					<Title>{nullSearch !== null && this.props.did && this.props.did.did ?
 						`DID: ${this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4)}` 
 						: 'Crear o recuperar cuenta'}
@@ -127,6 +145,12 @@ const styles = StyleSheet.create({
 	},
 	secondaryButton: {
 		backgroundColor: colors.secondary
+	},
+	questionsIcon: {
+		position: 'absolute',
+		top: 10,
+		left: "80%",
+		zIndex: 999
 	}
 });
 
