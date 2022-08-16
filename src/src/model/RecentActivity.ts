@@ -18,12 +18,8 @@ export const RecentActivity = {
 			credentialTitle: documents.map(doc =>
 				doc.specialFlag ? strings.specialCredentials[doc.specialFlag.type].title : doc.title
 			),
-			credentialKey: documents.map(doc =>
-				doc.specialFlag ? doc.category : doc.category
-			),
-			issuedAt:documents.map(doc =>
-				doc.specialFlag ? doc.issuedAt : doc.issuedAt
-			),
+			credentialKey: documents.map(doc => doc.category),
+			issuedAt:documents.map(doc =>  doc.issuedAt ),
 		};
 	}
 };
