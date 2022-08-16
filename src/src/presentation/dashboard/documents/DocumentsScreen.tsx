@@ -14,13 +14,15 @@ import themes from "../../resources/themes";
 import { DashboardScreenProps } from "../home/Dashboard";
 
 import { DocumentDetailProps } from "./DocumentDetail";
+import { RecentActivity } from "../../../model/RecentActivity";
 
 export type DocumentsScreenProps = {};
 interface DocumentsScreenStateProps {
-	filter: (doc: CredentialDocument, did: EthrDID) => boolean;
+	filter: (doc: CredentialDocument, did: EthrDID, recentActivity?: RecentActivity[] ) => boolean;
 	did: ActiveDid;
 	validCredentials: CredentialDocument[];
 	credentialContext: DocumentCredentialCardContext;
+	recentActivity: RecentActivity[];
 }
 
 export type DocumentsScreenNavigation = {
@@ -43,7 +45,7 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 						<FlatList
 							style={styles.body}
 							contentContainerStyle={styles.scrollContent}
-							data={validCredentials.filter(doc => filter(doc, did))}
+							data={validCredentials.filter(doc => filter(doc, did ,this.props.recentActivity))}
 							keyExtractor={(_, index) => index.toString()}
 							renderItem={item => this.renderCard(item.item, item.index)}
 							ListEmptyComponent={this.renderEmpty()}
@@ -83,14 +85,15 @@ class DocumentsScreen extends NavigationEnabledComponent<DocumentsScreenInternal
 	}
 }
 
-export default function (filter: (type: CredentialDocument, did: EthrDID) => boolean) {
+export default function (filter: (type: CredentialDocument , did: EthrDID) => boolean) {
 	return didiConnect(
 		DocumentsScreen,
 		(state): DocumentsScreenStateProps => ({
 			filter,
 			did: state.did.activeDid,
 			validCredentials: state.validCredentials,
-			credentialContext: extractContext(state)
+			credentialContext: extractContext(state),
+			recentActivity: state.combinedRecentActivity
 		})
 	);
 }

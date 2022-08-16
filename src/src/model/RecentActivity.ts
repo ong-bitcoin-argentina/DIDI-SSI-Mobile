@@ -6,6 +6,8 @@ export interface RecentActivity {
 	date: string;
 	type: "CREATE" | "SHARE" | "RECEIVE";
 	credentialTitle: string[];
+	credentialKey: string[] ;
+	issuedAt: number[]
 }
 
 export const RecentActivity = {
@@ -15,7 +17,13 @@ export const RecentActivity = {
 			type,
 			credentialTitle: documents.map(doc =>
 				doc.specialFlag ? strings.specialCredentials[doc.specialFlag.type].title : doc.title
-			)
+			),
+			credentialKey: documents.map(doc =>
+				doc.specialFlag ? doc.category : doc.category
+			),
+			issuedAt:documents.map(doc =>
+				doc.specialFlag ? doc.issuedAt : doc.issuedAt
+			),
 		};
 	}
 };
