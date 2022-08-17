@@ -26,8 +26,6 @@ import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
 import { CredentialStates } from "../../../model/Credential";
 import { IShareRequestData } from '../../../model/ShareRequest';
-import { JwtDecodeDocuments } from "../../util/appRouter";
-import { DataAlert } from "../../common/DataAlert";
 
 export type ShareCredentialProps = Record<string, unknown>;
 interface ShareCredentialInternalProps extends ShareCredentialProps {
@@ -156,57 +154,14 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 			this.setState({ selectedCredentials });
 		}
 	}
-	private shareRequestCompared(cred: string,shareRequest: string[]){
-		for (const share of shareRequest) {
-			if (
-				(cred === share) ||
-				(cred === 'Email' && share === 'emailMain') || 
-				(cred === 'Phone' && share === 'mobilePhone') ||
-				(cred === 'Domicilio Legal' && share === 'legalAddress') ||
-				(cred === 'Datos Personales' && share === 'nationalId')
-				) {		
-				return true;
-			}
-		}
-		return false;
-	}
 
-	private async credentialValidator(documents:  CredentialDocument[],shareRequests: IShareRequestData[]):Promise<boolean | undefined>{
-		let flag = false;
-		const credentialValidator: string[] = [];
-		const ShareRequestValidator: string[] =[];
-		const vcDocuments = await JwtDecodeDocuments(documents);
-		
-		vcDocuments.forEach((vc) => {
-		credentialValidator.push(Object.keys(vc.vc.credentialSubject)[0])
-		});
-		shareRequests.forEach((shareReq)=>{
-			Object.keys(shareReq.claims.verifiable).forEach((verifiable)=>{
-				ShareRequestValidator.push(verifiable)
-			})
-		})
-
-		if (credentialValidator.length !== ShareRequestValidator.length) return flag;
-		for (const cred of credentialValidator) {
-			flag =  this.shareRequestCompared(cred,ShareRequestValidator); 
-			if(!flag) return false;
-		}
-		return flag;
-	}
-
-	private async doShare(documents: CredentialDocument[], shareResp?: boolean ) {
+	private doShare(documents: CredentialDocument[], shareResp?: boolean ) {
 		if (shareResp === true) {
-			const {shareRequests, shareRequestId}= this.props;
-			if (await this.credentialValidator(documents,shareRequests)) {
-				this.navigate("ShareResp", { 
-					documents,
-					shareRequests,
-					shareRequestId,
-				});	
-			} else {
-				DataAlert.alert(strings.vuIdentity.failure.retryButton,'Envíe las credenciales que el emisor a solicitado, vuelva a seleccionarla/s');
-				this.setState({selectedCredentials:[]})
-			}
+			this.navigate("ShareResp", { 
+				documents,
+				shareRequests: this.props.shareRequests,
+				shareRequestId: this.props.shareRequestId,
+			});
 		}  else {
 			if (documents.every(doc => doc.nested.length === 0)) {
 				this.navigate("ShareExplanation", { documents });
