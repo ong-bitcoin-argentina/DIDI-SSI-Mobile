@@ -40,3 +40,12 @@ export async function getShareRequest(idShareRequest: string[]): Promise<IShareR
 		};
     }
 }
+
+export async function getShareRequestName(): Promise<string[] | null[]>{
+    try {
+        const result = await shareRequest().credentialList();
+        return result.data.credential_categories
+    } catch (e) {
+        return [null]
+    }
+}
