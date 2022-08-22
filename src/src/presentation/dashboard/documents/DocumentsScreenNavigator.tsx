@@ -12,6 +12,7 @@ import { DashboardScreenProps } from "../home/Dashboard";
 
 import { DocumentDetailProps } from "./DocumentDetail";
 import DocumentsScreen, { DocumentsScreenNavigation } from "./DocumentsScreen";
+import { RecentActivity } from "../../../model/RecentActivity";
 
 function screen(title: string, filter: (type: CredentialDocument, did: EthrDID) => boolean) {
 	return {
@@ -22,7 +23,16 @@ function screen(title: string, filter: (type: CredentialDocument, did: EthrDID) 
 	};
 }
 
-const categoryFilter = (category: DocumentFilterType) => (doc: CredentialDocument, did: EthrDID) => {
+const categoryFilter = (category: DocumentFilterType, share?: string ) => (doc: CredentialDocument, did: EthrDID, recentActivity?: RecentActivity[]) => {
+	if (share === 'SHARE' && recentActivity) {
+		const titleCompare = doc.specialFlag ? strings.specialCredentials[doc.specialFlag.type].title : doc.title;
+		for (const iterator of recentActivity) {
+			if (iterator.credentialTitle[0] === titleCompare && iterator.credentialKey[0] === doc.category && iterator.issuedAt[0] === doc.issuedAt){
+				return true
+			}
+		}	
+		return doc.subject.did() !== did.did()
+	}
 	return doc.category === category && doc.subject.did() === did.did();
 };
 
@@ -35,7 +45,7 @@ export const DocumentsScreenInnerNavigator = createMaterialTopTabNavigator(
 		DocumentsLivingPlace: screen(strings.documents.filterLivingPlace, categoryFilter("livingPlace")),
 		DocumentsFinance: screen(strings.documents.filterFinance, categoryFilter("finance")),
 		DocumentsIdentity: screen(strings.documents.filterIdentity, categoryFilter("identity")),
-		DocumentsShared: screen(strings.documents.filterShared, (doc, did) => doc.subject.did() !== did.did())
+		DocumentsShared: screen(strings.documents.filterShared, categoryFilter("work","SHARE"))
 	},
 	{
 		tabBarOptions: {
