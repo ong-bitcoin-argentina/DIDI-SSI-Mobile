@@ -25,6 +25,7 @@ export interface EnterPhoneState {
 	inputCountryCallingCode?: string;
 	inputPhoneNumber?: string;
 	inputPassword?: string;
+	disabledButton?: boolean;
 }
 
 export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, EnterPhoneState> {
@@ -33,10 +34,10 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		super(props);	
 		this.state = {
 			inputCountryCode: "AR",
-			inputCountryCallingCode: "54"
+			inputCountryCallingCode: "54",
+			disabledButton: false,
 		};
 	}
-
 	render() {		
 		return (
 			<DidiScreen >
@@ -93,16 +94,20 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 	}
 
 	private canPressContinueButton(): boolean {
-		return (
+		if (
 			Validations.isPhoneNumber(this.state.inputPhoneNumber, this.state.inputCountryCode) &&
 			(!this.props.isPasswordRequired || Validations.isPassword(this.state.inputPassword))
-		);
+		){
+			if(this.state.disabledButton) return false;
+			return true;
+		} else this.setState({disabledButton: false})
 	}
 
 	private onPressContinueButton() {
 		const countryPrefix = this.state.inputCountryCallingCode;
 		const phoneNumber = `+${countryPrefix}${this.state.inputPhoneNumber}`;		
 		this.props.onPressContinueButton(phoneNumber, this.state.inputPassword || null);
+		this.setState({disabledButton:!this.state.disabledButton})
 	}
 }
 

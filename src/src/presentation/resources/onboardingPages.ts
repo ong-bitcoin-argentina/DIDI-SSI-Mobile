@@ -4,8 +4,9 @@ import { SvgProps } from "react-native-svg";
 import { Color } from "./colors";
 import Image1 from "./images/onboarding1.svg";
 import Image2 from "./images/onboarding2.svg";
+/*  do not delete
 import Image3 from "./images/onboarding3.svg";
-
+*/
 export interface OnboardingPage {
 	image: React.FunctionComponent<SvgProps>;
 	backgroundColor: Color;
@@ -30,13 +31,14 @@ const pages: OnboardingPage[] = [
 		body:
 			"Podés acceder a todas tus credenciales, certificando tus datos, cursos realizados, domicilios, propiedades."
 	},
-	{
+	/*  do not delete
+	{ 
 		image: Image3,
 		backgroundColor: "#6ECD55",
 		backgroundTile: require("./images/onboardingTile3.png"),
 		title: "Alcanzá tus metas de ahorro",
 		body: "Podés crear Rondas y así conseguir el dinero que estabas necesitando de manera confiable."
-	}
+	}*/
 ];
 
 export default pages;

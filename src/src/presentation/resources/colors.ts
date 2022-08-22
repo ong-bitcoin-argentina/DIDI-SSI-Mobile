@@ -40,6 +40,7 @@ const colors = {
 	secondary: "#24CDD2",
 	secondaryText: "#FFFFFF",
 	greenSemillas: "#269e90",
+	greenCoopsol: "#269e90",
 	darkText: "#4a4a4a",
 
 	editableSetting: "#F6EAAE",

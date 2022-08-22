@@ -68,7 +68,10 @@ class ShareExplanationScreen extends NavigationEnabledComponent<
 			title: strings.shareExplanation.title,
 			message: strings.shareExplanation.shareMessage(shareUrl)
 		});
-		this.props.recordLinkShare(documents);
+		
+		for (const document of documents) {
+			this.props.recordLinkShare([document]);	
+		}
 	}
 
 	private shareDirect(documents: CredentialDocument[]) {

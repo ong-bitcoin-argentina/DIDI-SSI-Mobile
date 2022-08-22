@@ -18,6 +18,7 @@ import { PersistedPersonalDataAction } from "./reducers/persistedPersonalDataRed
 import { PendingLinkingAction } from "./reducers/pendingLinkingReducer";
 import { IssuersAction } from "./reducers/persistedIssuersDataReducer";
 import {VuSecurityDataAction} from "./reducers/vuSecurityDataReducer";
+import {ValidateCoopsolDniAction} from "./reducers/validateCoopsolDniReducer";
 
 export type StoreAction =
 	| { type: "RESET_PERSISTED_STORE" }
@@ -39,4 +40,5 @@ export type StoreAction =
 	| PersistedPersonalDataAction
 	| PendingLinkingAction
 	| IssuersAction
-	|VuSecurityDataAction;
+	|VuSecurityDataAction
+	|ValidateCoopsolDniAction;

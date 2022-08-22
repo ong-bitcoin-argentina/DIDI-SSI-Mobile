@@ -149,7 +149,7 @@ class EditProfileScreen extends NavigationEnabledComponent<
 		return (
 			<View style={styles.keyValueContainer} key={key}>
 				<Small style={{ color: colors.textLight, fontSize: 13 }}>{label}</Small>
-				<Small style={{ textAlign: "left" }}>{value ? value : "N/A"}</Small>
+				<Small style={{ textAlign: "left" }}>{value ? value : "No Disponible"}</Small>
 			</View>
 		);
 	}
