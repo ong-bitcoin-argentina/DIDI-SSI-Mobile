@@ -17,7 +17,7 @@ export interface CredentialCardProps extends DidiCardBodyProps {
 	credentialState?: CredentialStates;
 	subTitles: string[];
 	data?: ClaimDataPairs;
-	columns?: 1 | 2 | 3;
+	columns?: 1 | 2 | 3 | 5;
 	layout?: DocumentLayout;
 	preview: boolean;
 }
@@ -89,7 +89,8 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 		);
 	}
 
-	private renderKeyValuePairs(color: string) {
+	private renderKeyValuePairs(color: string, columns: number|undefined):JSX.Element|null|Element[] {
+		if (columns === 5 ) return null 
 		const rowData = this.splitDataIntoRows();
 
 		const columnStyles: ViewStyle[] = rowData.map(row => ({
@@ -121,7 +122,8 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 	}
 
 
-	private renderSpecialText(color: string) {
+	private renderSpecialText(color: string, columns:number|undefined): JSX.Element | null {
+		if (columns !== 5) return null;
 		return (
 			<View >
 				<FlatList
@@ -160,8 +162,9 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 			</View>
 		);
 	}
+	
 	render() {
-		const { hollow, color, layout, icon, preview, credentialState, subTitles } = this.props;
+		const { hollow, color, layout, icon, preview, credentialState, columns} = this.props;
 		const cardColor = hollow ? color : colors.lightBackground;
 		const style = layout?.style == "dark" && preview ? colors.darkText : cardColor;
 		const isRevoked = credentialState === CredentialStates.revoked;
@@ -171,10 +174,10 @@ export default class CredentialCard extends Component<CredentialCardProps, {}> {
 				{...this.props}
 				icon={this.hasLayout() ? "" : icon}
 				backgroundUrl={haveBackgroundImage ? layout?.backgroundImage : undefined}
-				specialText={subTitles[0].includes('Emisor: Coopsol')?this.renderSpecialText(style): null}
+				specialText={this.renderSpecialText(style, columns)}
 			>
 				{this.renderTitle(style)}
-				{subTitles[0].includes('Emisor: Coopsol')?null:this.renderKeyValuePairs(style)}
+				{this.renderKeyValuePairs(style,columns)}
 				{this.props.children}
 			</DidiCardBody>
 		);
