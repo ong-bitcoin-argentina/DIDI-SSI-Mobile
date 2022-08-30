@@ -55,6 +55,7 @@
 		"react-native-uport-signer": "^1.6.1",
 		"react-native-user-inactivity": "^1.2.0",
 		"react-native-vector-icons": "^6.6.0",
+		"react-native-walkthrough-tooltip": "^1.4.0",
 		"react-navigation": "^4.0.10",
 		"react-navigation-header-buttons": "^3.0.4",
 		"react-navigation-material-bottom-tabs": "^2.1.5",
