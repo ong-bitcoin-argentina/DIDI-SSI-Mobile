@@ -22,6 +22,8 @@ import Divider from "../common/Divider";
 import { EditProfileProps } from "./userMenu/EditProfile";
 import { ChangeEmailEnterEmailProps } from "./userData/ChangeEmailEnterEmail";
 import { ChangePhoneEnterScreenProps } from "./userData/ChangePhoneEnterPhone";
+import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
+import { OpenEmailScreenProps } from "../../common/OpenEmail";
 
 export type SettingsScreenProps = {};
 interface SettingsScreenStateProps {
@@ -46,6 +48,8 @@ export interface SettingsScreenNavigation {
 	JWTDecoderScreen: JWTDecoderScanScreenProps;
 	ChangeEmailEnterEmail: ChangeEmailEnterEmailProps;
 	ChangePhoneEnterPhone: ChangePhoneEnterScreenProps;
+	CommonQuestions: CommonQuestionsScreenProps;
+	OpenEmailScreenProps: OpenEmailScreenProps;
 }
 
 interface SettingsButton {
@@ -64,7 +68,8 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
 			{ name: strings.settings.changePassword, action: () => this.navigate("ChangePassword", {}) },
-			{ name: strings.settings.about.title, action: () => this.navigate("AboutThisAppScreen", {}) }
+			{ name: strings.settings.about.title, action: () => this.navigate("AboutThisAppScreen", {}) },
+			{ name: strings.settings.help, action: () => this.navigate("CommonQuestions", {}) }
 		];
 		const debug = [
 			...base,
@@ -110,15 +115,14 @@ class SettingsScreen extends NavigationEnabledComponent<SettingsScreenInternalPr
 
 						<Option onPress={() => this.navigateTo("AboutThisAppScreen")} label={settings.aboutAidi} icon="info" />
 
-						{/*  do not delete 
 						<Option
 							onPress={() => this.navigateTo("AboutRonda")}
 							label={settings.aboutRonda}
 							icon="filter_tilt_shift"
-						/> */}
+						/>
 
 						<Divider />
-
+						<Option onPress={() => this.navigateTo("CommonQuestions")} label={settings.help} icon="help"/>
 						<Option onPress={() => this.logout()} label={settings.endSession} icon="exit_to_app" />
 					</ScrollView>
 				</SafeAreaView>
@@ -186,7 +190,6 @@ const styles = StyleSheet.create({
 	container: {
 		paddingTop: 20,
 		paddingHorizontal: 26
-		// backgroundColor: colors.lightBackground
 	},
 	buttonSpacer: {
 		flex: 1
