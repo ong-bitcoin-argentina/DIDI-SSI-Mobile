@@ -112,6 +112,14 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 		return preview ? [issuerName] : [issuerName, emmitterId, verificationBlockchain];
 	}
 
+	searchingForType(issuerTexts: string[]){
+		const { document, preview } = this.props;
+		const resultColumns = CredentialDocument.numberOfColumns(document);
+		if(issuerTexts[0].includes('Emisor: Coopsol')) return 5
+		if (resultColumns !== 5) return preview ? CredentialDocument.numberOfColumns(document) : 1;
+		return resultColumns;
+	}
+
 	render() {
 		const { document, context, preview, children } = this.props;
 
@@ -149,7 +157,7 @@ export class DocumentCredentialCard extends React.Component<DocumentCredentialCa
 				title={title}
 				subTitles={issuerTexts}
 				data={data}
-				columns={preview ? CredentialDocument.numberOfColumns(document) : 1}
+				columns={this.searchingForType(issuerTexts)}
 				secondChildren={document.preview?.cardLayout && this.renderTypeMessage(styleType)}
 				color={style.color}
 				hollow={style.hollow}
