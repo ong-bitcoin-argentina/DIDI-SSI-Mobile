@@ -24,6 +24,10 @@ import { DidiText } from "../util/DidiText";
 import { CommonQuestionsScreenProps } from "../common/CommonQuestions";
 import Icon from "react-native-vector-icons/AntDesign";
 import { OpenEmailScreenProps } from "../common/OpenEmail";
+import { ExpiredAccountScreenProps  } from "../common/ExpiredAccount";
+import { PoliticsScreenProps } from "../common/Politics";
+import { ValidateIdentityScreenProps } from "../common/ValidateIdentity";
+import { ShareCredentialsScreenProps } from "../common/ShareCredentials";
 
 const { Title } = DidiText;
 
@@ -47,7 +51,11 @@ export interface StartAccessNavigation {
 	RecoveryExplanation: RecoveryExplanationProps;
 	AccessSettings: AccessSettingsProps;
 	CommonQuestions: CommonQuestionsScreenProps;
+	Politics: PoliticsScreenProps;
 	OpenEmail: OpenEmailScreenProps;
+	ExpiredAccount: ExpiredAccountScreenProps;
+	ValidateIdentity:ValidateIdentityScreenProps;
+	ShareCredentials: ShareCredentialsScreenProps
 }
 
 class StartAccessScreen extends NavigationEnabledComponent<
