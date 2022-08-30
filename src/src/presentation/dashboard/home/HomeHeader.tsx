@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import PushNotification from "react-native-push-notification";
 
 import { DidiText } from "../../util/DidiText";
@@ -12,11 +12,12 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ActiveDid } from "../../../store/reducers/didReducer";
-import { ComponentState, UpdateWaiticon } from "../../util/UpdateWaiticon";
+import Icon from "react-native-vector-icons/AntDesign";
 
 export interface HomeHeaderProps {
 	onPersonPress: () => void;
 	onBellPress: () => void;
+	onMarkPress: () => void;
 }
 
 interface HomeHeaderStateProps {
@@ -69,13 +70,13 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 								this.props.did.did().slice(0,15) + '...' + this.props.did.did().slice(-4) 
 						: 'Falta el did'}
 							</DidiText.DashboardHeader.Hello>
-							{this.props.isLoadingCredentials ? 
-							<UpdateWaiticon componentState={ComponentState.Pending} /> : 
-							<UpdateWaiticon componentState={ComponentState.Approved} /> 
-							}
 					</View>
 				</TouchableOpacity>
 				<View style={styles.activityIndicatorContainer}>
+					{this.props.isLoadingCredentials ? <ActivityIndicator size="large" color={colors.secondary} /> : undefined}
+					<TouchableOpacity style={[styles.bellContainer, {paddingRight: 0}]} onPress={this.props.onMarkPress}>
+						<Icon  name="question" color={colors.primaryText} size={28}  />
+					</TouchableOpacity>
 					<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
 						<DidiText.Icon color={this.props.newTokensAvailable ? colors.highlight : undefined} fontSize={24}>
 							
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
 	bellContainer: {
 		justifyContent: "center",
 		paddingVertical: 25,
-		paddingHorizontal: 20
+		paddingRight: 20
 	},
 	image: {
 		marginRight: 10,
