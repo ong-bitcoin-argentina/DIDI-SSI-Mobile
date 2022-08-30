@@ -5,7 +5,7 @@ import { JWTParseError } from "@proyecto-didi/app-sdk";
 
 import { assertUnreachable } from "../../util/assertUnreachable";
 
-import { gestures, LivenessGesture, TypeGestures } from "../dashboard/vuIdentity/LivenessGesture";
+import { LivenessGesture } from "../dashboard/validateIdentity/LivenessGesture";
 
 function formatDatePart(date: Date) {
 	const months = [
@@ -135,6 +135,11 @@ export default {
 			titleHas: "Acceso validado por",
 			connecting: "Conectándote a ronda..."
 		}
+	},
+	contact: {
+		title: "Si las preguntas frecuentes no han resuelto tu duda, envía un mensaje al correo electrónico info@didi.org.ar",
+		description: "En breve te responderemos.",
+		action: "Abrir email"
 	},
 	dashboardJump: {
 		scanCredential: "Escanear Credenciales",
@@ -479,6 +484,7 @@ export default {
 		changeEmail: "Cambiar E-mail",
 		aboutAidi: "Acerca de ai·di",
 		aboutRonda: "Acerca de ronda",
+		help: "Ayuda",
 		about: {
 			title: `Acerca de ${appName}`,
 			paragraphs: [
