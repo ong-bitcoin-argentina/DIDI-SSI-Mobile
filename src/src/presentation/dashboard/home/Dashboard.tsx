@@ -8,9 +8,7 @@ import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard"; 
-
 import UserInactivity from 'react-native-user-inactivity';
-
 import { RecentActivity } from "../../../model/RecentActivity";
 import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
@@ -45,6 +43,7 @@ import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
+import { PoliticsScreenProps } from "../../common/Politics";
 
 const INACTIVITY_TIME_EXPIRATION = 180000; //3min
 
@@ -89,6 +88,7 @@ export interface DashboardScreenNavigation {
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
 	CommonQuestions: CommonQuestionsScreenProps;
+	Politics:PoliticsScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
@@ -249,7 +249,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		if(!isActive) {
 			this.props.resetPendingLinking();
 			this.props.logout();
-			this.navigate("Login", {});
+			this.navigate("ExpiredAccount", {});
 		}
 	}
 
@@ -257,10 +257,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 		
 		return (
 			<Fragment>
-				 <UserInactivity
 					timeForInactivity={INACTIVITY_TIME_EXPIRATION}					
 					onAction={isActive => { this.logOutByInactivity(isActive); }}					
-				>
 					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 					<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
 						<FlatList
@@ -287,7 +285,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 								<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
 									{this.renderRecentActivities()}
 								</DropdownMenu>
-							}
+							} 
 						/>
 					</SafeAreaView>
 					<AuthModal
@@ -298,7 +296,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 						alreadyHave={this.props.hasRonda}
 						automatic
 					/>
-				</UserInactivity>
 			</Fragment>
 		);
 	}
