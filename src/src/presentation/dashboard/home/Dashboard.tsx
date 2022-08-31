@@ -257,8 +257,10 @@ class DashboardScreen extends NavigationEnabledComponent<
 		
 		return (
 			<Fragment>
-					timeForInactivity={INACTIVITY_TIME_EXPIRATION}					
-					onAction={isActive => { this.logOutByInactivity(isActive); }}					
+					<UserInactivity
+						timeForInactivity={INACTIVITY_TIME_EXPIRATION}					
+						onAction={isActive => { this.logOutByInactivity(isActive); }}			
+					>		
 					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
 					<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
 						<FlatList
@@ -296,6 +298,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						alreadyHave={this.props.hasRonda}
 						automatic
 					/>
+				</UserInactivity>
 			</Fragment>
 		);
 	}
