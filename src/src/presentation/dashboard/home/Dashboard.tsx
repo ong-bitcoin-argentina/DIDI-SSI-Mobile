@@ -10,7 +10,6 @@ import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
 import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard"; 
 import UserInactivity from 'react-native-user-inactivity';
 import { RecentActivity } from "../../../model/RecentActivity";
-import { checkValidateDni } from "../../../services/user/checkValidateDni";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { didiConnect } from "../../../store/store";
@@ -18,13 +17,14 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DocumentDetailProps } from "../documents/DocumentDetail";
-import { ValidateIdentityExplainWhatProps } from "../validateIdentity/ValidateIdentityExplainWhat";
 
 import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
 import { NotificationScreenProps } from "./NotificationScreen";
+/* do not delete 
 import { AuthModal } from "../common/AuthModal";
+*/
 import { DocumentsScreenProps } from "../documents/DocumentsScreen";
 import {
 	successfullyLogged,
@@ -41,7 +41,7 @@ import { EditProfileProps } from "../settings/userMenu/EditProfile";
 import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
-import { cancelVerificationVU } from "../../../services/vuSecurity/cancelVerification";
+import { IdentityVerificationCard } from './IdentityVerificationCard';
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
 import { PoliticsScreenProps } from "../../common/Politics";
 
@@ -59,19 +59,16 @@ interface DashboardScreenStateProps {
 	imageUrl: string;
 	imageId: string;
 	identity: ValidatedIdentity;
-	operationId: string,
-	userName: string,
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
 	logout():void;
 	resetDniValidation: () => void;
-	finishDniValidation: () => void;
+	finishDniValidation: (statusDni : string) => void;
 	resetPendingLinking: () => void;
 	setRondaAccount: (hasAccount: boolean) => void;
 	getPersonalData: (token: string) => void;
 	saveProfileImage: (image: any) => void;
-	resetVuSecurity: (userName: string, operationId: string, did: ActiveDid) => void;
 }
 type DashboardScreenInternalProps = DashboardScreenProps & DashboardScreenStateProps & DashboardScreenDispatchProps;
 
@@ -84,7 +81,7 @@ interface DashboardScreenState {
 }
 
 export interface DashboardScreenNavigation {
-	ValidateID: ValidateIdentityExplainWhatProps;
+	ValidateID: {};
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
 	CommonQuestions: CommonQuestionsScreenProps;
@@ -153,7 +150,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 	};
 
 	componentDidMount() {
-		const { pendingLinking, userName, operationId, did} = this.props;
+		const { pendingLinking } = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
 		dynamicLinkHandler(this.urlHandler);
@@ -161,7 +158,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 			this.props.resetPendingLinking();
 			this.urlHandler({ url: pendingLinking });
 		}
-		this.props.resetVuSecurity(userName,operationId, did);
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
@@ -262,42 +258,47 @@ class DashboardScreen extends NavigationEnabledComponent<
 						onAction={isActive => { this.logOutByInactivity(isActive); }}			
 					>		
 					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-					<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
-						<FlatList
-							style={styles.body}
-							data={this.props.validCredentials}
-							keyExtractor={(_, index) => index.toString()}
-							renderItem={item => this.renderCard(item.item, item.index)}
-							maxToRenderPerBatch={5}
-							updateCellsBatchingPeriod={30}
-							windowSize={6}
-							ListHeaderComponent={
-								<Fragment>
-									<HomeHeader
-										onPersonPress={() => this.navigate("EditProfile", {})}
-										onBellPress={() => this.navigate("NotificationScreen", {})}
-										onMarkPress={() => this.navigate("CommonQuestions", {})}
+				    <SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
+					<FlatList
+						style={styles.body}
+						data={this.props.validCredentials}
+						keyExtractor={(_, index) => index.toString()}
+						renderItem={item => this.renderCard(item.item, item.index)}
+						maxToRenderPerBatch={5}
+						updateCellsBatchingPeriod={30}
+						windowSize={6}
+						ListHeaderComponent={
+							<Fragment>
+								<HomeHeader
+									onPersonPress={() => this.navigate("EditProfile", {})}
+									onBellPress={() => this.navigate("NotificationScreen", {})}
+									onMarkPress={() => this.navigate("CommonQuestions", {})}
+								/>
+								<View style={styles.headerCredentials}> 
+									<IdentityVerificationCard
+										onStartValidateId={() => this.navigate("ValidateID", {})}
+										style={{ marginBottom: styles.headerCredentials.marginBottom }}
 									/>
-									<View style={styles.headerCredentials}>
-										<EvolutionCard credentials={this.props.credentials} />
-									</View>
-								</Fragment>
-							}
-							ListFooterComponent={
-								<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
-									{this.renderRecentActivities()}
-								</DropdownMenu>
-							} 
-						/>
-					</SafeAreaView>
-					<AuthModal
-						appName="ronda"
-						onCancel={this.permissionDenied}
-						onOk={this.permissionGranted}
-						visible={this.state.showModal}
-						alreadyHave={this.props.hasRonda}
-						automatic
+									<EvolutionCard credentials={this.props.credentials} />
+								</View>
+							</Fragment>
+						}
+						ListFooterComponent={
+							<DropdownMenu style={styles.dropdown} label={strings.dashboard.recentActivities.label}>
+								{this.renderRecentActivities()}
+							</DropdownMenu>
+						}
 					/>
+				</SafeAreaView>
+				{/* do not delete 
+				<AuthModal
+					appName="ronda"
+					onCancel={this.permissionDenied}
+					onOk={this.permissionGranted}
+					visible={this.state.showModal}
+					alreadyHave={this.props.hasRonda}
+					automatic
+				/> */}
 				</UserInactivity>
 			</Fragment>
 		);
@@ -317,19 +318,16 @@ export default didiConnect(
 		imageUrl: state.persistedPersonalData.imageUrl,
 		imageId: state.persistedPersonalData.imageId,
 		identity: state.validatedIdentity,
-		operationId: state.vuSecurityData.operationId,
-		userName: state.vuSecurityData.userName,
 	}),
 	(dispatch): DashboardScreenDispatchProps => ({
 		login: () => {
 			dispatch({ type: "SESSION_LOGIN" });
-			dispatch(checkValidateDni());
 			dispatch(getAllIssuerNames());
 		},
 		logout: () => dispatch({ type: "SESSION_LOGOUT" }),
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
-		finishDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: "Finished" } }),
+		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),
 		setRondaAccount: (hasAccount: Boolean) => dispatch({ type: "SET_RONDA_ACCOUNT", value: hasAccount }),
 		getPersonalData: (token: string) => dispatch(getPersonalData("getPersonalData", token)),
 		saveProfileImage: (identity: Identity) => {
@@ -337,10 +335,6 @@ export default didiConnect(
 				type: "IDENTITY_PATCH",
 				value: identity
 			});
-		},
-		resetVuSecurity: (userName: string, operationId: string, did: ActiveDid) => {
-			cancelVerificationVU(userName, operationId, did);
-			dispatch({ type: "VU_SECURITY_DATA_RESET" });
 		}
 	})
 );
