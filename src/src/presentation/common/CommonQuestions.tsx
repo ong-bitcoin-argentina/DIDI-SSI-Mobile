@@ -32,7 +32,7 @@ export class CommonQuestionsScreen extends NavigationEnabledComponent<CommonQues
 							<CollapseBody key={index} >
 								{ questions[key].map((question, Index) => {
 									return(
-										<Collapse style={{ paddingHorizontal: 0 }}>
+										<Collapse key={Index} style={{ paddingHorizontal: 0 }}>
 											<CollapseHeader style={[styles.titlesCard]}>
 												<Text style={[styles.titlesInner,{ width:'90%' }]}>{question.title}</Text>		
 												<Icon name="down" color={colors.text} size={15}  />

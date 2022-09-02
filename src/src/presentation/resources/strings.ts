@@ -137,7 +137,7 @@ export default {
 		}
 	},
 	contact: {
-		title: "Si las preguntas frecuentes no han resuelto tu duda, envía un mensaje al correo electrónico info@didi.org.ar",
+		title: "Si las preguntas frecuentes no han resuelto tu duda, envía un mensaje al correo electrónico soporte@aidi.app",
 		description: "En breve te responderemos.",
 		action: "Abrir email"
 	},
