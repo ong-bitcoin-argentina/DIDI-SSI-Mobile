@@ -1,7 +1,6 @@
 import React from "react";
 import {  DidiScrollScreen } from "../common/DidiScreen";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
-import questions from "../resources/commonQuestionsCatalog";
 import { DidiText } from "../util/DidiText";
 import { View, CheckBox, StyleSheet, Image } from 'react-native';
 import colors from "../resources/colors";
