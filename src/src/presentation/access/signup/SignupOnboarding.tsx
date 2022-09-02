@@ -32,6 +32,8 @@ export type SignupOnboardingProps = {};
 
 export interface SignupOnboardingNavigation {
 	PoliticsScreen: PoliticsScreenProps;
+	SignupEnterPhone: SignupEnterPhoneProps;
+	Politics: {}
 }
 
 interface SignupOnboardingState {

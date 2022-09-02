@@ -30,7 +30,6 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 		}
 	}
 	render() {		
-		const keys = Object.keys(questions);
 		return(
 			<DidiScrollScreen style={styles.scroll}>
 			<View style={{width: "100%", height: "100%"}} >
@@ -49,7 +48,7 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 				{
 					PoliticsTexts.data.map((politic, index) => {
 						return(
-							<View style={{backgroundColor: "white" , padding: 5, marginBottom:8}}>
+							<View key={index} style={{backgroundColor: "white" , padding: 5, marginBottom:8}}>
 							<DidiText.Title style={{textAlign:'left', fontWeight: 'bold', fontSize: 17, color:colors.darkBlue}}>{politic.title}</DidiText.Title>
 							<DidiText.Explanation.Small style={{textAlign: 'left'}}>
 								{politic.description}
