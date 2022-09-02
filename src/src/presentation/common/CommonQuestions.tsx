@@ -5,7 +5,7 @@ import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import questions from "../resources/commonQuestionsCatalog";
 import { DidiText } from "../util/DidiText";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../resources/colors";
 import commonStyles from "../resources/commonStyles";

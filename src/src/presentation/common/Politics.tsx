@@ -2,7 +2,7 @@ import React from "react";
 import {  DidiScrollScreen } from "../common/DidiScreen";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
 import { DidiText } from "../util/DidiText";
-import { View, CheckBox, StyleSheet } from 'react-native';
+import { View, CheckBox } from 'react-native';
 import colors from "../resources/colors";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import PoliticsTexts from "../resources/PoliticsTexts";
