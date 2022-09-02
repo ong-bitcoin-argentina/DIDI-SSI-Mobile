@@ -30,7 +30,6 @@ export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateI
 		}
 	}
 	render() {		
-		const keys = Object.keys(questions);
 		return(
 			<DidiScrollScreen style={styles.scroll}>
 			<View style={{width: "100%", height: "100%", justifyContent:'space-between'}} >
