@@ -7,18 +7,21 @@ import { View, CheckBox, StyleSheet, Image } from 'react-native';
 import colors from "../resources/colors";
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import ValidateIdentityText from "../resources/ValidateIdentityText";
-import Link from "../util/Link";
 import { SignupEnterPhoneProps } from "../access/signup/SignupEnterPhone";
 export type ValidateIdentityScreenProps = {};
 export type ValidateIdentityScreenNavigation = {
 	SignupEnterPhone: SignupEnterPhoneProps;
+	DashboardHome:{};
+	ValidateID:{}
 };
-
+import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
+import strings from "../resources/strings";
 export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateIdentityScreenProps,{},ValidateIdentityScreenNavigation> {
-	static navigationOptions = {
-		title: "Validar Identidad",
-		  
-	};
+	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
+	ValidateIdentityScreenNavigation,
+	"DashboardHome"
+>(strings.tabNames.identity, "DashboardHome", {});
+
 
 	constructor(props: ValidateIdentityScreenProps) {
 		super(props);
@@ -65,7 +68,7 @@ export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateI
 				<DidiServiceButton
 					isPending={false}
 					disabled={(!this.state.firstCheck)}					
-					onPress={() => {}}
+					onPress={() => this.navigate("ValidateID", {})}
 					title={"Siguiente"}
 				/>
 				</View>

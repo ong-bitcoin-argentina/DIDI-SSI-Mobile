@@ -81,7 +81,7 @@ interface DashboardScreenState {
 }
 
 export interface DashboardScreenNavigation {
-	ValidateID: {};
+	ValidateIdentity: {};
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
 	CommonQuestions: CommonQuestionsScreenProps;
@@ -276,7 +276,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 								/>
 								<View style={styles.headerCredentials}> 
 									<IdentityVerificationCard
-										onStartValidateId={() => this.navigate("ValidateID", {})}
+										onStartValidateId={() => this.navigate("ValidateIdentity", {})}
 										style={{ marginBottom: styles.headerCredentials.marginBottom }}
 									/>
 									<EvolutionCard credentials={this.props.credentials} />
