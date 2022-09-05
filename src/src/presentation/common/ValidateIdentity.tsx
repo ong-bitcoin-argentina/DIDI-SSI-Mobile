@@ -41,11 +41,11 @@ export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateI
 				{ValidateIdentityText.description}
 			</DidiText.Explanation.Emphasis>
 
-				<DidiText.Explanation.Small style={{textAlign:'left', marginTop: 10}}>
+				<DidiText.Explanation.Small style={{textAlign:'justify', marginTop: 10}}>
 					{ValidateIdentityText.paragraph}
 				</DidiText.Explanation.Small>
 
-				<DidiText.Explanation.Small style={{textAlign:'left', marginTop: 10}}>
+				<DidiText.Explanation.Small style={{textAlign:'justify', marginTop: 10}}>
 					{ValidateIdentityText.paragraph2}
 				</DidiText.Explanation.Small>
 		
@@ -56,7 +56,7 @@ export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateI
 						value={this.state.firstCheck}
 						onValueChange={this.onCheck.bind(this, 'firstCheck', this.state.firstCheck)}
 						/>
-						<DidiText.Small style={{textAlign: 'left'}}>{ValidateIdentityText.agreement}</DidiText.Small>
+						<DidiText.Small style={{textAlign: 'justify'}}>{ValidateIdentityText.agreement}</DidiText.Small>
 					</View>
 				</View>
 				</View>

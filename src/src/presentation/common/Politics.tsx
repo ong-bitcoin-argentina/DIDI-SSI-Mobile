@@ -35,13 +35,13 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 			<DidiScrollScreen style={styles.scroll}>
 			<View style={{width: "100%", height: "100%"}} >
 				
-				<DidiText.Explanation.Small style={{textAlign:'left', marginBottom: 10}} >
+				<DidiText.Explanation.Small style={{textAlign:'justify', marginBottom: 10}} >
 					{PoliticsTexts.description}
-					<Link url="https://didi.org.ar/aidi/terminos-condiciones.html" style={{textAlign:'left', fontSize: 17, color:colors.darkBlue}}>
+					<Link url="https://didi.org.ar/aidi/terminos-condiciones.html" style={{textAlign:'justify', fontSize: 17, color:colors.darkBlue}}>
 						{`Términos y Condiciones`}
 					</Link>
 						{` y `}
-					<Link url="https://didi.org.ar/privacidad/" style={{textAlign:'left', fontSize: 17, color:colors.darkBlue}}>
+					<Link url="https://didi.org.ar/privacidad/" style={{textAlign:'justify', fontSize: 17, color:colors.darkBlue}}>
 						{`Política de Privacidad`}
 					</Link>
 					{PoliticsTexts.description2}
@@ -60,14 +60,14 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 				}
 
 				<View style={{marginVertical:12}}>
-					<View style={{flexDirection: 'row'}} >
+					<View style={{textAlign:'justify', flexDirection: 'row'}} >
 						<CheckBox
 						value={this.state.firstCheck}
 						onValueChange={this.onCheck.bind(this, 'firstCheck', this.state.firstCheck)}
 						/>
 						<DidiText.Small style={{textAlign: 'left'}}>He leído y acepto los términos y condiciones.</DidiText.Small>
 					</View>
-					<View style={{flexDirection: 'row', marginVertical: 6}} >
+					<View style={{textAlign:'justify', flexDirection: 'row', marginVertical: 6}} >
 						<CheckBox
 						value={this.state.secondCheck}
 						onValueChange={this.onCheck.bind(this, 'secondCheck', this.state.secondCheck)}
