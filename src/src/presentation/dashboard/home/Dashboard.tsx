@@ -45,7 +45,7 @@ import { IdentityVerificationCard } from './IdentityVerificationCard';
 import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
 import { PoliticsScreenProps } from "../../common/Politics";
 
-const INACTIVITY_TIME_EXPIRATION = 180000; //3min
+const INACTIVITY_TIME_EXPIRATION = 1800000000; // 3min = 180000
 
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
