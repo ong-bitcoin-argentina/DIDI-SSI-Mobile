@@ -9,11 +9,18 @@ import Tooltip from 'react-native-walkthrough-tooltip';
 import Icon from "react-native-vector-icons/AntDesign";
 import colors from "../resources/colors";
 import { DidiServiceButton } from "../util/DidiServiceButton";
+import strings from "../resources/strings";
 export type ShareCredentialsScreenProps = {};
-export type ShareCredentialsScreenNavigation = {};
+export type ShareCredentialsScreenNavigation = {
+	DashboardHome: {},
+	ShareCredential: {}
+};
 
 export class ShareCredentialsScreen extends NavigationEnabledComponent<ShareCredentialsScreenProps,{},ShareCredentialsScreenNavigation> {
-	static navigationOptions = NavigationHeaderStyle.withTitle("Compartir");
+	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
+	ShareCredentialsScreenNavigation,
+	"DashboardHome"
+	>(strings.share.title, "DashboardHome", {});
 
 	constructor(props: ShareCredentialsScreenProps) {
 		super(props);
@@ -70,8 +77,8 @@ export class ShareCredentialsScreen extends NavigationEnabledComponent<ShareCred
 				</View>
 				<DidiServiceButton
 					isPending={false} 
-					disabled={(!this.state.firstCheck )}					
-					//onPress={() => this.navigate("ADD NEXT PATH", {})}
+					disabled={(!this.state.firstCheck )}			
+					onPress={() => this.navigate("ShareCredential", {})}
 					title={"Siguiente"}
 				/>
 				</View>

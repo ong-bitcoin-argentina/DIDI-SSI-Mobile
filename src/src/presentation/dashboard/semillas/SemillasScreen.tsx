@@ -63,7 +63,7 @@ type SemillasScreenInternalProps = SemillasScreenStateProps & SemillasScreenDisp
 export interface SemillasScreenNavigation {
 	DashboardHome: DashboardScreenProps;
 	Prestadores: PrestadoresProps;
-	ValidateID: {};
+	ValidateIdentity: {};
 	ValidateSemillasID: {};
 }
 
@@ -108,7 +108,7 @@ class SemillasScreen extends NavigationEnabledComponent<
 
 	goToRenaperValidation = () => {
 		this.toggleModal();
-		this.navigate("ValidateID", {});
+		this.navigate("ValidateIdentity", {});
 	};
 
 	goToSemillasValidation = () => {

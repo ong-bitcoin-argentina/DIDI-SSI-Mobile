@@ -1,24 +1,27 @@
 import React from "react";
 import {  DidiScrollScreen } from "../common/DidiScreen";
 import NavigationEnabledComponent from "../util/NavigationEnabledComponent";
-import questions from "../resources/commonQuestionsCatalog";
 import { DidiText } from "../util/DidiText";
-import { View, CheckBox, StyleSheet, Image } from 'react-native';
-import colors from "../resources/colors";
+import { View, CheckBox, Image } from 'react-native';
 import { DidiServiceButton } from "../util/DidiServiceButton";
 import ValidateIdentityText from "../resources/ValidateIdentityText";
-import Link from "../util/Link";
 import { SignupEnterPhoneProps } from "../access/signup/SignupEnterPhone";
+import commonStyles from "../resources/commonStyles";
+const styles = commonStyles.consentScreen;
 export type ValidateIdentityScreenProps = {};
 export type ValidateIdentityScreenNavigation = {
 	SignupEnterPhone: SignupEnterPhoneProps;
+	DashboardHome:{};
+	ValidateID:{}
 };
-
+import NavigationHeaderStyle from "../common/NavigationHeaderStyle";
+import strings from "../resources/strings";
 export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateIdentityScreenProps,{},ValidateIdentityScreenNavigation> {
-	static navigationOptions = {
-		title: "Validar Identidad",
-		  
-	};
+	static navigationOptions = NavigationHeaderStyle.withTitleAndFakeBackButton<
+	ValidateIdentityScreenNavigation,
+	"DashboardHome"
+>(strings.tabNames.identity, "DashboardHome", {});
+
 
 	constructor(props: ValidateIdentityScreenProps) {
 		super(props);
@@ -27,7 +30,6 @@ export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateI
 		}
 	}
 	render() {		
-		const keys = Object.keys(questions);
 		return(
 			<DidiScrollScreen style={styles.scroll}>
 			<View style={{width: "100%", height: "100%", justifyContent:'space-between'}} >
@@ -65,7 +67,7 @@ export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateI
 				<DidiServiceButton
 					isPending={false}
 					disabled={(!this.state.firstCheck)}					
-					onPress={() => {}}
+					onPress={() => this.navigate("ValidateID", {})}
 					title={"Siguiente"}
 				/>
 				</View>
@@ -80,37 +82,3 @@ export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateI
 	}
 	
 }
-
-const styles = StyleSheet.create({
-	scroll: {
-		width: "100%",
-		paddingHorizontal: '2%'		
-	},
-	titles: {
-		fontSize: 15,
-        fontFamily: "Roboto-Regular",
-        fontWeight: "bold",
-        color: colors.darkBlue, 
-	},
-    titlesInner: {
-        fontFamily: "Roboto-Regular",
-		fontSize: 14,
-        color: colors.text, 
-	},
-	text: {
-		fontSize: 12,
-        fontFamily: "Roboto-Regular",
-        fontWeight: "100",
-        color: colors.text, 
-	},
-	titlesCard:{	
-		paddingVertical:10,        
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-	},
-	border: {
-		borderBottomWidth:1,
-		borderBottomColor: '#4A4A4A',
-	}
-	
-});

@@ -10,7 +10,7 @@ import colors from "../resources/colors";
 import strings from "../resources/strings";
 
 import { ScanCredentialProps } from "./credentials/ScanCredential";
-import { ShareCredentialProps } from "./credentials/ShareCredential";
+import { ShareCredentialsScreenProps } from "../common/ShareCredentials";
 import { DocumentsScreenProps } from "./documents/DocumentsScreen";
 import { UserDataProps } from "./settings/userData/UserData";
 import { EditProfileProps } from "./settings/userMenu/EditProfile";
@@ -26,7 +26,7 @@ interface DashboardJumpMenuState {
 
 export interface DashboardJumpNavigation {
 	ScanCredential: ScanCredentialProps;
-	ShareCredential: ShareCredentialProps;
+	ShareCredentials: ShareCredentialsScreenProps;
 	DashboardDocuments: DocumentsScreenProps;
 	UserData: UserDataProps;
 	EditProfile: EditProfileProps;
@@ -76,7 +76,7 @@ const actions: Array<IActionProps & { name: keyof DashboardJumpNavigation }> = [
 		...actionCommon,
 		icon: iconFrom(""),
 		text: strings.dashboardJump.shareCredential,
-		name: "ShareCredential"
+		name: "ShareCredentials"
 	},
 	{
 		...actionCommon,
