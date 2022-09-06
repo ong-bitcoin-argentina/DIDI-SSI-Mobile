@@ -103,7 +103,7 @@ export default {
         },
         {
             id: "2",
-            title: "¿Qué tipo de credenciales puedo almacenar en ai.di?",
+            title: "¿Qué tipo de credenciales puedo almacenar en ai·di?",
             body: 'Con ai·di vas a poder almacenar credenciales sobre tu identidad (Documento nacional de Identidad), datos personales y de contacto (mail, ' +
             ' celular, dirección), laborales (trabajo y formación), educativos (estudios y cursos), vivienda (tipo de vivienda y sus características), y ' +
             ' financieros (registro de historial crediticio y de emprendimientos), entre otros.'
@@ -111,13 +111,13 @@ export default {
         {
             id: "3",
             title: "¿Para qué me sirve compartir una credencial?",
-            body: 'Puedes compartir tus credenciales para que otras personas o entidades conozcan los datos de las credenciales que almacenas en ai.di. ' +
+            body: 'Puedes compartir tus credenciales para que otras personas o entidades conozcan los datos de las credenciales que almacenas en ai·di. ' +
             ' A partir de esas credenciales en algunos casos podrás acceder a bienes y servicios.'
         },
         {
             id: "4",
             title: "¿Con quién puedo compartir una credencial?",
-            body: 'Desde ai.di tienes el control de tus credenciales, en cualquier momento podrás compartir con quien desees.'
+            body: 'Desde ai·di tienes el control de tus credenciales, en cualquier momento podrás compartir con quien desees.'
         },
         {
             id: "5",
@@ -125,7 +125,7 @@ export default {
             body: 'Desde la pantalla de Inicio al presionar el ícono amarillo con un signo de (+) y se despliega un menú donde aparece la opción de Compartir. ' +
             ' Seleccionar la credencial que se va a compartir. Se puede elegir más de una. Pulsar el botón inferior derecho para avanzar con el proceso. ' +
             ' Hay dos opciones para compartir las credenciales: ' +
-            ' La primera es directa a otra app a través de ai.di mediante código QR y la otra es compartiendo el enlace que se genera.' +
+            ' La primera es directa a otra app a través de ai·di mediante código QR y la otra es compartiendo el enlace que se genera.' +
             ' En la segunda opción se despliegan todas las opciones para elegir la red social o medio por el cual se puede compartir el enlace, ' +
             ' por ejemplo: whatsapp, instagram, también se puede copiar el enlace. Una vez que se selecciona un medio para compartir, va a llegar un ' +
             ' mensaje con el enlace que va a llevar a una página web en la que se muestra la información de la credencial que estamos compartiendo.'
@@ -133,7 +133,7 @@ export default {
         {
             id: "6",
             title: "¿Quién me puede emitir credenciales?",
-            body: 'Un emisor verificado por Ai.di. Actualmente nuestro emisores son: Ronda y Semillas.'
+            body: 'Un emisor verificado por ai·di. Actualmente nuestro emisores son: Ronda y Semillas.'
         },
         {
             id: "7",
@@ -192,20 +192,20 @@ export default {
         {
             id: "3",
             title: "¿Cómo accedo a ronda?",
-            body: 'Tienes que descargar ai.di, ya que ronda funciona de manera integrada ai·di, dado que las credenciales generadas en ronda son almacenadas en ai·di.'
+            body: 'Tienes que descargar ai·di, ya que ronda funciona de manera integrada ai·di, dado que las credenciales generadas en ronda son almacenadas en ai·di.'
         }
     ],
     ["Emisores"]:[
         {
             id: "1",
-            title: "¿Cómo funciona semillas y ai.di?",
+            title: "¿Cómo funciona semillas y ai·di?",
             body: 'El objetivo de SEMILLAS es apoyar y colaborar al desarrollo sostenible de familias de sectores vulnerados aportando capital y acompañamiento para su ' +
-            ' desarrollo. Desde ai.di puedes obtener tus credenciales que certifican que eres parte del programa SEMILLAS y acceder a sus beneficios.'
+            ' desarrollo. Desde ai·di puedes obtener tus credenciales que certifican que eres parte del programa SEMILLAS y acceder a sus beneficios.'
         },
         {
             id: "2",
             title: "¿Cómo solicitar las credenciales de semillas?",
-            body: ' Para ello, tendrás que haber validado tu identidad previamente y luego ir a los iconos de la parte inferior de ai.di y seleccionar el quinto icono. ' +
+            body: ' Para ello, tendrás que haber validado tu identidad previamente y luego ir a los iconos de la parte inferior de ai·di y seleccionar el quinto icono. ' +
             ' Visualizarás la pantalla del Programa de Semillas con una descripción y al dar clic en el botón Quiero mis credenciales podrás obtener la credencial Semillas ' + 
             ' que te dará acceso a sus servicios. ' +
             ' Para solicitar las credenciales Semillas, hay que enviar el código de usuario y número de DNI a la entidad (para realizar la acción nos solicita permiso). ' +
@@ -231,7 +231,7 @@ export default {
     ["Usuario y contraseña"]:[
         {
             id: "1",
-            title: "¿Cómo puedo cambiar la contraseña de ai.di?",
+            title: "¿Cómo puedo cambiar la contraseña de ai·di?",
             body: ' Desde la opción de Mi Perfil da clic en el icono de engranaje ubicado en la parte superior derecha. Desde el menú de opciones selecciona Contraseña. ' +
             ' Deberás ingresar tu contraseña actual y después la contraseña nueva. Ingresa nuevamente la nueva contraseña y finalmente da clic en el botón Cambiar Contraseña.'
         },
