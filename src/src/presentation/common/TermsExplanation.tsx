@@ -17,11 +17,11 @@ export default class TermsExplanation extends Component<TermsProps, TermsState> 
 		return (
 			<Text style={[styles.terms, this.props.style]}>
 				<DidiText.Explanation.Small style={styles.fontSize}>{registerDetail}</DidiText.Explanation.Small>
-				<Link url="https://didi.org.ar/aidi/terminos-condiciones.html" style={styles.fontSize}>
+				<Link url="https://didi.org.ar/terminos-y-condiciones-ai·di/" style={styles.fontSize}>
 					{terms}
 				</Link>
 				{` y `}
-				<Link url="https://didi.org.ar/aidi/privacidad.html" style={styles.fontSize}>
+				<Link url="https://didi.org.ar/privacidad/" style={styles.fontSize}>
 					{policies}
 				</Link>
 			</Text>

@@ -39,7 +39,7 @@ export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenPro
 				
 				<DidiText.Explanation.Small style={{textAlign:'justify', marginBottom: 10}} >
 					{PoliticsTexts.description}
-					<Link url="https://didi.org.ar/aidi/terminos-condiciones.html" style={{textAlign:'justify', fontSize: 17, color:colors.darkBlue}}>
+					<Link url="https://didi.org.ar/terminos-y-condiciones-ai·di/" style={{textAlign:'justify', fontSize: 17, color:colors.darkBlue}}>
 						{`Términos y Condiciones`}
 					</Link>
 						{` y `}
