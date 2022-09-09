@@ -22,7 +22,7 @@ interface ObserverDispatchProps {
 }
 
 export const PushNotificationObserver = didiConnect(
-	class extends React.PureComponent<PushNotificationObserverProps & ObserverStateProps & ObserverDispatchProps> {
+	class PushNotificationObserver extends React.PureComponent<PushNotificationObserverProps & ObserverStateProps & ObserverDispatchProps> {
 		componentDidUpdate() {
 			if (this.props.pendingPush === undefined) {
 				return;
