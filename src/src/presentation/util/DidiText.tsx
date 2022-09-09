@@ -291,9 +291,13 @@ export const styles = {
 	})
 };
 
+function textProp(props: AddChildren<TextProps>,style: TextStyle) {
+	return <Text {...props} style={[style, props.style]} />
+}
+
 function textWith(style: TextStyle) {
 	return (props: AddChildren<TextProps>) => {
-		return <Text {...props} style={[style, props.style]} />;
+		return textProp(props,style);
 	};
 }
 
@@ -352,7 +356,7 @@ export const DidiText = {
 	UserData: {
 		HeaderName: textWith(styles.component.userDataHeader)
 	},
-	Icon: (props: { fontSize: number; color?: string } & AddChildren<TextProps>) => {
+	Icon(props: { fontSize: number; color?: string } & AddChildren<TextProps>){
 		return (
 			<Text
 				{...props}
@@ -360,7 +364,7 @@ export const DidiText = {
 			/>
 		);
 	},
-	Button: (props: { disabled: boolean } & AddChildren<TextProps>) => {
+	Button(props: { disabled: boolean } & AddChildren<TextProps>) {
 		return (
 			<Text
 				{...props}
