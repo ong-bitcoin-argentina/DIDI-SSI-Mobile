@@ -54,7 +54,7 @@ export class VuIdentityBackScreen extends NavigationEnabledComponent<
 				image={require("../../resources/images/validateIdentityExplainBack.png")}
 				camera={(onLayout, reticle, onPictureTaken) => (
 					<VuDidiCamera
-					    VuBack={true}
+						VuBack={true}
 						onCameraLayout={onLayout}
 						cameraLandscape={true} 
 						onPictureTaken={onPictureTaken} 
