@@ -219,6 +219,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 			loadImage: true
 		});
 
+		/**	before delete.
+		*	verify its use correspond
 		const imgPath = `${DocumentDirectoryPath}/${this.props.imageId}.jpeg`;
 		const response = downloadFile({
 			fromUrl: this.props.imageUrl,
@@ -227,6 +229,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			const data = await readFile(imgPath, "base64");
 			this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		});
+		*/
 	}
 
 	async shouldComponentUpdate(nextState) {
