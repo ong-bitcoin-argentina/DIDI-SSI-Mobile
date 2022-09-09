@@ -121,7 +121,7 @@ export const PushNotificationReceiver = didiConnect(
 			return <ServiceObserver serviceKey={serviceKey} onSuccess={() => null} />;
 		}
 	},
-	state => ({}),
+	() => ({}),
 	(dispatch): ReceiverDispatchProps => ({
 		registerPushToken: (firebaseId: PushToken) => {
 			dispatch({ type: "SET_PUSH_TOKEN", value: firebaseId });
