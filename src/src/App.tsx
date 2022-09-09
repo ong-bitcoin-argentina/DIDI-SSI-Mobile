@@ -22,7 +22,7 @@ YellowBox.ignoreWarnings([
 const AppContainer = createAppContainer(AppNavigator);
 
 const StoreStatePanel = didiConnect(
-	class extends React.PureComponent<StoreContent> {
+	class StoreStatePanel extends React.PureComponent<StoreContent> {
 		render() {
 			if (true) {
 				return null;
