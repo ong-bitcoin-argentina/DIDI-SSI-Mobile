@@ -161,28 +161,28 @@ export const createTokenCoopsol = async (did: ActiveDid, data:IData):Promise<str
 		// "iat": 1658268440,
 		"sub": did.did(),
 		"vc": {
-		  "@context": [
+		"@context": [
 			"https://www.w3.org/2018/credentials/v1"
-		  ],
-		  "type": [
+		],
+		"type": [
 			"VerifiableCredential"
-		  ],
-		  "credentialSubject": {
+		],
+		"credentialSubject": {
 			"Datos Personales": {
-			  "category": "identity",
-			  "preview": {
+			"category": "identity",
+			"preview": {
 				"type": 2,
 				"fields": [
-				  "Numero de Identidad",
-				  "Nombre(s)",
-				  "Apellido(s)",
-				  "Nacionalidad",
-				  "Correo",
-				  "Numero de Celular"
+				"Numero de Identidad",
+				"Nombre(s)",
+				"Apellido(s)",
+				"Nacionalidad",
+				"Correo",
+				"Numero de Celular"
 				],
 				"cardLayout": null
-			  },
-			  "data": {
+			},
+			"data": {
 				"Credencial": "Datos Personales",
 				"Nombre(s)": data.name,
 				"Apellido(s)": data.lastName,
@@ -190,10 +190,10 @@ export const createTokenCoopsol = async (did: ActiveDid, data:IData):Promise<str
 				"Numero de Identidad": data.dni,
 				"Correo": data.email,
 				"Numero de Celular":data.phone
-			  }
 			}
-		  }
+			}
+		}
 		},
 		"iss":  did.did()
-	  });
+	});
 };
