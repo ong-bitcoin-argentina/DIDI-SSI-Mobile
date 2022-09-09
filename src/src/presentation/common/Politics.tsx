@@ -20,9 +20,9 @@ export type PoliticsScreenNavigation = {
 export class PoliticsScreen extends NavigationEnabledComponent<PoliticsScreenProps,{},PoliticsScreenNavigation> {
 	static navigationOptions = {
 		title: PoliticsTexts.title,
-		  headerTitleStyle: {
+		headerTitleStyle: {
 			fontSize: 14
-		  }
+		}
 	};
 
 	constructor(props: PoliticsScreenProps) {
