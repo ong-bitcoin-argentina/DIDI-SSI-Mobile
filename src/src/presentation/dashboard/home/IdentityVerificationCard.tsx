@@ -39,8 +39,8 @@ class IdentityVerificationCard extends React.Component<IdentityCardProps,Identit
 
 	async componentDidMount(){
 			if(this.props.validateDni !== 'Successful'){
-		    const result = await checkValidateDniVU(this.props.did);
-		    this.props.finishDniValidation(result.data.status);
+				const result = await checkValidateDniVU(this.props.did);
+				this.props.finishDniValidation(result.data.status);
 			}
 			const findVerified = this.props.credentials.find(function(element: any) {
 				return element.data.Credencial === strings.specialCredentials.PersonalData.title;
