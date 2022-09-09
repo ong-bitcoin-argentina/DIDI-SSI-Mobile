@@ -1,7 +1,10 @@
 import { CredentialDocument, Identity } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+/**	before delete.
+*	verify its use correspond
 import { downloadFile, DocumentDirectoryPath, readFile } from "react-native-fs";
+*/
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
