@@ -43,7 +43,7 @@ interface DispatchProps {
 
 type Props = StoreProps & DispatchProps;
  class CoopsolScreen extends NavigationEnabledComponent<
- 	Props,
+	Props,
 	CoopsolScreenState,
 	CoopsolScreenNavigation
 > {
