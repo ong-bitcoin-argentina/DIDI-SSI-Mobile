@@ -258,7 +258,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						onAction={isActive => { this.logOutByInactivity(isActive); }}			
 					>		
 					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				    <SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
+					<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
 					<FlatList
 						style={styles.body}
 						data={this.props.validCredentials}
