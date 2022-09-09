@@ -26,11 +26,14 @@ import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 
 import { SignupEnterPhoneProps } from "./SignupEnterPhone";
+import { PoliticsScreenProps } from "../../common/Politics";
 
 export type SignupOnboardingProps = {};
 
 export interface SignupOnboardingNavigation {
+	PoliticsScreen: PoliticsScreenProps;
 	SignupEnterPhone: SignupEnterPhoneProps;
+	Politics: {}
 }
 
 interface SignupOnboardingState {
@@ -194,7 +197,7 @@ export class SignupOnboardingScreen extends NavigationEnabledComponent<
 	}
 
 	private nextScreen = (andThen?: () => void) => {
-		this.replace("SignupEnterPhone", {}, andThen);
+		this.replace("Politics", {}, andThen);
 	};
 }
 

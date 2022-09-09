@@ -147,5 +147,38 @@ export default {
 			paddingHorizontal: 10,
 			paddingVertical: 8
 		}
+	}),
+	consentScreen:StyleSheet.create({
+		scroll: {
+			width: "100%",
+			paddingHorizontal: '2%'		
+		},
+		titles: {
+			fontSize: 15,
+			fontFamily: "Roboto-Regular",
+			fontWeight: "bold",
+			color: colors.darkBlue, 
+		},
+		titlesInner: {
+			fontFamily: "Roboto-Regular",
+			fontSize: 14,
+			color: colors.text, 
+		},
+		text: {
+			fontSize: 12,
+			fontFamily: "Roboto-Regular",
+			fontWeight: "100",
+			color: colors.text, 
+		},
+		titlesCard:{	
+			paddingVertical:10,        
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+		},
+		border: {
+			borderBottomWidth:1,
+			borderBottomColor: '#4A4A4A',
+		}
+		
 	})
 };
