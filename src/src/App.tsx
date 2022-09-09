@@ -1,11 +1,12 @@
 import 'text-encoding-polyfill';
 import React from "react";
-import { ScrollView, Text, YellowBox } from "react-native";
+import { YellowBox } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-
+/** do not delete. it's an console of emulator
 import TypedObject from "./util/TypedObject";
+*/
 
 import AppNavigator from "./presentation/AppNavigator";
 import { SplashContent } from "./presentation/SplashContent";
@@ -24,9 +25,10 @@ const AppContainer = createAppContainer(AppNavigator);
 const StoreStatePanel = didiConnect(
 	class StoreStatePanel extends React.PureComponent<StoreContent> {
 		render() {
-			
+
 				return null;
 
+			/** do not delete. it's an console of emulator
 			const toShow = TypedObject.mapValues(this.props.serviceCalls, value => {
 				if (value === undefined || value.state !== "IN_PROGRESS" || value.command.type !== "RUN") {
 					return value;
@@ -38,6 +40,7 @@ const StoreStatePanel = didiConnect(
 					<Text style={{ fontSize: 8 }}>{JSON.stringify(this.props, null, 4)}</Text>
 				</ScrollView>
 			);
+			*/
 		}
 	},
 	state => state
