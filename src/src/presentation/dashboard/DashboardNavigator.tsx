@@ -78,19 +78,20 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			screen: DashboardNavigator,
 			navigationOptions: {
 				title,
-				tabBarIcon: ({ tintColor }: { tintColor: string }) => (
-					<View style={{ alignItems: "center" }}>
-						{typeof image === "string" ? (
-							<DidiText.Icon color={tintColor} fontSize={24}>
-								{image}
-							</DidiText.Icon>
-						) : (
-							<Image 
-							style={{width: 30, height: 30, marginRight: '5%'}} 
-							source={image} />
-						)}
-					</View>
-				)
+				tabBarIcon({ tintColor }: { tintColor: string }){
+					return (
+						<View style={{ alignItems: "center" }}>
+							{typeof image === "string" ? (
+								<DidiText.Icon color={tintColor} fontSize={24}>
+									{image}
+								</DidiText.Icon>
+							) : (
+								<Image 
+								style={{width: 30, height: 30, marginRight: '5%'}} 
+								source={image} />
+							)}
+						</View>
+				)}
 			}
 		};
 	}
@@ -147,7 +148,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			DashboardCoopsol: screen(
 				CoopsolNavigator().stackNavigator("DashboardCoopsol"),
 				strings.tabNames.coopsol,
-				require("../resources/images/logo-gris-coopsol.png"),
+				require('../resources/images/logo-gris-coopsol.png'),
 				false
 			),
 			DashboardSettings: screen(
