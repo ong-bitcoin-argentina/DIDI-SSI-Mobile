@@ -39,7 +39,7 @@ const traits = (() => {
 		blinkRight: probabilityJump(f => f.rightEyeOpenProbability as number),
 		smile: probabilityJump(f => f.smilingProbability as number),
 		turnLeft: turn(f => f.yawAngle as number),
-		turnRight: turn(f => -1 * f.yawAngle as number)
+		turnRight: turn(f => -1 * (f.yawAngle as number))
 	};
 })();
 
