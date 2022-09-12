@@ -69,7 +69,7 @@ export class VuIdentityBackScreen extends NavigationEnabledComponent<
 							"VuIdentitySelfie",
 							{
 								front: this.props.front,
-								documentData: (this.props.documentData ?? this.state.documentData)!,
+								documentData: this.props.documentData ?? this.state.documentData,
 								back: data
 							},
 							reset

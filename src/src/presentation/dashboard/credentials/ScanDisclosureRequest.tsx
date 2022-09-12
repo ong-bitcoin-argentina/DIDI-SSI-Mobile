@@ -1,4 +1,4 @@
-import { CredentialDocument, Identity, SelectiveDisclosureRequest, SelectiveDisclosureResponse } from "@proyecto-didi/app-sdk";
+import { CredentialDocument, EthrDID, Identity, SelectiveDisclosureRequest, SelectiveDisclosureResponse } from "@proyecto-didi/app-sdk";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 
@@ -96,7 +96,7 @@ class ScanDisclosureRequestScreen extends NavigationEnabledComponent<
 	private async answerRequest() {
 		this.setState({ loading: true });
 		const { missingRequired, ownClaims, verifiedClaims } = SelectiveDisclosureResponse.getResponseClaims(
-			this.props.did!,
+			this.props.did as EthrDID,
 			this.props.request,
 			this.props.documents,
 			this.props.identity

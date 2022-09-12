@@ -57,7 +57,7 @@ export class VerifyCodeComponent extends React.PureComponent<VerifyCodeInternalP
 
 				<DidiServiceButton
 					disabled={!this.canPressContinueButton()}
-					onPress={() => this.props.onPressContinueButton(this.state.inputCode!)}
+					onPress={() => this.props.onPressContinueButton(this.state.inputCode as string)}
 					title={this.props.continueButtonText ?? strings.accessCommon.validateButtonText}
 					isPending={this.props.isContinuePending || false}
 				/>
