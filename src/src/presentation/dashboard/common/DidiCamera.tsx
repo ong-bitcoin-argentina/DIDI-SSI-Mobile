@@ -191,7 +191,8 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 	}
 
 	private async onCameraReady() {
-		const aspectRatios = await this.camera!.getSupportedRatiosAsync();
+		if(this.camera){
+		const aspectRatios = await this.camera.getSupportedRatiosAsync();
 		const aspectRatio =
 			aspectRatios.length === 0
 				? "4:3" // Default, should always exist
@@ -200,6 +201,7 @@ export class DidiCamera extends React.Component<DidiCameraProps, DidiCameraState
 
 		defaultAspectRatio = { width, height };
 		this.setState({ cameraAvailable: true, ratio: { width, height } });
+		}
 	}
 
 	private renderPictureButton() {
