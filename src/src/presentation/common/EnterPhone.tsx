@@ -105,7 +105,9 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		const countryPrefix = this.state.inputCountryCallingCode;
 		const phoneNumber = `+${countryPrefix}${this.state.inputPhoneNumber}`;		
 		this.props.onPressContinueButton(phoneNumber, this.state.inputPassword || null);
-		this.setState({disabledButton:!this.state.disabledButton})
+		this.setState((state) => ({
+            disabledButton: !state.disabledButton,
+        }));
 	}
 }
 
