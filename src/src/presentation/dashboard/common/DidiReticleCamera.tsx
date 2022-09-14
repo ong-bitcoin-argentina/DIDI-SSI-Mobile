@@ -67,7 +67,7 @@ function toViewStyle(rect: LayoutRectangle) {
 		height: rect.height,
 		top: rect.y,
 		left: rect.x,
-		position: "absolute" as "absolute"
+		position: "absolute" as const
 	};
 }
 

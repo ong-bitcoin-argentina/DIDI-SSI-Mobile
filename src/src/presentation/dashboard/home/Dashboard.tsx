@@ -1,7 +1,10 @@
 import { CredentialDocument, Identity } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+/**	before delete.
+*	verify its use correspond
 import { downloadFile, DocumentDirectoryPath, readFile } from "react-native-fs";
+*/
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
@@ -219,6 +222,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 			loadImage: true
 		});
 
+		/**	before delete.
+		*	verify its use correspond
 		const imgPath = `${DocumentDirectoryPath}/${this.props.imageId}.jpeg`;
 		const response = downloadFile({
 			fromUrl: this.props.imageUrl,
@@ -227,6 +232,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			const data = await readFile(imgPath, "base64");
 			this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		});
+		*/
 	}
 
 	async shouldComponentUpdate(nextState) {
@@ -258,7 +264,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 						onAction={isActive => { this.logOutByInactivity(isActive); }}			
 					>		
 					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				    <SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
+					<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
 					<FlatList
 						style={styles.body}
 						data={this.props.validCredentials}

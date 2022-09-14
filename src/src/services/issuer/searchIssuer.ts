@@ -24,8 +24,8 @@ export async function searchIssuerByName(IssuersEthrDID: EthrDID[], nameToSearch
             const issuers = result.right.data.issuersList;
             for (const issuer of issuers) {
                 for ( const IssuerEthrDID  of IssuersEthrDID) {
-                    let ethrDID = removeBlockchainFromDid(IssuerEthrDID.did());
-                    let IssuerName = issuer.name?.split(" ");
+                    const ethrDID = removeBlockchainFromDid(IssuerEthrDID.did());
+                    const IssuerName = issuer.name?.split(" ");
                     if ( JSON.stringify(issuer.did).slice(1,-1) === ethrDID && IssuerName?.find(element => element.toLowerCase() === nameToSearch.toLowerCase())) {    
                         return true
                     }
