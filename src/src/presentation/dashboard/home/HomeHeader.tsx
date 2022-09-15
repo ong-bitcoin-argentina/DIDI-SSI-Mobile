@@ -80,7 +80,7 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 				<View style={styles.activityIndicatorContainer}>
 
 					<TouchableOpacity style={[styles.bellContainer, {paddingRight: 0}]} onPress={this.props.onMarkPress}>
-						<Icon  name="question" color={colors.primaryText} size={28}  />
+						<Icon  name="questioncircle" color={colors.primaryText} size={28}  />
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
 						<DidiText.Icon color={this.props.newTokensAvailable ? colors.highlight : undefined} fontSize={24}>
