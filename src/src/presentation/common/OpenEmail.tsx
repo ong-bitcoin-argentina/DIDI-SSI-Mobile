@@ -8,7 +8,7 @@ import { StyleSheet, Linking } from 'react-native';
 import colors from "../resources/colors";
 import strings from "../resources/strings";
 const mailTo = "soporte@aidi.app";
-const mailBody = "Información";
+const mailBody = "";
 
 export type OpenEmailScreenProps = {};
 export type OpenEmailScreenNavigation = {};
@@ -35,7 +35,7 @@ export class OpenEmailScreen extends NavigationEnabledComponent<OpenEmailScreenP
 	}
 
 	private openMail = async() => {
-		Linking.openURL(`mailto:${mailTo}?subject=SendMail&body=${mailBody}`); 
+		Linking.openURL(`mailto:${mailTo}?subject=Contacto con Equipo aidi&body=${mailBody}`); 
 	}
 }
 
