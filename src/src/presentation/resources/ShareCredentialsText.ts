@@ -1,5 +1,5 @@
 export default {
-    title: "Compartir mis credenciales",
+    title: "Importante antes de compartir…",
     description: "Tú tienes el control de tu información y puedes elegir cuándo y con quien compartirla.",
     paragraph1: "En ai·di resguardamos tu información de forma segura.",
     paragraph2: "Estás por compartir tus datos fuera de ai·di. Algunos pueden contener datos con características especiales.",
