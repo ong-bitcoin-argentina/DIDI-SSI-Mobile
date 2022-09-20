@@ -58,7 +58,7 @@ export class ValidateIdentityScreen extends NavigationEnabledComponent<ValidateI
 						value={this.state.firstCheck}
 						onValueChange={this.onCheck.bind(this, 'firstCheck', this.state.firstCheck)}
 						/>
-						<DidiText.Small style={{textAlign: 'justify'}}>{ValidateIdentityText.agreement}</DidiText.Small>
+						<DidiText.Small style={{textAlign: 'left'}}>{ValidateIdentityText.agreement}</DidiText.Small>
 					</View>
 				</View>
 				</View>
