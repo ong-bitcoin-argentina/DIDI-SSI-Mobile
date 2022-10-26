@@ -31,11 +31,9 @@ import SettingsNavigator from "./settings/SettingsNavigator";
 import SemillasNavigator from "./semillas/SemillasNavigator";
 */
 /* don't remove these lines
-import CoopsolNavigator from "./coopsol/CoopsolNavigator";
-*/
-/* don't remove these lines
 import { RoundsScreen } from "./rounds/RoundsScreen";
 */
+import CoopsolNavigator from "./coopsol/CoopsolNavigator";
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
 import IssuersScreen  from "./issuers/IssuersScreen";
@@ -152,14 +150,12 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				false
 			),
 			*/
-			/* don't remove these lines
 			DashboardCoopsol: screen(
 				CoopsolNavigator().stackNavigator("DashboardCoopsol"),
 				strings.tabNames.coopsol,
 				{url: require('../resources/images/logo-gris-coopsol.png')},
 				false
 			),
-			*/
 			DashboardSettings: screen(
 				SettingsNavigator({
 					...then,
