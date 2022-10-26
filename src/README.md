@@ -1,7 +1,7 @@
 # didi
 
 # Diseños:
-[https://sketch.cloud/s/9ZYbM/a/DJD3aj/play](url)
+[Visualiza presentación de diseño](https://drive.google.com/file/d/1LoEFkPBtPO1fRZZler5VLpc8i1lz0dI5/view?usp=sharing)
 
 
 ---
