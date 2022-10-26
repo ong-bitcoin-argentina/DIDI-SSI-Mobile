@@ -27,7 +27,9 @@ import DocumentsNavigator from "./documents/DocumentsNavigator";
 import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
+/* don't remove these lines
 import SemillasNavigator from "./semillas/SemillasNavigator";
+*/
 /* don't remove these lines
 import CoopsolNavigator from "./coopsol/CoopsolNavigator";
 */
@@ -142,12 +144,14 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				"assignment_returned",
 				false
 			),
+			/* don't remove these lines
 			DashboardSemillas: screen(
 				SemillasNavigator().stackNavigator("DashboardSemillas"),
 				strings.tabNames.semillas,
 				"spa",
 				false
 			),
+			*/
 			/* don't remove these lines
 			DashboardCoopsol: screen(
 				CoopsolNavigator().stackNavigator("DashboardCoopsol"),
