@@ -22,7 +22,7 @@ interface ObserverDispatchProps {
 }
 
 export const PushNotificationObserver = didiConnect(
-	class extends React.PureComponent<PushNotificationObserverProps & ObserverStateProps & ObserverDispatchProps> {
+	class PushNotificationObserver extends React.PureComponent<PushNotificationObserverProps & ObserverStateProps & ObserverDispatchProps> {
 		componentDidUpdate() {
 			if (this.props.pendingPush === undefined) {
 				return;
@@ -121,7 +121,7 @@ export const PushNotificationReceiver = didiConnect(
 			return <ServiceObserver serviceKey={serviceKey} onSuccess={() => null} />;
 		}
 	},
-	state => ({}),
+	() => ({}),
 	(dispatch): ReceiverDispatchProps => ({
 		registerPushToken: (firebaseId: PushToken) => {
 			dispatch({ type: "SET_PUSH_TOKEN", value: firebaseId });

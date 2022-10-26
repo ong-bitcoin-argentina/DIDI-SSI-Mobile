@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, View, ViewProps } from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, View, ViewProps } from "react-native";
 import { NavigationContainer, NavigationScreenProp, NavigationState, StackActions } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
@@ -53,7 +53,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 	function screen(
 		InnerNavigator: NavigationContainer,
 		title: string,
-		image: string | string[] | NodeRequire,
+		image: string | { url: ImageSourcePropType },
 		withFloatButton = true
 	) {
 		class DashboardNavigator extends React.Component<NavigatorProps> {
@@ -79,19 +79,20 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			screen: DashboardNavigator,
 			navigationOptions: {
 				title,
-				tabBarIcon: ({ tintColor }: { tintColor: string }) => (
-					<View style={{ alignItems: "center" }}>
-						{typeof image === "string" ? (
-							<DidiText.Icon color={tintColor} fontSize={24}>
-								{image}
-							</DidiText.Icon>
-						) : (
-							<Image 
-							style={{width: 30, height: 30, marginRight: '5%'}} 
-							source={image} />
-						)}
-					</View>
-				)
+				tabBarIcon({ tintColor }: { tintColor: string }){
+					return (
+						<View style={{ alignItems: "center" }}>
+							{typeof image === "string" ? (
+								<DidiText.Icon color={tintColor} fontSize={24}>
+									{image}
+								</DidiText.Icon>
+							) : (
+								<Image 
+								style={{width: 30, height: 30, marginRight: '5%'}} 
+								source={image.url} />
+							)}
+						</View>
+				)}
 			}
 		};
 	}
@@ -151,7 +152,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 			DashboardCoopsol: screen(
 				CoopsolNavigator().stackNavigator("DashboardCoopsol"),
 				strings.tabNames.coopsol,
-				require("../resources/images/logo-gris-coopsol.png"),
+				{url: require('../resources/images/logo-gris-coopsol.png')},
 				false
 			),
 			*/

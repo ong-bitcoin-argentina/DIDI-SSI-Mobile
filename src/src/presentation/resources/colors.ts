@@ -51,7 +51,8 @@ const colors = {
 	subtitleAlpha: "A0",
 
 	yellow: "#ffbd10",
-	transparent: "transparent"
+	transparent: "transparent",
+	darkBlue: "#313180"
 };
 
 export default colors;

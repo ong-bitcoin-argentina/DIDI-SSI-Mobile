@@ -53,7 +53,7 @@ export class ForgotPasswordNewPasswordScreen extends NavigationEnabledComponent<
 				serviceButtonText={strings.accessCommon.recoverButtonText}
 				isServiceBlocked={this.state.password === null}
 				serviceCall={(serviceKey, validationCode) =>
-					recoverPassword(serviceKey, this.props.email, validationCode, this.state.password!)
+					recoverPassword(serviceKey, this.props.email, validationCode, this.state.password as string)
 				}
 				onServiceSuccess={() => this.navigate("Dashboard", {})}
 				onResendCodePress={serviceKey => sendMailValidator(serviceKey, this.props.email, null)}

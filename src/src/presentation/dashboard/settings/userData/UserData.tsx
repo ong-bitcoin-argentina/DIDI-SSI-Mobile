@@ -97,7 +97,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		return this.renderDropdown({
 			label: strings.userData.personalDataLabel,
 			data: personalDataStructure.order,
-			renderOne: key => {
+			renderOne(key ){
 				const struct = personalDataStructure.structure[key];
 				const data =
 					key === "cellPhone"
@@ -126,7 +126,7 @@ class UserDataScreen extends NavigationEnabledComponent<UserDataInternalProps, U
 		return this.renderDropdown({
 			label: strings.userData.addressDataLabel,
 			data: addressDataStructure.order,
-			renderOne: key => {
+			renderOne(key){
 				const struct = addressDataStructure.structure[key];
 				const data = this.props.identity.address.value[key];
 				return (

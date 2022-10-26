@@ -74,9 +74,12 @@ export const initializeDeepLinking = () => {
 	Linking.addEventListener("url", handleUrl);
 	DeepLinking.addRoute("/login");
 	DeepLinking.addRoute("/credentials");
+	/**	before delete.
+	*	verify its use correspond
 	const url = Linking.getInitialURL()
 		.then(url => url && Linking.openURL(url))
 		.catch(err => console.error("An error occurred", err));
+	*/
 };
 
 export const removeDeepLinkListener = () => {
@@ -164,28 +167,28 @@ export const createTokenCoopsol = async (did: ActiveDid, data:IData):Promise<str
 		// "iat": 1658268440,
 		"sub": did.did(),
 		"vc": {
-		  "@context": [
+		"@context": [
 			"https://www.w3.org/2018/credentials/v1"
-		  ],
-		  "type": [
+		],
+		"type": [
 			"VerifiableCredential"
-		  ],
-		  "credentialSubject": {
+		],
+		"credentialSubject": {
 			"Datos Personales": {
-			  "category": "identity",
-			  "preview": {
+			"category": "identity",
+			"preview": {
 				"type": 2,
 				"fields": [
-				  "Numero de Identidad",
-				  "Nombre(s)",
-				  "Apellido(s)",
-				  "Nacionalidad",
-				  "Correo",
-				  "Numero de Celular"
+				"Numero de Identidad",
+				"Nombre(s)",
+				"Apellido(s)",
+				"Nacionalidad",
+				"Correo",
+				"Numero de Celular"
 				],
 				"cardLayout": null
-			  },
-			  "data": {
+			},
+			"data": {
 				"Credencial": "Datos Personales",
 				"Nombre(s)": data.name,
 				"Apellido(s)": data.lastName,
@@ -193,19 +196,20 @@ export const createTokenCoopsol = async (did: ActiveDid, data:IData):Promise<str
 				"Numero de Identidad": data.dni,
 				"Correo": data.email,
 				"Numero de Celular":data.phone
-			  }
 			}
-		  }
+			}
+		}
 		},
 		"iss":  did.did()
 	  });
 };
+
 function removeBlockchainFromDid(did: string): string {
     const didAsArray = did.split(":");
     if (didAsArray.length === 3) return did;
     didAsArray.splice(2, 1);
     return didAsArray.join(":");
-  }
+};
 
 
 export const JwtDecodeDocuments = async (documents:CredentialDocument[])=>{
@@ -217,7 +221,7 @@ export const JwtDecodeDocuments = async (documents:CredentialDocument[])=>{
 		result.push(docJWT)
 	}
 	return result;
-}
+};
 
 /**
  * crea el token shareResponse:

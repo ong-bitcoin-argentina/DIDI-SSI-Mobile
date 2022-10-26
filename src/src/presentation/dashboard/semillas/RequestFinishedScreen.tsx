@@ -92,7 +92,7 @@ class RequestFinishedScreen extends NavigationEnabledComponent<
 							{customEmail ? (
 								<Small>Mail: {customEmail}</Small>
 							) : (
-								<Prestador style={styles.prestador} item={activePrestador} active={false} onPress={() => {}} />
+								<Prestador style={styles.prestador} item={activePrestador} active={false} onPress={undefined} />
 							)}
 						</View>
 					</View>

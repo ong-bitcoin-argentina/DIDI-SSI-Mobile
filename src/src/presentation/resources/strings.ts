@@ -136,6 +136,11 @@ export default {
 			connecting: "Conectándote a ronda..."
 		}
 	},
+	contact: {
+		title: "Si las preguntas frecuentes no han resuelto tu duda, envía un mensaje al correo electrónico soporte@aidi.app",
+		description: "En breve te responderemos.",
+		action: "Abrir email"
+	},
 	dashboardJump: {
 		scanCredential: "Escanear Credenciales",
 		shareCredential: "Compartir",
@@ -479,6 +484,7 @@ export default {
 		changeEmail: "Cambiar E-mail",
 		aboutAidi: "Acerca de ai·di",
 		aboutRonda: "Acerca de ronda",
+		help: "Ayuda",
 		about: {
 			title: `Acerca de ${appName}`,
 			paragraphs: [

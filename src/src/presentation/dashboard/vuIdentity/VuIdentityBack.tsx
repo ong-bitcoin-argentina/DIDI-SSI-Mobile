@@ -54,7 +54,7 @@ export class VuIdentityBackScreen extends NavigationEnabledComponent<
 				image={require("../../resources/images/validateIdentityExplainBack.png")}
 				camera={(onLayout, reticle, onPictureTaken) => (
 					<VuDidiCamera
-					    VuBack={true}
+						VuBack={true}
 						onCameraLayout={onLayout}
 						cameraLandscape={true} 
 						onPictureTaken={onPictureTaken} 
@@ -69,7 +69,7 @@ export class VuIdentityBackScreen extends NavigationEnabledComponent<
 							"VuIdentitySelfie",
 							{
 								front: this.props.front,
-								documentData: (this.props.documentData ?? this.state.documentData)!,
+								documentData: this.props.documentData ?? this.state.documentData,
 								back: data
 							},
 							reset

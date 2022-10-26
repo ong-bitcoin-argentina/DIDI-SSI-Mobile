@@ -141,7 +141,7 @@ class CoopsolValidationState extends Component<Props, State> {
 						style={[button.lightRed, styles.renaperButton]}/>: null}
 				</View>
 
-				 <View>
+				<View>
 					{!validateDni? <Small style={styles.smallText}>{validate.question}</Small>:null}
 					<Small onPress={goToCoopsolValidation} style={[styles.smallText, { textDecorationLine: "underline" }]}>
 						{validate.identityFromCoopsol}

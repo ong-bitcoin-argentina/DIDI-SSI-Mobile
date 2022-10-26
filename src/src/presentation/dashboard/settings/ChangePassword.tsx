@@ -60,7 +60,7 @@ class ChangePasswordScreen extends NavigationEnabledComponent<ChangePasswordInte
 				<DidiServiceButton
 					title={strings.userData.changePassword.changePassword}
 					disabled={this.state.oldPassword.length === 0 || this.state.password === null}
-					onPress={() => this.props.changePassword(this.state.oldPassword, this.state.password!)}
+					onPress={() => this.props.changePassword(this.state.oldPassword, this.state.password as string)}
 					isPending={this.props.changePasswordPending}
 				/>
 			</DidiScrollScreen>

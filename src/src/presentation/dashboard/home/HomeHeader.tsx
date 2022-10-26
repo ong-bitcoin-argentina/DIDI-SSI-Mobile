@@ -13,10 +13,12 @@ import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { ActiveDid } from "../../../store/reducers/didReducer";
 import { ComponentState, UpdateWaiticon } from "../../util/UpdateWaiticon";
+import Icon from "react-native-vector-icons/AntDesign";
 
 export interface HomeHeaderProps {
 	onPersonPress: () => void;
 	onBellPress: () => void;
+	onMarkPress: () => void;
 }
 
 interface HomeHeaderStateProps {
@@ -76,6 +78,10 @@ class HomeHeader extends React.Component<HomeHeaderProps & HomeHeaderStateProps 
 					</View>
 				</TouchableOpacity>
 				<View style={styles.activityIndicatorContainer}>
+
+					<TouchableOpacity style={[styles.bellContainer, {paddingRight: 0}]} onPress={this.props.onMarkPress}>
+						<Icon  name="questioncircle" color={colors.primaryText} size={28}  />
+					</TouchableOpacity>
 					<TouchableOpacity style={styles.bellContainer} onPress={this.props.onBellPress}>
 						<DidiText.Icon color={this.props.newTokensAvailable ? colors.highlight : undefined} fontSize={24}>
 							

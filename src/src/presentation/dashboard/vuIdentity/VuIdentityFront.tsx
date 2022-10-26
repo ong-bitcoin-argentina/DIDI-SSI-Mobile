@@ -114,7 +114,7 @@ class VuIdentityFrontScreen extends NavigationEnabledComponent<
 								this.navigate(
 									"VuIdentityBack",
 									{
-										documentData: this.state.documentData!,
+										documentData: this.state.documentData as DocumentBarcodeData,
 										front: data
 									},
 									reset

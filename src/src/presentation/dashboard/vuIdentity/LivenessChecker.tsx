@@ -35,11 +35,11 @@ const traits = (() => {
 		{ low: 25, high: 50 }
 	]);
 	return {
-		blinkLeft: probabilityJump(f => f.leftEyeOpenProbability!),
-		blinkRight: probabilityJump(f => f.rightEyeOpenProbability!),
-		smile: probabilityJump(f => f.smilingProbability!),
-		turnLeft: turn(f => f.yawAngle!),
-		turnRight: turn(f => -1 * f.yawAngle!)
+		blinkLeft: probabilityJump(f => f.leftEyeOpenProbability as number),
+		blinkRight: probabilityJump(f => f.rightEyeOpenProbability as number),
+		smile: probabilityJump(f => f.smilingProbability as number),
+		turnLeft: turn(f => f.yawAngle as number),
+		turnRight: turn(f => -1 * (f.yawAngle as number))
 	};
 })();
 
