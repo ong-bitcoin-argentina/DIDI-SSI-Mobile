@@ -193,7 +193,7 @@ class SelfieCamera extends React.Component<SelfieCameraProps, SelfieCameraState>
 
 			case "liveness":
 				if (livenessChecker.didPerformGesture(this.props.gesture, this.state.instructionIndex)) {
-					this.props.onPictureTaken(this.state.rawPicture!);
+					this.props.onPictureTaken(this.state.rawPicture as TakePictureResponse);
 				}
 				return;
 

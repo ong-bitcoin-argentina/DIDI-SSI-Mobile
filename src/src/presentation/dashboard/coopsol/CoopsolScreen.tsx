@@ -26,7 +26,7 @@ const {
 export interface CoopsolScreenNavigation {
 	DashboardHome: {};
 	Prestadores: {};
-	ValidateID: {};
+	ValidateIdentity: {};
 	ValidateCoopsolID: {};
 }
 
@@ -43,7 +43,7 @@ interface DispatchProps {
 
 type Props = StoreProps & DispatchProps;
  class CoopsolScreen extends NavigationEnabledComponent<
- 	Props,
+	Props,
 	CoopsolScreenState,
 	CoopsolScreenNavigation
 > {
@@ -68,7 +68,7 @@ type Props = StoreProps & DispatchProps;
 
 	goToVuSecurityValidation = () => {
 		this.toggleModal();
-		this.navigate("ValidateID", {});
+		this.navigate("ValidateIdentity", {});
 	};
 
 	goToCoopsolValidation = () => {

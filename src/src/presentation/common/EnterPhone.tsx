@@ -59,10 +59,8 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 							translation="spa"
 							countryCode={this.state.inputCountryCode}
 							countryCodes={["AR", "BZ", "BO", "BR", "CL", "CO", "CR", "EC", "SV", "FK", "GF", "GT", "GY", "HN", "NI", "PA", "PY", "PE", "SR", "UY", "VE", "MX"]} />
-					    
-						<Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}>
-							arrow_drop_down
-					    	</Icon>
+   
+						<Icon fontSize={22} color="black" style={{justifyContent:"flex-end"}}> arrow_drop_down </Icon>
 
 					</View>					
 					</View>
@@ -107,7 +105,9 @@ export class EnterPhoneScreen extends React.PureComponent<EnterPhoneProps, Enter
 		const countryPrefix = this.state.inputCountryCallingCode;
 		const phoneNumber = `+${countryPrefix}${this.state.inputPhoneNumber}`;		
 		this.props.onPressContinueButton(phoneNumber, this.state.inputPassword || null);
-		this.setState({disabledButton:!this.state.disabledButton})
+		this.setState((state) => ({
+            disabledButton: !state.disabledButton,
+        }));
 	}
 }
 

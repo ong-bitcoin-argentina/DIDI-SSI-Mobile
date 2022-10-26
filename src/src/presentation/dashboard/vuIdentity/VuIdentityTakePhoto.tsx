@@ -123,7 +123,10 @@ class VuIdentityTakePhoto extends React.Component<VuIdentityTakePhotoProps, VuId
 										}}
 										source={{ uri: this.state.uri }}
 									/>
-									<TouchableOpacity style={cameraButtonStyle} onPress={() => this.onPictureAccepted(uriResponse, this.state.documentData!)}>
+									<TouchableOpacity 
+										style={cameraButtonStyle} 
+										onPress={() => this.onPictureAccepted(uriResponse, this.state.documentData as IReturnGetInformation)}
+									>
 									{this.props.vuResponseFront === strings.vuIdentity.explainFront.vuResponseFront.notConfirmed||
 									this.props.vuResponseBack === strings.vuIdentity.explainBack.vuResponseBack.notConfirmed?
 									<Cross width="100%" height="100%" />:<Checkmark width="100%" height="100%" />}

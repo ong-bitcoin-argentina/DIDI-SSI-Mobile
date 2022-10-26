@@ -15,6 +15,9 @@ import { ChangePhoneEnterScreen } from "./userData/ChangePhoneEnterPhone";
 import { ChangePhoneVerifyScreen } from "./userData/ChangePhoneVerifyPhone";
 import { EditProfileScreen } from "./userMenu/EditProfile";
 import { AboutRondaScreen } from "./AboutRonda";
+import { CommonQuestionsScreen } from "../../common/CommonQuestions";
+import { OpenEmailScreen } from "../../common/OpenEmail";
+import { PoliticsScreen } from "../../common/Politics";
 
 export interface SettingsNavigatorNavigation {
 	Access: StartAccessProps;
@@ -40,6 +43,9 @@ export default function (then: NavTree<SettingsNavigatorNavigation>) {
 			IdentitySettings: NavMap.from(IdentitySettingsScreen, {}),
 			AboutThisAppScreen: NavMap.from(AboutThisAppScreen, {}),
 			AboutRonda: NavMap.from(AboutRondaScreen, {}),
+			OpenEmail: NavMap.from(OpenEmailScreen,{}),
+			Politics: NavMap.from(PoliticsScreen,{}),
+			CommonQuestions: NavMap.from(CommonQuestionsScreen, {}),
 			ServiceSettings: NavMap.from(ServiceSettingsScreen, {}),
 			JWTDecoderScreen: NavMap.from(JWTDecoderScanScreen, {})
 		}),

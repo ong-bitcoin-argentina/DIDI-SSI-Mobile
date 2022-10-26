@@ -30,8 +30,6 @@ interface BarcodeProps {
 interface FaceProps {
 	explanation: string;
 	onFacesDetected: ((response: Face[]) => void | undefined) | undefined
-
-	
 }
 interface VuSecurityProps {
 	VuFront?: boolean;
@@ -148,7 +146,7 @@ export class VuDidiSelfieCamera extends React.Component<VuDidiSelfieCameraProps,
 				faceDetectionClassifications = {RNCamera.Constants.FaceDetection.Classifications.all}
 				faceDetectionMode= {RNCamera.Constants.FaceDetection.Mode.fast}
 				faceDetectionLandmarks={RNCamera.Constants.FaceDetection.Landmarks.all}
-				onFacesDetected= {res => this.props.onFacesDetected!(res.faces)}
+				onFacesDetected= {res => this.props.onFacesDetected?this.props.onFacesDetected(res.faces): null}
 				notAuthorizedView={
 					<DidiText.CameraExplanation style={styles.notAuthorized}>
 						{strings.camera.notAuthorized}

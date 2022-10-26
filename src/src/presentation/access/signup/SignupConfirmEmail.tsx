@@ -97,7 +97,7 @@ class SignupConfirmEmailScreen extends NavigationEnabledComponent<
 	private registerUser() {
 		const { email, phoneNumber, name, lastname } = this.props;
 		this.setState({ didVerifyEmail: true });
-		this.props.registerUser(email, this.state.password!, phoneNumber, name, lastname);
+		this.props.registerUser(email, this.state.password as string, phoneNumber, name, lastname);
 		this.props.persistPersonalData(name, lastname);
 	}
 }

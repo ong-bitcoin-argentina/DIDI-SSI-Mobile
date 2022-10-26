@@ -1,13 +1,17 @@
 import { CredentialDocument, Identity } from "@proyecto-didi/app-sdk";
 import React, { Fragment } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+/**	before delete.
+*	verify its use correspond
 import { downloadFile, DocumentDirectoryPath, readFile } from "react-native-fs";
+*/
 import NavigationHeaderStyle from "../../common/NavigationHeaderStyle";
 import commonStyles from "../../resources/commonStyles";
 import { DidiText } from "../../util/DidiText";
 import DropdownMenu from "../../util/DropdownMenu";
 import NavigationEnabledComponent from "../../util/NavigationEnabledComponent";
-import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard";
+import { DocumentCredentialCard, DocumentCredentialCardContext, extractContext } from "../common/documentToCard"; 
+import UserInactivity from 'react-native-user-inactivity';
 import { RecentActivity } from "../../../model/RecentActivity";
 import { getAllIssuerNames } from "../../../services/user/getIssuerNames";
 import { ActiveDid } from "../../../store/reducers/didReducer";
@@ -16,6 +20,7 @@ import colors from "../../resources/colors";
 import strings from "../../resources/strings";
 import themes from "../../resources/themes";
 import { DocumentDetailProps } from "../documents/DocumentDetail";
+
 import DidiActivity from "./DidiActivity";
 import { EvolutionCard } from "./EvolutionCard";
 import HomeHeader from "./HomeHeader";
@@ -40,6 +45,11 @@ import { userHasRonda } from "../../../services/user/userHasRonda";
 import { getPersonalData } from "../../../services/user/getPersonalData";
 import { ValidatedIdentity } from "../../../store/selector/combinedIdentitySelector";
 import { IdentityVerificationCard } from './IdentityVerificationCard';
+import { CommonQuestionsScreenProps } from "../../common/CommonQuestions";
+import { PoliticsScreenProps } from "../../common/Politics";
+
+const INACTIVITY_TIME_EXPIRATION = 1800000000; // 3min = 180000
+
 export type DashboardScreenProps = {};
 interface DashboardScreenStateProps {
 	did: ActiveDid;
@@ -55,6 +65,7 @@ interface DashboardScreenStateProps {
 }
 interface DashboardScreenDispatchProps {
 	login(): void;
+	logout():void;
 	resetDniValidation: () => void;
 	finishDniValidation: (statusDni : string) => void;
 	resetPendingLinking: () => void;
@@ -73,19 +84,22 @@ interface DashboardScreenState {
 }
 
 export interface DashboardScreenNavigation {
+	ValidateIdentity: {};
 	EditProfile: EditProfileProps;
 	NotificationScreen: NotificationScreenProps;
+	CommonQuestions: CommonQuestionsScreenProps;
+	Politics:PoliticsScreenProps;
 	DashDocumentDetail: DocumentDetailProps;
 	DashboardDocuments: DocumentsScreenProps;
 	__DashboardSettings: {};
-	ValidateID: {};
+	DashboardIdentity: {};
 }
 
 class DashboardScreen extends NavigationEnabledComponent<
 	DashboardScreenInternalProps,
 	DashboardScreenState,
 	DashboardScreenNavigation
-	> {
+> {
 	static navigationOptions = NavigationHeaderStyle.gone;
 
 	constructor(props: DashboardScreenInternalProps) {
@@ -138,7 +152,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 		}
 	};
 
-	async componentDidMount() {
+	componentDidMount() {
 		const { pendingLinking } = this.props;
 		this.props.login();
 		deepLinkHandler(this.urlHandler);
@@ -150,7 +164,6 @@ class DashboardScreen extends NavigationEnabledComponent<
 	}
 
 	private renderCard(document: CredentialDocument, index: number) {
-
 		return (
 			<TouchableOpacity
 				key={`RG_${index}`}
@@ -209,6 +222,8 @@ class DashboardScreen extends NavigationEnabledComponent<
 			loadImage: true
 		});
 
+		/**	before delete.
+		*	verify its use correspond
 		const imgPath = `${DocumentDirectoryPath}/${this.props.imageId}.jpeg`;
 		const response = downloadFile({
 			fromUrl: this.props.imageUrl,
@@ -217,6 +232,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 			const data = await readFile(imgPath, "base64");
 			this.setIdentityMerging({ image: { mimetype: "image/jpeg", data } });
 		});
+		*/
 	}
 
 	async shouldComponentUpdate(nextState) {
@@ -231,11 +247,24 @@ class DashboardScreen extends NavigationEnabledComponent<
 		return false;
 	}
 
+	private async logOutByInactivity(isActive: boolean) {
+		if(!isActive) {
+			this.props.resetPendingLinking();
+			this.props.logout();
+			this.navigate("ExpiredAccount", {});
+		}
+	}
+
 	render() {
+		
 		return (
 			<Fragment>
-				<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
-				<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
+					<UserInactivity
+						timeForInactivity={INACTIVITY_TIME_EXPIRATION}					
+						onAction={isActive => { this.logOutByInactivity(isActive); }}			
+					>		
+					<StatusBar backgroundColor={themes.darkNavigation} barStyle="light-content" />
+					<SafeAreaView style={[commonStyles.view.area, { backgroundColor: themes.navigation }]}>
 					<FlatList
 						style={styles.body}
 						data={this.props.validCredentials}
@@ -249,10 +278,11 @@ class DashboardScreen extends NavigationEnabledComponent<
 								<HomeHeader
 									onPersonPress={() => this.navigate("EditProfile", {})}
 									onBellPress={() => this.navigate("NotificationScreen", {})}
+									onMarkPress={() => this.navigate("CommonQuestions", {})}
 								/>
 								<View style={styles.headerCredentials}> 
 									<IdentityVerificationCard
-										onStartValidateId={() => this.navigate("ValidateID", {})}
+										onStartValidateId={() => this.navigate("ValidateIdentity", {})}
 										style={{ marginBottom: styles.headerCredentials.marginBottom }}
 									/>
 									<EvolutionCard credentials={this.props.credentials} />
@@ -275,6 +305,7 @@ class DashboardScreen extends NavigationEnabledComponent<
 					alreadyHave={this.props.hasRonda}
 					automatic
 				/> */}
+				</UserInactivity>
 			</Fragment>
 		);
 	}
@@ -299,6 +330,7 @@ export default didiConnect(
 			dispatch({ type: "SESSION_LOGIN" });
 			dispatch(getAllIssuerNames());
 		},
+		logout: () => dispatch({ type: "SESSION_LOGOUT" }),
 		resetDniValidation: () => dispatch({ type: "VALIDATE_DNI_RESET" }),
 		resetPendingLinking: () => dispatch({ type: "PENDING_LINKING_RESET" }),
 		finishDniValidation: (statusDni : string) => dispatch({ type: "VALIDATE_DNI_RESOLVE", state: { state: statusDni } }),
