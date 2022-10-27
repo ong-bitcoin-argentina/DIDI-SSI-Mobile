@@ -34,6 +34,7 @@ interface IssuerScreenStateProps {
 
 interface IssuerScreenDispatchProps {
     getAllIssuerData: (limit: number, count: number) => void;
+    IssuersReset: () => void;
 }
 
 export type IssuerScreenProps = IssuerScreenStateProps & IssuerScreenDispatchProps;
@@ -143,6 +144,11 @@ class IssuersScreen extends NavigationEnabledComponent<
             </View>
         )
     }
+    loadMore = () =>{
+        this.props.IssuersReset();
+        const {limit, page} = this.state;
+        this.props.getAllIssuerData(limit, page);
+    }
     
     render() {
         return (
@@ -157,6 +163,7 @@ class IssuersScreen extends NavigationEnabledComponent<
                         renderItem={item => this.renderItem(item.item)}
                         keyExtractor={(_, index) => index.toString()}
                         refreshing={this.state.loading}
+                        onRefresh={this.loadMore} 
                     />
                 }
                 <WarningModal 
@@ -190,6 +197,9 @@ export default didiConnect(
         totalPages: state.issuersNames.totalPages
     }),
     (dispatch): IssuerScreenDispatchProps => ({
+        IssuersReset: () =>{
+			dispatch({ type: "ISSUERS_RESET" })
+		},
         getAllIssuerData: (limit, page) => dispatch(getAllIssuerData("getAllIssuerData", limit, page)),
     })
 );

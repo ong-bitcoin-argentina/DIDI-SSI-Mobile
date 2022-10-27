@@ -6,12 +6,16 @@ interface IssuersActionRegister {
 	content: IssuersDescriptor;
 }
 
+interface IssuersActionReset {
+	type: "ISSUERS_RESET";
+}
+
 const initialValue = {
 	issuersList: [],
 	totalPages: 0,
 };
 
-export type IssuersAction = IssuersActionRegister;
+export type IssuersAction = IssuersActionRegister | IssuersActionReset;
 
 export type IssuersRegistry = IssuersDescriptor;
 
@@ -26,6 +30,9 @@ export function persistedIssuersDataReducer(state: IssuersRegistry = initialValu
 				issuersData.issuersList.push(descriptor);
 			});
 			return issuersData;
+		}
+		case "ISSUERS_RESET": {
+			return initialValue;
 		}
 		default:
 			return state ?? [];
