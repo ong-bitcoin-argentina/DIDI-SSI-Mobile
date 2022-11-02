@@ -27,18 +27,19 @@ import DocumentsNavigator from "./documents/DocumentsNavigator";
 import DashboardScreen, { DashboardScreenProps } from "./home/Dashboard";
 import { NotificationScreen } from "./home/NotificationScreen";
 import SettingsNavigator from "./settings/SettingsNavigator";
+/* don't remove these lines
 import SemillasNavigator from "./semillas/SemillasNavigator";
-import CoopsolNavigator from "./coopsol/CoopsolNavigator";
+*/
 /* don't remove these lines
 import { RoundsScreen } from "./rounds/RoundsScreen";
 */
+import CoopsolNavigator from "./coopsol/CoopsolNavigator";
 import { EditProfileScreen } from "./settings/userMenu/EditProfile";
 import DocumentsScreen from "./documents/DocumentsScreen";
-/* don't remove these lines
- import { IssuersScreen } from "./issuers/IssuersScreen";
-*/
+import IssuersScreen  from "./issuers/IssuersScreen";
 import VuIdentityNavigator from './vuIdentity/VuIdentityNavigator';
 import { IdentityScreen } from './vuIdentity/IdentityScreen';
+import issuersNavigator from './issuers/IssuersNavigator';
 
 interface DashboardSwitchTarget {
 	Access: StartAccessProps;
@@ -105,6 +106,7 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 		}),
 		DashDocumentDetail: NavMap.from(DocumentDetailScreen, {}),
 		DashboardDocuments: NavMap.placeholder(DocumentsScreen),
+		DashboardIssuers: NavMap.placeholder(IssuersScreen),
 		ValidateID: NavMap.placeholder(IdentityScreen),
 		EditProfile: NavMap.placeholder(EditProfileScreen),
 		__DashboardSettings: SettingsNavigator({
@@ -131,20 +133,23 @@ export default function (then: NavTree<DashboardSwitchTarget>) {
 				strings.tabNames.documents,
 				"perm_contact_calendar"
 			),
-			/* don't remove these lines
 			DashboardIssuers: screen(
-				NavMap.from(IssuersScreen, { DashboardHome: dashboardPlaceholder }).stackNavigator("DashboardIssuers"),
+				issuersNavigator({
+					...then,
+					DashboardHome: dashboardPlaceholder
+				}).stackNavigator("DashboardIssuers"),
 				strings.tabNames.issuers,
 				"assignment_returned",
 				false
 			),
-			*/
+			/* don't remove these lines
 			DashboardSemillas: screen(
 				SemillasNavigator().stackNavigator("DashboardSemillas"),
 				strings.tabNames.semillas,
 				"spa",
 				false
 			),
+			*/
 			DashboardCoopsol: screen(
 				CoopsolNavigator().stackNavigator("DashboardCoopsol"),
 				strings.tabNames.coopsol,

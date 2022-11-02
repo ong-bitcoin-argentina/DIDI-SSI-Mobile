@@ -25,6 +25,7 @@ import themes from "../../resources/themes";
 import { ShareExplanationProps } from "./ShareExplanationScreen";
 import { ShareMicroCredentialProps } from "./ShareMicroCredential";
 import { CredentialStates } from "../../../model/Credential";
+import { IShareRequestData } from '../../../model/ShareRequest';
 
 export type ShareCredentialProps = Record<string, unknown>;
 interface ShareCredentialInternalProps extends ShareCredentialProps {
@@ -41,16 +42,24 @@ interface ShareCredentialState {
 export interface ShareCredentialNavigation {
 	ShareMicroCredential: ShareMicroCredentialProps;
 	ShareExplanation: ShareExplanationProps;
+	ShareResp:{};
 }
 
+interface ShareRespCredential {
+	shareResp: boolean
+	shareRequests: IShareRequestData[]
+	shareRequestId?: string
+}
+
+type ShareCredentialScreenProps = ShareCredentialInternalProps & ShareRespCredential;
 class ShareCredentialScreen extends NavigationEnabledComponent<
-	ShareCredentialInternalProps,
+	ShareCredentialScreenProps,
 	ShareCredentialState,
 	ShareCredentialNavigation
 > {
 	static navigationOptions = NavigationHeaderStyle.withTitleAndRightButtonClose(strings.share.title);
 
-	constructor(props: ShareCredentialInternalProps) {
+	constructor(props: ShareCredentialScreenProps) {
 		super(props);
 		this.state = {
 			selectedCredentials: []
@@ -76,6 +85,15 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 							</View>
 						}
 						ListHeaderComponent={
+							this.props.shareResp?
+							<View style={commonStyles.view.area}>
+								<DidiText.Explanation.Emphasis style={{marginVertical:'2%'}}>
+								{"Compartir Credenciales con Emisor"}
+							    </DidiText.Explanation.Emphasis>
+								<DidiText.Explanation.Normal style={{marginVertical:'2%'}}>
+									{"Seleccione las credenciales que le solicitaron"}
+								</DidiText.Explanation.Normal>
+							</View>:
 							<DidiText.Explanation.Emphasis style={{ marginVertical: 10 }}>
 								{strings.credentialShare.whichFull}
 							</DidiText.Explanation.Emphasis>
@@ -89,7 +107,7 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 							actions={[
 								{ name: "", icon: <ChevronBlueRight width={14} height={24} />, color: colors.backgroundSeparator }
 							]}
-							onPressItem={() => this.doShare(this.state.selectedCredentials)}
+							onPressItem={() => this.doShare(this.state.selectedCredentials, this.props.shareResp)}
 						/>
 					)}
 				</SafeAreaView>
@@ -137,16 +155,24 @@ class ShareCredentialScreen extends NavigationEnabledComponent<
 		}
 	}
 
-	private doShare(documents: CredentialDocument[]) {
-		if (documents.every(doc => doc.nested.length === 0)) {
-			this.navigate("ShareExplanation", { documents });
-		} else {
-			this.navigate("ShareMicroCredential", {
-				credentials: documents
-					.map(doc => (doc.nested.length === 0 ? [doc] : [doc, ...doc.nested]))
-					.reduce((acc, next) => [...acc, ...next], []),
-				credentialContext: this.props.credentialContext
+	private doShare(documents: CredentialDocument[], shareResp?: boolean ) {
+		if (shareResp === true) {
+			this.navigate("ShareResp", { 
+				documents,
+				shareRequests: this.props.shareRequests,
+				shareRequestId: this.props.shareRequestId,
 			});
+		}  else {
+			if (documents.every(doc => doc.nested.length === 0)) {
+				this.navigate("ShareExplanation", { documents });
+			} else {
+				this.navigate("ShareMicroCredential", {
+					credentials: documents
+						.map(doc => (doc.nested.length === 0 ? [doc] : [doc, ...doc.nested]))
+						.reduce((acc, next) => [...acc, ...next], []),
+					credentialContext: this.props.credentialContext
+				});
+			}
 		}
 	}
 }
