@@ -173,28 +173,6 @@ export default {
             body: 'Consulta la Política de Privacidad en el apartado \'Derecho de supresión\'.'
         }      
     ],
-    ["Ronda"]:[
-        {
-            id: "1",
-            title: "¿Para qué sirve la aplicacion ronda?",
-            body: 'Con ronda vas a poder organizar y participar de rondas, juntas, vaquitas, pollas o pasanakus con quien vos quieras, por el monto y el tiempo que elijan. ' +
-            ' Además, vas a poder hacer un seguimiento de la ronda, registrar tus pagos y obtener credenciales que validen tu comportamiento durante la ronda y así obtener ' +
-            ' reputación de buen pagador o pagadora. A través de notificaciones, ronda te enviará recordatorios sobre pagos, facilitando la gestión y el desarrollo de la ronda.'
-        },
-        {
-            id: "2",
-            title: "¿Qué es una ronda?",
-            body: 'ronda, pasanaku, junta, rueda, pandero, polla, vaquita, son algunos de los nombres que se usan para designar a un sistema de ahorro y financiación ' +
-            ' muy difundido en distintos barrios populares de Argentina y latinoamérica. Se juega entre personas que pertenecen a un mismo círculo de confianza. Cada ' +
-            ' cierto tiempo, definido por los que juegan la ronda, todos depositan un monto de dinero en un pozo y una persona del grupo se lleva el dinero reunido. ' +
-            ' Esto se repite hasta que todos los participantes reciban el pozo. Más información aquí.(https://didi.org.ar/aidi-ronda/)'
-        },
-        {
-            id: "3",
-            title: "¿Cómo accedo a ronda?",
-            body: 'Tienes que descargar ai·di, ya que ronda funciona de manera integrada ai·di, dado que las credenciales generadas en ronda son almacenadas en ai·di.'
-        }
-    ],
     ["Emisores"]:[
         {
             id: "1",
